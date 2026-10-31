@@ -1,0 +1,13 @@
+<!-- @dsCard group="Charts" height=240 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>PieChart</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.PieChart,{size:200,center:'1.284 €',data:[{name:'Hogar',value:700},{name:'Ocio',value:210},{name:'Transporte',value:95},{name:'Suscripciones',value:62},{name:'Otros',value:217}]}));
+</script>
+</body>
+</html>

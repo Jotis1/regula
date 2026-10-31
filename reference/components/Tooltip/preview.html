@@ -1,0 +1,13 @@
+<!-- @dsCard group="Status" height=170 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tooltip</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{display:'flex',gap:160,padding:'96px 0 0 120px'}},h(J.Tooltip,{title:'Esto es un tooltip',open:true},h(J.Button,{hierarchy:'secondary',iconOnly:'help-circle',label:'Ayuda'})),h(J.Tooltip,{title:'Con texto de apoyo',text:'Una frase más para explicar el control.',open:true},h(J.Button,{hierarchy:'secondary'},'Pasa el ratón'))));
+</script>
+</body>
+</html>

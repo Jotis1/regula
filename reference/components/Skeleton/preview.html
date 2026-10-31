@@ -1,0 +1,13 @@
+<!-- @dsCard group="Loading" height=120 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Skeleton</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{display:'flex',gap:16,maxWidth:420}},h(J.Skeleton,{circle:true,width:40,height:40}),h('div',{style:{flex:1}},h(J.Skeleton,{width:'40%',height:14}),h('div',{style:{height:12}}),h(J.Skeleton,{lines:3}))));
+</script>
+</body>
+</html>

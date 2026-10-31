@@ -1,0 +1,13 @@
+<!-- @dsCard group="Forms" height=300 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>TextEditor</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:640}},h(J.TextEditor,{label:'Notas',maxLength:500,defaultValue:'<p>Revisar el <b>seguro del coche</b> antes del 15.</p><ul><li>Comparar dos ofertas</li><li>Llamar al banco</li></ul>'})));
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+---
+import Calendar from "@jotis-me/icons/svg/calendar.svg?raw";
+// Solo componentes estáticos: se pintan en el servidor y no envían JavaScript.
+import { Button, CloseButton, Icon } from "@jotis-me/react";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Estáticos">
+	<main class="flex flex-col gap-6">
+		<h1 class="font-display text-display-sm font-semibold">Componentes estáticos</h1>
+		<div class="flex flex-wrap items-center gap-3">
+			<Button iconLeading="plus">Nuevo gasto</Button>
+			<Button hierarchy="secondary">Cancelar</Button>
+			<Button hierarchy="link-color" href="/interactivo/">Ver los interactivos</Button>
+			<CloseButton />
+			<span class="text-fg-brand-primary"><Icon name="check-circle" title="Correcto" /></span>
+			<!-- Icono SVG suelto, sin React -->
+			<span id="svg-suelto" class="text-fg-tertiary" set:html={Calendar} />
+		</div>
+	</main>
+</Layout>

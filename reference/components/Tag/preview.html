@@ -1,0 +1,13 @@
+<!-- @dsCard group="Status" height=72 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tag</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-row'},h(J.Tag,{},'Diseño'),h(J.Tag,{size:'md',count:5},'Facturas'),h(J.Tag,{size:'md',onRemove:function(){}},'León'),h(J.Tag,{size:'lg',dot:true},'Sincronizado')));
+</script>
+</body>
+</html>

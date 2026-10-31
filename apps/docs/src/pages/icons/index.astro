@@ -1,0 +1,146 @@
+---
+import { iconNames, iconSvg } from "@jotis-me/icons";
+import Base from "../../layouts/Base.astro";
+
+const componentName = (name: string) =>
+	`Icon${name
+		.split("-")
+		.map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+		.join("")}`;
+const icons = iconNames.map((name) => ({
+	name,
+	svg: iconSvg(name, 24),
+	react: `<Icon name="${name}" />`,
+	component: `import { ${componentName(name)} } from "@jotis-me/icons";`,
+	astro: `import ${componentName(name)} from "@jotis-me/icons/svg/${name}.svg?raw";`,
+}));
+const first = icons[0] as (typeof icons)[number];
+---
+
+<Base title="Iconos" description="Los 81 iconos de línea de la suite: 24×24, trazo de 2px redondeado.">
+	<div class="flex flex-col gap-8">
+		<div class="prose max-w-paragraph">
+			<h1>Iconos</h1>
+			<p class="lead">Los {icons.length} iconos de línea de la suite: 24×24, trazo de 2px redondeado, sin relleno.</p>
+			<p>
+				Toman el color del texto. Tamaños: 20 en botones e inputs, 16 en botones xs y menús, 24 en navegación. Un icono
+				solo, sin texto, necesita <code>title</code>.
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-2 sm:max-w-sm">
+			<label for="icon-search" class="text-sm font-medium text-secondary">Buscar icono</label>
+			<input
+				id="icon-search"
+				type="search"
+				placeholder="calendar, arrow…"
+				autocomplete="off"
+				class="h-10 rounded-lg border border-primary bg-primary px-3.5 text-md text-primary shadow-xs placeholder:text-placeholder focus:border-brand focus:shadow-focus-ring focus:outline-none"
+			/>
+			<p id="icon-count" class="text-sm text-tertiary" aria-live="polite">{icons.length} iconos</p>
+		</div>
+
+		<div class="grid gap-8 lg:grid-cols-[1fr_20rem]">
+			<div class="flex flex-col gap-4 self-start">
+			<ul class="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] content-start gap-2" aria-label="Iconos">
+				{
+					icons.map((icon) => (
+						<li data-icon={icon.name}>
+							<button
+								type="button"
+								data-select={icon.name}
+								aria-pressed={icon.name === first.name ? "true" : "false"}
+								class="flex w-full flex-col items-center gap-3 rounded-lg border border-secondary px-2 py-4 text-fg-secondary transition-colors duration-100 hover:bg-primary_hover aria-pressed:border-brand aria-pressed:bg-secondary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
+							>
+								<span set:html={icon.svg} />
+								<span class="w-full truncate text-center font-mono text-code-xs text-secondary">{icon.name}</span>
+							</button>
+						</li>
+					))
+				}
+			</ul>
+			<p id="icon-empty" class="hidden text-md text-tertiary">Ningún icono se llama así. Prueba con otra palabra.</p>
+			</div>
+
+			<aside class="h-fit rounded-xl border border-secondary bg-primary_alt p-6 lg:sticky lg:top-6" aria-labelledby="icon-detail-name">
+				<div class="mb-4 flex size-16 items-center justify-center rounded-lg bg-secondary text-fg-primary" id="icon-detail-preview" set:html={iconSvg(first.name, 32)} />
+				<h2 id="icon-detail-name" class="mb-4 font-mono text-code-sm font-semibold text-primary">{first.name}</h2>
+				{
+					[
+						["React", "react"],
+						["Componente", "component"],
+						["Astro sin React", "astro"],
+						["SVG", "svg"],
+					].map(([label, key]) => (
+						<div class="mb-4">
+							<p class="mb-1 text-xs font-semibold text-quaternary">{label}</p>
+							<button
+								type="button"
+								data-copy={first[key as keyof typeof first]}
+								data-field={key}
+								class="w-full rounded-md border border-secondary bg-secondary px-2.5 py-2 text-left font-mono text-code-xs break-all text-secondary hover:border-primary focus-visible:shadow-focus-ring focus-visible:outline-none"
+							>
+								{first[key as keyof typeof first]}
+							</button>
+						</div>
+					))
+				}
+				<p class="text-xs text-tertiary">Pulsa un bloque para copiarlo.</p>
+			</aside>
+		</div>
+	</div>
+	<script type="application/json" id="icon-data" set:html={JSON.stringify(icons)} />
+</Base>
+
+<script>
+	interface IconInfo {
+		name: string;
+		svg: string;
+		react: string;
+		component: string;
+		astro: string;
+	}
+	const data: IconInfo[] = JSON.parse((document.getElementById("icon-data") as HTMLElement).textContent ?? "[]");
+	const search = document.getElementById("icon-search") as HTMLInputElement;
+	const count = document.getElementById("icon-count") as HTMLElement;
+	const empty = document.getElementById("icon-empty") as HTMLElement;
+	const items = [...document.querySelectorAll<HTMLElement>("[data-icon]")];
+
+	search.addEventListener("input", () => {
+		const q = search.value.trim().toLowerCase();
+		let shown = 0;
+		for (const item of items) {
+			const match = (item.dataset.icon ?? "").includes(q);
+			item.hidden = !match;
+			if (match) shown++;
+		}
+		count.textContent = shown === 1 ? "1 icono" : `${shown} iconos`;
+		empty.classList.toggle("hidden", shown > 0);
+	});
+
+	document.addEventListener("click", (event) => {
+		const button = (event.target as Element).closest<HTMLElement>("[data-select]");
+		if (!button) return;
+		const icon = data.find((i) => i.name === button.dataset.select);
+		if (!icon) return;
+		for (const b of document.querySelectorAll("[data-select]"))
+			b.setAttribute("aria-pressed", String(b === button));
+		(document.getElementById("icon-detail-name") as HTMLElement).textContent = icon.name;
+		(document.getElementById("icon-detail-preview") as HTMLElement).innerHTML = icon.svg
+			.replace('width="24"', 'width="32"')
+			.replace('height="24"', 'height="32"');
+		for (const field of document.querySelectorAll<HTMLElement>("[data-field]")) {
+			const value = icon[field.dataset.field as keyof IconInfo];
+			field.dataset.copy = value;
+			field.textContent = value;
+		}
+	});
+
+	// `/icons/?icono=calendar`: llega desde la búsqueda (Ctrl+K) con el icono ya filtrado y elegido
+	const wanted = new URLSearchParams(location.search).get("icono");
+	if (wanted && data.some((i) => i.name === wanted)) {
+		search.value = wanted;
+		search.dispatchEvent(new Event("input"));
+		document.querySelector<HTMLElement>(`[data-select="${CSS.escape(wanted)}"]`)?.click();
+	}
+</script>

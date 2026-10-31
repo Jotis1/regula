@@ -1,0 +1,13 @@
+<!-- @dsCard group="Actions" height=72 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>ButtonGroup</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.ButtonGroup,{defaultValue:'m','aria-label':'Periodo',items:[{value:'a',label:'12 meses'},{value:'b',label:'30 días'},{value:'m',label:'7 días'},{value:'d',label:'24 horas',icon:'clock'}]}));
+</script>
+</body>
+</html>

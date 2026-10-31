@@ -1,0 +1,13 @@
+<!-- @dsCard group="Feedback" height=170 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>InlineCTA</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.InlineCTA,{icon:'stars-02',title:'Conecta tu banco',description:'Importa los movimientos cada día sin subir extractos a mano.',actions:h(F,null,h(J.Button,{hierarchy:'secondary',size:'sm'},'Ahora no'),h(J.Button,{size:'sm'},'Conectar'))}));
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+---
+import { getCollection, render } from "astro:content";
+import TokenTables from "../../components/TokenTables.astro";
+import Prose from "../../layouts/Prose.astro";
+
+export async function getStaticPaths() {
+	const pages = await getCollection("foundations");
+	return pages.map((page) => ({ params: { slug: page.id }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<Prose title={page.data.title} description={page.data.description}>
+	<Content />
+	<TokenTables page={page.id} />
+</Prose>

@@ -1,0 +1,10 @@
+---
+import Prose from "./Prose.astro";
+
+// Layout para páginas .mdx: el frontmatter llega como `frontmatter`
+const { frontmatter } = Astro.props;
+---
+
+<Prose title={frontmatter.title} description={frontmatter.description}>
+	<slot />
+</Prose>

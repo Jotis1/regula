@@ -1,0 +1,13 @@
+<!-- @dsCard group="Forms" height=300 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Input</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:24}},h(J.Input,{label:'Correo',required:true,icon:'mail-01',placeholder:'tu@jotis.me',hint:'Solo lo usamos para avisos.'}),h(J.Input,{label:'Importe',placeholder:'0,00',trailing:'currency-euro'}),h(J.Input,{label:'Correo',icon:'mail-01',defaultValue:'mal@correo',error:'Introduce un correo válido.'}),h(J.Input,{label:'Usuario',disabled:true,defaultValue:'jotis'}),h(J.Input,{label:'Buscar',size:'sm',icon:'search-lg',placeholder:'sm'}),h(J.Input,{label:'Nombre',size:'lg',placeholder:'lg'})));
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+.astro/
+.next/
+.vercel/
+.turbo/
+out/
+*.tgz
+
+# Tests
+coverage/
+playwright-report/
+test-results/
+
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

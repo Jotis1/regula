@@ -1,0 +1,13 @@
+<!-- @dsCard group="Actions" height=220 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Button</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-stack'},h('div',{className:'jm-row'},h(J.Button,{},'Guardar'),h(J.Button,{hierarchy:'secondary'},'Cancelar'),h(J.Button,{hierarchy:'tertiary'},'Más tarde'),h(J.Button,{hierarchy:'link-color'},'Ver detalles'),h(J.Button,{hierarchy:'link-gray'},'Ayuda')),h('div',{className:'jm-row'},h(J.Button,{size:'xs'},'xs'),h(J.Button,{size:'sm'},'sm'),h(J.Button,{size:'md',iconLeading:'plus'},'Nuevo gasto'),h(J.Button,{size:'lg',iconTrailing:'arrow-right'},'Continuar'),h(J.Button,{size:'xl'},'xl')),h('div',{className:'jm-row'},h(J.Button,{destructive:true},'Eliminar'),h(J.Button,{destructive:true,hierarchy:'secondary',iconLeading:'trash-01'},'Borrar'),h(J.Button,{loading:true},'Guardando'),h(J.Button,{disabled:true},'Deshabilitado'),h(J.Button,{hierarchy:'secondary',iconOnly:'edit-02',label:'Editar'}),h(J.Button,{hierarchy:'tertiary',iconOnly:'dots-vertical',label:'Más'}))));
+</script>
+</body>
+</html>

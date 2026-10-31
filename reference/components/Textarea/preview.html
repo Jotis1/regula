@@ -1,0 +1,13 @@
+<!-- @dsCard group="Forms" height=200 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Textarea</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:420}},h(J.Textarea,{label:'Descripción',placeholder:'Escribe una nota…',hint:'Máximo 280 caracteres.'})));
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+// Puertos de las vistas previas de los componentes de formulario.
+
+import {
+	Checkbox,
+	ColorPicker,
+	DatePicker,
+	FileUpload,
+	Input,
+	MessageInput,
+	Radio,
+	RadioGroup,
+	Select,
+	Slider,
+	Textarea,
+	TextEditor,
+	Toggle,
+} from "@jotis-me/react";
+import { row, stack } from "./actions";
+
+export function InputExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-6">
+			<Input
+				label="Correo"
+				required
+				icon="mail-01"
+				placeholder="tu@jotis.me"
+				hint="Solo lo usamos para avisos."
+			/>
+			<Input label="Importe" placeholder="0,00" trailing="currency-euro" />
+			<Input
+				label="Correo"
+				icon="mail-01"
+				defaultValue="mal@correo"
+				error="Introduce un correo válido."
+			/>
+			<Input label="Usuario" disabled defaultValue="jotis" />
+			<Input label="Buscar" size="sm" icon="search-lg" placeholder="sm" />
+			<Input label="Nombre" size="lg" placeholder="lg" />
+		</div>
+	);
+}
+
+export function TextareaExample() {
+	return (
+		<div className="max-w-[420px]">
+			<Textarea label="Descripción" placeholder="Escribe una nota…" hint="Máximo 280 caracteres." />
+		</div>
+	);
+}
+
+export function SelectExample() {
+	return (
+		<div className="max-w-[320px]">
+			<Select
+				label="Categoría"
+				placeholder="Elige una"
+				options={["Hogar", "Transporte", "Ocio", "Suscripciones"]}
+			/>
+		</div>
+	);
+}
+
+export function CheckboxExample() {
+	return (
+		<div className={stack}>
+			<Checkbox label="Recordarme" hint="Mantener la sesión 30 días." defaultChecked />
+			<Checkbox label="Selección parcial" indeterminate />
+			<Checkbox label="Opción md" size="md" />
+			<Checkbox label="Deshabilitado" disabled />
+		</div>
+	);
+}
+
+export function RadioExample() {
+	return (
+		<div className={row}>
+			<Radio name="r" label="Seleccionado" checked readOnly />
+			<Radio name="r" label="Sin seleccionar" size="md" />
+		</div>
+	);
+}
+
+export function RadioGroupExample() {
+	return (
+		<RadioGroup
+			defaultValue="m"
+			aria-label="Frecuencia"
+			options={[
+				{ value: "d", label: "Diario" },
+				{ value: "m", label: "Mensual", hint: "Resumen el día 1." },
+				{ value: "n", label: "Nunca" },
+			]}
+		/>
+	);
+}
+
+export function ToggleExample() {
+	return (
+		<div className={stack}>
+			<Toggle label="Notificaciones" hint="Recibe un aviso al vencer un pago." defaultChecked />
+			<Toggle label="Modo compacto" size="md" />
+			<Toggle label="Deshabilitado" disabled />
+		</div>
+	);
+}
+
+export function SliderExample() {
+	return (
+		<div className="max-w-[360px] pt-3">
+			<Slider defaultValue={40} aria-label="Presupuesto" />
+		</div>
+	);
+}
+
+export function FileUploadExample() {
+	return (
+		<div className="max-w-[512px]">
+			<FileUpload
+				accept=".csv,.md"
+				multiple
+				hint="CSV o Markdown (máx. 10 MB)"
+				files={[
+					{ name: "extracto-octubre.csv", size: 204800, progress: 100, status: "complete" },
+					{ name: "notas-reunion.md", size: 12800, progress: 40 },
+					{
+						name: "foto-ticket.heic",
+						size: 3355443,
+						status: "error",
+						error: "Formato no admitido",
+					},
+				]}
+				onRemove={() => {}}
+			/>
+		</div>
+	);
+}
+
+export function DatePickerExample() {
+	return (
+		<DatePicker
+			range
+			inline
+			today={new Date(2026, 9, 29)}
+			defaultValue={{ start: new Date(2026, 9, 6), end: new Date(2026, 9, 17) }}
+			presets={[
+				{ label: "Hoy", start: new Date(2026, 9, 29) },
+				{ label: "Últimos 7 días", start: new Date(2026, 9, 22), end: new Date(2026, 9, 29) },
+				{ label: "Este mes", start: new Date(2026, 9, 1), end: new Date(2026, 9, 31) },
+				{ label: "Mes pasado", start: new Date(2026, 8, 1), end: new Date(2026, 8, 30) },
+				{ label: "Este año", start: new Date(2026, 0, 1), end: new Date(2026, 11, 31) },
+			]}
+		/>
+	);
+}
+
+export function ColorPickerExample() {
+	return (
+		<ColorPicker
+			defaultValue="#4f39f6"
+			swatches={[
+				"#4f39f6",
+				"#615fff",
+				"#00a63e",
+				"#d08700",
+				"#e7000b",
+				"#00a6f4",
+				"#e12afb",
+				"#171717",
+			]}
+		/>
+	);
+}
+
+export function TextEditorExample() {
+	return (
+		<div className="max-w-[640px]">
+			<TextEditor
+				label="Notas"
+				maxLength={500}
+				defaultValue="<p>Revisar el <b>seguro del coche</b> antes del 15.</p><ul><li>Comparar dos ofertas</li><li>Llamar al banco</li></ul>"
+			/>
+		</div>
+	);
+}
+
+export function MessageInputExample() {
+	return (
+		<div className="max-w-[560px]">
+			<MessageInput placeholder="Pregunta a Emptor…" onAttach={() => {}} onSend={() => {}} />
+		</div>
+	);
+}

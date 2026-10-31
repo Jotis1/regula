@@ -1,0 +1,13 @@
+<!-- @dsCard group="Charts" height=330 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>BarChart</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.BarChart,{labels:['Nov','Dic','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct'],series:[{name:'Hogar',data:[650,650,650,650,650,650,700,700,700,700,700,700]},{name:'Ocio',data:[120,240,180,90,140,110,220,260,150,190,170,210]},{name:'Transporte',data:[60,80,70,90,75,60,120,140,90,85,70,95]}],format:function(v){return v+' €'}}));
+</script>
+</body>
+</html>

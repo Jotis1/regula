@@ -1,0 +1,28 @@
+---
+import { Button, ButtonGroup } from "@jotis-me/react";
+import Periodo from "../components/Periodo";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Interactivos">
+	<main class="flex flex-col gap-6">
+		<h1 class="font-display text-display-sm font-semibold">Componentes interactivos</h1>
+		<Button hierarchy="secondary">Botón estático en la misma página</Button>
+		<!-- Interactivo: necesita una directiva client:* -->
+		<ButtonGroup
+			client:load
+			aria-label="Vista"
+			defaultValue="lista"
+			items={[
+				{ value: "lista", label: "Lista" },
+				{ value: "tabla", label: "Tabla" },
+			]}
+		/>
+		<!-- Con función (onChange): a través de un envoltorio .tsx -->
+		<Periodo client:load />
+		<!-- Sin directiva: HTML inicial, sin JavaScript y sin respuesta -->
+		<div id="sin-directiva">
+			<ButtonGroup aria-label="Sin directiva" defaultValue="x" items={[{ value: "x", label: "X" }, { value: "y", label: "Y" }]} />
+		</div>
+	</main>
+</Layout>

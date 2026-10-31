@@ -1,0 +1,13 @@
+<!-- @dsCard group="Overlays" height=380 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Modal</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{position:'relative',height:360,borderRadius:12,overflow:'hidden'}},h(J.Modal,{contained:true,icon:'trash-01',destructive:true,title:'¿Eliminar este gasto?',description:'Se borrará también de los informes. No se puede deshacer.',onClose:function(){},actions:h(F,null,h(J.Button,{hierarchy:'secondary'},'Cancelar'),h(J.Button,{destructive:true},'Eliminar'))})));
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!-- @dsCard group="Feedback" height=300 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Alert</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-stack'},h(J.Alert,{color:'brand',title:'Hay una actualización disponible',description:'La nueva versión mejora la importación de extractos.',onClose:function(){},actions:h(F,null,h(J.Button,{hierarchy:'link-gray'},'Descartar'),h(J.Button,{hierarchy:'link-color'},'Ver cambios'))}),h(J.Alert,{color:'error',title:'No se pudo sincronizar',description:'Revisa la conexión con el banco e inténtalo de nuevo.'}),h(J.Alert,{color:'success',title:'Copia de seguridad completada'})));
+</script>
+</body>
+</html>

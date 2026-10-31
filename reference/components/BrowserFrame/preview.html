@@ -1,0 +1,21 @@
+<!-- @dsCard group="Mockups" height=600 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>BrowserFrame</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-stack',style:{gap:24}},
+ h(J.BrowserFrame,{url:'pecunia.jotis.me/resumen',height:260},
+  h('div',{style:{position:'relative',height:'100%',padding:24,background:'var(--bg-secondary)'}},
+   h(J.BackgroundPattern,{pattern:'grid',size:'sm',mask:'radial-down'}),
+   h('div',{style:{position:'relative',display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:16}},
+    h(J.MetricCard,{label:'Gasto de octubre',value:'1.284,50 €',change:'8 %',trend:'up',period:'vs. septiembre'}),
+    h(J.MetricCard,{label:'Ahorro',value:'412,00 €',change:'3 %',trend:'down',period:'vs. septiembre'})))),
+ h(J.BrowserFrame,{variant:'minimal',url:'vinculum.jotis.me',height:160},
+  h('div',{style:{display:'grid',placeItems:'center',height:'100%'}},h(J.EmptyState,{icon:'users-01',title:'Sin contactos todavía',description:'Importa un CSV o añade el primero.'})))));
+</script>
+</body>
+</html>

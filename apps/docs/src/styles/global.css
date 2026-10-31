@@ -1,0 +1,99 @@
+@import "tailwindcss";
+@import "@jotis-me/react/styles.css";
+
+/* Texto largo de la web: solo tokens de la guía. Los ejemplos vivos van en `.not-prose` y no heredan nada de aquí */
+@layer components {
+	.prose {
+		@apply text-md text-tertiary;
+	}
+	.prose h1:not(.not-prose *) {
+		@apply font-display text-display-sm font-semibold text-primary;
+	}
+	.prose .lead:not(.not-prose *) {
+		@apply mt-2 text-lg text-tertiary;
+	}
+	.prose h2:not(.not-prose *) {
+		@apply mt-12 mb-4 font-display text-display-xs font-semibold text-primary;
+	}
+	.prose h3:not(.not-prose *) {
+		@apply mt-8 mb-3 text-lg font-semibold text-primary;
+	}
+	.prose p:not(.not-prose *),
+	.prose ul:not(.not-prose *),
+	.prose ol:not(.not-prose *),
+	.prose table:not(.not-prose *) {
+		@apply my-4;
+	}
+	/* El texto corrido no pasa de 720px; las tablas pueden ocupar más */
+	.prose > p:not(.not-prose *),
+	.prose > ul:not(.not-prose *),
+	.prose > ol:not(.not-prose *),
+	.prose > h2:not(.not-prose *),
+	.prose > h3:not(.not-prose *),
+	.prose > pre:not(.not-prose *) {
+		@apply max-w-paragraph;
+	}
+	.prose ul:not(.not-prose *) {
+		@apply list-disc pl-6;
+	}
+	.prose ol:not(.not-prose *) {
+		@apply list-decimal pl-6;
+	}
+	.prose li:not(.not-prose *) {
+		@apply my-2 pl-1;
+	}
+	.prose li > ul:not(.not-prose *) {
+		@apply my-2;
+	}
+	.prose strong:not(.not-prose *) {
+		@apply font-semibold text-secondary;
+	}
+	.prose a:not(.not-prose *) {
+		@apply font-semibold text-brand-secondary underline-offset-2 hover:text-brand-secondary_hover hover:underline;
+	}
+	.prose code:not(.not-prose *) {
+		@apply rounded-sm border border-secondary bg-secondary px-1 py-0.5 font-mono text-code-xs text-secondary;
+	}
+	.prose pre:not(.not-prose *) {
+		@apply my-4 overflow-x-auto rounded-xl border border-secondary bg-secondary p-4 font-mono text-code-sm text-primary;
+	}
+	.prose pre code:not(.not-prose *) {
+		@apply border-0 bg-transparent p-0 text-code-sm;
+	}
+	.prose table:not(.not-prose *) {
+		@apply w-full border-separate border-spacing-0 overflow-hidden rounded-xl border border-secondary text-sm;
+	}
+	.prose th:not(.not-prose *) {
+		@apply border-b border-secondary bg-secondary px-4 py-3 text-left text-xs font-semibold text-quaternary;
+	}
+	.prose td:not(.not-prose *) {
+		@apply border-b border-secondary px-4 py-3 align-top text-tertiary;
+	}
+	.prose tr:last-child td:not(.not-prose *) {
+		@apply border-b-0;
+	}
+	.prose td code:not(.not-prose *) {
+		@apply whitespace-nowrap;
+	}
+	.prose td:has(.swatch):not(.not-prose *) {
+		@apply whitespace-nowrap;
+	}
+	.prose td:first-child:not(.not-prose *) {
+		@apply font-medium text-primary;
+	}
+	.token-copy {
+		@apply cursor-pointer whitespace-nowrap text-left rounded-sm font-mono text-code-xs text-primary underline decoration-(--border-primary) decoration-dashed underline-offset-4 hover:text-brand-secondary focus-visible:shadow-focus-ring focus-visible:outline-none;
+	}
+	.swatch {
+		@apply mr-2 inline-block size-5 rounded-sm border border-alpha-black/10 align-middle;
+	}
+	.spacer {
+		@apply mr-2 inline-block h-3 rounded-xs bg-utility-brand-200 align-middle;
+	}
+	.radius-sample {
+		@apply mr-2 inline-block size-8 border-2 border-brand bg-brand-primary align-middle;
+	}
+	.shadow-sample {
+		@apply inline-block h-10 w-16 rounded-lg border border-secondary bg-primary_alt;
+	}
+}

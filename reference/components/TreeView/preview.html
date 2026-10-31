@@ -1,0 +1,13 @@
+<!-- @dsCard group="Navigation" height=330 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>TreeView</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.TreeView,{defaultOpen:['notas','trabajo'],defaultSelected:'roadmap',items:[{id:'notas',label:'Notas',children:[{id:'trabajo',label:'Trabajo',children:[{id:'roadmap',label:'roadmap.md'},{id:'pentest',label:'pentest.md'}]},{id:'casa',label:'Casa',children:[{id:'mudanza',label:'mudanza.md'}]},{id:'leeme',label:'LEEME.md',meta:'2 KB'}]},{id:'recetas',label:'Recetas',children:[{id:'r1',label:'paella.md'}]},{id:'arch',label:'Archivo',icon:'inbox-01'}]}));
+</script>
+</body>
+</html>

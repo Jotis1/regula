@@ -1,0 +1,13 @@
+<!-- @dsCard group="Status" height=150 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Badge</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-stack'},h('div',{className:'jm-row'},h(J.Badge,{color:'gray'},'Borrador'),h(J.Badge,{color:'brand'},'Nuevo'),h(J.Badge,{color:'success'},'Pagado'),h(J.Badge,{color:'warning'},'Pendiente'),h(J.Badge,{color:'error'},'Vencido'),h(J.Badge,{color:'sky'},'Info'),h(J.Badge,{color:'purple'},'Beta')),h('div',{className:'jm-row'},h(J.Badge,{type:'badge',color:'brand',dot:true},'Activo'),h(J.Badge,{type:'modern',dot:true,color:'success'},'En línea'),h(J.Badge,{size:'sm'},'sm'),h(J.Badge,{size:'lg',color:'indigo'},'lg'),h(J.Badge,{color:'gray',onRemove:function(){}},'Filtro'))));
+</script>
+</body>
+</html>

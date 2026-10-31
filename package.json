@@ -1,0 +1,28 @@
+{
+	"name": "regula",
+	"private": true,
+	"description": "Sistema de diseño de la suite jotis.me",
+	"license": "MIT",
+	"packageManager": "bun@1.4.3",
+	"workspaces": [
+		"packages/*",
+		"apps/*",
+		"examples/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"test": "turbo run test",
+		"typecheck": "turbo run typecheck",
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"ci": "biome ci . && turbo run typecheck test build",
+		"changeset": "changeset",
+		"version-packages": "changeset version && bun install"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.6.4",
+		"@changesets/cli": "^3.0.3",
+		"turbo": "^2.11.10",
+		"typescript": "^7.0.2"
+	}
+}

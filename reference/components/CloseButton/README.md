@@ -1,0 +1,3 @@
+Botón cuadrado de 36px con la X, para cerrar modales, alertas y notificaciones.
+
+**Props.** `onClick`, `label` (por defecto "Cerrar"). Icono en `fg-quaternary`, hover `bg-primary_hover`. Se coloca arriba a la derecha a `spacing-xl` del borde.

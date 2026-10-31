@@ -1,0 +1,13 @@
+<!-- @dsCard group="Identity" height=140 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Avatar</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-stack'},h('div',{className:'jm-row'},h(J.Avatar,{size:'xs',initials:'AD',alt:'Administrador'}),h(J.Avatar,{size:'sm',initials:'AD',alt:'Administrador'}),h(J.Avatar,{size:'md',initials:'AD',alt:'Administrador'}),h(J.Avatar,{size:'lg',initials:'AD',alt:'Administrador'}),h(J.Avatar,{size:'xl',initials:'AD',alt:'Administrador'}),h(J.Avatar,{size:'2xl',initials:'AD',alt:'Administrador'})),h('div',{className:'jm-row'},h(J.Avatar,{size:'md',status:'online'}),h(J.AvatarGroup,{items:[{initials:'AB'},{initials:'CD'},{initials:'EF'},{initials:'+3'}]}))));
+</script>
+</body>
+</html>

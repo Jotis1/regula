@@ -1,0 +1,13 @@
+<!-- @dsCard group="Charts" height=330 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>LineChart</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.LineChart,{labels:['Nov','Dic','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct'],series:[{name:'Gastos',data:[820,910,1100,880,940,870,1020,990,1150,1240,1060,1284]},{name:'Presupuesto',data:[1000,1000,1000,1000,1000,1000,1100,1100,1100,1100,1200,1200]}],format:function(v){return v.toLocaleString('es-ES')+' €'}}));
+</script>
+</body>
+</html>

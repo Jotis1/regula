@@ -1,0 +1,15 @@
+---
+// Aplica el tema antes de pintar: lo elegido antes (localStorage) o, la primera vez, lo que pida el sistema.
+---
+
+<script is:inline>
+	(() => {
+		let theme = null;
+		try {
+			theme = localStorage.getItem("regula-tema");
+		} catch {}
+		if (theme !== "oscuro" && theme !== "claro")
+			theme = matchMedia("(prefers-color-scheme: dark)").matches ? "oscuro" : "claro";
+		document.documentElement.classList.toggle("dark-mode", theme === "oscuro");
+	})();
+</script>

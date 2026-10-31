@@ -1,0 +1,13 @@
+<!-- @dsCard group="Overlays" height=330 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Dropdown</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{height:310}},h(J.Dropdown,{label:'Acciones',defaultOpen:true,header:h(J.AvatarLabel,{size:'md',initials:'AD',name:'Administrador',supporting:'admin@jotis.me'}),items:[{icon:'user-01',label:'Ver perfil',shortcut:'⌘P'},{icon:'settings-02',label:'Ajustes',shortcut:'⌘S'},{icon:'copy-01',label:'Duplicar'},{divider:true},{icon:'trash-01',label:'Eliminar',danger:true}]})));
+</script>
+</body>
+</html>

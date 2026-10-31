@@ -1,0 +1,13 @@
+<!-- @dsCard group="Forms" height=400 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>FileUpload</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{maxWidth:512}},h(J.FileUpload,{accept:'.csv,.md',multiple:true,hint:'CSV o Markdown (máx. 10 MB)',files:[{name:'extracto-octubre.csv',size:204800,progress:100,status:'complete'},{name:'notas-reunion.md',size:12800,progress:40},{name:'foto-ticket.heic',size:3355443,status:'error',error:'Formato no admitido'}],onRemove:function(){}})));
+</script>
+</body>
+</html>

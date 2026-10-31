@@ -1,0 +1,3 @@
+Avatares solapados 8px para mostrar quién participa; el último puede ser "+N".
+
+**Props.** `items` (props de `Avatar`), `size`. Cada avatar lleva `ring` automáticamente.

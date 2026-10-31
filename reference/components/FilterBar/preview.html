@@ -1,0 +1,13 @@
+<!-- @dsCard group="Data" height=120 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>FilterBar</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.FilterBar,{segments:[{value:'t',label:'Todo'},{value:'g',label:'Gastos'},{value:'i',label:'Ingresos'}],defaultSegment:'t',search:true,searchPlaceholder:'Buscar movimientos',activeFilters:[{label:'Categoría: Hogar'},{label:'Importe > 50 €'}],onRemoveFilter:function(){},onClear:function(){}}));
+</script>
+</body>
+</html>

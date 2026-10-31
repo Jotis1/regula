@@ -1,0 +1,37 @@
+---
+import type { PropRow } from "../lib/props";
+import InlineCode from "./InlineCode.astro";
+
+interface Props {
+	rows: PropRow[];
+}
+const { rows } = Astro.props;
+---
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Tipo</th>
+			<th>Por defecto</th>
+			<th>Descripción</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			rows.map((p) => (
+				<tr>
+					<td>
+						<code>{p.name}</code>
+						{p.required && <span class="ml-1 text-xs font-medium text-brand-tertiary">obligatoria</span>}
+					</td>
+					<td>
+						<code class="whitespace-normal!">{p.type}</code>
+					</td>
+					<td>{p.defaultValue === undefined ? <span class="text-quaternary">—</span> : <code>{p.defaultValue}</code>}</td>
+					<td><InlineCode text={p.description} /></td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>

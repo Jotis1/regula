@@ -1,0 +1,43 @@
+{
+	"name": "docs",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"license": "MIT",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build && pagefind --site dist",
+		"preview": "astro preview",
+		"typecheck": "astro check",
+		"test:e2e": "playwright test",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"@astrojs/mdx": "^8.1.2",
+		"@astrojs/react": "^7.1.2",
+		"@jotis-me/icons": "workspace:*",
+		"@jotis-me/react": "workspace:*",
+		"@jotis-me/tokens": "workspace:*",
+		"@tailwindcss/vite": "^4.3.3",
+		"astro": "^7",
+		"react": "^19.3.1",
+		"react-dom": "^19.3.1",
+		"tailwindcss": "^4.3.3"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.12",
+		"@axe-core/playwright": "^4.14.0",
+		"@playwright/test": "^1.64.1",
+		"@types/pngjs": "^6.0.5",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
+		"pagefind": "^1.5.2",
+		"pixelmatch": "^8.0.0",
+		"pngjs": "^7.0.0",
+		"react-18": "npm:react@18.3.1",
+		"react-docgen-typescript": "^2.4.0",
+		"react-dom-18": "npm:react-dom@18.3.1",
+		"typescript": "^6",
+		"vitest": "^5"
+	}
+}

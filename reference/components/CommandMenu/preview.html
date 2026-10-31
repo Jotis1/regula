@@ -1,0 +1,13 @@
+<!-- @dsCard group="Overlays" height=520 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>CommandMenu</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{position:'relative',height:500,borderRadius:12,overflow:'hidden'}},h(J.CommandMenu,{contained:true,autoFocus:false,onClose:function(){},groups:[{label:'Apps',items:[{icon:'currency-euro',label:'Pecunia',description:'Gastos e ingresos',shortcut:'G P'},{icon:'users-01',label:'Vinculum',description:'Contactos'},{icon:'file-04',label:'Ornatus',description:'Lector Markdown'}]},{label:'Acciones',items:[{icon:'plus',label:'Nuevo gasto',shortcut:'⌘N'},{icon:'upload-cloud-02',label:'Importar extracto'},{icon:'moon-01',label:'Cambiar a modo oscuro'}]}]})));
+</script>
+</body>
+</html>

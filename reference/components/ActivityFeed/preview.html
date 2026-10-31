@@ -1,0 +1,13 @@
+<!-- @dsCard group="Data" height=330 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>ActivityFeed</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:40}},h(J.ActivityFeed,{items:[{author:'Pecunia',avatar:{initials:'Pe'},time:'Hace 2 min',text:h(F,null,'Importado ',h('strong',null,'extracto-octubre.csv'),' con 84 movimientos.'),unread:true},{author:'Emptor',avatar:{initials:'Em'},time:'Hace 1 h',text:'Ha bajado de precio una aspiradora que seguías.',unread:true},{author:'Vinculum',avatar:{initials:'Vi'},time:'Ayer',text:'3 contactos fusionados.'}]}),h(J.ActivityFeed,{connector:true,items:[{author:'Administrador',avatar:{initials:'AD'},time:'09:12',text:'Creó la categoría Mascotas.'},{author:'Administrador',avatar:{initials:'AD'},time:'09:15',text:'Movió 6 gastos a Mascotas.'},{author:'Pecunia',avatar:{initials:'Pe'},time:'09:16',text:'Recalculó el presupuesto de octubre.'}]})));
+</script>
+</body>
+</html>

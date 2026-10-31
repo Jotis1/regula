@@ -1,0 +1,18 @@
+<!-- @dsCard group="Mockups" height=460 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>CreditCard</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{display:'flex',flexWrap:'wrap',gap:20}},
+ h(J.CreditCard,{theme:'brand-dark',company:'Pecunia',holder:'Administrador',expiry:'06/29',last4:'4821'}),
+ h(J.CreditCard,{theme:'gray-dark',company:'Pecunia',holder:'Administrador',expiry:'11/28',last4:'0317'}),
+ h(J.CreditCard,{theme:'brand-light',company:'Pecunia',holder:'Administrador',expiry:'02/30',last4:'7754'}),
+ h(J.CreditCard,{theme:'gray-light',company:'Pecunia',holder:'Administrador',expiry:'09/27',last4:'1290'}),
+ h('div',{style:{padding:20,borderRadius:16,background:'linear-gradient(135deg,#432dd7,#a3b3ff)'}},h(J.CreditCard,{theme:'transparent',company:'Pecunia',holder:'Administrador',expiry:'01/31',last4:'6608'}))));
+</script>
+</body>
+</html>

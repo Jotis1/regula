@@ -1,0 +1,267 @@
+---
+import { blur, colors, radius, shadows, spacing, type, width } from "@jotis-me/tokens";
+import { colorGroups, radiusRows, shadowRows, spacingRows } from "../lib/tokens";
+
+interface Props {
+	page: string;
+}
+const { page } = Astro.props;
+
+const typeUtility = (family: string, style: string) => {
+	const size = style.replace(/-(regular|medium|semibold|bold)$/, "").replace(/^text-/, "");
+	const weight = style.match(/-(regular|medium|semibold|bold)$/)?.[1];
+	const w = weight === "regular" ? "font-normal" : weight ? `font-${weight}` : "";
+	return [`text-${size}`, w, family === "body" ? "" : `font-${family}`].filter(Boolean).join(" ");
+};
+
+// La muestra se pinta con los valores del token y no con la clase: la clase se monta aquí en tiempo de
+// ejecución y Tailwind no la ve al escanear, así que solo existiría si otro módulo la usa (en dev, además,
+// solo los ya cargados). Así un estilo nuevo aparece bien sin tocar la web.
+const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][number]) =>
+	[
+		`font-family:${type.families[family as keyof typeof type.families]}`,
+		`font-size:${s.fontSize}`,
+		`line-height:${s.lineHeight}`,
+		`font-weight:${s.fontWeight}`,
+		"letterSpacing" in s && s.letterSpacing ? `letter-spacing:${s.letterSpacing}` : "",
+	]
+		.filter(Boolean)
+		.join(";");
+---
+
+{
+	page === "color" &&
+		colorGroups(colors).map((group) => (
+			<section>
+				<h2>{group.title}</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Token</th>
+							<th>Claro</th>
+							<th>Oscuro</th>
+							<th>Uso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{group.rows.map((row) => (
+							<tr>
+								<td>
+									<button type="button" class="token-copy" data-copy={row.utility} aria-label={`Copiar ${row.utility}`}>
+										{row.utility}
+									</button>
+								</td>
+								<td>
+									<span class="swatch" style={`background:${row.light}`} />
+									<code>{row.light}</code>
+								</td>
+								<td>
+									<span class="swatch" style={`background:${row.dark}`} />
+									<code>{row.dark}</code>
+								</td>
+								<td>{row.usage}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+		))
+}
+
+{
+	page === "typography" &&
+		type.groups.map((group) => (
+			<section>
+				<h2>{group.name}</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Estilo</th>
+							<th>Tamaño</th>
+							<th>Uso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{group.styles.map((s) => (
+							<tr>
+								<td>
+									<button
+										type="button"
+										class="token-copy"
+										data-copy={typeUtility(group.family, s.name)}
+										aria-label={`Copiar ${s.name}`}
+										title={typeUtility(group.family, s.name)}
+									>
+										{s.name}
+									</button>
+									<p class="mt-2 text-primary" style={typeStyle(group.family, s)}>
+										Gasto de octubre
+									</p>
+								</td>
+								<td>
+									<code>
+										{s.fontSize}/{s.lineHeight}
+									</code>
+								</td>
+								<td>{s.usage ?? ""}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+		))
+}
+
+{
+	page === "spacing" && (
+		<>
+			<section>
+				<h2>Escala de espaciado</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Token</th>
+							<th>Valor</th>
+							<th>Uso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{spacingRows(spacing).map((row) => (
+							<tr>
+								<td>
+									<button type="button" class="token-copy" data-copy={row.utility ?? `var(--${row.name})`} aria-label={`Copiar ${row.name}`}
+										title={row.utility ?? `var(--${row.name})`}>
+										{row.name}
+									</button>
+									{row.utility && <span class="ml-2 text-xs text-quaternary">{row.utility}</span>}
+								</td>
+								<td>
+									<span class="spacer" style={`width:${row.value}`} />
+									<code>{row.value}</code>
+								</td>
+								<td>{row.usage}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>Radios</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Utilidad</th>
+							<th>Valor</th>
+							<th>Uso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{radiusRows(radius).map((row) => (
+							<tr>
+								<td>
+									<button type="button" class="token-copy" data-copy={row.utility} aria-label={`Copiar ${row.utility}`}>
+										{row.utility}
+									</button>
+								</td>
+								<td>
+									<span class="radius-sample" style={`border-radius:${row.value}`} />
+									<code>{row.value}</code>
+								</td>
+								<td>{row.usage}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>Anchos</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Token</th>
+							<th>Valor</th>
+							<th>Uso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{Object.entries(width).map(([name, t]) => (
+							<tr>
+								<td>
+									<button type="button" class="token-copy" data-copy={`var(--${name})`} aria-label={`Copiar ${name}`}
+										title={`var(--${name})`}>
+										{name}
+									</button>
+								</td>
+								<td>
+									<code>{t.value}</code>
+								</td>
+								<td>{t.usage}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+		</>
+	)
+}
+
+{
+	page === "shadows" && (
+		<>
+			<section>
+				<h2>Sombras</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Utilidad</th>
+							<th>Muestra</th>
+							<th>Uso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{shadowRows(shadows).map((row) => (
+							<tr>
+								<td>
+									<button type="button" class="token-copy" data-copy={row.utility} aria-label={`Copiar ${row.utility}`}>
+										{row.utility}
+									</button>
+								</td>
+								<td>
+									<span class="shadow-sample" style={`box-shadow:var(--${row.name})`} />
+								</td>
+								<td>{row.usage}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>Desenfoques</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Utilidad</th>
+							<th>Valor</th>
+							<th>Uso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{Object.entries(blur).map(([name, t]) => (
+							<tr>
+								<td>
+									<button type="button" class="token-copy" data-copy={name} aria-label={`Copiar ${name}`}>
+										{name}
+									</button>
+								</td>
+								<td>
+									<code>{t.value}</code>
+								</td>
+								<td>{t.usage}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
+		</>
+	)
+}

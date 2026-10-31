@@ -1,0 +1,13 @@
+<!-- @dsCard group="Data" height=190 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>MetricCard</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:24}},h(J.MetricCard,{label:'Gasto del mes',value:'1.284 €',change:'12%',trend:'down',period:'vs. septiembre',menu:true}),h(J.MetricCard,{label:'Ahorro',value:'420 €',change:'8%',period:'vs. septiembre'})));
+</script>
+</body>
+</html>

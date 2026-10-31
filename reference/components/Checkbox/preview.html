@@ -1,0 +1,13 @@
+<!-- @dsCard group="Forms" height=170 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Checkbox</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-stack'},h(J.Checkbox,{label:'Recordarme',hint:'Mantener la sesión 30 días.',defaultChecked:true}),h(J.Checkbox,{label:'Selección parcial',indeterminate:true}),h(J.Checkbox,{label:'Opción md',size:'md'}),h(J.Checkbox,{label:'Deshabilitado',disabled:true})));
+</script>
+</body>
+</html>

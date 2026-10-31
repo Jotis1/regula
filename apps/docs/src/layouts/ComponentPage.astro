@@ -1,0 +1,54 @@
+---
+// Página de un componente: qué es, cuándo usarlo (de su ficha), ejemplos vivos, props y código.
+import CodeTabs from "../components/CodeTabs.astro";
+import InlineCode from "../components/InlineCode.astro";
+import PropsTable from "../components/PropsTable.astro";
+import type { PropRow } from "../lib/props";
+import Base from "./Base.astro";
+
+interface Props {
+	name: string;
+	description: string;
+	props: PropRow[];
+	/** Uso en Next.js: el componente tal cual. */
+	next: string;
+	/** Uso en Astro: con la directiva `client:*` si es interactivo. */
+	astro: string;
+}
+const { name, description, props, next, astro } = Astro.props;
+---
+
+<Base title={name} description={description}>
+	<article class="prose max-w-5xl">
+		<h1>{name}</h1>
+		<p class="lead"><InlineCode text={description} /></p>
+
+		<section aria-labelledby="ficha">
+			<h2 id="ficha">Cuándo usarlo</h2>
+			<slot name="guide" />
+		</section>
+
+		<section aria-labelledby="ejemplos">
+			<h2 id="ejemplos">Ejemplos</h2>
+			<div data-pagefind-ignore class="not-prose my-4 flex flex-col gap-6 rounded-xl border border-secondary p-6">
+				<slot name="examples" />
+			</div>
+		</section>
+
+		<section aria-labelledby="props">
+			<h2 id="props">Props</h2>
+			<PropsTable rows={props} />
+		</section>
+
+		<section aria-labelledby="codigo">
+			<h2 id="codigo">Código</h2>
+			<CodeTabs
+				tabs={[
+					{ label: "Next.js", code: next },
+					{ label: "Astro", code: astro },
+				]}
+			/>
+			<slot name="astro-note" />
+		</section>
+	</article>
+</Base>

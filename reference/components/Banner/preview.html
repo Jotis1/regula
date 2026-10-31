@@ -1,0 +1,19 @@
+<!-- @dsCard group="Feedback" height=540 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Banner</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-stack',style:{gap:16}},
+ h(J.Banner,{icon:'zap',title:'Nueva versión de Pecunia.',description:'Ahora con presupuestos compartidos.',actions:h(F,null,h(J.Button,{hierarchy:'secondary',size:'sm'},'Más tarde'),h(J.Button,{size:'sm'},'Ver novedades')),onClose:function(){}}),
+ h(J.Banner,{theme:'brand',icon:'shield-tick',title:'Activa la verificación en dos pasos.',description:'Tarda un minuto.',actions:h(J.Button,{hierarchy:'secondary',size:'sm'},'Activar'),onClose:function(){}}),
+ h(J.Banner,{icon:'mail-01',title:'Resumen semanal por correo.',description:'Un correo los lunes, nada más.',email:{buttonLabel:'Suscribirme',hint:'Puedes darte de baja cuando quieras.'},onClose:function(){}}),
+ h(J.Banner,{theme:'brand',icon:'clock',title:'Fin de la beta.',description:'Exporta tus datos antes del cierre.',countdown:new Date(2026,10,1,12,0,0),now:new Date(2026,9,29,9,30,15),actions:h(J.Button,{hierarchy:'secondary',size:'sm'},'Exportar')}),
+ h(J.Banner,{slim:true,title:'Mantenimiento programado el domingo a las 03:00.',description:'Duración estimada: 2 horas.',onClose:function(){}}),
+ h('div',{style:{margin:'0 -16px'}},h(J.Banner,{layout:'full',theme:'brand',slim:true,title:'Estás viendo datos de ejemplo.',description:'Conecta tu banco para ver los tuyos.',onClose:function(){}}))));
+</script>
+</body>
+</html>

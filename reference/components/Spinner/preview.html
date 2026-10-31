@@ -1,0 +1,13 @@
+<!-- @dsCard group="Loading" height=130 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Spinner</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-row',style:{gap:48,alignItems:'flex-start'}},h(J.Spinner,{size:'sm',label:false}),h(J.Spinner,{size:'md'}),h(J.Spinner,{size:'lg',label:'Importando extracto…'})));
+</script>
+</body>
+</html>

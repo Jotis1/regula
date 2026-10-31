@@ -1,0 +1,13 @@
+<!-- @dsCard group="Data" height=420 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Table</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.Table,{title:'Movimientos',count:'240',description:'Octubre de 2026.',actions:h(J.Button,{hierarchy:'secondary',iconLeading:'download-01',size:'sm'},'Exportar'),columns:[{key:'c',label:'Concepto',primary:true},{key:'f',label:'Fecha'},{key:'e',label:'Estado',render:function(r){return h(J.Badge,{color:r.ok?'success':'warning',dot:true,size:'sm'},r.ok?'Pagado':'Pendiente')}},{key:'i',label:'Importe',align:'right'}],rows:[{c:'Alquiler',f:'01 oct',ok:true,i:'650,00 €'},{c:'Electricidad',f:'05 oct',ok:true,i:'48,20 €'},{c:'Seguro del coche',f:'15 oct',ok:false,i:'210,00 €'},{c:'Gimnasio',f:'20 oct',ok:false,i:'35,00 €'}],footer:h('div',{style:{padding:'0 24px 16px'}},h(J.Pagination,{total:24}))}));
+</script>
+</body>
+</html>

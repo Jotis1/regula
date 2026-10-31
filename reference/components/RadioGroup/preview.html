@@ -1,0 +1,13 @@
+<!-- @dsCard group="Forms" height=150 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>RadioGroup</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.RadioGroup,{defaultValue:'m','aria-label':'Frecuencia',options:[{value:'d',label:'Diario'},{value:'m',label:'Mensual',hint:'Resumen el día 1.'},{value:'n',label:'Nunca'}]}));
+</script>
+</body>
+</html>

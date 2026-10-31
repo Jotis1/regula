@@ -1,0 +1,16 @@
+---
+import "../styles/global.css";
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<title>{title} · Ejemplo Astro</title>
+	</head>
+	<body class="bg-primary p-8 text-primary antialiased">
+		<slot />
+	</body>
+</html>

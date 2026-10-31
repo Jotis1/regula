@@ -1,0 +1,13 @@
+<!-- @dsCard group="Feedback" height=280 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>EmptyState</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.EmptyState,{icon:'search-lg',title:'Sin resultados',description:'Ningún movimiento coincide con «León». Prueba con otro término o quita filtros.',actions:h(F,null,h(J.Button,{hierarchy:'secondary'},'Limpiar búsqueda'),h(J.Button,{iconLeading:'plus'},'Nuevo movimiento'))}));
+</script>
+</body>
+</html>

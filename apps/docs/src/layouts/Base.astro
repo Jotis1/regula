@@ -1,0 +1,86 @@
+---
+import pkg from "@jotis-me/react/package.json";
+import "../styles/global.css";
+import { getCollection } from "astro:content";
+import CopyToast from "../components/CopyToast.astro";
+import ThemeScript from "../components/ThemeScript.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import { withComponents } from "../nav";
+import SiteSearch from "../search/SiteSearch";
+
+interface Props {
+	title: string;
+	description?: string;
+}
+const { title, description = "Las reglas de diseño, los tokens y los componentes de la suite jotis.me." } =
+	Astro.props;
+const current = Astro.url.pathname;
+const nav = withComponents(
+	(await getCollection("components")).map((c) => ({ name: c.data.name, slug: c.id })),
+);
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<ThemeScript />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title === "Regula" ? "Regula · jotis.me" : `${title} · Regula`}</title>
+		<meta name="description" content={description} />
+		<slot name="head" />
+	</head>
+	<body class="min-h-screen bg-primary text-md text-primary antialiased">
+		<div class="mx-auto flex max-w-container">
+			<aside class="sticky top-0 hidden h-screen w-72 shrink-0 flex-col gap-6 overflow-y-auto border-r border-secondary px-4 py-6 lg:flex">
+				<a href="/" class="flex items-baseline gap-2 px-2">
+					<span class="font-display text-xl font-bold text-primary">jotis.me</span>
+					<span class="text-sm font-medium text-tertiary">Regula</span>
+				</a>
+				<nav aria-label="Secciones" class="flex flex-col gap-5">
+					{
+						nav
+							.filter((s) => s.items.length > 0)
+							.map((section) => (
+								<div class="flex flex-col gap-1">
+									<p class="px-2 text-xs font-semibold text-quaternary">{section.title}</p>
+									<ul class="flex flex-col">
+										{section.items.map((item) => (
+											<li>
+												<a
+													href={item.href}
+													aria-current={current === item.href ? "page" : undefined}
+													class:list={[
+														"block rounded-md px-2 py-1.5 text-sm font-medium text-secondary transition-colors duration-100 hover:bg-primary_hover hover:text-secondary_hover",
+														current === item.href && "bg-secondary_hover text-primary",
+													]}
+												>
+													{item.label}
+												</a>
+											</li>
+										))}
+									</ul>
+								</div>
+							))
+					}
+				</nav>
+			</aside>
+			<div class="flex min-w-0 flex-1 flex-col">
+				<header class="flex items-center justify-between gap-4 border-b border-secondary px-4 py-4 lg:px-8">
+					<a href="/" class="flex items-baseline gap-2 lg:hidden">
+						<span class="font-display text-xl font-bold text-primary">jotis.me</span>
+						<span class="text-sm font-medium text-tertiary">Regula</span>
+					</a>
+					<div class="ml-auto flex items-center gap-2"><slot name="header-actions" /><SiteSearch client:idle /><ThemeToggle /></div>
+				</header>
+				<main id="contenido" data-pagefind-body class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
+					<slot />
+				</main>
+				<footer class="border-t border-secondary px-4 py-6 text-sm text-tertiary lg:px-8">
+					Documenta <code class="font-mono text-code-xs text-secondary">@jotis-me/*</code> v{pkg.version} · Código MIT
+				</footer>
+			</div>
+		</div>
+		<CopyToast />
+	</body>
+</html>

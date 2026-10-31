@@ -1,0 +1,13 @@
+<!-- @dsCard group="Status" height=100 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>ProgressBar</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'jm-stack'},h('div',{style:{maxWidth:360}},h(J.ProgressBar,{value:62,'aria-label':'Presupuesto usado'})),h('div',{style:{maxWidth:360}},h(J.ProgressBar,{value:30,label:'bottom','aria-label':'Subida'}))));
+</script>
+</body>
+</html>

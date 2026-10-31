@@ -1,0 +1,9 @@
+---
+// Texto plano con `código` entre comillas invertidas (descripciones de props, entradillas, avisos).
+interface Props {
+	text: string;
+}
+const parts = Astro.props.text.split("`");
+---
+
+{parts.map((part, i) => (i % 2 ? <code>{part}</code> : part))}

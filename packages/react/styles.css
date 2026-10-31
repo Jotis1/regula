@@ -1,0 +1,7 @@
+/* Importa esto después de `@import "tailwindcss";` en la hoja principal de la app. */
+@import "@jotis-me/tokens/fonts.css";
+@import "@jotis-me/tokens/tokens.css";
+@import "@jotis-me/tokens/theme.css";
+
+/* Que el Tailwind de la app genere también las clases que usan los componentes */
+@source "./dist";

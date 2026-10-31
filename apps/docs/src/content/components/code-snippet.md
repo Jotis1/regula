@@ -1,0 +1,19 @@
+---
+
+name: CodeSnippet
+description: "Bloque de código con números de línea, resaltado sencillo, pestañas y botón de copiar."
+interactive: true
+astroNote: "Sin directiva se ve el código; las pestañas y el botón de copiar necesitan `client:load`."
+---
+
+**Props.** `code` + `language`, o `tabs` [{`label`, `code`}], `lineNumbers` (por defecto sí).
+
+**Visual.** Tarjeta `radius-xl` con borde `border-secondary`; números en columna `bg-secondary` y `text-quaternary`; código en Geist Mono 14/20 (`code-sm`). Resaltado con los colores del archivo: comentarios `utility-green-600`, palabras clave `utility-pink-600`, nombres y propiedades `utility-blue-600`, el resto `text-primary`. En oscuro las escalas utility se invierten solas.
+
+**Límites.** El resaltado es deliberadamente simple (JS, TS, bash, Python básico). Para Ornatus con muchos lenguajes, conecta un resaltador de verdad y conserva estos colores.
+
+**Accesibilidad.** Las pestañas se recorren con las flechas. El bloque recibe el foco, así que una línea larga se desplaza con el teclado. "Copiado" también se anuncia a lectores de pantalla.
+
+**Diferencia con la vista previa de la guía.** En la vista previa, el código sale con el monospace del navegador porque su `<code>` no hereda la fuente del bloque. Aquí se sigue la ficha: Geist Mono 14/20.
+
+**Contraste de los comentarios.** La ficha pide `utility-green-600`, pero en claro da 3,2:1 sobre blanco, por debajo del mínimo de 4,5:1. Los comentarios van un escalón más oscuros, en `utility-green-700` (4,95:1 en claro, 14:1 en oscuro).

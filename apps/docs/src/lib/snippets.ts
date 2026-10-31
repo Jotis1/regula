@@ -1,0 +1,287 @@
+// Fragmentos de código de cada página de componente. Se escriben una vez (el JSX de uso) y se envuelven
+// para Next.js (página de servidor) y para Astro (con `client:load` si el componente es interactivo).
+
+const usage: Record<string, string> = {
+	Button: `<Button iconLeading="plus">Nuevo gasto</Button>
+<Button hierarchy="secondary" href="/ajustes">Ajustes</Button>`,
+	ButtonGroup: `<ButtonGroup
+	aria-label="Periodo"
+	defaultValue="7d"
+	items={[
+		{ value: "30d", label: "30 días" },
+		{ value: "7d", label: "7 días" },
+		{ value: "24h", label: "24 horas", icon: "clock" },
+	]}
+/>`,
+	CloseButton: `<CloseButton label="Cerrar aviso" />`,
+	Icon: `<Icon name="calendar" size={20} />
+<Icon name="check-circle" title="Pagado" />`,
+	Badge: `<Badge color="success">Pagado</Badge>
+<Badge type="modern" color="success" dot>En línea</Badge>`,
+	Tag: `<Tag size="md" count={5}>Facturas</Tag>`,
+	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
+	AvatarGroup: `<AvatarGroup items={[{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }]} />`,
+	AvatarLabel: `<AvatarLabel initials="AD" name="Responsable de seguridad" supporting="admin@jotis.me" />`,
+	FeaturedIcon: `<FeaturedIcon icon="alert-circle" color="error" />`,
+	Spinner: `<Spinner label="Importando extracto…" />`,
+	Skeleton: `<Skeleton circle width={40} height={40} />
+<Skeleton lines={3} />`,
+	ProgressBar: `<ProgressBar value={62} aria-label="Presupuesto usado" />`,
+	AppIcon: `<AppIcon app="pecunia" size={48} />`,
+	Input: `<Input label="Correo" type="email" icon="mail-01" placeholder="tu@jotis.me" required />`,
+	Textarea: `<Textarea label="Descripción" hint="Máximo 300 caracteres." />`,
+	Select: `<Select label="Categoría" placeholder="Elige una" options={["Casa", "Coche", "Ocio"]} />`,
+	Checkbox: `<Checkbox label="Recordarme" hint="Mantén la sesión 30 días." />`,
+	Radio: `<Radio name="plan" value="mensual" label="Mensual" defaultChecked />
+<Radio name="plan" value="anual" label="Anual" />`,
+	RadioGroup: `<RadioGroup
+	aria-label="Plan"
+	defaultValue="mensual"
+	options={[
+		{ value: "mensual", label: "Mensual" },
+		{ value: "anual", label: "Anual", hint: "Dos meses gratis" },
+	]}
+/>`,
+	Toggle: `<Toggle label="Avisos por correo" defaultChecked />`,
+	Slider: `<Slider aria-label="Presupuesto" defaultValue={40} />`,
+	FileUpload: `<FileUpload accept=".csv" hint="CSV (máx. 10 MB)" onFiles={(files) => subir(files)} />`,
+	DatePicker: `<DatePicker
+	range
+	presets={[{ label: "Este mes", start: new Date(2026, 9, 1), end: new Date(2026, 9, 31) }]}
+	onApply={({ start, end }) => filtrar(start, end)}
+/>`,
+	ColorPicker: `<ColorPicker defaultValue="#4f39f6" swatches={["#4f39f6", "#00a63e"]} onChange={guardar} />`,
+	TextEditor: `<TextEditor label="Notas" maxLength={500} onChange={guardar} />`,
+	MessageInput: `<MessageInput placeholder="Pregunta a Emptor…" onSend={enviar} />`,
+	Tabs: `<Tabs
+	aria-label="Secciones"
+	items={[
+		{ id: "resumen", label: "Resumen" },
+		{ id: "movimientos", label: "Movimientos", count: 12 },
+	]}
+	onChange={cambiarVista}
+/>`,
+	Breadcrumbs: `<Breadcrumbs
+	items={[
+		{ label: "Inicio", icon: "home-line", href: "/" },
+		{ label: "Pecunia", href: "/pecunia/" },
+		{ label: "Gastos de octubre" },
+	]}
+/>`,
+	Pagination: `<Pagination total={10} page={pagina} onChange={setPagina} />`,
+	SidebarNav: `<SidebarNav
+	brand="jotis.me"
+	search
+	items={[
+		{ icon: "home-line", label: "Inicio", href: "/", active: true },
+		{ icon: "currency-euro", label: "Pecunia", href: "/pecunia/", badge: 3 },
+	]}
+	footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/ajustes/" }]}
+	user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
+/>`,
+	Dropdown: `<Dropdown
+	label="Acciones"
+	items={[
+		{ icon: "copy-01", label: "Duplicar", onSelect: duplicar },
+		{ divider: true },
+		{ icon: "trash-01", label: "Eliminar", danger: true, onSelect: eliminar },
+	]}
+/>`,
+	FilterBar: `<FilterBar
+	segments={[
+		{ value: "todo", label: "Todo" },
+		{ value: "gastos", label: "Gastos" },
+	]}
+	defaultSegment="todo"
+	onSearch={buscar}
+	activeFilters={filtros}
+	onRemoveFilter={quitarFiltro}
+	onClear={limpiarFiltros}
+	onOpenFilters={abrirFiltros}
+/>`,
+	CommandMenu: `<CommandMenu
+	open={abierto}
+	onClose={() => setAbierto(false)}
+	groups={[
+		{ label: "Apps", items: [{ icon: "currency-euro", label: "Pecunia", onSelect: irAPecunia }] },
+		{ label: "Acciones", items: [{ icon: "plus", label: "Nuevo gasto", shortcut: "⌘N", onSelect: nuevoGasto }] },
+	]}
+/>`,
+	Modal: `<Modal
+	open={abierto}
+	icon="trash-01"
+	destructive
+	title="¿Eliminar este gasto?"
+	description="Se borrará también de los informes. No se puede deshacer."
+	onClose={cerrar}
+	actions={
+		<>
+			<Button hierarchy="secondary" onClick={cerrar}>Cancelar</Button>
+			<Button destructive onClick={eliminar}>Eliminar</Button>
+		</>
+	}
+/>`,
+	Slideout: `<Slideout
+	open={abierto}
+	title="Alquiler"
+	description="Movimiento del 1 de octubre"
+	onClose={cerrar}
+	actions={<Button onClick={guardar}>Guardar</Button>}
+>
+	<Input label="Concepto" defaultValue="Alquiler" />
+</Slideout>`,
+	Tooltip: `<Tooltip title="Exportar a CSV" text="Incluye los movimientos filtrados.">
+	<Button hierarchy="secondary" iconOnly="download-01" label="Exportar" />
+</Tooltip>`,
+	Alert: `<Alert color="error" title="No se pudo sincronizar" description="Revisa la conexión con el banco." />`,
+	Notification: `<Notification
+	color="success"
+	title="Pago registrado"
+	description="Has añadido 42,50 € a Suscripciones."
+	onClose={quitarAviso}
+/>`,
+	Banner: `<Banner
+	icon="zap"
+	title="Nueva versión de Pecunia."
+	description="Ahora con presupuestos compartidos."
+	actions={<Button size="sm">Ver novedades</Button>}
+	onClose={ocultar}
+/>`,
+	EmptyState: `<EmptyState
+	title="Sin resultados"
+	description="Ningún movimiento coincide con «León». Prueba con otro término o quita filtros."
+	actions={<Button hierarchy="secondary">Limpiar búsqueda</Button>}
+/>`,
+	TreeView: `<TreeView
+	aria-label="Documentos"
+	items={[{ id: "notas", label: "Notas", children: [{ id: "leeme", label: "LEEME.md" }] }]}
+	defaultOpen={["notas"]}
+	onSelect={(item) => abrir(item.id)}
+/>`,
+	Table: `<Table
+	title="Movimientos"
+	count="240"
+	columns={[
+		{ key: "concepto", label: "Concepto", primary: true },
+		{ key: "fecha", label: "Fecha" },
+		{ key: "importe", label: "Importe", align: "right" },
+	]}
+	rows={[{ id: "1", concepto: "Alquiler", fecha: "01 oct", importe: "650,00 €" }]}
+	footer={<Pagination total={24} />}
+/>`,
+	MetricCard: `<MetricCard
+	label="Gasto del mes"
+	value="1.284 €"
+	change="12%"
+	trend="down"
+	period="vs. septiembre"
+/>`,
+	ActivityFeed: `<ActivityFeed
+	connector
+	items={[
+		{
+			author: "Ana Martín",
+			avatar: { initials: "AM" },
+			time: "Hace 2 h",
+			text: <>Ha pagado <strong>Alquiler</strong></>,
+		},
+	]}
+/>`,
+	Message: `<Message author="Emptor" avatar={{ initials: "Em" }} time="10:24">
+	He encontrado tres opciones por debajo de 200 €.
+</Message>`,
+	CalendarView: `<CalendarView
+	events={[{ date: new Date(2026, 9, 29), title: "Pago del alquiler", color: "brand" }]}
+	onSelectDate={(fecha) => abrirDia(fecha)}
+/>`,
+	CodeSnippet: `<CodeSnippet language="bash" code="bun add @jotis-me/react" />`,
+	PageHeader: `<PageHeader
+	breadcrumbs={[{ label: "Inicio", href: "/", icon: "home-line" }, { label: "Pecunia" }]}
+	title="Gastos"
+	description="Controla lo que entra y lo que sale."
+	actions={<Button iconLeading="plus">Nuevo gasto</Button>}
+/>`,
+	CardHeader: `<CardHeader
+	title="Suscripciones"
+	badge="12 activas"
+	description="Pagos recurrentes de este mes."
+	actions={<Button size="sm">Añadir</Button>}
+/>`,
+	SectionHeader: `<SectionHeader
+	title="Contactos"
+	description="Personas y empresas con las que tratas."
+	actions={<Button size="sm" iconLeading="plus">Nuevo contacto</Button>}
+/>`,
+	SectionFooter: `<SectionFooter
+	start={<Button hierarchy="link-gray" href="/ayuda">Ver ayuda</Button>}
+	actions={<Button size="sm" type="submit">Guardar cambios</Button>}
+/>`,
+	ContentDivider: `<ContentDivider label="o continúa con" />`,
+	InlineCTA: `<InlineCTA
+	icon="stars-02"
+	title="Conecta tu banco"
+	description="Importa los movimientos cada día sin subir extractos a mano."
+	actions={
+		<>
+			<Button hierarchy="secondary" size="sm" onClick={descartar}>
+				Ahora no
+			</Button>
+			<Button size="sm" href="/ajustes/bancos">Conectar</Button>
+		</>
+	}
+/>`,
+	BackgroundPattern: `<div className="relative">
+	<BackgroundPattern pattern="grid" size="sm" mask="radial" />
+	<div className="relative">Contenido</div>
+</div>`,
+	BrowserFrame: `<BrowserFrame url="pecunia.jotis.me/resumen" height={260}>
+	<MetricCard label="Gasto de octubre" value="1.284,50 €" />
+</BrowserFrame>`,
+	CreditCard: `<CreditCard theme="brand-dark" company="Pecunia" holder="Administrador" expiry="06/29" last4="4821" />`,
+	VideoPlayer: `<VideoPlayer src="/videos/presentacion.mp4" poster="/videos/presentacion.jpg" />`,
+	LineChart: `<LineChart
+	aria-label="Gastos de agosto a octubre"
+	labels={["Ago", "Sep", "Oct"]}
+	series={[
+		{ name: "Gastos", data: [1240, 1060, 1284] },
+		{ name: "Presupuesto", data: [1100, 1200, 1200] },
+	]}
+	format={(v) => formatCurrency(v)}
+/>`,
+	BarChart: `<BarChart
+	aria-label="Gasto por categoría y mes"
+	labels={["Ago", "Sep", "Oct"]}
+	series={[
+		{ name: "Hogar", data: [700, 700, 700] },
+		{ name: "Ocio", data: [190, 170, 210] },
+	]}
+	format={(v) => formatCurrency(v)}
+/>`,
+	PieChart: `<PieChart
+	aria-label="Gasto de octubre por categoría"
+	center="1.284 €"
+	data={[
+		{ name: "Hogar", value: 700 },
+		{ name: "Ocio", value: 210 },
+		{ name: "Otros", value: 374 },
+	]}
+/>`,
+	ChartLegend: `<ChartLegend series={[{ name: "Gastos" }, { name: "Presupuesto" }]} />`,
+};
+
+const indent = (code: string, tabs: number) =>
+	code
+		.split("\n")
+		.map((l) => "\t".repeat(tabs) + l)
+		.join("\n");
+
+/** Fragmentos de Next.js y Astro del componente `name`. */
+export function snippetsOf(name: string, interactive: boolean): { next: string; astro: string } {
+	const code = usage[name];
+	if (!code) throw new Error(`Falta el fragmento de uso de ${name} en src/lib/snippets.ts`);
+	const imp = `import { ${name} } from "@jotis-me/react";`;
+	return {
+		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n${indent(code, 3)}\n\t\t</>\n\t);\n}`,
+		astro: `---\n${imp}\n---\n\n${interactive ? code.replace(`<${name}`, `<${name} client:load`) : code}`,
+	};
+}

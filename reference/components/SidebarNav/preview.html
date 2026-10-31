@@ -1,0 +1,13 @@
+<!-- @dsCard group="Navigation" height=560 -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>SidebarNav</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  var J = window.Jotis, h = React.createElement, F = React.Fragment;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div',{style:{height:540,display:'flex'}},h(J.SidebarNav,{brand:'jotis.me',search:true,items:[{icon:'home-line',label:'Inicio',active:true},{icon:'bar-chart-01',label:'Panel',badge:3},{icon:'currency-euro',label:'Pecunia'},{icon:'users-01',label:'Vinculum'},{icon:'file-04',label:'Ornatus'}],footerItems:[{icon:'settings-02',label:'Ajustes'}],user:{initials:'AD',name:'Administrador',supporting:'admin@jotis.me'}})));
+</script>
+</body>
+</html>

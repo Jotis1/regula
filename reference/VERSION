@@ -1,0 +1,8 @@
+artefacto: Jotis.me (Design System)
+slug: bb424412-8082-461e-a84f-b3704de675c1
+url: https://claude.ai/artifact/Q8AXUzu86MzVrB9Ec3oKSY
+version: 1793369818-a6e0
+copiado: 2026-10-30
+verificacion: sha256 de cada fichero igual al de list_files de esa version (136 ficheros)
+no incluido: fuentes woff2 y lib/react*.js (binarios o ajenos; las fuentes vienen de npm),
+  SVG de assets/ (estan como assets del artefacto; se importan en el grupo 3 de tareas)

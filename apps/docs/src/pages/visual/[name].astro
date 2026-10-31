@@ -1,0 +1,27 @@
+---
+// Página aislada para comparar un componente con la vista previa de la guía. Fuera de la navegación.
+// Tema oscuro con ?tema=oscuro, aplicado antes de pintar.
+import "../../styles/global.css";
+import { slugOf, visualExamples } from "../../visual/registry";
+import VisualExample from "../../visual/VisualExample";
+
+export function getStaticPaths() {
+	return Object.keys(visualExamples).map((name) => ({ params: { name: slugOf(name) }, props: { name } }));
+}
+const { name } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex" />
+		<title>{name} · comparación visual</title>
+		<script is:inline>
+			if (new URLSearchParams(location.search).get("tema") === "oscuro") document.documentElement.classList.add("dark-mode");
+		</script>
+	</head>
+	<body class="m-0 bg-primary p-4 font-body text-primary antialiased">
+		<VisualExample client:load name={name} />
+	</body>
+</html>
