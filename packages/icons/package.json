@@ -1,6 +1,6 @@
 {
 	"name": "@jotis-me/icons",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Iconos de línea de la suite jotis.me en React y SVG, e iconos de app.",
 	"license": "MIT",
 	"type": "module",
