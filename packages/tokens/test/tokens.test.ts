@@ -41,6 +41,15 @@ describe("tokens.css", () => {
 		}
 	});
 
+	it("tiene la escala utility-chartreuse de Regula, con 600 en #829500 (claro) y #cada00 (oscuro)", () => {
+		const light = block(":root");
+		const dark = block(".dark-mode");
+		const steps = [50, 100, 200, 300, 400, 500, 600, 700];
+		for (const n of steps) expect(light.has(`utility-chartreuse-${n}`), `chartreuse-${n}`).toBe(true);
+		expect(light.get("utility-chartreuse-600")).toBe("#829500");
+		expect(dark.get("utility-chartreuse-600")).toBe("#cada00");
+	});
+
 	it("deja el hueco del anillo de foco en #0A0A0A en oscuro", () => {
 		expect(block(".dark-mode").get("focus-ring-shadow")).toBe("0 0 0 2px #0a0a0a, 0 0 0 4px #615fff");
 	});

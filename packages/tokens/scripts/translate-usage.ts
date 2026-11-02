@@ -31,6 +31,14 @@ const STEP_ROLE: Record<string, string> = {
 	"strongest text": "texto más fuerte",
 };
 
+/** Frase que algunas notas de paso añaden detrás de «Step N: …» (hoy, solo la paleta chartreuse). */
+const STEP_TAIL: Record<string, string> = {
+	"Custom palette (not in Tailwind), made for Regula.":
+		"Paleta propia (no es de Tailwind), hecha para Regula.",
+	"White on it is 3.4:1: graphics and large text only.":
+		"El blanco encima da 3,4:1: solo para gráficos y texto grande.",
+};
+
 const EXACT: Record<string, string> = {
 	"Body copy and headings on bg-primary, bg-secondary and bg-tertiary.":
 		"Texto y titulares sobre bg-primary, bg-secondary y bg-tertiary.",
@@ -256,9 +264,12 @@ const NOTES: Record<string, string> = {
 export function translate(en: string): string {
 	const hover = en.match(/^([\w-]+) on hover\.$/);
 	if (hover) return `${hover[1]} con hover.`;
-	const step = en.match(/^(.+)\. Step (\d+): (.+)\.$/);
-	if (step && STEP_PREFIX[step[1] as string] && STEP_ROLE[step[3] as string])
-		return `${STEP_PREFIX[step[1] as string]}. Paso ${step[2]}: ${STEP_ROLE[step[3] as string]}.`;
+	const step = en.match(/^(.+?)\. Step (\d+): ([^.]+)\.(?: (.+))?$/);
+	if (step && STEP_PREFIX[step[1] as string] && STEP_ROLE[step[3] as string]) {
+		const tail = step[4];
+		if (tail && !STEP_TAIL[tail]) throw new Error(`Sin traducción de la cola: «${tail}»`);
+		return `${STEP_PREFIX[step[1] as string]}. Paso ${step[2]}: ${STEP_ROLE[step[3] as string]}.${tail ? ` ${STEP_TAIL[tail]}` : ""}`;
+	}
 	const white = en.match(
 		/^White at (\d+)% \(flips to the dark ground in dark\)\. Overlays on images and brand sections\.$/,
 	);

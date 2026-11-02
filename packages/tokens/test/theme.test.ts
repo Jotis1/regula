@@ -44,6 +44,17 @@ describe("theme.css con Tailwind v4", () => {
 		expect(rule(css, "ring-focus-ring")).toContain("var(--focus-ring)");
 	});
 
+	it("expone la escala utility-chartreuse de Regula, que no es de Tailwind", () => {
+		const css = build([
+			"bg-utility-chartreuse-600",
+			"text-utility-chartreuse-700",
+			"bg-utility-chartreuse-50",
+		]);
+		expect(rule(css, "bg-utility-chartreuse-600")).toContain("var(--utility-chartreuse-600)");
+		expect(rule(css, "text-utility-chartreuse-700")).toContain("var(--utility-chartreuse-700)");
+		expect(rule(css, "bg-utility-chartreuse-50")).toContain("var(--utility-chartreuse-50)");
+	});
+
 	it("no genera la paleta cruda", () => {
 		const css = build(["bg-indigo-600", "text-gray-500", "bg-white"]);
 		expect(rule(css, "bg-indigo-600")).toBe("");
