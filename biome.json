@@ -9,6 +9,7 @@
 		"includes": [
 			"**",
 			"!reference",
+			"!apps/docs/e2e/visual/pinned",
 			"!**/dist",
 			"!**/.astro",
 			"!**/.next",
@@ -26,7 +27,13 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"preset": "recommended"
+			"preset": "recommended",
+			"a11y": {
+				"useValidAriaRole": {
+					"level": "error",
+					"options": { "ignoreNonDom": true }
+				}
+			}
 		}
 	},
 	"assist": {

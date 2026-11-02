@@ -20,7 +20,14 @@ const fontVars = `:root{${Object.entries(families)
 	.join("")}}`;
 
 const files: Record<string, () => Buffer | string> = {
-	"/tokens.css": () => readFileSync(join(tokensDist, "tokens.css")),
+	// En el artefacto el tema oscuro es `data-theme="dark"` (en <html> o en la raíz de cada componente de Stream);
+	// nuestro `tokens.css` lo llama `.dark-mode` (design §3). Se sirven los dos selectores para que la vista previa
+	// se vea como en la guía: las de Stream ponen la página en oscuro también en la captura "clara".
+	"/tokens.css": () =>
+		readFileSync(join(tokensDist, "tokens.css"), "utf8").replace(
+			/^\.dark-mode \{/m,
+			'.dark-mode, [data-theme="dark"] {',
+		),
 	"/fonts.css": () => readFileSync(join(tokensDist, "fonts.css")),
 	"/font-vars.css": () => fontVars,
 	"/bundle.css": () => readFileSync(join(components, "bundle.css")),
@@ -53,10 +60,22 @@ export const REFERENCE_FIXES: Record<string, string> = {
 	BackgroundPattern: ".jm-hint code { font-family: var(--font-mono); }",
 };
 
+/**
+ * Vistas previas fijadas a una versión anterior de la guía, para cambios de la guía que aún no se han portado
+ * (design §12). AppIcon: la versión 1793561361-ae73 añade Regula (`chartreuse`), que queda para un cambio de
+ * estilo propio; hasta entonces se compara con su vista previa de cuatro apps (1793369818-a6e0).
+ */
+const PINNED_PREVIEWS: Record<string, string> = {
+	AppIcon: join(import.meta.dirname, "pinned/AppIcon.preview.html"),
+};
+
+function previewHtml(name: string): string {
+	return readFileSync(PINNED_PREVIEWS[name] ?? join(components, name, "preview.html"), "utf8");
+}
+
 /** Alto de la tarjeta que declara la vista previa (`<!-- @dsCard height=220 -->`). */
 export function cardHeight(name: string): number {
-	const html = readFileSync(join(components, name, "preview.html"), "utf8");
-	return Number(html.match(/@dsCard[^>]*height=(\d+)/)?.[1] ?? 300);
+	return Number(previewHtml(name).match(/@dsCard[^>]*height=(\d+)/)?.[1] ?? 300);
 }
 
 /** Componentes con vista previa en la guía (sin `Cover`, que es la portada del artefacto). */
@@ -71,7 +90,7 @@ export async function openReference(page: Page, name: string, dark: boolean): Pr
 	await page.route(`${ORIGIN}/**`, (route) => {
 		const path = new URL(route.request().url()).pathname;
 		if (path === "/") {
-			const preview = readFileSync(join(components, name, "preview.html"), "utf8");
+			const preview = previewHtml(name);
 			const fix = REFERENCE_FIXES[name] ? `<style>${REFERENCE_FIXES[name]}</style>` : "";
 			const head = `<link rel="stylesheet" href="/fonts.css"><link rel="stylesheet" href="/tokens.css"><link rel="stylesheet" href="/font-vars.css"><link rel="stylesheet" href="/bundle.css">${fix}<script src="/react.js"></script><script src="/react-dom.js"></script><script src="/bundle.js"></script>`;
 			const html = preview

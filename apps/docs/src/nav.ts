@@ -21,6 +21,7 @@ export const nav: NavSection[] = [
 			{ label: "Sombras y estados", href: "/foundations/shadows/" },
 			{ label: "Iconografía", href: "/foundations/iconography/" },
 			{ label: "Fondos y adornos", href: "/foundations/backgrounds/" },
+			{ label: "Stream (Twitch)", href: "/foundations/stream/" },
 			{ label: "Marca e iconos de app", href: "/foundations/brand/" },
 		],
 	},

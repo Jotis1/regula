@@ -3,10 +3,10 @@
 ## Context
 
 - El directorio `regula/` solo tiene OpenSpec: no es repo git ni tiene código.
-- La fuente de verdad actual es el artefacto de Claude "Jotis.me" (tipo Design System, slug `bb424412-8082-461e-a84f-b3704de675c1`, versión `1793307990-2c91`), que contiene:
+- La fuente de verdad actual es el artefacto de Claude "Jotis.me" (tipo Design System, slug `bb424412-8082-461e-a84f-b3704de675c1`, importado primero en la versión `1793307990-2c91` y después en la `1793561361-ae73`, que añade los 12 componentes de Stream, §12), que contiene:
   - `project/README.md`: reglas, tono, color, tipografía, espaciado, iconografía, marca, iconos de app y uso con Tailwind v4.
   - `project/tokens.json` (2.610 líneas, valor claro/oscuro y nota de uso por token) y `project/design-system.json`.
-  - `project/components/<Nombre>/README.md` + `preview.html` de 62 componentes (`Cover` solo tiene vista previa: es la portada del propio artefacto, no un componente).
+  - `project/components/<Nombre>/README.md` + `preview.html` de 74 componentes, 62 de aplicación y 12 de Stream (`Cover` solo tiene vista previa: es la portada del propio artefacto, no un componente).
   - `project/components/index.d.ts`: tipos de las props de todos los componentes.
   - `project/components/bundle.js` / `bundle.css`: implementación React funcional (global `window.Jotis`, clases `.jm-*`, `data-theme="dark"`), pensada solo para las vistas previas.
   - `project/fonts/*.woff2` (Geist, Geist Mono, Bricolage Grotesque; binarios que la herramienta de artefactos no deja extraer, así que se toman de npm: `geist` y `@fontsource-variable/bricolage-grotesque`, mismas fuentes OFL) y `project/assets/*` (iconos de app, trazos a mano, iconos, logos, patrones).
@@ -25,6 +25,7 @@
 - Migrar Vinculum, Pecunia, Emptor u Ornatus a los paquetes (cada app, su propio cambio).
 - Lo que la guía deja fuera a propósito: componentes de marketing, calendario en vista semana/día, color picker con degradados o RGB/HSL, gráficas radar/gauge, mockups de dispositivo.
 - Sincronizar de vuelta con el artefacto de Claude o con Figma de forma automática.
+- En Stream: la conexión con Twitch (API, EventSub), la cola de alertas y la exportación de paneles a PNG. Los componentes reciben los datos por props; la cola y la conexión son de la app del overlay.
 
 ## Decisions
 
@@ -130,13 +131,24 @@ El paquete publica también `app-icons/` (SVG y PNG generados), `patterns/` y `h
 - GitHub Actions en `main` (con `oven-sh/setup-bun`): la acción de Changesets abre y actualiza el PR de versión. Al fusionarlo, cada paquete se empaqueta con `bun pm pack` (que sustituye `workspace:*` por la versión real) y el `.tgz` se publica con `npm publish --provenance` usando un token de automatización de npm.
 - Versión inicial `0.1.0`; `1.0.0` cuando una app de la suite haya migrado.
 
+### 12. Familia Stream (Twitch)
+Doce componentes para directos (StreamAlert, StreamScene, StreamCountdown, CamFrame, ChatBox, ChatBadge, StreamGoal, StreamEvents, NowPlaying, StreamStatus, ChannelPanel, ChannelBanner), con las mismas cuatro fuentes por componente que el resto (§7) y la sección "Stream (Twitch)" de la guía como regla común.
+- **Siempre oscuros.** La raíz de cada uno lleva la clase `dark-mode`, nuestro equivalente del `data-theme="dark"` del bundle (§3). Los tokens se redefinen en ese subárbol y `dark:` funciona dentro, así que se ven igual en una página clara.
+- **Movimiento, la excepción acotada.** Lo que aparece o se va (una alerta, el último mensaje del chat, la primera fila de eventos) entra en 250 ms con fundido y 8px de subida y sale en 200 ms; con `prefers-reduced-motion`, solo fundido. Se hace con la variante `starting:` de Tailwind v4 (`@starting-style`) para la entrada y con clases de salida para `state="exit"`, sin keyframes nuevos ni cambios en `@jotis-me/tokens`. En un OBS con un Chromium anterior al 117 el elemento aparece sin animación. Nada más se anima: las barras y la cuenta atrás solo cambian cuando cambia el dato.
+- **Cifras de reloj** en Geist con `tabular-nums`, no en Bricolage.
+- **Lienzos de tamaño fijo** (StreamScene 1920×1080, ChannelBanner 1200×480): se pintan a tamaño real y se escalan con `transform`. Con `scale` no necesitan JS; sin él miden su contenedor. El que mide es el lienzo común (`internal/stream-stage.tsx`, `"use client"`); el componente que lo usa puede seguir siendo de servidor (StreamScene lo es: su texto sale en el HTML y solo el lienzo y la cuenta atrás son de cliente). StreamCountdown también es de cliente (cuenta el tiempo); el resto, de servidor salvo que su tarea demuestre lo contrario.
+- **Datos del público** (`message` de StreamAlert, `text` de ChatBox): siempre texto plano, nunca HTML.
+- **ChatBox translúcido:** `color-mix` sobre la variable del token más `backdrop-blur-lg`, con fondo sólido de reserva con `@supports`. Sin colores crudos; si la guía fija alguno, va con `// color-fijo:`.
+- **Reimportación.** `reference/` pasa entera a la versión `1793561361-ae73`. Lo que no es de Stream (la paleta `chartreuse` en `tokens.json`, Regula en App icons, `design-system.json`) queda en `reference/` sin portar: `packages/tokens/src/tokens.json` no se regenera con `translate-usage.ts` y AppIcon no cambia hasta un cambio de estilo propio. Solo se capturan las referencias de paridad de los 12 nuevos; si el bundle nuevo altera la vista previa de alguno de los 62 existentes, se revisa a mano.
+- **Web:** página de fundamentos `/foundations/stream/` desde la sección de la guía y una página por componente; los lienzos se ven escalados al ancho del ejemplo.
+
 ## Risks / Trade-offs
 
 - [Algunos setups de Tailwind ignoran `node_modules` al detectar clases] → El `@source` va dentro del CSS del paquete con ruta explícita, que v4 respeta; los ejemplos lo verifican en cada release.
-- [La paridad píxel a píxel con 62 vistas previas es cara y frágil] → Umbrales tolerantes y comparación por componente aislado; las diferencias aceptadas se anotan en la página del componente.
+- [La paridad píxel a píxel con 74 vistas previas es cara y frágil] → Umbrales tolerantes y comparación por componente aislado; las diferencias aceptadas se anotan en la página del componente.
 - [React Aria añade peso (~30–50 kB gz en apps con muchos interactivos)] → Importación por componente, `sideEffects: false` y control de tamaño por componente en CI.
 - [Las props función no cruzan islas de Astro] → Patrón de envoltorio `.tsx` documentado y presente en `examples/astro`.
-- [El artefacto puede seguir cambiando durante el port] → Copia congelada en `reference/` con su versión; las actualizaciones posteriores entran en cambios propios.
+- [El artefacto puede seguir cambiando durante el port] → Copia congelada en `reference/` con su versión; las actualizaciones posteriores entran en cambios propios. Excepción, decidida con el usuario: la versión `1793561361-ae73` (Stream) entra en este cambio para salir en la `0.1.0`.
 - [`changeset publish` llama a `npm publish`, que no reescribe `workspace:*`, y se publicarían dependencias rotas] → Publicar desde el `.tgz` de `bun pm pack` y comprobar en CI que el `package.json` empaquetado no contiene `workspace:`.
 - [Licencias de fuentes: Geist y Bricolage son OFL] → Incluir las licencias en `@jotis-me/tokens/fonts/` y citarlas en la web.
 

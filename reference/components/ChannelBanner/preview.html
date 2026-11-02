@@ -1,0 +1,16 @@
+<!-- @dsCard group="Stream · Canal" height=430 width=1000 subtitle="Banner de perfil de 1200×480" -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>ChannelBanner</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:16px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  document.documentElement.setAttribute('data-theme', 'dark');
+  var J = window.Jotis, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h(J.ChannelBanner, {
+    name: 'Tu canal', tagline: 'Directos tranquilos y conversación sin guion.',
+    schedule: [{ day: 'Lunes', time: '20:00' }, { day: 'Miércoles', time: '20:00' }, { day: 'Viernes', time: '22:00' }] }));
+</script>
+</body>
+</html>

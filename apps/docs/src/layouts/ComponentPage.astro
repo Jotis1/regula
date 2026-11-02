@@ -14,8 +14,10 @@ interface Props {
 	next: string;
 	/** Uso en Astro: con la directiva `client:*` si es interactivo. */
 	astro: string;
+	/** Ejemplos sobre fondo oscuro, como sus vistas previas de la guía (Stream: `DARK_PREVIEWS`). */
+	dark?: boolean;
 }
-const { name, description, props, next, astro } = Astro.props;
+const { name, description, props, next, astro, dark = false } = Astro.props;
 ---
 
 <Base title={name} description={description}>
@@ -30,7 +32,13 @@ const { name, description, props, next, astro } = Astro.props;
 
 		<section aria-labelledby="ejemplos">
 			<h2 id="ejemplos">Ejemplos</h2>
-			<div data-pagefind-ignore class="not-prose my-4 flex flex-col gap-6 rounded-xl border border-secondary p-6">
+			<div
+				data-pagefind-ignore
+				class:list={[
+					"not-prose my-4 flex flex-col gap-6 rounded-xl border border-secondary p-6",
+					dark && "dark-mode bg-primary text-primary",
+				]}
+			>
 				<slot name="examples" />
 			</div>
 		</section>

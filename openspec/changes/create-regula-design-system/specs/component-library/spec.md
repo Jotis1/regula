@@ -7,11 +7,11 @@ Da a las apps de la suite los componentes de la guía de diseño ya construidos 
 ## ADDED Requirements
 
 ### Requirement: Catálogo completo de componentes
-La librería SHALL exportar los 62 componentes que tienen ficha en la guía, con el mismo nombre que en ella, cada uno con su tipo de props.
+La librería SHALL exportar los 74 componentes que tienen ficha en la guía, con el mismo nombre que en ella, cada uno con su tipo de props.
 
 #### Scenario: Exportaciones
 - **WHEN** se lista lo que exporta el punto de entrada del paquete
-- **THEN** aparecen ActivityFeed, Alert, AppIcon, Avatar, AvatarGroup, AvatarLabel, BackgroundPattern, Badge, Banner, BarChart, Breadcrumbs, BrowserFrame, Button, ButtonGroup, CalendarView, CardHeader, ChartLegend, Checkbox, CloseButton, CodeSnippet, ColorPicker, CommandMenu, ContentDivider, CreditCard, DatePicker, Dropdown, EmptyState, FeaturedIcon, FileUpload, FilterBar, Icon, InlineCTA, Input, LineChart, Message, MessageInput, MetricCard, Modal, Notification, PageHeader, Pagination, PieChart, ProgressBar, Radio, RadioGroup, SectionFooter, SectionHeader, Select, SidebarNav, Skeleton, Slideout, Slider, Spinner, Table, Tabs, Tag, TextEditor, Textarea, Toggle, Tooltip, TreeView y VideoPlayer, con sus tipos de props
+- **THEN** aparecen ActivityFeed, Alert, AppIcon, Avatar, AvatarGroup, AvatarLabel, BackgroundPattern, Badge, Banner, BarChart, Breadcrumbs, BrowserFrame, Button, ButtonGroup, CalendarView, CardHeader, ChartLegend, Checkbox, CloseButton, CodeSnippet, ColorPicker, CommandMenu, ContentDivider, CreditCard, DatePicker, Dropdown, EmptyState, FeaturedIcon, FileUpload, FilterBar, Icon, InlineCTA, Input, LineChart, Message, MessageInput, MetricCard, Modal, Notification, PageHeader, Pagination, PieChart, ProgressBar, Radio, RadioGroup, SectionFooter, SectionHeader, Select, SidebarNav, Skeleton, Slideout, Slider, Spinner, Table, Tabs, Tag, TextEditor, Textarea, Toggle, Tooltip, TreeView y VideoPlayer, y los de Stream: CamFrame, ChannelBanner, ChannelPanel, ChatBadge, ChatBox, NowPlaying, StreamAlert, StreamCountdown, StreamEvents, StreamGoal, StreamScene y StreamStatus, todos con sus tipos de props
 
 ### Requirement: API pública según las fichas
 Las props de cada componente SHALL coincidir en nombre, tipo y valores por defecto con las declaradas en `index.d.ts` y en la ficha del componente de la guía; un cambio incompatible en ellas SHALL considerarse ruptura de API.
@@ -36,7 +36,7 @@ Cada componente SHALL reproducir el aspecto de su vista previa en la guía, en c
 - **THEN** no aparece ningún color hex ni utilidad de paleta cruda de Tailwind, salvo en los componentes cuya paleta fija documenta la guía: AppIcon (el tono de cada app), CreditCard (la tarjeta es un objeto y no cambia con el tema), BrowserFrame (el semáforo) y VideoPlayer (controles en blanco y negro sobre el vídeo); y las líneas sueltas que la guía fija y que se marcan con su motivo, como el brillo interior del botón primario
 
 ### Requirement: Estados comunes de interacción
-Los controles SHALL mostrar hover cambiando el fondo o el texto un escalón, deshabilitado al 50 % de opacidad en todo el control y foco de teclado con `focus-ring-shadow` (`focus-ring-error-shadow` si hay error), con transiciones de color de 100–150 ms y sin animaciones decorativas.
+Los controles SHALL mostrar hover cambiando el fondo o el texto un escalón, deshabilitado al 50 % de opacidad en todo el control y foco de teclado con `focus-ring-shadow` (`focus-ring-error-shadow` si hay error), con transiciones de color de 100–150 ms y sin animaciones decorativas, salvo la entrada y salida de la familia Stream (requisito propio).
 
 #### Scenario: Foco con teclado
 - **WHEN** el usuario llega a un `Input` con Tab
@@ -111,6 +111,33 @@ Los textos que traen los componentes (etiquetas accesibles, "Cerrar", estados va
 #### Scenario: Texto sustituible
 - **WHEN** se pasa `label="Cerrar aviso"` a `CloseButton`
 - **THEN** el nombre accesible del botón es "Cerrar aviso"
+
+### Requirement: Familia Stream para directos
+Los componentes de Stream SHALL pintarse siempre con el tema oscuro, sea cual sea el tema de la página; lo que aparece o se va SHALL entrar en 250 ms con fundido y 8px de subida y salir en 200 ms, solo con fundido si el usuario pide movimiento reducido; las cifras de reloj SHALL usar números tabulares; los textos que llegan del público SHALL pintarse como texto plano; y los lienzos de tamaño fijo SHALL medir su tamaño de Twitch multiplicado por `scale`.
+
+#### Scenario: Oscuro en una página clara
+- **WHEN** se pinta `StreamAlert` dentro de una página en tema claro
+- **THEN** la tarjeta usa los valores oscuros de los tokens
+
+#### Scenario: Entrada con movimiento reducido
+- **WHEN** se pinta `StreamAlert` con `state="enter"` y `prefers-reduced-motion: reduce`
+- **THEN** la tarjeta aparece con fundido y sin desplazamiento
+
+#### Scenario: Cuenta atrás
+- **WHEN** se pinta `StreamCountdown` con `seconds={90}`
+- **THEN** muestra "01:30", lleva `role="timer"` y `aria-live="off"`, y al llegar a "00:00" se queda ahí
+
+#### Scenario: Mensaje con HTML
+- **WHEN** `ChatBox` recibe un mensaje con `text="<b>hola</b>"`
+- **THEN** se ve el texto literal `<b>hola</b>`, sin negrita
+
+#### Scenario: Escena escalada
+- **WHEN** se pinta `StreamScene` con `scale={0.5}`
+- **THEN** ocupa 960×540 px
+
+#### Scenario: En directo sin rojo
+- **WHEN** se pinta `StreamStatus` con `status="live"`
+- **THEN** el punto usa `fg-success-secondary` y va junto a la palabra "En directo"
 
 ### Requirement: Gráficas con la paleta de series
 LineChart, BarChart y PieChart SHALL asignar por defecto, en este orden, `utility-brand-600`, `utility-brand-400`, `utility-brand-200`, `utility-sky-500`, `utility-pink-500` y `utility-neutral-400`, y SHALL mostrar leyenda por defecto cuando haya tres series o más.

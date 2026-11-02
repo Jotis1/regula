@@ -82,7 +82,12 @@
         "emptor-solid.svg",
         "emptor-light.svg",
         "emptor-mono.svg",
-        "emptor-maskable.svg"
+        "emptor-maskable.svg",
+        "regula-default.svg",
+        "regula-solid.svg",
+        "regula-light.svg",
+        "regula-mono.svg",
+        "regula-maskable.svg"
       ],
       "files": {
         "ornatus-default.svg": {
@@ -203,6 +208,36 @@
           "name": "emptor-maskable.svg",
           "blob": "be6e95dadd1fc318119ca0dce7ab5434",
           "size": 1139,
+          "type": "image/svg+xml"
+        },
+        "regula-default.svg": {
+          "name": "regula-default.svg",
+          "blob": "7363bfe52cc85df820532db9215ea13d",
+          "size": 1719,
+          "type": "image/svg+xml"
+        },
+        "regula-solid.svg": {
+          "name": "regula-solid.svg",
+          "blob": "42f8c6a374e539a5b3380bb7de3702b4",
+          "size": 1608,
+          "type": "image/svg+xml"
+        },
+        "regula-light.svg": {
+          "name": "regula-light.svg",
+          "blob": "3dec4e0e8d15712a997e6f2cbe26343c",
+          "size": 1929,
+          "type": "image/svg+xml"
+        },
+        "regula-mono.svg": {
+          "name": "regula-mono.svg",
+          "blob": "966569bcd39c9e38fd89b2a09e1cdeb3",
+          "size": 1719,
+          "type": "image/svg+xml"
+        },
+        "regula-maskable.svg": {
+          "name": "regula-maskable.svg",
+          "blob": "ecc05acfa0ed4a25599653535e7e29a4",
+          "size": 1620,
           "type": "image/svg+xml"
         }
       }
@@ -1443,8 +1478,8 @@
   },
   "lastChange": {
     "by": "Claude",
-    "at": "2026-10-29T22:00:00Z",
-    "via": "Figma · Yoruverse UI (v8.0)",
-    "note": "Virgulilla de tamaño fijo en los iconos de app, igual en todas las apps."
+    "at": "2026-11-01T19:30:00Z",
+    "via": "Claude",
+    "note": "Familia Stream para Twitch: 12 componentes (alertas, escenas, overlay y canal), tipos y sección en el README."
   }
 }

@@ -1,18 +1,19 @@
 ---
 // Página aislada para comparar un componente con la vista previa de la guía. Fuera de la navegación.
-// Tema oscuro con ?tema=oscuro, aplicado antes de pintar.
+// Tema oscuro con ?tema=oscuro, aplicado antes de pintar; las de `DARK_PREVIEWS` (Stream) van siempre en oscuro.
 import "../../styles/global.css";
-import { slugOf, visualExamples } from "../../visual/registry";
+import { DARK_PREVIEWS, slugOf, visualExamples } from "../../visual/registry";
 import VisualExample from "../../visual/VisualExample";
 
 export function getStaticPaths() {
 	return Object.keys(visualExamples).map((name) => ({ params: { name: slugOf(name) }, props: { name } }));
 }
 const { name } = Astro.props;
+const alwaysDark = DARK_PREVIEWS.has(name);
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class:list={[alwaysDark && "dark-mode"]}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="robots" content="noindex" />

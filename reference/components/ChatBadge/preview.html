@@ -1,0 +1,15 @@
+<!-- @dsCard group="Stream · Overlay" height=190 width=720 subtitle="Insignias de chat en tres tamaños" -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>ChatBadge</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:24px;font-family:var(--font-body);color:var(--text-secondary);font-size:14px;line-height:20px} .row{display:flex;align-items:center;gap:12px;margin-bottom:16px} .row span.l{width:72px;color:var(--text-tertiary)}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  document.documentElement.setAttribute('data-theme', 'dark');
+  var J = window.Jotis, h = React.createElement, kinds = ['broadcaster', 'mod', 'vip', 'sub', 'bits'];
+  function row(size) { return h('div', { className: 'row', key: size }, h('span', { className: 'l' }, size + ' px'), kinds.map(function (k) { return h(J.ChatBadge, { key: k, kind: k, size: size }); })); }
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', null, row(18), row(20), row(28)));
+</script>
+</body>
+</html>

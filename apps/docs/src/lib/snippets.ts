@@ -267,6 +267,49 @@ const usage: Record<string, string> = {
 	]}
 />`,
 	ChartLegend: `<ChartLegend series={[{ name: "Gastos" }, { name: "Presupuesto" }]} />`,
+	StreamAlert: `<StreamAlert key={alerta.id} type="raid" user="TioBigotes" amount={1284} state="enter" />`,
+	StreamEvents: `<StreamEvents
+	animate
+	items={[
+		{ id: 3, type: "follow", user: "lucia_pixel", time: "ahora" },
+		{ id: 2, type: "donation", user: "Marta_en_Directo", amount: 5, time: "2 min" },
+		{ id: 1, type: "raid", user: "TioBigotes", amount: 1284, time: "9 min" },
+	]}
+/>`,
+	StreamStatus: `<StreamStatus status="live" viewers={1284} uptime="2:14:05" category="Just Chatting" />`,
+	ChatBadge: `<ChatBadge kind="mod" />
+<ChatBadge kind="sub" size={28} />`,
+	ChatBox: `<ChatBox
+	translucent
+	animate
+	messages={[
+		{ id: 1, user: "TioBigotes", tone: "sky", badges: ["mod"], text: "Bienvenidos todos." },
+		{ id: 2, user: "lucia_pixel", tone: "pink", badges: ["sub"], text: "Esa jugada la he visto yo." },
+	]}
+/>`,
+	CamFrame: `<CamFrame ratio="16:9" width={480} live name="Tu canal" role="ella/él" />`,
+	StreamGoal: `<StreamGoal label="Meta de seguidores" current={1284} goal={2000} />`,
+	NowPlaying: `<NowPlaying title="Cuatro paredes y un techo" artist="Los Vecinos del Quinto" progress={0.42} />`,
+	StreamCountdown: `<StreamCountdown seconds={600} label="Empezamos en" />`,
+	StreamScene: `<StreamScene variant="brb" seconds={480} countdownLabel="Vuelvo en" />`,
+	ChannelPanel: `<ChannelPanel
+	title="Horario"
+	icon="calendar"
+	rows={[
+		{ label: "Lunes", value: "20:00" },
+		{ label: "Viernes", value: "22:00" },
+	]}
+	action={{ label: "Ver todos los enlaces", href: "/enlaces", icon: "arrow-right" }}
+/>`,
+	ChannelBanner: `<ChannelBanner
+	scale={1}
+	name="Tu canal"
+	tagline="Directos tranquilos y conversación sin guion."
+	schedule={[
+		{ day: "Lunes", time: "20:00" },
+		{ day: "Viernes", time: "22:00" },
+	]}
+/>`,
 };
 
 const indent = (code: string, tabs: number) =>

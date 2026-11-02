@@ -1,0 +1,17 @@
+<!-- @dsCard group="Stream · Escenas" height=190 width=800 subtitle="Cuenta atrás en tres tamaños" -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>StreamCountdown</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:24px} .row{display:flex;align-items:flex-end;gap:64px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  document.documentElement.setAttribute('data-theme', 'dark');
+  var J = window.Jotis, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'row' },
+    h(J.StreamCountdown, { size: 'md', seconds: 125, paused: true, label: 'Pausa' }),
+    h(J.StreamCountdown, { size: 'lg', seconds: 600, paused: true, label: 'Empezamos en' }),
+    h(J.StreamCountdown, { size: 'xl', seconds: 3725, paused: true, label: 'Falta una hora y pico' })));
+</script>
+</body>
+</html>
