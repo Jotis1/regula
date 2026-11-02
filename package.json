@@ -17,7 +17,8 @@
 		"format": "biome format --write .",
 		"ci": "biome ci . && turbo run typecheck test build",
 		"changeset": "changeset",
-		"version-packages": "changeset version && bun install"
+		"version-packages": "changeset version && bun install",
+		"release": "bun run scripts/release.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.6.4",

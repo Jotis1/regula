@@ -1,0 +1,89 @@
+# Integración continua: en cada PR y en cada push a main. La publicación (release.yml) solo corre si este flujo
+# termina bien en main, así que todo lo que bloquea una versión está aquí.
+name: CI
+
+on:
+    pull_request:
+    push:
+        branches: [main]
+
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    # Comprobaciones sin navegador: formato y lint, tipos, tests unitarios (con axe en jsdom), build, colores,
+    # exports y tipos publicados, tamaño por componente y paquetes sin `workspace:`.
+    checks:
+        name: Comprobaciones
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version-file: package.json
+            - run: bun install --frozen-lockfile
+            - name: Biome
+              run: bunx biome ci .
+            - name: Tipos, tests y build
+              run: bunx turbo run build typecheck test
+            - name: Colores fuera de los tokens
+              run: bun run check:colors
+              working-directory: packages/react
+            - name: publint y arethetypeswrong
+              run: |
+                  for p in tokens icons react; do
+                    (cd packages/$p && bun run check:package)
+                  done
+            - name: Tamaño por componente
+              run: bun run check:size
+              working-directory: packages/react
+            - name: "Paquetes sin workspace:"
+              run: bun run scripts/pack.ts
+
+    # Pruebas con navegador. En Windows porque las referencias de la paridad visual se capturaron en Windows: el
+    # suavizado del texto cambia entre sistemas y en Linux superaría el umbral del 2 %.
+    browser:
+        name: Navegador (web, ejemplos y Lighthouse)
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version-file: package.json
+            - run: bun install --frozen-lockfile
+            - name: Build
+              run: bunx turbo run build
+            - name: Chromium de Playwright
+              run: bunx playwright install chromium
+              working-directory: apps/docs
+            - name: Tokens e iconos (fuentes sin red, capturas)
+              shell: bash
+              run: |
+                  (cd packages/tokens && bun run test:e2e)
+                  (cd packages/icons && bun run test:e2e)
+            - name: Web (funcional, axe y paridad visual)
+              run: bunx playwright test
+              working-directory: apps/docs
+            - name: Ejemplo Next.js (sin avisos de hidratación)
+              run: bunx playwright test
+              working-directory: examples/next
+            - name: Ejemplo Astro (sin JS en estáticos, isla con teclado)
+              run: bunx playwright test
+              working-directory: examples/astro
+            - name: Lighthouse (móvil, ≥ 90 en rendimiento y accesibilidad)
+              run: bun run test:lighthouse
+              working-directory: apps/docs
+            - name: Resultados si algo falla
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: resultados-navegador
+                  path: |
+                      apps/docs/test-results/
+                      apps/docs/.lighthouseci/
+                      examples/*/test-results/
+                  retention-days: 7

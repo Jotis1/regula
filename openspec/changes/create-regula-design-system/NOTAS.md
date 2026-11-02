@@ -6,6 +6,15 @@ Lo que no cabe en las casillas de `tasks.md` ni en `design.md`. Léelo antes de 
 
 64 de 70 tareas. El 2 nov se añadió el grupo 13 (Stream) y la publicación pasó a ser el 14. Hechos los grupos 1 a 13, la 14.1 y la 14.2. Lo siguiente: 14.3 (CI y publicación). Las tareas 14.3 en adelante son acciones fuera del repo (GitHub, Vercel, DNS, npm): pedir confirmación al usuario antes de cada una.
 
+14.3 en curso (sin marcar): los workflows y los scripts están escritos y probados en local; falta verificarlo en GitHub.
+- `.github/workflows/ci.yml` (PR y push a main): trabajo `checks` en Ubuntu y `browser` en Windows (las referencias de paridad son de Windows). `release.yml` por `workflow_run` de CI con éxito en main. Detalle en design §11.
+- `packages/react`: `bun run check:size` (gzip de `import { X }` desde el índice, React fuera; límites en `size-budget.json`, `--update` los rehace con +10 %). El suelo es ~9 kB (tailwind-merge de `cx`) y el set de iconos suma ~3 kB.
+- `scripts/pack.ts` (los `.tgz` en `.pack/`, sin `workspace:`; probado con un .tgz falso) y `scripts/release.ts` (`bun run release --dry-run` para ensayar; **nunca lo lances sin `--dry-run` en local**: publicaría). `releasePlan` rechaza 0.0.0 y paquetes desconocidos y ordena tokens → icons → react.
+- `apps/docs/lighthouserc.json` (`bun run test:lighthouse`, 3 pasadas, mediana ≥ 0,9 en rendimiento y accesibilidad, informes en `.lighthouseci/`, sin subir a ningún sitio). No se puede ejecutar en este equipo: solo en CI.
+- Biome formatea también los YAML (4 espacios). Una clave terminada en `:` en un `name:` rompe el YAML: va entre comillas.
+- Para verificar la 14.3 (acciones del usuario): subir la rama y abrir el PR (CI corre por primera vez: comprobar paridad en el runner de Windows y Lighthouse); un PR de prueba con un test roto que salga en rojo; en GitHub, proteger `main` exigiendo los dos trabajos de CI y activar "Allow GitHub Actions to create and approve pull requests" (para el PR de versión). Ojo: el PR de versión que abre la acción con `GITHUB_TOKEN` no lanza CI por sí solo; CI corre al fusionarlo en main, y solo entonces publica.
+- Trusted publishing: npm solo deja configurar el editor de confianza en un paquete que ya existe. La primera publicación de cada paquete (14.5) tendrá que hacerse de otra forma (a mano o con un token temporal): decidirlo con el usuario.
+
 Decisiones de la 13.7:
 - `/foundations/stream/`: la sección "Stream (Twitch)" de la guía, con `data-theme="dark"` cambiado por la clase `dark-mode` y "En OBS" adaptado al paquete (sin "el bundle solo sirve para verlos"), más un apartado "En el paquete" (entrada sin JS, listas que crecen, texto del público, servidor y cliente). En la navegación va antes de "Marca", como en la guía (Marca pasa a `order: 10`). `foundations.spec.ts` la incluye y comprueba un texto.
 - Las 12 páginas de componente recogen las decisiones de la 13.3 a la 13.6 (secciones "Diferencias con la guía", "Ampliaciones sobre la guía", "En el paquete", "Accesibilidad").

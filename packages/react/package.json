@@ -32,7 +32,8 @@
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit",
 		"check:colors": "bun run scripts/check-colors.ts src",
-		"check:package": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./styles.css"
+		"check:package": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./styles.css",
+		"check:size": "bun run scripts/check-size.ts"
 	},
 	"dependencies": {
 		"@internationalized/date": "^3.12.4",

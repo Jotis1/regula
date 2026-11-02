@@ -1,0 +1,55 @@
+# Publicación con Changesets. Solo corre cuando CI termina bien tras un push a main (workflow_run), y trabaja
+# sobre el mismo commit que CI probó. Si hay changesets pendientes abre o actualiza el PR de versión; al fusionar
+# ese PR, empaqueta con `bun pm pack` y publica cada .tgz con procedencia.
+#
+# npm con trusted publishing: sin token. En npmjs.com, cada paquete tiene que tener como editor de confianza este
+# repositorio (Jotis1/regula) y este flujo (release.yml).
+name: Release
+
+on:
+    workflow_run:
+        workflows: [CI]
+        types: [completed]
+        branches: [main]
+
+concurrency:
+    group: release
+    cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+    release:
+        name: Versión y publicación
+        if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write # etiquetas y rama del PR de versión
+            pull-requests: write # PR de versión
+            id-token: write # trusted publishing y procedencia
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.event.workflow_run.head_sha }}
+                  fetch-depth: 0
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version-file: package.json
+            # Trusted publishing necesita npm ≥ 11.5.1. Sin `registry-url`: así no se configura ningún token.
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+            - run: npm install -g npm@latest
+            - run: bun install --frozen-lockfile
+            - name: Build de los paquetes
+              run: bunx turbo run build --filter=./packages/*
+            - name: PR de versión o publicación
+              uses: changesets/action@v1
+              with:
+                  version: bun run version-packages
+                  publish: bun run release
+                  title: "Versión de los paquetes"
+                  commit: "Versión de los paquetes"
+                  createGithubReleases: false
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

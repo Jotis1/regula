@@ -128,7 +128,9 @@ El paquete publica también `app-icons/` (SVG y PNG generados), `patterns/` y `h
 
 ### 11. Versionado y publicación con Changesets
 - Changesets con los tres paquetes en modo `fixed` (misma versión para todos), para que "la web documenta la versión X" sea inequívoco.
-- GitHub Actions en `main` (con `oven-sh/setup-bun`): la acción de Changesets abre y actualiza el PR de versión. Al fusionarlo, cada paquete se empaqueta con `bun pm pack` (que sustituye `workspace:*` por la versión real) y el `.tgz` se publica con `npm publish --provenance` usando un token de automatización de npm.
+- GitHub Actions (con `oven-sh/setup-bun`). `ci.yml` corre en cada PR y en cada push a `main`: un trabajo en Ubuntu (Biome, tipos, tests, build, colores, publint/attw, tamaño por componente con `check:size` y `size-budget.json`, y `scripts/pack.ts`) y otro en Windows con navegador (e2e de tokens e iconos, la web con axe y paridad visual, los dos ejemplos y Lighthouse CI). Va en Windows porque las referencias de paridad se capturaron en Windows y el suavizado del texto cambia entre sistemas.
+- `release.yml` solo corre cuando `ci.yml` termina bien tras un push a `main` (`workflow_run`), sobre el mismo commit. La acción de Changesets abre y actualiza el PR de versión; al fusionarlo, `scripts/release.ts` empaqueta cada paquete con `bun pm pack` (que sustituye `workspace:*` por la versión real), comprueba que el `package.json` del `.tgz` no contiene `workspace:`, se niega a publicar 0.0.0 y publica en orden (tokens, icons, react) con `npm publish --provenance`. **Trusted publishing** (decisión del usuario): sin token de npm; npm usa el OIDC de GitHub Actions, y cada paquete tiene en npmjs.com como editor de confianza `Jotis1/regula` con `release.yml`.
+- Lighthouse no se puede ejecutar en el equipo de desarrollo (una extensión bloquea el Chrome instalado y la Lighthouse de `@lhci/cli` falla con el Chromium de Playwright): se verifica solo en CI.
 - Versión inicial `0.1.0`; `1.0.0` cuando una app de la suite haya migrado.
 
 ### 12. Familia Stream (Twitch)
