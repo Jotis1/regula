@@ -3,7 +3,9 @@
 # ese PR, empaqueta con `bun pm pack` y publica cada .tgz con procedencia.
 #
 # npm con trusted publishing: sin token. En npmjs.com, cada paquete tiene que tener como editor de confianza este
-# repositorio (Jotis1/regula) y este flujo (release.yml).
+# repositorio (Jotis1/regula) y este flujo (release.yml). npm solo deja configurarlo en paquetes que ya existen,
+# así que la primera publicación usa un token temporal (secreto NPM_TOKEN). Al borrar el secreto, este mismo flujo
+# pasa a trusted publishing sin cambiar nada.
 name: Release
 
 on:
@@ -27,6 +29,9 @@ jobs:
             contents: write # etiquetas y rama del PR de versión
             pull-requests: write # PR de versión
             id-token: write # trusted publishing y procedencia
+        env:
+            # Solo un sí o un no: el token en sí no se expone a los demás pasos.
+            HAS_NPM_TOKEN: ${{ secrets.NPM_TOKEN != '' }}
         steps:
             - uses: actions/checkout@v4
               with:
@@ -43,13 +48,23 @@ jobs:
             - run: bun install --frozen-lockfile
             - name: Build de los paquetes
               run: bunx turbo run build --filter=./packages/*
-            - name: PR de versión o publicación
+            # La acción solo abre o actualiza el PR de versión. No le pasamos `publish`: cuando publica escribe su
+            # propio ~/.npmrc con NPM_TOKEN (vacío sin token), y eso estorbaría a trusted publishing.
+            - name: PR de versión
+              id: changesets
               uses: changesets/action@v1
               with:
                   version: bun run version-packages
-                  publish: bun run release
                   title: "Versión de los paquetes"
                   commit: "Versión de los paquetes"
-                  createGithubReleases: false
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            # Sin changesets pendientes (se acaba de fusionar el PR de versión): se publica lo que no esté en npm.
+            - name: Token temporal de npm (solo la primera publicación)
+              if: steps.changesets.outputs.hasChangesets == 'false' && env.HAS_NPM_TOKEN == 'true'
+              env:
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "$HOME/.npmrc"
+            - name: Publicación
+              if: steps.changesets.outputs.hasChangesets == 'false'
+              run: bun run release
