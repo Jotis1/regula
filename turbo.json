@@ -10,7 +10,8 @@
 		},
 		"test": {
 			"dependsOn": ["build"],
-			"outputs": ["coverage/**"]
+			"outputs": ["coverage/**"],
+			"inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/reference/**"]
 		},
 		"dev": {
 			"cache": false,
