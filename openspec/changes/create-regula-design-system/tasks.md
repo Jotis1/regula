@@ -119,3 +119,4 @@
 
 - Archivar el cambio cuando la web esté publicada y `0.1.0` en npm.
 - Abrir un cambio por app (Vinculum, Pecunia, Emptor, Ornatus) para migrarla a los paquetes.
+- Abrir un cambio para las fuentes de reserva ajustadas en `@jotis-me/tokens` (`size-adjust` y `ascent-override` para Geist, Geist Mono y Bricolage), de modo que el cambio de fuente no desplace el texto con red lenta (ver NOTAS.md, 14.3).
