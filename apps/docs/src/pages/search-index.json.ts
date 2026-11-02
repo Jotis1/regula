@@ -53,14 +53,14 @@ export const GET: APIRoute = async () => {
 			group: "tokens" as const,
 			label: row.utility ?? row.name,
 			description: `Espaciado y radios · ${row.usage}`,
-			href: "/foundations/spacing/",
+			href: "/foundations/layout/",
 			keywords: row.name,
 		})),
 		...shadowRows(shadows).map((row) => ({
 			group: "tokens" as const,
 			label: row.utility,
 			description: `Sombras · ${row.usage}`,
-			href: "/foundations/shadows/",
+			href: "/foundations/states/",
 			keywords: row.name,
 		})),
 		...iconNames.map((name) => ({

@@ -11,13 +11,13 @@ const pages: Record<string, string> = {
 	"Contenido y tono": "/foundations/content/",
 	Color: "/foundations/color/",
 	Tipografía: "/foundations/typography/",
-	"Espaciado, radios y layout": "/foundations/spacing/",
-	"Sombras y estados": "/foundations/shadows/",
+	"Espaciado, radios y layout": "/foundations/layout/",
+	"Sombras y estados": "/foundations/states/",
 	Iconografía: "/foundations/iconography/",
 	"Fondos y adornos": "/foundations/backgrounds/",
 	"Stream (Twitch)": "/foundations/stream/",
 	Marca: "/foundations/brand/",
-	"Con Tailwind v4 (Next o Astro)": "/usage/tailwind/",
+	"Con Tailwind v4 (Next o Astro)": "/start/install/",
 	// «Uso en el propio sistema» describe el bundle del artefacto; su regla de gráficas está en Color
 	"Uso en el propio sistema": "/foundations/color/",
 };
@@ -34,6 +34,14 @@ for (const [section, href] of Object.entries(pages)) {
 		expect(res?.status()).toBe(200);
 		await expect(page.locator("h1")).toBeVisible();
 		await expect(page.locator(`nav a[href="${href}"]`)).toHaveAttribute("aria-current", "page");
+	});
+}
+
+// URLs del rediseño, sin redirecciones (proposal): las antiguas dejan de existir
+for (const old of ["/usage/tailwind/", "/foundations/spacing/", "/foundations/shadows/"]) {
+	test(`la URL antigua ${old} ya no existe`, async ({ page }) => {
+		const res = await page.goto(old);
+		expect(res?.status()).toBe(404);
 	});
 }
 

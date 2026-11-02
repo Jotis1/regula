@@ -17,8 +17,8 @@ export const nav: NavSection[] = [
 			{ label: "Contenido y tono", href: "/foundations/content/" },
 			{ label: "Color", href: "/foundations/color/" },
 			{ label: "Tipografía", href: "/foundations/typography/" },
-			{ label: "Espaciado, radios y layout", href: "/foundations/spacing/" },
-			{ label: "Sombras y estados", href: "/foundations/shadows/" },
+			{ label: "Espaciado, radios y layout", href: "/foundations/layout/" },
+			{ label: "Sombras y estados", href: "/foundations/states/" },
 			{ label: "Iconografía", href: "/foundations/iconography/" },
 			{ label: "Fondos y adornos", href: "/foundations/backgrounds/" },
 			{ label: "Stream (Twitch)", href: "/foundations/stream/" },
@@ -28,7 +28,7 @@ export const nav: NavSection[] = [
 	{
 		title: "Uso",
 		items: [
-			{ label: "Instalación con Tailwind v4", href: "/usage/tailwind/" },
+			{ label: "Instalación con Tailwind v4", href: "/start/install/" },
 			{ label: "Iconos", href: "/icons/" },
 		],
 	},

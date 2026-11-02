@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Navegación de Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<nav class="jm-root rg-root" aria-label="Documentación" style="display: flex; flex-direction: column; gap: 20px; width: 100%; padding: 24px 16px 40px; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <div style="display: flex; flex-direction: column; gap: 6px; padding: 0 2px;">
+    <label for="rg-nav-filter" style="font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-secondary);">Filtrar navegación</label>
+    <div style="display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px; border-radius: var(--radius-lg); background: var(--bg-primary); box-shadow: var(--shadow-xs), inset 0 0 0 1px var(--border-primary); color: var(--fg-quaternary);">
+      <x-import component-from-global-scope="Jotis.Icon" name="filter-lines" size="{{n.s16}}"></x-import>
+      <input id="rg-nav-filter" type="search" value="{{q}}" onChange="{{onQ}}" placeholder="Button, tabla, alerta…" autocomplete="off" style="flex-grow: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: 400 14px/20px var(--font-body); color: var(--text-primary);">
+      <kbd class="rg-kbd">/</kbd>
+    </div>
+  </div>
+  <sc-for list="{{sections}}" as="sec" hint-placeholder-count="4">
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <h2 style="margin: 0 0 4px; padding: 0 10px; display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 18px; font-weight: 600; color: var(--text-quaternary);">
+        <span>{{sec.label}}</span>
+        <span style="font-weight: 500; font-variant-numeric: tabular-nums;">{{sec.count}}</span>
+      </h2>
+      <sc-for list="{{sec.items}}" as="it" hint-placeholder-count="2">
+        <a class="rg-nav" href="{{it.href}}" aria-current="{{it.cur}}">{{it.label}}</a>
+      </sc-for>
+      <sc-for list="{{sec.groups}}" as="g" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <button type="button" class="rg-nav-group" aria-expanded="{{g.expandedAttr}}" onClick="{{g.toggle}}">
+            <x-import component-from-global-scope="Jotis.Icon" name="{{g.chev}}" size="{{n.s16}}" style="color: var(--fg-quaternary);"></x-import>
+            <span style="flex-grow: 1; font-size: 13px; line-height: 20px; color: var(--text-secondary);">{{g.label}}</span>
+            <span style="font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-quaternary); font-variant-numeric: tabular-nums;">{{g.count}}</span>
+          </button>
+          <sc-if value="{{g.expanded}}" hint-placeholder-val="{{yes}}">
+            <div style="display: flex; flex-direction: column; gap: 2px; padding-left: 22px;">
+              <sc-for list="{{g.items}}" as="it" hint-placeholder-count="3">
+                <a class="rg-nav" href="{{it.href}}" aria-current="{{it.cur}}">{{it.label}}</a>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </sc-for>
+  <sc-if value="{{empty}}" hint-placeholder-val="{{no}}">
+    <p style="margin: 0; padding: 0 10px; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Nada se llama así. Prueba la búsqueda global con <kbd class="rg-kbd">Ctrl K</kbd>, que también mira tokens e iconos.</p>
+  </sc-if>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"current":{"editor":"enum","options":["home","install","principles","content","color","typography","layout","states","iconography","backgrounds","brand","icons","button","stream","stream-scene"],"default":"button"},"$preview":{"width":288,"height":1480}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { q: '', toggled: {} }; }
+  renderVals() {
+    var self = this, cur = this.props.current || 'button', q = (this.state.q || '').trim().toLowerCase();
+    function slug(n) { return n.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase(); }
+    function comp(names) { return names.split(' ').map(function (n) { return { id: slug(n), label: n, href: '/components/' + slug(n) + '/' }; }); }
+    var K = { button: 'botón acción', input: 'campo texto formulario', select: 'desplegable opciones', checkbox: 'casilla', toggle: 'interruptor', table: 'tabla datos', alert: 'aviso error', modal: 'diálogo ventana', tooltip: 'ayuda', tabs: 'pestañas', badge: 'etiqueta insignia', 'empty-state': 'vacío', 'date-picker': 'fecha calendario', 'command-menu': 'búsqueda comandos', 'stream-scene': 'escena empezando pausa offline', 'stream-alert': 'alerta follow sub raid', 'chat-box': 'chat mensajes' };
+    var data = [
+      { id: 'start', label: 'Empezar', items: [{ id: 'home', label: 'Qué es Regula', href: '/' }, { id: 'install', label: 'Instalación', href: '/start/install/' }] },
+      { id: 'foundations', label: 'Fundamentos', items: [
+        { id: 'principles', label: 'Principios', href: '/foundations/principles/' },
+        { id: 'content', label: 'Contenido y tono', href: '/foundations/content/' },
+        { id: 'color', label: 'Color', href: '/foundations/color/' },
+        { id: 'typography', label: 'Tipografía', href: '/foundations/typography/' },
+        { id: 'layout', label: 'Espaciado, radios y layout', href: '/foundations/layout/' },
+        { id: 'states', label: 'Sombras y estados', href: '/foundations/states/' },
+        { id: 'iconography', label: 'Iconografía', href: '/foundations/iconography/' },
+        { id: 'backgrounds', label: 'Fondos y adornos', href: '/foundations/backgrounds/' },
+        { id: 'brand', label: 'Marca e iconos de app', href: '/foundations/brand/' }] },
+      { id: 'icons', label: 'Iconos', items: [{ id: 'icons', label: 'Galería de iconos', href: '/icons/' }] },
+      { id: 'components', label: 'Componentes', groups: [
+        { id: 'actions', label: 'Acciones', items: comp('Button ButtonGroup CloseButton') },
+        { id: 'forms', label: 'Formularios', items: comp('Input Textarea Select Checkbox Radio RadioGroup Toggle Slider DatePicker FileUpload ColorPicker TextEditor') },
+        { id: 'nav', label: 'Navegación', items: comp('Tabs Breadcrumbs Pagination SidebarNav Dropdown CommandMenu TreeView FilterBar') },
+        { id: 'layers', label: 'Capas', items: comp('Modal Slideout Tooltip') },
+        { id: 'feedback', label: 'Avisos y carga', items: comp('Alert Notification Banner EmptyState ProgressBar Spinner Skeleton') },
+        { id: 'labels', label: 'Etiquetas e identidad', items: comp('Badge Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon') },
+        { id: 'data', label: 'Datos', items: comp('Table MetricCard ActivityFeed CalendarView') },
+        { id: 'charts', label: 'Gráficas', items: comp('LineChart BarChart PieChart ChartLegend') },
+        { id: 'structure', label: 'Estructura de página', items: comp('PageHeader CardHeader SectionHeader SectionFooter ContentDivider InlineCTA') },
+        { id: 'media', label: 'Contenido y medios', items: comp('Message MessageInput CodeSnippet VideoPlayer') },
+        { id: 'mockups', label: 'Fondos y maquetas', items: comp('BackgroundPattern CreditCard BrowserFrame AppIcon') }] },
+      { id: 'stream', label: 'Stream', items: [{ id: 'stream', label: 'Guía de Stream', href: '/foundations/stream/' }], groups: [
+        { id: 's-alerts', label: 'Alertas', items: comp('StreamAlert') },
+        { id: 's-scenes', label: 'Escenas', items: comp('StreamScene StreamCountdown') },
+        { id: 's-overlay', label: 'Overlay', items: comp('CamFrame ChatBox ChatBadge StreamGoal StreamEvents NowPlaying StreamStatus') },
+        { id: 's-channel', label: 'Canal', items: comp('ChannelPanel ChannelBanner') }] }
+    ];
+    function hit(it) { return !q || (it.label + ' ' + (K[it.id] || '')).toLowerCase().indexOf(q) >= 0; }
+    function mark(it) { return { href: it.href, label: it.label, cur: it.id === cur ? 'page' : undefined }; }
+    var total = 0;
+    var sections = data.map(function (s) {
+      var items = (s.items || []).filter(hit).map(mark);
+      var groups = (s.groups || []).map(function (g) {
+        var gi = g.items.filter(hit);
+        var hasCur = g.items.some(function (it) { return it.id === cur; });
+        var t = self.state.toggled[g.id];
+        var expanded = q ? gi.length > 0 : (t === undefined ? hasCur : t);
+        return { label: g.label, count: g.items.length, items: gi.map(mark), expanded: expanded, expandedAttr: expanded ? 'true' : 'false',
+          chev: expanded ? 'chevron-down' : 'chevron-right', show: gi.length > 0,
+          toggle: function () { var o = Object.assign({}, self.state.toggled); o[g.id] = !expanded; self.setState({ toggled: o }); } };
+      }).filter(function (g) { return g.show; });
+      var count = (s.items || []).length + (s.groups || []).reduce(function (a, g) { return a + g.items.length; }, 0);
+      total += items.length + groups.length;
+      return { label: s.label, count: s.id === 'components' || s.id === 'stream' ? count : '', items: items, groups: groups, show: items.length + groups.length > 0 };
+    }).filter(function (s) { return s.show; });
+    return { sections: sections, q: this.state.q, empty: total === 0, yes: true, no: false, n: { s16: 16 },
+      onQ: function (e) { self.setState({ q: e.target.value }); } };
+  }
+}
+</script>
+</body>
+</html>

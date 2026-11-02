@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Menú móvil de Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" role="dialog" aria-modal="true" aria-label="Menú" style="display: flex; flex-direction: column; width: 100%; height: 844px; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <div style="display: flex; align-items: center; gap: 8px; height: 56px; flex: none; padding: 0 6px 0 16px; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+    <x-import component-from-global-scope="Jotis.AppIcon" letters="Re" hue="fuchsia" label="Regula" size="{{n.s24}}" aria-hidden="true" style="display: flex;"></x-import>
+    <span style="font-family: var(--font-display); font-weight: 700; font-size: 18px; line-height: 28px; letter-spacing: -0.02em;">Regula</span>
+    <div style="flex-grow: 1;"></div>
+    <x-import component-from-global-scope="Jotis.Button" hierarchy="tertiary" size="lg" icon-only="x-close" label="Cerrar menú"></x-import>
+  </div>
+  <div style="flex: none; padding: 16px 16px 4px;">
+    <button type="button" class="rg-search" style="width: 100%; height: 44px;">
+      <x-import component-from-global-scope="Jotis.Icon" name="search-lg" size="{{n.s20}}" style="color: var(--fg-quaternary);"></x-import>
+      <span style="flex-grow: 1;">Buscar en Regula</span>
+    </button>
+  </div>
+  <div style="flex-grow: 1; min-height: 0; overflow: auto;">
+    <dc-import name="DocNav" current="button" hint-size="100%,1400px"></dc-import>
+  </div>
+  <div style="flex: none; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg-secondary); box-shadow: inset 0 1px 0 var(--border-secondary);">
+    <span id="rg-theme-label" style="flex-grow: 1; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--text-secondary);">Tema</span>
+    <x-import component-from-global-scope="Jotis.ButtonGroup" aria-label="Tema" default-value="system" items="{{themes}}"></x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { n: { s20: 20, s24: 24 }, themes: [{ value: 'system', label: 'Sistema' }, { value: 'light', label: 'Claro' }, { value: 'dark', label: 'Oscuro' }] };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,12 +1,15 @@
 // Extrae del transcript de una sesión de Claude Code (y de sus tool-results) las lecturas completas de
 // ficheros del artefacto "Jotis.me" hechas con read_file, las verifica con el sha256 del último list_files
-// y las escribe en reference/. Uso: node extract-files.mjs <transcript.jsonl> <tool-results> <reference> [--missing]
+// y las escribe en reference/. Uso: node extract-files.mjs <transcript.jsonl> <tool-results> <reference> [--missing] [--slug=<artefacto>]
 import { createHash } from "node:crypto";
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
 const [transcript, resultsDir, outDir] = process.argv.slice(2);
-const SLUG = "bb424412-8082-461e-a84f-b3704de675c1";
+// Por defecto, la guía. Para otro artefacto (p. ej. el diseño de la web), `--slug=<slug>`.
+const SLUG =
+	process.argv.find((a) => a.startsWith("--slug="))?.slice("--slug=".length) ??
+	"bb424412-8082-461e-a84f-b3704de675c1";
 const blobs = [];
 
 function collect(content) {
@@ -27,7 +30,8 @@ for (const line of readFileSync(transcript, "utf8").split("\n")) {
 	if (!Array.isArray(parts)) continue;
 	for (const p of parts) if (p.type === "tool_result") collect(p.content);
 }
-for (const f of readdirSync(resultsDir)) {
+// Sin `tool-results` (lecturas pequeñas, todo va en el transcript) se sigue solo con el transcript.
+for (const f of existsSync(resultsDir) ? readdirSync(resultsDir) : []) {
 	try {
 		collect(JSON.parse(readFileSync(join(resultsDir, f), "utf8")));
 	} catch {}

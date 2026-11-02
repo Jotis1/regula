@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Contenido y tono · Fundamentos · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="min-height: 100%; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="Header" active="foundations" hint-size="100%,64px"></dc-import>
+  <div style="max-width: 1440px; margin: 0 auto; display: flex; align-items: flex-start;">
+    <aside style="flex: none; width: 288px; box-shadow: inset -1px 0 0 var(--border-secondary);">
+      <dc-import name="DocNav" current="content" hint-size="100%,900px"></dc-import>
+    </aside>
+
+    <main id="contenido" style="flex: 1 1 0; min-width: 0; display: flex; gap: 48px; padding: 32px 40px 80px 56px;">
+      <article style="flex: 1 1 0; min-width: 0; max-width: 720px; display: flex; flex-direction: column; gap: 48px;">
+        <header style="display: flex; flex-direction: column; gap: 16px;">
+          <x-import component-from-global-scope="Jotis.Breadcrumbs" items="{{crumbs}}"></x-import>
+          <h1 style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 36px; line-height: 44px; letter-spacing: -0.02em;">Contenido y tono</h1>
+          <p style="margin: 0; font-size: 18px; line-height: 28px; color: var(--text-tertiary);">Cómo habla la suite: cercana, con humor seco y sin hacerte perder el tiempo. Ni una empresa sin sentimientos ni alguien que vive en una terminal.</p>
+        </header>
+
+        <section aria-labelledby="voz" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="voz" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">La voz</h2>
+          <p style="margin: 0; font-size: 16px; line-height: 26px; color: var(--text-secondary);">Hablamos como alguien que sabe lo que hace y no necesita demostrarlo. Frases cortas, tuteo y castellano de España. Sin jerga técnica ni referencias de nicho: quien usa Pecunia quiere apuntar un gasto, no descifrar un mensaje.</p>
+          <div style="display: flex; gap: 16px; padding: 20px; border-radius: var(--radius-xl); background: var(--bg-secondary); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+            <x-import component-from-global-scope="Jotis.FeaturedIcon" icon="stars-02" color="gray" variant="modern" size="md"></x-import>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Una broma por pantalla, como mucho</p>
+              <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Y si no mejora el texto, se quita. La ironía es un condimento, no el plato.</p>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="humor" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="humor" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Dónde cabe el humor y dónde no</h2>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--text-primary);">
+                <x-import component-from-global-scope="Jotis.Icon" name="check-circle" size="{{n.s20}}" style="color: var(--fg-success-primary);"></x-import>Cabe
+              </p>
+              <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 20px; color: var(--text-secondary);">
+                <li>Estados vacíos</li><li>Confirmaciones</li><li>Cargas y esperas</li><li>Errores sin consecuencias</li>
+              </ul>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--text-primary);">
+                <x-import component-from-global-scope="Jotis.Icon" name="x-close" size="{{n.s20}}" style="color: var(--fg-error-primary);"></x-import>No cabe: claro y serio
+              </p>
+              <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 20px; color: var(--text-secondary);">
+                <li>Pagos y dinero</li><li>Borrados</li><li>Fallos graves</li><li>Cualquier cosa que no se pueda deshacer</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="cambios" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="cambios" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">En lugar de esto, esto otro</h2>
+          <div style="border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary); overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px; line-height: 20px;">
+              <caption class="rg-sr">Ejemplos de texto: lo que se evita y lo que se escribe</caption>
+              <thead>
+                <tr style="background: var(--bg-secondary);">
+                  <th scope="col" style="width: 22%; padding: 12px 20px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Momento</th>
+                  <th scope="col" style="padding: 12px 20px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">En lugar de</th>
+                  <th scope="col" style="padding: 12px 20px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Escribe</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{pairs}}" as="p" hint-placeholder-count="6">
+                  <tr style="box-shadow: inset 0 1px 0 var(--border-secondary);">
+                    <th scope="row" style="padding: 16px 20px; text-align: left; vertical-align: top; font-weight: 500; color: var(--text-primary);">{{p.when}}</th>
+                    <td style="padding: 16px 20px; vertical-align: top; color: var(--text-tertiary);">
+                      <span style="display: flex; gap: 8px;"><x-import component-from-global-scope="Jotis.Icon" name="x-close" size="{{n.s16}}" title="Evitar" style="flex: none; margin-top: 2px; color: var(--fg-error-secondary);"></x-import><span>{{p.bad}}</span></span>
+                    </td>
+                    <td style="padding: 16px 20px; vertical-align: top; color: var(--text-primary);">
+                      <span style="display: flex; gap: 8px;"><x-import component-from-global-scope="Jotis.Icon" name="check" size="{{n.s16}}" title="Mejor" style="flex: none; margin-top: 2px; color: var(--fg-success-primary);"></x-import><span>{{p.good}}</span></span>
+                    </td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <figure style="margin: 8px 0 0; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 24px; border-radius: var(--radius-xl); background: var(--bg-secondary); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <div style="padding: 20px; border-radius: var(--radius-xl); background: var(--bg-primary); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+                <x-import component-from-global-scope="Jotis.EmptyState" icon="inbox-01" title="Aún no hay gastos" description="Qué calma. Cuando apuntes el primero, aparecerá aquí."></x-import>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center;">
+                <x-import component-from-global-scope="Jotis.Alert" color="success" title="Guardado" description="Ya no se te va a olvidar."></x-import>
+                <x-import component-from-global-scope="Jotis.Alert" color="error" title="No se ha podido cobrar" description="La tarjeta ha caducado. Añade otra para seguir."></x-import>
+              </div>
+            </div>
+            <figcaption style="font-size: 12px; line-height: 18px; color: var(--text-quaternary);">Humor en el estado vacío y en la confirmación. En el cobro fallido, ni una broma.</figcaption>
+          </figure>
+        </section>
+
+        <section aria-labelledby="reglas" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="reglas" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Reglas de escritura</h2>
+          <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+            <sc-for list="{{rules}}" as="r" hint-placeholder-count="6">
+              <li style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+                <span style="font-size: 14px; line-height: 22px; font-weight: 600; color: var(--text-primary);">{{r.k}}</span>
+                <span style="font-size: 14px; line-height: 22px; color: var(--text-secondary);">{{r.v}}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </section>
+
+        <section aria-labelledby="cifras" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="cifras" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Cifras y fechas</h2>
+          <p style="margin: 0; font-size: 16px; line-height: 26px; color: var(--text-secondary);">Formato español siempre. En las tablas, las cifras van alineadas a la derecha y con números tabulares para que se puedan comparar de un vistazo.</p>
+          <dl style="margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;">
+            <sc-for list="{{formats}}" as="f" hint-placeholder-count="4">
+              <div style="display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: var(--radius-lg); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+                <dt style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">{{f.k}}</dt>
+                <dd style="margin: 0; font-family: var(--font-mono); font-size: 16px; line-height: 24px; color: var(--text-primary);">{{f.v}}</dd>
+              </div>
+            </sc-for>
+          </dl>
+        </section>
+
+        <section aria-labelledby="donde" style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 id="donde" style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Se ve en</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <a class="rg-link" href="/components/empty-state/" style="font-size: 14px; line-height: 20px;">EmptyState</a><span aria-hidden="true" style="color: var(--text-quaternary);">·</span>
+            <a class="rg-link" href="/components/alert/" style="font-size: 14px; line-height: 20px;">Alert</a><span aria-hidden="true" style="color: var(--text-quaternary);">·</span>
+            <a class="rg-link" href="/components/input/" style="font-size: 14px; line-height: 20px;">Input</a><span aria-hidden="true" style="color: var(--text-quaternary);">·</span>
+            <a class="rg-link" href="/components/button/" style="font-size: 14px; line-height: 20px;">Button</a><span aria-hidden="true" style="color: var(--text-quaternary);">·</span>
+            <a class="rg-link" href="/components/stream-scene/" style="font-size: 14px; line-height: 20px;">StreamScene</a>
+          </div>
+        </section>
+
+        <nav aria-label="Anterior y siguiente" style="display: flex; flex-wrap: wrap; gap: 16px; padding-top: 8px;">
+          <a class="rg-pager" href="/foundations/principles/"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Anterior</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Principios</span></a>
+          <a class="rg-pager" href="/foundations/color/" style="text-align: right;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Siguiente</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Color</span></a>
+        </nav>
+      </article>
+
+      <nav aria-label="En esta página" style="flex: none; width: 200px; display: flex; flex-direction: column; gap: 8px; padding-top: 4px;">
+        <p style="margin: 0 0 4px; font-size: 12px; line-height: 18px; font-weight: 600; color: var(--text-quaternary);">En esta página</p>
+        <a class="rg-toc" href="#voz" aria-current="true">La voz</a>
+        <a class="rg-toc" href="#humor">Dónde cabe el humor</a>
+        <a class="rg-toc" href="#cambios">En lugar de esto</a>
+        <a class="rg-toc" href="#reglas">Reglas de escritura</a>
+        <a class="rg-toc" href="#cifras">Cifras y fechas</a>
+        <div style="margin-top: 16px;">
+          <x-import component-from-global-scope="Jotis.Button" hierarchy="link-gray" size="sm" icon-leading="edit-02" href="#">Proponer un cambio</x-import>
+        </div>
+      </nav>
+    </main>
+  </div>
+  <dc-import name="Footer" hint-size="100%,320px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      n: { s16: 16, s20: 20 },
+      crumbs: [{ label: 'Fundamentos', href: '/foundations/principles/' }, { label: 'Contenido y tono' }],
+      pairs: [
+        { when: 'Estado vacío', bad: 'No se encontraron resultados.', good: 'Aún no hay gastos. Qué calma.' },
+        { when: 'Error leve', bad: 'Se ha producido un error de validación.', good: 'Ese correo no parece un correo. Revísalo.' },
+        { when: 'Confirmación', bad: 'Los cambios se han guardado correctamente.', good: 'Guardado. Ya no se te va a olvidar.' },
+        { when: 'Error de campo', bad: 'Error 422', good: 'Introduce un correo válido.' },
+        { when: 'Botón', bad: 'Aceptar', good: 'Guardar gasto' },
+        { when: 'Título', bad: 'Nuevo Movimiento', good: 'Nuevo movimiento' }
+      ],
+      rules: [
+        { k: 'Idioma', v: 'Castellano de España, con tuteo. Frases cortas.' },
+        { k: 'Botones', v: 'Un verbo que diga qué pasa: "Guardar", "Eliminar gasto", "Exportar". Nada de "Aceptar" si hay un verbo mejor.' },
+        { k: 'Mayúsculas', v: 'Solo al principio de la frase y en nombres propios.' },
+        { k: 'Errores', v: 'Qué ha pasado y cómo se arregla. Nunca un código sin explicación.' },
+        { k: 'Emojis', v: 'Ninguno en la interfaz. Tampoco como iconos.' },
+        { k: 'Exclamaciones', v: 'Solo si algo es realmente bueno. El entusiasmo se nota en lo que haces, no en los signos.' }
+      ],
+      formats: [
+        { k: 'Importe', v: '1.284,50 €' },
+        { k: 'Fecha', v: '29 oct 2026' },
+        { k: 'Miles', v: '12.480' },
+        { k: 'Hora', v: '20:00' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

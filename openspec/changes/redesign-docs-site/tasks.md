@@ -2,9 +2,9 @@
 
 ## 1. Referencia y estructura
 
-- [ ] 1.1 Copiar a `reference/docs-design/` los `.dc.html`, `lib/regula.css` y `canvas.json` del artefacto "Regula · web de documentación" (versión `1793652886-4c32`), con un `VERSION`; verificar que cada fichero coincide con el sha256 de `list_files` y que están las 33 pantallas del lienzo
-- [ ] 1.2 Crear `src/lib/catalog.ts` con las secciones de la cabecera, los grupos de componentes (incluidos los cuatro de Stream) y el orden de fundamentos (design §2); verificar con un test que los 74 componentes de la colección están cada uno en un solo grupo y que ningún grupo nombra un componente inexistente
-- [ ] 1.3 Mover las rutas a `/start/install/`, `/foundations/layout/` y `/foundations/states/` y actualizar enlaces, índice de búsqueda y `e2e/foundations.spec.ts`; verificar con el build que las tres responden y que las URLs antiguas ya no existen
+- [x] 1.1 Copiar a `reference/docs-design/` los `.dc.html`, `lib/regula.css` y `canvas.json` del artefacto "Regula · web de documentación" (versión `1793652886-4c32`), con un `VERSION`; verificar que cada fichero coincide con el sha256 de `list_files` y que están las 33 pantallas del lienzo
+- [x] 1.2 Crear `src/lib/catalog.ts` con las secciones de la cabecera, los grupos de componentes (incluidos los cuatro de Stream) y el orden de fundamentos (design §2); verificar con un test que los 74 componentes de la colección están cada uno en un solo grupo y que ningún grupo nombra un componente inexistente
+- [x] 1.3 Mover las rutas a `/start/install/`, `/foundations/layout/` y `/foundations/states/` y actualizar enlaces, índice de búsqueda y `e2e/foundations.spec.ts`; verificar con el build que las tres responden y que las URLs antiguas ya no existen
 
 ## 2. Regula en la familia de iconos de app
 

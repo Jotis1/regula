@@ -17,8 +17,8 @@ test("pulsar un token copia su utilidad y lo confirma", async ({ page, context }
 
 for (const [path, sample] of [
 	["/foundations/typography/", "Copiar display-sm-semibold"],
-	["/foundations/spacing/", "Copiar rounded-lg"],
-	["/foundations/shadows/", "Copiar shadow-xs-skeuomorphic"],
+	["/foundations/layout/", "Copiar rounded-lg"],
+	["/foundations/states/", "Copiar shadow-xs-skeuomorphic"],
 ] as const) {
 	test(`${path} se genera desde los tokens`, async ({ page }) => {
 		await page.goto(path);
@@ -43,7 +43,7 @@ test("cada muestra de tipografía se pinta con el tamaño, interlineado y peso d
 });
 
 test("cada muestra de sombra tiene la sombra de su token", async ({ page }) => {
-	await page.goto("/foundations/shadows/");
+	await page.goto("/foundations/states/");
 	const none = await page
 		.locator(".shadow-sample")
 		.evaluateAll((spans) =>
@@ -68,5 +68,5 @@ test("las URLs van en inglés", async ({ page }) => {
 	const hrefs = await page
 		.locator("aside nav a")
 		.evaluateAll((as) => as.map((a) => a.getAttribute("href")));
-	for (const href of hrefs) expect(href).toMatch(/^\/(foundations|usage|icons|components)\//);
+	for (const href of hrefs) expect(href).toMatch(/^\/(start|foundations|icons|components)\//);
 });

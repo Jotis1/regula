@@ -1,0 +1,77 @@
+/* Regula: estados de la web de documentación (hover, foco, actual).
+   La maquetación va en línea en cada artboard; aquí solo lo que el estilo en línea no puede: pseudo-clases. */
+.rg-root { font-family: var(--font-body); color: var(--text-primary); background: var(--bg-primary); -webkit-font-smoothing: antialiased; }
+.rg-root *, .rg-root *::before, .rg-root *::after { box-sizing: border-box; }
+.rg-root :focus-visible { outline: none; box-shadow: var(--focus-ring-shadow); border-radius: var(--radius-md); }
+
+/* Saltar al contenido */
+.rg-skip { position: absolute; left: 16px; top: -48px; z-index: 60; padding: 8px 12px; border-radius: var(--radius-lg);
+  background: var(--bg-primary_alt); color: var(--text-primary); font: 600 14px/20px var(--font-body); text-decoration: none; box-shadow: var(--shadow-lg); }
+.rg-skip:focus-visible { top: 12px; }
+
+/* Enlaces en el texto: subrayados siempre. En oscuro, text-brand-secondary es gris: el subrayado es lo que los distingue. */
+.rg-link { color: var(--text-brand-secondary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.rg-link:hover { color: var(--text-brand-secondary_hover); text-decoration-thickness: 2px; }
+
+/* Secciones de la cabecera */
+.rg-top { display: inline-flex; align-items: center; height: 64px; padding: 0 2px; color: var(--text-tertiary); font: 600 14px/20px var(--font-body);
+  text-decoration: none; box-shadow: inset 0 -2px 0 transparent; }
+.rg-top:hover { color: var(--text-primary); }
+.rg-top[aria-current="page"], .rg-top[aria-current="true"] { color: var(--text-primary); box-shadow: inset 0 -2px 0 var(--fg-brand-primary_alt); }
+
+/* Navegación lateral */
+.rg-nav { display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 6px 10px; border-radius: var(--radius-md);
+  color: var(--text-tertiary); font: 500 14px/20px var(--font-body); text-decoration: none; }
+.rg-nav:hover { background: var(--bg-primary_hover); color: var(--text-secondary_hover); }
+.rg-nav[aria-current="page"] { background: var(--bg-brand-primary_alt); color: var(--text-brand-secondary); font-weight: 600; }
+.rg-nav-group { display: flex; width: 100%; align-items: center; gap: 8px; min-height: 32px; padding: 6px 10px; border: 0; background: none; cursor: pointer;
+  border-radius: var(--radius-md); color: var(--text-primary); font: 600 12px/18px var(--font-body); text-align: left; }
+.rg-nav-group:hover { background: var(--bg-primary_hover); }
+
+/* Tarjetas enlazadas */
+.rg-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--bg-primary);
+  border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary); transition: box-shadow .15s linear; }
+.rg-card:hover { box-shadow: inset 0 0 0 1px var(--border-primary), var(--shadow-md); }
+
+/* Disparador de búsqueda con aspecto de campo */
+.rg-search { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 8px 0 12px; border: 0; cursor: pointer;
+  border-radius: var(--radius-lg); background: var(--bg-primary); color: var(--text-placeholder); font: 400 14px/20px var(--font-body);
+  box-shadow: var(--shadow-xs), inset 0 0 0 1px var(--border-primary); text-align: left; }
+.rg-search:hover { background: var(--bg-primary_hover); }
+.rg-search > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rg-search .rg-kbd { flex: none; white-space: nowrap; }
+
+/* CodeSnippet: el <code> interior heredaba el monospace del navegador en lugar de Geist Mono */
+.jm-code-pre code { font: inherit; }
+.rg-kbd { display: inline-flex; align-items: center; height: 22px; padding: 0 6px; border-radius: var(--radius-sm);
+  font: 500 12px/18px var(--font-mono); color: var(--text-quaternary); background: var(--bg-secondary); box-shadow: inset 0 0 0 1px var(--border-secondary); }
+
+/* Fila copiable de la tabla de tokens */
+.rg-copy { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px; border: 0; cursor: pointer; border-radius: var(--radius-md);
+  background: var(--bg-secondary); color: var(--text-secondary); font: 500 12px/18px var(--font-mono); box-shadow: inset 0 0 0 1px var(--border-secondary); white-space: nowrap; }
+.rg-copy:hover { background: var(--bg-secondary_hover); color: var(--text-primary); }
+.rg-tokrow:hover { background: var(--bg-primary_hover); }
+
+/* Baldosa de icono */
+.rg-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 96px; padding: 12px 6px; border: 0; cursor: pointer;
+  border-radius: var(--radius-lg); background: var(--bg-primary); color: var(--fg-secondary); box-shadow: inset 0 0 0 1px var(--border-secondary); }
+.rg-tile:hover { background: var(--bg-primary_hover); color: var(--fg-primary); }
+.rg-tile[aria-pressed="true"] { background: var(--bg-brand-primary_alt); color: var(--fg-primary); box-shadow: inset 0 0 0 2px var(--border-brand); }
+
+/* Índice "en esta página" */
+.rg-toc { display: block; padding: 4px 0 4px 12px; color: var(--text-tertiary); font: 400 13px/20px var(--font-body); text-decoration: none; box-shadow: inset 1px 0 0 var(--border-secondary); }
+.rg-toc:hover { color: var(--text-primary); }
+.rg-toc[aria-current="true"] { color: var(--text-primary); font-weight: 500; box-shadow: inset 2px 0 0 var(--fg-brand-primary); }
+
+/* Anterior / siguiente */
+.rg-pager { flex: 1 1 240px; display: flex; flex-direction: column; gap: 2px; padding: 16px; border-radius: var(--radius-xl); text-decoration: none;
+  box-shadow: inset 0 0 0 1px var(--border-secondary); color: var(--text-primary); }
+.rg-pager:hover { background: var(--bg-primary_hover); }
+
+.rg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .rg-card { transition: none; } }
+
+/* Piezas que cambian con el tema (el conmutador muestra el tema al que vas) */
+.rg-when-dark { display: none !important; }
+[data-theme="dark"] .rg-when-dark { display: inline-flex !important; }
+[data-theme="dark"] .rg-when-light { display: none !important; }

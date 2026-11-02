@@ -1,0 +1,383 @@
+{
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-02T20:15:00Z"
+ },
+ "title": "Regula · web de documentación",
+ "launch": {
+  "view": "canvas"
+ },
+ "pages": [],
+ "boards": {
+  "Footer.dc.html": {
+   "x": 0,
+   "y": 184,
+   "w": 1440,
+   "h": 320,
+   "title": "Pie"
+  },
+  "DocNav.dc.html": {
+   "x": 1520,
+   "y": 0,
+   "w": 288,
+   "h": 1480,
+   "title": "Navegación lateral",
+   "is_interactive": true
+  },
+  "HeaderM.dc.html": {
+   "x": 1888,
+   "y": 0,
+   "w": 390,
+   "h": 56,
+   "title": "Cabecera · móvil"
+  },
+  "MobileMenu.dc.html": {
+   "x": 2358,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Menú · móvil",
+   "is_interactive": true
+  },
+  "HomeDark.dc.html": {
+   "x": 1520,
+   "y": 1900,
+   "w": 1440,
+   "h": 2500,
+   "title": "Portada · escritorio · oscuro",
+   "expand": "fill"
+  },
+  "HomeM.dc.html": {
+   "x": 3040,
+   "y": 1900,
+   "w": 390,
+   "h": 3100,
+   "title": "Portada · móvil · claro"
+  },
+  "HomeMDark.dc.html": {
+   "x": 3510,
+   "y": 1900,
+   "w": 390,
+   "h": 3100,
+   "title": "Portada · móvil · oscuro"
+  },
+  "Tone.dc.html": {
+   "x": 0,
+   "y": 5420,
+   "w": 1440,
+   "h": 2500,
+   "title": "Fundamentos con texto · Contenido y tono · escritorio · claro",
+   "expand": "fill"
+  },
+  "ToneDark.dc.html": {
+   "x": 1520,
+   "y": 5420,
+   "w": 1440,
+   "h": 2500,
+   "title": "Fundamentos con texto · Contenido y tono · escritorio · oscuro",
+   "expand": "fill"
+  },
+  "ToneM.dc.html": {
+   "x": 3040,
+   "y": 5420,
+   "w": 390,
+   "h": 3300,
+   "title": "Fundamentos con texto · Contenido y tono · móvil · claro"
+  },
+  "ToneMDark.dc.html": {
+   "x": 3510,
+   "y": 5420,
+   "w": 390,
+   "h": 3300,
+   "title": "Fundamentos con texto · Contenido y tono · móvil · oscuro"
+  },
+  "Color.dc.html": {
+   "x": 0,
+   "y": 9140,
+   "w": 1440,
+   "h": 2700,
+   "title": "Fundamentos con tokens · Color · escritorio · claro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "ColorDark.dc.html": {
+   "x": 1520,
+   "y": 9140,
+   "w": 1440,
+   "h": 2700,
+   "title": "Fundamentos con tokens · Color · escritorio · oscuro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "ColorM.dc.html": {
+   "x": 3040,
+   "y": 9140,
+   "w": 390,
+   "h": 3300,
+   "title": "Fundamentos con tokens · Color · móvil · claro",
+   "is_interactive": true
+  },
+  "ColorMDark.dc.html": {
+   "x": 3510,
+   "y": 9140,
+   "w": 390,
+   "h": 3300,
+   "title": "Fundamentos con tokens · Color · móvil · oscuro",
+   "is_interactive": true
+  },
+  "Button.dc.html": {
+   "x": 0,
+   "y": 12860,
+   "w": 1440,
+   "h": 3300,
+   "title": "Componente de aplicación · Button · escritorio · claro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "ButtonDark.dc.html": {
+   "x": 1520,
+   "y": 12860,
+   "w": 1440,
+   "h": 3300,
+   "title": "Componente de aplicación · Button · escritorio · oscuro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "ButtonM.dc.html": {
+   "x": 3040,
+   "y": 12860,
+   "w": 390,
+   "h": 4000,
+   "title": "Componente de aplicación · Button · móvil · claro",
+   "is_interactive": true
+  },
+  "ButtonMDark.dc.html": {
+   "x": 3510,
+   "y": 12860,
+   "w": 390,
+   "h": 4000,
+   "title": "Componente de aplicación · Button · móvil · oscuro",
+   "is_interactive": true
+  },
+  "Scene.dc.html": {
+   "x": 0,
+   "y": 17280,
+   "w": 1440,
+   "h": 3100,
+   "title": "Componente de Stream · StreamScene · escritorio · claro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "SceneDark.dc.html": {
+   "x": 1520,
+   "y": 17280,
+   "w": 1440,
+   "h": 3100,
+   "title": "Componente de Stream · StreamScene · escritorio · oscuro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "SceneM.dc.html": {
+   "x": 3040,
+   "y": 17280,
+   "w": 390,
+   "h": 3700,
+   "title": "Componente de Stream · StreamScene · móvil · claro",
+   "is_interactive": true
+  },
+  "SceneMDark.dc.html": {
+   "x": 3510,
+   "y": 17280,
+   "w": 390,
+   "h": 3700,
+   "title": "Componente de Stream · StreamScene · móvil · oscuro",
+   "is_interactive": true
+  },
+  "Icons.dc.html": {
+   "x": 0,
+   "y": 21400,
+   "w": 1440,
+   "h": 1700,
+   "title": "Galería de iconos · escritorio · claro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "IconsDark.dc.html": {
+   "x": 1520,
+   "y": 21400,
+   "w": 1440,
+   "h": 1700,
+   "title": "Galería de iconos · escritorio · oscuro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "IconsM.dc.html": {
+   "x": 3040,
+   "y": 21400,
+   "w": 390,
+   "h": 844,
+   "title": "Galería de iconos · móvil · claro",
+   "is_interactive": true
+  },
+  "IconsMDark.dc.html": {
+   "x": 3510,
+   "y": 21400,
+   "w": 390,
+   "h": 844,
+   "title": "Galería de iconos · móvil · oscuro",
+   "is_interactive": true
+  },
+  "Search.dc.html": {
+   "x": 0,
+   "y": 24120,
+   "w": 1440,
+   "h": 900,
+   "title": "Búsqueda abierta (Ctrl K) · escritorio · claro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "SearchDark.dc.html": {
+   "x": 1520,
+   "y": 24120,
+   "w": 1440,
+   "h": 900,
+   "title": "Búsqueda abierta (Ctrl K) · escritorio · oscuro",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "SearchM.dc.html": {
+   "x": 3040,
+   "y": 24120,
+   "w": 390,
+   "h": 844,
+   "title": "Búsqueda abierta (Ctrl K) · móvil · claro",
+   "is_interactive": true
+  },
+  "SearchMDark.dc.html": {
+   "x": 3510,
+   "y": 24120,
+   "w": 390,
+   "h": 844,
+   "title": "Búsqueda abierta (Ctrl K) · móvil · oscuro",
+   "is_interactive": true
+  },
+  "Header.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 64,
+   "title": "Cabecera · escritorio"
+  },
+  "Main.dc.html": {
+   "x": 0,
+   "y": 1900,
+   "w": 1440,
+   "h": 2500,
+   "title": "Portada · escritorio · claro",
+   "expand": "fill"
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "Header.dc.html",
+  "Footer.dc.html",
+  "DocNav.dc.html",
+  "HeaderM.dc.html",
+  "MobileMenu.dc.html",
+  "HomeDark.dc.html",
+  "HomeM.dc.html",
+  "HomeMDark.dc.html",
+  "Tone.dc.html",
+  "ToneDark.dc.html",
+  "ToneM.dc.html",
+  "ToneMDark.dc.html",
+  "Color.dc.html",
+  "ColorDark.dc.html",
+  "ColorM.dc.html",
+  "ColorMDark.dc.html",
+  "Button.dc.html",
+  "ButtonDark.dc.html",
+  "ButtonM.dc.html",
+  "ButtonMDark.dc.html",
+  "Scene.dc.html",
+  "SceneDark.dc.html",
+  "SceneM.dc.html",
+  "SceneMDark.dc.html",
+  "Icons.dc.html",
+  "IconsDark.dc.html",
+  "IconsM.dc.html",
+  "IconsMDark.dc.html",
+  "Search.dc.html",
+  "SearchDark.dc.html",
+  "SearchM.dc.html",
+  "SearchMDark.dc.html"
+ ],
+ "notes": {
+  "piezas": {
+   "x": 0,
+   "y": -300,
+   "text": "Piezas compartidas",
+   "kind": "title1",
+   "maxW": 2748
+  },
+  "tHome": {
+   "x": 0,
+   "y": 1600,
+   "text": "Portada",
+   "kind": "title1",
+   "maxW": 3900
+  },
+  "tTone": {
+   "x": 0,
+   "y": 5120,
+   "text": "Fundamentos con texto · Contenido y tono",
+   "kind": "title1",
+   "maxW": 3900
+  },
+  "tColor": {
+   "x": 0,
+   "y": 8840,
+   "text": "Fundamentos con tokens · Color",
+   "kind": "title1",
+   "maxW": 3900
+  },
+  "tButton": {
+   "x": 0,
+   "y": 12560,
+   "text": "Componente de aplicación · Button",
+   "kind": "title1",
+   "maxW": 3900
+  },
+  "tScene": {
+   "x": 0,
+   "y": 16980,
+   "text": "Componente de Stream · StreamScene",
+   "kind": "title1",
+   "maxW": 3900
+  },
+  "tIcons": {
+   "x": 0,
+   "y": 21100,
+   "text": "Galería de iconos",
+   "kind": "title1",
+   "maxW": 3900
+  },
+  "tSearch": {
+   "x": 0,
+   "y": 23820,
+   "text": "Búsqueda abierta (Ctrl K)",
+   "kind": "title1",
+   "maxW": 3900
+  }
+ },
+ "designSystems": [
+  {
+   "title": "Jotis.me",
+   "namespace": "jotis",
+   "artifact": "https://claude.ai/artifact/Q8AXUzu86MzVrB9Ec3oKSY",
+   "version": "1793561361-ae73",
+   "copiedAt": "2026-11-02T20:10:00Z"
+  }
+ ]
+}

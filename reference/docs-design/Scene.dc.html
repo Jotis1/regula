@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>StreamScene · Stream · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="min-height: 100%; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="Header" active="stream" hint-size="100%,64px"></dc-import>
+  <div style="max-width: 1440px; margin: 0 auto; display: flex; align-items: flex-start;">
+    <aside style="flex: none; width: 288px; box-shadow: inset -1px 0 0 var(--border-secondary);">
+      <dc-import name="DocNav" current="stream-scene" hint-size="100%,1100px"></dc-import>
+    </aside>
+
+    <main id="contenido" style="flex: 1 1 0; min-width: 0; display: flex; gap: 48px; padding: 32px 40px 80px 56px;">
+      <article style="flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 56px;">
+        <header style="display: flex; flex-direction: column; gap: 14px;">
+          <x-import component-from-global-scope="Jotis.Breadcrumbs" items="{{crumbs}}"></x-import>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px;">
+            <h1 style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 36px; line-height: 44px; letter-spacing: -0.02em;">StreamScene</h1>
+            <x-import component-from-global-scope="Jotis.Badge" color="gray" type="badge" size="sm">Stream · Escenas</x-import>
+            <x-import component-from-global-scope="Jotis.Badge" color="gray" type="badge" size="sm" icon="moon-01">Siempre en oscuro</x-import>
+          </div>
+          <p style="margin: 0; max-width: 680px; font-size: 18px; line-height: 28px; color: var(--text-tertiary);">Escena completa de 1920 × 1080 para los momentos sin juego: empezando, pausa, final del directo y offline.</p>
+          <dl style="margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 13px; line-height: 20px;">
+            <div style="display: flex; gap: 6px;"><dt style="color: var(--text-quaternary);">Importar</dt><dd style="margin: 0; font-family: var(--font-mono); color: var(--text-secondary);">import { StreamScene } from "@jotis/regula/stream"</dd></div>
+            <div style="display: flex; gap: 6px;"><dt style="color: var(--text-quaternary);">En Astro</dt><dd style="margin: 0; color: var(--text-secondary);">Isla, si lleva cuenta atrás</dd></div>
+          </dl>
+        </header>
+
+        <section aria-labelledby="ejemplo" style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 id="ejemplo" class="rg-sr">Ejemplo</h2>
+          <div data-theme="dark" style="border-radius: var(--radius-xl); background: var(--bg-primary); box-shadow: inset 0 0 0 1px var(--border-secondary); overflow: hidden; color: var(--text-primary);">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 12px 16px; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+              <x-import component-from-global-scope="Jotis.ButtonGroup" aria-label="Variante" value="{{v}}" on-change="{{setV}}" items="{{variants}}"></x-import>
+              <div style="flex-grow: 1;"></div>
+              <span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary); font-variant-numeric: tabular-nums;">Lienzo 1920 × 1080, escalado al ancho</span>
+              <x-import component-from-global-scope="Jotis.Button" hierarchy="tertiary" size="sm" icon-trailing="maximize-01" href="/components/stream-scene/full/">Ver a tamaño real</x-import>
+            </div>
+            <div style="padding: 20px;">
+              <div style="border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 0 0 1px var(--border-secondary);">
+                <x-import component-from-global-scope="Jotis.StreamScene" variant="{{v}}" seconds="{{secs}}" countdown-label="{{cdLabel}}" next="{{next}}" channel="Jotis" handle="twitch.tv/jotis"></x-import>
+              </div>
+            </div>
+          </div>
+          <p style="margin: 0; display: flex; gap: 8px; font-size: 13px; line-height: 20px; color: var(--text-tertiary);">
+            <x-import component-from-global-scope="Jotis.Icon" name="info-circle" size="{{n.s16}}" style="flex: none; margin-top: 2px; color: var(--fg-tertiary);"></x-import>
+            Los componentes de Stream llevan data-theme="dark" en su raíz: en esta web clara se ven igual que en OBS.
+          </p>
+        </section>
+
+        <section aria-labelledby="uso" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="uso" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Cuándo usarla</h2>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600;"><x-import component-from-global-scope="Jotis.Icon" name="check-circle" size="{{n.s20}}" style="color: var(--fg-success-primary);"></x-import>Úsala así</p>
+              <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 22px; color: var(--text-secondary);">
+                <li>Como fuente de navegador a pantalla completa en OBS, una escena por variante.</li>
+                <li>Sin <code style="font: 500 13px/20px var(--font-mono);">scale</code> se ajusta al ancho: a 1920 queda 1:1. Con <code style="font: 500 13px/20px var(--font-mono);">scale</code>, mide 1920 × scale.</li>
+                <li>Los textos por defecto ya llevan su broma seca. Una por escena.</li>
+              </ul>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600;"><x-import component-from-global-scope="Jotis.Icon" name="x-close" size="{{n.s20}}" style="color: var(--fg-error-primary);"></x-import>Evita</p>
+              <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 22px; color: var(--text-secondary);">
+                <li>Titulares de más de 24 caracteres: a 152 px, dos líneas ocupan media pantalla.</li>
+                <li>Más de un dato de horario en el pie.</li>
+                <li>Índigo fuera del punto de la insignia. Y "en directo" en rojo: el rojo es error.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="variantes" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="variantes" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Variantes</h2>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;">
+            <sc-for list="{{all}}" as="s" hint-placeholder-count="4">
+              <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px;">
+                <div style="border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 0 0 1px var(--border-secondary);">
+                  <x-import component-from-global-scope="Jotis.StreamScene" variant="{{s.id}}" seconds="{{s.secs}}" countdown-label="{{s.cd}}" next="{{s.next}}" paused="{{yes}}"></x-import>
+                </div>
+                <figcaption style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 20px;"><span style="font-weight: 500;">{{s.label}}</span><code style="font: 400 12px/20px var(--font-mono); color: var(--text-tertiary);">variant="{{s.id}}"</code></figcaption>
+              </figure>
+            </sc-for>
+          </div>
+        </section>
+
+        <section aria-labelledby="props" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="props" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Props</h2>
+          <div style="border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary); overflow-x: auto;">
+            <table style="width: 100%; min-width: 680px; border-collapse: collapse; font-size: 14px; line-height: 20px;">
+              <caption class="rg-sr">Props de StreamScene</caption>
+              <thead><tr style="background: var(--bg-secondary);">
+                <th scope="col" style="padding: 12px 20px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Prop</th>
+                <th scope="col" style="padding: 12px 16px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Tipo</th>
+                <th scope="col" style="padding: 12px 16px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Por defecto</th>
+                <th scope="col" style="padding: 12px 20px 12px 16px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Descripción</th>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{props}}" as="p" hint-placeholder-count="12">
+                  <tr style="box-shadow: inset 0 1px 0 var(--border-secondary);">
+                    <th scope="row" style="padding: 12px 20px; text-align: left; vertical-align: top; font: 500 13px/20px var(--font-mono); color: var(--text-primary); white-space: nowrap;">{{p.name}}</th>
+                    <td style="padding: 12px 16px; vertical-align: top; font: 400 12px/20px var(--font-mono); color: var(--text-brand-tertiary_alt); max-width: 240px;">{{p.type}}</td>
+                    <td style="padding: 12px 16px; vertical-align: top; font: 400 12px/20px var(--font-mono); color: var(--text-secondary); white-space: nowrap;">{{p.def}}</td>
+                    <td style="padding: 12px 20px 12px 16px; vertical-align: top; color: var(--text-tertiary);">{{p.desc}}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section aria-labelledby="codigo" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="codigo" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Código</h2>
+          <x-import component-from-global-scope="Jotis.CodeSnippet" tabs="{{code}}"></x-import>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;">
+            <div style="display: flex; gap: 12px; padding: 16px; border-radius: var(--radius-xl); background: var(--bg-secondary); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <x-import component-from-global-scope="Jotis.Icon" name="zap" size="{{n.s20}}" style="flex: none; color: var(--fg-tertiary);"></x-import>
+              <p style="margin: 0; font-size: 14px; line-height: 22px; color: var(--text-secondary);"><strong style="font-weight: 600; color: var(--text-primary);">Isla en Astro.</strong> La cuenta atrás cambia cada segundo: con <code style="font: 500 13px/20px var(--font-mono);">seconds</code> o <code style="font: 500 13px/20px var(--font-mono);">target</code>, móntala con <code style="font: 500 13px/20px var(--font-mono);">client:load</code>. Las variantes ending y offline no la necesitan.</p>
+            </div>
+            <div style="display: flex; gap: 12px; padding: 16px; border-radius: var(--radius-xl); background: var(--bg-secondary); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <x-import component-from-global-scope="Jotis.Icon" name="play" size="{{n.s20}}" style="flex: none; color: var(--fg-tertiary);"></x-import>
+              <p style="margin: 0; font-size: 14px; line-height: 22px; color: var(--text-secondary);"><strong style="font-weight: 600; color: var(--text-primary);">En OBS.</strong> Fuente de navegador de 1920 × 1080 apuntando a la página de la escena, con el fondo del body transparente.</p>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="a11y" style="display: flex; flex-direction: column; gap: 16px;">
+          <h2 id="a11y" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Detalles y movimiento</h2>
+          <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+            <sc-for list="{{details}}" as="d" hint-placeholder-count="5">
+              <li style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+                <span style="font-size: 14px; line-height: 22px; font-weight: 600;">{{d.k}}</span>
+                <span style="font-size: 14px; line-height: 22px; color: var(--text-secondary);">{{d.v}}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </section>
+
+        <nav aria-label="Anterior y siguiente" style="display: flex; flex-wrap: wrap; gap: 16px;">
+          <a class="rg-pager" href="/components/stream-alert/"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Anterior</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">StreamAlert</span></a>
+          <a class="rg-pager" href="/components/stream-countdown/" style="text-align: right;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Siguiente</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">StreamCountdown</span></a>
+        </nav>
+      </article>
+
+      <nav aria-label="En esta página" style="flex: none; width: 184px; display: flex; flex-direction: column; gap: 8px; padding-top: 4px;">
+        <p style="margin: 0 0 4px; font-size: 12px; line-height: 18px; font-weight: 600; color: var(--text-quaternary);">En esta página</p>
+        <a class="rg-toc" href="#ejemplo" aria-current="true">Ejemplo</a>
+        <a class="rg-toc" href="#uso">Cuándo usarla</a>
+        <a class="rg-toc" href="#variantes">Variantes</a>
+        <a class="rg-toc" href="#props">Props</a>
+        <a class="rg-toc" href="#codigo">Código</a>
+        <a class="rg-toc" href="#a11y">Movimiento</a>
+        <p style="margin: 20px 0 4px; font-size: 12px; line-height: 18px; font-weight: 600; color: var(--text-quaternary);">Relacionados</p>
+        <a class="rg-toc" href="/components/stream-countdown/">StreamCountdown</a>
+        <a class="rg-toc" href="/components/channel-banner/">ChannelBanner</a>
+        <a class="rg-toc" href="/foundations/stream/">Guía de Stream</a>
+      </nav>
+    </main>
+  </div>
+  <dc-import name="Footer" hint-size="100%,320px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3100}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { v: 'starting' }; }
+  renderVals() {
+    var self = this, v = this.state.v;
+    var meta = {
+      starting: { label: 'Empezando', secs: 300, cd: 'Para empezar', next: undefined },
+      brb: { label: 'Pausa', secs: 480, cd: 'Vuelvo en', next: undefined },
+      ending: { label: 'Final', secs: undefined, cd: undefined, next: 'Próximo directo: jueves, 20:00' },
+      offline: { label: 'Offline', secs: undefined, cd: undefined, next: 'Lunes, miércoles y viernes · 20:00' }
+    };
+    var m = meta[v];
+    return {
+      yes: true, n: { s16: 16, s20: 20 },
+      crumbs: [{ label: 'Stream', href: '/foundations/stream/' }, { label: 'Escenas', href: '/components/#stream-escenas' }, { label: 'StreamScene' }],
+      v: v, secs: m.secs, cdLabel: m.cd, next: m.next,
+      setV: function (x) { self.setState({ v: x }); },
+      variants: ['starting', 'brb', 'ending', 'offline'].map(function (k) { return { value: k, label: meta[k].label }; }),
+      all: ['starting', 'brb', 'ending', 'offline'].map(function (k) { return { id: k, label: meta[k].label, secs: meta[k].secs, cd: meta[k].cd, next: meta[k].next }; }),
+      props: [
+        { name: 'variant', type: '"starting" | "brb" | "ending" | "offline"', def: '"starting"', desc: 'La escena. Cada una trae insignia, titular y subtítulo propios.' },
+        { name: 'title', type: 'ReactNode', def: 'por variante', desc: 'Titular en Bricolage a 152 px. 24 caracteres como mucho.' },
+        { name: 'subtitle', type: 'ReactNode | false', def: 'por variante', desc: 'Línea bajo el titular. false la oculta.' },
+        { name: 'badge', type: 'ReactNode', def: 'por variante', desc: 'Texto de la insignia de estado.' },
+        { name: 'seconds', type: 'number', def: '—', desc: 'Cuenta atrás en segundos. Solo en starting y brb.' },
+        { name: 'target', type: 'Date | string | number', def: '—', desc: 'Hora de llegada, en lugar de seconds.' },
+        { name: 'now', type: 'Date | string | number', def: 'ahora', desc: 'Hora fija, para pruebas y capturas.' },
+        { name: 'paused', type: 'boolean', def: 'false', desc: 'Congela la cuenta atrás.' },
+        { name: 'countdownLabel', type: 'ReactNode', def: '—', desc: 'Etiqueta sobre la cuenta atrás.' },
+        { name: 'channel', type: 'ReactNode', def: '"Tu canal"', desc: 'Nombre del canal, a la izquierda del pie.' },
+        { name: 'next', type: 'ReactNode', def: '—', desc: 'Línea central del pie: el próximo directo. Una sola.' },
+        { name: 'handle', type: 'ReactNode', def: '"twitch.tv/tucanal"', desc: 'Enlace del canal, a la derecha del pie.' },
+        { name: 'scale', type: 'number', def: 'ajuste al ancho', desc: 'Escala fija. Mide 1920 × scale de ancho.' }
+      ],
+      code: [
+        { label: 'Next.js', code: '// app/overlay/empezando/page.tsx\n"use client";\nimport { StreamScene } from "@jotis/regula/stream";\n\nexport default function Empezando() {\n  return (\n    <StreamScene\n      variant="starting"\n      seconds={300}\n      countdownLabel="Para empezar"\n      channel="Jotis"\n      handle="twitch.tv/jotis"\n    />\n  );\n}' },
+        { label: 'Astro', code: '---\n// src/pages/overlay/empezando.astro\nimport { StreamScene } from "@jotis/regula/stream";\n---\n\n<html lang="es">\n  <body style="margin: 0; background: transparent">\n    <StreamScene\n      client:load\n      variant="starting"\n      seconds={300}\n      countdownLabel="Para empezar"\n      channel="Jotis"\n      handle="twitch.tv/jotis"\n    />\n  </body>\n</html>' }
+      ],
+      details: [
+        { k: 'Composición', v: 'Fondo en bg-primary con rejilla de border-secondary desvanecida hacia los bordes, insignia, titular en Bricolage y pie con canal, próxima fecha y enlace.' },
+        { k: 'Cifras de reloj', v: 'Geist con números tabulares, no Bricolage, para que la cuenta atrás no baile al cambiar de segundo.' },
+        { k: 'Movimiento', v: 'La escena no se anima. La cuenta atrás solo cambia cuando cambia el dato.' },
+        { k: 'Movimiento reducido', v: 'Con prefers-reduced-motion, lo que entra o sale lo hace solo con fundido.' },
+        { k: 'Lectores de pantalla', v: 'El titular es un h1. En OBS no hay lector, pero en la vista previa de esta web sí.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

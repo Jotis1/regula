@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Color · Fundamentos · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="position: relative; min-height: 100%; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="Header" active="foundations" hint-size="100%,64px"></dc-import>
+  <div style="max-width: 1440px; margin: 0 auto; display: flex; align-items: flex-start;">
+    <aside style="flex: none; width: 288px; box-shadow: inset -1px 0 0 var(--border-secondary);">
+      <dc-import name="DocNav" current="color" hint-size="100%,900px"></dc-import>
+    </aside>
+
+    <main id="contenido" style="flex: 1 1 0; min-width: 0; padding: 32px 40px 80px 56px; display: flex; flex-direction: column; gap: 48px;">
+      <header style="display: flex; flex-direction: column; gap: 16px; max-width: 720px;">
+        <x-import component-from-global-scope="Jotis.Breadcrumbs" items="{{crumbs}}"></x-import>
+        <h1 style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 36px; line-height: 44px; letter-spacing: -0.02em;">Color</h1>
+        <p style="margin: 0; font-size: 18px; line-height: 28px; color: var(--text-tertiary);">Los tokens son semánticos: se eligen por función, no por tono. Casi todo es gris, y el índigo queda para lo interactivo y lo actual.</p>
+        <nav aria-label="En esta página" style="display: flex; flex-wrap: wrap; gap: 8px 20px; padding-top: 4px;">
+          <a class="rg-link" href="#esencial" style="font-size: 14px; line-height: 20px;">Lo esencial</a>
+          <a class="rg-link" href="#contraste" style="font-size: 14px; line-height: 20px;">Contraste</a>
+          <a class="rg-link" href="#tokens" style="font-size: 14px; line-height: 20px;">Tokens (249)</a>
+        </nav>
+      </header>
+
+      <section aria-labelledby="esencial" style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 id="esencial" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Lo esencial</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+          <sc-for list="{{rules}}" as="r" hint-placeholder-count="6">
+            <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <div aria-hidden="true" style="display: flex; gap: 6px;">
+                <sc-for list="{{r.sw}}" as="s" hint-placeholder-count="3">
+                  <span style="{{s}}"></span>
+                </sc-for>
+              </div>
+              <h3 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">{{r.t}}</h3>
+              <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">{{r.d}}</p>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section aria-labelledby="contraste" style="display: flex; flex-direction: column; gap: 16px; max-width: 880px;">
+        <h2 id="contraste" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Contraste</h2>
+        <p style="margin: 0; font-size: 16px; line-height: 26px; color: var(--text-secondary);">Todos los pares de texto principales pasan de 4,5:1 en los dos temas. Estas excepciones vienen del archivo y se mantienen; lo que cambia es cómo se usan.</p>
+        <div style="border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary); overflow: hidden;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 14px; line-height: 20px;">
+            <caption class="rg-sr">Tokens por debajo del contraste recomendado y cómo usarlos</caption>
+            <thead><tr style="background: var(--bg-secondary);">
+              <th scope="col" style="padding: 12px 20px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Token</th>
+              <th scope="col" style="padding: 12px 20px; text-align: right; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Claro</th>
+              <th scope="col" style="padding: 12px 20px; text-align: right; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Oscuro</th>
+              <th scope="col" style="padding: 12px 20px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Cómo se usa</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{exceptions}}" as="e" hint-placeholder-count="5">
+                <tr style="box-shadow: inset 0 1px 0 var(--border-secondary);">
+                  <th scope="row" style="padding: 14px 20px; text-align: left; font: 500 13px/20px var(--font-mono); color: var(--text-primary); white-space: nowrap;">{{e.n}}</th>
+                  <td style="padding: 14px 20px; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-secondary); white-space: nowrap;">{{e.l}}</td>
+                  <td style="padding: 14px 20px; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-secondary); white-space: nowrap;">{{e.d}}</td>
+                  <td style="padding: 14px 20px; color: var(--text-tertiary);">{{e.how}}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="tokens" style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 24px;">
+          <div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 4px;">
+            <h2 id="tokens" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Tokens</h2>
+            <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Pulsa la utilidad para copiarla. La muestra enseña el valor claro a la izquierda y el oscuro a la derecha.</p>
+          </div>
+          <div style="width: 280px;">
+            <x-import component-from-global-scope="Jotis.Input" label="Filtrar tokens" size="sm" icon="search-md" placeholder="brand, error, hover…" value="{{q}}" on-change="{{onQ}}" type="search"></x-import>
+          </div>
+        </div>
+        <x-import component-from-global-scope="Jotis.ButtonGroup" aria-label="Familia de tokens" value="{{cat}}" on-change="{{onCat}}" items="{{cats}}"></x-import>
+
+        <div style="border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary); overflow: hidden;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 14px; line-height: 20px;">
+            <caption class="rg-sr">Tokens de color de la familia elegida, con valores claro y oscuro y su utilidad de Tailwind</caption>
+            <thead><tr style="background: var(--bg-secondary);">
+              <th scope="col" style="width: 96px; padding: 12px 20px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Muestra</th>
+              <th scope="col" style="padding: 12px 16px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Token y uso</th>
+              <th scope="col" style="width: 128px; padding: 12px 16px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Claro</th>
+              <th scope="col" style="width: 128px; padding: 12px 16px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Oscuro</th>
+              <th scope="col" style="width: 236px; padding: 12px 20px 12px 16px; text-align: left; font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-tertiary);">Utilidad de Tailwind</th>
+            </tr></thead>
+            <tbody>
+              <sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
+                <tr class="rg-tokrow" style="box-shadow: inset 0 1px 0 var(--border-secondary);">
+                  <td style="padding: 12px 20px; vertical-align: top;">
+                    <span aria-hidden="true" style="display: flex; width: 56px; height: 40px; border-radius: var(--radius-md); overflow: hidden; box-shadow: inset 0 0 0 1px var(--border-secondary);">
+                      <span style="{{r.swL}}"><sc-if value="{{r.isText}}" hint-placeholder-val="{{no}}">Aa</sc-if><sc-if value="{{r.isIcon}}" hint-placeholder-val="{{no}}"><x-import component-from-global-scope="Jotis.Icon" name="star-01" size="{{n.s16}}"></x-import></sc-if></span>
+                      <span style="{{r.swD}}"><sc-if value="{{r.isText}}" hint-placeholder-val="{{no}}">Aa</sc-if><sc-if value="{{r.isIcon}}" hint-placeholder-val="{{no}}"><x-import component-from-global-scope="Jotis.Icon" name="star-01" size="{{n.s16}}"></x-import></sc-if></span>
+                    </span>
+                  </td>
+                  <th scope="row" style="padding: 12px 16px; text-align: left; vertical-align: top; font-weight: 400;">
+                    <span style="display: block; font: 500 13px/20px var(--font-mono); color: var(--text-primary);">{{r.n}}</span>
+                    <span style="display: block; margin-top: 2px; font-size: 13px; line-height: 20px; color: var(--text-tertiary);">{{r.s}}</span>
+                  </th>
+                  <td style="padding: 12px 16px; vertical-align: top;">
+                    <span style="display: block; font: 400 13px/20px var(--font-mono); color: var(--text-secondary);">{{r.l}}</span>
+                    <sc-if value="{{r.hasRatio}}" hint-placeholder-val="{{no}}"><span style="display: block; font-size: 12px; line-height: 18px; color: var(--text-quaternary); font-variant-numeric: tabular-nums;">{{r.rl}}</span></sc-if>
+                  </td>
+                  <td style="padding: 12px 16px; vertical-align: top;">
+                    <span style="display: block; font: 400 13px/20px var(--font-mono); color: var(--text-secondary);">{{r.d}}</span>
+                    <sc-if value="{{r.hasRatio}}" hint-placeholder-val="{{no}}"><span style="display: block; font-size: 12px; line-height: 18px; color: var(--text-quaternary); font-variant-numeric: tabular-nums;">{{r.rd}}</span></sc-if>
+                  </td>
+                  <td style="padding: 10px 20px 10px 16px; vertical-align: top;">
+                    <button type="button" class="rg-copy" onClick="{{r.copy}}" aria-label="{{r.copyLabel}}">
+                      <span>{{r.u}}</span>
+                      <x-import component-from-global-scope="Jotis.Icon" name="{{r.copyIcon}}" size="{{n.s14}}" style="color: var(--fg-quaternary);"></x-import>
+                    </button>
+                  </td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <sc-if value="{{empty}}" hint-placeholder-val="{{no}}">
+            <div style="padding: 40px 20px;">
+              <x-import component-from-global-scope="Jotis.EmptyState" icon="search-lg" title="Ningún token se llama así" description="Prueba con la función (fondo, borde, error) o mira en otra familia."></x-import>
+            </div>
+          </sc-if>
+        </div>
+        <p style="margin: 0; font-size: 12px; line-height: 18px; color: var(--text-quaternary);">Contraste calculado sobre bg-primary de cada tema. Fuente: tokens v2, sincronizados con el archivo de Figma el 29 oct 2026.</p>
+      </section>
+
+      <nav aria-label="Anterior y siguiente" style="display: flex; flex-wrap: wrap; gap: 16px; max-width: 720px;">
+        <a class="rg-pager" href="/foundations/content/"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Anterior</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Contenido y tono</span></a>
+        <a class="rg-pager" href="/foundations/typography/" style="text-align: right;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Siguiente</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Tipografía</span></a>
+      </nav>
+    </main>
+  </div>
+  <dc-import name="Footer" hint-size="100%,320px"></dc-import>
+
+  <div role="status" aria-live="polite" style="position: absolute; right: 32px; top: 96px; width: 360px; z-index: 40;">
+    <sc-if value="{{copied}}" hint-placeholder-val="{{no}}">
+      <x-import component-from-global-scope="Jotis.Notification" color="success" icon="check-circle" title="{{copiedTitle}}" description="Ya está en el portapapeles."></x-import>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { data: null, cat: 'text', q: '', copied: '' };
+  }
+  componentDidMount() {
+    var self = this;
+    fetch('/_blob/d694037f0142fabc7e248c7f4025d555').then(function (r) { return r.json(); }).then(function (d) { self.setState({ data: d }); }).catch(function () {});
+  }
+  componentWillUnmount() { clearTimeout(this.t); }
+  renderVals() {
+    var self = this;
+    var fallback = [
+      { n: 'text-primary', c: 'text', k: 'text', l: '#171717', d: '#fafafa', u: 'text-primary', s: 'Títulos y texto principal sobre bg-primary, bg-secondary y bg-tertiary.', cl: 17.9, cd: 19 },
+      { n: 'text-secondary', c: 'text', k: 'text', l: '#404040', d: '#d4d4d4', u: 'text-secondary', s: 'Etiquetas, texto de botones secundarios y cabeceras de tabla.', cl: 10.4, cd: 13.4 },
+      { n: 'text-tertiary', c: 'text', k: 'text', l: '#525252', d: '#a1a1a1', u: 'text-tertiary', s: 'Texto de apoyo, pistas y botones terciarios.', cl: 7.8, cd: 7.7 },
+      { n: 'text-quaternary', c: 'text', k: 'text', l: '#737373', d: '#a1a1a1', u: 'text-quaternary', s: 'Metadatos: fechas, pies de foto. Fuera de bg-tertiary.', cl: 4.7, cd: 7.7 }
+    ];
+    var data = this.state.data || fallback;
+    var labels = { text: 'Texto', bg: 'Fondo', border: 'Borde', fg: 'Icono', utility: 'Utility', alpha: 'Alfa', comp: 'Componentes' };
+    var counts = {};
+    data.forEach(function (t) { counts[t.c] = (counts[t.c] || 0) + 1; });
+    var cats = ['text', 'bg', 'border', 'fg', 'utility', 'alpha', 'comp'].map(function (c) { return { value: c, label: labels[c] + ' ' + (counts[c] || 0) }; });
+    var q = this.state.q.trim().toLowerCase();
+    function fmt(x) { return String(x).replace('.', ',') + ':1'; }
+    function half(kind, col, base) {
+      var s = 'flex: 1; display: flex; align-items: center; justify-content: center; ';
+      if (kind === 'text') return s + 'background: ' + base + '; color: ' + col + '; font: 600 15px/1 var(--font-display);';
+      if (kind === 'icon') return s + 'background: ' + base + '; color: ' + col + ';';
+      if (kind === 'border') return s + 'background: ' + base + '; box-shadow: inset 0 0 0 3px ' + col + ';';
+      return s + 'background: linear-gradient(' + col + ', ' + col + '), ' + (col.length > 7 ? '#a3a3a3' : base) + ';';
+    }
+    var rows = data.filter(function (t) { return q ? (t.n + ' ' + (t.s || '')).toLowerCase().indexOf(q) >= 0 : t.c === self.state.cat; }).map(function (t) {
+      var on = self.state.copied === t.u;
+      var hasRatio = t.cl != null;
+      var low = t.k === 'text' ? 4.5 : 3;
+      return {
+        n: t.n, s: t.s, l: t.l, d: t.d, u: t.u,
+        isText: t.k === 'text', isIcon: t.k === 'icon', hasRatio: hasRatio,
+        rl: hasRatio ? fmt(t.cl) + (t.cl < low ? ' · bajo' : '') : '',
+        rd: hasRatio ? fmt(t.cd) + (t.cd < low ? ' · bajo' : '') : '',
+        swL: half(t.k, t.l, '#ffffff'), swD: half(t.k, t.d, '#0a0a0a'),
+        copyIcon: on ? 'check' : 'copy-01', copyLabel: 'Copiar ' + t.u,
+        copy: function () {
+          try { navigator.clipboard.writeText(t.u); } catch (e) {}
+          clearTimeout(self.t);
+          self.setState({ copied: t.u });
+          self.t = setTimeout(function () { self.setState({ copied: '' }); }, 2400);
+        }
+      };
+    });
+    return {
+      n: { s14: 14, s16: 16 }, no: false,
+      crumbs: [{ label: 'Fundamentos', href: '/foundations/principles/' }, { label: 'Color' }],
+      q: this.state.q, cat: q ? null : this.state.cat, cats: cats, rows: rows, empty: rows.length === 0,
+      copied: !!this.state.copied, copiedTitle: 'Copiado: ' + this.state.copied,
+      onQ: function (e) { self.setState({ q: e.target.value }); },
+      onCat: function (v) { self.setState({ cat: v, q: '' }); },
+      rules: [
+        { t: 'Fondos', d: 'Página y tarjetas en bg-primary. Zonas secundarias en bg-secondary. Lo que flota, en bg-primary_alt, que en oscuro se separa del fondo.',
+          sw: ['width: 28px; height: 28px; border-radius: 6px; background: var(--bg-primary); box-shadow: inset 0 0 0 1px var(--border-primary);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--bg-secondary); box-shadow: inset 0 0 0 1px var(--border-primary);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--bg-tertiary); box-shadow: inset 0 0 0 1px var(--border-primary);'] },
+        { t: 'Texto', d: 'text-primary para títulos y valores; secondary para etiquetas; tertiary para apoyo; quaternary para metadatos. Placeholder, solo en placeholders.',
+          sw: ['width: 28px; height: 28px; border-radius: 6px; background: var(--text-primary);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--text-secondary);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--text-tertiary);'] },
+        { t: 'Bordes', d: 'border-primary en controles, border-secondary en separadores y tarjetas, border-brand en el foco.',
+          sw: ['width: 28px; height: 28px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--border-primary);', 'width: 28px; height: 28px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--border-secondary);', 'width: 28px; height: 28px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--border-brand);'] },
+        { t: 'Marca', d: 'El índigo marca lo interactivo y lo actual: bg-brand-solid, fg-brand-primary y text-brand-secondary. Más de tres manchas por pantalla es demasiado.',
+          sw: ['width: 28px; height: 28px; border-radius: 6px; background: var(--bg-brand-solid);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--bg-brand-primary); box-shadow: inset 0 0 0 1px var(--border-secondary);'] },
+        { t: 'Estados', d: 'Error, aviso y éxito en tres capas: tinte de fondo, relleno sólido y texto o icono. Siempre con palabra o icono, nunca solo color.',
+          sw: ['width: 28px; height: 28px; border-radius: 6px; background: var(--bg-error-solid);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--bg-warning-solid);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--bg-success-solid);'] },
+        { t: 'Escalas utility', d: 'Para badges, etiquetas y gráficas: fondo -50, borde -200, texto -700 y punto -500. En oscuro la escala se invierte.',
+          sw: ['width: 28px; height: 28px; border-radius: 6px; background: var(--utility-sky-50); box-shadow: inset 0 0 0 1px var(--utility-sky-200);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--utility-sky-500);', 'width: 28px; height: 28px; border-radius: 6px; background: var(--utility-sky-700);'] }
+      ],
+      exceptions: [
+        { n: 'text-warning-primary', l: '2,9:1', d: '12,6:1', how: 'En claro, solo de 24 px en adelante o junto a un icono y una palabra.' },
+        { n: 'text-success-primary', l: '3,2:1', d: '11,1:1', how: 'En claro, grande, en negrita o con icono.' },
+        { n: 'fg-quaternary', l: '2,6:1', d: '2,5:1', how: 'Solo decoración. Nunca el único portador de sentido.' },
+        { n: 'border-primary', l: '1,5:1', d: '1,9:1', how: 'No llega al 3:1 de un borde de control: todo campo lleva etiqueta visible.' },
+        { n: 'text-placeholder', l: '4,7:1', d: '4,2:1', how: 'Solo para placeholders, que nunca sustituyen a la etiqueta.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Regula · Portada (móvil)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="width: 100%; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="HeaderM" hint-size="100%,56px"></dc-import>
+  <main id="contenido">
+    <section aria-labelledby="hero-t" style="position: relative; overflow: hidden; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+      <div aria-hidden="true" style="position: absolute; inset: 0; display: flex; justify-content: center; pointer-events: none;">
+        <x-import component-from-global-scope="Jotis.BackgroundPattern" pattern="grid" size="md" mask="radial-down" width="{{n.w480}}" height="{{n.h480}}"></x-import>
+      </div>
+      <div style="position: relative; padding: 40px 16px 40px; display: flex; flex-direction: column; gap: 20px;">
+        <p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--text-tertiary);">El sistema de diseño de la suite jotis.me</p>
+        <h1 id="hero-t" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 36px; line-height: 44px; letter-spacing: -0.02em; text-wrap: balance;">Las reglas de la suite, con el código al lado.</h1>
+        <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--text-tertiary);">Fundamentos, tokens, 81 iconos y 74 componentes. Se consulta con una mano mientras la otra programa.</p>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 4px;">
+          <x-import component-from-global-scope="Jotis.Button" size="xl" href="/start/install/" icon-trailing="arrow-right" style="width: 100%;">Instalar en tu proyecto</x-import>
+          <button type="button" class="rg-search" style="width: 100%; height: 48px; font-size: 16px; line-height: 24px;">
+            <x-import component-from-global-scope="Jotis.Icon" name="search-lg" size="{{n.s20}}" style="color: var(--fg-quaternary);"></x-import>
+            <span style="flex-grow: 1;">Busca lo que te falte</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="install-t" style="padding: 40px 16px 8px; display: flex; flex-direction: column; gap: 12px;">
+      <p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--text-brand-tertiary);">Empezar</p>
+      <h2 id="install-t" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Tres pasos y a lo tuyo</h2>
+      <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--text-tertiary);">Paquete, tema de Tailwind v4 y fuentes sin saltos.</p>
+      <div style="min-width: 0; overflow: hidden;"><x-import component-from-global-scope="Jotis.CodeSnippet" tabs="{{install}}" line-numbers="{{no}}"></x-import></div>
+      <x-import component-from-global-scope="Jotis.Button" hierarchy="link-color" href="/start/install/" icon-trailing="arrow-right">Guía de instalación completa</x-import>
+    </section>
+
+    <section aria-labelledby="map-t" style="padding: 40px 16px 8px; display: flex; flex-direction: column; gap: 16px;">
+      <h2 id="map-t" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Dónde está cada cosa</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <a class="rg-card" href="/foundations/principles/" style="flex-direction: row; align-items: center; gap: 16px; padding: 12px;">
+          <span aria-hidden="true" style="flex: none; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg); background: var(--bg-secondary); font-family: var(--font-display); font-weight: 600; font-size: 28px;">Aa</span>
+          <span style="flex-grow: 1; min-width: 0;"><span style="display: block; font-size: 16px; line-height: 24px; font-weight: 600;">Fundamentos</span><span style="display: block; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">9 apartados y sus tokens</span></span>
+          <x-import component-from-global-scope="Jotis.Icon" name="chevron-right" size="{{n.s20}}" style="color: var(--fg-quaternary);"></x-import>
+        </a>
+        <a class="rg-card" href="/components/" style="flex-direction: row; align-items: center; gap: 16px; padding: 12px;">
+          <span aria-hidden="true" style="flex: none; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg); background: var(--bg-secondary); color: var(--fg-secondary);"><x-import component-from-global-scope="Jotis.Icon" name="grid-01" size="{{n.s28}}"></x-import></span>
+          <span style="flex-grow: 1; min-width: 0;"><span style="display: block; font-size: 16px; line-height: 24px; font-weight: 600;">Componentes</span><span style="display: block; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">62 de aplicación en 11 grupos</span></span>
+          <x-import component-from-global-scope="Jotis.Icon" name="chevron-right" size="{{n.s20}}" style="color: var(--fg-quaternary);"></x-import>
+        </a>
+        <a class="rg-card" href="/foundations/stream/" style="flex-direction: row; align-items: center; gap: 16px; padding: 12px;">
+          <span aria-hidden="true" data-theme="dark" style="flex: none; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg); background: var(--bg-primary); color: var(--fg-secondary);"><x-import component-from-global-scope="Jotis.Icon" name="play" size="{{n.s28}}"></x-import></span>
+          <span style="flex-grow: 1; min-width: 0;"><span style="display: block; font-size: 16px; line-height: 24px; font-weight: 600;">Stream</span><span style="display: block; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">12 componentes para Twitch</span></span>
+          <x-import component-from-global-scope="Jotis.Icon" name="chevron-right" size="{{n.s20}}" style="color: var(--fg-quaternary);"></x-import>
+        </a>
+        <a class="rg-card" href="/icons/" style="flex-direction: row; align-items: center; gap: 16px; padding: 12px;">
+          <span aria-hidden="true" style="flex: none; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg); background: var(--bg-secondary); color: var(--fg-secondary);"><x-import component-from-global-scope="Jotis.Icon" name="star-01" size="{{n.s28}}"></x-import></span>
+          <span style="flex-grow: 1; min-width: 0;"><span style="display: block; font-size: 16px; line-height: 24px; font-weight: 600;">Iconos</span><span style="display: block; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">81, con buscador</span></span>
+          <x-import component-from-global-scope="Jotis.Icon" name="chevron-right" size="{{n.s20}}" style="color: var(--fg-quaternary);"></x-import>
+        </a>
+      </div>
+    </section>
+
+    <section aria-labelledby="rules-t" style="padding: 40px 16px 8px; display: flex; flex-direction: column; gap: 8px;">
+      <h2 id="rules-t" style="margin: 0 0 4px; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Cinco reglas que se olvidan</h2>
+      <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+        <li style="display: flex; gap: 14px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);"><span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">01</span><div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Neutro primero</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">El índigo marca lo interactivo y lo actual.</p></div></li>
+        <li style="display: flex; gap: 14px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);"><span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">02</span><div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Un primario por vista</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Lo demás, secundario o terciario.</p></div></li>
+        <li style="display: flex; gap: 14px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);"><span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">03</span><div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Todo campo con etiqueta</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">El borde no llega a 3:1.</p></div></li>
+        <li style="display: flex; gap: 14px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);"><span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">04</span><div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">El color nunca va solo</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Un estado lleva palabra o icono.</p></div></li>
+        <li style="display: flex; gap: 14px; padding: 14px 0;"><span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">05</span><div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Cifras a la española</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">1.284,50 € y 29 oct 2026.</p></div></li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="suite-t" style="padding: 32px 16px 48px; display: flex; flex-direction: column; gap: 16px;">
+      <h2 id="suite-t" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 20px; line-height: 30px;">Las apps que lo usan</h2>
+      <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px;">
+        <sc-for list="{{apps}}" as="a" hint-placeholder-count="5">
+          <li style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <x-import component-from-global-scope="Jotis.AppIcon" letters="{{a.l}}" hue="{{a.h}}" label="{{a.name}}" size="{{n.s48}}" aria-hidden="true" style="display: flex;"></x-import>
+            <span style="font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-secondary);">{{a.name}}</span>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+  </main>
+  <dc-import name="Footer" hint-size="100%,520px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":3100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      no: false,
+      n: { s20: 20, s28: 28, s48: 48, w480: 480, h480: 480 },
+      apps: [{ l: 'Or', h: 'indigo', name: 'Ornatus' }, { l: 'Vi', h: 'sky', name: 'Vinculum' }, { l: 'Pe', h: 'emerald', name: 'Pecunia' }, { l: 'Em', h: 'orange', name: 'Emptor' }, { l: 'Re', h: 'fuchsia', name: 'Regula' }],
+      install: [
+        { label: 'Next.js', code: 'npm install @jotis/regula\n\n/* app/globals.css */\n@import "tailwindcss";\n@import "@jotis/regula/theme.css";' },
+        { label: 'Astro', code: 'npm install @jotis/regula\nnpx astro add tailwind react\n\n/* src/styles/global.css */\n@import "tailwindcss";\n@import "@jotis/regula/theme.css";' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
