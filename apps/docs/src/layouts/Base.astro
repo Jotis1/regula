@@ -2,6 +2,11 @@
 import pkg from "@jotis-me/react/package.json";
 import "../styles/global.css";
 import { getCollection } from "astro:content";
+// Fuentes de lo que se ve al cargar: precargarlas evita pintar con la de reserva y que el texto se recoloque al
+// llegar (CLS de 0,2 en Lighthouse móvil; Geist Mono es la de los `<code>` en línea, que crecían de 20 a 22px). Mismo fichero que usa fonts.css, así que no se descarga dos veces.
+import bricolage from "@jotis-me/tokens/fonts/BricolageGrotesque-Variable-latin.woff2?url";
+import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
+import geistMono from "@jotis-me/tokens/fonts/GeistMono-Variable.woff2?url";
 import CopyToast from "../components/CopyToast.astro";
 import ThemeScript from "../components/ThemeScript.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
@@ -26,6 +31,9 @@ const nav = withComponents(
 		<meta charset="utf-8" />
 		<ThemeScript />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="preload" href={geist} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={geistMono} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={bricolage} as="font" type="font/woff2" crossorigin />
 		<title>{title === "Regula" ? "Regula · jotis.me" : `${title} · Regula`}</title>
 		<meta name="description" content={description} />
 		<slot name="head" />
