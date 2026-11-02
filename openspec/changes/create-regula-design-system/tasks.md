@@ -105,8 +105,8 @@
 
 - [x] 14.1 Integrar Pagefind con CommandMenu y atajo Ctrl+K / Cmd+K sobre páginas, tokens, iconos y componentes; verificar con Playwright que "modal" encuentra la página de Modal y Enter navega
 - [x] 14.2 Configurar Changesets en modo `fixed` para los tres paquetes, versión inicial `0.1.0` y changelog; verificar con `bunx changeset version` en seco
-- [ ] 14.3 Crear el workflow de CI con `oven-sh/setup-bun` (tipos, `biome ci`, tests, axe, paridad visual, build de ejemplos, `publint`/`attw`, tamaño por componente, Lighthouse CI ≥ 90) y el de publicación (`bun pm pack` + `npm publish <tgz> --provenance`) al fusionar el PR de versión; verificar con un PR de prueba que un test roto bloquea la publicación y que el `package.json` empaquetado no contiene `workspace:`
-- [ ] 14.4 Crear el proyecto en Vercel (raíz `apps/docs`, `bun install`, previews por PR) y el CNAME de `regula.jotis.me` hacia Vercel; verificar que `https://regula.jotis.me` responde con HTTPS y muestra la versión en el pie
+- [x] 14.3 Crear el workflow de CI con `oven-sh/setup-bun` (tipos, `biome ci`, tests, axe, paridad visual, build de ejemplos, `publint`/`attw`, tamaño por componente, Lighthouse CI ≥ 90) y el de publicación (`bun pm pack` + `npm publish <tgz> --provenance`) al fusionar el PR de versión; verificar con un PR de prueba que un test roto bloquea la publicación y que el `package.json` empaquetado no contiene `workspace:`
+- [x] 14.4 Crear el proyecto en Vercel (raíz `apps/docs`, `bun install`, previews por PR) y el CNAME de `regula.jotis.me` hacia Vercel; verificar que `https://regula.jotis.me` responde con HTTPS y muestra la versión en el pie
 - [ ] 14.5 Publicar `0.1.0` de `@jotis-me/tokens`, `@jotis-me/icons` y `@jotis-me/react`; verificar que npmjs.com muestra la procedencia y que `npm install @jotis-me/react` funciona sin credenciales en un directorio vacío
 
 ## 15. Comprobaciones de integración
@@ -119,3 +119,4 @@
 
 - Archivar el cambio cuando la web esté publicada y `0.1.0` en npm.
 - Abrir un cambio por app (Vinculum, Pecunia, Emptor, Ornatus) para migrarla a los paquetes.
+- Abrir un cambio para las fuentes de reserva ajustadas en `@jotis-me/tokens` (`size-adjust` y `ascent-override` para Geist, Geist Mono y Bricolage), de modo que el cambio de fuente no desplace el texto con red lenta (ver NOTAS.md, 14.3).

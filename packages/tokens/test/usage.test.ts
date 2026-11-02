@@ -4,7 +4,28 @@ import { describe, expect, it } from "vitest";
 
 const read = (p: string) => JSON.parse(readFileSync(join(import.meta.dirname, p), "utf8"));
 const es = read("../src/tokens.json");
-const en = read("../../../reference/tokens.json");
+const guide = read("../../../reference/tokens.json");
+
+// Lo que la guía trae y aún no se porta (design §12: la paleta `chartreuse` de la versión 1793561361-ae73 queda
+// para un cambio de estilo propio). Se quita de la guía antes de comparar; todo lo demás tiene que coincidir.
+const UNPORTED = /^utility-chartreuse-/;
+const en = {
+	...guide,
+	color: {
+		...guide.color,
+		tokens: guide.color.tokens.filter((t: { name: string }) => !UNPORTED.test(t.name)),
+	},
+};
+
+describe("tokens sin portar", () => {
+	it("solo falta la paleta chartreuse, y nada más difiere en los nombres", () => {
+		const names = (t: typeof es) => t.color.tokens.map((x: { name: string }) => x.name);
+		const onlyInGuide = names(guide).filter((n: string) => !names(es).includes(n));
+		expect(onlyInGuide).toHaveLength(8);
+		expect(onlyInGuide.every((n: string) => UNPORTED.test(n))).toBe(true);
+		expect(names(es)).toEqual(names(en));
+	});
+});
 
 const notes = (t: typeof es): string[] => [
 	...["color", "spacing", "radius", "width", "shadow", "blur"].flatMap((k) =>
