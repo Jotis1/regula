@@ -1,6 +1,6 @@
 {
 	"name": "@jotis-me/tokens",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Tokens de diseño de la suite jotis.me: variables CSS en claro y oscuro, tema de Tailwind v4 y fuentes.",
 	"license": "MIT",
 	"type": "module",
