@@ -1,8 +1,9 @@
 artefacto: Jotis.me (Design System)
 slug: bb424412-8082-461e-a84f-b3704de675c1
 url: https://claude.ai/artifact/Q8AXUzu86MzVrB9Ec3oKSY
-version: 1793369818-a6e0
-copiado: 2026-10-30
-verificacion: sha256 de cada fichero igual al de list_files de esa version (136 ficheros)
+version: 1793561361-ae73
+copiado: 2026-11-02
+verificacion: sha256 de cada fichero igual al de list_files de esa version (todos los de project/ salvo los excluidos abajo); SVG de assets/App icons verificados con el sha256 de read_asset
+cambios frente a 1793369818-a6e0: 12 componentes de Stream (CamFrame, ChannelBanner, ChannelPanel, ChatBadge, ChatBox, NowPlaying, StreamAlert, StreamCountdown, StreamEvents, StreamGoal, StreamScene, StreamStatus), seccion "Stream (Twitch)" en GUIA.md, bundle.js/bundle.css/index.d.ts; y, sin portar todavia (design §12), la paleta chartreuse en tokens.json y Regula en AppIcon y assets/App icons
 no incluido: fuentes woff2 y lib/react*.js (binarios o ajenos; las fuentes vienen de npm),
-  SVG de assets/ (estan como assets del artefacto; se importan en el grupo 3 de tareas)
+  SVG de assets/ salvo App icons (los iconos salen de bundle.js; patrones y trazos se importaron en el grupo 3)

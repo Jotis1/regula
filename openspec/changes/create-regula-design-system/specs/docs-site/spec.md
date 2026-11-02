@@ -7,7 +7,7 @@ regula.jotis.me es la referencia pública del sistema de diseño de la suite jot
 ## ADDED Requirements
 
 ### Requirement: Secciones de fundamentos
-La web SHALL tener una página para cada apartado de la guía: principios, contenido y tono, color, tipografía, espaciado, radios y layout, sombras y estados, iconografía, fondos y adornos, marca e iconos de app, y uso con Tailwind v4 en Next.js y Astro, con el contenido de la guía.
+La web SHALL tener una página para cada apartado de la guía: principios, contenido y tono, color, tipografía, espaciado, radios y layout, sombras y estados, iconografía, fondos y adornos, marca e iconos de app, Stream (Twitch), y uso con Tailwind v4 en Next.js y Astro, con el contenido de la guía.
 
 #### Scenario: Contenido y tono
 - **WHEN** se abre la página de contenido y tono

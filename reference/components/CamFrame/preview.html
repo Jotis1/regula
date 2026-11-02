@@ -1,0 +1,22 @@
+<!-- @dsCard group="Stream · Overlay" height=330 width=1000 subtitle="Marco de cámara con interior transparente" -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>CamFrame</title>
+<style>
+  html,body{margin:0;background:var(--bg-primary)} body{padding:24px}
+  .row{display:flex;align-items:flex-end;gap:24px}
+  /* Cuadrícula de damas: así se ve que el interior está vacío (en OBS, aquí va la cámara) */
+  .checker{background-color:var(--bg-secondary);background-image:linear-gradient(45deg,var(--bg-tertiary) 25%,transparent 25%,transparent 75%,var(--bg-tertiary) 75%),linear-gradient(45deg,var(--bg-tertiary) 25%,transparent 25%,transparent 75%,var(--bg-tertiary) 75%);background-size:32px 32px;background-position:0 0,16px 16px;padding:24px;border-radius:16px}
+</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  document.documentElement.setAttribute('data-theme', 'dark');
+  var J = window.Jotis, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'checker' }, h('div', { className: 'row' },
+    h(J.CamFrame, { ratio: '16:9', width: 400, live: true, name: 'Tu canal', role: 'ella/él' }),
+    h(J.CamFrame, { ratio: '4:3', width: 280, name: 'Invitada' }),
+    h(J.CamFrame, { ratio: '1:1', width: 200, name: 'Mod' }))));
+</script>
+</body>
+</html>

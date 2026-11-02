@@ -15,6 +15,7 @@ const pages: Record<string, string> = {
 	"Sombras y estados": "/foundations/shadows/",
 	Iconografía: "/foundations/iconography/",
 	"Fondos y adornos": "/foundations/backgrounds/",
+	"Stream (Twitch)": "/foundations/stream/",
 	Marca: "/foundations/brand/",
 	"Con Tailwind v4 (Next o Astro)": "/usage/tailwind/",
 	// «Uso en el propio sistema» describe el bundle del artefacto; su regla de gráficas está en Color
@@ -41,4 +42,6 @@ test("el texto de la guía sale tal cual", async ({ page }) => {
 	await expect(page.getByText('"Aún no hay gastos. Qué calma."')).toBeVisible();
 	await page.goto("/foundations/color/");
 	await expect(page.getByText("Las series usan, en este orden")).toBeVisible();
+	await page.goto("/foundations/stream/");
+	await expect(page.getByText('"En directo" no va en rojo')).toBeVisible();
 });

@@ -85,4 +85,23 @@ export interface BackgroundPatternProps { pattern?: 'grid' | 'grid-dot' | 'grid-
 export interface CreditCardProps { theme?: 'brand-dark' | 'brand-light' | 'gray-dark' | 'gray-light' | 'transparent'; company?: ReactNode; holder?: string; expiry?: string; last4?: string; network?: ReactNode; className?: string; style?: React.CSSProperties; }
 export type AppIconHue = 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'orange' | 'amber' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue';
 export interface AppIconProps { app?: 'ornatus' | 'vinculum' | 'pecunia' | 'emptor'; letters?: string; hue?: AppIconHue; variant?: 'default' | 'solid' | 'light' | 'mono'; size?: number; shape?: 'rounded' | 'square'; tilde?: boolean; label?: string; className?: string; style?: React.CSSProperties; }
+// Stream (Twitch): siempre en oscuro (cada raíz lleva data-theme="dark").
+export type StreamEventType = 'follow' | 'sub' | 'resub' | 'gift' | 'raid' | 'bits' | 'donation';
+export type ChatBadgeKind = 'broadcaster' | 'mod' | 'vip' | 'sub' | 'bits';
+type StreamTime = Date | string | number;
+export interface StreamAlertProps { type?: StreamEventType; user: ReactNode; amount?: number; months?: number; tier?: number | string; message?: ReactNode; detail?: ReactNode; label?: ReactNode; icon?: IconName; state?: 'enter' | 'exit'; className?: string; }
+export interface StreamCountdownProps { seconds?: number; target?: StreamTime; now?: StreamTime; paused?: boolean; size?: 'md' | 'lg' | 'xl' | number; label?: ReactNode; className?: string; }
+export interface StreamSceneProps { variant?: 'starting' | 'brb' | 'ending' | 'offline'; title?: ReactNode; subtitle?: ReactNode | false; badge?: ReactNode; seconds?: number; target?: StreamTime; now?: StreamTime; paused?: boolean; countdownLabel?: ReactNode; channel?: ReactNode; next?: ReactNode; handle?: ReactNode; scale?: number; className?: string; }
+export interface CamFrameProps { ratio?: '16:9' | '4:3' | '1:1'; width?: number | string; live?: boolean; name?: ReactNode; role?: ReactNode; children?: ReactNode; className?: string; style?: React.CSSProperties; }
+export interface ChatBadgeProps { kind?: ChatBadgeKind; size?: number; title?: string; }
+export interface ChatMessage { user: ReactNode; text: ReactNode; tone?: 'brand' | 'sky' | 'emerald' | 'pink' | 'purple' | 'orange' | 'indigo' | 'neutral'; badges?: ChatBadgeKind[]; id?: string | number; }
+export interface ChatBoxProps { messages: ChatMessage[]; width?: number | string; height?: number | string; translucent?: boolean; fade?: boolean; animate?: boolean; 'aria-label'?: string; className?: string; }
+export interface StreamGoalProps { label: ReactNode; current: number; goal: number; unit?: string; width?: number | string; className?: string; }
+export interface StreamEventItem { type: StreamEventType; user: ReactNode; amount?: number; months?: number; detail?: ReactNode; time?: ReactNode; }
+export interface StreamEventsProps { items: StreamEventItem[]; max?: number; title?: ReactNode; width?: number | string; animate?: boolean; className?: string; }
+export interface NowPlayingProps { title: ReactNode; artist?: ReactNode; cover?: string; progress?: number; paused?: boolean; width?: number | string; className?: string; }
+export interface StreamStatusProps { status?: 'live' | 'offline' | 'rerun'; viewers?: number; uptime?: string; category?: ReactNode; className?: string; }
+export interface ChannelPanelProps { title: ReactNode; icon?: IconName; children?: ReactNode; rows?: { label: ReactNode; value: ReactNode }[]; action?: { label: ReactNode; href?: string; icon?: IconName | ReactNode; hierarchy?: ButtonProps['hierarchy'] }; width?: number | string; className?: string; }
+export interface ChannelBannerProps { name?: ReactNode; tagline?: ReactNode; eyebrow?: ReactNode; schedule?: { day: ReactNode; time: ReactNode }[]; scale?: number; className?: string; }
+
 export interface BrowserFrameProps { variant?: 'safari' | 'minimal'; url?: string; height?: number | string; children?: ReactNode; className?: string; style?: React.CSSProperties; }

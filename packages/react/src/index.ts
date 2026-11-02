@@ -33,8 +33,22 @@ export { BrowserFrame, type BrowserFrameProps } from "./components/BrowserFrame.
 export { Button, type ButtonHierarchy, type ButtonProps, type ButtonSize } from "./components/Button.js";
 export { ButtonGroup, type ButtonGroupItem, type ButtonGroupProps } from "./components/ButtonGroup.js";
 export { type CalendarEvent, CalendarView, type CalendarViewProps } from "./components/CalendarView.js";
+export { CamFrame, type CamFrameProps, type CamFrameRatio } from "./components/CamFrame.js";
 export { CardHeader, type CardHeaderProps } from "./components/CardHeader.js";
+export {
+	ChannelBanner,
+	type ChannelBannerProps,
+	type ChannelBannerSlot,
+} from "./components/ChannelBanner.js";
+export {
+	ChannelPanel,
+	type ChannelPanelAction,
+	type ChannelPanelProps,
+	type ChannelPanelRow,
+} from "./components/ChannelPanel.js";
 export { ChartLegend, type ChartLegendProps } from "./components/ChartLegend.js";
+export { ChatBadge, type ChatBadgeKind, type ChatBadgeProps } from "./components/ChatBadge.js";
+export { ChatBox, type ChatBoxProps, type ChatMessage, type ChatTone } from "./components/ChatBox.js";
 export { Checkbox, type CheckboxProps } from "./components/Checkbox.js";
 export { CloseButton, type CloseButtonProps } from "./components/CloseButton.js";
 export { CodeSnippet, type CodeSnippetProps, type CodeSnippetTab } from "./components/CodeSnippet.js";
@@ -84,6 +98,7 @@ export { MessageInput, type MessageInputProps } from "./components/MessageInput.
 export { MetricCard, type MetricCardProps } from "./components/MetricCard.js";
 export { Modal, type ModalProps } from "./components/Modal.js";
 export { Notification, type NotificationProps } from "./components/Notification.js";
+export { NowPlaying, type NowPlayingLabels, type NowPlayingProps } from "./components/NowPlaying.js";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
 export {
 	Pagination,
@@ -107,6 +122,21 @@ export { Skeleton, type SkeletonProps } from "./components/Skeleton.js";
 export { Slideout, type SlideoutProps } from "./components/Slideout.js";
 export { Slider, type SliderProps } from "./components/Slider.js";
 export { Spinner, type SpinnerProps, type SpinnerSize } from "./components/Spinner.js";
+export { StreamAlert, type StreamAlertProps } from "./components/StreamAlert.js";
+export {
+	StreamCountdown,
+	type StreamCountdownProps,
+	type StreamCountdownSize,
+} from "./components/StreamCountdown.js";
+export { type StreamEventItem, StreamEvents, type StreamEventsProps } from "./components/StreamEvents.js";
+export { StreamGoal, type StreamGoalLabels, type StreamGoalProps } from "./components/StreamGoal.js";
+export { StreamScene, type StreamSceneProps, type StreamSceneVariant } from "./components/StreamScene.js";
+export {
+	StreamStatus,
+	type StreamStatusLabels,
+	type StreamStatusProps,
+	type StreamStatusValue,
+} from "./components/StreamStatus.js";
 export { Table, type TableColumn, type TableProps } from "./components/Table.js";
 export { type TabItem, Tabs, type TabsProps, type TabsSize, type TabsType } from "./components/Tabs.js";
 export { Tag, type TagProps, type TagSize } from "./components/Tag.js";
@@ -127,4 +157,5 @@ export {
 	formatNumber,
 	formatPercent,
 } from "./internal/format.js";
+export type { StreamEventType, StreamMotion, StreamTime } from "./internal/stream.js";
 export { defaultStrings, type Strings } from "./internal/strings.js";

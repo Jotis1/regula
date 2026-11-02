@@ -1,0 +1,17 @@
+<!-- @dsCard group="Stream · Overlay" height=262 width=800 subtitle="Suena ahora, en pausa y con título largo" -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>NowPlaying</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:24px} .row{display:flex;flex-wrap:wrap;gap:24px}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  document.documentElement.setAttribute('data-theme', 'dark');
+  var J = window.Jotis, h = React.createElement;
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'row' },
+    h(J.NowPlaying, { title: 'Cuatro paredes y un techo', artist: 'Los Vecinos del Quinto', progress: 0.42 }),
+    h(J.NowPlaying, { title: 'Silencio incómodo', artist: 'Banda sin nombre', progress: 0.9, paused: true }),
+    h(J.NowPlaying, { title: 'Una canción con un título bastante más largo de lo razonable para esta tarjeta', artist: 'Artista con nombre igual de largo que la canción', progress: 0.15 })));
+</script>
+</body>
+</html>

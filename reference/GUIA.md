@@ -68,6 +68,17 @@ Los tokens son **semánticos**: elige por función, no por tono. Cada uno trae s
 - **Trazos a mano** (grupo Hand-drawn): subrayados, círculos, flechas y acentos en tinta `#171717`. En oscuro, recolorea a `#FAFAFA`. Uno o dos por vista, nunca en pantallas de trabajo.
 - **Maquetas** (`CreditCard`, `BrowserFrame`): tarjeta de pago y marco de navegador para onboarding, documentación y presentaciones. Dentro del marco van componentes reales, no capturas.
 
+## Stream (Twitch)
+
+Familia de componentes para directos: alertas, escenas, overlay y canal. Sigue la misma gramática del sistema (neutro primero, índigo con intención, Geist y Bricolage) y se dibuja **siempre en oscuro**: cada raíz lleva `data-theme="dark"`, así que se ve igual dentro de una página clara.
+
+- **Piezas.** Alertas: `StreamAlert`. Escenas: `StreamScene` y `StreamCountdown`. Overlay: `CamFrame`, `ChatBox`, `ChatBadge`, `StreamGoal`, `StreamEvents`, `NowPlaying` y `StreamStatus`. Canal: `ChannelPanel` y `ChannelBanner`.
+- **Tamaños de Twitch.** Escena y pantalla offline: 1920×1080. Banner de perfil: 1200×480. Paneles: 320px de ancho (exporta a 640px). Emotes: 28, 56 y 112px. Insignias de suscriptor: 18, 36 y 72px. `StreamScene` y `ChannelBanner` son lienzos de tamaño fijo que se escalan al ancho disponible, o a `scale` si se lo das.
+- **Movimiento.** Es la excepción acotada a "sin animaciones decorativas": lo que aparece o se va (una alerta, el último mensaje del chat, la primera fila de eventos) entra en 250 ms con fundido y 8px de subida, y sale en 200 ms. Con `prefers-reduced-motion`, solo fundido. No hay ecualizadores, bucles ni brillos; la cuenta atrás y las barras solo cambian cuando cambia el dato.
+- **Color.** Un solo acento, el índigo: `bg-brand-solid` en los iconos de alerta y el relleno de las barras, `fg-brand-primary` en los puntos. El rol de cada usuario en el chat usa las escalas `utility-*`, que en oscuro dan fondo oscuro y texto claro. "En directo" no va en rojo: en el sistema el rojo es error.
+- **Texto.** La voz de la suite (cercana, humor seco, una broma por pantalla), en castellano de España y sin emojis. Cifras con formato español (`1.284`, `5,00 €`). Las cifras de reloj van en Geist tabular y no en Bricolage, que las tiene de ancho variable.
+- **En OBS.** El flujo es el de la suite: implementa cada componente en Astro o Next con Tailwind sobre estos tokens y úsalo como fuente de navegador con fondo transparente. El bundle de aquí solo sirve para verlos. `ChatBox` con `translucent` usa `color-mix` y `backdrop-filter`; en un OBS con un Chromium antiguo cae al fondo sólido.
+
 ## Marca
 
 No hay logotipo propio de jotis.me en el archivo: en la cabecera de cada app, escribe "jotis.me" en Bricolage Grotesque bold, `text-primary`. El grupo Logos guarda el logo y el logomark **Yoruverse** que trae el archivo (marca índigo con luna), con una versión de tinta blanca para fondos oscuros; úsalos solo si la app forma parte de Yoruverse.
@@ -82,6 +93,7 @@ Cada app de la suite tiene un icono de la misma familia: baldosa con las dos pri
 | Vinculum | Vi | `sky` |
 | Pecunia | Pe | `emerald` |
 | Emptor | Em | `orange` |
+| Regula | Re | `chartreuse` |
 
 **Rasgos de la familia.** Tres cosas, siempre juntas, que distinguen un icono de jotis.me de cualquier baldosa oscura con letras:
 - **Esquina.** Tres esquinas con radio del 22,5 % del lado y la inferior izquierda casi recta (6/128). Es la silueta de la familia y no depende del color.
@@ -94,7 +106,7 @@ Cada app de la suite tiene un icono de la misma familia: baldosa con las dos pri
 - Vertical: línea base al 62,5 % de L con virgulilla y al 66,4 % sin ella. La virgulilla va 11/128 por debajo de la línea base, mide 40/128 de largo (fijo), trazo de 3,6/128 con extremos redondos y una amplitud de unos 3/128.
 - En los SVG las letras van en curvas: no dependen de la fuente instalada.
 
-**Variantes** (tono T de la paleta v4 de Tailwind):
+**Variantes** (tono T de la paleta v4 de Tailwind, o `chartreuse`):
 
 | Variante | Fondo | Mayúscula / minúscula / virgulilla | Uso |
 |---|---|---|---|
@@ -113,6 +125,9 @@ Cada app de la suite tiene un icono de la misma familia: baldosa con las dos pri
   - Nunca `red`, que es error.
   - Tampoco `yellow`, porque el blanco sobre `yellow-600` no llega a 3:1.
   - Ni grises: la variante mono ya es la gris.
+  - Si ningún tono de Tailwind cumple lo anterior, la suite tiene escala propia: `chartreuse` (Regula).
+
+**`chartreuse`, la paleta propia.** Verde amarillento en el hueco de tono entre `yellow` y `lime` (tono OKLCH ≈ 112–122), con la misma escalera de luminosidad que las demás: 50 `#fafde6`, 100 `#f4f9c3`, 200 `#eaf389`, 300 `#dce930`, 400 `#cada00`, 500 `#b1c300`, 600 `#829500`, 700 `#627200`, 800 `#4c5a00`, 900 `#404d0f`, 950 `#222b06`. Es más amarilla que `lime` (`#7ccf00` en 500) y no es neutra como `olive`. Contrastes de los iconos de Regula: mayúscula 300 sobre 950, 11,1:1; minúscula 500 sobre 950, 7,5:1; blanco sobre 600 (sólido), 3,4:1; 800 sobre 50 (claro), 7,3:1. En los tokens va como `utility-chartreuse-50…700`. Como no viene en Tailwind, el `theme.css` de las apps necesita las once variables `--color-chartreuse-50` … `--color-chartreuse-950` dentro de `@theme`; con eso Tailwind v4 genera `bg-chartreuse-600` y compañía. Blanco sobre `chartreuse-600` no pasa de 3,4:1: sirve para iconos y letras grandes, no para texto corrido.
 
 ## Con Tailwind v4 (Next o Astro)
 

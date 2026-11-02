@@ -1,0 +1,25 @@
+<!-- @dsCard group="Stream · Overlay" height=585 width=800 subtitle="Últimos eventos, con los siete tipos" -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>StreamEvents</title>
+<style>html,body{margin:0;background:var(--bg-primary)} body{padding:24px} .row{display:flex;gap:24px;align-items:flex-start}</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  document.documentElement.setAttribute('data-theme', 'dark');
+  var J = window.Jotis, h = React.createElement;
+  var all = [
+    { type: 'follow', user: 'lucia_pixel', time: 'ahora' },
+    { type: 'donation', user: 'Marta_en_Directo', amount: 5, time: '2 min' },
+    { type: 'raid', user: 'TioBigotes', amount: 1284, time: '9 min' },
+    { type: 'resub', user: 'nachoXL', months: 14, time: '12 min' },
+    { type: 'gift', user: 'ElSilencioso', amount: 5, time: '20 min' },
+    { type: 'bits', user: 'Pixel_Panda', amount: 500, time: '31 min' },
+    { type: 'sub', user: 'cafeconleche', time: '40 min' }
+  ];
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'row' },
+    h(J.StreamEvents, { items: all, max: 7, animate: true }),
+    h(J.StreamEvents, { title: 'Hoy', items: all.slice(0, 3), width: 300 })));
+</script>
+</body>
+</html>

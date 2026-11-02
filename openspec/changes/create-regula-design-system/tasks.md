@@ -91,19 +91,29 @@
 - [x] 12.1 Portar LineChart (área), BarChart (apilado), PieChart (anillo, centro) y ChartLegend con la paleta de series por defecto y leyenda automática con 3+ series; verificar con tests de colores, leyenda y `aria-label`, axe y paridad visual en claro y oscuro
 - [x] 12.2 Escribir las páginas de la web de las 4 gráficas, con la advertencia de la tercera serie en oscuro; verificar con el build de la web y los tests de 5.7
 
-## 13. Búsqueda, publicación y despliegue
+## 13. Stream (Twitch)
 
-- [x] 13.1 Integrar Pagefind con CommandMenu y atajo Ctrl+K / Cmd+K sobre páginas, tokens, iconos y componentes; verificar con Playwright que "modal" encuentra la página de Modal y Enter navega
-- [x] 13.2 Configurar Changesets en modo `fixed` para los tres paquetes, versión inicial `0.1.0` y changelog; verificar con `bunx changeset version` en seco
-- [ ] 13.3 Crear el workflow de CI con `oven-sh/setup-bun` (tipos, `biome ci`, tests, axe, paridad visual, build de ejemplos, `publint`/`attw`, tamaño por componente, Lighthouse CI ≥ 90) y el de publicación (`bun pm pack` + `npm publish <tgz> --provenance`) al fusionar el PR de versión; verificar con un PR de prueba que un test roto bloquea la publicación y que el `package.json` empaquetado no contiene `workspace:`
-- [ ] 13.4 Crear el proyecto en Vercel (raíz `apps/docs`, `bun install`, previews por PR) y el CNAME de `regula.jotis.me` hacia Vercel; verificar que `https://regula.jotis.me` responde con HTTPS y muestra la versión en el pie
-- [ ] 13.5 Publicar `0.1.0` de `@jotis-me/tokens`, `@jotis-me/icons` y `@jotis-me/react`; verificar que npmjs.com muestra la procedencia y que `npm install @jotis-me/react` funciona sin credenciales en un directorio vacío
+- [x] 13.1 Reimportar la guía en `reference/` desde la versión `1793561361-ae73` con `scripts/import-artifact/` (README como `GUIA.md`, `VERSION` actualizado) sin regenerar `packages/tokens/src/tokens.json` ni tocar AppIcon (design §12); verificar que hay 74 carpetas de componente con `README.md` y `preview.html` más Cover, que `--missing` no lista nada y que build, tests y la paridad de los 62 componentes existentes siguen pasando (si el bundle nuevo cambia alguna vista previa, anotarlo)
+- [x] 13.2 Crear la base común de Stream: raíz con `dark-mode`, entrada y salida con `starting:` y `motion-reduce`, cifras tabulares, iconos y etiquetas de los siete tipos de evento (compartidos por StreamAlert y StreamEvents) y lienzo de tamaño fijo escalable; verificar con tests y con `e2e/motion.spec.ts` que con movimiento reducido solo hay fundido
+- [x] 13.3 Portar StreamAlert (siete tipos, `state`, `message` como texto plano), StreamEvents (máximo, hora relativa, detalle en `es-ES`), StreamStatus y ChatBadge; verificar con tests, axe en claro y oscuro y paridad visual
+- [x] 13.4 Portar ChatBox (tonos `utility-*`, insignias, desvanecido, translúcido con reserva sólida, solo el último mensaje animado), CamFrame, StreamGoal (`role="progressbar"`, meta conseguida) y NowPlaying; verificar con tests, axe y paridad visual
+- [x] 13.5 Portar StreamCountdown (`role="timer"`, `aria-live="off"`, h:mm:ss, se queda en 00:00, `now` y `paused`) y StreamScene (cuatro variantes, 1920×1080, `scale`); verificar con tests de reloj falso, axe y paridad visual
+- [x] 13.6 Portar ChannelPanel (320px, una acción) y ChannelBanner (1200×480, zona segura de 120px, `scale`); verificar con tests, axe y paridad visual
+- [x] 13.7 Escribir la página de fundamentos `/foundations/stream/` desde la sección de la guía y las páginas de los 12 componentes; verificar con el build de la web y los tests de 5.7
 
-## 14. Comprobaciones de integración
+## 14. Búsqueda, publicación y despliegue
 
-- [ ] 14.1 Crear un proyecto Next.js nuevo y otro Astro nuevo fuera del monorepo siguiendo solo el README publicado y pintar un `Button` en claro y oscuro; verificar que el aspecto coincide con la web
-- [ ] 14.2 En el ejemplo Next, importar solo `Button` y analizar el bundle de producción; verificar que no contiene código de `DatePicker` ni de las gráficas
-- [ ] 14.3 Recorrer la web publicada con axe y Lighthouse en móvil (portada, una página de fundamentos, una de componente) en ambos temas; verificar los umbrales del spec `docs-site`
+- [x] 14.1 Integrar Pagefind con CommandMenu y atajo Ctrl+K / Cmd+K sobre páginas, tokens, iconos y componentes; verificar con Playwright que "modal" encuentra la página de Modal y Enter navega
+- [x] 14.2 Configurar Changesets en modo `fixed` para los tres paquetes, versión inicial `0.1.0` y changelog; verificar con `bunx changeset version` en seco
+- [ ] 14.3 Crear el workflow de CI con `oven-sh/setup-bun` (tipos, `biome ci`, tests, axe, paridad visual, build de ejemplos, `publint`/`attw`, tamaño por componente, Lighthouse CI ≥ 90) y el de publicación (`bun pm pack` + `npm publish <tgz> --provenance`) al fusionar el PR de versión; verificar con un PR de prueba que un test roto bloquea la publicación y que el `package.json` empaquetado no contiene `workspace:`
+- [ ] 14.4 Crear el proyecto en Vercel (raíz `apps/docs`, `bun install`, previews por PR) y el CNAME de `regula.jotis.me` hacia Vercel; verificar que `https://regula.jotis.me` responde con HTTPS y muestra la versión en el pie
+- [ ] 14.5 Publicar `0.1.0` de `@jotis-me/tokens`, `@jotis-me/icons` y `@jotis-me/react`; verificar que npmjs.com muestra la procedencia y que `npm install @jotis-me/react` funciona sin credenciales en un directorio vacío
+
+## 15. Comprobaciones de integración
+
+- [ ] 15.1 Crear un proyecto Next.js nuevo y otro Astro nuevo fuera del monorepo siguiendo solo el README publicado y pintar un `Button` en claro y oscuro; verificar que el aspecto coincide con la web
+- [ ] 15.2 En el ejemplo Next, importar solo `Button` y analizar el bundle de producción; verificar que no contiene código de `DatePicker` ni de las gráficas
+- [ ] 15.3 Recorrer la web publicada con axe y Lighthouse en móvil (portada, una página de fundamentos, una de componente) en ambos temas; verificar los umbrales del spec `docs-site`
 
 ## Workflow follow-up
 

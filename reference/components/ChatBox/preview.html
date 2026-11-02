@@ -1,0 +1,29 @@
+<!-- @dsCard group="Stream · Overlay" height=500 width=960 subtitle="Chat sólido y translúcido, con el último mensaje entrando" -->
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>ChatBox</title>
+<style>
+  html,body{margin:0;background:var(--bg-primary)} body{padding:24px}
+  .row{display:flex;gap:24px;align-items:flex-start}
+  /* Fondo de juego de mentira, para ver la transparencia */
+  .busy{padding:20px;border-radius:16px;background-color:var(--bg-secondary);background-image:repeating-linear-gradient(135deg,var(--bg-tertiary) 0 12px,var(--bg-quaternary) 12px 24px)}
+</style></head>
+<body>
+<div id="root" class="jm-root"></div>
+<script>
+  document.documentElement.setAttribute('data-theme', 'dark');
+  var J = window.Jotis, h = React.createElement;
+  var msgs = [
+    { user: 'TioBigotes', tone: 'sky', badges: ['mod'], text: 'Bienvenidos todos, el sillón de la derecha es mío.' },
+    { user: 'lucia_pixel', tone: 'pink', badges: ['sub', 'vip'], text: 'Esa jugada la he visto yo en un tutorial.' },
+    { user: 'nachoXL', tone: 'emerald', badges: ['sub'], text: 'Cuenta atrás para el primer susto.' },
+    { user: 'Marta_en_Directo', tone: 'purple', badges: ['bits'], text: 'Cien bits para el café, que hace falta.' },
+    { user: 'ElSilencioso', tone: 'neutral', text: 'Llego tarde pero llego.' },
+    { user: 'TioBigotes', tone: 'sky', badges: ['mod'], text: 'Recordad las normas, que luego me toca a mí.' }
+  ];
+  ReactDOM.createRoot(document.getElementById('root')).render(h('div', { className: 'row' },
+    h(J.ChatBox, { messages: msgs, height: 440, animate: true }),
+    h('div', { className: 'busy' }, h(J.ChatBox, { messages: msgs, height: 400, width: 400, translucent: true }))));
+</script>
+</body>
+</html>

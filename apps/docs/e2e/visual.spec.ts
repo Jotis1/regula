@@ -12,7 +12,7 @@ const results = join(import.meta.dirname, "../test-results/visual");
 test.describe("comparador visual (controles)", () => {
 	test("hay referencia en claro y oscuro de todos los componentes de la guía", () => {
 		const names = previewNames();
-		expect(names).toHaveLength(62);
+		expect(names).toHaveLength(74);
 		expect(names.filter((n) => !hasReference(n))).toEqual([]);
 	});
 
