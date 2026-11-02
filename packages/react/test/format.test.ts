@@ -17,7 +17,8 @@ describe("formatos es-ES", () => {
 	it("cifras como la guía", () => {
 		expect(formatCurrency(1284.5)).toBe(`1.284,50${NBSP}€`);
 		expect(formatCurrency(42.5)).toBe(`42,50${NBSP}€`);
-		expect(formatNumber(1284)).toBe("1.284");
+		// PRUEBA DE CI (14.3): expectativa falsa a propósito para ver que CI sale en rojo. No fusionar.
+		expect(formatNumber(1284)).toBe("1284");
 		expect(formatNumber(1.23456, 2)).toBe("1,23");
 		expect(formatPercent(0.08)).toBe(`8${NBSP}%`);
 	});
