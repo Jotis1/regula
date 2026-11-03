@@ -1,12 +1,15 @@
 ---
-// Índice de componentes (design §10): los grupos del catálogo en su orden, cada componente con su descripción de la
-// ficha y enlazado a su página. Los cuatro grupos de Stream van al final, bajo su sección.
+// Índice de componentes (design §10): los grupos del catálogo en su orden, cada componente en una card con su foto, su
+// descripción de la ficha y el enlace a su página. Los cuatro grupos de Stream van al final, bajo su sección.
+//
+// La foto es la captura de la vista previa de la guía que usa la paridad visual, en claro y en oscuro, recortada en el
+// build (src/lib/previews.ts; decisión del usuario, 3 nov).
 import { getCollection } from "astro:content";
 import { Breadcrumbs } from "@jotis-me/react";
 import InlineCode from "../../components/InlineCode.astro";
 import Base from "../../layouts/Base.astro";
 import { COMPONENT_GROUPS, slugOf } from "../../lib/catalog";
-import { PAGER } from "../../lib/toc";
+import { type Preview, preview, previewUrl } from "../../lib/previews";
 
 const pages = await getCollection("components");
 const descriptions = new Map(pages.map((p) => [p.data.name, p.data.description]));
@@ -18,6 +21,19 @@ const sections = [
 	},
 	{ id: "stream", title: "Stream", groups: COMPONENT_GROUPS.filter((g) => g.section === "stream") },
 ] as const;
+const photos = new Map<string, { light: Preview; dark: Preview }>(
+	await Promise.all(
+		sections
+			.flatMap((s) => s.groups.flatMap((g) => [...g.components]))
+			.map(
+				async (name) =>
+					[
+						name,
+						{ light: await preview(name, "light"), dark: await preview(name, "dark") },
+					] as const,
+			),
+	),
+);
 const total = pages.length;
 const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length, 0);
 ---
@@ -50,11 +66,33 @@ const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length,
 							<ul class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3" data-group={group.id}>
 								{group.components.map((name) => (
 									<li class="flex">
-										<a href={`/components/${slugOf(name)}/`} class={PAGER}>
-											<span class="text-md font-semibold">{name}</span>
-											<span class="text-sm text-tertiary">
-												<InlineCode text={descriptions.get(name) ?? ""} />
-											</span>
+										<a
+											href={`/components/${slugOf(name)}/`}
+											class="group flex flex-1 flex-col overflow-hidden rounded-xl border border-secondary text-primary no-underline transition-shadow duration-100 hover:border-primary hover:shadow-sm focus-visible:shadow-focus-ring focus-visible:outline-none"
+										>
+											{/* El fondo de la card es el de la captura, para que la foto no se vea como un recuadro */}
+											<div
+												class="flex aspect-[16/10] items-center justify-center overflow-hidden bg-[var(--photo-light)] p-4 shadow-[inset_0_-1px_0_var(--border-secondary)] dark:bg-[var(--photo-dark)]"
+												style={`--photo-light:${photos.get(name)?.light.background};--photo-dark:${photos.get(name)?.dark.background}`}
+											>
+												{(["light", "dark"] as const).map((theme) => (
+													<img
+														src={previewUrl(name, theme)}
+														width={photos.get(name)?.[theme].width}
+														height={photos.get(name)?.[theme].height}
+														alt=""
+														loading="lazy"
+														decoding="async"
+														class:list={["h-auto max-h-full w-auto max-w-full object-contain", theme === "light" ? "dark:hidden" : "hidden dark:block"]}
+													/>
+												))}
+											</div>
+											<div class="flex flex-col gap-0.5 p-4">
+												<span class="text-md font-semibold group-hover:underline">{name}</span>
+												<span class="text-sm text-tertiary">
+													<InlineCode text={descriptions.get(name) ?? ""} />
+												</span>
+											</div>
 										</a>
 									</li>
 								))}

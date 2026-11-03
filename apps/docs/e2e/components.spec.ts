@@ -211,3 +211,30 @@ test("/components/ lista los 74 componentes, cada uno enlazado a su página, con
 		await expect(page.locator(`h3#${id}`)).toHaveCount(1);
 	await expect(page.locator("#seccion-stream + section h3")).toHaveText(/Alertas/);
 });
+
+test("/components/: cada card lleva su foto, la de claro o la de oscuro según el tema", async ({
+	page,
+	request,
+}) => {
+	await page.goto("/components/");
+	const card = page.locator(`[data-group] a[href="/components/button-group/"]`);
+	const light = card.locator(`img[src="/components/previews/ButtonGroup-light.webp"]`);
+	const dark = card.locator(`img[src="/components/previews/ButtonGroup-dark.webp"]`);
+	await card.scrollIntoViewIfNeeded();
+	await expect(light).toBeVisible();
+	await expect(dark).toBeHidden();
+	// Decorativa: el nombre de la card sigue siendo solo el del componente y su descripción
+	await expect(light).toHaveAttribute("alt", "");
+	await expect(card).toHaveAccessibleName(/^ButtonGroup Grupo segmentado/);
+	await expect.poll(() => light.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
+	expect(
+		(await request.get("/components/previews/StreamScene-dark.webp")).headers()["content-type"],
+	).toContain("image/webp");
+	await page.emulateMedia({ colorScheme: "dark" });
+	await page.reload();
+	await card.scrollIntoViewIfNeeded();
+	await expect(dark).toBeVisible();
+	await expect(light).toBeHidden();
+	// Las fotos van con lazy: al cargar solo se piden las de la vista
+	expect(await page.locator("[data-group] img[loading=lazy]").count()).toBe(pages.length * 2);
+});

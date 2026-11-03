@@ -114,7 +114,7 @@ No hace falta JavaScript para leerla. El filtro y la copia son una isla pequeña
 - **Tema de Tailwind:** nada que añadir. AppIcon lleva los colores de cada tono en su código (excepción documentada en `check:colors`); el tema sigue sin exponer la paleta cruda.
 
 ### 10. Páginas nuevas
-- **`/components/`:** grupos del catálogo con nombre y descripción de cada componente.
+- **`/components/`:** grupos del catálogo, con cada componente en una card con su foto, su nombre y su descripción. La foto es la captura de la paridad visual (`e2e/visual/reference/`) en claro y en oscuro, recortada en el build con sharp (`src/lib/previews.ts`) y servida como WebP estático (decisión del usuario, 3 nov). Se descartó pintar el componente en vivo porque Modal, Slideout, CommandMenu y los lienzos de Stream no se pintan sin JavaScript.
 - **`/changelog/`:** lee en el build los `CHANGELOG.md` de los paquetes (Changesets en modo `fixed`: misma versión en los tres). Muestra cada versión una vez, con las entradas de los tres. Sin versiones publicadas, un `EmptyState`.
 - **`/components/<slug>/full/`:** solo para StreamScene y ChannelBanner. El lienzo va con `scale={1}` sobre fondo oscuro, `noindex` y un enlace de vuelta.
 
