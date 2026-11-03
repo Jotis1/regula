@@ -1,0 +1,25 @@
+# Lighthouse en móvil sobre la web publicada (regula.jotis.me), en claro y en oscuro: portada, Color y Button, con
+# umbral de 90 en rendimiento y accesibilidad (spec docs-site). Se lanza a mano desde Actions, después de un
+# despliegue; el CI de cada PR ya mide la web construida en local, solo en claro.
+name: Lighthouse de la web publicada
+
+on:
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    lighthouse:
+        name: Lighthouse (móvil, claro y oscuro)
+        # El mismo sistema que el job de navegador del CI, para que las cifras se puedan comparar
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version-file: package.json
+            - run: bun install --frozen-lockfile
+            - name: Lighthouse sobre regula.jotis.me
+              working-directory: apps/docs
+              run: bun run scripts/lighthouse-published.ts

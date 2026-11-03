@@ -28,7 +28,13 @@ const value = (name: Name, on: "ground" | "white", theme: "light" | "dark") => {
 const cell = "px-5 py-3.5";
 ---
 
-<div class="not-prose my-4 overflow-x-auto rounded-xl shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+<!-- En móvil la tabla se desplaza dentro de su caja; con teclado, la caja recibe el foco para desplazarla -->
+<div
+	role="region"
+	aria-label="Excepciones de contraste"
+	tabindex="0"
+	class="not-prose my-4 overflow-x-auto rounded-xl shadow-[inset_0_0_0_1px_var(--border-secondary)] focus-visible:shadow-focus-ring focus-visible:outline-none"
+>
 	<table class="w-full min-w-[560px] border-collapse text-sm">
 		<caption class="sr-only">Tokens por debajo del contraste recomendado y cómo usarlos</caption>
 		<thead>

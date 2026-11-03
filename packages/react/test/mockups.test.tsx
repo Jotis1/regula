@@ -104,6 +104,18 @@ describe("BackgroundPattern", () => {
 });
 
 describe("BrowserFrame", () => {
+	it("el contenido es una región con foco, con la dirección como nombre, para desplazarlo con el teclado", async () => {
+		render(
+			<BrowserFrame url="pecunia.jotis.me/resumen" height={120}>
+				<p>Pantalla</p>
+			</BrowserFrame>,
+		);
+		const region = screen.getByRole("region", { name: "pecunia.jotis.me/resumen" });
+		expect(region.textContent).toBe("Pantalla");
+		await userEvent.tab();
+		expect(document.activeElement).toBe(region);
+	});
+
 	it("safari: semáforo, navegación, dirección, acciones y contenido con su alto", () => {
 		const { container } = render(
 			<BrowserFrame url="pecunia.jotis.me/resumen" height={260}>

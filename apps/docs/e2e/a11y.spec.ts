@@ -65,3 +65,15 @@ for (const path of pages(dist)) {
 		});
 	}
 }
+
+// A 390px aparecen cajas que se desplazan en horizontal (tablas, ejemplos anchos) que en escritorio caben: cada una
+// tiene que poder enfocarse para desplazarla con el teclado. Solo esta regla, que es la que depende del ancho.
+for (const path of pages(dist))
+	test(`${path} a 390px: lo que se desplaza se puede enfocar`, async ({ page }) => {
+		await page.setViewportSize({ width: 390, height: 844 });
+		await page.goto(path);
+		const { violations } = await new AxeBuilder({ page })
+			.withRules(["scrollable-region-focusable"])
+			.analyze();
+		expect(violations.flatMap((v) => v.nodes.map((n) => n.target.join(" ")))).toEqual([]);
+	});

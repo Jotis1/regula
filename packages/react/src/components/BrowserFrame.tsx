@@ -86,9 +86,17 @@ export function BrowserFrame({
 					</>
 				)}
 			</div>
-			<div className="relative overflow-auto" style={height !== undefined ? { height } : undefined}>
+			{/* Región con foco: si la pantalla no cabe (alto fijo o un ancho estrecho), se desplaza y tiene que poder
+			    hacerse con el teclado. Su nombre es la dirección de la barra */}
+			<section
+				aria-label={url}
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: el contenido puede desplazarse y necesita foco de teclado
+				tabIndex={0}
+				className="relative overflow-auto focus-visible:shadow-[inset_0_0_0_2px_var(--focus-ring)] focus-visible:outline-none"
+				style={height !== undefined ? { height } : undefined}
+			>
 				{children}
-			</div>
+			</section>
 		</div>
 	);
 }

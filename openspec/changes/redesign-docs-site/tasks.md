@@ -49,8 +49,8 @@
 
 ## 9. Integración
 
-- [ ] 9.1 Pasar la verificación completa: `biome ci`, `turbo build typecheck test` desde un clon limpio, toda la suite de la web (incluida la paridad de `/visual/`), los ejemplos Next y Astro, y Lighthouse en CI (≥ 90 en portada, Color y Button) en el PR de `rediseno-web`; verificar con CI en verde en el PR
-- [ ] 9.2 Revisar con el usuario la preview de Vercel del PR frente al diseño en escritorio y móvil, en claro y oscuro, y anotar en NOTAS.md del cambio las diferencias aceptadas; verificar con su visto bueno
+- [x] 9.1 Pasar la verificación completa: `biome ci`, `turbo build typecheck test` desde un clon limpio, toda la suite de la web (incluida la paridad de `/visual/`), los ejemplos Next y Astro, y Lighthouse en CI (≥ 90 en portada, Color y Button) en el PR de `rediseno-web`; verificar con CI en verde en el PR
+- [x] 9.2 Revisar con el usuario la preview de Vercel del PR frente al diseño en escritorio y móvil, en claro y oscuro, y anotar en NOTAS.md del cambio las diferencias aceptadas; verificar con su visto bueno
 
 ## Workflow follow-up
 
