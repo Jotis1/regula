@@ -12,10 +12,7 @@ La web de documentación (regula.jotis.me) se montó con un diseño provisional:
   - Menú móvil a pantalla completa, con búsqueda y tema en tres estados (Sistema, Claro, Oscuro).
   - Migas de pan, índice "En esta página", anterior/siguiente y relacionados.
 - **Marca de la web.** La cabecera, el pie y el menú muestran "Regula" con su icono de app, en lugar de "jotis.me" junto a "Regula". **BREAKING** para el requisito actual de `docs-site`.
-- **Regula en la familia de iconos de app.** Se porta lo que la versión `1793561361-ae73` de la guía añadió y `create-regula-design-system` dejó fuera (su design §12):
-  - Regula (`Re`, tono `chartreuse`) en el registro de apps, con sus SVG, favicon y PNG;
-  - la paleta propia `chartreuse` en el icono;
-  - los tokens `utility-chartreuse-50…700`.
+- **Regula en la familia de iconos de app.** Se porta lo que la guía añadió y `create-regula-design-system` dejó fuera (su design §12): Regula (`Re`, tono `fuchsia`) en el registro de apps, con sus SVG, favicon y PNG. La versión `1793561361-ae73` lo traía en una paleta propia, `chartreuse`; la `1793653059-466a` (decisión del usuario, 3 nov) lo pasa a `fuchsia`, de la paleta de Tailwind, y quita `chartreuse` de los tokens. `reference/` se reimporta a esa versión.
 - **Portada nueva:**
   - mensaje principal con un formulario de componentes reales;
   - instalación en tres pasos;
@@ -64,8 +61,7 @@ Ninguna.
   - navegación agrupada con filtro y menú móvil;
   - pie con historial;
   - páginas nuevas: portada, índice de componentes, historial y tamaño real.
-- `brand-assets`: el registro de apps incluye Regula (`Re`, `chartreuse`) y admite `chartreuse` como paleta propia de la suite.
-- `design-tokens`: la paridad con la guía incluye `utility-chartreuse-50…700`; deja de ser una diferencia documentada.
+- `brand-assets`: el registro de apps incluye Regula (`Re`, `fuchsia`).
 
 ## Impact
 
@@ -75,8 +71,8 @@ Ninguna.
   - cambian las rutas;
   - los e2e (`components`, `foundations`, `icons`, `search`, `theme`, `tokens`, `a11y`) se adaptan a la nueva estructura;
   - la paridad visual (`/visual/`) y su arnés no cambian.
-- **`packages/tokens`:** regenerar `src/tokens.json` desde la guía con la paleta `chartreuse` y pasar `translate-usage.ts`; quitar la exclusión de `test/usage.test.ts`.
-- **`packages/icons` y `packages/react`:** Regula en el registro de apps, tono `chartreuse` en la geometría y los colores, y los SVG/PNG de Regula. `AppIcon` deja de compararse con la vista previa fijada (`e2e/visual/pinned/AppIcon.preview.html`) y se recaptura su referencia.
-- **Changeset:** `minor` para los tres paquetes (Regula en `AppIcon` y tokens nuevos).
-- **Dependencia de orden:** `docs-site`, `brand-assets` y `design-tokens` solo existen todavía como deltas de `create-regula-design-system`. Este cambio se archiva después de ese.
+- **`packages/tokens`:** regenerar `src/tokens.json` desde la guía `1793653059-466a` con `translate-usage.ts` y quitar la exclusión `UNPORTED` de `test/usage.test.ts`: la guía ya no trae tokens sin portar.
+- **`packages/icons` y `packages/react`:** Regula (`fuchsia`) en el registro de apps y los SVG/PNG de Regula. `AppIcon` deja de compararse con la vista previa fijada (`e2e/visual/pinned/AppIcon.preview.html`) y se recaptura su referencia.
+- **Changeset:** `minor` para `@jotis-me/icons` y `@jotis-me/react` (Regula en `AppIcon`); los tres suben juntos (Changesets en modo `fixed`).
+- **Dependencia de orden:** `docs-site` y `brand-assets` solo existen todavía como deltas de `create-regula-design-system`. Este cambio se archiva después de ese.
 - **Rama:** `rediseno-web`, creada desde `grupo-13-stream`. Se rebasa sobre `main` cuando `grupo-13-stream` esté fusionada.

@@ -55,7 +55,7 @@ La web SHALL construirse con los paquetes del propio monorepo y cumplir las regl
 
 #### Scenario: Cabecera
 - **WHEN** se abre cualquier página
-- **THEN** la cabecera muestra el icono de app de Regula (`Re`, tono `chartreuse`) y "Regula" en Bricolage Grotesque bold en `text-primary`
+- **THEN** la cabecera muestra el icono de app de Regula (`Re`, tono `fuchsia`) y "Regula" en Bricolage Grotesque bold en `text-primary`
 
 #### Scenario: Paquetes reales en el código
 - **WHEN** se revisa cualquier fragmento de código de la web

@@ -101,13 +101,13 @@ No hace falta JavaScript para leerla. El filtro y la copia son una isla pequeña
 ### 8. Tema en tres estados
 `localStorage` guarda `claro`, `oscuro` o nada (sistema). El script de `<head>` ya resuelve el sistema cuando no hay valor. El conmutador de la cabecera alterna claro y oscuro; el selector del menú móvil añade "Sistema", que borra el valor guardado.
 
-### 9. Marca: icono de Regula en `chartreuse`
-- **Registro y tono:** Regula entra en el registro de `@jotis-me/icons`. Su tono es la escala de 11 pasos de la guía (`chartreuse-50…950`).
-- **Validación:** acepta `chartreuse` como paleta propia. En el círculo de tonos va entre `yellow` y `lime`, lejos de los tonos de las otras apps.
-- **Ficheros:** se generan sus SVG, el favicon y los PNG. La paridad se comprueba con `reference/assets/App icons/regula-*.svg`.
+### 9. Marca: icono de Regula en `fuchsia`
+- **Registro y tono:** Regula entra en el registro de `@jotis-me/icons` con `fuchsia`, un tono de la paleta de Tailwind. La guía `1793561361-ae73` lo traía en una paleta propia, `chartreuse`; la `1793653059-466a` lo pasa a `fuchsia` y quita `chartreuse` de los tokens (decisión del usuario, 3 nov). Las tareas 2.1 a 2.4 se hicieron primero con `chartreuse` y se rehicieron con `fuchsia` (ver tasks.md).
+- **Validación:** no cambia. `fuchsia` no lo usa otra app ni es vecino de ninguna (`indigo`, la más cercana, está a tres pasos en el círculo de tonos). Sus vecinos, `purple` y `pink`, dejan de valer para una app nueva.
+- **Ficheros:** se generan sus SVG, el favicon y los PNG. La paridad se comprueba con `reference/assets/App icons/regula-*.svg`. Los de Regula de la guía nueva llevan las letras con `transform="translate(…) scale(…)"` en lugar de coordenadas absolutas: los tests de paridad aplican ese transform antes de comparar.
 - **Paridad visual de AppIcon:** la vista previa deja de estar fijada (`e2e/visual/pinned/`) y se recaptura con la de la guía, que ya trae la fila de Regula.
 - **Variante en la cabecera:** la guía dice que dentro de una interfaz clara, documentación incluida, va la variante `light` (claro). La cabecera usa `light` en el tema claro y la principal en el oscuro. El diseño usa siempre la principal; aquí manda la guía, y se anota en la página de marca.
-- **Tema de Tailwind:** no se añaden las variables `--color-chartreuse-*` a `theme.css`. AppIcon lleva sus colores en el código (excepción documentada en `check:colors`), y crear `bg-chartreuse-600` rompería la regla de "sin paleta cruda". Los tokens `utility-chartreuse-50…700` sí entran (spec `design-tokens`).
+- **Tema de Tailwind:** nada que añadir. AppIcon lleva los colores de cada tono en su código (excepción documentada en `check:colors`); el tema sigue sin exponer la paleta cruda.
 
 ### 10. Páginas nuevas
 - **`/components/`:** grupos del catálogo con nombre y descripción de cada componente.
@@ -135,7 +135,7 @@ No hace falta JavaScript para leerla. El filtro y la copia son una isla pequeña
 1. Rama `rediseno-web` desde `grupo-13-stream`; se rebasa sobre `main` cuando esta tenga `grupo-13-stream`.
 2. Cada PR tiene su preview en Vercel para revisarla con el usuario.
 3. Al fusionar en `main`, Vercel despliega la web nueva. CI sigue siendo obligatorio.
-4. El changeset `minor` (Regula en AppIcon, tokens `chartreuse`) entra en el siguiente PR de versión.
+4. El changeset `minor` (Regula en AppIcon) entra en el siguiente PR de versión.
 5. **Vuelta atrás:** revertir el merge en `main` devuelve la web anterior en el siguiente despliegue. Los paquetes no se ven afectados hasta que se publica la versión.
 
 ## Open Questions

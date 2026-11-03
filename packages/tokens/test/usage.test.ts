@@ -6,17 +6,13 @@ const read = (p: string) => JSON.parse(readFileSync(join(import.meta.dirname, p)
 const es = read("../src/tokens.json");
 const guide = read("../../../reference/tokens.json");
 
-// La guía y src/tokens.json tienen los mismos tokens, con la paleta `chartreuse` incluida: solo cambia el texto de
-// las notas de uso, que aquí está en castellano.
-
+// La guía y src/tokens.json tienen los mismos tokens, en el mismo orden: solo cambia el texto de las notas de uso,
+// que aquí está en castellano. La paleta `chartreuse` de la guía 1793561361-ae73 ya no existe (1793653059-466a).
 describe("tokens de la guía", () => {
-	it("están todos, también utility-chartreuse-50…700, y en el mismo orden", () => {
+	it("están todos y en el mismo orden, sin ninguno de más", () => {
 		const names = (t: typeof es) => t.color.tokens.map((x: { name: string }) => x.name);
 		expect(names(es)).toEqual(names(guide));
-		const chartreuse = names(es).filter((n: string) => /^utility-chartreuse-/.test(n));
-		expect(chartreuse).toEqual(
-			[50, 100, 200, 300, 400, 500, 600, 700].map((n) => `utility-chartreuse-${n}`),
-		);
+		expect(names(es).filter((n: string) => n.includes("chartreuse"))).toEqual([]);
 	});
 });
 
