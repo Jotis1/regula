@@ -43,7 +43,7 @@ La web de documentación (regula.jotis.me) se montó con un diseño provisional:
 
 Fuera de este cambio:
 - las fuentes de reserva ajustadas (seguimiento de `create-regula-design-system`);
-- cambiar los componentes de `@jotis-me/react`, salvo `AppIcon` y el nombre accesible de la barra de tono de `ColorPicker` (decisión del usuario, 3 nov: la ficha repartida dejó a la vista un fallo de su HTML de servidor, ver design §3);
+- cambiar los componentes de `@jotis-me/react`, salvo `AppIcon` el nombre accesible de la barra de tono de `ColorPicker` y el `aria-checked` de `Checkbox` indeterminado (decisiones del usuario, 3 nov: la ficha repartida y el playground dejaron a la vista fallos de su HTML de servidor, ver design §3);
 - la paridad visual de los componentes con la guía, que no cambia.
 
 ## Capabilities
@@ -73,6 +73,6 @@ Ninguna.
   - la paridad visual (`/visual/`) y su arnés no cambian.
 - **`packages/tokens`:** regenerar `src/tokens.json` desde la guía `1793653059-466a` con `translate-usage.ts` y quitar la exclusión `UNPORTED` de `test/usage.test.ts`: la guía ya no trae tokens sin portar.
 - **`packages/icons` y `packages/react`:** Regula (`fuchsia`) en el registro de apps y los SVG/PNG de Regula. `AppIcon` deja de compararse con la vista previa fijada (`e2e/visual/pinned/AppIcon.preview.html`) y se recaptura su referencia.
-- **Changeset:** `minor` para `@jotis-me/icons` y `@jotis-me/react` (Regula en `AppIcon`); y `patch` para `@jotis-me/react` (ColorPicker); los tres suben juntos (Changesets en modo `fixed`).
+- **Changeset:** `minor` para `@jotis-me/icons` y `@jotis-me/react` (Regula en `AppIcon`); y `patch` para `@jotis-me/react` (ColorPicker y Checkbox); los tres suben juntos (Changesets en modo `fixed`).
 - **Dependencia de orden:** `docs-site` y `brand-assets` solo existen todavía como deltas de `create-regula-design-system`. Este cambio se archiva después de ese.
 - **Rama:** `rediseno-web`, creada desde `grupo-13-stream`. Se rebasa sobre `main` cuando `grupo-13-stream` esté fusionada.

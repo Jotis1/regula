@@ -61,6 +61,8 @@ test("encuentra tokens e iconos; un icono abre la galería con él elegido", asy
 test("busca también en el texto de las páginas (Pagefind)", async ({ page }) => {
 	await ready(page);
 	await page.keyboard.press("Control+k");
+	// Como los demás: con el equipo cargado, el diálogo puede tardar en abrir tras el atajo
+	await expect(dialog(page)).toBeVisible();
 	await page.getByRole("combobox", { name: "Buscar en Regula" }).fill("virgulilla");
 	const text = page.getByRole("group", { name: "En el texto" });
 	// Pagefind carga su WebAssembly y el índice al primer uso: con el equipo cargado tarda más de 5 s

@@ -136,7 +136,8 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 	);
 	await expect(page.locator("header dl")).toContainText('import { Button } from "@jotis-me/react"');
 	const headings = await page.locator("article h2").allTextContents();
-	expect(headings.slice(0, 5)).toEqual([
+	expect(headings.slice(0, 6)).toEqual([
+		"Ejemplo interactivo",
 		"Cuándo usarlo",
 		"Variantes y estados",
 		"Props",

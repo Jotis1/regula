@@ -7,10 +7,12 @@ import { Badge, Breadcrumbs, Icon } from "@jotis-me/react";
 import CardSections from "../components/CardSections.astro";
 import CodeTabs from "../components/CodeTabs.astro";
 import InlineCode from "../components/InlineCode.astro";
+import Playground from "../components/Playground";
 import PropsTable from "../components/PropsTable.astro";
 import type { SplitCard } from "../lib/card";
 import { groupOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
 import { inline } from "../lib/inline";
+import type { Playground as PlaygroundData } from "../lib/playground";
 import type { PropRow } from "../lib/props";
 import { PAGER, TOC_LINK } from "../lib/toc";
 import Base from "./Base.astro";
@@ -31,6 +33,8 @@ interface Props {
 	astroNote?: string;
 	/** Ejemplos sobre fondo oscuro, como sus vistas previas de la guía (Stream: `DARK_PREVIEWS`). */
 	dark?: boolean;
+	/** Playground generado de sus props (src/lib/playground.ts); sin él, la página enseña solo sus ejemplos. */
+	playground?: PlaygroundData;
 }
 const {
 	name,
@@ -42,6 +46,7 @@ const {
 	interactive = false,
 	astroNote,
 	dark = false,
+	playground,
 } = Astro.props;
 
 const group = groupOf(name);
@@ -56,6 +61,7 @@ const href = (c: string) => `/components/${slugOf(c)}/`;
 
 const has = (...ids: string[]) => card.sections.some((s) => ids.includes(s.id));
 const toc = [
+	playground && { slug: "ejemplo", text: "Ejemplo" },
 	has("uso", "evita") && { slug: "uso", text: "Cuándo usarlo" },
 	{ slug: "variantes", text: "Variantes y estados" },
 	{ slug: "props", text: "Props" },
@@ -105,6 +111,17 @@ const toc = [
 					)
 				}
 			</header>
+
+			{
+				playground && (
+					<section aria-labelledby="ejemplo" data-pagefind-ignore>
+						<h2 id="ejemplo">Ejemplo interactivo</h2>
+						<div class="not-prose my-4">
+							<Playground client:visible playground={playground} />
+						</div>
+					</section>
+				)
+			}
 
 			<CardSections card={card} part="uso" />
 

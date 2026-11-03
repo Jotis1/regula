@@ -32,8 +32,14 @@ export function Checkbox({
 	const autoId = useId();
 	const id = givenId ?? autoId;
 	const ref = useRef<HTMLInputElement>(null);
+	// La propiedad `indeterminate` no existe en HTML: se pone al montar, y `aria-checked="mixed"` con ella, para
+	// que el HTML de servidor no anuncie "mixed" en una casilla nativa que todavía no lo está
 	useEffect(() => {
-		if (ref.current) ref.current.indeterminate = !!indeterminate;
+		const input = ref.current;
+		if (!input) return;
+		input.indeterminate = !!indeterminate;
+		if (indeterminate) input.setAttribute("aria-checked", "mixed");
+		else input.removeAttribute("aria-checked");
 	}, [indeterminate]);
 	const markSize = size === "md" ? 14 : 12;
 	return (
@@ -42,7 +48,6 @@ export function Checkbox({
 				ref={ref}
 				id={id}
 				type="checkbox"
-				aria-checked={indeterminate ? "mixed" : undefined}
 				{...rest}
 				className={hiddenInput}
 			/>
