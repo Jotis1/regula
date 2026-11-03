@@ -1,10 +1,24 @@
 ---
-import Prose from "./Prose.astro";
+// Layout de las páginas .mdx de src/pages (hoy, /start/install/): la misma composición que los fundamentos, con
+// migas, índice y anterior/siguiente. Astro le pasa el frontmatter, los títulos y la ruta del fichero.
+import FoundationPage from "./FoundationPage.astro";
 
-// Layout para páginas .mdx: el frontmatter llega como `frontmatter`
-const { frontmatter } = Astro.props;
+interface Props {
+	frontmatter: { title: string; description?: string; slug?: string };
+	headings: { depth: number; slug: string; text: string }[];
+	file: string;
+}
+const { frontmatter, headings, file } = Astro.props;
+const normalized = file.replaceAll("\\", "/");
+const source = normalized.slice(normalized.indexOf("apps/docs/"));
 ---
 
-<Prose title={frontmatter.title} description={frontmatter.description}>
+<FoundationPage
+	slug={frontmatter.slug ?? ""}
+	title={frontmatter.title}
+	description={frontmatter.description}
+	headings={headings}
+	source={source}
+>
 	<slot />
-</Prose>
+</FoundationPage>

@@ -5,6 +5,8 @@ description: "La marca jotis.me y los iconos de cada app."
 order: 10
 ---
 
+## La marca
+
 No hay logotipo propio de jotis.me en el archivo: en la cabecera de cada app, escribe "jotis.me" en Bricolage Grotesque bold, `text-primary`. El grupo Logos guarda el logo y el logomark **Yoruverse** que trae el archivo (marca índigo con luna), con una versión de tinta blanca para fondos oscuros; úsalos solo si la app forma parte de Yoruverse.
 
 ## Iconos de app

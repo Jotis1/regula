@@ -120,6 +120,35 @@ test("las páginas de fundamentos llevan migas, índice y anterior/siguiente", a
 	);
 });
 
+// Un texto clave de la guía por apartado: cada página lo lleva tal cual, aunque vaya en otra pieza
+for (const [href, text] of [
+	["/foundations/principles/", "Si una pantalla tiene más de dos o tres manchas de marca, sobra alguna."],
+	["/foundations/typography/", "No uses bold en display."],
+	["/foundations/layout/", "pills, avatares, toggles."],
+	["/foundations/states/", "Deshabilitado: 50% de opacidad en todo el control."],
+	["/foundations/iconography/", "Nunca emojis como iconos."],
+	["/foundations/backgrounds/", "Uno o dos por vista, nunca en pantallas de trabajo."],
+	["/foundations/brand/", "el icono identifica la app, no la tiñe."],
+	["/foundations/stream/", "la cuenta atrás y las barras solo cambian cuando cambia el dato."],
+	["/start/install/", "llegan los otros dos."],
+] as const) {
+	test(`${href} lleva el texto de la guía`, async ({ page }) => {
+		await page.goto(href);
+		await expect(page.locator("main")).toContainText(text);
+	});
+}
+
+test("la instalación va en Empezar, antes de los principios", async ({ page }) => {
+	await page.goto("/start/install/");
+	await expect(page.getByRole("navigation", { name: "Migas de pan" })).toContainText("Empezar");
+	const pager = page.getByRole("navigation", { name: "Anterior y siguiente" });
+	await expect(pager.getByRole("link", { name: /Anterior\s*Qué es Regula/ })).toHaveAttribute("href", "/");
+	await expect(pager.getByRole("link", { name: /Siguiente\s*Principios/ })).toHaveAttribute(
+		"href",
+		"/foundations/principles/",
+	);
+});
+
 test("la página de marca tiene a Regula en fuchsia y la nota de la variante Claro", async ({ page }) => {
 	await page.goto("/foundations/brand/");
 	const row = page.getByRole("row", { name: /Regula/ });

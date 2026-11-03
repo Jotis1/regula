@@ -28,7 +28,7 @@
 
 - [x] 5.1 Crear las piezas de composición en MDX (tarjetas de "lo esencial", "Cabe / No cabe", tabla "En lugar de / Escribe", pares de título y texto, ejemplos vivos), migrar Contenido y tono con el texto de la guía y añadir migas, índice "En esta página" y anterior/siguiente; verificar con `e2e/foundations.spec.ts` (texto clave de la guía), axe y capturas comparadas con `Tone.dc.html` y `ToneM.dc.html`
 - [x] 5.2 Rehacer Color: "lo esencial", tabla de excepciones de contraste de la guía y tabla de tokens con filtro, familias con recuento, valores claro/oscuro, contraste WCAG calculado en el build y copia de la utilidad (design §6); verificar con tests del cálculo de contraste (`text-primary` 17,9:1 en claro), con que `e2e/tokens.spec.ts` sigue mostrando un token nuevo sin tocar la web, axe y capturas comparadas con `Color.dc.html` y `ColorM.dc.html`
-- [ ] 5.3 Migrar el resto de fundamentos (principios, tipografía, espaciado/layout, sombras/estados, iconografía, fondos, marca, Stream) e Instalación a la nueva composición con el texto de la guía; verificar con `e2e/foundations.spec.ts` para cada apartado, axe en todas y el build
+- [x] 5.3 Migrar el resto de fundamentos (principios, tipografía, espaciado/layout, sombras/estados, iconografía, fondos, marca, Stream) e Instalación a la nueva composición con el texto de la guía; verificar con `e2e/foundations.spec.ts` para cada apartado, axe en todas y el build
 
 ## 6. Página de componente
 

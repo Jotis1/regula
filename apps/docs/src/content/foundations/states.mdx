@@ -1,0 +1,39 @@
+---
+title: "Sombras y estados"
+description: "Sombras, hover, deshabilitado y foco."
+order: 6
+---
+
+import { Button } from "@jotis-me/react";
+import Essentials from "../../components/compose/Essentials.astro";
+import Example from "../../components/compose/Example.astro";
+
+{/* Texto de la guía (reference/GUIA.md, «Sombras y estados»), repartido en tarjetas sin reescribirlo */}
+
+## Lo esencial
+
+<Essentials
+	items={[
+		{
+			title: "Sombras",
+			text: "Sombras: `shadow-xs` inputs; `shadow-xs-skeuomorphic` botones e iconos destacados; `shadow-sm` mando del toggle; `shadow-lg` menús, tooltips, notificaciones; `shadow-xl` modales. Son las mismas en claro y oscuro; sobre fondos oscuros las exteriores casi no se ven y la separación la dan `bg-primary_alt` y los bordes.",
+		},
+		{
+			title: "Hover y deshabilitado",
+			text: "Hover: cambia el fondo un escalón (`bg-primary` → `bg-primary_hover`) o el color del texto a su `_hover`. Deshabilitado: 50% de opacidad en todo el control. Sin animaciones decorativas; transiciones de 100–150 ms en color y en el mando del toggle.",
+		},
+		{
+			title: "Backdrop de modal",
+			text: "Backdrop de modal: `bg-overlay` al 70% con `backdrop-blur-lg` (16px).",
+		},
+	]}
+/>
+
+<Example caption="Botones en reposo y deshabilitados. Pasa el ratón o usa Tab para ver el hover y el foco.">
+	<div class="flex flex-wrap items-center gap-3">
+		<Button>Guardar</Button>
+		<Button hierarchy="secondary">Cancelar</Button>
+		<Button disabled>Deshabilitado</Button>
+		<Button hierarchy="secondary" disabled>Deshabilitado</Button>
+	</div>
+</Example>
