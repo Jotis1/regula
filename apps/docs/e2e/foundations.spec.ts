@@ -53,3 +53,16 @@ test("el texto de la guía sale tal cual", async ({ page }) => {
 	await page.goto("/foundations/stream/");
 	await expect(page.getByText('"En directo" no va en rojo')).toBeVisible();
 });
+
+test("la página de marca tiene a Regula en chartreuse y la nota de la variante Claro", async ({ page }) => {
+	await page.goto("/foundations/brand/");
+	const row = page.getByRole("row", { name: /Regula/ });
+	await expect(row).toContainText("Re");
+	await expect(row).toContainText("chartreuse");
+	await expect(page.getByText("la paleta propia.", { exact: false }).first()).toBeVisible();
+	await expect(page.getByText("la suite tiene escala propia: chartreuse (Regula)")).toBeVisible();
+	await expect(
+		page.getByText("no añade las variables --color-chartreuse-*", { exact: false }),
+	).toBeVisible();
+	await expect(page.getByText("la variante Claro en el tema claro", { exact: false })).toBeVisible();
+});
