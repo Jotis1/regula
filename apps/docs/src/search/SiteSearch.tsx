@@ -33,8 +33,14 @@ export default function SiteSearch() {
 				setOpen((o) => !o);
 			}
 		};
+		// El menú móvil abre la búsqueda con este evento (no comparte estado con esta isla)
+		const onOpen = () => setOpen(true);
 		window.addEventListener("keydown", onKey);
-		return () => window.removeEventListener("keydown", onKey);
+		window.addEventListener("regula:search", onOpen);
+		return () => {
+			window.removeEventListener("keydown", onKey);
+			window.removeEventListener("regula:search", onOpen);
+		};
 	}, []);
 
 	useEffect(() => {
@@ -91,11 +97,12 @@ export default function SiteSearch() {
 				type="button"
 				onClick={() => setOpen(true)}
 				aria-keyshortcuts="Control+K Meta+K"
-				className="flex h-10 items-center gap-2 rounded-lg border border-primary bg-primary pr-2 pl-3 text-left text-sm text-quaternary shadow-xs transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none md:w-[300px]"
+				// En móvil, botón de icono de 44px (HeaderM.dc.html); desde lg, el campo de 300px
+				className="flex size-11 items-center justify-center gap-2 rounded-lg text-left text-sm text-quaternary transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none lg:h-10 lg:w-[300px] lg:justify-start lg:border lg:border-primary lg:bg-primary lg:pr-2 lg:pl-3 lg:shadow-xs"
 			>
 				<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
-				<span className="sr-only min-w-0 grow truncate md:not-sr-only">Buscar en Regula</span>
-				<kbd className="hidden h-[22px] shrink-0 items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium whitespace-nowrap text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)] md:inline-flex">
+				<span className="sr-only min-w-0 grow truncate lg:not-sr-only">Buscar en Regula</span>
+				<kbd className="hidden h-[22px] shrink-0 items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium whitespace-nowrap text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)] lg:inline-flex">
 					{mac ? "⌘ K" : "Ctrl K"}
 				</kbd>
 			</button>

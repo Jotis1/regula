@@ -1,4 +1,5 @@
 ---
+// Conmutador de la cabecera: alterna claro y oscuro y recuerda la elección. "Sistema" está en el menú móvil.
 import moon from "@jotis-me/icons/svg/moon-01.svg?raw";
 import sun from "@jotis-me/icons/svg/sun.svg?raw";
 ---
@@ -7,23 +8,20 @@ import sun from "@jotis-me/icons/svg/sun.svg?raw";
 	type="button"
 	data-theme-toggle
 	aria-label="Usar tema oscuro"
-	class="inline-flex size-10 items-center justify-center rounded-lg text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
+	class="inline-flex size-11 items-center justify-center rounded-lg text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none lg:size-10"
 >
 	<span class="contents dark:hidden" set:html={moon} />
 	<span class="hidden dark:contents" set:html={sun} />
 </button>
 
 <script>
-	const label = () =>
-		document.documentElement.classList.contains("dark-mode") ? "Usar tema claro" : "Usar tema oscuro";
+	import { followSystem, isDark, onThemeChange, setTheme } from "../lib/theme";
+
+	followSystem();
 	for (const button of document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]")) {
-		button.setAttribute("aria-label", label());
-		button.addEventListener("click", () => {
-			const dark = document.documentElement.classList.toggle("dark-mode");
-			try {
-				localStorage.setItem("regula-tema", dark ? "oscuro" : "claro");
-			} catch {}
-			button.setAttribute("aria-label", label());
-		});
+		const label = () => button.setAttribute("aria-label", isDark() ? "Usar tema claro" : "Usar tema oscuro");
+		label();
+		onThemeChange(label);
+		button.addEventListener("click", () => setTheme(isDark() ? "claro" : "oscuro"));
 	}
 </script>

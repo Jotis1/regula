@@ -42,7 +42,8 @@ test("el botón de la cabecera la abre; sin escribir se ven las páginas", async
 test("encuentra tokens e iconos; un icono abre la galería con él elegido", async ({ page }) => {
 	await ready(page);
 	await page.keyboard.press("Control+k");
-	await page.keyboard.type("bg-brand-solid");
+	// fill y no keyboard.type: con el equipo cargado, las primeras letras llegaban antes que el foco y se perdían
+	await page.getByRole("combobox", { name: "Buscar en Regula" }).fill("bg-brand-solid");
 	await expect(
 		page.getByRole("group", { name: "Tokens" }).getByRole("option").first(),
 	).toHaveAccessibleName(/^bg-brand-solid/);
@@ -61,7 +62,7 @@ test("encuentra tokens e iconos; un icono abre la galería con él elegido", asy
 test("busca también en el texto de las páginas (Pagefind)", async ({ page }) => {
 	await ready(page);
 	await page.keyboard.press("Control+k");
-	await page.keyboard.type("virgulilla");
+	await page.getByRole("combobox", { name: "Buscar en Regula" }).fill("virgulilla");
 	const text = page.getByRole("group", { name: "En el texto" });
 	// Pagefind carga su WebAssembly y el índice al primer uso: con el equipo cargado tarda más de 5 s
 	await expect(text.getByRole("option").first()).toBeVisible({ timeout: 15_000 });
