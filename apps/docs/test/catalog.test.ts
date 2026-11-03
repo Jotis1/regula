@@ -6,6 +6,7 @@ import {
 	catalogComponents,
 	FOUNDATIONS,
 	groupOf,
+	neighborsOf,
 	SECTIONS,
 	sectionOf,
 	slugOf,
@@ -125,5 +126,19 @@ describe("catálogo de secciones y fundamentos", () => {
 		expect(slugOf("ButtonGroup")).toBe("button-group");
 		expect(slugOf("InlineCTA")).toBe("inline-cta");
 		expect(slugOf("button-group")).toBe("button-group");
+	});
+
+	it("anterior y siguiente no salen de la sección y los relacionados son los de su grupo", () => {
+		expect(neighborsOf("Button")).toEqual({
+			prev: undefined,
+			next: "ButtonGroup",
+			related: ["ButtonGroup", "CloseButton"],
+		});
+		expect(neighborsOf("CloseButton").next).toBe("Input");
+		// El último de Componentes no salta a Stream, ni el primero de Stream vuelve a Componentes
+		expect(neighborsOf("AppIcon").next).toBeUndefined();
+		expect(neighborsOf("StreamAlert")).toEqual({ prev: undefined, next: "StreamScene", related: [] });
+		expect(neighborsOf("ChannelBanner").next).toBeUndefined();
+		expect(neighborsOf("Ejemplo")).toEqual({ related: [] });
 	});
 });

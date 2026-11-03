@@ -4,47 +4,85 @@ import { getContainerRenderer } from "@astrojs/react";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { beforeAll, describe, expect, it } from "vitest";
 import ComponentPage from "../src/layouts/ComponentPage.astro";
+import { splitCard } from "../src/lib/card";
 import { propsOf } from "../src/lib/props";
 
 const fixture = fileURLToPath(new URL("./fixtures/Ejemplo.tsx", import.meta.url));
-let html = "";
 
-beforeAll(async () => {
+const card = splitCard(
+	[
+		"**Cuándo usarlo.** Úsalo para probar la plantilla.",
+		"**Evita.** Usarlo en producción.",
+		"**Foco.** Anillo de 4 px.",
+		"**Props.** Acepta además los atributos de `<button>`.",
+	].join("\n\n"),
+);
+
+async function render(name: string, extra: Record<string, unknown> = {}) {
 	// El layout lleva una isla React (la búsqueda de la cabecera)
 	const renderers = await loadRenderers([getContainerRenderer()]);
 	const container = await AstroContainer.create({ renderers });
-	html = await container.renderToString(ComponentPage, {
+	return container.renderToString(ComponentPage, {
 		props: {
-			name: "Ejemplo",
+			name,
 			description: "Componente de prueba de la plantilla.",
+			card,
 			props: propsOf(fixture, "Ejemplo"),
 			next: '<Ejemplo label="Guardar" />',
 			astro: '<Ejemplo client:load label="Guardar" />',
+			...extra,
 		},
-		slots: {
-			guide: "<p>Úsalo para probar la plantilla.</p>",
-			examples: '<button type="button">Guardar</button>',
-		},
-		request: new Request("https://regula.jotis.me/components/ejemplo/"),
+		slots: { examples: '<button type="button">Guardar</button>' },
+		request: new Request(`https://regula.jotis.me/components/${name.toLowerCase()}/`),
 	});
+}
+
+let html = "";
+let button = "";
+
+beforeAll(async () => {
+	html = await render("Ejemplo", { interactive: true, astroNote: "Ponlo en una isla `client:load`." });
+	// Un componente del catálogo: migas, grupo, anterior/siguiente y relacionados
+	button = await render("Button");
 });
 
+const order = (page: string, ...needles: string[]) => needles.map((n) => page.indexOf(n));
+
 describe("plantilla de página de componente", () => {
-	it("tiene título, descripción, la ficha y las secciones de ejemplos, props y código", () => {
+	it("pinta las secciones en el orden del diseño, con la ficha partida en dos", () => {
 		expect(html).toContain("<h1");
 		expect(html).toContain("Componente de prueba de la plantilla.");
-		// «Cuándo usarlo» y «Detalles» los pinta la ficha repartida (CardSections), que llega por la ranura guide
-		for (const s of ["Ejemplos", "Props", "Código"]) expect(html).toContain(`>${s}</h2>`);
+		const at = order(
+			html,
+			">Cuándo usarlo</h2>",
+			">Variantes y estados</h2>",
+			">Props</h2>",
+			">Código</h2>",
+			">Detalles y accesibilidad</h2>",
+		);
+		expect(at.every((i) => i > 0)).toBe(true);
+		expect([...at].sort((a, b) => a - b)).toEqual(at);
 		expect(html).toContain("Úsalo para probar la plantilla.");
+		expect(html).toContain("Anillo de 4 px.");
 		expect(html).toContain('<button type="button">Guardar</button>');
 	});
 
-	it("genera la tabla de props desde los tipos del componente", () => {
+	it("lleva la línea de importación y la nota de Astro", () => {
+		expect(html).toContain("import { Ejemplo } from &quot;@jotis-me/react&quot;");
+		expect(html).toMatch(/Isla con <code[^>]*>client:load<\/code>/);
+		expect(html).toContain("Isla en Astro.");
+		expect(button).toContain("Sin isla: se pinta en el servidor");
+		expect(button).not.toContain("Isla en Astro.");
+	});
+
+	it("genera la tabla de props desde los tipos y pone el párrafo «Props.» de la ficha tras ella", () => {
 		expect(html).toMatch(/<code>hierarchy<\/code>/);
 		expect(html).toContain("&quot;primary&quot; · &quot;secondary&quot;");
 		expect(html).toContain("Jerarquía visual del ejemplo.");
 		expect(html).toMatch(/<code>label<\/code>\s*<span[^>]*>obligatoria<\/span>/);
 		expect(html).toMatch(/<code>40<\/code>/);
+		const [table, props] = order(html, "</table>", "Acepta además");
+		expect(props).toBeGreaterThan(table);
 	});
 
 	it("muestra el código para Next.js y para Astro en pestañas accesibles", () => {
@@ -52,8 +90,26 @@ describe("plantilla de página de componente", () => {
 		expect(html).toContain(">Next.js</button>");
 		expect(html).toContain(">Astro</button>");
 		expect(html).toContain("&lt;Ejemplo label=&quot;Guardar&quot; /&gt;");
-		expect(html).toContain("client:load");
 		expect(html.match(/role="tabpanel"/g)).toHaveLength(2);
 		expect(html).toMatch(/role="tabpanel"[^>]*hidden/);
+	});
+
+	it("con un componente del catálogo: migas, grupo, anterior/siguiente y relacionados", () => {
+		expect(button).toContain('href="/components/"');
+		expect(button).toContain('href="/components/#acciones"');
+		expect(button).toMatch(/>Acciones<\/span>/);
+		expect(button).toMatch(/href="\/components\/button-group\/"[^>]*rel="next"/);
+		expect(button).not.toContain('rel="prev"');
+		const related = button.slice(button.indexOf(">Relacionados</p>"));
+		expect(related).toContain('href="/components/button-group/"');
+		expect(related).toContain('href="/components/close-button/"');
+	});
+
+	it("el índice «En esta página» lista las secciones que hay", () => {
+		const toc = html.slice(html.indexOf('aria-label="En esta página"'));
+		for (const s of ["uso", "variantes", "props", "codigo", "detalles"])
+			expect(toc).toContain(`href="#${s}"`);
+		// Fuera del catálogo no hay relacionados
+		expect(html).not.toContain(">Relacionados</p>");
 	});
 });

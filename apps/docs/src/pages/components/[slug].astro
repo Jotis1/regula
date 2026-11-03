@@ -1,11 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import { join } from "node:path";
-import CardSections from "../../components/CardSections.astro";
-import InlineCode from "../../components/InlineCode.astro";
 import ComponentPage from "../../layouts/ComponentPage.astro";
 import { splitCard } from "../../lib/card";
-import { inline } from "../../lib/inline";
 import { propsOf } from "../../lib/props";
 import { snippetsOf } from "../../lib/snippets";
 import { DARK_PREVIEWS } from "../../visual/registry";
@@ -25,9 +22,16 @@ const card = splitCard(page.body ?? "");
 const source = join(process.cwd(), "../..", own ?? `packages/react/src/components/${name}.tsx`);
 ---
 
-<ComponentPage name={name} description={description} props={propsOf(source, name)} next={next} astro={astro} dark={DARK_PREVIEWS.has(name)}>
-	<CardSections slot="guide" card={card} />
-	{card.props && <p slot="props-summary" class="text-sm" set:html={inline(card.props.raw)} />}
+<ComponentPage
+	name={name}
+	description={description}
+	card={card}
+	props={propsOf(source, name)}
+	next={next}
+	astro={astro}
+	interactive={interactive}
+	astroNote={astroNote}
+	dark={DARK_PREVIEWS.has(name)}
+>
 	<VisualExample slot="examples" client:visible name={name} />
-	{astroNote && <p slot="astro-note"><InlineCode text={astroNote} /></p>}
 </ComponentPage>

@@ -1,61 +1,211 @@
 ---
-// Página de un componente: qué es, cuándo usarlo (de su ficha), ejemplos vivos, props y código.
+// Página de un componente (reference/docs-design/Button.dc.html y ButtonM.dc.html): migas Componentes › grupo ›
+// nombre, insignia del grupo, descripción, línea de importación y nota de Astro; «Cuándo usarlo» (la ficha),
+// variantes (el ejemplo del registro), props, código, «Detalles y accesibilidad» (el resto de la ficha) y
+// anterior/siguiente. A la derecha, el índice «En esta página» y los relacionados del catálogo (design §2).
+import { Badge, Breadcrumbs, Icon } from "@jotis-me/react";
+import CardSections from "../components/CardSections.astro";
 import CodeTabs from "../components/CodeTabs.astro";
 import InlineCode from "../components/InlineCode.astro";
 import PropsTable from "../components/PropsTable.astro";
+import type { SplitCard } from "../lib/card";
+import { groupOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
+import { inline } from "../lib/inline";
 import type { PropRow } from "../lib/props";
+import { PAGER, TOC_LINK } from "../lib/toc";
 import Base from "./Base.astro";
 
 interface Props {
 	name: string;
 	description: string;
+	/** La ficha de la guía repartida por etiqueta (`splitCard`). */
+	card: SplitCard;
 	props: PropRow[];
 	/** Uso en Next.js: el componente tal cual. */
 	next: string;
 	/** Uso en Astro: con la directiva `client:*` si es interactivo. */
 	astro: string;
+	/** Necesita `client:*` en Astro para responder. */
+	interactive?: boolean;
+	/** Aviso bajo el fragmento de Astro (props función, islas). */
+	astroNote?: string;
 	/** Ejemplos sobre fondo oscuro, como sus vistas previas de la guía (Stream: `DARK_PREVIEWS`). */
 	dark?: boolean;
 }
-const { name, description, props, next, astro, dark = false } = Astro.props;
+const {
+	name,
+	description,
+	card,
+	props,
+	next,
+	astro,
+	interactive = false,
+	astroNote,
+	dark = false,
+} = Astro.props;
+
+const group = groupOf(name);
+const section = SECTIONS.find((s) => s.id === (group?.section ?? "components"));
+const crumbs = [
+	...(section ? [{ label: section.label, href: section.href }] : []),
+	...(group ? [{ label: group.label, href: `/components/#${group.id}` }] : []),
+	{ label: name },
+];
+const { prev, next: following, related } = neighborsOf(name);
+const href = (c: string) => `/components/${slugOf(c)}/`;
+
+const has = (...ids: string[]) => card.sections.some((s) => ids.includes(s.id));
+const toc = [
+	has("uso", "evita") && { slug: "uso", text: "Cuándo usarlo" },
+	{ slug: "variantes", text: "Variantes y estados" },
+	{ slug: "props", text: "Props" },
+	{ slug: "codigo", text: "Código" },
+	has("detalles", "accesibilidad", "amplia") && { slug: "detalles", text: "Detalles y accesibilidad" },
+].filter((t): t is { slug: string; text: string } => !!t);
 ---
 
 <Base title={name} description={description}>
-	<article class="prose max-w-5xl">
-		<h1>{name}</h1>
-		<p class="lead"><InlineCode text={description} /></p>
+	<div class="flex gap-12">
+		<article class="prose min-w-0 max-w-none flex-1">
+			<header class="not-prose mb-10 flex flex-col gap-3.5">
+				<!-- En móvil, sin el grupo, como ButtonM: con él no caben en 390px -->
+				<Breadcrumbs items={crumbs} className="hidden md:block" />
+				<Breadcrumbs items={[crumbs[0], crumbs.at(-1)].filter((c) => c !== undefined)} className="md:hidden" />
+				<div class="flex flex-wrap items-center gap-x-4 gap-y-3">
+					<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">{name}</h1>
+					{group && <Badge color="gray" size="sm">{group.label}</Badge>}
+				</div>
+				<p class="max-w-[680px] text-md text-tertiary lg:text-lg"><InlineCode text={description} /></p>
+				<dl class="mt-1 hidden flex-wrap gap-x-7 gap-y-2 text-[13px] leading-5 md:flex">
+					<div class="flex gap-1.5">
+						<dt class="text-quaternary">Importar</dt>
+						<dd class="font-mono text-secondary">{`import { ${name} } from "@jotis-me/react"`}</dd>
+					</div>
+					<div class="flex gap-1.5">
+						<dt class="text-quaternary">En Astro</dt>
+						<dd class="text-secondary">
+							{interactive ? <>Isla con <code class="font-mono">client:load</code></> : "Sin isla: se pinta en el servidor"}
+						</dd>
+					</div>
+				</dl>
+				{
+					toc.length > 1 && (
+						<details class="mt-1 rounded-lg shadow-[inset_0_0_0_1px_var(--border-secondary)] xl:hidden">
+							<summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 px-3.5 text-sm font-semibold text-secondary [&::-webkit-details-marker]:hidden">
+								En esta página
+							</summary>
+							<div class="flex flex-col gap-1 px-3.5 pb-3.5">
+								{toc.map((h) => (
+									<a href={`#${h.slug}`} class={TOC_LINK}>
+										{h.text}
+									</a>
+								))}
+							</div>
+						</details>
+					)
+				}
+			</header>
 
-		<!-- La ficha de la guía repartida por etiqueta (CardSections): Cuándo usarlo y Detalles y accesibilidad -->
-		<slot name="guide" />
+			<CardSections card={card} part="uso" />
 
-		<section aria-labelledby="ejemplos">
-			<h2 id="ejemplos">Ejemplos</h2>
-			<div
-				data-pagefind-ignore
-				class:list={[
-					"not-prose my-4 flex flex-col gap-6 rounded-xl border border-secondary p-6",
-					dark && "dark-mode bg-primary text-primary",
-				]}
-			>
-				<slot name="examples" />
-			</div>
-		</section>
+			<section aria-labelledby="variantes">
+				<h2 id="variantes">Variantes y estados</h2>
+				<div
+					data-pagefind-ignore
+					role="region"
+					aria-label={`Variantes de ${name}`}
+					tabindex="0"
+					class:list={[
+						"not-prose my-4 flex flex-col gap-6 overflow-x-auto rounded-xl p-6 shadow-[inset_0_0_0_1px_var(--border-secondary)] focus-visible:shadow-focus-ring focus-visible:outline-none",
+						dark && "dark-mode bg-primary text-primary",
+					]}
+				>
+					<slot name="examples" />
+				</div>
+			</section>
 
-		<section aria-labelledby="props">
-			<h2 id="props">Props</h2>
-			<slot name="props-summary" />
-			<PropsTable rows={props} />
-		</section>
+			<section aria-labelledby="props">
+				<h2 id="props">Props</h2>
+				<!-- En móvil la tabla se desplaza dentro de su caja; con teclado, la caja recibe el foco para desplazarla -->
+				<div
+					role="region"
+					aria-label={`Props de ${name}`}
+					tabindex="0"
+					class="overflow-x-auto rounded-sm focus-visible:shadow-focus-ring focus-visible:outline-none"
+				>
+					<PropsTable rows={props} />
+				</div>
+				{card.props && <p class="text-sm text-tertiary" set:html={inline(card.props.raw)} />}
+			</section>
 
-		<section aria-labelledby="codigo">
-			<h2 id="codigo">Código</h2>
-			<CodeTabs
-				tabs={[
-					{ label: "Next.js", code: next },
-					{ label: "Astro", code: astro },
-				]}
-			/>
-			<slot name="astro-note" />
-		</section>
-	</article>
+			<section aria-labelledby="codigo">
+				<h2 id="codigo">Código</h2>
+				<CodeTabs
+					tabs={[
+						{ label: "Next.js", code: next },
+						{ label: "Astro", code: astro },
+					]}
+				/>
+				{
+					astroNote && (
+						<div class="not-prose my-4 flex gap-3 rounded-xl bg-secondary p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+							<Icon name="info-circle" size={20} className="mt-px flex-none text-fg-quaternary" />
+							<p class="text-sm text-secondary">
+								<strong class="font-semibold text-primary">Isla en Astro.</strong> <InlineCode text={astroNote} />
+							</p>
+						</div>
+					)
+				}
+			</section>
+
+			<CardSections card={card} part="detalles" />
+
+			{
+				(prev || following) && (
+					<nav aria-label="Anterior y siguiente" class="not-prose mt-14 flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
+						{prev && (
+							<a href={href(prev)} class={PAGER} rel="prev">
+								<span class="text-xs text-tertiary">Anterior</span>
+								<span class="text-md font-semibold">{prev}</span>
+							</a>
+						)}
+						{following && (
+							<a href={href(following)} class={`${PAGER} text-right`} rel="next">
+								<span class="text-xs text-tertiary">Siguiente</span>
+								<span class="text-md font-semibold">{following}</span>
+							</a>
+						)}
+					</nav>
+				)
+			}
+		</article>
+		<nav aria-label="En esta página" class="sticky top-8 hidden w-[184px] shrink-0 flex-col gap-2 self-start pt-1 xl:flex" data-toc>
+			<p class="mb-1 text-xs font-semibold text-quaternary">En esta página</p>
+			{
+				toc.map((h) => (
+					<a href={`#${h.slug}`} class={TOC_LINK} data-toc-link={h.slug}>
+						{h.text}
+					</a>
+				))
+			}
+			{
+				related.length > 0 && (
+					<>
+						<p class="mt-5 mb-1 text-xs font-semibold text-quaternary">Relacionados</p>
+						{related.map((c) => (
+							<a href={href(c)} class={TOC_LINK}>
+								{c}
+							</a>
+						))}
+					</>
+				)
+			}
+		</nav>
+	</div>
 </Base>
+
+<script>
+	import { initToc } from "../lib/toc";
+
+	initToc();
+</script>

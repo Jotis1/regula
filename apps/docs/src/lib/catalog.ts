@@ -198,3 +198,21 @@ export function groupOf(nameOrSlug: string): ComponentGroup | undefined {
 	const slug = slugOf(nameOrSlug);
 	return COMPONENT_GROUPS.find((g) => g.components.some((c) => slugOf(c) === slug));
 }
+
+/**
+ * Anterior y siguiente de un componente, en el orden de la navegación y sin salir de su sección (Componentes o
+ * Stream), y sus relacionados: los demás de su grupo. Un nombre fuera del catálogo no tiene ninguno.
+ */
+export function neighborsOf(name: string): { prev?: string; next?: string; related: string[] } {
+	const group = groupOf(name);
+	if (!group) return { related: [] };
+	const list = COMPONENT_GROUPS.filter((g) => g.section === group.section).flatMap((g) => [
+		...g.components,
+	]);
+	const i = list.findIndex((c) => slugOf(c) === slugOf(name));
+	return {
+		prev: list[i - 1],
+		next: list[i + 1],
+		related: group.components.filter((c) => slugOf(c) !== slugOf(name)),
+	};
+}

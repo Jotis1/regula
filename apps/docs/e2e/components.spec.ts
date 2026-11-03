@@ -26,7 +26,7 @@ for (const { slug, name } of pages) {
 		await expect(page.getByRole("heading", { level: 1 }).first()).toHaveText(name);
 		await expect(page.getByRole("link", { name, exact: true })).toHaveAttribute("aria-current", "page");
 		// La isla de ejemplos se hidrata al verse: después tiene contenido
-		const examples = page.locator("#ejemplos + div astro-island");
+		const examples = page.locator("#variantes + div astro-island");
 		await examples.scrollIntoViewIfNeeded();
 		await expect(examples).not.toHaveAttribute("ssr", /.*/);
 		await expect(examples.locator(":scope > *").first()).toBeVisible();
@@ -40,7 +40,7 @@ test("los ejemplos vivos no heredan los estilos del texto largo (tablas, listas,
 	page,
 }) => {
 	await page.goto("/components/date-picker/");
-	const grid = page.locator("#ejemplos + div table");
+	const grid = page.locator("#variantes + div table");
 	await grid.scrollIntoViewIfNeeded();
 	const css = await grid.evaluate((t) => {
 		const th = t.querySelector("th") as Element;
@@ -52,7 +52,7 @@ test("los ejemplos vivos no heredan los estilos del texto largo (tablas, listas,
 	});
 	expect(css).toEqual({ border: "0px", thPadding: "0px", thBg: "rgba(0, 0, 0, 0)" });
 	await page.goto("/components/text-editor/");
-	const li = page.locator("#ejemplos + div [role=textbox] li").first();
+	const li = page.locator("#variantes + div [role=textbox] li").first();
 	await li.scrollIntoViewIfNeeded();
 	expect(await li.evaluate((e) => getComputedStyle(e).paddingLeft)).toBe("0px");
 });
@@ -61,7 +61,7 @@ test("Button: cinco jerarquías y cinco tamaños vivos, la regla de una primaria
 	page,
 }) => {
 	await page.goto("/components/button/");
-	const examples = page.locator("#ejemplos + div");
+	const examples = page.locator("#variantes + div");
 	for (const label of ["Guardar", "Cancelar", "Más tarde", "Ver detalles", "Ayuda", "xs", "sm", "xl"])
 		await expect(examples.getByRole("button", { name: label, exact: true })).toBeVisible();
 	await expect(examples.getByRole("button", { name: "Nuevo gasto" })).toHaveCSS("height", "40px");
@@ -121,4 +121,64 @@ test("los estáticos no llevan directiva en Astro y avisan si necesitan una func
 	const panel = page.locator("[data-code-tabs]").getByRole("tabpanel");
 	await expect(panel).not.toContainText("client:");
 	await expect(page.locator("section[aria-labelledby=codigo]")).toContainText("onRemove");
+});
+
+test("Button: migas con su grupo, importación, índice, relacionados y anterior/siguiente (Button.dc.html)", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/components/button/");
+	const crumbs = page.getByRole("navigation", { name: /migas/i });
+	await expect(crumbs.getByRole("link", { name: "Componentes" })).toHaveAttribute("href", "/components/");
+	await expect(crumbs.getByRole("link", { name: "Acciones" })).toHaveAttribute(
+		"href",
+		"/components/#acciones",
+	);
+	await expect(page.locator("header dl")).toContainText('import { Button } from "@jotis-me/react"');
+	const headings = await page.locator("article h2").allTextContents();
+	expect(headings.slice(0, 5)).toEqual([
+		"Cuándo usarlo",
+		"Variantes y estados",
+		"Props",
+		"Código",
+		"Detalles y accesibilidad",
+	]);
+	const toc = page.getByRole("navigation", { name: "En esta página" }).last();
+	await expect(toc.getByRole("link", { name: "Props" })).toHaveAttribute("href", "#props");
+	for (const [name, slug] of [
+		["ButtonGroup", "button-group"],
+		["CloseButton", "close-button"],
+	])
+		await expect(toc.getByRole("link", { name, exact: true })).toHaveAttribute(
+			"href",
+			`/components/${slug}/`,
+		);
+	const pager = page.getByRole("navigation", { name: "Anterior y siguiente" });
+	await expect(pager.getByRole("link")).toHaveCount(1);
+	await expect(pager.getByRole("link", { name: /Siguiente\s*ButtonGroup/ })).toHaveAttribute(
+		"href",
+		"/components/button-group/",
+	);
+	// En Stream, las migas empiezan por Stream y anterior/siguiente no salen de la sección
+	await page.goto("/components/stream-alert/");
+	await expect(page.getByRole("navigation", { name: /migas/i }).getByRole("link").first()).toHaveText(
+		"Stream",
+	);
+	await expect(page.getByRole("navigation", { name: "Anterior y siguiente" }).getByRole("link")).toHaveText(
+		/StreamScene/,
+	);
+});
+
+test("a 390px ninguna página de componente se desplaza en horizontal: la tabla de props va en su caja", async ({
+	page,
+}) => {
+	test.setTimeout(180_000);
+	await page.setViewportSize({ width: 390, height: 844 });
+	const wide: string[] = [];
+	for (const { slug } of pages) {
+		await page.goto(`/components/${slug}/`);
+		if ((await page.evaluate(() => document.documentElement.scrollWidth)) > 390) wide.push(slug);
+	}
+	expect(wide).toEqual([]);
+	await expect(page.getByRole("region", { name: /^Props de / })).toHaveAttribute("tabindex", "0");
 });

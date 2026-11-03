@@ -2,14 +2,17 @@
 // La ficha de un componente repartida por etiqueta (src/lib/card.ts): «Úsalo así» y «Evita» en dos tarjetas
 // (Button.dc.html, «Cuándo usarlo»), «Accesibilidad», «Amplía o difiere de la guía» en una tarjeta de marca y
 // «Detalles» como pares de título y texto. Cada párrafo se pinta con su texto de la ficha, sin cambios.
+// La página las pone en dos sitios, como el diseño: `part="uso"` arriba y `part="detalles"` tras el código.
 import { Icon, type IconName } from "@jotis-me/react";
 import type { CardSection, SplitCard } from "../lib/card";
 import { inline } from "../lib/inline";
 
 interface Props {
 	card: SplitCard;
+	part: "uso" | "detalles";
 }
-const { sections } = Astro.props.card;
+const { card, part } = Astro.props;
+const { sections } = card;
 const find = (id: CardSection["id"]) => sections.find((s) => s.id === id);
 const cards = [
 	{ section: find("uso"), icon: "check-circle", color: "text-fg-success-primary" },
@@ -22,7 +25,7 @@ const box = "rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)] md:
 ---
 
 {
-	cards.length > 0 && (
+	part === "uso" && cards.length > 0 && (
 		<section aria-labelledby="uso">
 			<h2 id="uso">Cuándo usarlo</h2>
 			<div class:list={["not-prose my-4 grid grid-cols-1 gap-3 md:gap-4", cards.length > 1 && "md:grid-cols-2"]}>
@@ -42,7 +45,7 @@ const box = "rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)] md:
 	)
 }
 {
-	(details || accessibility || extends_) && (
+	part === "detalles" && (details || accessibility || extends_) && (
 		<section aria-labelledby="detalles">
 			<h2 id="detalles">Detalles y accesibilidad</h2>
 			{details && (
