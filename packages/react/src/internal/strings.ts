@@ -48,6 +48,7 @@ export const defaultStrings = {
 	writeMessage: "Escribe un mensaje",
 	savedColors: "Colores guardados",
 	hex: "Hex",
+	hue: "Tono",
 	formatting: "Formato",
 	bold: "Negrita",
 	italic: "Cursiva",

@@ -28,7 +28,7 @@ Motivación y alcance, en `proposal.md`; requisitos, en `specs/`.
 
 **Non-Goals:**
 - Paridad píxel a píxel con el diseño. Se compara a ojo con capturas, porque el diseño son maquetas con datos de ejemplo.
-- Cambiar componentes de `@jotis-me/react`, salvo `AppIcon`.
+- Cambiar componentes de `@jotis-me/react`, salvo `AppIcon` y el arreglo de `ColorPicker` (abajo, §3).
 - Redirecciones de las URLs antiguas (decisión del usuario).
 - Un playground a mano por componente.
 
@@ -63,6 +63,8 @@ En el build, cada párrafo de la ficha que empieza por `**Etiqueta.**` se asigna
 El párrafo "Props." no se pierde: va junto a la tabla de props como resumen de la guía. Hay un test que comprueba que todos los párrafos de las 74 fichas acaban en la página, una sola vez y sin cambios.
 
 *Alternativa descartada:* reescribir las fichas en listas; el usuario la descartó.
+
+**ColorPicker (decisión del usuario, 3 nov).** Con la ficha repartida, el ejemplo de ColorPicker queda fuera de la vista al cargar y axe lee su HTML de servidor sin hidratar: la barra de tono (`ColorSlider` sin `<Label>`) llevaba un `aria-labelledby` hacia una etiqueta que no existe. Se arregla en el paquete: la barra recibe un nombre propio, «Tono», cambiable con la prop nueva `hueLabel` (changeset `patch`). Un test del paquete comprueba que cada `aria-labelledby` del HTML de servidor apunta a un elemento que existe.
 
 ### 4. Playground genérico desde los tipos
 `propsOf` ya da, para cada prop, el tipo, los valores de las uniones y el valor por defecto.
