@@ -66,7 +66,7 @@ test("Button: cinco jerarquías y cinco tamaños vivos, la regla de una primaria
 		await expect(examples.getByRole("button", { name: label, exact: true })).toBeVisible();
 	await expect(examples.getByRole("button", { name: "Nuevo gasto" })).toHaveCSS("height", "40px");
 	await expect(examples.getByRole("button", { name: "Continuar" })).toHaveCSS("height", "44px");
-	await expect(page.locator("section[aria-labelledby=ficha]")).toContainText(
+	await expect(page.locator("section[aria-labelledby=uso]")).toContainText(
 		"Una sola primary por vista o por modal",
 	);
 	const props = await page
@@ -74,6 +74,23 @@ test("Button: cinco jerarquías y cinco tamaños vivos, la regla de una primaria
 		.allTextContents();
 	for (const p of ["hierarchy", "size", "destructive", "iconOnly", "loading", "href"])
 		expect(props).toContain(p);
+});
+
+// El texto de un párrafo de la ficha tal como se lee: sin las marcas de Markdown
+const plain = (md: string) => md.replace(/\*\*|`/g, "").replace(/(^|\s)_([^_]+)_/g, "$1$2");
+
+test("la ficha se reparte por etiqueta sin cambiar su texto: «Evita» va en la sección Evita", async ({
+	page,
+}) => {
+	const md = readFileSync(join(dir, "cam-frame.md"), "utf8");
+	const evita = (md.match(/^\*\*Evita\.\*\*.*$/m) as RegExpMatchArray)[0];
+	await page.goto("/components/cam-frame/");
+	const section = page.locator("[data-card-section=evita]");
+	await expect(section.getByRole("heading", { name: "Evita" })).toBeVisible();
+	await expect(section.locator("p")).toHaveText([plain(evita)]);
+	// Y la de props va junto a su tabla
+	const props = (md.match(/^\*\*Props\.\*\*.*$/m) as RegExpMatchArray)[0];
+	await expect(page.locator("section[aria-labelledby=props] > p").first()).toHaveText(plain(props));
 });
 
 test("pestañas de código: flechas para cambiar, Astro con client:load en un interactivo", async ({

@@ -25,10 +25,8 @@ const { name, description, props, next, astro, dark = false } = Astro.props;
 		<h1>{name}</h1>
 		<p class="lead"><InlineCode text={description} /></p>
 
-		<section aria-labelledby="ficha">
-			<h2 id="ficha">Cuándo usarlo</h2>
-			<slot name="guide" />
-		</section>
+		<!-- La ficha de la guía repartida por etiqueta (CardSections): Cuándo usarlo y Detalles y accesibilidad -->
+		<slot name="guide" />
 
 		<section aria-labelledby="ejemplos">
 			<h2 id="ejemplos">Ejemplos</h2>
@@ -45,6 +43,7 @@ const { name, description, props, next, astro, dark = false } = Astro.props;
 
 		<section aria-labelledby="props">
 			<h2 id="props">Props</h2>
+			<slot name="props-summary" />
 			<PropsTable rows={props} />
 		</section>
 

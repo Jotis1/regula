@@ -30,11 +30,11 @@ beforeAll(async () => {
 });
 
 describe("plantilla de página de componente", () => {
-	it("tiene título, descripción y las cuatro secciones", () => {
+	it("tiene título, descripción, la ficha y las secciones de ejemplos, props y código", () => {
 		expect(html).toContain("<h1");
 		expect(html).toContain("Componente de prueba de la plantilla.");
-		for (const s of ["Cuándo usarlo", "Ejemplos", "Props", "Código"])
-			expect(html).toContain(`>${s}</h2>`);
+		// «Cuándo usarlo» y «Detalles» los pinta la ficha repartida (CardSections), que llega por la ranura guide
+		for (const s of ["Ejemplos", "Props", "Código"]) expect(html).toContain(`>${s}</h2>`);
 		expect(html).toContain("Úsalo para probar la plantilla.");
 		expect(html).toContain('<button type="button">Guardar</button>');
 	});
