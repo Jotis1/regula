@@ -26,7 +26,7 @@ test("el filtro «tabla» deja Table con su grupo abierto", async ({ page }) => 
 });
 
 test("el filtro no distingue tildes y avisa cuando no hay nada", async ({ page }) => {
-	await page.goto("/");
+	await page.goto("/foundations/principles/");
 	const filter = docnav(page).getByLabel("Filtrar navegación");
 	await filter.fill("dialogo");
 	await expect(docnav(page).getByRole("link", { name: "Modal", exact: true })).toBeVisible();
@@ -58,7 +58,7 @@ test("la página actual lleva aria-current y su grupo está abierto", async ({ p
 });
 
 test("tiene las secciones y los recuentos del catálogo", async ({ page }) => {
-	await page.goto("/");
+	await page.goto("/foundations/principles/");
 	await expect(docnav(page).getByRole("heading", { level: 2 })).toHaveText([
 		"Empezar",
 		"Fundamentos",

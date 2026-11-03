@@ -22,7 +22,7 @@
 
 ## 4. Portada
 
-- [ ] 4.1 Rehacer la portada: mensaje principal con el formulario de componentes reales, instalación en tres pasos desde el README de `@jotis-me/react`, mapa de secciones con cifras contadas en el build, "Cinco reglas que se olvidan" con el texto de la guía y las cinco apps con su `AppIcon`; verificar con un e2e de las cifras (componentes, iconos y tokens iguales a los de los paquetes), axe y capturas a 1440 y 390px comparadas con `Main.dc.html` y `HomeM.dc.html`
+- [x] 4.1 Rehacer la portada: mensaje principal con el formulario de componentes reales, instalación en tres pasos desde el README de `@jotis-me/react`, mapa de secciones con cifras contadas en el build, "Cinco reglas que se olvidan" con el texto de la guía y las cinco apps con su `AppIcon`; verificar con un e2e de las cifras (componentes, iconos y tokens iguales a los de los paquetes), axe y capturas a 1440 y 390px comparadas con `Main.dc.html` y `HomeM.dc.html`
 
 ## 5. Fundamentos
 

@@ -14,9 +14,14 @@ import ThemeScript from "../components/ThemeScript.astro";
 interface Props {
 	title: string;
 	description?: string;
+	/** A todo el ancho, sin navegación lateral ni márgenes (la portada). */
+	wide?: boolean;
 }
-const { title, description = "Las reglas de diseño, los tokens y los componentes de la suite jotis.me." } =
-	Astro.props;
+const {
+	title,
+	description = "Las reglas de diseño, los tokens y los componentes de la suite jotis.me.",
+	wide = false,
+} = Astro.props;
 const current = Astro.url.pathname;
 ---
 
@@ -35,16 +40,24 @@ const current = Astro.url.pathname;
 	</head>
 	<body class="min-h-screen bg-primary text-md text-primary antialiased">
 		<SiteHeader />
-		<div class="mx-auto flex max-w-[1440px]">
-			<aside class="sticky top-0 hidden h-screen w-72 shrink-0 overflow-y-auto shadow-[inset_-1px_0_0_var(--border-secondary)] lg:block">
-				<SideNav current={current} />
-			</aside>
-			<div class="flex min-w-0 flex-1 flex-col">
-				<main id="contenido" data-pagefind-body class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
+		{
+			wide ? (
+				<main id="contenido" data-pagefind-body>
 					<slot />
 				</main>
-			</div>
-		</div>
+			) : (
+				<div class="mx-auto flex max-w-[1440px]">
+					<aside class="sticky top-0 hidden h-screen w-72 shrink-0 overflow-y-auto shadow-[inset_-1px_0_0_var(--border-secondary)] lg:block">
+						<SideNav current={current} />
+					</aside>
+					<div class="flex min-w-0 flex-1 flex-col">
+						<main id="contenido" data-pagefind-body class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
+							<slot />
+						</main>
+					</div>
+				</div>
+			)
+		}
 		<SiteFooter />
 		<CopyToast />
 	</body>

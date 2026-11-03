@@ -16,6 +16,9 @@ Lo que no cabe en las casillas de `tasks.md` ni en `design.md`. Léelo antes de 
 - **Navegación lateral, grupos:** `<details>` en lugar de botones con `aria-expanded`, para que sin JavaScript se pueda abrir un grupo (design §7). El filtro solo aparece con JavaScript.
 - **Menú móvil:** es el `Slideout` de `@jotis-me/react` a todo el ancho (design §7). Su X dice «Cerrar», la etiqueta por defecto de `CloseButton`, en lugar de «Cerrar menú»: `Slideout` no deja cambiarla. La búsqueda del menú cierra el menú y abre la global (evento `regula:search`), en lugar de apilar dos capas modales.
 - **Tema:** el conmutador de la cabecera alterna Claro y Oscuro; «Sistema» solo está en el menú móvil, como en el diseño. Mientras no hay elección guardada, la página sigue los cambios del sistema sin recargar (`src/lib/theme.ts`).
+- **Portada, instalación:** el diseño dice «importa el tema de Tailwind v4 y carga las fuentes sin que el texto dé saltos». El README de `@jotis-me/react`, de donde salen los fragmentos (design §11), no tiene paso de fuentes: la hoja `styles.css` ya las trae. El texto dice «importa la hoja en tu CSS de Tailwind v4».
+- **Portada, cinco reglas:** títulos del diseño con el texto de la guía (Principios, Color y Contenido y tono), no las frases cortas del diseño. «Todo campo con etiqueta» pasa a «Todo input lleva etiqueta visible» y «El color nunca va solo» a «Un estado nunca va solo con color», que es lo que dice la guía.
+- **Portada, formulario:** lleva su propio `Button` primary («Guardar gasto») junto al «Instalar en tu proyecto» de la página, como en el diseño. Es la maqueta de una pantalla de app dentro de un `<figure>`, no una segunda acción de la portada; en móvil no se muestra (HomeM).
 - **Salto al contenido:** fuera de la vista a −96px en lugar de −48px; a −48px su `shadow-lg` asomaba en el borde superior.
 
 ## Verificación
