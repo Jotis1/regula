@@ -3,12 +3,10 @@ import { glob } from "astro/loaders";
 
 const foundations = defineCollection({
 	loader: glob({ pattern: "*.{md,mdx}", base: "./src/content/foundations" }),
-	// `wide`: a todo el ancho, con el índice en línea bajo el título (Color, por su tabla de tokens)
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
 		order: z.number(),
-		wide: z.boolean().optional(),
 	}),
 });
 

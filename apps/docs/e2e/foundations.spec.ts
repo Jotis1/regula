@@ -159,3 +159,16 @@ test("la página de marca tiene a Regula en fuchsia y la nota de la variante Cla
 	await expect(page.getByText("la variante Claro en el tema claro", { exact: false })).toBeVisible();
 	await expect(page.getByText("chartreuse", { exact: false })).toHaveCount(0);
 });
+
+test("Color lleva el índice «En esta página» en columna, como el resto de fundamentos", async ({ page }) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/foundations/color/");
+	const toc = page.getByRole("navigation", { name: "En esta página" });
+	await expect(toc).toHaveCount(1);
+	await expect(toc).toBeVisible();
+	await expect(toc.getByText("En esta página", { exact: true })).toBeVisible();
+	await expect(toc.getByRole("link", { name: "Proponer un cambio" })).toBeVisible();
+	const article = await page.locator("article").boundingBox();
+	const column = await toc.boundingBox();
+	expect(column && article && column.x).toBeGreaterThan((article?.x ?? 0) + (article?.width ?? 0));
+});
