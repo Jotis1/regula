@@ -1,0 +1,14 @@
+---
+// Ejemplo vivo dentro de una página de fundamentos: componentes de verdad sobre bg-secondary, con su pie.
+interface Props {
+	caption?: string;
+}
+const { caption } = Astro.props;
+---
+
+<figure class="not-prose my-6 flex flex-col gap-2.5">
+	<div class="flex flex-col gap-4 rounded-xl bg-secondary p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)] md:p-6">
+		<slot />
+	</div>
+	{caption && <figcaption class="text-xs text-quaternary">{caption}</figcaption>}
+</figure>

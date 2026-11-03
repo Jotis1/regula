@@ -1,0 +1,18 @@
+---
+// Formatos de cifras y fechas (Tone.dc.html): etiqueta y valor en monoespaciada, cuatro por fila en escritorio.
+interface Props {
+	items: { label: string; value: string }[];
+}
+const { items } = Astro.props;
+---
+
+<dl class="not-prose my-4 grid grid-cols-2 gap-2.5 md:grid-cols-4 md:gap-3">
+	{
+		items.map((i) => (
+			<div class="flex flex-col gap-1 rounded-lg p-3.5 shadow-[inset_0_0_0_1px_var(--border-secondary)] md:p-4">
+				<dt class="text-xs text-tertiary">{i.label}</dt>
+				<dd class="font-mono text-md text-primary">{i.value}</dd>
+			</div>
+		))
+	}
+</dl>

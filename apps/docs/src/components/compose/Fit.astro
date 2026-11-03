@@ -1,0 +1,33 @@
+---
+// «Cabe / No cabe» (Tone.dc.html): dos tarjetas con lo que sí y lo que no, en el texto de la guía.
+import { Icon } from "@jotis-me/react";
+import { inline } from "../../lib/inline";
+
+interface Props {
+	fits: string[];
+	nots: string[];
+	fitsLabel?: string;
+	notsLabel?: string;
+}
+const { fits, nots, fitsLabel = "Cabe", notsLabel = "No cabe" } = Astro.props;
+const cards = [
+	{ label: fitsLabel, items: fits, icon: "check-circle", color: "text-fg-success-primary" },
+	{ label: notsLabel, items: nots, icon: "x-close", color: "text-fg-error-primary" },
+] as const;
+---
+
+<div class="not-prose my-4 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+	{
+		cards.map((c) => (
+			<div class="flex flex-col gap-3 rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)] md:p-5">
+				<p class="flex items-center gap-2 text-sm font-semibold text-primary">
+					<Icon name={c.icon} size={20} className={c.color} />
+					{c.label}
+				</p>
+				<ul class="flex list-disc flex-col gap-1.5 pl-[18px] text-sm text-secondary">
+					{c.items.map((i) => <li set:html={inline(i)} />)}
+				</ul>
+			</div>
+		))
+	}
+</div>

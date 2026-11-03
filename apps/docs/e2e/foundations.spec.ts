@@ -50,11 +50,74 @@ for (const old of ["/usage/tailwind/", "/foundations/spacing/", "/foundations/sh
 
 test("el texto de la guía sale tal cual", async ({ page }) => {
 	await page.goto("/foundations/content/");
-	await expect(page.getByText('"Aún no hay gastos. Qué calma."')).toBeVisible();
+	// En «En lugar de» va dos veces, tabla en escritorio y tarjetas en móvil: una se ve
+	await expect(page.getByText('"Aún no hay gastos. Qué calma."').filter({ visible: true })).toHaveCount(1);
 	await page.goto("/foundations/color/");
 	await expect(page.getByText("Las series usan, en este orden")).toBeVisible();
 	await page.goto("/foundations/stream/");
 	await expect(page.getByText('"En directo" no va en rojo')).toBeVisible();
+});
+
+test("contenido y tono: la voz, las reglas de formato y los ejemplos de la guía", async ({ page }) => {
+	await page.goto("/foundations/content/");
+	const main = page.locator("main");
+	await expect(main).toContainText("Voz: cercana, desenfadada y con humor seco.");
+	await expect(main).toContainText("Castellano de España, tuteo, frases cortas.");
+	await expect(main).toContainText(
+		'Mayúscula solo al principio: "Nuevo movimiento", no "Nuevo Movimiento".',
+	);
+	await expect(main).toContainText("Cifras con formato español: 1.284,50 €, fechas 29 oct 2026.");
+	const instead = page.getByRole("table", { name: /lo que se evita y lo que se escribe/ });
+	await expect(instead.getByRole("row", { name: /Error leve/ })).toContainText(
+		'"Se ha producido un error de validación."',
+	);
+	await expect(page.getByRole("heading", { name: "Aún no hay gastos" })).toBeVisible();
+});
+
+test("las páginas de fundamentos llevan migas, índice y anterior/siguiente", async ({ page }) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/foundations/color/");
+	const crumbs = page.getByRole("navigation", { name: "Migas de pan" });
+	await expect(crumbs.getByRole("link", { name: "Fundamentos" })).toHaveAttribute(
+		"href",
+		"/foundations/principles/",
+	);
+	await expect(crumbs).toContainText("Color");
+	const pager = page.getByRole("navigation", { name: "Anterior y siguiente" });
+	await expect(pager.getByRole("link", { name: /Anterior\s*Contenido y tono/ })).toHaveAttribute(
+		"href",
+		"/foundations/content/",
+	);
+	await expect(pager.getByRole("link", { name: /Siguiente\s*Tipografía/ })).toHaveAttribute(
+		"href",
+		"/foundations/typography/",
+	);
+
+	await page.goto("/foundations/content/");
+	const toc = page.getByRole("navigation", { name: "En esta página" });
+	await expect(toc.locator("[data-toc-link]")).toHaveText([
+		"La voz",
+		"Dónde cabe el humor",
+		"En lugar de esto, esto otro",
+		"Reglas de escritura",
+		"Cifras y fechas",
+	]);
+	await expect(toc.getByRole("link", { name: "La voz" })).toHaveAttribute("aria-current", "true");
+	await page.evaluate(() =>
+		document.getElementById("reglas-de-escritura")?.scrollIntoView({ block: "start" }),
+	);
+	await expect(toc.getByRole("link", { name: "Reglas de escritura" })).toHaveAttribute(
+		"aria-current",
+		"true",
+	);
+	await expect(toc.getByRole("link", { name: "La voz" })).toHaveAttribute("aria-current", "false");
+	// Al final de la página se marca la última, aunque su título no llegue arriba
+	await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+	await expect(toc.getByRole("link", { name: "Cifras y fechas" })).toHaveAttribute("aria-current", "true");
+	await expect(page.getByRole("link", { name: "Proponer un cambio" })).toHaveAttribute(
+		"href",
+		"https://github.com/Jotis1/regula/edit/main/apps/docs/src/content/foundations/content.mdx",
+	);
 });
 
 test("la página de marca tiene a Regula en fuchsia y la nota de la variante Claro", async ({ page }) => {

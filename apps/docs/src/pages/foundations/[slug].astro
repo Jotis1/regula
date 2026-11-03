@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import TokenTables from "../../components/TokenTables.astro";
-import Prose from "../../layouts/Prose.astro";
+import FoundationPage from "../../layouts/FoundationPage.astro";
 
 export async function getStaticPaths() {
 	const pages = await getCollection("foundations");
@@ -9,10 +9,16 @@ export async function getStaticPaths() {
 }
 
 const { page } = Astro.props;
-const { Content } = await render(page);
+const { Content, headings } = await render(page);
 ---
 
-<Prose title={page.data.title} description={page.data.description}>
+<FoundationPage
+	slug={page.id}
+	title={page.data.title}
+	description={page.data.description}
+	headings={headings}
+	source={`apps/docs/${page.filePath}`}
+>
 	<Content />
 	<TokenTables page={page.id} />
-</Prose>
+</FoundationPage>
