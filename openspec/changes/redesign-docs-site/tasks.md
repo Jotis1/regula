@@ -17,7 +17,7 @@
 
 - [x] 3.1 Rehacer `Base.astro` con la cabecera del diseño: icono de Regula (`light` en claro, principal en oscuro) y "Regula", las cinco secciones con la actual marcada, búsqueda con aspecto de campo y conmutador de tema; verificar con un e2e de la cabecera y de la sección actual, axe en claro y oscuro, y una captura a 1440px comparada con `Header.dc.html`
 - [x] 3.2 Crear la navegación lateral desde el catálogo: grupos en `<details>` con el grupo actual abierto, recuentos y filtro con atajo `/` (design §7); verificar con e2e que "tabla" deja `Table` con su grupo abierto, que sin JavaScript se puede navegar y que la página actual lleva `aria-current`
-- [ ] 3.3 Crear el pie con los enlaces de documentación y de la suite, la versión de cada paquete leída de su `package.json` y el enlace a `/changelog/`; verificar con un e2e que la versión coincide con la de `@jotis-me/react`
+- [x] 3.3 Crear el pie con los enlaces de documentación y de la suite, la versión de cada paquete leída de su `package.json` y el enlace a `/changelog/`; verificar con un e2e que la versión coincide con la de `@jotis-me/react`
 - [ ] 3.4 Crear la cabecera móvil y el menú a pantalla completa sobre `Slideout` (búsqueda, navegación con filtro y tema Sistema/Claro/Oscuro), y el tema en tres estados (design §8); verificar con e2e a 390px que el menú atrapa el foco, se cierra con Escape y devuelve el foco, que "Sistema" sigue al sistema y borra la elección guardada, y que `e2e/theme.spec.ts` sigue pasando sin parpadeo
 
 ## 4. Portada

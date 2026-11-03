@@ -1,5 +1,4 @@
 ---
-import pkg from "@jotis-me/react/package.json";
 import "../styles/global.css";
 // Fuentes de lo que se ve al cargar: precargarlas evita pintar con la de reserva y que el texto se recoloque al
 // llegar (CLS de 0,2 en Lighthouse móvil; Geist Mono es la de los `<code>` en línea, que crecían de 20 a 22px). Mismo fichero que usa fonts.css, así que no se descarga dos veces.
@@ -8,6 +7,7 @@ import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
 import geistMono from "@jotis-me/tokens/fonts/GeistMono-Variable.woff2?url";
 import CopyToast from "../components/CopyToast.astro";
 import SideNav from "../components/SideNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import ThemeScript from "../components/ThemeScript.astro";
 
@@ -43,11 +43,9 @@ const current = Astro.url.pathname;
 				<main id="contenido" data-pagefind-body class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
 					<slot />
 				</main>
-				<footer class="border-t border-secondary px-4 py-6 text-sm text-tertiary lg:px-8">
-					Documenta <code class="font-mono text-code-xs text-secondary">@jotis-me/*</code> v{pkg.version} · Código MIT
-				</footer>
 			</div>
 		</div>
+		<SiteFooter />
 		<CopyToast />
 	</body>
 </html>
