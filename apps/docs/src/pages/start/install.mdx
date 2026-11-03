@@ -5,36 +5,36 @@ title: Instalación con Tailwind v4
 description: Cómo usar los paquetes en una app de Next.js o de Astro.
 ---
 
+import Code from "../../components/compose/Code.astro";
+
 Tres paquetes, todos en npm: `@jotis-me/tokens` (colores, tipografía, espaciado y fuentes), `@jotis-me/icons` (iconos de línea e iconos de app) y `@jotis-me/react` (los componentes). Con instalar `@jotis-me/react` llegan los otros dos.
 
 ## Next.js (App Router)
 
-```sh
-bun add @jotis-me/react
-```
+<Code code={"bun add @jotis-me/react"} />
 
 En `app/globals.css`:
 
-```css
-@import "tailwindcss";
-@import "@jotis-me/react/styles.css";
-```
+<Code
+	code={`@import "tailwindcss";
+@import "@jotis-me/react/styles.css";`}
+/>
 
 Los componentes sin estado (`Badge`, `PageHeader`, `Alert`…) funcionan como Server Components. Los interactivos (`Modal`, `Tabs`, `DatePicker`…) ya llevan `"use client"`: impórtalos desde una página de servidor sin envolverlos.
 
 ## Astro
 
-```sh
-bunx astro add react
-bun add @jotis-me/react @tailwindcss/vite tailwindcss
-```
+<Code
+	code={`bunx astro add react
+bun add @jotis-me/react @tailwindcss/vite tailwindcss`}
+/>
 
 En la hoja principal, lo mismo que en Next:
 
-```css
-@import "tailwindcss";
-@import "@jotis-me/react/styles.css";
-```
+<Code
+	code={`@import "tailwindcss";
+@import "@jotis-me/react/styles.css";`}
+/>
 
 Sin directiva, un componente se pinta en el servidor y no envía JavaScript. Los interactivos necesitan una directiva `client:*` (`client:load`, `client:visible`…). Las props que son funciones (`onChange`, `render`) no pueden cruzar de una página `.astro` a una isla: envuelve el componente en un fichero `.tsx` y pásale ahí la función.
 

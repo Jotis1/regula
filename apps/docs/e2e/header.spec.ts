@@ -115,3 +115,13 @@ test("a 1440px tiene las medidas del diseño", async ({ page }) => {
 	expect(underline).toContain("inset");
 	expect(underline).toMatch(/-2px/);
 });
+
+test("favicon: el icono de app de Regula, en SVG y PNG, servido como fichero", async ({ page, request }) => {
+	await page.goto("/components/button/");
+	const svg = await page.locator('link[rel="icon"][type="image/svg+xml"]').getAttribute("href");
+	const png = await page.locator('link[rel="icon"][type="image/png"]').getAttribute("href");
+	const apple = await page.locator('link[rel="apple-touch-icon"]').getAttribute("href");
+	expect(svg).toMatch(/^\/_astro\/regula-favicon\..+\.svg$/);
+	for (const href of [svg, png, apple]) expect((await request.get(href ?? "")).ok()).toBe(true);
+	expect(await (await request.get(svg ?? "")).text()).toContain("<title>Regula</title>");
+});

@@ -85,13 +85,17 @@ describe("plantilla de página de componente", () => {
 		expect(props).toBeGreaterThan(table);
 	});
 
-	it("muestra el código para Next.js y para Astro en pestañas accesibles", () => {
-		expect(html.match(/role="tab"/g)).toHaveLength(2);
-		expect(html).toContain(">Next.js</button>");
-		expect(html).toContain(">Astro</button>");
-		expect(html).toContain("&lt;Ejemplo label=&quot;Guardar&quot; /&gt;");
-		expect(html.match(/role="tabpanel"/g)).toHaveLength(2);
-		expect(html).toMatch(/role="tabpanel"[^>]*hidden/);
+	it("muestra el código para Next.js y para Astro en el CodeSnippet de @jotis-me/react, resaltado", () => {
+		const code = html.slice(html.indexOf("data-code-tabs"));
+		expect(code.match(/role="tab"/g)).toHaveLength(2);
+		expect(code).toContain(">Next.js</button>");
+		expect(code).toContain(">Astro</button>");
+		// CodeSnippet pinta solo la pestaña activa, con los colores de su ficha: nombres en utility-blue-600 y
+		// palabras clave en utility-pink-600 (aquí, solo el nombre)
+		expect(code.match(/role="tabpanel"/g)).toHaveLength(1);
+		expect(code).toContain('<span class="text-utility-blue-600">Ejemplo</span>');
+		// La pestaña de Astro va en las props de la isla
+		expect(code).toContain("Ejemplo client:load");
 	});
 
 	it("con un componente del catálogo: migas, grupo, anterior/siguiente y relacionados", () => {

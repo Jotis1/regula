@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
+import { type } from "@jotis-me/tokens";
 import TokenTables from "../../components/TokenTables.astro";
 import FoundationPage from "../../layouts/FoundationPage.astro";
+import { tokenSections } from "../../lib/tokens";
 
 export async function getStaticPaths() {
 	const pages = await getCollection("foundations");
@@ -16,7 +18,7 @@ const { Content, headings } = await render(page);
 	slug={page.id}
 	title={page.data.title}
 	description={page.data.description}
-	headings={headings}
+	headings={[...headings, ...tokenSections(page.id, type.groups).map((s) => ({ depth: 2, ...s }))]}
 	source={`apps/docs/${page.filePath}`}
 >
 	<Content />

@@ -1,7 +1,14 @@
 // Páginas de componente: ficha, ejemplos vivos, props, fragmentos de código y navegación.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
+
+/** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
+async function hydrated(page: Page, selector: string) {
+	const island = page.locator(`${selector} astro-island`);
+	await island.scrollIntoViewIfNeeded();
+	await expect(island).not.toHaveAttribute("ssr", /.*/);
+}
 
 const dir = join(import.meta.dirname, "../src/content/components");
 const pages = readdirSync(dir).map((f) => ({
@@ -97,6 +104,7 @@ test("pestañas de código: flechas para cambiar, Astro con client:load en un in
 	page,
 }) => {
 	await page.goto("/components/button-group/");
+	await hydrated(page, "[data-code-tabs]");
 	const tabs = page.locator("[data-code-tabs]").getByRole("tab");
 	const next = tabs.nth(0);
 	const astro = tabs.nth(1);
@@ -117,6 +125,7 @@ test("pestañas de código: flechas para cambiar, Astro con client:load en un in
 
 test("los estáticos no llevan directiva en Astro y avisan si necesitan una función", async ({ page }) => {
 	await page.goto("/components/badge/");
+	await hydrated(page, "[data-code-tabs]");
 	await page.locator("[data-code-tabs]").getByRole("tab", { name: "Astro" }).click();
 	const panel = page.locator("[data-code-tabs]").getByRole("tabpanel");
 	await expect(panel).not.toContainText("client:");

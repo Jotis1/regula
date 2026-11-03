@@ -3,10 +3,10 @@
 // nombre, insignia del grupo, descripción, línea de importación y nota de Astro; «Cuándo usarlo» (la ficha),
 // variantes (el ejemplo del registro), props, código, «Detalles y accesibilidad» (el resto de la ficha) y
 // anterior/siguiente. A la derecha, el índice «En esta página» y los relacionados del catálogo (design §2).
-import { Badge, Breadcrumbs, Icon } from "@jotis-me/react";
+import { Badge, Breadcrumbs, CodeSnippet, Icon } from "@jotis-me/react";
 import CardSections from "../components/CardSections.astro";
-import CodeTabs from "../components/CodeTabs.astro";
 import InlineCode from "../components/InlineCode.astro";
+import Pager from "../components/Pager.astro";
 import Playground from "../components/Playground";
 import PropsTable from "../components/PropsTable.astro";
 import StreamNote from "../components/StreamNote.astro";
@@ -15,7 +15,7 @@ import { groupOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
 import { inline } from "../lib/inline";
 import type { Playground as PlaygroundData } from "../lib/playground";
 import type { PropRow } from "../lib/props";
-import { PAGER, TOC_LINK } from "../lib/toc";
+import { TOC_LINK } from "../lib/toc";
 import Base from "./Base.astro";
 
 interface Props {
@@ -100,7 +100,7 @@ const toc = [
 					</div>
 				</dl>
 				{
-					toc.length > 1 && (
+					toc.length > 0 && (
 						<details class="mt-1 rounded-lg shadow-[inset_0_0_0_1px_var(--border-secondary)] xl:hidden">
 							<summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 px-3.5 text-sm font-semibold text-secondary [&::-webkit-details-marker]:hidden">
 								En esta página
@@ -164,12 +164,15 @@ const toc = [
 
 			<section aria-labelledby="codigo">
 				<h2 id="codigo">Código</h2>
-				<CodeTabs
-					tabs={[
-						{ label: "Next.js", code: next },
-						{ label: "Astro", code: astro },
-					]}
-				/>
+				<div class="not-prose my-4" data-code-tabs>
+					<CodeSnippet
+						client:visible
+						tabs={[
+							{ label: "Next.js", code: next },
+							{ label: "Astro", code: astro },
+						]}
+					/>
+				</div>
 				{
 					astroNote && (
 						<div class="not-prose my-4 flex gap-3 rounded-xl bg-secondary p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
@@ -194,24 +197,10 @@ const toc = [
 
 			<CardSections card={card} part="detalles" />
 
-			{
-				(prev || following) && (
-					<nav aria-label="Anterior y siguiente" class="not-prose mt-14 flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
-						{prev && (
-							<a href={href(prev)} class={PAGER} rel="prev">
-								<span class="text-xs text-tertiary">Anterior</span>
-								<span class="text-md font-semibold">{prev}</span>
-							</a>
-						)}
-						{following && (
-							<a href={href(following)} class={`${PAGER} text-right`} rel="next">
-								<span class="text-xs text-tertiary">Siguiente</span>
-								<span class="text-md font-semibold">{following}</span>
-							</a>
-						)}
-					</nav>
-				)
-			}
+			<Pager
+				prev={prev ? { href: href(prev), label: prev } : undefined}
+				next={following ? { href: href(following), label: following } : undefined}
+			/>
 		</article>
 		<nav aria-label="En esta página" class="sticky top-8 hidden w-[184px] shrink-0 flex-col gap-2 self-start pt-1 xl:flex" data-toc>
 			<p class="mb-1 text-xs font-semibold text-quaternary">En esta página</p>

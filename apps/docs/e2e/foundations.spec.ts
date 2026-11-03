@@ -172,3 +172,44 @@ test("Color lleva el índice «En esta página» en columna, como el resto de fu
 	const column = await toc.boundingBox();
 	expect(column && article && column.x).toBeGreaterThan((article?.x ?? 0) + (article?.width ?? 0));
 });
+
+test("anterior y siguiente llevan su flecha, sin cambiar el nombre accesible", async ({ page }) => {
+	await page.goto("/foundations/color/");
+	const pager = page.getByRole("navigation", { name: "Anterior y siguiente" });
+	const prev = pager.getByRole("link", { name: "Anterior Contenido y tono" });
+	const next = pager.getByRole("link", { name: "Siguiente Tipografía" });
+	await expect(prev.locator('svg[aria-hidden="true"]')).toHaveCount(1);
+	await expect(next.locator('svg[aria-hidden="true"]')).toHaveCount(1);
+});
+
+// Todas las páginas de fundamentos e instalación tienen índice, aunque sea de una sección, y las tablas de tokens
+// del final (espaciado, sombras, tipografía) entran en él
+const tocs: [string, string[]][] = [
+	["/start/install/", ["Next.js (App Router)", "Astro", "Nombres de las utilidades", "Sin Tailwind"]],
+	["/foundations/principles/", ["Los cuatro principios"]],
+	["/foundations/layout/", ["Lo esencial", "Escala de espaciado", "Radios", "Anchos"]],
+	["/foundations/states/", ["Lo esencial", "Sombras", "Desenfoques"]],
+	["/foundations/iconography/", ["Lo esencial"]],
+	["/foundations/backgrounds/", ["Lo esencial"]],
+];
+for (const [path, sections] of tocs)
+	test(`${path} tiene su índice «En esta página» y cada enlace lleva a su sección`, async ({ page }) => {
+		await page.setViewportSize({ width: 1440, height: 900 });
+		await page.goto(path);
+		const links = page.getByRole("navigation", { name: "En esta página" }).locator("[data-toc-link]");
+		await expect(links).toHaveText(sections);
+		for (const id of await links.evaluateAll((as) => as.map((a) => a.getAttribute("data-toc-link"))))
+			await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
+	});
+
+test("la instalación usa el CodeSnippet de @jotis-me/react, con su resaltado, y no el de Astro", async ({
+	page,
+}) => {
+	await page.goto("/start/install/");
+	await expect(page.locator(".astro-code")).toHaveCount(0);
+	const blocks = page.locator("[data-code]");
+	await expect(blocks).toHaveCount(4);
+	await expect(blocks.first().getByRole("button", { name: "Copiar código" })).toBeVisible();
+	// La palabra clave `import` de la hoja va en el color de la ficha (utility-pink-600)
+	await expect(blocks.nth(1).locator("span.text-utility-pink-600").first()).toHaveText("import");
+});

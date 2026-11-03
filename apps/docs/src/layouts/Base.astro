@@ -2,6 +2,10 @@
 import "../styles/global.css";
 // Fuentes de lo que se ve al cargar: precargarlas evita pintar con la de reserva y que el texto se recoloque al
 // llegar (CLS de 0,2 en Lighthouse móvil; Geist Mono es la de los `<code>` en línea, que crecían de 20 a 22px). Mismo fichero que usa fonts.css, así que no se descarga dos veces.
+// Favicon: el icono de app de Regula en su variante de favicon (sólido), con PNG de 32px y el de iOS de respaldo
+import appleTouchIcon from "@jotis-me/icons/app-icons/regula-apple-touch-icon.png?no-inline";
+import favicon from "@jotis-me/icons/app-icons/regula-favicon.svg?no-inline";
+import favicon32 from "@jotis-me/icons/app-icons/regula-favicon-32.png?no-inline";
 import bricolage from "@jotis-me/tokens/fonts/BricolageGrotesque-Variable-latin.woff2?url";
 import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
 import geistMono from "@jotis-me/tokens/fonts/GeistMono-Variable.woff2?url";
@@ -34,6 +38,9 @@ const current = Astro.url.pathname;
 		<meta charset="utf-8" />
 		<ThemeScript />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href={favicon} type="image/svg+xml" />
+		<link rel="icon" href={favicon32} type="image/png" sizes="32x32" />
+		<link rel="apple-touch-icon" href={appleTouchIcon} />
 		<link rel="preload" href={geist} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={geistMono} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={bricolage} as="font" type="font/woff2" crossorigin />
