@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 
 /** La isla de búsqueda se hidrata con `client:idle`: hasta entonces el atajo no responde. */
@@ -24,6 +25,44 @@ test('Ctrl+K, "modal" y Enter llevan a la página de Modal', async ({ page }) =>
 	await page.keyboard.press("Enter");
 	await expect(page).toHaveURL(/\/components\/modal\/$/);
 	await expect(page.getByRole("heading", { level: 1 }).first()).toHaveText("Modal");
+});
+
+for (const dark of [false, true]) {
+	test(`el diálogo abierto, con resultados, no tiene fallos serios (${dark ? "oscuro" : "claro"})`, async ({
+		page,
+	}) => {
+		await page.emulateMedia({ colorScheme: dark ? "dark" : "light" });
+		await ready(page);
+		await open(page);
+		await page.getByRole("combobox", { name: "Buscar en Regula" }).fill("cal");
+		await expect(page.getByRole("group", { name: "Iconos" })).toBeVisible();
+		const { violations } = await new AxeBuilder({ page })
+			.include('[role="dialog"]')
+			.withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+			.analyze();
+		expect(violations.filter((v) => v.impact === "serious" || v.impact === "critical")).toEqual([]);
+	});
+}
+
+test("cada componente lleva su grupo del catálogo como descripción", async ({ page }) => {
+	await ready(page);
+	await open(page);
+	const search = page.getByRole("combobox", { name: "Buscar en Regula" });
+	await search.fill("modal");
+	await expect(
+		page.getByRole("group", { name: "Componentes" }).getByRole("option", { name: /^Modal/ }),
+	).toContainText("Capas");
+	await search.fill("streamalert");
+	await expect(
+		page.getByRole("group", { name: "Componentes" }).getByRole("option", { name: /^StreamAlert/ }),
+	).toContainText("Stream · Alertas");
+});
+
+test("sin resultados, sugiere buscar por lo que hace", async ({ page }) => {
+	await ready(page);
+	await open(page);
+	await page.getByRole("combobox", { name: "Buscar en Regula" }).fill("zzqxj");
+	await expect(page.getByText("Nada por aquí. Prueba con lo que hace (borrar, fecha)")).toBeVisible();
 });
 
 test("Cmd+K también lo abre; Escape lo cierra y el foco vuelve", async ({ page }) => {

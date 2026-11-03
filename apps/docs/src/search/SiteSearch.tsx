@@ -113,7 +113,11 @@ export default function SiteSearch() {
 					onQueryChange={onQueryChange}
 					groups={groups}
 					placeholder="Busca páginas, componentes, tokens o iconos"
-					emptyText={entries.length ? "Prueba con otra palabra." : "Cargando el índice…"}
+					emptyText={
+						entries.length
+							? "Nada por aquí. Prueba con lo que hace (borrar, fecha) en vez de cómo se llama."
+							: "Cargando el índice…"
+					}
 					labels={{ dialog: "Buscar en Regula", search: "Buscar en Regula" }}
 				/>
 			) : null}
