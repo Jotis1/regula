@@ -1,7 +1,14 @@
 // Páginas de componente: ficha, ejemplos vivos, props, fragmentos de código y navegación.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
+
+/** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
+async function hydrated(page: Page, selector: string) {
+	const island = page.locator(`${selector} astro-island`);
+	await island.scrollIntoViewIfNeeded();
+	await expect(island).not.toHaveAttribute("ssr", /.*/);
+}
 
 const dir = join(import.meta.dirname, "../src/content/components");
 const pages = readdirSync(dir).map((f) => ({
@@ -10,10 +17,10 @@ const pages = readdirSync(dir).map((f) => ({
 }));
 
 test("la navegación lateral lista todas las páginas de componente", async ({ page }) => {
-	await page.goto("/");
-	const nav = page.getByRole("navigation", { name: "Secciones" });
+	await page.goto("/foundations/principles/"); // la portada va sin navegación lateral
+	const nav = page.getByRole("navigation", { name: "Documentación" });
 	for (const { name, slug } of pages)
-		await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute(
+		await expect(nav.getByRole("link", { name, exact: true, includeHidden: true })).toHaveAttribute(
 			"href",
 			`/components/${slug}/`,
 		);
@@ -26,7 +33,7 @@ for (const { slug, name } of pages) {
 		await expect(page.getByRole("heading", { level: 1 }).first()).toHaveText(name);
 		await expect(page.getByRole("link", { name, exact: true })).toHaveAttribute("aria-current", "page");
 		// La isla de ejemplos se hidrata al verse: después tiene contenido
-		const examples = page.locator("#ejemplos + div astro-island");
+		const examples = page.locator("#variantes + div astro-island");
 		await examples.scrollIntoViewIfNeeded();
 		await expect(examples).not.toHaveAttribute("ssr", /.*/);
 		await expect(examples.locator(":scope > *").first()).toBeVisible();
@@ -40,7 +47,7 @@ test("los ejemplos vivos no heredan los estilos del texto largo (tablas, listas,
 	page,
 }) => {
 	await page.goto("/components/date-picker/");
-	const grid = page.locator("#ejemplos + div table");
+	const grid = page.locator("#variantes + div table");
 	await grid.scrollIntoViewIfNeeded();
 	const css = await grid.evaluate((t) => {
 		const th = t.querySelector("th") as Element;
@@ -52,7 +59,7 @@ test("los ejemplos vivos no heredan los estilos del texto largo (tablas, listas,
 	});
 	expect(css).toEqual({ border: "0px", thPadding: "0px", thBg: "rgba(0, 0, 0, 0)" });
 	await page.goto("/components/text-editor/");
-	const li = page.locator("#ejemplos + div [role=textbox] li").first();
+	const li = page.locator("#variantes + div [role=textbox] li").first();
 	await li.scrollIntoViewIfNeeded();
 	expect(await li.evaluate((e) => getComputedStyle(e).paddingLeft)).toBe("0px");
 });
@@ -61,12 +68,12 @@ test("Button: cinco jerarquías y cinco tamaños vivos, la regla de una primaria
 	page,
 }) => {
 	await page.goto("/components/button/");
-	const examples = page.locator("#ejemplos + div");
+	const examples = page.locator("#variantes + div");
 	for (const label of ["Guardar", "Cancelar", "Más tarde", "Ver detalles", "Ayuda", "xs", "sm", "xl"])
 		await expect(examples.getByRole("button", { name: label, exact: true })).toBeVisible();
 	await expect(examples.getByRole("button", { name: "Nuevo gasto" })).toHaveCSS("height", "40px");
 	await expect(examples.getByRole("button", { name: "Continuar" })).toHaveCSS("height", "44px");
-	await expect(page.locator("section[aria-labelledby=ficha]")).toContainText(
+	await expect(page.locator("section[aria-labelledby=uso]")).toContainText(
 		"Una sola primary por vista o por modal",
 	);
 	const props = await page
@@ -76,10 +83,28 @@ test("Button: cinco jerarquías y cinco tamaños vivos, la regla de una primaria
 		expect(props).toContain(p);
 });
 
+// El texto de un párrafo de la ficha tal como se lee: sin las marcas de Markdown
+const plain = (md: string) => md.replace(/\*\*|`/g, "").replace(/(^|\s)_([^_]+)_/g, "$1$2");
+
+test("la ficha se reparte por etiqueta sin cambiar su texto: «Evita» va en la sección Evita", async ({
+	page,
+}) => {
+	const md = readFileSync(join(dir, "cam-frame.md"), "utf8");
+	const evita = (md.match(/^\*\*Evita\.\*\*.*$/m) as RegExpMatchArray)[0];
+	await page.goto("/components/cam-frame/");
+	const section = page.locator("[data-card-section=evita]");
+	await expect(section.getByRole("heading", { name: "Evita" })).toBeVisible();
+	await expect(section.locator("p")).toHaveText([plain(evita)]);
+	// Y la de props va junto a su tabla
+	const props = (md.match(/^\*\*Props\.\*\*.*$/m) as RegExpMatchArray)[0];
+	await expect(page.locator("section[aria-labelledby=props] > p").first()).toHaveText(plain(props));
+});
+
 test("pestañas de código: flechas para cambiar, Astro con client:load en un interactivo", async ({
 	page,
 }) => {
 	await page.goto("/components/button-group/");
+	await hydrated(page, "[data-code-tabs]");
 	const tabs = page.locator("[data-code-tabs]").getByRole("tab");
 	const next = tabs.nth(0);
 	const astro = tabs.nth(1);
@@ -100,8 +125,116 @@ test("pestañas de código: flechas para cambiar, Astro con client:load en un in
 
 test("los estáticos no llevan directiva en Astro y avisan si necesitan una función", async ({ page }) => {
 	await page.goto("/components/badge/");
+	await hydrated(page, "[data-code-tabs]");
 	await page.locator("[data-code-tabs]").getByRole("tab", { name: "Astro" }).click();
 	const panel = page.locator("[data-code-tabs]").getByRole("tabpanel");
 	await expect(panel).not.toContainText("client:");
 	await expect(page.locator("section[aria-labelledby=codigo]")).toContainText("onRemove");
+});
+
+test("Button: migas con su grupo, importación, índice, relacionados y anterior/siguiente (Button.dc.html)", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/components/button/");
+	const crumbs = page.getByRole("navigation", { name: /migas/i });
+	await expect(crumbs.getByRole("link", { name: "Componentes" })).toHaveAttribute("href", "/components/");
+	await expect(crumbs.getByRole("link", { name: "Acciones" })).toHaveAttribute(
+		"href",
+		"/components/#acciones",
+	);
+	await expect(page.locator("header dl")).toContainText('import { Button } from "@jotis-me/react"');
+	const headings = await page.locator("article h2").allTextContents();
+	expect(headings.slice(0, 6)).toEqual([
+		"Ejemplo interactivo",
+		"Cuándo usarlo",
+		"Variantes y estados",
+		"Props",
+		"Código",
+		"Detalles y accesibilidad",
+	]);
+	const toc = page.getByRole("navigation", { name: "En esta página" }).last();
+	await expect(toc.getByRole("link", { name: "Props" })).toHaveAttribute("href", "#props");
+	for (const [name, slug] of [
+		["ButtonGroup", "button-group"],
+		["CloseButton", "close-button"],
+	])
+		await expect(toc.getByRole("link", { name, exact: true })).toHaveAttribute(
+			"href",
+			`/components/${slug}/`,
+		);
+	const pager = page.getByRole("navigation", { name: "Anterior y siguiente" });
+	await expect(pager.getByRole("link")).toHaveCount(1);
+	await expect(pager.getByRole("link", { name: /Siguiente\s*ButtonGroup/ })).toHaveAttribute(
+		"href",
+		"/components/button-group/",
+	);
+	// En Stream, las migas empiezan por Stream y anterior/siguiente no salen de la sección
+	await page.goto("/components/stream-alert/");
+	await expect(page.getByRole("navigation", { name: /migas/i }).getByRole("link").first()).toHaveText(
+		"Stream",
+	);
+	await expect(page.getByRole("navigation", { name: "Anterior y siguiente" }).getByRole("link")).toHaveText(
+		/StreamScene/,
+	);
+});
+
+test("a 390px ninguna página de componente se desplaza en horizontal: la tabla de props va en su caja", async ({
+	page,
+}) => {
+	test.setTimeout(180_000);
+	await page.setViewportSize({ width: 390, height: 844 });
+	const wide: string[] = [];
+	for (const { slug } of pages) {
+		await page.goto(`/components/${slug}/`);
+		if ((await page.evaluate(() => document.documentElement.scrollWidth)) > 390) wide.push(slug);
+	}
+	expect(wide).toEqual([]);
+	await expect(page.getByRole("region", { name: /^Props de / })).toHaveAttribute("tabindex", "0");
+});
+
+test("/components/ lista los 74 componentes, cada uno enlazado a su página, con las anclas de sus grupos", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Componentes");
+	const index = page.locator("article");
+	const links = index.locator("[data-group] a");
+	await expect(links).toHaveCount(pages.length);
+	for (const { slug, name } of pages) {
+		const link = index.locator(`[data-group] a[href="/components/${slug}/"]`);
+		await expect(link).toHaveCount(1);
+		await expect(link.locator("span").first()).toHaveText(name);
+	}
+	// Las migas de cada página apuntan a estas anclas (/components/#acciones)
+	for (const id of ["acciones", "formularios", "stream-escenas", "stream-canal"])
+		await expect(page.locator(`h3#${id}`)).toHaveCount(1);
+	await expect(page.locator("#seccion-stream + section h3")).toHaveText(/Alertas/);
+});
+
+test("/components/: cada card lleva su foto, la de claro o la de oscuro según el tema", async ({
+	page,
+	request,
+}) => {
+	await page.goto("/components/");
+	const card = page.locator(`[data-group] a[href="/components/button-group/"]`);
+	const light = card.locator(`img[src="/components/previews/ButtonGroup-light.webp"]`);
+	const dark = card.locator(`img[src="/components/previews/ButtonGroup-dark.webp"]`);
+	await card.scrollIntoViewIfNeeded();
+	await expect(light).toBeVisible();
+	await expect(dark).toBeHidden();
+	// Decorativa: el nombre de la card sigue siendo solo el del componente y su descripción
+	await expect(light).toHaveAttribute("alt", "");
+	await expect(card).toHaveAccessibleName(/^ButtonGroup Grupo segmentado/);
+	await expect.poll(() => light.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
+	expect(
+		(await request.get("/components/previews/StreamScene-dark.webp")).headers()["content-type"],
+	).toContain("image/webp");
+	await page.emulateMedia({ colorScheme: "dark" });
+	await page.reload();
+	await card.scrollIntoViewIfNeeded();
+	await expect(dark).toBeVisible();
+	await expect(light).toBeHidden();
+	// Las fotos van con lazy: al cargar solo se piden las de la vista
+	expect(await page.locator("[data-group] img[loading=lazy]").count()).toBe(pages.length * 2);
 });

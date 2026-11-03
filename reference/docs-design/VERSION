@@ -1,0 +1,10 @@
+artefacto: Regula · web de documentación (proyecto de Claude Design)
+slug: 242dc7f2-8bea-4c9f-87b8-a34506d57a6f
+version: 1793652886-4c32
+copiado: 2026-11-02
+verificacion: sha256 y tamaño de cada fichero iguales a los de list_files de esa version (35 de 35, 0 discrepancias); las 33 pantallas de canvas.json (boards y order) tienen su .dc.html y no sobra ninguno
+contenido: los 33 .dc.html (escritorio y móvil, claro y oscuro), lib/regula.css y canvas.json
+guia de la que parte: Jotis.me (Design System) 1793561361-ae73, la misma que reference/VERSION
+no incluido: ds/jotis/ (bundle.css, bundle.js, tokens.json y fuentes: copia de la guía, ya está en reference/), lib/tokens.css y los ficheros del tipo de artefacto (SKILL.md, artifact-type/, index.html)
+ojo, el diseño es una maqueta y no se copia tal cual (proposal.md, "Datos reales"): usa paquetes inventados (@jotis/regula, @untitledui/icons), una prop `as` en Button que no existe y "tokens v2 sincronizados con Figma"; y pinta el icono de Regula con hue="fuchsia" mientras el plan (design §9) lo lleva a `chartreuse`
+reimportar: scripts/import-artifact/README.md; para este artefacto, node scripts/import-artifact/extract-files.mjs <transcript> <tool-results> reference/docs-design --slug=242dc7f2-8bea-4c9f-87b8-a34506d57a6f

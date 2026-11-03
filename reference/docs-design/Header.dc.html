@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cabecera de Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<header class="jm-root rg-root" style="position: relative; display: flex; align-items: center; gap: 32px; height: 64px; padding: 0 32px; background: var(--bg-primary); box-shadow: inset 0 -1px 0 var(--border-secondary); font-family: var(--font-body); color: var(--text-primary);">
+  <a class="rg-skip" href="#contenido">Saltar al contenido</a>
+  <a href="/" aria-label="Regula, portada" style="display: flex; align-items: center; gap: 10px; flex: none; color: var(--text-primary); text-decoration: none;">
+    <x-import component-from-global-scope="Jotis.AppIcon" letters="Re" hue="fuchsia" label="Regula" size="{{n.s28}}" aria-hidden="true" style="display: flex;"></x-import>
+    <span style="font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 28px; letter-spacing: -0.02em;">Regula</span>
+  </a>
+  <nav aria-label="Secciones" style="display: flex; align-items: center; gap: 24px; height: 64px;">
+    <a class="rg-top" href="/start/install/" aria-current="{{cur.start}}">Empezar</a>
+    <a class="rg-top" href="/foundations/principles/" aria-current="{{cur.foundations}}">Fundamentos</a>
+    <a class="rg-top" href="/components/" aria-current="{{cur.components}}">Componentes</a>
+    <a class="rg-top" href="/foundations/stream/" aria-current="{{cur.stream}}">Stream</a>
+    <a class="rg-top" href="/icons/" aria-current="{{cur.icons}}">Iconos</a>
+  </nav>
+  <div style="flex-grow: 1;"></div>
+  <button type="button" class="rg-search" aria-keyshortcuts="Control+K Meta+K" style="width: 300px;">
+    <x-import component-from-global-scope="Jotis.Icon" name="search-lg" size="{{n.s20}}" style="color: var(--fg-quaternary);"></x-import>
+    <span style="flex-grow: 1;">Buscar en Regula</span>
+    <kbd class="rg-kbd">Ctrl K</kbd>
+  </button>
+  <span class="rg-when-light">
+    <x-import component-from-global-scope="Jotis.Button" hierarchy="tertiary" icon-only="moon-01" label="Usar tema oscuro"></x-import>
+  </span>
+  <span class="rg-when-dark">
+    <x-import component-from-global-scope="Jotis.Button" hierarchy="tertiary" icon-only="sun" label="Usar tema claro"></x-import>
+  </span>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["home","start","foundations","components","stream","icons"],"default":"home"},"$preview":{"width":1440,"height":64}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var a = this.props.active || 'home';
+    var cur = {};
+    ['start', 'foundations', 'components', 'stream', 'icons'].forEach(function (k) { cur[k] = a === k ? 'true' : undefined; });
+    return { cur: cur, n: { s20: 20, s28: 28 } };
+  }
+}
+</script>
+</body>
+</html>

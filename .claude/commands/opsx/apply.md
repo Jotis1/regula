@@ -2,6 +2,7 @@
 name: "OPSX: Apply"
 description: "Implement tasks from an OpenSpec change (Experimental)"
 allowed-tools: Bash(openspec:*)
+model: sonnet
 category: "Workflow"
 tags: ["workflow", "artifacts", "experimental"]
 ---

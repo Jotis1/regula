@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Color (móvil) · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="position: relative; width: 100%; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="HeaderM" hint-size="100%,56px"></dc-import>
+  <main id="contenido" style="padding: 20px 16px 48px; display: flex; flex-direction: column; gap: 36px;">
+    <header style="display: flex; flex-direction: column; gap: 12px;">
+      <x-import component-from-global-scope="Jotis.Breadcrumbs" items="{{crumbs}}"></x-import>
+      <h1 style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 38px;">Color</h1>
+      <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--text-tertiary);">Tokens semánticos: se eligen por función, no por tono.</p>
+      <x-import component-from-global-scope="Jotis.Button" hierarchy="secondary" size="lg" href="#tokens" icon-trailing="arrow-right" style="align-self: flex-start;">Ir a los 249 tokens</x-import>
+    </header>
+
+    <section aria-labelledby="esencial" style="display: flex; flex-direction: column; gap: 4px;">
+      <h2 id="esencial" style="margin: 0 0 8px; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Lo esencial</h2>
+      <sc-for list="{{rules}}" as="r" hint-placeholder-count="5">
+        <div style="display: flex; gap: 14px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+          <span aria-hidden="true" style="{{r.sw}}"></span>
+          <div style="min-width: 0;">
+            <h3 style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 600;">{{r.t}}</h3>
+            <p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">{{r.d}}</p>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section aria-labelledby="contraste" style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 id="contraste" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Contraste</h2>
+      <p style="margin: 0; font-size: 15px; line-height: 24px; color: var(--text-secondary);">Los pares principales pasan de 4,5:1. Estas excepciones se mantienen, con condiciones.</p>
+      <dl style="margin: 0; display: flex; flex-direction: column; gap: 10px;">
+        <sc-for list="{{exceptions}}" as="e" hint-placeholder-count="5">
+          <div style="display: flex; flex-direction: column; gap: 4px; padding: 14px; border-radius: var(--radius-lg); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+            <dt style="display: flex; justify-content: space-between; gap: 8px; font: 500 13px/20px var(--font-mono);"><span>{{e.n}}</span><span style="font-family: var(--font-body); font-size: 12px; color: var(--text-tertiary); font-variant-numeric: tabular-nums;">{{e.l}} · {{e.d}}</span></dt>
+            <dd style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">{{e.how}}</dd>
+          </div>
+        </sc-for>
+      </dl>
+    </section>
+
+    <section aria-labelledby="tokens" style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 id="tokens" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Tokens</h2>
+      <x-import component-from-global-scope="Jotis.Select" label="Familia" value="{{cat}}" on-change="{{onCat}}" options="{{cats}}"></x-import>
+      <x-import component-from-global-scope="Jotis.Input" label="Filtrar" icon="search-md" placeholder="brand, error, hover…" value="{{q}}" on-change="{{onQ}}" type="search"></x-import>
+      <p style="margin: 0; font-size: 13px; line-height: 20px; color: var(--text-tertiary);">Toca la utilidad para copiarla. Muestra: claro a la izquierda, oscuro a la derecha.</p>
+      <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="10">
+          <li style="display: flex; gap: 14px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+            <span aria-hidden="true" style="flex: none; display: flex; width: 48px; height: 40px; border-radius: var(--radius-md); overflow: hidden; box-shadow: inset 0 0 0 1px var(--border-secondary);">
+              <span style="{{r.swL}}"><sc-if value="{{r.isText}}" hint-placeholder-val="{{no}}">A</sc-if></span>
+              <span style="{{r.swD}}"><sc-if value="{{r.isText}}" hint-placeholder-val="{{no}}">A</sc-if></span>
+            </span>
+            <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px;">
+              <span style="font: 500 13px/20px var(--font-mono); color: var(--text-primary); overflow-wrap: anywhere;">{{r.n}}</span>
+              <span style="font-size: 13px; line-height: 20px; color: var(--text-tertiary);">{{r.s}}</span>
+              <span style="font: 400 12px/18px var(--font-mono); color: var(--text-secondary);">{{r.l}} · {{r.d}}<sc-if value="{{r.hasRatio}}" hint-placeholder-val="{{no}}"><span style="font-family: var(--font-body); color: var(--text-quaternary);"> · {{r.rl}} / {{r.rd}}</span></sc-if></span>
+              <button type="button" class="rg-copy" onClick="{{r.copy}}" aria-label="{{r.copyLabel}}" style="align-self: flex-start; height: 36px; max-width: 100%;">
+                <span style="overflow: hidden; text-overflow: ellipsis;">{{r.u}}</span>
+                <x-import component-from-global-scope="Jotis.Icon" name="{{r.copyIcon}}" size="{{n.s14}}" style="color: var(--fg-quaternary);"></x-import>
+              </button>
+            </div>
+          </li>
+        </sc-for>
+      </ul>
+      <sc-if value="{{empty}}" hint-placeholder-val="{{no}}">
+        <x-import component-from-global-scope="Jotis.EmptyState" icon="search-lg" title="Ningún token se llama así" description="Prueba con la función: fondo, borde, error."></x-import>
+      </sc-if>
+    </section>
+
+    <nav aria-label="Anterior y siguiente" style="display: flex; flex-direction: column; gap: 12px;">
+      <a class="rg-pager" href="/foundations/content/" style="flex: none;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Anterior</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Contenido y tono</span></a>
+      <a class="rg-pager" href="/foundations/typography/" style="flex: none; text-align: right;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Siguiente</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Tipografía</span></a>
+    </nav>
+  </main>
+  <dc-import name="Footer" hint-size="100%,520px"></dc-import>
+
+  <div role="status" aria-live="polite" style="position: absolute; left: 16px; right: 16px; top: 72px; z-index: 40;">
+    <sc-if value="{{copied}}" hint-placeholder-val="{{no}}">
+      <x-import component-from-global-scope="Jotis.Notification" color="success" icon="check-circle" title="{{copiedTitle}}" description="Ya está en el portapapeles."></x-import>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":3300}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { data: null, cat: 'text', q: '', copied: '' }; }
+  componentDidMount() {
+    var self = this;
+    fetch('/_blob/d694037f0142fabc7e248c7f4025d555').then(function (r) { return r.json(); }).then(function (d) { self.setState({ data: d }); }).catch(function () {});
+  }
+  componentWillUnmount() { clearTimeout(this.t); }
+  renderVals() {
+    var self = this;
+    var data = this.state.data || [
+      { n: 'text-primary', c: 'text', k: 'text', l: '#171717', d: '#fafafa', u: 'text-primary', s: 'Títulos y texto principal.', cl: 17.9, cd: 19 },
+      { n: 'text-secondary', c: 'text', k: 'text', l: '#404040', d: '#d4d4d4', u: 'text-secondary', s: 'Etiquetas y cabeceras de tabla.', cl: 10.4, cd: 13.4 }
+    ];
+    var labels = { text: 'Texto', bg: 'Fondo', border: 'Borde', fg: 'Icono', utility: 'Utility', alpha: 'Alfa', comp: 'Componentes' };
+    var counts = {};
+    data.forEach(function (t) { counts[t.c] = (counts[t.c] || 0) + 1; });
+    var cats = ['text', 'bg', 'border', 'fg', 'utility', 'alpha', 'comp'].map(function (c) { return { value: c, label: labels[c] + ' (' + (counts[c] || 0) + ')' }; });
+    var q = this.state.q.trim().toLowerCase();
+    function fmt(x) { return String(x).replace('.', ',') + ':1'; }
+    function half(kind, col, base) {
+      var s = 'flex: 1; display: flex; align-items: center; justify-content: center; ';
+      if (kind === 'text') return s + 'background: ' + base + '; color: ' + col + '; font: 600 14px/1 var(--font-display);';
+      if (kind === 'icon') return s + 'background: ' + base + '; box-shadow: inset 0 0 0 8px ' + base + '; background-image: linear-gradient(' + col + ', ' + col + ');';
+      if (kind === 'border') return s + 'background: ' + base + '; box-shadow: inset 0 0 0 3px ' + col + ';';
+      return s + 'background: linear-gradient(' + col + ', ' + col + '), ' + (col.length > 7 ? '#a3a3a3' : base) + ';';
+    }
+    var rows = data.filter(function (t) { return q ? (t.n + ' ' + (t.s || '')).toLowerCase().indexOf(q) >= 0 : t.c === self.state.cat; }).map(function (t) {
+      var on = self.state.copied === t.u;
+      return {
+        n: t.n, s: t.s, l: t.l, d: t.d, u: t.u, isText: t.k === 'text', hasRatio: t.cl != null,
+        rl: t.cl != null ? fmt(t.cl) : '', rd: t.cd != null ? fmt(t.cd) : '',
+        swL: half(t.k, t.l, '#ffffff'), swD: half(t.k, t.d, '#0a0a0a'),
+        copyIcon: on ? 'check' : 'copy-01', copyLabel: 'Copiar ' + t.u,
+        copy: function () {
+          try { navigator.clipboard.writeText(t.u); } catch (e) {}
+          clearTimeout(self.t); self.setState({ copied: t.u });
+          self.t = setTimeout(function () { self.setState({ copied: '' }); }, 2400);
+        }
+      };
+    });
+    var box = 'flex: none; width: 36px; height: 36px; border-radius: 8px; ';
+    return {
+      n: { s14: 14 }, no: false,
+      crumbs: [{ label: 'Fundamentos', href: '/foundations/principles/' }, { label: 'Color' }],
+      q: this.state.q, cat: this.state.cat, cats: cats, rows: rows, empty: rows.length === 0,
+      copied: !!this.state.copied, copiedTitle: 'Copiado: ' + this.state.copied,
+      onQ: function (e) { self.setState({ q: e.target.value }); },
+      onCat: function (e) { self.setState({ cat: e && e.target ? e.target.value : e, q: '' }); },
+      rules: [
+        { t: 'Fondos', d: 'bg-primary para página y tarjetas, bg-secondary para zonas secundarias, bg-primary_alt para lo que flota.', sw: box + 'background: var(--bg-secondary); box-shadow: inset 0 0 0 1px var(--border-primary);' },
+        { t: 'Texto', d: 'primary, secondary, tertiary y quaternary, de más a menos peso.', sw: box + 'background: var(--text-primary);' },
+        { t: 'Bordes', d: 'primary en controles, secondary en separadores, brand en el foco.', sw: box + 'box-shadow: inset 0 0 0 2px var(--border-brand);' },
+        { t: 'Marca', d: 'Índigo para lo interactivo y lo actual. Con mesura.', sw: box + 'background: var(--bg-brand-solid);' },
+        { t: 'Estados', d: 'Tinte, relleno y texto. Siempre con palabra o icono.', sw: box + 'background: var(--bg-error-solid);' }
+      ],
+      exceptions: [
+        { n: 'text-warning-primary', l: '2,9:1', d: '12,6:1', how: 'En claro, de 24 px o con icono y palabra.' },
+        { n: 'text-success-primary', l: '3,2:1', d: '11,1:1', how: 'En claro, grande, en negrita o con icono.' },
+        { n: 'fg-quaternary', l: '2,6:1', d: '2,5:1', how: 'Solo decoración.' },
+        { n: 'border-primary', l: '1,5:1', d: '1,9:1', how: 'Todo campo lleva etiqueta visible.' },
+        { n: 'text-placeholder', l: '4,7:1', d: '4,2:1', how: 'Nunca sustituye a la etiqueta.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

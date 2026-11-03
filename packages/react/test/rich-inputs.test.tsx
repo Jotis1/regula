@@ -80,6 +80,19 @@ describe("ColorPicker", () => {
 		expect(renderToString(<ColorPicker swatches={SWATCHES} />)).toContain("#4F39F6");
 	});
 
+	it("en el HTML de servidor, cada aria-labelledby apunta a un elemento que existe", () => {
+		const container = document.createElement("div");
+		container.innerHTML = renderToString(<ColorPicker hueLabel="Matiz" />);
+		const labelled = [...container.querySelectorAll("[aria-labelledby]")];
+		expect(labelled.length).toBeGreaterThan(0);
+		for (const el of labelled) {
+			for (const id of (el.getAttribute("aria-labelledby") ?? "").split(/\s+/)) {
+				expect(container.querySelector(`[id="${id}"]`), id).not.toBeNull();
+			}
+		}
+		expect(container.querySelector('[role="group"][aria-label="Matiz"]')).not.toBeNull();
+	});
+
 	it("sin infracciones de axe en claro y oscuro", async () => {
 		await expectAccessibleInThemes(<ColorPicker swatches={SWATCHES} />);
 	});

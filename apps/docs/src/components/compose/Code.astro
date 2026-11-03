@@ -1,0 +1,15 @@
+---
+// Bloque de código en MDX: el `CodeSnippet` de @jotis-me/react, con su resaltado (los colores de la ficha), y no el
+// de Astro. Con `tabs`, una pestaña por versión; con `code`, un solo bloque.
+import { CodeSnippet, type CodeSnippetTab } from "@jotis-me/react";
+
+interface Props {
+	code?: string;
+	tabs?: CodeSnippetTab[];
+}
+const { code, tabs } = Astro.props;
+---
+
+<div class="not-prose my-4" data-code>
+	<CodeSnippet client:visible code={code} tabs={tabs} />
+</div>

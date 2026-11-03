@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Búsqueda · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="position: relative; width: 100%; height: 900px; overflow: hidden; background: var(--bg-primary);">
+  <div inert="" aria-hidden="true" style="height: 900px; overflow: hidden;">
+    <dc-import name="Button" hint-size="100%,900px"></dc-import>
+  </div>
+  <x-import component-from-global-scope="Jotis.CommandMenu" contained="{{yes}}" groups="{{groups}}" placeholder="Busca páginas, componentes, tokens o iconos" empty-text="{{emptyText}}" on-close="{{noop}}"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { tokens: null, icons: null }; }
+  componentDidMount() {
+    var self = this;
+    fetch('/_blob/d694037f0142fabc7e248c7f4025d555').then(function (r) { return r.json(); }).then(function (d) { self.setState({ tokens: d }); }).catch(function () {});
+    fetch('/_blob/99985407a6f8e1b24e7d3d4270a1af01').then(function (r) { return r.json(); }).then(function (d) { self.setState({ icons: d }); }).catch(function () {});
+  }
+  renderVals() {
+    var s = this.state;
+    var pages = [
+      ['Qué es Regula', 'Empezar', 'portada inicio'], ['Instalación', 'Empezar · Next.js y Astro', 'instalar tailwind next astro fuentes'],
+      ['Principios', 'Fundamentos', 'neutro marca primario'], ['Contenido y tono', 'Fundamentos', 'voz texto humor errores botones cifras'],
+      ['Color', 'Fundamentos · 249 tokens', 'colores tokens contraste tema'], ['Tipografía', 'Fundamentos', 'geist bricolage mono fuentes texto display'],
+      ['Espaciado, radios y layout', 'Fundamentos', 'spacing radius contenedor márgenes'], ['Sombras y estados', 'Fundamentos', 'shadow hover foco deshabilitado'],
+      ['Iconografía', 'Fundamentos', 'iconos tamaños trazo'], ['Fondos y adornos', 'Fundamentos', 'patrones banner trazos maquetas'],
+      ['Marca e iconos de app', 'Fundamentos', 'logo appicon chartreuse virgulilla'], ['Guía de Stream', 'Stream', 'twitch obs directo'],
+      ['Galería de iconos', 'Iconos · 81', 'iconos svg react']
+    ].map(function (p) { return { icon: 'file-04', label: p[0], description: p[1], keywords: p[2] }; });
+    var groups = {
+      'Acciones': 'Button ButtonGroup CloseButton', 'Formularios': 'Input Textarea Select Checkbox Radio RadioGroup Toggle Slider DatePicker FileUpload ColorPicker TextEditor',
+      'Navegación': 'Tabs Breadcrumbs Pagination SidebarNav Dropdown CommandMenu TreeView FilterBar', 'Capas': 'Modal Slideout Tooltip',
+      'Avisos y carga': 'Alert Notification Banner EmptyState ProgressBar Spinner Skeleton', 'Etiquetas e identidad': 'Badge Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon',
+      'Datos': 'Table MetricCard ActivityFeed CalendarView', 'Gráficas': 'LineChart BarChart PieChart ChartLegend',
+      'Estructura de página': 'PageHeader CardHeader SectionHeader SectionFooter ContentDivider InlineCTA', 'Contenido y medios': 'Message MessageInput CodeSnippet VideoPlayer',
+      'Fondos y maquetas': 'BackgroundPattern CreditCard BrowserFrame AppIcon', 'Stream · Alertas': 'StreamAlert', 'Stream · Escenas': 'StreamScene StreamCountdown',
+      'Stream · Overlay': 'CamFrame ChatBox ChatBadge StreamGoal StreamEvents NowPlaying StreamStatus', 'Stream · Canal': 'ChannelPanel ChannelBanner'
+    };
+    var es = { Button: 'botón', Input: 'campo texto', Select: 'desplegable', Checkbox: 'casilla', Toggle: 'interruptor', Table: 'tabla', Alert: 'aviso error', Modal: 'diálogo', Tabs: 'pestañas', Badge: 'etiqueta', EmptyState: 'vacío', DatePicker: 'fecha calendario', StreamScene: 'escena empezando pausa offline', StreamAlert: 'alerta follow sub raid', ChatBox: 'chat' };
+    var comps = [];
+    Object.keys(groups).forEach(function (g) { groups[g].split(' ').forEach(function (n) { comps.push({ icon: g.indexOf('Stream') === 0 ? 'play' : 'grid-01', label: n, description: g, keywords: es[n] || '' }); }); });
+    var tokens = (s.tokens || []).map(function (t) { return { icon: 'palette', label: t.n, description: t.u, keywords: t.s || '' }; });
+    var icons = ((window.Jotis && window.Jotis.iconNames) || []).map(function (n) { return { icon: n, label: n, description: 'Icono', keywords: (s.icons && s.icons[n] && s.icons[n].k) || '' }; });
+    return {
+      yes: true,
+      noop: function () {},
+      emptyText: 'Nada por aquí. Prueba con lo que hace (borrar, fecha) en vez de cómo se llama.',
+      groups: [
+        { label: 'Páginas', items: pages },
+        { label: 'Componentes', items: comps },
+        { label: 'Tokens', items: tokens },
+        { label: 'Iconos', items: icons }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

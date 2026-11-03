@@ -25,6 +25,8 @@ export interface ColorPickerProps {
 	swatchesLabel?: string;
 	/** Nombre accesible del campo hexadecimal. @default "Hex" */
 	hexLabel?: string;
+	/** Nombre accesible de la barra de tono. @default "Tono" */
+	hueLabel?: string;
 	className?: string;
 }
 
@@ -47,6 +49,7 @@ export function ColorPicker({
 	swatches,
 	swatchesLabel = defaultStrings.savedColors,
 	hexLabel = defaultStrings.hex,
+	hueLabel = defaultStrings.hue,
 	className,
 }: ColorPickerProps) {
 	const [color, setColor] = useState(() => toHsb(defaultValue));
@@ -76,7 +79,15 @@ export function ColorPicker({
 				>
 					<ColorThumb className={THUMB} />
 				</ColorArea>
-				<ColorSlider value={color} onChange={set} channel="hue" colorSpace="hsb">
+				{/* Sin <Label>, react-aria apunta aria-labelledby a una etiqueta que en el HTML de
+				    servidor no existe; un nombre explícito evita esa referencia rota. */}
+				<ColorSlider
+					value={color}
+					onChange={set}
+					channel="hue"
+					colorSpace="hsb"
+					aria-label={hueLabel}
+				>
 					<SliderTrack className="h-3 cursor-pointer touch-none rounded-full">
 						<ColorThumb className={cx(THUMB, "top-1/2")} />
 					</SliderTrack>

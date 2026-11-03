@@ -1,44 +1,70 @@
-// Navegación lateral de la web: secciones y páginas en el orden de la guía.
-// Los textos van en castellano; las URLs, en inglés.
+// Navegación de la web, desde el catálogo (src/lib/catalog.ts): las páginas que no son de componente, que usan
+// también la búsqueda y los tests, y la navegación lateral completa de DocNav.dc.html, con los componentes por
+// grupos. Los textos van en castellano; las URLs, en inglés.
+import { COMPONENT_GROUPS, COMPONENT_KEYWORDS, FOUNDATIONS, slugOf } from "./lib/catalog";
+
 export interface NavItem {
 	label: string;
 	href: string;
+	/** Más texto por el que lo encuentra el filtro (no se muestra). */
+	keywords?: string;
 }
-export interface NavSection {
-	title: string;
+export interface NavGroup {
+	id: string;
+	label: string;
 	items: NavItem[];
 }
+export interface NavSection {
+	id: "start" | "foundations" | "icons" | "components" | "stream";
+	title: string;
+	items: NavItem[];
+	groups: NavGroup[];
+	/** Recuento que se muestra junto al título (componentes de la sección). */
+	count?: number;
+}
 
-export const nav: NavSection[] = [
+const groupsOf = (section: "components" | "stream"): NavGroup[] =>
+	COMPONENT_GROUPS.filter((g) => g.section === section).map((g) => ({
+		id: g.id,
+		label: g.label,
+		items: g.components.map((name) => ({
+			label: name,
+			href: `/components/${slugOf(name)}/`,
+			keywords: COMPONENT_KEYWORDS[slugOf(name)],
+		})),
+	}));
+const countOf = (groups: NavGroup[]) => groups.reduce((n, g) => n + g.items.length, 0);
+
+const components = groupsOf("components");
+const stream = groupsOf("stream");
+
+/** La navegación lateral, en el orden del diseño: Empezar, Fundamentos, Iconos, Componentes y Stream. */
+export const docNav: NavSection[] = [
 	{
+		id: "start",
+		title: "Empezar",
+		items: [
+			{ label: "Qué es Regula", href: "/" },
+			{ label: "Instalación", href: "/start/install/", keywords: "tailwind next astro" },
+		],
+		groups: [],
+	},
+	{
+		id: "foundations",
 		title: "Fundamentos",
-		items: [
-			{ label: "Principios", href: "/foundations/principles/" },
-			{ label: "Contenido y tono", href: "/foundations/content/" },
-			{ label: "Color", href: "/foundations/color/" },
-			{ label: "Tipografía", href: "/foundations/typography/" },
-			{ label: "Espaciado, radios y layout", href: "/foundations/spacing/" },
-			{ label: "Sombras y estados", href: "/foundations/shadows/" },
-			{ label: "Iconografía", href: "/foundations/iconography/" },
-			{ label: "Fondos y adornos", href: "/foundations/backgrounds/" },
-			{ label: "Stream (Twitch)", href: "/foundations/stream/" },
-			{ label: "Marca e iconos de app", href: "/foundations/brand/" },
-		],
+		items: FOUNDATIONS.map((f) => ({ label: f.label, href: `/foundations/${f.slug}/` })),
+		groups: [],
 	},
+	{ id: "icons", title: "Iconos", items: [{ label: "Galería de iconos", href: "/icons/" }], groups: [] },
+	{ id: "components", title: "Componentes", items: [], groups: components, count: countOf(components) },
 	{
-		title: "Uso",
-		items: [
-			{ label: "Instalación con Tailwind v4", href: "/usage/tailwind/" },
-			{ label: "Iconos", href: "/icons/" },
-		],
+		id: "stream",
+		title: "Stream",
+		items: [{ label: "Guía de Stream", href: "/foundations/stream/", keywords: "twitch obs directo" }],
+		groups: stream,
+		count: countOf(stream),
 	},
-	{ title: "Componentes", items: [] },
 ];
 
-/** La navegación con la sección de componentes rellena, en orden alfabético, desde la colección. */
-export function withComponents(components: { name: string; slug: string }[]): NavSection[] {
-	const items = [...components]
-		.sort((a, b) => a.name.localeCompare(b.name))
-		.map((c) => ({ label: c.name, href: `/components/${c.slug}/` }));
-	return nav.map((s) => (s.title === "Componentes" ? { ...s, items } : s));
-}
+/** Las páginas que no son de componente (portada, instalación, fundamentos, Stream e iconos), por sección. */
+export const nav = docNav.filter((s) => s.items.length > 0).map((s) => ({ title: s.title, items: s.items }));

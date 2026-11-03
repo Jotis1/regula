@@ -3,7 +3,7 @@
 import { AppIcon, type AppName, appIcons } from "@jotis-me/react";
 import { Fragment } from "react";
 
-const apps: AppName[] = ["ornatus", "vinculum", "pecunia", "emptor"];
+const apps: AppName[] = ["ornatus", "vinculum", "pecunia", "emptor", "regula"];
 const cols = [
 	["default", "Principal"],
 	["solid", "Sólido"],

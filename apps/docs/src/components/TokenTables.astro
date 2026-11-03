@@ -1,11 +1,13 @@
 ---
-import { blur, colors, radius, shadows, spacing, type, width } from "@jotis-me/tokens";
-import { colorGroups, radiusRows, shadowRows, spacingRows } from "../lib/tokens";
+import { blur, radius, shadows, spacing, type, width } from "@jotis-me/tokens";
+import { radiusRows, shadowRows, spacingRows, tokenSections } from "../lib/tokens";
 
 interface Props {
 	page: string;
 }
 const { page } = Astro.props;
+// Las anclas de sus títulos, las mismas que pone la página en su índice
+const ids = new Map(tokenSections(page, type.groups).map((s) => [s.text, s.slug]));
 
 const typeUtility = (family: string, style: string) => {
 	const size = style.replace(/-(regular|medium|semibold|bold)$/, "").replace(/^text-/, "");
@@ -29,50 +31,12 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 		.join(";");
 ---
 
-{
-	page === "color" &&
-		colorGroups(colors).map((group) => (
-			<section>
-				<h2>{group.title}</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Token</th>
-							<th>Claro</th>
-							<th>Oscuro</th>
-							<th>Uso</th>
-						</tr>
-					</thead>
-					<tbody>
-						{group.rows.map((row) => (
-							<tr>
-								<td>
-									<button type="button" class="token-copy" data-copy={row.utility} aria-label={`Copiar ${row.utility}`}>
-										{row.utility}
-									</button>
-								</td>
-								<td>
-									<span class="swatch" style={`background:${row.light}`} />
-									<code>{row.light}</code>
-								</td>
-								<td>
-									<span class="swatch" style={`background:${row.dark}`} />
-									<code>{row.dark}</code>
-								</td>
-								<td>{row.usage}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
-		))
-}
 
 {
 	page === "typography" &&
 		type.groups.map((group) => (
 			<section>
-				<h2>{group.name}</h2>
+				<h2 id={ids.get(group.name)}>{group.name}</h2>
 				<table>
 					<thead>
 						<tr>
@@ -113,10 +77,10 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 }
 
 {
-	page === "spacing" && (
+	page === "layout" && (
 		<>
 			<section>
-				<h2>Escala de espaciado</h2>
+				<h2 id={ids.get("Escala de espaciado")}>Escala de espaciado</h2>
 				<table>
 					<thead>
 						<tr>
@@ -146,7 +110,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 				</table>
 			</section>
 			<section>
-				<h2>Radios</h2>
+				<h2 id={ids.get("Radios")}>Radios</h2>
 				<table>
 					<thead>
 						<tr>
@@ -174,7 +138,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 				</table>
 			</section>
 			<section>
-				<h2>Anchos</h2>
+				<h2 id={ids.get("Anchos")}>Anchos</h2>
 				<table>
 					<thead>
 						<tr>
@@ -206,10 +170,10 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 }
 
 {
-	page === "shadows" && (
+	page === "states" && (
 		<>
 			<section>
-				<h2>Sombras</h2>
+				<h2 id={ids.get("Sombras")}>Sombras</h2>
 				<table>
 					<thead>
 						<tr>
@@ -236,7 +200,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 				</table>
 			</section>
 			<section>
-				<h2>Desenfoques</h2>
+				<h2 id={ids.get("Desenfoques")}>Desenfoques</h2>
 				<table>
 					<thead>
 						<tr>

@@ -33,8 +33,14 @@ export default function SiteSearch() {
 				setOpen((o) => !o);
 			}
 		};
+		// El menú móvil abre la búsqueda con este evento (no comparte estado con esta isla)
+		const onOpen = () => setOpen(true);
 		window.addEventListener("keydown", onKey);
-		return () => window.removeEventListener("keydown", onKey);
+		window.addEventListener("regula:search", onOpen);
+		return () => {
+			window.removeEventListener("keydown", onKey);
+			window.removeEventListener("regula:search", onOpen);
+		};
 	}, []);
 
 	useEffect(() => {
@@ -84,16 +90,20 @@ export default function SiteSearch() {
 
 	return (
 		<>
+			{/* Disparador con aspecto de campo (rg-search en reference/docs-design/lib/regula.css). El diseño le pone
+			    text-placeholder, pero es la etiqueta de un botón, no un placeholder, y en oscuro se queda en 4,2:1:
+			    text-quaternary es el mismo #737373 en claro y en oscuro pasa a 7,7:1. */}
 			<button
 				type="button"
 				onClick={() => setOpen(true)}
 				aria-keyshortcuts="Control+K Meta+K"
-				className="inline-flex h-10 items-center gap-2 rounded-lg border border-primary bg-primary px-3 text-sm text-tertiary shadow-xs transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
+				// En móvil, botón de icono de 44px (HeaderM.dc.html); desde lg, el campo de 300px
+				className="flex size-11 items-center justify-center gap-2 rounded-lg text-left text-sm text-quaternary transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none lg:h-10 lg:w-[300px] lg:justify-start lg:border lg:border-primary lg:bg-primary lg:pr-2 lg:pl-3 lg:shadow-xs"
 			>
-				<Icon name="search-lg" size={20} />
-				<span>Buscar</span>
-				<kbd className="hidden rounded border border-secondary px-1.5 font-body text-xs text-quaternary sm:inline">
-					{mac ? "⌘K" : "Ctrl K"}
+				<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
+				<span className="sr-only min-w-0 grow truncate lg:not-sr-only">Buscar en Regula</span>
+				<kbd className="hidden h-[22px] shrink-0 items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium whitespace-nowrap text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)] lg:inline-flex">
+					{mac ? "⌘ K" : "Ctrl K"}
 				</kbd>
 			</button>
 			{open ? (
@@ -103,7 +113,11 @@ export default function SiteSearch() {
 					onQueryChange={onQueryChange}
 					groups={groups}
 					placeholder="Busca páginas, componentes, tokens o iconos"
-					emptyText={entries.length ? "Prueba con otra palabra." : "Cargando el índice…"}
+					emptyText={
+						entries.length
+							? "Nada por aquí. Prueba con lo que hace (borrar, fecha) en vez de cómo se llama."
+							: "Cargando el índice…"
+					}
 					labels={{ dialog: "Buscar en Regula", search: "Buscar en Regula" }}
 				/>
 			) : null}

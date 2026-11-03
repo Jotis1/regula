@@ -97,3 +97,44 @@ export function shadowRows(shadows: Record<string, ThemedToken>): ColorRow[] {
 		usage: t.usage,
 	}));
 }
+
+/** Familias del filtro de Color (Color.dc.html), en su orden. */
+export const COLOR_FAMILIES = [
+	["text", "Texto"],
+	["bg", "Fondo"],
+	["border", "Borde"],
+	["fg", "Icono"],
+	["utility", "Utility"],
+	["alpha", "Alfa"],
+	["comp", "Componentes"],
+] as const;
+export type ColorFamily = (typeof COLOR_FAMILIES)[number][0];
+
+/** La familia de un token: por su prefijo, y el resto (foco, avatares, controles…) en Componentes. */
+export function colorFamily(name: string): ColorFamily {
+	const prefix = name.split("-")[0];
+	return (["text", "bg", "border", "fg", "utility", "alpha"] as const).find((f) => f === prefix) ?? "comp";
+}
+
+/**
+ * Las secciones que añaden las tablas de tokens al final de una página de fundamentos, con su ancla, para el índice
+ * «En esta página»: sus `<h2>` no salen del Markdown y Astro no los cuenta entre los títulos de la página.
+ */
+export function tokenSections(
+	page: string,
+	typeGroups: readonly { name: string }[],
+): { slug: string; text: string }[] {
+	const titles: Record<string, string[]> = {
+		typography: typeGroups.map((g) => g.name),
+		layout: ["Escala de espaciado", "Radios", "Anchos"],
+		states: ["Sombras", "Desenfoques"],
+	};
+	return (titles[page] ?? []).map((text) => ({
+		text,
+		slug: `tokens-${text
+			.normalize("NFD")
+			.replace(/\p{Diacritic}/gu, "")
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, "-")}`,
+	}));
+}

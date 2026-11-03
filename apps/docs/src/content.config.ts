@@ -2,8 +2,12 @@ import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 const foundations = defineCollection({
-	loader: glob({ pattern: "*.md", base: "./src/content/foundations" }),
-	schema: z.object({ title: z.string(), description: z.string(), order: z.number() }),
+	loader: glob({ pattern: "*.{md,mdx}", base: "./src/content/foundations" }),
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		order: z.number(),
+	}),
 });
 
 // Una página por componente: el cuerpo es su ficha de la guía; los ejemplos son los de la paridad visual

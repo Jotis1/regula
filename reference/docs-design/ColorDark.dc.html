@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>Color (oscuro) · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div data-theme="dark" style="min-height: 100%; background: var(--bg-primary);">
+  <dc-import name="Color" hint-size="100%,2700px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2700}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

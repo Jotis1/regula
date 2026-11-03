@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Contenido y tono (móvil) · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="width: 100%; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="HeaderM" hint-size="100%,56px"></dc-import>
+  <main id="contenido" style="padding: 20px 16px 48px; display: flex; flex-direction: column; gap: 36px;">
+    <header style="display: flex; flex-direction: column; gap: 12px;">
+      <x-import component-from-global-scope="Jotis.Breadcrumbs" items="{{crumbs}}"></x-import>
+      <h1 style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 38px;">Contenido y tono</h1>
+      <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--text-tertiary);">Cómo habla la suite: cercana, con humor seco y sin hacerte perder el tiempo.</p>
+      <details style="margin-top: 4px; border-radius: var(--radius-lg); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+        <summary style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; cursor: pointer; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--text-secondary);">
+          <x-import component-from-global-scope="Jotis.Icon" name="align-left" size="{{n.s16}}" style="color: var(--fg-quaternary);"></x-import>En esta página
+        </summary>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding: 4px 14px 14px;">
+          <a class="rg-toc" href="#voz">La voz</a>
+          <a class="rg-toc" href="#humor">Dónde cabe el humor</a>
+          <a class="rg-toc" href="#cambios">En lugar de esto</a>
+          <a class="rg-toc" href="#reglas">Reglas de escritura</a>
+          <a class="rg-toc" href="#cifras">Cifras y fechas</a>
+        </div>
+      </details>
+    </header>
+
+    <section aria-labelledby="voz" style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 id="voz" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">La voz</h2>
+      <p style="margin: 0; font-size: 16px; line-height: 26px; color: var(--text-secondary);">Hablamos como alguien que sabe lo que hace y no necesita demostrarlo. Frases cortas, tuteo y castellano de España. Sin jerga técnica ni referencias de nicho.</p>
+      <div style="display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: var(--radius-xl); background: var(--bg-secondary); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+        <p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Una broma por pantalla, como mucho</p>
+        <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Y si no mejora el texto, se quita.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="humor" style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 id="humor" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Dónde cabe el humor</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+          <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600;"><x-import component-from-global-scope="Jotis.Icon" name="check-circle" size="{{n.s20}}" style="color: var(--fg-success-primary);"></x-import>Cabe</p>
+          <p style="margin: 0; font-size: 14px; line-height: 22px; color: var(--text-secondary);">Estados vacíos, confirmaciones, cargas y errores sin consecuencias.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+          <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600;"><x-import component-from-global-scope="Jotis.Icon" name="x-close" size="{{n.s20}}" style="color: var(--fg-error-primary);"></x-import>No cabe: claro y serio</p>
+          <p style="margin: 0; font-size: 14px; line-height: 22px; color: var(--text-secondary);">Pagos, borrados, fallos graves y todo lo que no se puede deshacer.</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="cambios" style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 id="cambios" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">En lugar de esto, esto otro</h2>
+      <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px;">
+        <sc-for list="{{pairs}}" as="p" hint-placeholder-count="6">
+          <li style="display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+            <p style="margin: 0; font-size: 12px; line-height: 18px; font-weight: 600; color: var(--text-quaternary);">{{p.when}}</p>
+            <p style="margin: 0; display: flex; gap: 8px; font-size: 14px; line-height: 20px; color: var(--text-tertiary);"><x-import component-from-global-scope="Jotis.Icon" name="x-close" size="{{n.s16}}" title="Evitar" style="flex: none; margin-top: 2px; color: var(--fg-error-secondary);"></x-import>{{p.bad}}</p>
+            <p style="margin: 0; display: flex; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--text-primary);"><x-import component-from-global-scope="Jotis.Icon" name="check" size="{{n.s16}}" title="Mejor" style="flex: none; margin-top: 2px; color: var(--fg-success-primary);"></x-import>{{p.good}}</p>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+
+    <section aria-labelledby="reglas" style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 id="reglas" style="margin: 0 0 6px; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Reglas de escritura</h2>
+      <dl style="margin: 0; display: flex; flex-direction: column;">
+        <sc-for list="{{rules}}" as="r" hint-placeholder-count="6">
+          <div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+            <dt style="font-size: 14px; line-height: 20px; font-weight: 600;">{{r.k}}</dt>
+            <dd style="margin: 0; font-size: 14px; line-height: 22px; color: var(--text-secondary);">{{r.v}}</dd>
+          </div>
+        </sc-for>
+      </dl>
+    </section>
+
+    <section aria-labelledby="cifras" style="display: flex; flex-direction: column; gap: 14px;">
+      <h2 id="cifras" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Cifras y fechas</h2>
+      <dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+        <sc-for list="{{formats}}" as="f" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 2px; padding: 14px; border-radius: var(--radius-lg); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+            <dt style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">{{f.k}}</dt>
+            <dd style="margin: 0; font-family: var(--font-mono); font-size: 15px; line-height: 22px;">{{f.v}}</dd>
+          </div>
+        </sc-for>
+      </dl>
+    </section>
+
+    <nav aria-label="Anterior y siguiente" style="display: flex; flex-direction: column; gap: 12px;">
+      <a class="rg-pager" href="/foundations/principles/" style="flex: none;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Anterior</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Principios</span></a>
+      <a class="rg-pager" href="/foundations/color/" style="flex: none; text-align: right;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Siguiente</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Color</span></a>
+    </nav>
+  </main>
+  <dc-import name="Footer" hint-size="100%,520px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":3300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      n: { s16: 16, s20: 20 },
+      crumbs: [{ label: 'Fundamentos', href: '/foundations/principles/' }, { label: 'Contenido y tono' }],
+      pairs: [
+        { when: 'Estado vacío', bad: 'No se encontraron resultados.', good: 'Aún no hay gastos. Qué calma.' },
+        { when: 'Error leve', bad: 'Se ha producido un error de validación.', good: 'Ese correo no parece un correo. Revísalo.' },
+        { when: 'Confirmación', bad: 'Los cambios se han guardado correctamente.', good: 'Guardado. Ya no se te va a olvidar.' },
+        { when: 'Error de campo', bad: 'Error 422', good: 'Introduce un correo válido.' },
+        { when: 'Botón', bad: 'Aceptar', good: 'Guardar gasto' },
+        { when: 'Título', bad: 'Nuevo Movimiento', good: 'Nuevo movimiento' }
+      ],
+      rules: [
+        { k: 'Idioma', v: 'Castellano de España, con tuteo. Frases cortas.' },
+        { k: 'Botones', v: 'Un verbo que diga qué pasa: "Guardar", "Eliminar gasto", "Exportar".' },
+        { k: 'Mayúsculas', v: 'Solo al principio de la frase y en nombres propios.' },
+        { k: 'Errores', v: 'Qué ha pasado y cómo se arregla.' },
+        { k: 'Emojis', v: 'Ninguno en la interfaz.' },
+        { k: 'Exclamaciones', v: 'Solo si algo es realmente bueno.' }
+      ],
+      formats: [{ k: 'Importe', v: '1.284,50 €' }, { k: 'Fecha', v: '29 oct 2026' }, { k: 'Miles', v: '12.480' }, { k: 'Hora', v: '20:00' }]
+    };
+  }
+}
+</script>
+</body>
+</html>

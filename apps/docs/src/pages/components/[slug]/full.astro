@@ -1,0 +1,32 @@
+---
+// Lienzo a tamaño real (design §10): StreamScene y ChannelBanner con `scale={1}` sobre fondo oscuro, sin
+// navegación, fuera de la búsqueda y de los buscadores, y con un enlace de vuelta a su página.
+import { Button } from "@jotis-me/react";
+import FullCanvas from "../../../components/FullCanvas";
+import Base from "../../../layouts/Base.astro";
+import { FULL_SIZE, slugOf } from "../../../lib/catalog";
+
+export function getStaticPaths() {
+	return Object.keys(FULL_SIZE).map((name) => ({ params: { slug: slugOf(name) }, props: { name } }));
+}
+
+const { name } = Astro.props;
+const canvas = FULL_SIZE[name] as (typeof FULL_SIZE)[string];
+---
+
+<Base title={`${name} a tamaño real`} bare>
+	<meta slot="head" name="robots" content="noindex" />
+	<div class="dark-mode flex min-h-screen flex-col gap-6 bg-primary p-6 text-primary">
+		<div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+			<Button hierarchy="secondary" size="sm" iconLeading="arrow-left" href={`/components/${slugOf(name)}/`}>
+				Volver a {name}
+			</Button>
+			<p class="text-sm text-tertiary">
+				{name} a tamaño real: {canvas.width} × {canvas.height} px, sin escalar. Desplázate para verlo entero.
+			</p>
+		</div>
+		<div class="overflow-auto rounded-sm focus-visible:shadow-focus-ring focus-visible:outline-none" role="region" aria-label={`${name} a tamaño real`} tabindex="0" data-full-canvas>
+			<FullCanvas client:load name={name} props={canvas.props} />
+		</div>
+	</div>
+</Base>

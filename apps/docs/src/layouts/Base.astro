@@ -1,28 +1,40 @@
 ---
-import pkg from "@jotis-me/react/package.json";
 import "../styles/global.css";
-import { getCollection } from "astro:content";
 // Fuentes de lo que se ve al cargar: precargarlas evita pintar con la de reserva y que el texto se recoloque al
 // llegar (CLS de 0,2 en Lighthouse móvil; Geist Mono es la de los `<code>` en línea, que crecían de 20 a 22px). Mismo fichero que usa fonts.css, así que no se descarga dos veces.
+// Favicon: el icono de app de Regula en su variante de favicon (sólido), con PNG de 32px y el de iOS de respaldo
+import appleTouchIcon from "@jotis-me/icons/app-icons/regula-apple-touch-icon.png?no-inline";
+import favicon from "@jotis-me/icons/app-icons/regula-favicon.svg?no-inline";
+import favicon32 from "@jotis-me/icons/app-icons/regula-favicon-32.png?no-inline";
 import bricolage from "@jotis-me/tokens/fonts/BricolageGrotesque-Variable-latin.woff2?url";
 import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
 import geistMono from "@jotis-me/tokens/fonts/GeistMono-Variable.woff2?url";
 import CopyToast from "../components/CopyToast.astro";
+import SideNav from "../components/SideNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import ThemeScript from "../components/ThemeScript.astro";
-import ThemeToggle from "../components/ThemeToggle.astro";
-import { withComponents } from "../nav";
-import SiteSearch from "../search/SiteSearch";
 
 interface Props {
 	title: string;
 	description?: string;
+	/** A todo el ancho, sin navegación lateral ni márgenes (la portada). */
+	wide?: boolean;
+	/** Solo el contenido, sin cabecera, navegación ni pie (los lienzos a tamaño real). */
+	bare?: boolean;
+	/** Fuera de buscadores y de la búsqueda de texto completo (Pagefind): la 404. */
+	noindex?: boolean;
 }
-const { title, description = "Las reglas de diseño, los tokens y los componentes de la suite jotis.me." } =
-	Astro.props;
+const {
+	title,
+	description = "Las reglas de diseño, los tokens y los componentes de la suite jotis.me.",
+	wide = false,
+	bare = false,
+	noindex = false,
+} = Astro.props;
+// Pagefind indexa solo las páginas con `data-pagefind-body`; sin él, la página queda fuera
+const indexed = noindex ? {} : { "data-pagefind-body": true };
 const current = Astro.url.pathname;
-const nav = withComponents(
-	(await getCollection("components")).map((c) => ({ name: c.data.name, slug: c.id })),
-);
 ---
 
 <!doctype html>
@@ -31,64 +43,42 @@ const nav = withComponents(
 		<meta charset="utf-8" />
 		<ThemeScript />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href={favicon} type="image/svg+xml" />
+		<link rel="icon" href={favicon32} type="image/png" sizes="32x32" />
+		<link rel="apple-touch-icon" href={appleTouchIcon} />
 		<link rel="preload" href={geist} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={geistMono} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={bricolage} as="font" type="font/woff2" crossorigin />
 		<title>{title === "Regula" ? "Regula · jotis.me" : `${title} · Regula`}</title>
 		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex" />}
 		<slot name="head" />
 	</head>
 	<body class="min-h-screen bg-primary text-md text-primary antialiased">
-		<div class="mx-auto flex max-w-container">
-			<aside class="sticky top-0 hidden h-screen w-72 shrink-0 flex-col gap-6 overflow-y-auto border-r border-secondary px-4 py-6 lg:flex">
-				<a href="/" class="flex items-baseline gap-2 px-2">
-					<span class="font-display text-xl font-bold text-primary">jotis.me</span>
-					<span class="text-sm font-medium text-tertiary">Regula</span>
-				</a>
-				<nav aria-label="Secciones" class="flex flex-col gap-5">
-					{
-						nav
-							.filter((s) => s.items.length > 0)
-							.map((section) => (
-								<div class="flex flex-col gap-1">
-									<p class="px-2 text-xs font-semibold text-quaternary">{section.title}</p>
-									<ul class="flex flex-col">
-										{section.items.map((item) => (
-											<li>
-												<a
-													href={item.href}
-													aria-current={current === item.href ? "page" : undefined}
-													class:list={[
-														"block rounded-md px-2 py-1.5 text-sm font-medium text-secondary transition-colors duration-100 hover:bg-primary_hover hover:text-secondary_hover",
-														current === item.href && "bg-secondary_hover text-primary",
-													]}
-												>
-													{item.label}
-												</a>
-											</li>
-										))}
-									</ul>
-								</div>
-							))
-					}
-				</nav>
-			</aside>
-			<div class="flex min-w-0 flex-1 flex-col">
-				<header class="flex items-center justify-between gap-4 border-b border-secondary px-4 py-4 lg:px-8">
-					<a href="/" class="flex items-baseline gap-2 lg:hidden">
-						<span class="font-display text-xl font-bold text-primary">jotis.me</span>
-						<span class="text-sm font-medium text-tertiary">Regula</span>
-					</a>
-					<div class="ml-auto flex items-center gap-2"><slot name="header-actions" /><SiteSearch client:idle /><ThemeToggle /></div>
-				</header>
-				<main id="contenido" data-pagefind-body class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
+		{!bare && <SiteHeader />}
+		{
+			bare ? (
+				<main id="contenido">
 					<slot />
 				</main>
-				<footer class="border-t border-secondary px-4 py-6 text-sm text-tertiary lg:px-8">
-					Documenta <code class="font-mono text-code-xs text-secondary">@jotis-me/*</code> v{pkg.version} · Código MIT
-				</footer>
-			</div>
-		</div>
-		<CopyToast />
+			) : wide ? (
+				<main id="contenido" {...indexed}>
+					<slot />
+				</main>
+			) : (
+				<div class="mx-auto flex max-w-[1440px]">
+					<aside class="sticky top-0 hidden h-screen w-72 shrink-0 overflow-y-auto shadow-[inset_-1px_0_0_var(--border-secondary)] lg:block">
+						<SideNav current={current} />
+					</aside>
+					<div class="flex min-w-0 flex-1 flex-col">
+						<main id="contenido" {...indexed} class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
+							<slot />
+						</main>
+					</div>
+				</div>
+			)
+		}
+		{!bare && <SiteFooter />}
+		{!bare && <CopyToast />}
 	</body>
 </html>

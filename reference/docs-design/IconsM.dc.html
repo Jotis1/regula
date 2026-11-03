@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Iconos (móvil) · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="position: relative; width: 100%; height: 844px; display: flex; flex-direction: column; overflow: hidden; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="HeaderM" hint-size="100%,56px"></dc-import>
+  <main id="contenido" style="flex: 1 1 0; min-height: 0; overflow: auto; padding: 20px 16px 24px; display: flex; flex-direction: column; gap: 16px;">
+    <h1 style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 38px;">Iconos</h1>
+    <p style="margin: 0; font-size: 15px; line-height: 22px; color: var(--text-tertiary);">24 × 24, trazo de 2 px. Toca uno para ver su código.</p>
+    <x-import component-from-global-scope="Jotis.Input" label="Buscar icono" icon="search-md" placeholder="borrar, fecha, euro…" value="{{q}}" on-change="{{onQ}}" type="search"></x-import>
+    <p role="status" style="margin: 0; font-size: 13px; line-height: 20px; color: var(--text-tertiary);">{{countText}}</p>
+    <ul aria-label="Iconos" style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px;">
+      <sc-for list="{{tiles}}" as="t" hint-placeholder-count="24">
+        <li>
+          <button type="button" class="rg-tile" aria-pressed="{{t.pressed}}" aria-label="{{t.name}}" onClick="{{t.pick}}" style="width: 100%; min-height: 72px; gap: 6px;">
+            <x-import component-from-global-scope="Jotis.Icon" name="{{t.name}}" size="{{n.s24}}"></x-import>
+            <span aria-hidden="true" style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 10px/14px var(--font-mono); color: var(--text-tertiary);">{{t.short}}</span>
+          </button>
+        </li>
+      </sc-for>
+    </ul>
+  </main>
+
+  <sc-if value="{{open}}" hint-placeholder-val="{{yes}}">
+    <div aria-hidden="true" style="position: absolute; inset: 0; background: color-mix(in srgb, var(--bg-overlay) 50%, transparent);"></div>
+    <section role="dialog" aria-modal="true" aria-labelledby="sheet-t" style="position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; max-height: 78%; border-radius: 16px 16px 0 0; background: var(--bg-primary_alt); box-shadow: var(--shadow-xl), inset 0 1px 0 var(--border-secondary_alt);">
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; margin-top: 8px; border-radius: 2px; background: var(--bg-quaternary);"></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 8px 12px 16px;">
+        <span style="flex: none; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg); background: var(--bg-secondary); color: var(--fg-primary);"><x-import component-from-global-scope="Jotis.Icon" name="{{sel}}" size="{{n.s32}}"></x-import></span>
+        <div style="flex-grow: 1; min-width: 0;">
+          <h2 id="sheet-t" style="margin: 0; font: 600 16px/24px var(--font-mono);">{{sel}}</h2>
+          <p style="margin: 0; font-size: 13px; line-height: 20px; color: var(--text-tertiary);">React: {{pascal}}</p>
+        </div>
+        <x-import component-from-global-scope="Jotis.Button" hierarchy="tertiary" size="lg" icon-only="x-close" label="Cerrar" on-click="{{close}}"></x-import>
+      </div>
+      <div style="min-height: 0; overflow: auto; padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="min-width: 0; overflow: hidden;"><x-import component-from-global-scope="Jotis.CodeSnippet" tabs="{{code}}" line-numbers="{{no}}"></x-import></div>
+        <x-import component-from-global-scope="Jotis.Button" size="lg" icon-leading="copy-01" on-click="{{copyName}}" style="width: 100%;">Copiar nombre</x-import>
+      </div>
+    </section>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { q: '', sel: 'search-lg', open: true, data: null }; }
+  componentDidMount() {
+    var self = this;
+    fetch('/_blob/99985407a6f8e1b24e7d3d4270a1af01').then(function (r) { return r.json(); }).then(function (d) { self.setState({ data: d }); }).catch(function () {});
+  }
+  renderVals() {
+    var self = this, s = this.state;
+    var names = (window.Jotis && window.Jotis.iconNames) || ['search-lg'];
+    var data = s.data || {};
+    var q = s.q.trim().toLowerCase();
+    var list = names.filter(function (n) { return !q || (n + ' ' + ((data[n] && data[n].k) || '')).toLowerCase().indexOf(q) >= 0; });
+    var sel = s.sel;
+    var pascal = sel.split('-').map(function (p) { return p.charAt(0).toUpperCase() + p.slice(1); }).join('');
+    var camel = pascal.charAt(0).toLowerCase() + pascal.slice(1);
+    var paths = (data[sel] && data[sel].p) || [];
+    return {
+      yes: true, no: false, n: { s24: 24, s32: 32 },
+      q: s.q, sel: sel, pascal: pascal, open: s.open,
+      countText: list.length === names.length ? names.length + ' iconos' : list.length + ' de ' + names.length,
+      tiles: list.map(function (n) { return { name: n, short: n.replace(/-0\d$/, ''), pressed: n === sel && s.open ? 'true' : 'false', pick: function () { self.setState({ sel: n, open: true }); } }; }),
+      onQ: function (e) { self.setState({ q: e.target.value }); },
+      close: function () { self.setState({ open: false }); },
+      copyName: function () { try { navigator.clipboard.writeText(sel); } catch (e) {} },
+      code: [
+        { label: 'React', code: 'import { ' + pascal + ' } from "@untitledui/icons";\n\n<' + pascal + '\n  className="size-5"\n  aria-hidden="true"\n/>' },
+        { label: 'Importar SVG', code: 'import ' + camel + ' from\n  "@jotis/regula/icons/' + sel + '.svg";' },
+        { label: 'SVG', code: '<svg viewBox="0 0 24 24" fill="none"\n  stroke="currentColor" stroke-width="2"\n  stroke-linecap="round"\n  stroke-linejoin="round">\n' + paths.map(function (d) { return '  <path d="' + d + '"/>'; }).join('\n') + '\n</svg>' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

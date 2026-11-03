@@ -1,8 +1,9 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 import { join } from "node:path";
-import InlineCode from "../../components/InlineCode.astro";
 import ComponentPage from "../../layouts/ComponentPage.astro";
+import { splitCard } from "../../lib/card";
+import { playgroundOf } from "../../lib/playground";
 import { propsOf } from "../../lib/props";
 import { snippetsOf } from "../../lib/snippets";
 import { DARK_PREVIEWS } from "../../visual/registry";
@@ -16,13 +17,26 @@ export async function getStaticPaths() {
 const { page } = Astro.props;
 const { name, description, interactive, astroNote, source: own } = page.data;
 const { next, astro } = snippetsOf(name, interactive);
-const { Content } = await render(page);
+// La ficha de la guía, repartida por etiqueta sin cambiar su texto (design §3)
+const card = splitCard(page.body ?? "");
 // El build corre en apps/docs: las props salen del fuente del componente
 const source = join(process.cwd(), "../..", own ?? `packages/react/src/components/${name}.tsx`);
+const rows = propsOf(source, name);
+const dark = DARK_PREVIEWS.has(name);
+const playground = playgroundOf(name, rows, { interactive, dark });
 ---
 
-<ComponentPage name={name} description={description} props={propsOf(source, name)} next={next} astro={astro} dark={DARK_PREVIEWS.has(name)}>
-	<Content slot="guide" />
+<ComponentPage
+	name={name}
+	description={description}
+	card={card}
+	props={rows}
+	next={next}
+	astro={astro}
+	interactive={interactive}
+	astroNote={astroNote}
+	dark={dark}
+	playground={playground}
+>
 	<VisualExample slot="examples" client:visible name={name} />
-	{astroNote && <p slot="astro-note"><InlineCode text={astroNote} /></p>}
 </ComponentPage>

@@ -6,24 +6,13 @@ const read = (p: string) => JSON.parse(readFileSync(join(import.meta.dirname, p)
 const es = read("../src/tokens.json");
 const guide = read("../../../reference/tokens.json");
 
-// Lo que la guía trae y aún no se porta (design §12: la paleta `chartreuse` de la versión 1793561361-ae73 queda
-// para un cambio de estilo propio). Se quita de la guía antes de comparar; todo lo demás tiene que coincidir.
-const UNPORTED = /^utility-chartreuse-/;
-const en = {
-	...guide,
-	color: {
-		...guide.color,
-		tokens: guide.color.tokens.filter((t: { name: string }) => !UNPORTED.test(t.name)),
-	},
-};
-
-describe("tokens sin portar", () => {
-	it("solo falta la paleta chartreuse, y nada más difiere en los nombres", () => {
+// La guía y src/tokens.json tienen los mismos tokens, en el mismo orden: solo cambia el texto de las notas de uso,
+// que aquí está en castellano. La paleta `chartreuse` de la guía 1793561361-ae73 ya no existe (1793653059-466a).
+describe("tokens de la guía", () => {
+	it("están todos y en el mismo orden, sin ninguno de más", () => {
 		const names = (t: typeof es) => t.color.tokens.map((x: { name: string }) => x.name);
-		const onlyInGuide = names(guide).filter((n: string) => !names(es).includes(n));
-		expect(onlyInGuide).toHaveLength(8);
-		expect(onlyInGuide.every((n: string) => UNPORTED.test(n))).toBe(true);
-		expect(names(es)).toEqual(names(en));
+		expect(names(es)).toEqual(names(guide));
+		expect(names(es).filter((n: string) => n.includes("chartreuse"))).toEqual([]);
 	});
 });
 
@@ -39,7 +28,7 @@ const notes = (t: typeof es): string[] => [
 describe("notas de uso en castellano", () => {
 	it("cada nota está traducida respecto al original de la guía", () => {
 		const a = notes(es);
-		const b = notes(en);
+		const b = notes(guide);
 		expect(a).toHaveLength(b.length);
 		for (const [i, note] of a.entries()) expect(note, b[i]).not.toBe(b[i]);
 	});
@@ -51,7 +40,7 @@ describe("notas de uso en castellano", () => {
 
 	it("los valores no cambian: solo el texto", () => {
 		expect(es.color.tokens.map((t: { value: unknown }) => t.value)).toEqual(
-			en.color.tokens.map((t: { value: unknown }) => t.value),
+			guide.color.tokens.map((t: { value: unknown }) => t.value),
 		);
 	});
 });

@@ -1,0 +1,67 @@
+---
+title: "Stream (Twitch)"
+description: "Componentes para directos: alertas, escenas, overlay y canal, siempre en oscuro."
+order: 9
+---
+
+import Essentials from "../../components/compose/Essentials.astro";
+import Terms from "../../components/compose/Terms.astro";
+
+{/* Texto de la guía (reference/GUIA.md, «Stream (Twitch)»), repartido en las piezas sin reescribirlo, y lo que
+hace el paquete («En el paquete») */}
+
+Familia de componentes para directos: alertas, escenas, overlay y canal. Sigue la misma gramática del sistema (neutro primero, índigo con intención, Geist y Bricolage) y se dibuja **siempre en oscuro**: cada raíz lleva la clase `dark-mode`, que redefine los tokens en su interior, así que se ve igual dentro de una página clara.
+
+## Lo esencial
+
+<Essentials
+	items={[
+		{
+			title: "Piezas",
+			text: "Alertas: `StreamAlert`. Escenas: `StreamScene` y `StreamCountdown`. Overlay: `CamFrame`, `ChatBox`, `ChatBadge`, `StreamGoal`, `StreamEvents`, `NowPlaying` y `StreamStatus`. Canal: `ChannelPanel` y `ChannelBanner`.",
+		},
+		{
+			title: "Tamaños de Twitch",
+			text: "Escena y pantalla offline: 1920×1080. Banner de perfil: 1200×480. Paneles: 320px de ancho (exporta a 640px). Emotes: 28, 56 y 112px. Insignias de suscriptor: 18, 36 y 72px. `StreamScene` y `ChannelBanner` son lienzos de tamaño fijo que se escalan al ancho disponible, o a `scale` si se lo das.",
+		},
+		{
+			title: "Movimiento",
+			text: 'Es la excepción acotada a "sin animaciones decorativas": lo que aparece o se va (una alerta, el último mensaje del chat, la primera fila de eventos) entra en 250 ms con fundido y 8px de subida, y sale en 200 ms. Con `prefers-reduced-motion`, solo fundido. No hay ecualizadores, bucles ni brillos; la cuenta atrás y las barras solo cambian cuando cambia el dato.',
+		},
+		{
+			title: "Color",
+			text: 'Un solo acento, el índigo: `bg-brand-solid` en los iconos de alerta y el relleno de las barras, `fg-brand-primary` en los puntos. El rol de cada usuario en el chat usa las escalas `utility-*`, que en oscuro dan fondo oscuro y texto claro. "En directo" no va en rojo: en el sistema el rojo es error.',
+		},
+		{
+			title: "Texto",
+			text: "La voz de la suite (cercana, humor seco, una broma por pantalla), en castellano de España y sin emojis. Cifras con formato español (`1.284`, `5,00 €`). Las cifras de reloj van en Geist tabular y no en Bricolage, que las tiene de ancho variable.",
+		},
+		{
+			title: "En OBS",
+			text: "Monta cada pieza con `@jotis-me/react` en una página de Astro o Next con Tailwind y úsala como fuente de navegador con fondo transparente. `ChatBox` con `translucent` usa `color-mix` y `backdrop-filter`; en un OBS con un Chromium antiguo cae al fondo sólido.",
+		},
+	]}
+/>
+
+## En el paquete
+
+<Terms
+	items={[
+		{
+			term: "Entrada y salida sin JavaScript",
+			text: "La entrada es una transición desde `@starting-style` (la variante `starting:` de Tailwind): se ve al montar el elemento. Para repetirla, móntalo de nuevo (cambia su `key`). La salida es una transición al pasar `state` a `exit`; quita el elemento cuando acabe (200 ms). En un OBS con Chromium anterior al 117 el elemento aparece sin animación.",
+		},
+		{
+			term: "Listas que crecen",
+			text: "En `StreamEvents` y `ChatBox` cada fila se reconoce por su `id` o, si no lo tiene, por su contenido. Así, con `animate`, cuando entra un evento o un mensaje solo se anima ese, aunque la lista vaya llena y salga el más antiguo.",
+		},
+		{
+			term: "Lo que escribe el público",
+			text: "`message` de `StreamAlert` y `text` de `ChatBox` son texto (`string`) y se pintan tal cual, nunca como HTML. Modéralos antes.",
+		},
+		{
+			term: "Servidor y cliente",
+			text: "Todos son componentes de servidor salvo `StreamCountdown`, que cuenta el tiempo. `StreamScene` y `ChannelBanner` también son de servidor: solo su lienzo, que mide el contenedor, es de cliente. Con `scale` no necesitan JavaScript; sin él, en Astro van en una isla (`client:load`), o no se ven hasta medir.",
+		},
+	]}
+/>

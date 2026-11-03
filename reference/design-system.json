@@ -212,32 +212,32 @@
         },
         "regula-default.svg": {
           "name": "regula-default.svg",
-          "blob": "7363bfe52cc85df820532db9215ea13d",
-          "size": 1719,
+          "blob": "2ae678974677fc31edbb82f977656720",
+          "size": 1419,
           "type": "image/svg+xml"
         },
         "regula-solid.svg": {
           "name": "regula-solid.svg",
-          "blob": "42f8c6a374e539a5b3380bb7de3702b4",
-          "size": 1608,
+          "blob": "4245eaba39e382ec77086067624de048",
+          "size": 1288,
           "type": "image/svg+xml"
         },
         "regula-light.svg": {
           "name": "regula-light.svg",
-          "blob": "3dec4e0e8d15712a997e6f2cbe26343c",
-          "size": 1929,
+          "blob": "1dcb43a7580bf400043dbb346c3f6e6f",
+          "size": 1629,
           "type": "image/svg+xml"
         },
         "regula-mono.svg": {
           "name": "regula-mono.svg",
-          "blob": "966569bcd39c9e38fd89b2a09e1cdeb3",
-          "size": 1719,
+          "blob": "422e2a3d91880397f4f0ba09987ebfc1",
+          "size": 1419,
           "type": "image/svg+xml"
         },
         "regula-maskable.svg": {
           "name": "regula-maskable.svg",
-          "blob": "ecc05acfa0ed4a25599653535e7e29a4",
-          "size": 1620,
+          "blob": "8f15296f3b5661f3a5d212021f58add2",
+          "size": 1320,
           "type": "image/svg+xml"
         }
       }
@@ -1478,8 +1478,8 @@
   },
   "lastChange": {
     "by": "Claude",
-    "at": "2026-11-01T19:30:00Z",
+    "at": "2026-11-02T20:58:00Z",
     "via": "Claude",
-    "note": "Familia Stream para Twitch: 12 componentes (alertas, escenas, overlay y canal), tipos y sección en el README."
+    "note": "Regula pasa a fucsia: icono de app, SVG del grupo App icons, README y tokens sin la paleta chartreuse."
   }
 }

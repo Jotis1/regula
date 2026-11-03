@@ -1,0 +1,66 @@
+---
+// «En lugar de / Escribe» (Tone.dc.html y ToneM.dc.html): tabla en escritorio y tarjetas en móvil, con los ejemplos
+// de la guía.
+import { Icon } from "@jotis-me/react";
+import { inline } from "../../lib/inline";
+
+interface Props {
+	rows: { when: string; bad: string; good: string }[];
+	caption?: string;
+}
+const { rows, caption = "Ejemplos de texto: lo que se evita y lo que se escribe" } = Astro.props;
+const cell = "px-5 py-4 align-top";
+---
+
+<div class="not-prose my-4">
+	<div class="hidden overflow-hidden rounded-xl shadow-[inset_0_0_0_1px_var(--border-secondary)] md:block">
+		<table class="w-full border-collapse text-sm">
+			<caption class="sr-only">{caption}</caption>
+			<thead>
+				<tr class="bg-secondary">
+					<th scope="col" class="w-[22%] px-5 py-3 text-left text-xs font-medium text-tertiary">Momento</th>
+					<th scope="col" class="px-5 py-3 text-left text-xs font-medium text-tertiary">En lugar de</th>
+					<th scope="col" class="px-5 py-3 text-left text-xs font-medium text-tertiary">Escribe</th>
+				</tr>
+			</thead>
+			<tbody>
+				{
+					rows.map((r) => (
+						<tr class="shadow-[inset_0_1px_0_var(--border-secondary)]">
+							<th scope="row" class={`${cell} text-left font-medium text-primary`}>{r.when}</th>
+							<td class={`${cell} text-tertiary`}>
+								<span class="flex gap-2">
+									<Icon name="x-close" size={16} title="Evitar" className="mt-0.5 shrink-0 text-fg-error-secondary" />
+									<span set:html={inline(r.bad)} />
+								</span>
+							</td>
+							<td class={`${cell} text-primary`}>
+								<span class="flex gap-2">
+									<Icon name="check" size={16} title="Mejor" className="mt-0.5 shrink-0 text-fg-success-primary" />
+									<span set:html={inline(r.good)} />
+								</span>
+							</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</div>
+	<ul class="flex flex-col gap-3 md:hidden">
+		{
+			rows.map((r) => (
+				<li class="flex flex-col gap-2.5 rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+					<p class="text-xs font-semibold text-quaternary">{r.when}</p>
+					<p class="flex gap-2 text-sm text-tertiary">
+						<Icon name="x-close" size={16} title="Evitar" className="mt-0.5 shrink-0 text-fg-error-secondary" />
+						<span set:html={inline(r.bad)} />
+					</p>
+					<p class="flex gap-2 text-sm font-medium text-primary">
+						<Icon name="check" size={16} title="Mejor" className="mt-0.5 shrink-0 text-fg-success-primary" />
+						<span set:html={inline(r.good)} />
+					</p>
+				</li>
+			))
+		}
+	</ul>
+</div>

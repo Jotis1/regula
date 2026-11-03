@@ -713,5 +713,10 @@ export const appicon = {
 			letters: "Em",
 			hue: "orange",
 		},
+		regula: {
+			name: "Regula",
+			letters: "Re",
+			hue: "fuchsia",
+		},
 	},
 };

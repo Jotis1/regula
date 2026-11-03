@@ -5,6 +5,8 @@ description: "La marca jotis.me y los iconos de cada app."
 order: 10
 ---
 
+## La marca
+
 No hay logotipo propio de jotis.me en el archivo: en la cabecera de cada app, escribe "jotis.me" en Bricolage Grotesque bold, `text-primary`. El grupo Logos guarda el logo y el logomark **Yoruverse** que trae el archivo (marca índigo con luna), con una versión de tinta blanca para fondos oscuros; úsalos solo si la app forma parte de Yoruverse.
 
 ## Iconos de app
@@ -17,6 +19,7 @@ Cada app de la suite tiene un icono de la misma familia: baldosa con las dos pri
 | Vinculum | Vi     | `sky`     |
 | Pecunia  | Pe     | `emerald` |
 | Emptor   | Em     | `orange`  |
+| Regula   | Re     | `fuchsia` |
 
 **Rasgos de la familia.** Tres cosas, siempre juntas, que distinguen un icono de jotis.me de cualquier baldosa oscura con letras:
 - **Esquina.** Tres esquinas con radio del 22,5 % del lado y la inferior izquierda casi recta (6/128). Es la silueta de la familia y no depende del color.
@@ -48,3 +51,7 @@ Cada app de la suite tiene un icono de la misma familia: baldosa con las dos pri
   - Nunca `red`, que es error.
   - Tampoco `yellow`, porque el blanco sobre `yellow-600` no llega a 3:1.
   - Ni grises: la variante mono ya es la gris.
+
+**Contrastes del icono de Regula (`fuchsia`).** Mayúscula 300 sobre 950, 8,4:1; minúscula 500 sobre 950, 4,2:1; blanco sobre 600 (sólido), 4,7:1; 800 sobre 50 (claro), 7,8:1. Es un tono de la paleta de Tailwind, así que no necesita variables propias en el `theme.css`.
+
+**En esta web.** Esta documentación es una interfaz clara, así que su cabecera lleva el icono de Regula en la variante Claro en el tema claro, y la principal en el oscuro.

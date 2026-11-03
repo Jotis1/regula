@@ -1,0 +1,69 @@
+---
+title: "Color"
+description: "Tokens semánticos de color en claro y oscuro."
+order: 3
+---
+
+import ContrastExceptions from "../../components/ContrastExceptions.astro";
+import TokenExplorer from "../../components/TokenExplorer.astro";
+import Essentials from "../../components/compose/Essentials.astro";
+
+{/* Texto de la guía (reference/GUIA.md, «Color»), repartido en las piezas de Color.dc.html sin reescribirlo */}
+
+Los tokens son **semánticos**: elige por función, no por tono. Cada uno trae su valor claro y oscuro.
+
+## Lo esencial
+
+<Essentials
+	items={[
+		{
+			title: "Fondos",
+			text: "Página y tarjetas en `bg-primary`. Zonas secundarias (cabecera de tabla, shell de la app) en `bg-secondary`. Superficies elevadas (modales, menús, alertas) en `bg-primary_alt`, que en oscuro se separa del fondo. Hover de filas e ítems: `bg-primary_hover`.",
+			swatches: ["bg-primary", "bg-secondary", "bg-primary_alt"],
+		},
+		{
+			title: "Texto",
+			text: "`text-primary` para títulos y valores; `text-secondary` para etiquetas y texto de botones; `text-tertiary` para apoyo y pistas; `text-quaternary` para metadatos; `text-placeholder` solo en placeholders. Enlaces: `text-brand-secondary`.",
+			swatches: ["bg-primary-solid", "bg-quaternary", "bg-tertiary"],
+		},
+		{
+			title: "Bordes",
+			text: "`border-primary` en controles (inputs, checkboxes, botones secundarios); `border-secondary` para separadores y tarjetas; `border-brand` en foco.",
+			swatches: ["bg-primary", "bg-primary", "bg-brand-primary"],
+		},
+		{
+			title: "Iconos",
+			text: "Familia `fg-*`: `fg-quaternary` dentro de controles, `fg-tertiary` en navegación, `fg-brand-primary` en indicadores activos.",
+			swatches: ["bg-secondary", "bg-tertiary", "bg-brand-solid"],
+		},
+		{
+			title: "Estados",
+			text: "`error`, `warning`, `success` en tres capas: `bg-*-primary` (tinte de fondo), `bg-*-solid` (relleno), `text-*-primary` / `fg-*-primary` (texto e icono). Un estado siempre lleva palabra o icono además del color.",
+			swatches: ["bg-error-solid", "bg-warning-solid", "bg-success-solid"],
+		},
+		{
+			title: "Escalas utility",
+			text: "`utility-<tono>-50…700`: para badges, etiquetas y gráficas. Fondo `-50`, borde `-200`, texto `-700`, punto `-500`. El modo oscuro invierte la escala.",
+			swatches: ["bg-utility-sky-50", "bg-utility-sky-500", "bg-utility-sky-700"],
+		},
+		{
+			title: "Foco",
+			text: "`focus-ring-shadow`: hueco de 2px en `bg-primary` y anillo de 4px en `focus-ring` (#615FFF). En errores, `focus-ring-error-shadow`.",
+			swatches: ["bg-brand-solid"],
+		},
+	]}
+/>
+
+## Contraste
+
+Todos los pares de texto principales superan 4,5:1 en ambos temas. Excepciones heredadas del archivo, que se mantienen tal cual:
+
+<ContrastExceptions />
+
+## Tokens
+
+<TokenExplorer />
+
+## Gráficas
+
+Las series usan, en este orden, `utility-brand-600`, `utility-brand-400`, `utility-brand-200`, `utility-sky-500`, `utility-pink-500`, `utility-neutral-400`. En oscuro la escala de marca se invierte, como en el archivo: la tercera serie queda oscura sobre fondo oscuro, así que con tres o más series añade siempre leyenda.

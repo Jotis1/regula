@@ -1,0 +1,43 @@
+---
+title: "Espaciado, radios y layout"
+description: "Escala de espaciado, radios, contenedor y anchos."
+order: 5
+---
+
+import Essentials from "../../components/compose/Essentials.astro";
+import Example from "../../components/compose/Example.astro";
+
+{/* Texto de la guía (reference/GUIA.md, «Espaciado, radios y layout»), repartido en tarjetas sin reescribirlo */}
+
+## Lo esencial
+
+<Essentials
+	items={[
+		{
+			title: "Espaciado",
+			text: "Escala de espaciado `spacing-xxs` (2) … `spacing-11xl` (160). Lo habitual: `spacing-md` (8) dentro de controles, `spacing-xl` (16) entre campos, `spacing-3xl` (24) de padding en tarjetas y modales, `spacing-4xl` (32) de gutter de página en escritorio.",
+		},
+		{
+			title: "Contenedor",
+			text: "Contenedor: máximo `container-max-width-desktop` (1280), padding `container-padding-mobile` (16) y `container-padding-desktop` (32).",
+		},
+		{
+			title: "Radios",
+			text: "Radios, con los mismos nombres que Tailwind (`rounded-md` = `radius-md`): `radius-md` (6) badges, tags, pestañas e ítems de menú; `radius-lg` (8) botones, inputs, tooltips; `radius-xl` (12) tarjetas, alertas, tablas; `radius-2xl` (16) modales; `radius-full` pills, avatares, toggles.",
+		},
+		{
+			title: "Anchos",
+			text: "Anchos: modales en `width-sm` (480); paneles estrechos `width-xxs` (320).",
+		},
+	]}
+/>
+
+<Example caption="Los radios de la escala, de radius-md a radius-full.">
+	<div class="flex flex-wrap items-end gap-4">
+		<div class="flex flex-col items-center gap-2"><span class="block size-16 rounded-md bg-primary shadow-[inset_0_0_0_1px_var(--border-primary)]"></span><code class="font-mono text-xs text-tertiary">rounded-md</code></div>
+		<div class="flex flex-col items-center gap-2"><span class="block size-16 rounded-lg bg-primary shadow-[inset_0_0_0_1px_var(--border-primary)]"></span><code class="font-mono text-xs text-tertiary">rounded-lg</code></div>
+		<div class="flex flex-col items-center gap-2"><span class="block size-16 rounded-xl bg-primary shadow-[inset_0_0_0_1px_var(--border-primary)]"></span><code class="font-mono text-xs text-tertiary">rounded-xl</code></div>
+		<div class="flex flex-col items-center gap-2"><span class="block size-16 rounded-2xl bg-primary shadow-[inset_0_0_0_1px_var(--border-primary)]"></span><code class="font-mono text-xs text-tertiary">rounded-2xl</code></div>
+		<div class="flex flex-col items-center gap-2"><span class="block size-16 rounded-full bg-primary shadow-[inset_0_0_0_1px_var(--border-primary)]"></span><code class="font-mono text-xs text-tertiary">rounded-full</code></div>
+	</div>
+</Example>

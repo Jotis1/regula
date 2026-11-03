@@ -1,0 +1,77 @@
+---
+// Pie de la web (reference/docs-design/Footer.dc.html), con los datos reales: la versión de cada paquete sale de su
+// package.json, en lugar de los nombres de paquete y la fecha de tokens inventados del diseño (proposal, «Datos
+// reales»). El icono de Regula sigue la regla de la cabecera: Claro en el tema claro y principal en el oscuro.
+import icons from "@jotis-me/icons/package.json";
+import { AppIcon } from "@jotis-me/react";
+import react from "@jotis-me/react/package.json";
+import tokens from "@jotis-me/tokens/package.json";
+
+const docs = [
+	{ label: "Instalación", href: "/start/install/" },
+	{ label: "Fundamentos", href: "/foundations/principles/" },
+	{ label: "Componentes", href: "/components/" },
+	{ label: "Iconos", href: "/icons/" },
+];
+const suite = [
+	{ label: "Vinculum", href: "https://vinculum.jotis.me" },
+	{ label: "Pecunia", href: "https://pecunia.jotis.me" },
+	{ label: "Emptor", href: "https://emptor.jotis.me" },
+	{ label: "Ornatus", href: "https://ornatus.jotis.me" },
+];
+const versions = [
+	{ label: "Componentes", pkg: react },
+	{ label: "Tokens", pkg: tokens },
+	{ label: "Iconos", pkg: icons },
+];
+const link =
+	"rounded-sm text-sm text-secondary underline-offset-3 hover:text-primary hover:underline focus-visible:shadow-focus-ring focus-visible:outline-none";
+---
+
+<footer class="bg-secondary text-primary shadow-[inset_0_1px_0_var(--border-secondary)]">
+	<div class="mx-auto flex max-w-[1280px] flex-col gap-8 px-6 pt-10 pb-8">
+		<div class="flex flex-wrap justify-between gap-x-16 gap-y-10">
+			<div class="flex max-w-[400px] flex-[1_1_280px] flex-col gap-3">
+				<div class="flex items-center gap-2.5">
+					<span aria-hidden="true" class="flex dark:hidden"><AppIcon app="regula" variant="light" size={24} /></span>
+					<span aria-hidden="true" class="hidden dark:flex"><AppIcon app="regula" size={24} /></span>
+					<span class="font-display text-lg font-bold tracking-[-0.02em]">Regula</span>
+				</div>
+				<p class="text-sm text-tertiary">
+					Las reglas de la suite jotis.me, con su código al lado. Esta web está hecha con ellas, así que si algo
+					chirría aquí, chirría en todas partes.
+				</p>
+			</div>
+			<nav aria-label="Pie" class="flex flex-wrap gap-x-14 gap-y-8">
+				<div class="flex min-w-32 flex-col gap-2.5">
+					<h2 class="text-xs font-semibold text-quaternary">Documentación</h2>
+					{docs.map((l) => <a href={l.href} class={link}>{l.label}</a>)}
+				</div>
+				<div class="flex min-w-32 flex-col gap-2.5">
+					<h2 class="text-xs font-semibold text-quaternary">La suite</h2>
+					{suite.map((l) => <a href={l.href} class={link}>{l.label}</a>)}
+				</div>
+			</nav>
+		</div>
+		<div class="flex flex-wrap items-center gap-x-6 gap-y-3 pt-5 shadow-[inset_0_1px_0_var(--border-secondary)]">
+			<dl class="flex flex-wrap gap-x-6 gap-y-2 text-xs" data-versions>
+				{
+					versions.map((v) => (
+						<div class="flex gap-1.5">
+							<dt class="text-quaternary">{v.label}</dt>
+							<dd class="font-mono text-secondary">
+								{v.pkg.name} {v.pkg.version}
+							</dd>
+						</div>
+					))
+				}
+			</dl>
+			<a
+				href="/changelog/"
+				class="ml-auto rounded-sm text-xs text-brand-secondary underline underline-offset-3 hover:text-brand-secondary_hover hover:decoration-2 focus-visible:shadow-focus-ring focus-visible:outline-none"
+			>
+				Qué ha cambiado
+			</a>
+		</div>
+	</div>
+</footer>

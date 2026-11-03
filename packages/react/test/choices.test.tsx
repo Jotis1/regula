@@ -39,6 +39,17 @@ describe("Checkbox", () => {
 		expect(svg?.getAttribute("stroke-width")).toBe("1.67");
 	});
 
+	it("indeterminate: el HTML de servidor no anuncia mixed (la casilla nativa aún no lo está) y se quita al cambiar", () => {
+		const html = renderToString(<Checkbox label="Selección parcial" indeterminate />);
+		expect(html).not.toContain("aria-checked");
+		const { rerender } = render(<Checkbox label="Selección parcial" indeterminate />);
+		const cb = screen.getByRole("checkbox") as HTMLInputElement;
+		expect(cb.getAttribute("aria-checked")).toBe("mixed");
+		rerender(<Checkbox label="Selección parcial" />);
+		expect(cb.hasAttribute("aria-checked")).toBe(false);
+		expect(cb.indeterminate).toBe(false);
+	});
+
 	it("indeterminate: guion, aria-checked=mixed y propiedad del DOM", () => {
 		render(<Checkbox label="Selección parcial" indeterminate size="md" />);
 		const cb = screen.getByRole("checkbox") as HTMLInputElement;

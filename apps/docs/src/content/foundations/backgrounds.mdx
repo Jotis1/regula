@@ -1,0 +1,43 @@
+---
+title: "Fondos y adornos"
+description: "Banners, patrones de fondo, trazos a mano y maquetas."
+order: 8
+---
+
+import { BackgroundPattern } from "@jotis-me/react";
+import Essentials from "../../components/compose/Essentials.astro";
+import Example from "../../components/compose/Example.astro";
+
+{/* Texto de la guía (reference/GUIA.md, «Fondos y adornos»), repartido en tarjetas sin reescribirlo */}
+
+## Lo esencial
+
+<Essentials
+	items={[
+		{
+			title: "Banners",
+			text: "**Banners** (`Banner`): avisos globales, flotantes o de ancho completo, en tema neutro o de marca. Uno a la vez.",
+		},
+		{
+			title: "Fondos",
+			text: "**Fondos** (`BackgroundPattern`): rejilla, puntos, rejilla con casillas y círculos o cuadrados concéntricos en `border-secondary`, siempre con máscara de desvanecido. Solo detrás de cabeceras, estados vacíos o bienvenidas. Texturas fijas (rayas, ondas, curvas de nivel) en el grupo Patterns.",
+		},
+		{
+			title: "Trazos a mano",
+			text: "**Trazos a mano** (grupo Hand-drawn): subrayados, círculos, flechas y acentos en tinta `#171717`. En oscuro, recolorea a `#FAFAFA`. Uno o dos por vista, nunca en pantallas de trabajo.",
+		},
+		{
+			title: "Maquetas",
+			text: "**Maquetas** (`CreditCard`, `BrowserFrame`): tarjeta de pago y marco de navegador para onboarding, documentación y presentaciones. Dentro del marco van componentes reales, no capturas.",
+		},
+	]}
+/>
+
+<Example caption="BackgroundPattern con la rejilla de puntos y su máscara de desvanecido, detrás de una cabecera.">
+	<div class="relative flex h-40 items-center justify-center overflow-hidden rounded-lg bg-primary">
+		<div aria-hidden="true" class="pointer-events-none absolute inset-0 flex justify-center">
+			<BackgroundPattern pattern="grid-dot" size="md" mask="radial" width={640} height={160} />
+		</div>
+		<p class="relative font-display text-display-xs font-semibold text-primary">Bienvenida a Pecunia</p>
+	</div>
+</Example>

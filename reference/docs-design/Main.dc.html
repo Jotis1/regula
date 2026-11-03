@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Regula · Portada</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="min-height: 100%; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="Header" active="home" hint-size="100%,64px"></dc-import>
+  <main id="contenido">
+
+    <section aria-labelledby="hero-t" style="position: relative; overflow: hidden; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+      <div aria-hidden="true" style="position: absolute; inset: 0; display: flex; justify-content: center; pointer-events: none;">
+        <x-import component-from-global-scope="Jotis.BackgroundPattern" pattern="grid" size="lg" mask="radial-down" width="{{n.w1440}}" height="{{n.h640}}"></x-import>
+      </div>
+      <div style="position: relative; max-width: 1280px; margin: 0 auto; padding: 88px 32px 96px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px;">
+        <div style="flex: 1 1 520px; display: flex; flex-direction: column; gap: 24px; min-width: 0;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <x-import component-from-global-scope="Jotis.AppIcon" letters="Re" hue="fuchsia" label="Regula" size="{{n.s40}}" aria-hidden="true" style="display: flex;"></x-import>
+            <p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--text-tertiary);">El sistema de diseño de la suite jotis.me</p>
+          </div>
+          <h1 id="hero-t" style="margin: 0; max-width: 640px; font-family: var(--font-display); font-weight: 600; font-size: 60px; line-height: 72px; letter-spacing: -0.02em; text-wrap: balance;">Las reglas de la suite, con el código al lado.</h1>
+          <p style="margin: 0; max-width: 560px; font-size: 18px; line-height: 28px; color: var(--text-tertiary);">Fundamentos, tokens, 81 iconos y 74 componentes para Vinculum, Pecunia, Emptor, Ornatus y lo que venga. Se consulta con una mano mientras la otra programa.</p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding-top: 8px;">
+            <x-import component-from-global-scope="Jotis.Button" size="xl" href="/start/install/" icon-trailing="arrow-right">Instalar en tu proyecto</x-import>
+            <button type="button" class="rg-search" aria-keyshortcuts="Control+K Meta+K" style="height: 48px; width: 320px; padding: 0 10px 0 14px; font-size: 16px; line-height: 24px;">
+              <x-import component-from-global-scope="Jotis.Icon" name="search-lg" size="{{n.s20}}" style="color: var(--fg-quaternary);"></x-import>
+              <span style="flex-grow: 1;">Busca lo que te falte</span>
+              <kbd class="rg-kbd">Ctrl K</kbd>
+            </button>
+          </div>
+        </div>
+
+        <figure style="flex: 1 1 400px; max-width: 480px; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; flex-direction: column; gap: 20px; padding: 24px; border-radius: var(--radius-2xl); background: var(--bg-primary_alt); box-shadow: var(--shadow-xl), inset 0 0 0 1px var(--border-secondary_alt);">
+            <div style="display: flex; align-items: flex-start; gap: 16px;">
+              <x-import component-from-global-scope="Jotis.FeaturedIcon" icon="currency-euro" color="brand" variant="modern" size="lg"></x-import>
+              <div style="flex-grow: 1; min-width: 0;">
+                <p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Nuevo gasto</p>
+                <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Lo apuntas ahora y no lo buscas en marzo.</p>
+              </div>
+              <x-import component-from-global-scope="Jotis.Badge" color="success" dot="{{yes}}" size="sm">Pagado</x-import>
+            </div>
+            <x-import component-from-global-scope="Jotis.Input" label="Importe" default-value="1.284,50 €" icon="currency-euro"></x-import>
+            <x-import component-from-global-scope="Jotis.Input" label="Correo del recibo" default-value="hola@pecunia" error="Ese correo no parece un correo. Revísalo."></x-import>
+            <x-import component-from-global-scope="Jotis.Toggle" label="Repetir cada mes" default-checked="{{yes}}"></x-import>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; padding-top: 4px;">
+              <x-import component-from-global-scope="Jotis.Button" hierarchy="secondary">Cancelar</x-import>
+              <x-import component-from-global-scope="Jotis.Button">Guardar gasto</x-import>
+            </div>
+          </div>
+          <figcaption style="font-size: 12px; line-height: 18px; color: var(--text-quaternary); padding-left: 4px;">No es una captura: son los componentes de verdad. Prueba a escribir.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section aria-labelledby="install-t" style="max-width: 1280px; margin: 0 auto; padding: 64px 32px 24px; display: flex; flex-wrap: wrap; gap: 32px 64px; align-items: flex-start;">
+      <div style="flex: 1 1 320px; max-width: 400px; display: flex; flex-direction: column; gap: 12px;">
+        <p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--text-brand-tertiary);">Empezar</p>
+        <h2 id="install-t" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 38px;">Tres pasos y a lo tuyo</h2>
+        <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--text-tertiary);">Instala el paquete, importa el tema de Tailwind v4 y carga las fuentes sin que el texto dé saltos. El resto es usar las utilidades de siempre con los nombres del sistema.</p>
+        <x-import component-from-global-scope="Jotis.Button" hierarchy="link-color" href="/start/install/" icon-trailing="arrow-right">Guía de instalación completa</x-import>
+      </div>
+      <div style="flex: 1 1 520px; min-width: 0;">
+        <x-import component-from-global-scope="Jotis.CodeSnippet" tabs="{{install}}"></x-import>
+      </div>
+    </section>
+
+    <section aria-labelledby="map-t" style="max-width: 1280px; margin: 0 auto; padding: 56px 32px 24px; display: flex; flex-direction: column; gap: 24px;">
+      <h2 id="map-t" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 38px;">Dónde está cada cosa</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+        <a class="rg-card" href="/foundations/principles/">
+          <div aria-hidden="true" style="height: 148px; display: flex; align-items: center; justify-content: center; gap: 16px; border-radius: 12px 12px 0 0; background: var(--bg-secondary); box-shadow: inset 0 -1px 0 var(--border-secondary);">
+            <span style="font-family: var(--font-display); font-weight: 600; font-size: 48px; line-height: 60px; letter-spacing: -0.02em;">Aa</span>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px;">
+              <span style="width: 22px; height: 22px; border-radius: 6px; background: var(--bg-brand-solid);"></span>
+              <span style="width: 22px; height: 22px; border-radius: 6px; background: var(--text-primary);"></span>
+              <span style="width: 22px; height: 22px; border-radius: 6px; background: var(--bg-quaternary);"></span>
+              <span style="width: 22px; height: 22px; border-radius: 6px; background: var(--bg-error-solid);"></span>
+              <span style="width: 22px; height: 22px; border-radius: 6px; background: var(--bg-warning-solid);"></span>
+              <span style="width: 22px; height: 22px; border-radius: 6px; background: var(--bg-success-solid);"></span>
+            </div>
+          </div>
+          <div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px;">
+            <h3 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Fundamentos</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Principios, tono, color, tipografía y el resto de la guía, con sus tokens.</p>
+            <p style="margin: 8px 0 0; font-size: 12px; line-height: 18px; color: var(--text-quaternary);">9 apartados · 249 tokens de color</p>
+          </div>
+        </a>
+        <a class="rg-card" href="/components/">
+          <div aria-hidden="true" inert="" style="height: 148px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border-radius: 12px 12px 0 0; background: var(--bg-secondary); box-shadow: inset 0 -1px 0 var(--border-secondary);">
+            <div style="display: flex; gap: 8px;">
+              <x-import component-from-global-scope="Jotis.Button" hierarchy="secondary" size="sm" icon-leading="download-01" tabindex="-1">Exportar</x-import>
+              <x-import component-from-global-scope="Jotis.Button" size="sm" tabindex="-1">Guardar</x-import>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <x-import component-from-global-scope="Jotis.Badge" color="brand" size="sm">Nuevo</x-import>
+              <x-import component-from-global-scope="Jotis.Badge" color="warning" size="sm" dot="{{yes}}">Pendiente</x-import>
+            </div>
+          </div>
+          <div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px;">
+            <h3 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Componentes</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Botones, formularios, navegación, capas, avisos, datos, gráficas y maquetas.</p>
+            <p style="margin: 8px 0 0; font-size: 12px; line-height: 18px; color: var(--text-quaternary);">62 de aplicación · 11 grupos</p>
+          </div>
+        </a>
+        <a class="rg-card" href="/foundations/stream/">
+          <div aria-hidden="true" data-theme="dark" style="height: 148px; display: flex; align-items: center; justify-content: center; padding: 0 16px; white-space: nowrap; border-radius: 12px 12px 0 0; background: var(--bg-secondary); box-shadow: inset 0 -1px 0 var(--border-secondary);">
+            <x-import component-from-global-scope="Jotis.StreamStatus" status="live" viewers="{{n.v}}"></x-import>
+          </div>
+          <div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px;">
+            <h3 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Stream</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Alertas, escenas, chat y paneles para Twitch. Siempre en oscuro.</p>
+            <p style="margin: 8px 0 0; font-size: 12px; line-height: 18px; color: var(--text-quaternary);">12 componentes · guía propia</p>
+          </div>
+        </a>
+        <a class="rg-card" href="/icons/">
+          <div aria-hidden="true" style="height: 148px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); place-items: center; padding: 20px 36px; border-radius: 12px 12px 0 0; background: var(--bg-secondary); box-shadow: inset 0 -1px 0 var(--border-secondary); color: var(--fg-secondary);">
+            <sc-for list="{{icons}}" as="ic" hint-placeholder-count="8">
+              <x-import component-from-global-scope="Jotis.Icon" name="{{ic}}" size="{{n.s24}}"></x-import>
+            </sc-for>
+          </div>
+          <div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px;">
+            <h3 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Iconos</h3>
+            <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">El set de línea de 24 px, con buscador y el código listo para copiar.</p>
+            <p style="margin: 8px 0 0; font-size: 12px; line-height: 18px; color: var(--text-quaternary);">81 iconos · React, SVG y en bruto</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section aria-labelledby="rules-t" style="max-width: 1280px; margin: 0 auto; padding: 56px 32px 24px; display: flex; flex-wrap: wrap; gap: 24px 64px;">
+      <div style="flex: 1 1 280px; max-width: 360px; display: flex; flex-direction: column; gap: 12px;">
+        <h2 id="rules-t" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 38px;">Cinco reglas que se olvidan</h2>
+        <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--text-tertiary);">El resto está en los fundamentos. Estas son las que más se saltan con prisa.</p>
+        <x-import component-from-global-scope="Jotis.Button" hierarchy="link-color" href="/foundations/principles/" icon-trailing="arrow-right">Leer los principios</x-import>
+      </div>
+      <ol style="flex: 1 1 560px; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px;">
+        <li style="display: flex; gap: 16px; padding: 16px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+          <span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">01</span>
+          <div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Neutro primero</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">El índigo marca lo interactivo y lo actual. Si hay más de tres manchas, sobra alguna.</p></div>
+        </li>
+        <li style="display: flex; gap: 16px; padding: 16px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+          <span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">02</span>
+          <div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Un primario por vista</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Lo demás, secundario o terciario. También en los modales.</p></div>
+        </li>
+        <li style="display: flex; gap: 16px; padding: 16px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+          <span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">03</span>
+          <div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Todo campo con etiqueta</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">El borde no llega a 3:1, así que la etiqueta visible no es opcional.</p></div>
+        </li>
+        <li style="display: flex; gap: 16px; padding: 16px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+          <span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">04</span>
+          <div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">El color nunca va solo</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Un estado lleva palabra o icono. El rojo es error, no "en directo".</p></div>
+        </li>
+        <li style="display: flex; gap: 16px; padding: 16px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+          <span style="font-family: var(--font-mono); font-size: 14px; line-height: 24px; color: var(--text-quaternary);">05</span>
+          <div><p style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600;">Cifras a la española</p><p style="margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">1.284,50 € y 29 oct 2026. Nada de 1,284.50.</p></div>
+        </li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="suite-t" style="max-width: 1280px; margin: 0 auto; padding: 56px 32px 88px; display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px;">
+        <h2 id="suite-t" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 32px;">Las apps que lo usan</h2>
+        <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">Cada una con su tono en el icono. La interfaz, en índigo para todas.</p>
+      </div>
+      <ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px;">
+        <sc-for list="{{apps}}" as="a" hint-placeholder-count="5">
+          <li style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+            <x-import component-from-global-scope="Jotis.AppIcon" letters="{{a.l}}" hue="{{a.h}}" label="{{a.name}}" size="{{n.s40}}" aria-hidden="true" style="display: flex;"></x-import>
+            <div style="min-width: 0;">
+              <p style="margin: 0; font-size: 14px; line-height: 20px; font-weight: 600;">{{a.name}}</p>
+              <p style="margin: 0; font-size: 12px; line-height: 18px; color: var(--text-tertiary);">{{a.what}}</p>
+            </div>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+  </main>
+  <dc-import name="Footer" hint-size="100%,320px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      yes: true,
+      n: { s20: 20, s24: 24, s40: 40, w1440: 1440, h640: 640, v: 128 },
+      icons: ['search-lg', 'calendar', 'bell-01', 'lock-01', 'bar-chart-01', 'send-01', 'palette', 'zap'],
+      apps: [
+        { l: 'Or', h: 'indigo', name: 'Ornatus', what: 'Lector de Markdown' },
+        { l: 'Vi', h: 'sky', name: 'Vinculum', what: 'Acortador de enlaces' },
+        { l: 'Pe', h: 'emerald', name: 'Pecunia', what: 'Finanzas' },
+        { l: 'Em', h: 'orange', name: 'Emptor', what: 'Compras con IA' },
+        { l: 'Re', h: 'fuchsia', name: 'Regula', what: 'Esta web' }
+      ],
+      install: [
+        { label: 'Next.js', code: 'npm install @jotis/regula @untitledui/icons\n\n/* app/globals.css */\n@import "tailwindcss";\n@import "@jotis/regula/theme.css";\n\n/* app/layout.tsx: Geist y Bricolage con next/font */' },
+        { label: 'Astro', code: 'npm install @jotis/regula @untitledui/icons\nnpx astro add tailwind react\n\n/* src/styles/global.css */\n@import "tailwindcss";\n@import "@jotis/regula/theme.css";\n\n/* src/layouts/Base.astro: <link rel="preload"> de las fuentes */' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

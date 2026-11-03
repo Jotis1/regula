@@ -1,0 +1,53 @@
+---
+layout: ../../layouts/ProseMdx.astro
+slug: install
+title: Instalación con Tailwind v4
+description: Cómo usar los paquetes en una app de Next.js o de Astro.
+---
+
+import Code from "../../components/compose/Code.astro";
+
+Tres paquetes, todos en npm: `@jotis-me/tokens` (colores, tipografía, espaciado y fuentes), `@jotis-me/icons` (iconos de línea e iconos de app) y `@jotis-me/react` (los componentes). Con instalar `@jotis-me/react` llegan los otros dos.
+
+## Next.js (App Router)
+
+<Code code={"bun add @jotis-me/react"} />
+
+En `app/globals.css`:
+
+<Code
+	code={`@import "tailwindcss";
+@import "@jotis-me/react/styles.css";`}
+/>
+
+Los componentes sin estado (`Badge`, `PageHeader`, `Alert`…) funcionan como Server Components. Los interactivos (`Modal`, `Tabs`, `DatePicker`…) ya llevan `"use client"`: impórtalos desde una página de servidor sin envolverlos.
+
+## Astro
+
+<Code
+	code={`bunx astro add react
+bun add @jotis-me/react @tailwindcss/vite tailwindcss`}
+/>
+
+En la hoja principal, lo mismo que en Next:
+
+<Code
+	code={`@import "tailwindcss";
+@import "@jotis-me/react/styles.css";`}
+/>
+
+Sin directiva, un componente se pinta en el servidor y no envía JavaScript. Los interactivos necesitan una directiva `client:*` (`client:load`, `client:visible`…). Las props que son funciones (`onChange`, `render`) no pueden cruzar de una página `.astro` a una isla: envuelve el componente en un fichero `.tsx` y pásale ahí la función.
+
+## Nombres de las utilidades
+
+- **Colores.** Cada token es la utilidad del mismo nombre: `bg-primary`, `bg-brand-solid`, `text-secondary`, `text-brand-secondary`, `border-secondary`, `text-fg-quaternary`, `ring-focus-ring`, `bg-utility-brand-50`. Nada de hex ni de paleta cruda (`bg-indigo-600`): en el tema no existe.
+- **Oscuro.** Clase `dark-mode` en `<html>` o en cualquier ancestro. La variante `dark:` responde a esa clase, no a la preferencia del sistema.
+- **Transparencias.** `alpha-white` y `alpha-black` admiten el modificador de opacidad: `bg-alpha-white/10`, `border-alpha-black/20`.
+- **Radios y desenfoque.** Mismos nombres que Tailwind: `rounded-lg` = 8px, `backdrop-blur-lg` = 16px.
+- **Espaciado.** Los nombres de la guía son la escala numérica de Tailwind, px ÷ 4: `spacing-xs` (4) = `1`, `spacing-md` (8) = `2`, `spacing-lg` (12) = `3`, `spacing-xl` (16) = `4`, `spacing-3xl` (24) = `6`, `spacing-4xl` (32) = `8`. Contenedor: `max-w-container` (1280); párrafos: `max-w-paragraph` (720).
+- **Tipografía.** `text-xs` … `text-xl` y `text-display-xs` … `text-display-2xl`, con su altura de línea; familias `font-body`, `font-display` y `font-mono`.
+- **Sombras.** `shadow-xs` … `shadow-3xl`, `shadow-xs-skeuomorphic` y el anillo de foco `shadow-focus-ring` (`shadow-focus-ring-error` en errores).
+
+## Sin Tailwind
+
+Todos los tokens están también como variables CSS con el nombre de la guía: `var(--bg-primary)`, `var(--text-tertiary)`, `var(--spacing-xl)`, `var(--radius-lg)`. Importa `@jotis-me/tokens/tokens.css` y `@jotis-me/tokens/fonts.css`.

@@ -11,6 +11,24 @@ const HUE = { indigo600: "#4f39f6", indigo950: "#1e1a4d", teal950: "#022f2e" };
 
 const ref = join(import.meta.dirname, "../../../reference/assets/App icons");
 
+/**
+ * Números de un trazado en coordenadas absolutas del lienzo de 128. Los SVG de Regula de la guía llevan las letras
+ * en unidades de la fuente con `transform="translate(tx ty) scale(k -k)"`; con transform, H solo mueve x, V solo y,
+ * y los demás comandos van en pares x y.
+ */
+function absolute(d: string, transform?: string): number[] {
+	const t = transform?.match(/translate\(([-\d.]+)[ ,]+([-\d.]+)\)\s*scale\(([-\d.]+)[ ,]+([-\d.]+)\)/);
+	const [tx, ty, sx, sy] = (t ? t.slice(1) : [0, 0, 1, 1]).map(Number) as [number, number, number, number];
+	return [...d.matchAll(/([A-Za-z])([^A-Za-z]*)/g)].flatMap(([, cmd, body]) =>
+		((body as string).match(/-?\d*\.?\d+/g) ?? []).map(Number).map((v, i) => {
+			if (!t) return v;
+			if (cmd === "H") return tx + v * sx;
+			if (cmd === "V") return ty + v * sy;
+			return i % 2 === 0 ? tx + v * sx : ty + v * sy;
+		}),
+	);
+}
+
 /** Piezas de un SVG: relleno, trazo, comandos y números del trazado. */
 function parse(svg: string) {
 	return [...svg.matchAll(/<path ([^>]*)>/g)].map((m) => {
@@ -21,7 +39,7 @@ function parse(svg: string) {
 			fill: get("fill"),
 			stroke: get("stroke"),
 			cmds: d.replace(/[^A-Z]/g, ""),
-			nums: (d.match(/-?\d*\.?\d+/g) ?? []).map(Number),
+			nums: absolute(d, get("transform")),
 		};
 	});
 }

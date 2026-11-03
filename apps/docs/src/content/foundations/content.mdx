@@ -1,0 +1,82 @@
+---
+title: "Contenido y tono"
+description: "Voz cercana y con humor seco, castellano de España, formatos de cifras y fechas."
+order: 2
+---
+
+import { Alert, EmptyState } from "@jotis-me/react";
+import Essentials from "../../components/compose/Essentials.astro";
+import Example from "../../components/compose/Example.astro";
+import Fit from "../../components/compose/Fit.astro";
+import Formats from "../../components/compose/Formats.astro";
+import Instead from "../../components/compose/Instead.astro";
+import Terms from "../../components/compose/Terms.astro";
+
+{/* Texto de la guía (reference/GUIA.md, «Contenido y tono»), repartido en las piezas de Tone.dc.html sin reescribirlo */}
+
+## La voz
+
+**Voz: cercana, desenfadada y con humor seco.** Quien use la app no debe sentir que habla con una empresa sin sentimientos, pero tampoco con alguien que vive en una terminal. Sin jerga técnica ni referencias de nicho.
+
+<Essentials
+	icon="stars-02"
+	items={[{ title: "Una broma por pantalla como mucho", text: "Y si no mejora el texto, se quita." }]}
+/>
+
+## Dónde cabe el humor
+
+Una pizca de ironía donde no estorba; en pagos, borrados y fallos graves, claro y serio.
+
+<Fit
+	fits={["Estados vacíos", "Confirmaciones", "Cargas", "Errores sin consecuencias"]}
+	notsLabel="No cabe: claro y serio"
+	nots={["Pagos", "Borrados", "Fallos graves"]}
+/>
+
+## En lugar de esto, esto otro
+
+<Instead
+	rows={[
+		{ when: "Estado vacío", bad: '"No se encontraron resultados."', good: '"Aún no hay gastos. Qué calma."' },
+		{ when: "Error leve", bad: '"Se ha producido un error de validación."', good: '"Ese correo no parece un correo. Revísalo."' },
+		{ when: "Confirmación", bad: '"Los cambios se han guardado correctamente."', good: '"Guardado. Ya no se te va a olvidar."' },
+		{ when: "Error", bad: '"Error 422"', good: '"Introduce un correo válido."' },
+		{ when: "Botón", bad: '"Aceptar"', good: '"Guardar", "Eliminar gasto", "Exportar"' },
+		{ when: "Mayúsculas", bad: '"Nuevo Movimiento"', good: '"Nuevo movimiento"' },
+	]}
+/>
+
+<Example caption="Humor en el estado vacío y en la confirmación. En el cobro fallido, ni una broma.">
+	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+		<div class="rounded-xl bg-primary p-5 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+			<EmptyState icon="inbox-01" title="Aún no hay gastos" description="Qué calma. Cuando apuntes el primero, aparecerá aquí." />
+		</div>
+		<div class="flex flex-col justify-center gap-4">
+			<Alert color="success" title="Guardado" description="Ya no se te va a olvidar." />
+			<Alert color="error" title="No se ha podido cobrar" description="La tarjeta ha caducado. Añade otra para seguir." />
+		</div>
+	</div>
+</Example>
+
+## Reglas de escritura
+
+<Terms
+	items={[
+		{ term: "Idioma", text: "Castellano de España, tuteo, frases cortas." },
+		{ term: "Botones", text: 'Verbos en los botones: "Guardar", "Eliminar gasto", "Exportar". Nada de "Aceptar" cuando hay un verbo mejor.' },
+		{ term: "Mayúsculas", text: 'Mayúscula solo al principio: "Nuevo movimiento", no "Nuevo Movimiento".' },
+		{ term: "Errores", text: 'Errores que dicen qué pasa y cómo arreglarlo: "Introduce un correo válido." No "Error 422".' },
+		{ term: "Emojis y exclamaciones", text: "Sin emojis en la interfaz. Sin signos de exclamación salvo que algo sea realmente bueno." },
+	]}
+/>
+
+## Cifras y fechas
+
+Cifras con formato español: `1.284,50 €`, fechas `29 oct 2026`.
+
+<Formats
+	items={[
+		{ label: "Importe", value: "1.284,50 €" },
+		{ label: "Fecha", value: "29 oct 2026" },
+	]}
+/>

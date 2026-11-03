@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Button (móvil) · Regula</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib/tokens.css">
+<link rel="stylesheet" href="ds/jotis/components/bundle.css">
+<link rel="stylesheet" href="lib/regula.css">
+<script src="ds/jotis/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0}</style>
+</helmet>
+<div class="jm-root rg-root" style="width: 100%; background: var(--bg-primary); font-family: var(--font-body); color: var(--text-primary);">
+  <dc-import name="HeaderM" hint-size="100%,56px"></dc-import>
+  <nav aria-label="En esta página" style="display: flex; gap: 4px; padding: 8px 12px; overflow-x: auto; background: var(--bg-primary); box-shadow: inset 0 -1px 0 var(--border-secondary); white-space: nowrap;">
+    <a class="rg-nav" href="#ejemplo" aria-current="page" style="min-height: 36px;">Ejemplo</a>
+    <a class="rg-nav" href="#uso" style="min-height: 36px;">Uso</a>
+    <a class="rg-nav" href="#variantes" style="min-height: 36px;">Variantes</a>
+    <a class="rg-nav" href="#props" style="min-height: 36px;">Props</a>
+    <a class="rg-nav" href="#codigo" style="min-height: 36px;">Código</a>
+    <a class="rg-nav" href="#a11y" style="min-height: 36px;">Accesibilidad</a>
+  </nav>
+  <main id="contenido" style="padding: 20px 16px 48px; display: flex; flex-direction: column; gap: 40px;">
+    <header style="display: flex; flex-direction: column; gap: 10px;">
+      <x-import component-from-global-scope="Jotis.Breadcrumbs" items="{{crumbs}}"></x-import>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <h1 style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 30px; line-height: 38px;">Button</h1>
+        <x-import component-from-global-scope="Jotis.Badge" color="gray" type="badge" size="sm">Acciones</x-import>
+      </div>
+      <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--text-tertiary);">La acción de la pantalla: cinco jerarquías y cinco tamaños.</p>
+    </header>
+
+    <section aria-labelledby="ejemplo" style="display: flex; flex-direction: column; gap: 0; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary); overflow: hidden;">
+      <h2 id="ejemplo" class="rg-sr">Ejemplo interactivo</h2>
+      <div style="min-height: 160px; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--bg-secondary);">
+        <x-import component-from-global-scope="Jotis.Button" hierarchy="{{pg.hierarchy}}" size="{{pg.size}}" destructive="{{pg.destructive}}" icon-leading="{{pg.iconLeading}}" loading="{{pg.loading}}">{{pg.text}}</x-import>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px; padding: 16px; box-shadow: inset 0 1px 0 var(--border-secondary), inset 0 -1px 0 var(--border-secondary);">
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+          <x-import component-from-global-scope="Jotis.Select" label="Jerarquía" value="{{pg.hierarchy}}" on-change="{{set.hierarchy}}" options="{{opts.hierarchy}}"></x-import>
+          <x-import component-from-global-scope="Jotis.Select" label="Tamaño" value="{{pg.size}}" on-change="{{set.size}}" options="{{opts.size}}"></x-import>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+          <x-import component-from-global-scope="Jotis.Toggle" label="Destructivo" checked="{{pg.destructive}}" on-change="{{set.destructive}}"></x-import>
+          <x-import component-from-global-scope="Jotis.Toggle" label="Icono" checked="{{pg.icon}}" on-change="{{set.icon}}"></x-import>
+          <x-import component-from-global-scope="Jotis.Toggle" label="Cargando" checked="{{pg.loading}}" on-change="{{set.loading}}"></x-import>
+        </div>
+      </div>
+      <div style="min-width: 0; overflow: hidden;"><x-import component-from-global-scope="Jotis.CodeSnippet" tabs="{{pgCode}}" line-numbers="{{no}}"></x-import></div>
+    </section>
+
+    <section aria-labelledby="uso" style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 id="uso" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Cuándo usarlo</h2>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+        <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600;"><x-import component-from-global-scope="Jotis.Icon" name="check-circle" size="{{n.s20}}" style="color: var(--fg-success-primary);"></x-import>Úsalo así</p>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 22px; color: var(--text-secondary);">
+          <li>Una sola primary por vista o por modal.</li>
+          <li>El resto, secondary; lo de poco peso, tertiary.</li>
+          <li>Dentro de un texto, link-color o link-gray.</li>
+        </ul>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+        <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; font-weight: 600;"><x-import component-from-global-scope="Jotis.Icon" name="x-close" size="{{n.s20}}" style="color: var(--fg-error-primary);"></x-import>Evita</p>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 22px; color: var(--text-secondary);">
+          <li>Dos primarios juntos.</li>
+          <li>El rojo para todo lo negativo.</li>
+          <li>Cambiarle la forma.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section aria-labelledby="variantes" style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 id="variantes" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Variantes y estados</h2>
+      <div style="display: flex; flex-direction: column; border-radius: var(--radius-xl); box-shadow: inset 0 0 0 1px var(--border-secondary);">
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 16px; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+          <p style="margin: 0; font-size: 13px; line-height: 20px; font-weight: 500; color: var(--text-secondary);">Jerarquías</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <x-import component-from-global-scope="Jotis.Button" size="lg">Guardar</x-import>
+            <x-import component-from-global-scope="Jotis.Button" hierarchy="secondary" size="lg">Cancelar</x-import>
+            <x-import component-from-global-scope="Jotis.Button" hierarchy="tertiary" size="lg">Más tarde</x-import>
+            <x-import component-from-global-scope="Jotis.Button" hierarchy="link-color">Ver detalles</x-import>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 16px; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+          <p style="margin: 0; font-size: 13px; line-height: 20px; font-weight: 500; color: var(--text-secondary);">Con icono</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <x-import component-from-global-scope="Jotis.Button" size="lg" icon-leading="plus">Nuevo gasto</x-import>
+            <x-import component-from-global-scope="Jotis.Button" hierarchy="secondary" size="lg" icon-only="edit-02" label="Editar"></x-import>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 16px;">
+          <p style="margin: 0; font-size: 13px; line-height: 20px; font-weight: 500; color: var(--text-secondary);">Estados</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <x-import component-from-global-scope="Jotis.Button" size="lg" loading="{{yes}}">Guardando</x-import>
+            <x-import component-from-global-scope="Jotis.Button" size="lg" disabled="{{yes}}">Deshabilitado</x-import>
+            <x-import component-from-global-scope="Jotis.Button" size="lg" destructive="{{yes}}">Eliminar</x-import>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="props" style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 id="props" style="margin: 0 0 4px; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Props</h2>
+      <dl style="margin: 0; display: flex; flex-direction: column;">
+        <sc-for list="{{props}}" as="p" hint-placeholder-count="10">
+          <div style="display: flex; flex-direction: column; gap: 4px; padding: 14px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+            <dt style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; font: 500 14px/20px var(--font-mono);"><span>{{p.name}}</span><span style="font-weight: 400; font-size: 12px; color: var(--text-tertiary);">por defecto {{p.def}}</span></dt>
+            <dd style="margin: 0; font: 400 12px/18px var(--font-mono); color: var(--text-brand-tertiary_alt); overflow-wrap: anywhere;">{{p.type}}</dd>
+            <dd style="margin: 0; font-size: 14px; line-height: 20px; color: var(--text-tertiary);">{{p.desc}}</dd>
+          </div>
+        </sc-for>
+      </dl>
+    </section>
+
+    <section aria-labelledby="codigo" style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 id="codigo" style="margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Código</h2>
+      <div style="min-width: 0; overflow: hidden;"><x-import component-from-global-scope="Jotis.CodeSnippet" tabs="{{code}}" line-numbers="{{no}}"></x-import></div>
+      <p style="margin: 0; padding: 14px; border-radius: var(--radius-lg); background: var(--bg-secondary); font-size: 14px; line-height: 22px; color: var(--text-secondary);"><strong style="font-weight: 600; color: var(--text-primary);">Isla en Astro.</strong> Sin eventos, se pinta en el servidor. Con onClick, client:load.</p>
+    </section>
+
+    <section aria-labelledby="a11y" style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 id="a11y" style="margin: 0 0 4px; font-family: var(--font-display); font-weight: 600; font-size: 22px; line-height: 30px;">Detalles y accesibilidad</h2>
+      <dl style="margin: 0; display: flex; flex-direction: column;">
+        <sc-for list="{{details}}" as="d" hint-placeholder-count="5">
+          <div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 0; box-shadow: inset 0 -1px 0 var(--border-secondary);">
+            <dt style="font-size: 14px; line-height: 20px; font-weight: 600;">{{d.k}}</dt>
+            <dd style="margin: 0; font-size: 14px; line-height: 22px; color: var(--text-secondary);">{{d.v}}</dd>
+          </div>
+        </sc-for>
+      </dl>
+    </section>
+
+    <nav aria-label="Anterior y siguiente" style="display: flex; flex-direction: column; gap: 12px;">
+      <a class="rg-pager" href="/icons/" style="flex: none;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Anterior</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">Galería de iconos</span></a>
+      <a class="rg-pager" href="/components/button-group/" style="flex: none; text-align: right;"><span style="font-size: 12px; line-height: 18px; color: var(--text-tertiary);">Siguiente</span><span style="font-size: 16px; line-height: 24px; font-weight: 600;">ButtonGroup</span></a>
+    </nav>
+  </main>
+  <dc-import name="Footer" hint-size="100%,520px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":4000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { hierarchy: 'primary', size: 'lg', destructive: false, icon: true, loading: false }; }
+  renderVals() {
+    var self = this, s = this.state;
+    function setter(k) { return function (v) { var o = {}; o[k] = v && v.target ? v.target.value : v; self.setState(o); }; }
+    var attrs = [];
+    if (s.hierarchy !== 'primary') attrs.push('hierarchy="' + s.hierarchy + '"');
+    if (s.size !== 'md') attrs.push('size="' + s.size + '"');
+    if (s.destructive) attrs.push('destructive');
+    if (s.icon) attrs.push('iconLeading="plus"');
+    if (s.loading) attrs.push('loading');
+    var text = s.destructive ? 'Eliminar gasto' : 'Nuevo gasto';
+    var open = '<Button' + (attrs.length ? '\n  ' + attrs.join('\n  ') + '\n' : '') + '>';
+    return {
+      yes: true, no: false, n: { s20: 20 },
+      crumbs: [{ label: 'Componentes', href: '/components/' }, { label: 'Button' }],
+      pg: { hierarchy: s.hierarchy, size: s.size, destructive: s.destructive, iconLeading: s.icon ? 'plus' : undefined, icon: s.icon, loading: s.loading, text: text },
+      set: { hierarchy: setter('hierarchy'), size: setter('size'), destructive: setter('destructive'), icon: setter('icon'), loading: setter('loading') },
+      opts: { hierarchy: ['primary', 'secondary', 'tertiary', 'link-color', 'link-gray'], size: ['xs', 'sm', 'md', 'lg', 'xl'] },
+      pgCode: [{ label: 'Next.js', code: 'import { Button } from "@jotis/regula";\n\n' + open + '\n  ' + text + '\n</Button>' }, { label: 'Astro', code: '---\nimport { Button } from "@jotis/regula";\n---\n' + open + text + '</Button>' }],
+      props: [
+        { name: 'hierarchy', type: '"primary" | "secondary" | "tertiary" | "link-color" | "link-gray"', def: '"primary"', desc: 'Peso visual. Una primary por vista.' },
+        { name: 'size', type: '"xs" | "sm" | "md" | "lg" | "xl"', def: '"md"', desc: 'Alto de 32 a 48 px.' },
+        { name: 'destructive', type: 'boolean', def: 'false', desc: 'Lo tiñe de error.' },
+        { name: 'iconLeading', type: 'IconName | ReactNode', def: '—', desc: 'Icono antes del texto.' },
+        { name: 'iconTrailing', type: 'IconName | ReactNode', def: '—', desc: 'Icono después del texto.' },
+        { name: 'iconOnly', type: 'IconName', def: '—', desc: 'Solo icono. Exige label.' },
+        { name: 'label', type: 'string', def: '—', desc: 'Nombre accesible con iconOnly.' },
+        { name: 'loading', type: 'boolean', def: 'false', desc: 'Spinner, aria-busy y deshabilitado.' },
+        { name: 'disabled', type: 'boolean', def: 'false', desc: '50 % de opacidad.' },
+        { name: 'href', type: 'string', def: '—', desc: 'Lo pinta como enlace.' },
+        { name: 'as', type: 'ElementType', def: '—', desc: 'Cambia la etiqueta (Link de Next).' },
+        { name: 'children', type: 'ReactNode', def: '—', desc: 'El texto, con verbo.' }
+      ],
+      code: [
+        { label: 'Next.js', code: 'import { Button } from "@jotis/regula";\n\n<Button iconLeading="check" onClick={guardar}>\n  Guardar gasto\n</Button>' },
+        { label: 'Astro', code: '---\nimport { Button } from "@jotis/regula";\n---\n<Button href="/gastos">Ver gastos</Button>' }
+      ],
+      details: [
+        { k: 'Foco', v: 'Anillo de 4 px con hueco de 2 px en bg-primary.' },
+        { k: 'Solo icono', v: 'El label se lee como texto oculto.' },
+        { k: 'Tipo por defecto', v: 'type="button": no envía formularios sin querer.' },
+        { k: 'Cargando', v: 'aria-busy y deshabilitado mientras dura.' },
+        { k: 'Táctil', v: 'En móvil, lg o xl: 44 y 48 px.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
