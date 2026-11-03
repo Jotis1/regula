@@ -1,16 +1,15 @@
 ---
 import pkg from "@jotis-me/react/package.json";
 import "../styles/global.css";
-import { getCollection } from "astro:content";
 // Fuentes de lo que se ve al cargar: precargarlas evita pintar con la de reserva y que el texto se recoloque al
 // llegar (CLS de 0,2 en Lighthouse móvil; Geist Mono es la de los `<code>` en línea, que crecían de 20 a 22px). Mismo fichero que usa fonts.css, así que no se descarga dos veces.
 import bricolage from "@jotis-me/tokens/fonts/BricolageGrotesque-Variable-latin.woff2?url";
 import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
 import geistMono from "@jotis-me/tokens/fonts/GeistMono-Variable.woff2?url";
 import CopyToast from "../components/CopyToast.astro";
+import SideNav from "../components/SideNav.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import ThemeScript from "../components/ThemeScript.astro";
-import { withComponents } from "../nav";
 
 interface Props {
 	title: string;
@@ -19,9 +18,6 @@ interface Props {
 const { title, description = "Las reglas de diseño, los tokens y los componentes de la suite jotis.me." } =
 	Astro.props;
 const current = Astro.url.pathname;
-const nav = withComponents(
-	(await getCollection("components")).map((c) => ({ name: c.data.name, slug: c.id })),
-);
 ---
 
 <!doctype html>
@@ -40,34 +36,8 @@ const nav = withComponents(
 	<body class="min-h-screen bg-primary text-md text-primary antialiased">
 		<SiteHeader />
 		<div class="mx-auto flex max-w-[1440px]">
-			<aside class="sticky top-0 hidden h-screen w-72 shrink-0 flex-col gap-6 overflow-y-auto px-4 py-6 shadow-[inset_-1px_0_0_var(--border-secondary)] lg:flex">
-				<nav aria-label="Documentación" class="flex flex-col gap-5">
-					{
-						nav
-							.filter((s) => s.items.length > 0)
-							.map((section) => (
-								<div class="flex flex-col gap-1">
-									<p class="px-2 text-xs font-semibold text-quaternary">{section.title}</p>
-									<ul class="flex flex-col">
-										{section.items.map((item) => (
-											<li>
-												<a
-													href={item.href}
-													aria-current={current === item.href ? "page" : undefined}
-													class:list={[
-														"block rounded-md px-2 py-1.5 text-sm font-medium text-secondary transition-colors duration-100 hover:bg-primary_hover hover:text-secondary_hover",
-														current === item.href && "bg-secondary_hover text-primary",
-													]}
-												>
-													{item.label}
-												</a>
-											</li>
-										))}
-									</ul>
-								</div>
-							))
-					}
-				</nav>
+			<aside class="sticky top-0 hidden h-screen w-72 shrink-0 overflow-y-auto shadow-[inset_-1px_0_0_var(--border-secondary)] lg:block">
+				<SideNav current={current} />
 			</aside>
 			<div class="flex min-w-0 flex-1 flex-col">
 				<main id="contenido" data-pagefind-body class="flex-1 px-4 py-8 lg:px-8 lg:py-12">

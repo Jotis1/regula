@@ -1,0 +1,139 @@
+---
+// Navegación lateral (reference/docs-design/DocNav.dc.html), desde el catálogo. Los grupos de componentes son
+// <details>, abiertos en el grupo de la página actual: sin JavaScript se navega igual (design §7). El filtro, con el
+// atajo "/", solo aparece cuando hay JavaScript, que es quien lo hace funcionar.
+import chevron from "@jotis-me/icons/svg/chevron-right.svg?raw";
+import filter from "@jotis-me/icons/svg/filter-lines.svg?raw";
+import { docNav } from "../nav";
+import { fold } from "../search/entries";
+
+interface Props {
+	/** Ruta de la página actual. */
+	current: string;
+}
+const { current } = Astro.props;
+const words = (label: string, keywords?: string) => fold(`${label} ${keywords ?? ""}`);
+const link =
+	"flex min-h-8 items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-tertiary transition-colors duration-100 hover:bg-primary_hover hover:text-secondary_hover focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current=page]:bg-brand-primary_alt aria-[current=page]:font-semibold aria-[current=page]:text-brand-secondary";
+---
+
+<nav aria-label="Documentación" class="flex flex-col gap-5 px-4 pt-6 pb-10" data-docnav>
+	<div class="flex flex-col gap-1.5 px-0.5" data-docnav-filter hidden>
+		<label for="docnav-filter" class="text-xs font-medium text-secondary">Filtrar navegación</label>
+		<div class="flex h-9 items-center gap-2 rounded-lg border border-primary bg-primary px-2.5 text-fg-quaternary shadow-xs focus-within:shadow-focus-ring">
+			<span class="flex size-4 shrink-0 [&>svg]:size-4" aria-hidden="true" set:html={filter} />
+			<input
+				id="docnav-filter"
+				type="search"
+				placeholder="Button, tabla, alerta…"
+				autocomplete="off"
+				aria-keyshortcuts="/"
+				class="min-w-0 grow border-0 bg-transparent text-sm text-primary outline-none placeholder:text-placeholder"
+			/>
+			<kbd class="inline-flex h-[22px] shrink-0 items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)]">/</kbd>
+		</div>
+	</div>
+	{
+		docNav.map((section) => (
+			<div class="flex flex-col gap-0.5" data-docnav-section>
+				<h2 class="mb-1 flex items-center gap-2 px-2.5 text-xs font-semibold text-quaternary">
+					<span>{section.title}</span>
+					{section.count ? <span class="font-medium tabular-nums">{section.count}</span> : null}
+				</h2>
+				{section.items.map((item) => (
+					<a
+						href={item.href}
+						aria-current={current === item.href ? "page" : undefined}
+						data-docnav-link={words(item.label, item.keywords)}
+						class={link}
+					>
+						{item.label}
+					</a>
+				))}
+				{section.groups.map((group) => (
+					<details
+						open={group.items.some((i) => i.href === current)}
+						data-docnav-group
+						class="group"
+					>
+						<summary class="flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-md px-2.5 py-1.5 transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden">
+							<span
+								class="flex size-4 shrink-0 text-fg-quaternary transition-transform duration-100 group-open:rotate-90 [&>svg]:size-4"
+								aria-hidden="true"
+								set:html={chevron}
+							/>
+							<span class="grow text-[13px] leading-5 font-semibold text-secondary">{group.label}</span>
+							<span class="text-xs font-medium text-quaternary tabular-nums">{group.items.length}</span>
+						</summary>
+						<div class="flex flex-col gap-0.5 pt-0.5 pl-[22px]">
+							{group.items.map((item) => (
+								<a
+									href={item.href}
+									aria-current={current === item.href ? "page" : undefined}
+									data-docnav-link={words(item.label, item.keywords)}
+									class={link}
+								>
+									{item.label}
+								</a>
+							))}
+						</div>
+					</details>
+				))}
+			</div>
+		))
+	}
+	<p class="px-2.5 text-sm text-tertiary" data-docnav-empty hidden>
+		Nada se llama así. Prueba la búsqueda global con <kbd
+			class="inline-flex h-[22px] items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)]"
+			>Ctrl K</kbd
+		>, que también mira tokens e iconos.
+	</p>
+</nav>
+
+<script>
+	import { fold } from "../search/entries";
+
+	for (const nav of document.querySelectorAll<HTMLElement>("[data-docnav]")) {
+		const box = nav.querySelector<HTMLElement>("[data-docnav-filter]");
+		const input = nav.querySelector<HTMLInputElement>("#docnav-filter");
+		const empty = nav.querySelector<HTMLElement>("[data-docnav-empty]");
+		if (!box || !input || !empty) continue;
+		box.hidden = false;
+		const groups = [...nav.querySelectorAll<HTMLDetailsElement>("[data-docnav-group]")];
+		// Lo que el usuario abrió o cerró sin filtrar se recupera al vaciar el filtro
+		let opened = groups.map((g) => g.open);
+
+		const apply = () => {
+			const q = fold(input.value.trim());
+			let shown = 0;
+			for (const a of nav.querySelectorAll<HTMLElement>("[data-docnav-link]")) {
+				const hit = !q || (a.dataset.docnavLink ?? "").includes(q);
+				a.hidden = !hit;
+				if (hit) shown++;
+			}
+			groups.forEach((g, i) => {
+				const hits = g.querySelectorAll("[data-docnav-link]:not([hidden])").length;
+				g.hidden = hits === 0;
+				g.open = q ? hits > 0 : (opened[i] as boolean);
+			});
+			for (const s of nav.querySelectorAll<HTMLElement>("[data-docnav-section]"))
+				s.hidden = !s.querySelector("[data-docnav-link]:not([hidden])");
+			empty.hidden = shown > 0;
+		};
+
+		input.addEventListener("focus", () => {
+			if (!input.value) opened = groups.map((g) => g.open);
+		});
+		input.addEventListener("input", apply);
+
+		// "/" lleva al filtro, salvo que se esté escribiendo en otro campo
+		document.addEventListener("keydown", (e) => {
+			if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) return;
+			const t = e.target as HTMLElement | null;
+			if (t?.closest("input, textarea, select, [contenteditable]")) return;
+			if (!nav.checkVisibility()) return;
+			e.preventDefault();
+			input.focus();
+		});
+	}
+</script>

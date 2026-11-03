@@ -143,6 +143,30 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 	},
 ];
 
+/**
+ * Palabras en castellano por las que el filtro de la navegación encuentra un componente, además de su nombre
+ * (las de DocNav.dc.html): "tabla" encuentra `Table`.
+ */
+export const COMPONENT_KEYWORDS: Readonly<Record<string, string>> = {
+	button: "botón acción",
+	input: "campo texto formulario",
+	select: "desplegable opciones",
+	checkbox: "casilla",
+	toggle: "interruptor",
+	table: "tabla datos",
+	alert: "aviso error",
+	modal: "diálogo ventana",
+	tooltip: "ayuda",
+	tabs: "pestañas",
+	badge: "etiqueta insignia",
+	"empty-state": "vacío",
+	"date-picker": "fecha calendario",
+	"command-menu": "búsqueda comandos",
+	"stream-scene": "escena empezando pausa offline",
+	"stream-alert": "alerta follow sub raid",
+	"chat-box": "chat mensajes",
+};
+
 /** `ButtonGroup` → `button-group`: el nombre de la ficha y de su URL (`/components/<slug>/`). */
 export function slugOf(name: string): string {
 	return name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();

@@ -13,7 +13,7 @@ test("la navegación lateral lista todas las páginas de componente", async ({ p
 	await page.goto("/");
 	const nav = page.getByRole("navigation", { name: "Documentación" });
 	for (const { name, slug } of pages)
-		await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute(
+		await expect(nav.getByRole("link", { name, exact: true, includeHidden: true })).toHaveAttribute(
 			"href",
 			`/components/${slug}/`,
 		);

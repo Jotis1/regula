@@ -68,5 +68,5 @@ test("las URLs van en inglés", async ({ page }) => {
 	const hrefs = await page
 		.locator("aside nav a")
 		.evaluateAll((as) => as.map((a) => a.getAttribute("href")));
-	for (const href of hrefs) expect(href).toMatch(/^\/(start|foundations|icons|components)\//);
+	for (const href of hrefs) expect(href).toMatch(/^\/((start|foundations|icons|components)\/.*)?$/);
 });
