@@ -44,13 +44,7 @@ export function Checkbox({
 	const markSize = size === "md" ? 14 : 12;
 	return (
 		<label htmlFor={id} className={cx(choiceLabel(size), className)}>
-			<input
-				ref={ref}
-				id={id}
-				type="checkbox"
-				{...rest}
-				className={hiddenInput}
-			/>
+			<input ref={ref} id={id} type="checkbox" {...rest} className={hiddenInput} />
 			<span
 				aria-hidden="true"
 				className={cx(
