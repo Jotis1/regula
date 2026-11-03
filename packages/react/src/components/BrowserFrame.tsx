@@ -88,8 +88,7 @@ export function BrowserFrame({
 			</div>
 			{/* Región con foco: si la pantalla no cabe (alto fijo o un ancho estrecho), se desplaza y tiene que poder
 			    hacerse con el teclado. Su nombre es la dirección de la barra */}
-			<div
-				role="region"
+			<section
 				aria-label={url}
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: el contenido puede desplazarse y necesita foco de teclado
 				tabIndex={0}
@@ -97,7 +96,7 @@ export function BrowserFrame({
 				style={height !== undefined ? { height } : undefined}
 			>
 				{children}
-			</div>
+			</section>
 		</div>
 	);
 }
