@@ -6,6 +6,24 @@ import { type AppName, appIcon, appIconSvg, apps, validateApps } from "../src/ap
 
 const ref = join(import.meta.dirname, "../../../reference/assets/App icons");
 
+/**
+ * Números de un trazado en coordenadas absolutas del lienzo de 128. Los SVG de Regula de la guía
+ * (1793653059-466a) llevan las letras en unidades de la fuente con `transform="translate(tx ty) scale(k -k)"`;
+ * el resto, ya en absolutas. Con transform, H solo mueve x, V solo y, y los demás comandos van en pares x y.
+ */
+function absolute(d: string, transform?: string): number[] {
+	const t = transform?.match(/translate\(([-\d.]+)[ ,]+([-\d.]+)\)\s*scale\(([-\d.]+)[ ,]+([-\d.]+)\)/);
+	const [tx, ty, sx, sy] = (t ? t.slice(1) : [0, 0, 1, 1]).map(Number) as [number, number, number, number];
+	return [...d.matchAll(/([A-Za-z])([^A-Za-z]*)/g)].flatMap(([, cmd, body]) =>
+		((body as string).match(/-?\d*\.?\d+/g) ?? []).map(Number).map((v, i) => {
+			if (!t) return v;
+			if (cmd === "H") return tx + v * sx;
+			if (cmd === "V") return ty + v * sy;
+			return i % 2 === 0 ? tx + v * sx : ty + v * sy;
+		}),
+	);
+}
+
 /** Piezas de un SVG: color de relleno, trazo y números de su trazado. */
 function parse(svg: string) {
 	return [...svg.matchAll(/<path ([^>]*)>/g)].map((m) => {
@@ -15,7 +33,7 @@ function parse(svg: string) {
 			fill: get("fill"),
 			stroke: get("stroke"),
 			cmds: (get("d") ?? "").replace(/[^A-Z]/g, ""),
-			nums: ((get("d") ?? "").match(/-?\d*\.?\d+/g) ?? []).map(Number),
+			nums: absolute(get("d") ?? "", get("transform")),
 		};
 	});
 }
@@ -42,13 +60,10 @@ describe("icono de app frente a los SVG de la guía", () => {
 					const nums = (p.d.match(/-?\d*\.?\d+/g) ?? []).map(Number);
 					expect(nums.length).toBe(e.nums.length);
 					// Los SVG de la guía salen de la fuente con unidades fraccionarias; la tabla de letras de bundle.js
-					// las redondea a enteros. El margen es una unidad de la fuente (0,47 × 128 / 1000 ≈ 0,06 sobre 128):
-					// Ornatus, Vinculum, Pecunia y Emptor llegan a 0,04 y la «R» y la «e» de Regula, a 0,06, sin
-					// desplazamiento medio (ruido punto a punto). Invisible a cualquier tamaño; el test de píxeles de abajo
-					// lo confirma.
-					const fontUnit = (0.47 * 128) / 1000;
+					// las redondea a enteros. La diferencia máxima es 0,04 unidades sobre 128: invisible a cualquier tamaño.
+					// Los de Regula usan ya la tabla de enteros (con transform) y solo difieren en el redondeo: 0,005.
 					for (const [j, v] of nums.entries())
-						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(fontUnit);
+						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(0.05);
 				});
 			});
 		}
@@ -75,25 +90,22 @@ describe("registro de apps", () => {
 	it("el registro de la suite es válido", () => {
 		expect(validateApps(apps)).toEqual([]);
 	});
-	it("Regula está en el registro: Re, en chartreuse", () => {
-		expect(apps.regula).toEqual({ name: "Regula", letters: "Re", hue: "chartreuse" });
-	});
-	it("acepta chartreuse, la paleta propia de la suite, aunque no sea de Tailwind", () => {
-		const { regula: _, ...rest } = apps;
-		expect(validateApps({ ...rest, nueva: { name: "Nueva", letters: "Nu", hue: "chartreuse" } })).toEqual(
-			[],
-		);
+	it("Regula está en el registro: Re, en fuchsia", () => {
+		expect(apps.regula).toEqual({ name: "Regula", letters: "Re", hue: "fuchsia" });
 	});
 	it.each([
 		["red", "reservado para errores"],
 		["yellow", "3:1"],
 		["neutral", "gris"],
 		["indigo", "mismo tono"],
-		["chartreuse", "mismo tono"],
+		["fuchsia", "mismo tono"],
 		["blue", "vecinos"],
 		["teal", "vecinos"],
-		// chartreuse va entre yellow y lime en el círculo de tonos: lime es vecino de Regula
-		["lime", "vecinos"],
+		// purple y pink son los vecinos de fuchsia, el tono de Regula
+		["purple", "vecinos"],
+		["pink", "vecinos"],
+		// chartreuse ya no es un tono de la suite (guía 1793653059-466a)
+		["chartreuse", "no es un tono de la paleta"],
 	])("rechaza el tono %s", (hue, msg) => {
 		const problems = validateApps({ ...apps, nueva: { name: "Nueva", letters: "Nu", hue } });
 		expect(problems.join("\n")).toContain(msg);

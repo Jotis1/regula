@@ -635,15 +635,6 @@ export const appicon = {
 			"800": "#3c6300",
 			"950": "#192e03",
 		},
-		chartreuse: {
-			"50": "#fafde6",
-			"200": "#eaf389",
-			"300": "#dce930",
-			"500": "#b1c300",
-			"600": "#829500",
-			"800": "#4c5a00",
-			"950": "#222b06",
-		},
 		green: {
 			"50": "#f0fdf4",
 			"200": "#b9f8cf",
@@ -725,7 +716,7 @@ export const appicon = {
 		regula: {
 			name: "Regula",
 			letters: "Re",
-			hue: "chartreuse",
+			hue: "fuchsia",
 		},
 	},
 };

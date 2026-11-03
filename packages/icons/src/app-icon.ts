@@ -11,7 +11,6 @@ export type AppIconHue =
 	| "rose"
 	| "orange"
 	| "amber"
-	| "chartreuse"
 	| "lime"
 	| "green"
 	| "emerald"
@@ -37,16 +36,12 @@ export const hues = data.hues as Record<
 	Record<"50" | "200" | "300" | "500" | "600" | "800" | "950", string>
 >;
 
-/**
- * Orden de la paleta de Tailwind (circular): define qué tonos son vecinos. `chartreuse`, la paleta propia de la
- * suite (Regula), va en su hueco de tono, entre `yellow` y `lime` (guía, «chartreuse, la paleta propia»).
- */
+/** Orden de la paleta de Tailwind (circular): define qué tonos son vecinos. */
 const WHEEL = [
 	"red",
 	"orange",
 	"amber",
 	"yellow",
-	"chartreuse",
 	"lime",
 	"green",
 	"emerald",
@@ -64,7 +59,7 @@ const WHEEL = [
 const GRAYS = ["slate", "gray", "zinc", "neutral", "stone"];
 
 /**
- * Comprueba un registro de apps con las reglas de la guía: dos letras, tono de la paleta (o `chartreuse`),
+ * Comprueba un registro de apps con las reglas de la guía: dos letras, tono de la paleta,
  * nunca rojo (error), amarillo (el blanco no llega a 3:1) ni grises, y sin repetir ni ser vecino de otro.
  * Devuelve la lista de problemas; vacía si el registro es válido.
  */
