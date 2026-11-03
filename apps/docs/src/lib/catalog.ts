@@ -153,6 +153,22 @@ export function catalogComponents(): string[] {
 	return COMPONENT_GROUPS.flatMap((g) => [...g.components]);
 }
 
+/**
+ * La sección de la cabecera a la que pertenece una ruta, o `undefined` en la portada. La guía de Stream y los
+ * componentes de los grupos de Stream son de Stream; el resto de `/components/`, de Componentes.
+ */
+export function sectionOf(pathname: string): SectionId | undefined {
+	const path = pathname.endsWith("/") ? pathname : `${pathname}/`;
+	if (path.startsWith("/start/")) return "start";
+	if (path === "/foundations/stream/") return "stream";
+	if (path.startsWith("/foundations/")) return "foundations";
+	if (path.startsWith("/icons/")) return "icons";
+	const component = path.match(/^\/components\/([^/]+)\//)?.[1];
+	if (component) return groupOf(component)?.section === "stream" ? "stream" : "components";
+	if (path === "/components/") return "components";
+	return undefined;
+}
+
 /** El grupo de un componente por su nombre (`Button`) o su slug (`button`). */
 export function groupOf(nameOrSlug: string): ComponentGroup | undefined {
 	const slug = slugOf(nameOrSlug);

@@ -1,0 +1,46 @@
+---
+// Cabecera de la web (reference/docs-design/Header.dc.html): icono de Regula y nombre, las cinco secciones con la
+// actual marcada, búsqueda con aspecto de campo y conmutador de tema. El icono va en la variante Claro en el tema
+// claro, como pide la guía dentro de una interfaz clara, y en la principal en el oscuro (design §9).
+import { AppIcon } from "@jotis-me/react";
+import { SECTIONS, sectionOf } from "../lib/catalog";
+import SiteSearch from "../search/SiteSearch";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const current = sectionOf(Astro.url.pathname);
+---
+
+<header class="relative flex h-16 items-center gap-8 bg-primary px-8 shadow-[inset_0_-1px_0_var(--border-secondary)]">
+	<a
+		href="#contenido"
+		class="absolute -top-24 left-4 z-60 rounded-lg bg-primary_alt px-3 py-2 text-sm font-semibold text-primary shadow-lg focus:top-3 focus-visible:outline-none"
+	>
+		Saltar al contenido
+	</a>
+	<a
+		href="/"
+		aria-label="Regula, portada"
+		class="flex shrink-0 items-center gap-2.5 rounded-md text-primary focus-visible:shadow-focus-ring focus-visible:outline-none"
+	>
+		<span aria-hidden="true" class="flex dark:hidden"><AppIcon app="regula" variant="light" size={28} /></span>
+		<span aria-hidden="true" class="hidden dark:flex"><AppIcon app="regula" size={28} /></span>
+		<span class="font-display text-xl font-bold tracking-[-0.02em]">Regula</span>
+	</a>
+	<nav aria-label="Secciones" class="hidden h-16 items-center gap-6 lg:flex">
+		{
+			SECTIONS.map((s) => (
+				<a
+					href={s.href}
+					aria-current={current === s.id ? "true" : undefined}
+					class="inline-flex h-16 items-center px-0.5 text-sm font-semibold text-tertiary transition-colors duration-100 hover:text-primary focus-visible:rounded-md focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current]:text-primary aria-[current]:shadow-[inset_0_-2px_0_var(--fg-brand-primary_alt)]"
+				>
+					{s.label}
+				</a>
+			))
+		}
+	</nav>
+	<div class="ml-auto flex items-center gap-8">
+		<SiteSearch client:idle />
+		<ThemeToggle />
+	</div>
+</header>

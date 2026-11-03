@@ -6,7 +6,7 @@ import sun from "@jotis-me/icons/svg/sun.svg?raw";
 <button
 	type="button"
 	data-theme-toggle
-	aria-label="Cambiar a modo oscuro"
+	aria-label="Usar tema oscuro"
 	class="inline-flex size-10 items-center justify-center rounded-lg text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
 >
 	<span class="contents dark:hidden" set:html={moon} />
@@ -15,7 +15,7 @@ import sun from "@jotis-me/icons/svg/sun.svg?raw";
 
 <script>
 	const label = () =>
-		document.documentElement.classList.contains("dark-mode") ? "Cambiar a modo claro" : "Cambiar a modo oscuro";
+		document.documentElement.classList.contains("dark-mode") ? "Usar tema claro" : "Usar tema oscuro";
 	for (const button of document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]")) {
 		button.setAttribute("aria-label", label());
 		button.addEventListener("click", () => {

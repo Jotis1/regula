@@ -7,6 +7,7 @@ import {
 	FOUNDATIONS,
 	groupOf,
 	SECTIONS,
+	sectionOf,
 	slugOf,
 } from "../src/lib/catalog";
 
@@ -104,6 +105,20 @@ describe("catálogo de secciones y fundamentos", () => {
 		expect(new Set(slugs).size).toBe(slugs.length);
 		expect(slugs).not.toContain("spacing");
 		expect(slugs).not.toContain("shadows");
+	});
+
+	it("sectionOf marca la sección de cada ruta", () => {
+		expect(sectionOf("/")).toBeUndefined();
+		expect(sectionOf("/start/install/")).toBe("start");
+		expect(sectionOf("/foundations/color/")).toBe("foundations");
+		expect(sectionOf("/foundations/stream/")).toBe("stream");
+		expect(sectionOf("/components/")).toBe("components");
+		expect(sectionOf("/components/button/")).toBe("components");
+		expect(sectionOf("/components/stream-scene/")).toBe("stream");
+		expect(sectionOf("/components/stream-scene/full/")).toBe("stream");
+		expect(sectionOf("/components/channel-banner")).toBe("stream");
+		expect(sectionOf("/icons/")).toBe("icons");
+		expect(sectionOf("/changelog/")).toBeUndefined();
 	});
 
 	it("slugOf reproduce el de la navegación del diseño", () => {

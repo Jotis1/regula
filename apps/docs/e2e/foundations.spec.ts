@@ -33,7 +33,10 @@ for (const [section, href] of Object.entries(pages)) {
 		const res = await page.goto(href);
 		expect(res?.status()).toBe(200);
 		await expect(page.locator("h1")).toBeVisible();
-		await expect(page.locator(`nav a[href="${href}"]`)).toHaveAttribute("aria-current", "page");
+		await expect(page.locator(`nav[aria-label="Documentación"] a[href="${href}"]`)).toHaveAttribute(
+			"aria-current",
+			"page",
+		);
 	});
 }
 

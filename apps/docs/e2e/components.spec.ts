@@ -11,7 +11,7 @@ const pages = readdirSync(dir).map((f) => ({
 
 test("la navegación lateral lista todas las páginas de componente", async ({ page }) => {
 	await page.goto("/");
-	const nav = page.getByRole("navigation", { name: "Secciones" });
+	const nav = page.getByRole("navigation", { name: "Documentación" });
 	for (const { name, slug } of pages)
 		await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute(
 			"href",

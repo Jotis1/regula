@@ -84,16 +84,19 @@ export default function SiteSearch() {
 
 	return (
 		<>
+			{/* Disparador con aspecto de campo (rg-search en reference/docs-design/lib/regula.css). El diseño le pone
+			    text-placeholder, pero es la etiqueta de un botón, no un placeholder, y en oscuro se queda en 4,2:1:
+			    text-quaternary es el mismo #737373 en claro y en oscuro pasa a 7,7:1. */}
 			<button
 				type="button"
 				onClick={() => setOpen(true)}
 				aria-keyshortcuts="Control+K Meta+K"
-				className="inline-flex h-10 items-center gap-2 rounded-lg border border-primary bg-primary px-3 text-sm text-tertiary shadow-xs transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
+				className="flex h-10 items-center gap-2 rounded-lg border border-primary bg-primary pr-2 pl-3 text-left text-sm text-quaternary shadow-xs transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none md:w-[300px]"
 			>
-				<Icon name="search-lg" size={20} />
-				<span>Buscar</span>
-				<kbd className="hidden rounded border border-secondary px-1.5 font-body text-xs text-quaternary sm:inline">
-					{mac ? "⌘K" : "Ctrl K"}
+				<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
+				<span className="sr-only min-w-0 grow truncate md:not-sr-only">Buscar en Regula</span>
+				<kbd className="hidden h-[22px] shrink-0 items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium whitespace-nowrap text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)] md:inline-flex">
+					{mac ? "⌘ K" : "Ctrl K"}
 				</kbd>
 			</button>
 			{open ? (
