@@ -40,7 +40,7 @@
 
 ## 7. Iconos y búsqueda
 
-- [ ] 7.1 Rehacer la galería de iconos con buscador, tamaño de vista previa, recuento y panel del icono elegido (tamaños, uso por contexto de la guía y código React, importación SVG y SVG en bruto de `@jotis-me/icons`); verificar con `e2e/icons.spec.ts` ("cal" filtra; al elegir `calendar` el código usa `@jotis-me/icons`), axe y capturas comparadas con `Icons.dc.html` y `IconsM.dc.html`
+- [x] 7.1 Rehacer la galería de iconos con buscador, tamaño de vista previa, recuento y panel del icono elegido (tamaños, uso por contexto de la guía y código React, importación SVG y SVG en bruto de `@jotis-me/icons`); verificar con `e2e/icons.spec.ts` ("cal" filtra; al elegir `calendar` el código usa `@jotis-me/icons`), axe y capturas comparadas con `Icons.dc.html` y `IconsM.dc.html`
 - [ ] 7.2 Ajustar la búsqueda al diseño: grupos Páginas, Componentes (con su grupo del catálogo como descripción), Tokens e Iconos, y el texto de sin resultados; verificar con `e2e/search.spec.ts` ("modal" y Enter llevan a Modal), axe y capturas comparadas con `Search.dc.html` y `SearchM.dc.html`
 
 ## 8. Historial de cambios
