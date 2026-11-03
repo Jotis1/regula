@@ -60,17 +60,8 @@ export const REFERENCE_FIXES: Record<string, string> = {
 	BackgroundPattern: ".jm-hint code { font-family: var(--font-mono); }",
 };
 
-/**
- * Vistas previas fijadas a una versión anterior de la guía, para cambios de la guía que aún no se han portado
- * (design §12). AppIcon: la versión 1793561361-ae73 añade Regula (`chartreuse`), que queda para un cambio de
- * estilo propio; hasta entonces se compara con su vista previa de cuatro apps (1793369818-a6e0).
- */
-const PINNED_PREVIEWS: Record<string, string> = {
-	AppIcon: join(import.meta.dirname, "pinned/AppIcon.preview.html"),
-};
-
 function previewHtml(name: string): string {
-	return readFileSync(PINNED_PREVIEWS[name] ?? join(components, name, "preview.html"), "utf8");
+	return readFileSync(join(components, name, "preview.html"), "utf8");
 }
 
 /** Alto de la tarjeta que declara la vista previa (`<!-- @dsCard height=220 -->`). */

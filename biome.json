@@ -9,7 +9,6 @@
 		"includes": [
 			"**",
 			"!reference",
-			"!apps/docs/e2e/visual/pinned",
 			"!**/dist",
 			"!**/.astro",
 			"!**/.next",
