@@ -1,6 +1,6 @@
 ---
-import { blur, colors, radius, shadows, spacing, type, width } from "@jotis-me/tokens";
-import { colorGroups, radiusRows, shadowRows, spacingRows } from "../lib/tokens";
+import { blur, radius, shadows, spacing, type, width } from "@jotis-me/tokens";
+import { radiusRows, shadowRows, spacingRows } from "../lib/tokens";
 
 interface Props {
 	page: string;
@@ -29,44 +29,6 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 		.join(";");
 ---
 
-{
-	page === "color" &&
-		colorGroups(colors).map((group) => (
-			<section>
-				<h2>{group.title}</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Token</th>
-							<th>Claro</th>
-							<th>Oscuro</th>
-							<th>Uso</th>
-						</tr>
-					</thead>
-					<tbody>
-						{group.rows.map((row) => (
-							<tr>
-								<td>
-									<button type="button" class="token-copy" data-copy={row.utility} aria-label={`Copiar ${row.utility}`}>
-										{row.utility}
-									</button>
-								</td>
-								<td>
-									<span class="swatch" style={`background:${row.light}`} />
-									<code>{row.light}</code>
-								</td>
-								<td>
-									<span class="swatch" style={`background:${row.dark}`} />
-									<code>{row.dark}</code>
-								</td>
-								<td>{row.usage}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
-		))
-}
 
 {
 	page === "typography" &&

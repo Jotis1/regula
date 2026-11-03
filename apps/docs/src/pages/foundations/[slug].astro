@@ -17,6 +17,7 @@ const { Content, headings } = await render(page);
 	title={page.data.title}
 	description={page.data.description}
 	headings={headings}
+	wide={page.data.wide}
 	source={`apps/docs/${page.filePath}`}
 >
 	<Content />

@@ -97,3 +97,21 @@ export function shadowRows(shadows: Record<string, ThemedToken>): ColorRow[] {
 		usage: t.usage,
 	}));
 }
+
+/** Familias del filtro de Color (Color.dc.html), en su orden. */
+export const COLOR_FAMILIES = [
+	["text", "Texto"],
+	["bg", "Fondo"],
+	["border", "Borde"],
+	["fg", "Icono"],
+	["utility", "Utility"],
+	["alpha", "Alfa"],
+	["comp", "Componentes"],
+] as const;
+export type ColorFamily = (typeof COLOR_FAMILIES)[number][0];
+
+/** La familia de un token: por su prefijo, y el resto (foco, avatares, controles…) en Componentes. */
+export function colorFamily(name: string): ColorFamily {
+	const prefix = name.split("-")[0];
+	return (["text", "bg", "border", "fg", "utility", "alpha"] as const).find((f) => f === prefix) ?? "comp";
+}

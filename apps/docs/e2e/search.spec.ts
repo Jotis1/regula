@@ -47,8 +47,7 @@ test("encuentra tokens e iconos; un icono abre la galería con él elegido", asy
 	await expect(
 		page.getByRole("group", { name: "Tokens" }).getByRole("option").first(),
 	).toHaveAccessibleName(/^bg-brand-solid/);
-	await page.getByRole("combobox").fill("");
-	await page.keyboard.type("calendar");
+	await page.getByRole("combobox").fill("calendar");
 	await page
 		.getByRole("group", { name: "Iconos" })
 		.getByRole("option", { name: /^calendar\b/ })

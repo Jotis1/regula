@@ -1,0 +1,58 @@
+---
+// Excepciones de contraste de la guía (reference/GUIA.md, «Contraste»), con el contraste de cada tema calculado en
+// el build desde @jotis-me/tokens en lugar de copiado: si un valor cambia, la tabla cambia con él.
+import { colors } from "@jotis-me/tokens";
+import { contrast, ratio } from "../lib/contrast";
+import { inline } from "../lib/inline";
+
+type Name = keyof typeof colors;
+const bg = colors["bg-primary"];
+// `on`: el token va sobre bg-primary (texto, icono, borde) o lleva blanco encima (rellenos sólidos)
+const exceptions: { name: Name; on: "ground" | "white"; how: string }[] = [
+	{ name: "text-warning-primary", on: "ground", how: "Sobre blanco vale para 24px+ o junto a un icono." },
+	{ name: "text-success-primary", on: "ground", how: "Sobre blanco vale para 24px+ o junto a un icono." },
+	{ name: "fg-quaternary", on: "ground", how: "Es solo decoración." },
+	{ name: "bg-success-solid", on: "white", how: "No admite texto blanco normal." },
+	{ name: "bg-warning-solid", on: "white", how: "No admite texto blanco normal." },
+	{
+		name: "border-primary",
+		on: "ground",
+		how: "Queda por debajo del 3:1 para bordes de control, así que **todo input lleva etiqueta visible**.",
+	},
+	{ name: "text-placeholder", on: "ground", how: "Baja a 4,2:1 en oscuro." },
+];
+const value = (name: Name, on: "ground" | "white", theme: "light" | "dark") => {
+	const r = contrast(colors[name][theme], on === "white" ? "#ffffff" : bg[theme]);
+	return r === undefined ? "—" : ratio(r);
+};
+const cell = "px-5 py-3.5";
+---
+
+<div class="not-prose my-4 overflow-x-auto rounded-xl shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+	<table class="w-full min-w-[560px] border-collapse text-sm">
+		<caption class="sr-only">Tokens por debajo del contraste recomendado y cómo usarlos</caption>
+		<thead>
+			<tr class="bg-secondary">
+				<th scope="col" class="px-5 py-3 text-left text-xs font-medium text-tertiary">Token</th>
+				<th scope="col" class="px-5 py-3 text-right text-xs font-medium text-tertiary">Claro</th>
+				<th scope="col" class="px-5 py-3 text-right text-xs font-medium text-tertiary">Oscuro</th>
+				<th scope="col" class="px-5 py-3 text-left text-xs font-medium text-tertiary">Cómo se usa</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				exceptions.map((e) => (
+					<tr class="shadow-[inset_0_1px_0_var(--border-secondary)]">
+						<th scope="row" class={`${cell} text-left font-mono text-[13px] font-medium whitespace-nowrap text-primary`}>
+							{e.name}
+							{e.on === "white" && <span class="block font-body text-xs font-normal text-quaternary">con texto blanco</span>}
+						</th>
+						<td class={`${cell} text-right whitespace-nowrap text-secondary tabular-nums`}>{value(e.name, e.on, "light")}</td>
+						<td class={`${cell} text-right whitespace-nowrap text-secondary tabular-nums`}>{value(e.name, e.on, "dark")}</td>
+						<td class={`${cell} text-tertiary`} set:html={inline(e.how)} />
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>
