@@ -11,7 +11,7 @@
 - [x] 2.1 Reimportar a `reference/` la guía `1793653059-466a` (Regula en `fuchsia`, sin la paleta `chartreuse`) verificando cada fichero con su sha256, regenerar `packages/tokens/src/tokens.json` con `translate-usage.ts` y quitar la exclusión `UNPORTED` de `test/usage.test.ts`; verificar con los tests de tokens (paridad uno a uno con la guía, sin ningún `utility-chartreuse-*`)
 - [x] 2.2 Añadir Regula (`Re`, `fuchsia`) al registro de `@jotis-me/icons` y generar sus SVG, favicon y PNG; verificar con tests que la validación acepta el registro, que sigue rechazando `red`, que rechaza `purple` y `pink` por vecinos de Regula y que los SVG coinciden con `reference/assets/App icons/regula-*.svg`
 - [x] 2.3 Quitar la vista previa fijada de AppIcon (`e2e/visual/pinned/`, `PINNED_PREVIEWS`), recapturar su referencia con la vista previa de la guía (con la fila de Regula) y añadir el changeset `minor`; verificar con la paridad visual de AppIcon en claro y oscuro y con `check:colors`
-- [ ] 2.4 Añadir Regula a la página de marca, con su tono `fuchsia`, sus contrastes y la nota de la variante `light` en interfaces claras (design §9); verificar con el build y `e2e/foundations.spec.ts`
+- [x] 2.4 Añadir Regula a la página de marca, con su tono `fuchsia`, sus contrastes y la nota de la variante `light` en interfaces claras (design §9); verificar con el build y `e2e/foundations.spec.ts`
 
 ## 3. Estructura común: cabecera, navegación, pie y tema
 
