@@ -55,3 +55,7 @@ Lo que no cabe en las casillas de `tasks.md` ni en `design.md`. Léelo antes de 
 ## Verificación
 
 - `e2e/header.spec.ts` comprueba la cabecera contra `Header.dc.html` a 1440px por medidas (alto 64, padding 32, icono 28, huecos de 32 y 24, subrayado de 2px), no por píxeles: el diseño es una maqueta y no se puede pintar fuera de Claude Design.
+
+## Revisión de la preview (9.2)
+
+- 3 nov: el usuario revisó la preview de Vercel del PR #6 frente al diseño (escritorio y móvil, claro y oscuro) y dio su visto bueno. No hay más diferencias aceptadas que las anotadas arriba.
