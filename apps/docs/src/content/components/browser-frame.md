@@ -12,3 +12,5 @@ interactive: false
 **Reglas.** Mete dentro componentes de verdad, no capturas: así cambian con el tema. Para capturas a pantalla completa no hace falta marco.
 
 **Detalles.** Funciona sin JavaScript (lo que lleve dentro puede necesitar sus islas). La barra es una maqueta: sus iconos no son botones y se ocultan en pantallas de menos de 560px.
+
+**Ampliación sobre la guía.** El área de contenido es una región con foco, con la dirección de la barra como nombre: si la pantalla no cabe (alto fijo o pantalla estrecha), se desplaza también con el teclado.
