@@ -47,6 +47,12 @@ const half = (kind: string, color: string, ground: string) => {
 	return `${s}background:linear-gradient(${color},${color}),${color.length > 7 ? "#a3a3a3" : ground}`;
 };
 const th = "px-4 py-3 text-left text-xs font-medium text-tertiary";
+// La tabla tiene unos 4.600 nodos y casi toda queda fuera de la vista al cargar. Con `content-visibility: auto` el
+// navegador no la maqueta ni la pinta hasta que se acerca, y sigue en el árbol de accesibilidad y en Ctrl+F. Sin
+// eso, en Lighthouse móvil (CPU ×4) su maquetación retrasaba el primer pintado y el LCP de Color en ~0,8 s y lo
+// dejaba al borde de 90. El alto estimado (~130 px por fila más la cabecera) evita que la barra de desplazamiento
+// salte; `auto` recuerda el alto real en cuanto se ha pintado una vez, con o sin filtro.
+const estimatedHeight = `auto ${rows.length * 130 + 48}px`;
 ---
 
 <div class="not-prose my-4 flex flex-col gap-5" data-tokens>
@@ -88,7 +94,11 @@ const th = "px-4 py-3 text-left text-xs font-medium text-tertiary";
 			}
 		</div>
 	</div>
-	<div class="overflow-x-auto rounded-xl shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+	<div
+		class="overflow-x-auto rounded-xl shadow-[inset_0_0_0_1px_var(--border-secondary)] [content-visibility:auto]"
+		style={`contain-intrinsic-size: ${estimatedHeight}`}
+		data-tokens-table
+	>
 		<table class="w-full min-w-[760px] border-collapse text-sm">
 			<caption class="sr-only">Tokens de color, con sus valores en claro y oscuro, su contraste y su utilidad de Tailwind</caption>
 			<thead>

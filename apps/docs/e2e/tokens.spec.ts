@@ -133,3 +133,21 @@ test.describe("tabla de tokens de Color", () => {
 		});
 	});
 });
+
+test("la tabla de tokens no se maqueta hasta acercarse, sin que el alto de la página salte", async ({
+	page,
+}) => {
+	await page.goto("/foundations/color/");
+	const table = page.locator("[data-tokens-table]");
+	await expect(table).toHaveCSS("content-visibility", "auto");
+	const before = await page.evaluate(() => document.documentElement.scrollHeight);
+	await table.scrollIntoViewIfNeeded();
+	await page.mouse.wheel(0, 2000);
+	const after = await page.evaluate(() => document.documentElement.scrollHeight);
+	// El alto estimado (130 px por fila) se queda a menos de un 5 % del real
+	expect(Math.abs(after - before) / after).toBeLessThan(0.05);
+	// Con el teclado se llega a una fila aún sin pintar
+	const copy = table.locator("[data-copy]").nth(120);
+	await copy.focus();
+	await expect(copy).toBeInViewport();
+});
