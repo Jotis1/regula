@@ -125,3 +125,9 @@ test("favicon: el icono de app de Regula, en SVG y PNG, servido como fichero", a
 	for (const href of [svg, png, apple]) expect((await request.get(href ?? "")).ok()).toBe(true);
 	expect(await (await request.get(svg ?? "")).text()).toContain("<title>Regula</title>");
 });
+
+test("el icono de la cabecera lleva la virgulilla, aunque vaya por debajo de 32px", async ({ page }) => {
+	await page.goto("/");
+	const logo = header(page).getByRole("link", { name: "Regula, portada" });
+	await expect(logo.locator('svg:visible path[stroke-linecap="round"]')).toHaveCount(1);
+});

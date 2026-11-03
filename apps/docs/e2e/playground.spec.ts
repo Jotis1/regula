@@ -107,3 +107,18 @@ for (const name of Object.keys(STARTS))
 		}
 		expect(errors).toEqual([]);
 	});
+
+test("BackgroundPattern: el patrón llena su marco y cambia con los controles", async ({ page }) => {
+	await page.goto("/components/background-pattern/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	const preview = pg.locator("[data-playground-preview]");
+	// Sin la rejilla decorativa del playground: el único patrón es el del componente
+	await expect(preview.locator("svg")).toHaveCount(1);
+	const frame = await preview.locator("> div").first().boundingBox();
+	expect(frame?.height).toBe(200);
+	const before = await preview.locator("svg").innerHTML();
+	await pg.getByRole("button", { name: "circles", exact: true }).click();
+	await expect.poll(() => preview.locator("svg").innerHTML()).not.toBe(before);
+	await expect(pg.locator("pre")).toContainText('pattern="circles"');
+});

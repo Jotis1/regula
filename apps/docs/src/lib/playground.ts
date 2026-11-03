@@ -18,6 +18,11 @@ export interface Start {
 	children?: string;
 	/** A todo el ancho del lienzo (lo que mide su contenedor, como StreamScene). */
 	wide?: boolean;
+	/**
+	 * Alto del marco, en px, para los componentes que llenan a su padre (`absolute inset-0`, como BackgroundPattern):
+	 * sin él, su padre no mide nada y no se ven. Con marco, el playground no pone su rejilla de fondo.
+	 */
+	fill?: number;
 }
 
 export interface Playground {
@@ -285,7 +290,7 @@ export const STARTS: Record<string, Start> = {
 		wide: true,
 	},
 	ContentDivider: { props: { label: "o continúa con" }, wide: true },
-	BackgroundPattern: { props: { width: 480, height: 200 } },
+	BackgroundPattern: { props: { width: 480, height: 200 }, fill: 200 },
 	BrowserFrame: { props: { url: "pecunia.jotis.me/resumen", height: 200 }, wide: true },
 	CreditCard: { props: { company: "Pecunia", holder: "Administrador", expiry: "06/29", last4: "4821" } },
 	LineChart: {

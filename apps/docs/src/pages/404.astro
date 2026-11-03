@@ -1,0 +1,37 @@
+---
+// Página 404: la que sirve Vercel (y `astro preview`) para cualquier dirección que no existe. Composición de estado
+// vacío (FeaturedIcon, título, qué ha pasado y qué hacer), con BackgroundPattern detrás, como permite la guía en los
+// estados vacíos. Una acción principal, volver a la portada; la búsqueda, como secundaria.
+import { BackgroundPattern, Button, FeaturedIcon } from "@jotis-me/react";
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Página no encontrada" description="Esta dirección no lleva a ninguna página de Regula." noindex>
+	<section class="relative flex flex-col items-center px-4 py-16 text-center lg:py-24" data-not-found>
+		<div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 flex h-[360px] justify-center">
+			<BackgroundPattern pattern="grid-dot" size="md" mask="radial" width={640} height={360} />
+		</div>
+		<div class="relative flex flex-col items-center gap-6">
+			<FeaturedIcon icon="search-lg" color="gray" size="xl" variant="modern" />
+			<div class="flex flex-col gap-3">
+				<p class="text-sm font-semibold text-brand-secondary">Error 404</p>
+				<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">
+					Esta página no existe
+				</h1>
+				<p class="mx-auto max-w-[480px] text-md text-tertiary lg:text-lg">
+					O se ha mudado con el rediseño, o la dirección tiene una errata. Búscala o vuelve a la portada.
+				</p>
+			</div>
+			<div class="mt-2 flex flex-col-reverse gap-3 sm:flex-row">
+				<Button hierarchy="secondary" size="lg" iconLeading="search-lg" data-open-search>Buscar en Regula</Button>
+				<Button size="lg" href="/">Ir a la portada</Button>
+			</div>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// El botón abre la búsqueda global (SiteSearch escucha este evento)
+	for (const b of document.querySelectorAll("[data-open-search]"))
+		b.addEventListener("click", () => window.dispatchEvent(new CustomEvent("regula:search")));
+</script>

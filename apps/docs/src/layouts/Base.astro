@@ -22,13 +22,18 @@ interface Props {
 	wide?: boolean;
 	/** Solo el contenido, sin cabecera, navegación ni pie (los lienzos a tamaño real). */
 	bare?: boolean;
+	/** Fuera de buscadores y de la búsqueda de texto completo (Pagefind): la 404. */
+	noindex?: boolean;
 }
 const {
 	title,
 	description = "Las reglas de diseño, los tokens y los componentes de la suite jotis.me.",
 	wide = false,
 	bare = false,
+	noindex = false,
 } = Astro.props;
+// Pagefind indexa solo las páginas con `data-pagefind-body`; sin él, la página queda fuera
+const indexed = noindex ? {} : { "data-pagefind-body": true };
 const current = Astro.url.pathname;
 ---
 
@@ -46,6 +51,7 @@ const current = Astro.url.pathname;
 		<link rel="preload" href={bricolage} as="font" type="font/woff2" crossorigin />
 		<title>{title === "Regula" ? "Regula · jotis.me" : `${title} · Regula`}</title>
 		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex" />}
 		<slot name="head" />
 	</head>
 	<body class="min-h-screen bg-primary text-md text-primary antialiased">
@@ -56,7 +62,7 @@ const current = Astro.url.pathname;
 					<slot />
 				</main>
 			) : wide ? (
-				<main id="contenido" data-pagefind-body>
+				<main id="contenido" {...indexed}>
 					<slot />
 				</main>
 			) : (
@@ -65,7 +71,7 @@ const current = Astro.url.pathname;
 						<SideNav current={current} />
 					</aside>
 					<div class="flex min-w-0 flex-1 flex-col">
-						<main id="contenido" data-pagefind-body class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
+						<main id="contenido" {...indexed} class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
 							<slot />
 						</main>
 					</div>

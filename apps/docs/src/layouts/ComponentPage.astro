@@ -133,13 +133,15 @@ const toc = [
 
 			<section aria-labelledby="variantes">
 				<h2 id="variantes">Variantes y estados</h2>
+				{/* Contenedor: un ejemplo puede adaptarse al ancho de la caja (StreamAlert pasa a una columna) sin cambiar en
+				    /visual/, donde no hay contenedor y la paridad compara con la captura de la guía */}
 				<div
 					data-pagefind-ignore
 					role="region"
 					aria-label={`Variantes de ${name}`}
 					tabindex="0"
 					class:list={[
-						"not-prose my-4 flex flex-col gap-6 overflow-x-auto rounded-xl p-6 shadow-[inset_0_0_0_1px_var(--border-secondary)] focus-visible:shadow-focus-ring focus-visible:outline-none",
+						"@container not-prose my-4 flex flex-col gap-6 overflow-x-auto rounded-xl p-6 shadow-[inset_0_0_0_1px_var(--border-secondary)] focus-visible:shadow-focus-ring focus-visible:outline-none",
 						dark && "dark-mode bg-primary text-primary",
 					]}
 				>

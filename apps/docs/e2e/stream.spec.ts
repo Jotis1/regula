@@ -75,3 +75,13 @@ test("un componente de Stream sin lienzo fijo no enlaza a tamaño real; uno de a
 	await expect(page.locator("[data-stream-note], [data-obs-note]")).toHaveCount(0);
 	await expect(page.getByText("Siempre en oscuro")).toHaveCount(0);
 });
+
+test("StreamAlert: en escritorio las variantes caben en su caja, en una columna", async ({ page }) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/components/stream-alert/");
+	const box = page.locator('[aria-label="Variantes de StreamAlert"]');
+	await box.scrollIntoViewIfNeeded();
+	await expect(box.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
+	const [client, scroll] = await box.evaluate((el) => [el.clientWidth, el.scrollWidth]);
+	expect(scroll).toBeLessThanOrEqual(client);
+});

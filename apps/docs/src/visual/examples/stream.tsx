@@ -24,7 +24,9 @@ export function StreamAlertExample() {
 	const [n, setN] = useState(0);
 	return (
 		<div>
-			<div className="grid grid-cols-[repeat(2,480px)] items-start gap-4">
+			{/* Dos columnas de 480px, como la vista previa de la guía (que también las corta a 800px). En la caja de
+			    variantes de la web, que es un contenedor, pasa a una si no caben las dos */}
+			<div className="grid grid-cols-[repeat(2,480px)] items-start gap-4 @max-[976px]:grid-cols-[480px]">
 				<StreamAlert key={`f${n}`} type="follow" user="lucia_pixel" state={n ? "enter" : undefined} />
 				<StreamAlert
 					type="sub"

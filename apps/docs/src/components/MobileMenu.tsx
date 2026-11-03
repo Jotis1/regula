@@ -54,10 +54,10 @@ export default function MobileMenu({ children }: { children?: ReactNode }) {
 				title={
 					<span className="flex items-center gap-2">
 						<span aria-hidden="true" className="flex dark:hidden">
-							<AppIcon app="regula" variant="light" size={24} />
+							<AppIcon app="regula" variant="light" size={24} tilde />
 						</span>
 						<span aria-hidden="true" className="hidden dark:flex">
-							<AppIcon app="regula" size={24} />
+							<AppIcon app="regula" size={24} tilde />
 						</span>
 						<span className="font-display text-lg font-bold tracking-[-0.02em]">Regula</span>
 					</span>

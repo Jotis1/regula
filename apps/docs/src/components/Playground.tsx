@@ -22,13 +22,32 @@ export default function Playground({ playground }: { playground: Data }) {
 			<div
 				data-playground-preview
 				className={`relative flex min-h-55 items-center justify-center overflow-hidden p-6 md:p-10 ${
-					playground.dark ? "dark-mode bg-primary text-primary" : "bg-secondary"
+					playground.dark
+						? "dark-mode bg-primary text-primary"
+						: // Con marco (BackgroundPattern), sobre `bg-primary`, donde va en la guía: en `bg-secondary` apenas se ve
+							playground.start.fill
+							? "bg-primary"
+							: "bg-secondary"
 				}`}
 			>
-				<div aria-hidden="true" className="pointer-events-none absolute inset-0 flex justify-center">
-					<BackgroundPattern pattern="grid-dot" size="sm" mask="radial" width={800} height={220} />
-				</div>
-				<div className={`relative ${playground.start.wide ? "w-full" : "max-w-full"}`}>
+				{!playground.start.fill && (
+					<div
+						aria-hidden="true"
+						className="pointer-events-none absolute inset-0 flex justify-center"
+					>
+						<BackgroundPattern
+							pattern="grid-dot"
+							size="sm"
+							mask="radial"
+							width={800}
+							height={220}
+						/>
+					</div>
+				)}
+				<div
+					className={`relative ${playground.start.wide || playground.start.fill ? "w-full" : "max-w-full"}`}
+					style={playground.start.fill ? { height: playground.start.fill } : undefined}
+				>
 					<Component {...propsFor(playground, state)}>{playground.start.children}</Component>
 				</div>
 			</div>
