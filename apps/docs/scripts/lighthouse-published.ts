@@ -15,6 +15,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { chromium } from "@playwright/test";
 import lighthouse from "lighthouse";
+import { screenEmulationMetrics, throttling, userAgents } from "lighthouse/core/config/constants.js";
 
 const ORIGIN = "https://regula.jotis.me";
 const PAGES = ["/", "/foundations/color/", "/components/button/"];
@@ -40,15 +41,32 @@ try {
 		for (const path of PAGES) {
 			const perf: number[] = [];
 			const a11y: number[] = [];
+			const fcp: number[] = [];
+			const lcp: number[] = [];
+			let applied = "";
 			for (let run = 0; run < RUNS; run++) {
 				const result = await lighthouse(`${ORIGIN}${path}`, {
 					port: PORT,
 					disableStorageReset: true,
+					// Móvil explícito, con las constantes de Lighthouse: no depende de los valores por defecto
+					formFactor: "mobile",
+					screenEmulation: screenEmulationMetrics.mobile,
+					emulatedUserAgent: userAgents.mobile,
+					throttlingMethod: "simulate",
+					throttling: throttling.mobileSlow4G,
 					onlyCategories: ["performance", "accessibility"],
 					output: "json",
 					logLevel: "error",
 				});
-				const categories = result?.lhr.categories;
+				const lhr = result?.lhr;
+				const categories = lhr?.categories;
+				fcp.push(lhr?.audits["first-contentful-paint"]?.numericValue ?? 0);
+				lcp.push(lhr?.audits["largest-contentful-paint"]?.numericValue ?? 0);
+				// Lo que Lighthouse dice haber aplicado, para que la medida se pueda comprobar
+				const c = lhr?.configSettings;
+				applied = c
+					? `${c.formFactor}, ${c.screenEmulation.width}×${c.screenEmulation.height}, ${c.throttlingMethod} (RTT ${c.throttling.rttMs} ms, ${c.throttling.throughputKbps} kbps, CPU ×${c.throttling.cpuSlowdownMultiplier})${lhr?.runWarnings.length ? ` · avisos: ${lhr.runWarnings.join("; ")}` : ""}`
+					: "sin informe";
 				perf.push(Math.round((categories?.performance?.score ?? 0) * 100));
 				a11y.push(Math.round((categories?.accessibility?.score ?? 0) * 100));
 			}
@@ -58,7 +76,8 @@ try {
 			const [p, a] = [median(perf), median(a11y)];
 			const ok = themeKept && p >= MIN && a >= MIN;
 			if (!ok) failed++;
-			const text = `rendimiento ${p}, accesibilidad ${a} (pasadas: ${perf.map((v, i) => `${v}/${a11y[i]}`).join(" ")})${themeKept ? "" : " · el tema no se conservó: medida no válida"}`;
+			const secs = (v: number) => `${(v / 1000).toFixed(1)} s`;
+			const text = `rendimiento ${p}, accesibilidad ${a} (pasadas: ${perf.map((v, i) => `${v}/${a11y[i]}`).join(" ")}) · FCP ${secs(median(fcp))}, LCP ${secs(median(lcp))} · ${applied}${themeKept ? "" : " · el tema no se conservó: medida no válida"}`;
 			console.log(`::${ok ? "notice" : "error"} title=Lighthouse ${path} (${theme})::${text}`);
 		}
 		await page.close();
