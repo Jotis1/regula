@@ -183,3 +183,22 @@ test("a 390px ninguna página de componente se desplaza en horizontal: la tabla 
 	expect(wide).toEqual([]);
 	await expect(page.getByRole("region", { name: /^Props de / })).toHaveAttribute("tabindex", "0");
 });
+
+test("/components/ lista los 74 componentes, cada uno enlazado a su página, con las anclas de sus grupos", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Componentes");
+	const index = page.locator("article");
+	const links = index.locator("[data-group] a");
+	await expect(links).toHaveCount(pages.length);
+	for (const { slug, name } of pages) {
+		const link = index.locator(`[data-group] a[href="/components/${slug}/"]`);
+		await expect(link).toHaveCount(1);
+		await expect(link.locator("span").first()).toHaveText(name);
+	}
+	// Las migas de cada página apuntan a estas anclas (/components/#acciones)
+	for (const id of ["acciones", "formularios", "stream-escenas", "stream-canal"])
+		await expect(page.locator(`h3#${id}`)).toHaveCount(1);
+	await expect(page.locator("#seccion-stream + section h3")).toHaveText(/Alertas/);
+});

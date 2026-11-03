@@ -8,10 +8,16 @@ async function ready(page: Page, path = "/") {
 
 const dialog = (page: Page) => page.getByRole("dialog", { name: "Buscar en Regula" });
 
+// Ctrl+K hasta que se abra: con el equipo cargado, el atajo puede llegar antes de que el script lo escuche
+const open = (page: Page) =>
+	expect(async () => {
+		if (!(await dialog(page).isVisible())) await page.keyboard.press("Control+k");
+		await expect(dialog(page)).toBeVisible({ timeout: 2_000 });
+	}).toPass({ timeout: 20_000 });
+
 test('Ctrl+K, "modal" y Enter llevan a la página de Modal', async ({ page }) => {
 	await ready(page, "/foundations/color/");
-	await page.keyboard.press("Control+k");
-	await expect(dialog(page)).toBeVisible();
+	await open(page);
 	await page.keyboard.type("modal");
 	const first = page.getByRole("option").first();
 	await expect(first).toHaveAccessibleName(/^Modal/);
@@ -41,7 +47,7 @@ test("el botón de la cabecera la abre; sin escribir se ven las páginas", async
 
 test("encuentra tokens e iconos; un icono abre la galería con él elegido", async ({ page }) => {
 	await ready(page);
-	await page.keyboard.press("Control+k");
+	await open(page);
 	// fill y no keyboard.type: con el equipo cargado, las primeras letras llegaban antes que el foco y se perdían
 	await page.getByRole("combobox", { name: "Buscar en Regula" }).fill("bg-brand-solid");
 	await expect(
@@ -60,9 +66,7 @@ test("encuentra tokens e iconos; un icono abre la galería con él elegido", asy
 
 test("busca también en el texto de las páginas (Pagefind)", async ({ page }) => {
 	await ready(page);
-	await page.keyboard.press("Control+k");
-	// Como los demás: con el equipo cargado, el diálogo puede tardar en abrir tras el atajo
-	await expect(dialog(page)).toBeVisible();
+	await open(page);
 	await page.getByRole("combobox", { name: "Buscar en Regula" }).fill("virgulilla");
 	const text = page.getByRole("group", { name: "En el texto" });
 	// Pagefind carga su WebAssembly y el índice al primer uso: con el equipo cargado tarda más de 5 s
