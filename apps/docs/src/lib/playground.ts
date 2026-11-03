@@ -352,5 +352,5 @@ export const STARTS: Record<string, Start> = {
 		props: { title: "Cuatro paredes y un techo", artist: "Los Vecinos del Quinto", progress: 0.42 },
 	},
 	StreamCountdown: { props: { seconds: 600, label: "Empezamos en" } },
-	StreamScene: { props: { seconds: 480, countdownLabel: "Vuelvo en" }, wide: true },
+	StreamScene: { props: { variant: "brb", seconds: 480, countdownLabel: "Vuelvo en" }, wide: true },
 };

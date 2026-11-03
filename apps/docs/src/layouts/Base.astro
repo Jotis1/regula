@@ -16,11 +16,14 @@ interface Props {
 	description?: string;
 	/** A todo el ancho, sin navegación lateral ni márgenes (la portada). */
 	wide?: boolean;
+	/** Solo el contenido, sin cabecera, navegación ni pie (los lienzos a tamaño real). */
+	bare?: boolean;
 }
 const {
 	title,
 	description = "Las reglas de diseño, los tokens y los componentes de la suite jotis.me.",
 	wide = false,
+	bare = false,
 } = Astro.props;
 const current = Astro.url.pathname;
 ---
@@ -39,9 +42,13 @@ const current = Astro.url.pathname;
 		<slot name="head" />
 	</head>
 	<body class="min-h-screen bg-primary text-md text-primary antialiased">
-		<SiteHeader />
+		{!bare && <SiteHeader />}
 		{
-			wide ? (
+			bare ? (
+				<main id="contenido">
+					<slot />
+				</main>
+			) : wide ? (
 				<main id="contenido" data-pagefind-body>
 					<slot />
 				</main>
@@ -58,7 +65,7 @@ const current = Astro.url.pathname;
 				</div>
 			)
 		}
-		<SiteFooter />
-		<CopyToast />
+		{!bare && <SiteFooter />}
+		{!bare && <CopyToast />}
 	</body>
 </html>

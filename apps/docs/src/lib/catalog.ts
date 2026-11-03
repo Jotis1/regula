@@ -216,3 +216,30 @@ export function neighborsOf(name: string): { prev?: string; next?: string; relat
 		related: group.components.filter((c) => slugOf(c) !== slugOf(name)),
 	};
 }
+
+/**
+ * Los lienzos de tamaño fijo de Twitch, con su página a tamaño real (`/components/<slug>/full/`) y las props con
+ * las que se pintan allí (las de su fragmento de uso).
+ */
+export const FULL_SIZE: Readonly<
+	Record<string, { width: number; height: number; props: Record<string, unknown> }>
+> = {
+	StreamScene: {
+		width: 1920,
+		height: 1080,
+		props: { variant: "brb", seconds: 480, countdownLabel: "Vuelvo en" },
+	},
+	ChannelBanner: {
+		width: 1200,
+		height: 480,
+		props: {
+			name: "Tu canal",
+			tagline: "Directos tranquilos y conversación sin guion.",
+			schedule: [
+				{ day: "Lunes", time: "20:00" },
+				{ day: "Miércoles", time: "20:00" },
+				{ day: "Viernes", time: "22:00" },
+			],
+		},
+	},
+};

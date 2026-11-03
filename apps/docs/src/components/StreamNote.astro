@@ -1,0 +1,29 @@
+---
+// Nota bajo el primer ejemplo de un componente de Stream (Scene.dc.html): por qué se ve en oscuro en una web clara
+// y, en los lienzos de tamaño fijo, el enlace a su página a tamaño real.
+import { Button, Icon } from "@jotis-me/react";
+import { FULL_SIZE, slugOf } from "../lib/catalog";
+
+interface Props {
+	name: string;
+}
+const { name } = Astro.props;
+const full = FULL_SIZE[name];
+---
+
+<div class="not-prose my-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3" data-stream-note>
+	<p class="flex items-start gap-2 text-sm text-tertiary">
+		<Icon name="info-circle" size={16} className="mt-0.5 flex-none text-fg-quaternary" />
+		<span>
+			Los componentes de Stream llevan <code class="font-mono text-secondary">dark-mode</code> en su raíz: en esta
+			web clara se ven igual que en OBS.
+		</span>
+	</p>
+	{
+		full && (
+			<Button hierarchy="tertiary" size="sm" iconTrailing="maximize-01" href={`/components/${slugOf(name)}/full/`}>
+				Ver a tamaño real
+			</Button>
+		)
+	}
+</div>
