@@ -211,3 +211,10 @@ cd examples/astro && bunx playwright test     # tras su build
 ## Reimportar la guía
 
 Ver `scripts/import-artifact/README.md`. La copia actual está en `reference/` (versión en `reference/VERSION`).
+
+## Comprobaciones de integración (15, 3 nov)
+
+- **15.1:** proyectos nuevos fuera del monorepo (`create-next-app` 16.4 sin Tailwind y `create astro` 7.4 `minimal`), con solo los pasos del README publicado en npm (0.1.0). Los dos compilan. En Astro, Button sale como HTML sin `<script>`. Capturas de «Guardar» (primary) y «Cancelar» (secondary) en claro y oscuro (`dark-mode` en `<html>`, como dice el README) comparadas con `regula.jotis.me/visual/button/`: mismo tamaño y 0,00 % de píxeles distintos en los ocho casos.
+- **15.2:** build de producción de Next con solo `Button`. Marcadores: las etiquetas por defecto de las tres gráficas («Gráfica de barras», «Gráfica de líneas», «Gráfica circular»), «Selector de fecha» y `gregory` (calendario de `@internationalized/date`, que usa DatePicker). Control: con una página que usa DatePicker y las gráficas, los cinco salen en el bundle; solo con Button, ninguno.
+- **15.3, axe (web publicada, 390px, claro y oscuro):** portada y Button sin fallos. Color tenía uno serio: `scrollable-region-focusable` en la tabla de excepciones de contraste, que en móvil se desplaza sin poder enfocarse (las pruebas de axe de la web solo corrían a 1280px). Arreglado como la tabla de props (región con nombre y `tabindex="0"`). `e2e/a11y.spec.ts` pasa ahora esa regla a 390px por todas las páginas, y así salió otro: el área de contenido de `BrowserFrame`, arreglada en el paquete (decisión del usuario; changeset `patch`).
+- **15.3, Lighthouse:** Browser Security Plus no deja lanzar Chrome en el equipo del usuario, y la API anónima de PageSpeed Insights tenía la cuota del día agotada.

@@ -111,8 +111,8 @@
 
 ## 15. Comprobaciones de integración
 
-- [ ] 15.1 Crear un proyecto Next.js nuevo y otro Astro nuevo fuera del monorepo siguiendo solo el README publicado y pintar un `Button` en claro y oscuro; verificar que el aspecto coincide con la web
-- [ ] 15.2 En el ejemplo Next, importar solo `Button` y analizar el bundle de producción; verificar que no contiene código de `DatePicker` ni de las gráficas
+- [x] 15.1 Crear un proyecto Next.js nuevo y otro Astro nuevo fuera del monorepo siguiendo solo el README publicado y pintar un `Button` en claro y oscuro; verificar que el aspecto coincide con la web
+- [x] 15.2 En el ejemplo Next, importar solo `Button` y analizar el bundle de producción; verificar que no contiene código de `DatePicker` ni de las gráficas
 - [ ] 15.3 Recorrer la web publicada con axe y Lighthouse en móvil (portada, una página de fundamentos, una de componente) en ambos temas; verificar los umbrales del spec `docs-site`
 
 ## Workflow follow-up
