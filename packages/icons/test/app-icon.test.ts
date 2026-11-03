@@ -42,9 +42,13 @@ describe("icono de app frente a los SVG de la guía", () => {
 					const nums = (p.d.match(/-?\d*\.?\d+/g) ?? []).map(Number);
 					expect(nums.length).toBe(e.nums.length);
 					// Los SVG de la guía salen de la fuente con unidades fraccionarias; la tabla de letras de bundle.js
-					// las redondea a enteros. La diferencia máxima es 0,04 unidades sobre 128: invisible a cualquier tamaño.
+					// las redondea a enteros. El margen es una unidad de la fuente (0,47 × 128 / 1000 ≈ 0,06 sobre 128):
+					// Ornatus, Vinculum, Pecunia y Emptor llegan a 0,04 y la «R» y la «e» de Regula, a 0,06, sin
+					// desplazamiento medio (ruido punto a punto). Invisible a cualquier tamaño; el test de píxeles de abajo
+					// lo confirma.
+					const fontUnit = (0.47 * 128) / 1000;
 					for (const [j, v] of nums.entries())
-						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(0.05);
+						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(fontUnit);
 				});
 			});
 		}
@@ -71,13 +75,25 @@ describe("registro de apps", () => {
 	it("el registro de la suite es válido", () => {
 		expect(validateApps(apps)).toEqual([]);
 	});
+	it("Regula está en el registro: Re, en chartreuse", () => {
+		expect(apps.regula).toEqual({ name: "Regula", letters: "Re", hue: "chartreuse" });
+	});
+	it("acepta chartreuse, la paleta propia de la suite, aunque no sea de Tailwind", () => {
+		const { regula: _, ...rest } = apps;
+		expect(validateApps({ ...rest, nueva: { name: "Nueva", letters: "Nu", hue: "chartreuse" } })).toEqual(
+			[],
+		);
+	});
 	it.each([
 		["red", "reservado para errores"],
 		["yellow", "3:1"],
 		["neutral", "gris"],
 		["indigo", "mismo tono"],
+		["chartreuse", "mismo tono"],
 		["blue", "vecinos"],
 		["teal", "vecinos"],
+		// chartreuse va entre yellow y lime en el círculo de tonos: lime es vecino de Regula
+		["lime", "vecinos"],
 	])("rechaza el tono %s", (hue, msg) => {
 		const problems = validateApps({ ...apps, nueva: { name: "Nueva", letters: "Nu", hue } });
 		expect(problems.join("\n")).toContain(msg);

@@ -46,9 +46,11 @@ describe("AppIcon frente a reference/assets/App icons", () => {
 					const e = expected[i] as (typeof expected)[number];
 					expect(p.cmds).toBe(e.cmds);
 					expect(p.nums.length).toBe(e.nums.length);
-					// La tabla de letras redondea a unidades enteras de la fuente: como mucho 0,04 sobre 128 (design.md §8)
+					// La tabla de letras redondea a unidades enteras de la fuente: como mucho una unidad (0,47 × 128 / 1000
+					// ≈ 0,06 sobre 128; 0,04 en las cuatro primeras apps, 0,06 en Regula), sin desplazamiento medio (design.md §8)
+					const fontUnit = (0.47 * 128) / 1000;
 					for (const [j, v] of p.nums.entries())
-						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(0.05);
+						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(fontUnit);
 				});
 			});
 		}
