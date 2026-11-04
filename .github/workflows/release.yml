@@ -65,6 +65,20 @@ jobs:
               env:
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
               run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "$HOME/.npmrc"
+            # Lo que trusted publishing necesita para funcionar, sin enseñar ningún valor secreto: npm ≥ 11.5.1 y
+            # las variables de OIDC de GitHub (solo si existen). Si npm no las ve, falla con ENEEDAUTH sin más.
+            - name: Diagnóstico de npm (trusted publishing)
+              if: steps.changesets.outputs.hasChangesets == 'false'
+              run: |
+                  echo "node $(node --version) · npm $(npm --version) · npm en $(command -v npm)"
+                  for v in GITHUB_ACTIONS ACTIONS_ID_TOKEN_REQUEST_URL ACTIONS_ID_TOKEN_REQUEST_TOKEN; do
+                      if [ -n "${!v}" ]; then echo "$v: presente"; else echo "$v: AUSENTE"; fi
+                  done
+                  npm config get registry
+                  ls -la "$HOME/.npmrc" 2>/dev/null || echo "sin ~/.npmrc"
             - name: Publicación
               if: steps.changesets.outputs.hasChangesets == 'false'
+              # verbose: npm cuenta el intento de OIDC y, si falla, por qué
+              env:
+                  NPM_CONFIG_LOGLEVEL: verbose
               run: bun run release
