@@ -86,7 +86,7 @@
     },
     "packages/icons": {
       "name": "@jotis-me/icons",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "devDependencies": {
         "@arethetypeswrong/cli": "^0.18.5",
         "@playwright/test": "^1.64.1",
@@ -109,7 +109,7 @@
     },
     "packages/react": {
       "name": "@jotis-me/react",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "dependencies": {
         "@internationalized/date": "^3.12.4",
         "@jotis-me/icons": "workspace:*",
@@ -139,7 +139,7 @@
     },
     "packages/tokens": {
       "name": "@jotis-me/tokens",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "devDependencies": {
         "@arethetypeswrong/cli": "^0.18.5",
         "@fontsource-variable/bricolage-grotesque": "^5.3.0",
