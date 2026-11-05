@@ -9,9 +9,9 @@ Hoy cada componente existe dos veces: en el `bundle.js` del artefacto "Jotis.me"
 - El repo pasa a ser la fuente de verdad del sistema: tokens, iconos, marca, componentes, fichas y guía. `reference/` queda congelada como registro de la importación original y deja de leerse desde el código y los tests. Esto sustituye lo que decía `create-regula-design-system` ("el artefacto se actualiza desde el repo si hace falta"): ahora se actualiza siempre, y solo desde el repo.
 - Se porta lo que el artefacto añadió después de la importación: Scaena (`Sc`, tono `lime`) en el registro de apps, sus cinco SVG, su mención en la ficha de AppIcon y en la página de marca.
 - El artefacto "Jotis.me" se genera desde el repo: bundle de `@jotis-me/react` como script clásico, hoja compilada, tipos, fichas, vistas previas, tokens, fuentes y assets. Queda en solo lectura (`"editing": "code"`) para que nadie lo edite a mano.
-- La paridad visual compara cada ejemplo de la web con capturas aprobadas que viven en el repo. Las 74 actuales (sacadas de la guía) se conservan tal cual; los componentes nuevos se aprueban desde la vista previa del deploy.
+- La paridad visual compara cada ejemplo de la web con capturas aprobadas que viven en el repo. Las 74 actuales (sacadas de la guía) se conservan tal cual y su carpeta pasa de `e2e/visual/reference/` a `e2e/visual/approved/`. Las de los componentes nuevos, o las de los que cambian de aspecto a propósito, se capturan del ejemplo de la web y se aprueban revisando la PNG en el diff del PR.
 - El catálogo de componentes deja de estar fijado en 74: es lo que exporta `@jotis-me/react`, y un test comprueba que coincide con las páginas de la web y con el artefacto generado.
-- **BREAKING** (solo interno): se retiran `scripts/import-artifact/`, `apps/docs/scripts/split-guide.ts`, `packages/icons/scripts/extract.ts` y el servidor de vistas previas de la guía de los tests visuales. No cambia ninguna API publicada.
+- **BREAKING** (solo interno): se retiran `scripts/import-artifact/`, `apps/docs/scripts/split-guide.ts`, `packages/icons/scripts/extract.ts`, `packages/tokens/scripts/translate-usage.ts` (con la comprobación de traducción de `usage.test.ts`) y el servidor de vistas previas de la guía de los tests visuales. No cambia ninguna API publicada.
 
 ## Capabilities
 
@@ -27,7 +27,7 @@ Hoy cada componente existe dos veces: en el `bundle.js` del artefacto "Jotis.me"
 
 ## Impact
 
-- **Código**: `packages/icons` (fuentes de assets y SVG de app dentro del paquete, Scaena en el registro), tests de `packages/icons`, `packages/react` y `apps/docs` que leen `reference/`, `apps/docs/e2e/visual/*` y `apps/docs/scripts/capture-reference.ts`.
+- **Código**: `packages/icons` (fuentes de assets y SVG de app dentro del paquete, Scaena en el registro), tests de `packages/icons`, `packages/react` y `apps/docs` que leen `reference/`, `apps/docs/e2e/visual/*` (con la carpeta de capturas renombrada a `approved/`), `apps/docs/src/lib/previews.ts` (lee esas capturas), `apps/docs/scripts/capture-reference.ts` y los dos jobs de `.github/workflows/ci.yml`.
 - **Nuevo**: `scripts/artifact/` (generador del artefacto) y su test, y un paso en CI que comprueba que el generador funciona.
 - **Sistemas externos**: el artefacto "Jotis.me" de Claude pasa a ser de solo lectura y se republica después de cada versión publicada. Los diseños que lo usan (Scaena, Ornatus, Regula) empiezan a pintar los componentes reales del paquete en lugar de la copia a mano.
 - **Fuera de alcance**: los componentes y variantes nuevos del Figma (cambios siguientes) y la corrección de la paleta del Figma.

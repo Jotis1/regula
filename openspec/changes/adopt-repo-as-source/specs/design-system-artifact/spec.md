@@ -10,8 +10,8 @@ Mantiene el artefacto "Jotis.me" de Claude como copia generada del sistema de di
 Los tokens, iconos, iconos de app, adornos, componentes, fichas y la guía SHALL definirse solo en el repo. El artefacto "Jotis.me" SHALL ser una salida generada y ningún código ni test del repo SHALL leer `reference/`, que queda como registro congelado de la importación original.
 
 #### Scenario: Sin lecturas de reference
-- **WHEN** se buscan rutas a `reference/` en el código fuente, los scripts y los tests de `packages/`, `apps/` y `scripts/`
-- **THEN** no aparece ninguna
+- **WHEN** se buscan en el código fuente, los scripts y los tests de `packages/`, `apps/` y `scripts/` rutas que lleguen a la carpeta `reference/` de la raíz
+- **THEN** no aparece ninguna, y los comentarios que citan un fichero de `reference/` como procedencia no cuentan como lectura
 
 #### Scenario: Cambio en el artefacto a mano
 - **WHEN** alguien abre el artefacto "Jotis.me" en Claude
@@ -39,6 +39,14 @@ El bundle del artefacto SHALL ser `@jotis-me/react` compilado como un único scr
 - **WHEN** una vista previa del artefacto pinta `Jotis.Button` con `hierarchy="secondary"` y `size="lg"`
 - **THEN** se ve igual que el mismo botón en la web, en claro y en oscuro
 
+#### Scenario: Vista previa con utilidades propias
+- **WHEN** una vista previa del artefacto monta un ejemplo de `Jotis.previews` que usa utilidades que no aparecen en el paquete (por ejemplo, la rejilla del ejemplo de AppIcon)
+- **THEN** esas utilidades están en la hoja y la vista previa coincide con la captura aprobada del componente
+
+#### Scenario: React del artefacto
+- **WHEN** se carga el bundle en una página con React 18 UMD
+- **THEN** cada componente del catálogo se monta sin errores en consola
+
 #### Scenario: Tema oscuro del artefacto
 - **WHEN** una vista previa pone `data-theme="dark"` en la raíz
 - **THEN** los componentes toman los valores oscuros de los tokens, igual que con `.dark-mode` en las apps
@@ -53,3 +61,7 @@ El artefacto SHALL registrar de qué repo y commit sale y SHALL republicarse des
 #### Scenario: Versión nueva
 - **WHEN** se publica una versión nueva de `@jotis-me/react`
 - **THEN** el artefacto se regenera desde ese commit y su `lastChange` apunta a él
+
+#### Scenario: Artefacto atrasado
+- **WHEN** se empieza una sincronización y el `lastChange` publicado no apunta al commit de la última versión de los paquetes
+- **THEN** el procedimiento avisa de qué versiones se quedaron sin sincronizar antes de publicar

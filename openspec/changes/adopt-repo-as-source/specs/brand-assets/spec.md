@@ -27,4 +27,4 @@ El sistema SHALL mantener un registro de apps con nombre, letras y tono: Ornatus
 
 #### Scenario: Vecino de Scaena
 - **WHEN** se añade al registro una app con tono `green`
-- **THEN** la validación del registro falla porque es vecino de `lime`, el tono de Scaena
+- **THEN** la validación del registro falla con un problema que nombra a Scaena por ser vecino de `lime`, además del que nombra a Pecunia por ser vecino de `emerald`

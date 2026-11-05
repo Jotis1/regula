@@ -25,7 +25,7 @@ Las props de cada componente SHALL coincidir en nombre, tipo y valores por defec
 - **THEN** la compilación falla con un error de tipo
 
 ### Requirement: Aspecto fiel a la guía
-Cada componente SHALL reproducir, en claro y en oscuro, la captura aprobada de su ejemplo que se guarda en el repo, usando solo utilidades de los tokens semánticos y nunca hex ni paleta cruda (`bg-indigo-600`). Las capturas de los 74 componentes originales son las de la vista previa de la guía; las de un componente nuevo se aprueban al revisar su ejemplo.
+Cada componente SHALL reproducir, en claro y en oscuro, la captura aprobada de su ejemplo que se guarda en el repo, usando solo utilidades de los tokens semánticos y nunca hex ni paleta cruda (`bg-indigo-600`). Las capturas de los 74 componentes originales parten de la vista previa de la guía; las de un componente nuevo, o las de uno existente cuyo aspecto cambia a propósito, se aprueban en el PR que las añade o sustituye, revisando la PNG en el diff.
 
 #### Scenario: Comparación visual
 - **WHEN** se compara la captura de cada ejemplo de la web con su captura aprobada, en ambos temas
@@ -34,6 +34,10 @@ Cada componente SHALL reproducir, en claro y en oscuro, la captura aprobada de s
 #### Scenario: Componente sin captura aprobada
 - **WHEN** se ejecutan los tests visuales y un componente del catálogo no tiene captura aprobada en algún tema
 - **THEN** el test falla indicando qué componente y qué tema faltan
+
+#### Scenario: Cambio de aspecto aprobado
+- **WHEN** un PR cambia a propósito el aspecto de un componente que ya tiene captura aprobada, también uno de los 74 originales
+- **THEN** el PR sustituye sus dos PNG por capturas nuevas de su ejemplo, explica el motivo, y los tests visuales pasan contra las nuevas
 
 #### Scenario: Sin colores crudos
 - **WHEN** se analiza el código fuente de los componentes

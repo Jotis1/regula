@@ -10,5 +10,5 @@ El paquete de iconos SHALL incluir los iconos de uso común definidos en el repo
 - **THEN** coinciden uno a uno
 
 #### Scenario: Los 81 originales
-- **WHEN** se busca en la lista exportada cada uno de los 81 nombres de la guía original
+- **WHEN** se busca en la lista exportada cada uno de los 81 nombres de la guía original, guardados como fixture en los tests del paquete
 - **THEN** están todos

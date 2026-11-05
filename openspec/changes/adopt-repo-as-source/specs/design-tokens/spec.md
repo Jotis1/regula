@@ -14,5 +14,5 @@ El paquete de tokens SHALL exponer cada token de color de la guía (fondos, text
 - **THEN** `--text-primary` vale `#fafafa` y el resto de tokens toman su valor oscuro
 
 #### Scenario: Paridad con la guía
-- **WHEN** se compara la lista de tokens publicada con la fuente de tokens del repo
-- **THEN** no falta ningún token ni sobra ninguno fuera de los documentados como añadidos
+- **WHEN** se compara la lista de tokens que publica el paquete (variables CSS y exportación de TypeScript) con la lista de nombres de la guía, fijada en los tests del paquete
+- **THEN** coinciden en nombre y orden, y quitar o renombrar un token obliga a cambiar esa lista en el mismo PR
