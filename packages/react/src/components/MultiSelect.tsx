@@ -2,8 +2,8 @@
 
 import { type ReactNode, useId, useState } from "react";
 import {
-	Input as AriaInput,
 	Button as AriaButton,
+	Input as AriaInput,
 	Autocomplete,
 	Dialog,
 	DialogTrigger,
