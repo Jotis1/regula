@@ -186,7 +186,12 @@ export function Input({
 			{split ? (
 				<div className={controlClasses(size, error, disabled, true)}>
 					{leadingSelect ? (
-						<AddonSelect select={leadingSelect} size={size} position="leading" disabled={disabled} />
+						<AddonSelect
+							select={leadingSelect}
+							size={size}
+							position="leading"
+							disabled={disabled}
+						/>
 					) : null}
 					{prefix != null ? <span className={addonClasses(size)}>{prefix}</span> : null}
 					<div
@@ -201,7 +206,12 @@ export function Input({
 						{field}
 					</div>
 					{trailingSelect ? (
-						<AddonSelect select={trailingSelect} size={size} position="trailing" disabled={disabled} />
+						<AddonSelect
+							select={trailingSelect}
+							size={size}
+							position="trailing"
+							disabled={disabled}
+						/>
 					) : null}
 				</div>
 			) : (

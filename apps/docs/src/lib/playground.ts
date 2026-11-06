@@ -168,6 +168,8 @@ export const STARTS: Record<string, Start> = {
 	AppIcon: { props: { app: "regula", size: 64 } },
 	Icon: { props: { name: "refresh-cw-01", size: 24 } },
 	Input: { props: { label: "Correo", type: "email", placeholder: "tu@jotis.me" } },
+	NumberInput: { props: { label: "Invitados", defaultValue: 2, min: 1, max: 12 } },
+	TagInput: { props: { label: "Etiquetas", defaultValue: ["diseño", "código"] } },
 	Textarea: { props: { label: "Descripción", hint: "Máximo 300 caracteres." } },
 	Select: { props: { label: "Categoría", placeholder: "Elige una", options: ["Casa", "Coche", "Ocio"] } },
 	Checkbox: { props: { label: "Recordarme", hint: "Mantén la sesión 30 días." } },

@@ -99,6 +99,7 @@ export { MetricCard, type MetricCardProps } from "./components/MetricCard.js";
 export { Modal, type ModalProps } from "./components/Modal.js";
 export { Notification, type NotificationProps } from "./components/Notification.js";
 export { NowPlaying, type NowPlayingLabels, type NowPlayingProps } from "./components/NowPlaying.js";
+export { NumberInput, type NumberInputProps } from "./components/NumberInput.js";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
 export {
 	Pagination,
@@ -140,6 +141,7 @@ export {
 export { Table, type TableColumn, type TableProps } from "./components/Table.js";
 export { type TabItem, Tabs, type TabsProps, type TabsSize, type TabsType } from "./components/Tabs.js";
 export { Tag, type TagProps, type TagSize } from "./components/Tag.js";
+export { TagInput, type TagInputProps } from "./components/TagInput.js";
 export { Textarea, type TextareaProps } from "./components/Textarea.js";
 export { TextEditor, type TextEditorLabels, type TextEditorProps } from "./components/TextEditor.js";
 export { Toggle, type ToggleProps } from "./components/Toggle.js";

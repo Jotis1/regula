@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ColorPicker, MessageInput, TextEditor } from "../src/index.js";
-import { expectAccessibleInThemes } from "./helpers.js";
+import { ColorPicker, MessageInput, NumberInput, TagInput, TextEditor } from "../src/index.js";
+import { danglingAriaRefsOnServer, expectAccessibleInThemes } from "./helpers.js";
 
 const SWATCHES = ["#4f39f6", "#00a63e", "#e7000b"];
 
@@ -249,5 +249,196 @@ describe("MessageInput", () => {
 			"Pregunta a Emptor…",
 		);
 		await expectAccessibleInThemes(<MessageInput placeholder="Pregunta a Emptor…" onAttach={() => {}} />);
+	});
+});
+
+describe("NumberInput", () => {
+	const field = (name = "Invitados") => screen.getByRole("textbox", { name }) as HTMLInputElement;
+
+	it("las flechas respetan mínimo, máximo y paso, y + se deshabilita en el máximo", async () => {
+		const onChange = vi.fn();
+		render(<NumberInput label="Invitados" defaultValue={3} max={4} onChange={onChange} />);
+		await userEvent.click(field());
+		await userEvent.keyboard("{ArrowUp}{ArrowUp}");
+		expect(field().value).toBe("4");
+		expect(onChange).toHaveBeenLastCalledWith(4);
+		const plus = screen.getByRole("button", { name: "Sumar" }) as HTMLButtonElement;
+		expect(plus.disabled).toBe(true);
+		await userEvent.keyboard("{ArrowDown}");
+		expect(field().value).toBe("3");
+	});
+
+	it("los botones suman y restan el paso sin pasar del mínimo", async () => {
+		render(<NumberInput label="Invitados" defaultValue={1} min={0} step={1} />);
+		await userEvent.click(screen.getByRole("button", { name: "Restar" }));
+		expect(field().value).toBe("0");
+		expect((screen.getByRole("button", { name: "Restar" }) as HTMLButtonElement).disabled).toBe(true);
+		await userEvent.click(screen.getByRole("button", { name: "Sumar" }));
+		expect(field().value).toBe("1");
+	});
+
+	it("lee y muestra el decimal con coma (es-ES)", async () => {
+		const onChange = vi.fn();
+		render(<NumberInput label="Horas" step={0.5} onChange={onChange} />);
+		const input = field("Horas");
+		await userEvent.type(input, "12,5");
+		await userEvent.tab();
+		expect(onChange).toHaveBeenLastCalledWith(12.5);
+		expect(input.value).toBe("12,5");
+	});
+
+	it("vertical: chevrons apilados detrás, con los mismos nombres", () => {
+		const { container } = render(
+			<NumberInput label="Invitados" orientation="vertical" defaultValue={2} />,
+		);
+		const [up, down] = screen.getAllByRole("button");
+		expect(up?.getAttribute("aria-label")).toBe("Sumar");
+		expect(down?.getAttribute("aria-label")).toBe("Restar");
+		expect(container.querySelector(".w-7.border-l")).not.toBeNull();
+	});
+
+	it("error enlazado con aria-invalid y la etiqueta visible da nombre al campo", () => {
+		render(<NumberInput label="Invitados" error="Como mucho, 12." defaultValue={20} />);
+		const input = field();
+		expect(input.getAttribute("aria-invalid")).toBe("true");
+		const described = (input.getAttribute("aria-describedby") ?? "")
+			.split(" ")
+			.map((id) => document.getElementById(id)?.textContent)
+			.join(" ");
+		expect(described).toContain("Como mucho, 12.");
+		expect(screen.getByText("Como mucho, 12.").className).toContain("text-error-primary");
+	});
+
+	it("nombres de los botones sustituibles y mismo alto que Input en lg", () => {
+		render(<NumberInput label="Invitados" size="lg" decrementLabel="Menos" incrementLabel="Más" />);
+		expect(screen.getByRole("button", { name: "Menos" })).toBeTruthy();
+		expect(field().closest(".rounded-lg")?.className).toContain("min-h-11");
+	});
+
+	it("se renderiza en servidor", () => {
+		const html = renderToString(<NumberInput label="Invitados" defaultValue={3} />);
+		expect(html).toContain('value="3"');
+		expect(html).toContain("Invitados");
+		expect(danglingAriaRefsOnServer(html)).toEqual([]);
+		expect(
+			danglingAriaRefsOnServer(
+				renderToString(
+					<NumberInput label="Horas" orientation="vertical" hint="Pista" error="Error" />,
+				),
+			),
+		).toEqual([]);
+	});
+
+	it("sin infracciones de axe en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<div>
+				<NumberInput label="Invitados" defaultValue={3} />
+				<NumberInput
+					label="Horas"
+					orientation="vertical"
+					defaultValue={2}
+					hint="De media hora en media hora."
+				/>
+				<NumberInput label="Error" error="Como mucho, 12." defaultValue={20} />
+				<NumberInput label="Deshabilitado" disabled defaultValue={1} />
+			</div>,
+		);
+	});
+});
+
+describe("TagInput", () => {
+	const field = () => screen.getByRole("textbox", { name: "Etiquetas" }) as HTMLInputElement;
+	const tagTexts = () => screen.queryAllByRole("listitem").map((li) => li.textContent);
+
+	it("Enter y coma añaden; no entran repetidas ni vacías; Retroceso en vacío quita la última", async () => {
+		const onChange = vi.fn();
+		render(<TagInput label="Etiquetas" onChange={onChange} />);
+		await userEvent.type(field(), "diseño{Enter}");
+		expect(tagTexts()).toEqual(["diseño"]);
+		expect(field().value).toBe("");
+		await userEvent.type(field(), "diseño{Enter}   {Enter}");
+		expect(tagTexts()).toEqual(["diseño"]);
+		await userEvent.type(field(), "código,");
+		expect(tagTexts()).toEqual(["diseño", "código"]);
+		expect(onChange).toHaveBeenLastCalledWith(["diseño", "código"]);
+		await userEvent.type(field(), "{Backspace}");
+		expect(tagTexts()).toEqual(["diseño"]);
+		expect(onChange).toHaveBeenLastCalledWith(["diseño"]);
+	});
+
+	it("Retroceso con texto escrito borra letras, no etiquetas", async () => {
+		render(<TagInput label="Etiquetas" defaultValue={["diseño"]} />);
+		await userEvent.type(field(), "ab{Backspace}");
+		expect(field().value).toBe("a");
+		expect(tagTexts()).toEqual(["diseño"]);
+	});
+
+	it("la X se alcanza con Tab, quita su etiqueta y devuelve el foco al campo", async () => {
+		render(<TagInput label="Etiquetas" defaultValue={["diseño", "código"]} />);
+		await userEvent.tab();
+		const x = screen.getByRole("button", { name: "Quitar diseño" });
+		expect(document.activeElement).toBe(x);
+		await userEvent.keyboard("{Enter}");
+		expect(tagTexts()).toEqual(["código"]);
+		expect(document.activeElement).toBe(field());
+	});
+
+	it("outside: las etiquetas van debajo del marco", () => {
+		render(<TagInput label="Etiquetas" placement="outside" defaultValue={["diseño"]} />);
+		const control = field().parentElement as HTMLElement;
+		const list = screen.getByRole("list");
+		expect(control.contains(list)).toBe(false);
+		expect(control.compareDocumentPosition(list) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+	});
+
+	it("inside: el marco admite varias líneas y crece en alto", () => {
+		render(<TagInput label="Etiquetas" defaultValue={["a", "b", "c"]} />);
+		const control = field().parentElement as HTMLElement;
+		expect(control.className).toContain("flex-wrap");
+		expect(control.contains(screen.getByRole("list"))).toBe(true);
+	});
+
+	it("controlado: manda el padre", async () => {
+		const onChange = vi.fn();
+		render(<TagInput label="Etiquetas" value={["fija"]} onChange={onChange} />);
+		await userEvent.type(field(), "nueva{Enter}");
+		expect(onChange).toHaveBeenCalledWith(["fija", "nueva"]);
+		expect(tagTexts()).toEqual(["fija"]);
+	});
+
+	it("error enlazado, deshabilitado sin X y name con las etiquetas separadas por comas", () => {
+		const { container } = render(
+			<TagInput
+				label="Etiquetas"
+				error="Pon al menos una."
+				disabled
+				name="tags"
+				defaultValue={["a", "b"]}
+			/>,
+		);
+		expect(field().getAttribute("aria-invalid")).toBe("true");
+		expect(screen.queryByRole("button")).toBeNull();
+		expect(screen.getByRole("list").getAttribute("aria-disabled")).toBe("true");
+		expect((container.querySelector('input[type="hidden"]') as HTMLInputElement).value).toBe("a,b");
+	});
+
+	it("se renderiza en servidor", () => {
+		const html = renderToString(<TagInput label="Etiquetas" defaultValue={["diseño"]} />);
+		expect(html).toContain("diseño");
+		expect(html).toContain("Añadir etiqueta");
+	});
+
+	it("sin infracciones de axe en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<div>
+				<TagInput
+					label="Etiquetas"
+					defaultValue={["diseño", "código"]}
+					hint="Enter o coma para añadir."
+				/>
+				<TagInput label="Fuera" placement="outside" defaultValue={["diseño"]} />
+				<TagInput label="Error" error="Pon al menos una." />
+			</div>,
+		);
 	});
 });

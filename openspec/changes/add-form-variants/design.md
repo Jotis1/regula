@@ -55,13 +55,15 @@ El texto fijo delante, el desplegable delante o detrás y la contraseña siguen 
 - **Formas:** `orientation="horizontal"` pone los botones − y + a los lados, separados por bordes, como «Number counter horizontal»; `"vertical"` los apila detrás, como «Number counter vertical».
 - **Textos:** el locale se fija con `I18nProvider locale="es-ES"` dentro del componente, así que no depende del navegador. Los nombres de los botones («Restar», «Sumar») salen de `defaultStrings`.
 
-### D4. `TagInput` con `TagGroup` y un `<input>` nativo, no con `TokenField`
-Las etiquetas se pintan con el `Tag` del paquete dentro de un `TagGroup` de React Aria, que da la navegación con flechas entre etiquetas y el borrado con Retroceso y Supr. El texto se escribe en un `<input>` normal.
-- **Al escribir:** Enter o coma añade la etiqueta si no está vacía ni repetida. Retroceso con el campo vacío quita la última.
+### D4. `TagInput` con el `Tag` del paquete en una lista y un `<input>` nativo
+Las etiquetas son el `Tag` del paquete (tamaño `md`, como en el Figma) dentro de una lista `<ul>`, cada una con su X: un `<button>` nativo que entra en el orden de Tab, como pide el spec. El texto se escribe en un `<input>` normal.
+- **Al escribir:** Enter o coma añade la etiqueta si no está vacía ni repetida. Retroceso con el campo vacío quita la última. Al quitar una con su X, el foco vuelve al campo.
 - **Posición:** `placement="inside"` (por defecto) las pone en el marco, delante del texto, y el campo crece en alto. `"outside"` las pone debajo.
-- **Valor:** controlado o no, `string[]`.
+- **Valor:** controlado o no, `string[]`. Con `name`, un `<input type="hidden">` lleva las etiquetas separadas por comas.
 
-*Alternativa:* `TokenField`. Se descarta porque es un campo `contenteditable` con tokens dentro del texto, pensado para fórmulas y menciones, y su API es la más nueva del paquete. Para una lista de etiquetas, `TagGroup` más un `<input>` es más predecible y se prueba igual que `Tag`.
+*Alternativas:*
+- `TagGroup` de React Aria. Era la idea inicial y se cambió al implementar: en un `TagGroup` las X no reciben foco con Tab (se recorre con flechas), y el spec pide llegar a la X con Tab.
+- `TokenField`. Se descarta porque es un campo `contenteditable` con tokens dentro del texto, pensado para fórmulas y menciones, y su API es la más nueva del paquete.
 
 ### D5. `VerificationCodeInput` con casillas nativas propias
 React Aria no tiene un campo OTP. Cada dígito es un `<input inputMode="numeric" maxLength={1}>` dentro de un `role="group"` con la etiqueta del campo. Cada casilla tiene `aria-label` «Dígito n de N» (plantilla sustituible) y la primera lleva `autoComplete="one-time-code"`.

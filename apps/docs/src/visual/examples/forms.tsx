@@ -7,10 +7,12 @@ import {
 	FileUpload,
 	Input,
 	MessageInput,
+	NumberInput,
 	Radio,
 	RadioGroup,
 	Select,
 	Slider,
+	TagInput,
 	Textarea,
 	TextEditor,
 	Toggle,
@@ -200,6 +202,40 @@ export function MessageInputExample() {
 	return (
 		<div className="max-w-[560px]">
 			<MessageInput placeholder="Pregunta a Emptor…" onAttach={() => {}} onSend={() => {}} />
+		</div>
+	);
+}
+
+export function NumberInputExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-6">
+			<NumberInput
+				label="Invitados"
+				required
+				defaultValue={2}
+				min={1}
+				max={12}
+				hint="Hasta 12 personas."
+			/>
+			<NumberInput label="Horas" orientation="vertical" defaultValue={1.5} step={0.5} min={0} />
+			<NumberInput label="Noches" defaultValue={20} error="Como mucho, 14." />
+			<NumberInput label="Plazas" disabled defaultValue={4} />
+		</div>
+	);
+}
+
+export function TagInputExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
+			<TagInput
+				label="Etiquetas"
+				required
+				defaultValue={["diseño", "código"]}
+				hint="Enter o coma para añadir."
+			/>
+			<TagInput label="Temas" placement="outside" defaultValue={["finanzas", "hogar", "viajes"]} />
+			<TagInput label="Palabras clave" error="Pon al menos una." />
+			<TagInput label="Archivadas" disabled defaultValue={["2025"]} />
 		</div>
 	);
 }

@@ -23,22 +23,22 @@ Cada grupo trae sus propios tests y su documentación. La referencia visual de c
 
 ## 3. NumberInput
 
-- [ ] 3.1 Crear `NumberInput` sobre `NumberField` (D3), en horizontal y vertical, mirando «Number counter horizontal» y «Number counter vertical» del nodo `1090:57817`. Llevar `I18nProvider` `es-ES`, `FieldShell`, `size` y `disabled`, y exportarlo en `index.ts`. Tests en `test/rich-inputs.test.tsx`:
+- [x] 3.1 Crear `NumberInput` sobre `NumberField` (D3), en horizontal y vertical, mirando «Number counter horizontal» y «Number counter vertical» del nodo `1090:57817`. Llevar `I18nProvider` `es-ES`, `FieldShell`, `size` y `disabled`, y exportarlo en `index.ts`. Tests en `test/rich-inputs.test.tsx`:
   - las flechas respetan mínimo, máximo y paso;
   - `12,5` se lee como 12.5 y se muestra con coma;
   - el botón de sumar se deshabilita en el máximo;
   - el error queda enlazado con `aria-invalid`.
-- [ ] 3.2 Página `apps/docs/src/content/components/number-input.md`, grupo «Formularios» en `src/lib/catalog.ts`, ejemplo en el registro con su alto en `CARD_HEIGHTS` y sus dos PNG aprobadas. Comprobar que el test de catálogo y `e2e/visual.spec.ts -g NumberInput` pasan.
+- [x] 3.2 Página `apps/docs/src/content/components/number-input.md`, grupo «Formularios» en `src/lib/catalog.ts`, ejemplo en el registro con su alto en `CARD_HEIGHTS` y sus dos PNG aprobadas. Comprobar que el test de catálogo y `e2e/visual.spec.ts -g NumberInput` pasan.
 
 ## 4. TagInput
 
-- [ ] 4.1 Crear `TagInput` con `TagGroup` y `Tag` del paquete más un `<input>` nativo (D4), con `placement` `inside`/`outside` y `value`/`defaultValue`/`onChange` de tipo `string[]`, mirando «Tags inner» y «Tags outer» del nodo `1090:57817`. Exportarlo. Tests:
+- [x] 4.1 Crear `TagInput` con `Tag` del paquete en una lista más un `<input>` nativo (D4), con `placement` `inside`/`outside` y `value`/`defaultValue`/`onChange` de tipo `string[]`, mirando «Tags inner» y «Tags outer» del nodo `1090:57817`. Exportarlo. Tests:
   - Enter y coma añaden la etiqueta;
   - no entran repetidas ni vacías;
   - Retroceso con el campo vacío quita la última;
   - la X quita la suya y devuelve el foco al campo;
   - el campo crece en alto con muchas etiquetas.
-- [ ] 4.2 Página `tag-input.md`, catálogo, ejemplo (las dos posiciones, con error y deshabilitado) y sus dos PNG aprobadas. Comprobar el test de catálogo y `e2e/visual.spec.ts -g TagInput`.
+- [x] 4.2 Página `tag-input.md`, catálogo, ejemplo (las dos posiciones, con error y deshabilitado) y sus dos PNG aprobadas. Comprobar el test de catálogo y `e2e/visual.spec.ts -g TagInput`.
 
 ## 5. VerificationCodeInput
 

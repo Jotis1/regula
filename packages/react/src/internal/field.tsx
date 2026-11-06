@@ -87,7 +87,7 @@ export function FieldShell({
 	return (
 		<div className={cx("flex min-w-0 flex-col gap-1.5 font-body", className)}>
 			{label ? (
-				<label htmlFor={id} className="text-sm font-medium text-secondary">
+				<label id={`${id}-label`} htmlFor={id} className="text-sm font-medium text-secondary">
 					{label}
 					{required ? (
 						<span
