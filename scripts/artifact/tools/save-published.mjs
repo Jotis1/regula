@@ -1,6 +1,7 @@
-// Extrae del transcript de una sesión de Claude Code (y de sus tool-results) las lecturas completas de
-// ficheros del artefacto "Jotis.me" hechas con read_file, las verifica con el sha256 del último list_files
-// y las escribe en reference/. Uso: node extract-files.mjs <transcript.jsonl> <tool-results> <reference> [--missing] [--slug=<artefacto>]
+// Guarda ficheros del artefacto "Jotis.me" tal cual se publicaron, para el paso 3 de la publicación (README.md):
+// los saca del transcript de la sesión de Claude Code (y de sus tool-results), de las lecturas completas hechas con
+// read_file, y los verifica con el sha256 del último list_files antes de escribirlos.
+// Uso: node scripts/artifact/tools/save-published.mjs <transcript.jsonl> <tool-results> <carpeta> [--missing] [--slug=<artefacto>]
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";

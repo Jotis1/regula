@@ -11,7 +11,7 @@ Hoy cada componente existe dos veces: en el `bundle.js` del artefacto "Jotis.me"
 - El artefacto "Jotis.me" se genera desde el repo: bundle de `@jotis-me/react` como script clásico, hoja compilada, tipos, fichas, vistas previas, tokens, fuentes y assets. Queda en solo lectura (`"editing": "code"`) para que nadie lo edite a mano.
 - La paridad visual compara cada ejemplo de la web con capturas aprobadas que viven en el repo. Las 74 actuales (sacadas de la guía) se conservan tal cual y su carpeta pasa de `e2e/visual/reference/` a `e2e/visual/approved/`. Las de los componentes nuevos, o las de los que cambian de aspecto a propósito, se capturan del ejemplo de la web y se aprueban revisando la PNG en el diff del PR.
 - El catálogo de componentes deja de estar fijado en 74: es lo que exporta `@jotis-me/react`, y un test comprueba que coincide con las páginas de la web y con el artefacto generado.
-- **BREAKING** (solo interno): se retiran `scripts/import-artifact/`, `apps/docs/scripts/split-guide.ts`, `packages/icons/scripts/extract.ts`, `packages/tokens/scripts/translate-usage.ts` (con la comprobación de traducción de `usage.test.ts`) y el servidor de vistas previas de la guía de los tests visuales. No cambia ninguna API publicada.
+- **BREAKING** (solo interno): se retiran `scripts/import-artifact/` (su `extract-files.mjs` pasa a `scripts/artifact/tools/save-published.mjs`, para guardar el índice publicado al sincronizar), `apps/docs/scripts/split-guide.ts`, `packages/icons/scripts/extract.ts`, `packages/tokens/scripts/translate-usage.ts` (con la comprobación de traducción de `usage.test.ts`) y el servidor de vistas previas de la guía de los tests visuales. No cambia ninguna API publicada.
 
 ## Capabilities
 

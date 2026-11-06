@@ -70,6 +70,6 @@ test("las cinco reglas llevan el texto de la guía y las apps su icono", async (
 	await expect(rules.nth(1)).toContainText("Cada vista y cada modal tiene como mucho un Button primary.");
 	await expect(rules.nth(3)).toContainText("Un estado siempre lleva palabra o icono además del color.");
 	const apps = page.locator("section[aria-labelledby='suite-t'] li");
-	await expect(apps).toHaveText([/Ornatus/, /Vinculum/, /Pecunia/, /Emptor/, /Regula/]);
+	await expect(apps).toHaveText([/Ornatus/, /Vinculum/, /Pecunia/, /Emptor/, /Regula/, /Scaena/]);
 	await expect(apps.nth(4).locator("svg:visible path").first()).toHaveAttribute("fill", "#4b004f");
 });
