@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import { Radio as AriaRadio, RadioGroup as AriaRadioGroup } from "react-aria-components";
 import { type ChoiceSize, ChoiceText, choiceBox, choiceLabel, radioDot } from "../internal/choice.js";
 import { cx } from "../internal/cx.js";
-import { Icon } from "./Icon.js";
 
 export interface RadioGroupOption {
 	value: string;
@@ -101,7 +100,21 @@ export function RadioGroup({
 								<span className={cx(radioDot("sm"), "hidden group-data-selected:block")} />
 							) : (
 								<span className="hidden group-data-selected:inline-flex">
-									<Icon name="check" size={12} strokeWidth={1.67} />
+									{/* El check del icono `check`, en línea: importar Icon traería el set entero a RadioGroup. */}
+									<svg
+										width={12}
+										height={12}
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth={1.67}
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										aria-hidden="true"
+										focusable="false"
+									>
+										<path d="M20 6L9 17L4 12" />
+									</svg>
 								</span>
 							)}
 						</span>

@@ -42,8 +42,10 @@
 	"MessageInput": 27648,
 	"MetricCard": 27648,
 	"Modal": 50688,
+	"MultiSelect": 93184,
 	"Notification": 27648,
 	"NowPlaying": 26624,
+	"NumberInput": 57344,
 	"PageHeader": 26624,
 	"Pagination": 28160,
 	"PieChart": 11264,
@@ -67,10 +69,12 @@
 	"Table": 27648,
 	"Tabs": 46592,
 	"Tag": 26624,
+	"TagInput": 28160,
 	"TextEditor": 27648,
 	"Textarea": 11264,
 	"Toggle": 27136,
 	"Tooltip": 27648,
 	"TreeView": 78336,
+	"VerificationCodeInput": 13824,
 	"VideoPlayer": 26112
 }
