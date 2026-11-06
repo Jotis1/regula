@@ -49,6 +49,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	MessageInput: 120,
 	NumberInput: 214,
 	TagInput: 246,
+	VerificationCodeInput: 302,
 	MetricCard: 190,
 	Modal: 380,
 	Notification: 170,

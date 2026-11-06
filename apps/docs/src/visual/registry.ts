@@ -41,6 +41,7 @@ import {
 	TextareaExample,
 	TextEditorExample,
 	ToggleExample,
+	VerificationCodeInputExample,
 } from "./examples/forms";
 import {
 	CardHeaderExample,
@@ -120,6 +121,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	MessageInput: MessageInputExample,
 	NumberInput: NumberInputExample,
 	TagInput: TagInputExample,
+	VerificationCodeInput: VerificationCodeInputExample,
 	Tabs: TabsExample,
 	Breadcrumbs: BreadcrumbsExample,
 	Pagination: PaginationExample,

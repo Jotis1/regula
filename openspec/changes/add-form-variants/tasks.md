@@ -42,12 +42,12 @@ Cada grupo trae sus propios tests y su documentación. La referencia visual de c
 
 ## 5. VerificationCodeInput
 
-- [ ] 5.1 Crear `VerificationCodeInput` (D5) con `digits` 4 o 6, `size` `sm`/`md`/`lg`, `value`/`onChange`, `onComplete`, el separador decorativo con 6 dígitos y `autoComplete="one-time-code"` en la primera casilla, mirando el nodo `1106:66757`. Exportarlo. Tests:
+- [x] 5.1 Crear `VerificationCodeInput` (D5) con `digits` 4 o 6, `size` `sm`/`md`/`lg`, `value`/`onChange`, `onComplete`, el separador decorativo con 6 dígitos y `autoComplete="one-time-code"` en la primera casilla, mirando el nodo `1106:66757`. Exportarlo. Tests:
   - escribir avanza el foco y Retroceso borra y retrocede;
   - pegar `482913` rellena todo y llama a `onComplete` una sola vez;
   - las letras no entran;
   - cada casilla se llama «Dígito n de 6» dentro de un grupo con la etiqueta.
-- [ ] 5.2 Añadir un e2e de teclado y pegado en Chromium, Firefox y WebKit (`apps/docs/e2e/components.spec.ts`) sobre el ejemplo de la web. Página `verification-code-input.md`, catálogo, ejemplo (4 y 6 dígitos, relleno y con error) y sus dos PNG aprobadas. Comprobar que el e2e y el visual pasan.
+- [x] 5.2 Añadir un e2e de teclado y pegado en Chromium, Firefox y WebKit (`apps/docs/e2e/cross-browser/`, con proyectos de Playwright para Firefox y WebKit que solo corren esa carpeta, y el job «Navegador» del CI instalando los dos) sobre el ejemplo de la web. Página `verification-code-input.md`, catálogo, ejemplo (4 y 6 dígitos, relleno y con error) y sus dos PNG aprobadas. Comprobar que el e2e y el visual pasan.
 
 ## 6. MultiSelect
 

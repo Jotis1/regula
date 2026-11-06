@@ -16,6 +16,7 @@ import {
 	Textarea,
 	TextEditor,
 	Toggle,
+	VerificationCodeInput,
 } from "@jotis-me/react";
 import { row, stack } from "./actions";
 
@@ -236,6 +237,25 @@ export function TagInputExample() {
 			<TagInput label="Temas" placement="outside" defaultValue={["finanzas", "hogar", "viajes"]} />
 			<TagInput label="Palabras clave" error="Pon al menos una." />
 			<TagInput label="Archivadas" disabled defaultValue={["2025"]} />
+		</div>
+	);
+}
+
+export function VerificationCodeInputExample() {
+	return (
+		<div className="flex flex-col gap-6">
+			<VerificationCodeInput
+				label="Código de verificación"
+				defaultValue="482"
+				hint="Te lo hemos enviado a tu@jotis.me."
+			/>
+			<VerificationCodeInput
+				label="PIN"
+				digits={4}
+				size="sm"
+				defaultValue="7351"
+				error="Ese PIN no es."
+			/>
 		</div>
 	);
 }

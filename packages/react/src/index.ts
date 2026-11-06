@@ -147,6 +147,10 @@ export { TextEditor, type TextEditorLabels, type TextEditorProps } from "./compo
 export { Toggle, type ToggleProps } from "./components/Toggle.js";
 export { Tooltip, type TooltipProps } from "./components/Tooltip.js";
 export { type TreeItem, TreeView, type TreeViewProps } from "./components/TreeView.js";
+export {
+	VerificationCodeInput,
+	type VerificationCodeInputProps,
+} from "./components/VerificationCodeInput.js";
 export { VideoPlayer, type VideoPlayerLabels, type VideoPlayerProps } from "./components/VideoPlayer.js";
 export type { ChartSeries } from "./internal/chart.js";
 export type { ChoiceSize } from "./internal/choice.js";

@@ -2,7 +2,14 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ColorPicker, MessageInput, NumberInput, TagInput, TextEditor } from "../src/index.js";
+import {
+	ColorPicker,
+	MessageInput,
+	NumberInput,
+	TagInput,
+	TextEditor,
+	VerificationCodeInput,
+} from "../src/index.js";
 import { danglingAriaRefsOnServer, expectAccessibleInThemes } from "./helpers.js";
 
 const SWATCHES = ["#4f39f6", "#00a63e", "#e7000b"];
@@ -438,6 +445,138 @@ describe("TagInput", () => {
 				/>
 				<TagInput label="Fuera" placement="outside" defaultValue={["diseño"]} />
 				<TagInput label="Error" error="Pon al menos una." />
+			</div>,
+		);
+	});
+});
+
+describe("VerificationCodeInput", () => {
+	const cells = () => screen.getAllByRole("textbox") as HTMLInputElement[];
+	const values = () =>
+		cells()
+			.map((c) => c.value)
+			.join("");
+
+	it("escribir avanza el foco; Retroceso borra y retrocede", async () => {
+		render(<VerificationCodeInput label="Código de verificación" />);
+		await userEvent.click(cells()[0] as HTMLInputElement);
+		await userEvent.keyboard("481");
+		expect(values()).toBe("481");
+		expect(document.activeElement).toBe(cells()[3]);
+		await userEvent.keyboard("{Backspace}");
+		expect(values()).toBe("48");
+		expect(document.activeElement).toBe(cells()[2]);
+		await userEvent.keyboard("{Backspace}");
+		expect(values()).toBe("4");
+		expect(document.activeElement).toBe(cells()[1]);
+	});
+
+	it("pegar el código entero rellena todo, enfoca la última y avisa una sola vez", async () => {
+		const onComplete = vi.fn();
+		const onChange = vi.fn();
+		render(<VerificationCodeInput label="Código" onComplete={onComplete} onChange={onChange} />);
+		await userEvent.click(cells()[0] as HTMLInputElement);
+		await userEvent.paste("482913");
+		expect(values()).toBe("482913");
+		expect(document.activeElement).toBe(cells()[5]);
+		expect(onComplete).toHaveBeenCalledTimes(1);
+		expect(onComplete).toHaveBeenCalledWith("482913");
+		expect(onChange).toHaveBeenLastCalledWith("482913");
+	});
+
+	it("el autocompletado (valor entero en la primera casilla) también reparte", () => {
+		const onComplete = vi.fn();
+		render(<VerificationCodeInput label="Código" digits={4} onComplete={onComplete} />);
+		fireEvent.change(cells()[0] as HTMLInputElement, { target: { value: "7351" } });
+		expect(values()).toBe("7351");
+		expect(onComplete).toHaveBeenCalledWith("7351");
+	});
+
+	it("las letras no entran y escribir sobre una cifra la sustituye", async () => {
+		render(<VerificationCodeInput label="Código" digits={4} defaultValue="12" />);
+		await userEvent.click(cells()[0] as HTMLInputElement);
+		await userEvent.keyboard("a");
+		expect(values()).toBe("12");
+		await userEvent.keyboard("9");
+		expect(values()).toBe("92");
+		expect(document.activeElement).toBe(cells()[1]);
+	});
+
+	it("flechas para moverse entre casillas", async () => {
+		render(<VerificationCodeInput label="Código" digits={4} />);
+		await userEvent.click(cells()[1] as HTMLInputElement);
+		await userEvent.keyboard("{ArrowRight}");
+		expect(document.activeElement).toBe(cells()[2]);
+		await userEvent.keyboard("{ArrowLeft}{ArrowLeft}");
+		expect(document.activeElement).toBe(cells()[0]);
+	});
+
+	it("casillas con nombre dentro de un grupo con la etiqueta, solo cifras y one-time-code en la primera", () => {
+		render(<VerificationCodeInput label="Código de verificación" />);
+		const group = screen.getByRole("group", { name: "Código de verificación" });
+		const all = cells();
+		expect(all).toHaveLength(6);
+		all.forEach((c, i) => {
+			expect(group.contains(c)).toBe(true);
+			expect(c.getAttribute("aria-label")).toBe(`Dígito ${i + 1} de 6`);
+			expect(c.getAttribute("inputmode")).toBe("numeric");
+		});
+		expect(all[0]?.getAttribute("autocomplete")).toBe("one-time-code");
+		expect(all[1]?.getAttribute("autocomplete")).toBe("off");
+		// La etiqueta visible enfoca la primera casilla.
+		expect(screen.getByText("Código de verificación").closest("label")?.getAttribute("for")).toBe(
+			all[0]?.id,
+		);
+	});
+
+	it("4 dígitos sin guion; 6 con el guion decorativo entre el tercero y el cuarto", () => {
+		const { container, rerender } = render(<VerificationCodeInput label="Código" digits={4} />);
+		expect(container.querySelector('[aria-hidden="true"]')).toBeNull();
+		rerender(<VerificationCodeInput label="Código" digits={6} />);
+		expect(container.querySelector('[aria-hidden="true"]')?.textContent).toBe("-");
+	});
+
+	it("tamaños, error enlazado al grupo y nombre sustituible", () => {
+		render(
+			<VerificationCodeInput
+				label="Código"
+				size="lg"
+				error="Ese código ha caducado."
+				digitLabel={(n, t) => `Cifra ${n}/${t}`}
+			/>,
+		);
+		const first = cells()[0] as HTMLInputElement;
+		expect(first.className).toContain("size-24");
+		expect(first.getAttribute("aria-invalid")).toBe("true");
+		expect(first.getAttribute("aria-label")).toBe("Cifra 1/6");
+		const group = screen.getByRole("group");
+		expect(document.getElementById(group.getAttribute("aria-describedby") ?? "")?.textContent).toBe(
+			"Ese código ha caducado.",
+		);
+	});
+
+	it("se renderiza en servidor sin referencias rotas", () => {
+		const html = renderToString(
+			<VerificationCodeInput label="Código" hint="Te lo hemos enviado por correo." />,
+		);
+		expect(danglingAriaRefsOnServer(html)).toEqual([]);
+		expect(html).toContain("Dígito 6 de 6");
+	});
+
+	it("sin infracciones de axe en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<div>
+				<VerificationCodeInput
+					label="Código"
+					defaultValue="482"
+					hint="Te lo hemos enviado por correo."
+				/>
+				<VerificationCodeInput
+					label="Código corto"
+					digits={4}
+					size="sm"
+					error="Ese código ha caducado."
+				/>
 			</div>,
 		);
 	});

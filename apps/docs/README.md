@@ -2,6 +2,8 @@
 
 La web de documentación del sistema (Astro). Se construye con `bun run build` y se prueba con `bunx playwright test`, que levanta `astro preview` en el puerto 4321.
 
+Todo corre en Chromium. Lo que depende de cómo cada navegador entrega el teclado, el pegado o el autocompletado va en `e2e/cross-browser/` y corre también en Firefox y WebKit (proyectos de `playwright.config.ts`). En local hay que instalarlos una vez: `bunx playwright install firefox webkit`. Para correr solo Chromium: `--project=chromium`.
+
 ## Paridad visual y capturas aprobadas
 
 Cada componente del catálogo tiene un ejemplo en `src/visual/registry.ts` (`visualExamples`), con el alto de su tarjeta (`CARD_HEIGHTS`) y, si se pinta siempre en oscuro, su entrada en `DARK_PREVIEWS`. La web lo sirve en `/visual/<componente>/`, y `e2e/visual.spec.ts` lo compara en claro y en oscuro con su **captura aprobada**: `e2e/visual/approved/<Nombre>-<light|dark>.png`. Las 74 originales se capturaron de la guía; desde entonces, la referencia es la captura aprobada, no la guía.

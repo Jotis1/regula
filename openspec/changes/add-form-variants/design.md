@@ -117,7 +117,7 @@ Todos se pueden sustituir por props. Para la búsqueda sin resultados de `MultiS
 - **[El Figma usa colores de Tailwind v3]** → Cada color se traduce al token semántico del campo equivalente. El test de «sin colores crudos» lo vigila.
 - **[`Autocomplete` y `ListBox` múltiple en un `Popover` tienen casos raros de foco en móvil]** → El e2e de teclado y el de móvil a 390px cubren abrir, elegir, quitar y cerrar. Si falla en Safari iOS, se documenta en la ficha como «Límites», como hacen otras fichas.
 - **[Recapturar `Input`, `RadioGroup` y `Toggle` mueve tres PNG de los 74 originales]** → Es el flujo previsto (D4 de `adopt-repo-as-source`). La revisión compara la PNG anterior con la nueva en el diff, y la parte antigua del ejemplo debe verse igual.
-- **[Pegar en `VerificationCodeInput` en navegadores sin `clipboardData`]** → Se reparte desde el evento `input` de la casilla, que recibe el texto entero aunque `maxLength` sea 1 en el pegado de algunos navegadores. Se prueba en Chromium, Firefox y WebKit.
+- **[Pegar en `VerificationCodeInput` en navegadores sin `clipboardData`]** → Las casillas no llevan `maxLength`. Si el evento `paste` llega sin datos legibles, se deja pegar al navegador y se reparte desde el evento `input` de la casilla, que trae el texto entero; el autocompletado entra por el mismo camino. Se prueba con pegado real (Ctrl+V) en Chromium, Firefox y WebKit: `e2e/cross-browser/` corre en los tres (proyectos de Playwright), el resto de e2e solo en Chromium, y el job «Navegador» del CI instala los tres (decisión del usuario).
 
 ## Migration Plan
 
