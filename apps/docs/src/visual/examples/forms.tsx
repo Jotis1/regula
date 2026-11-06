@@ -37,6 +37,18 @@ export function InputExample() {
 			<Input label="Usuario" disabled defaultValue="jotis" />
 			<Input label="Buscar" size="sm" icon="search-lg" placeholder="sm" />
 			<Input label="Nombre" size="lg" placeholder="lg" />
+			<Input label="Web" prefix="https://" placeholder="jotis.me" />
+			<Input
+				label="Teléfono"
+				placeholder="612 345 678"
+				leadingSelect={{ label: "Prefijo", options: ["+34", "+351", "+33"], defaultValue: "+34" }}
+			/>
+			<Input
+				label="Importe"
+				placeholder="1.000,00"
+				trailingSelect={{ label: "Divisa", options: ["EUR", "USD", "GBP"], defaultValue: "EUR" }}
+			/>
+			<Input label="Contraseña" type="password" defaultValue="secreta1" hint="Al menos 8 caracteres." />
 		</div>
 	);
 }

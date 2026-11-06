@@ -91,7 +91,7 @@ export {
 export { FilterBar, type FilterBarLabels, type FilterBarProps } from "./components/FilterBar.js";
 export { Icon, type IconName, type IconProps } from "./components/Icon.js";
 export { InlineCTA, type InlineCTAProps } from "./components/InlineCTA.js";
-export { Input, type InputProps } from "./components/Input.js";
+export { Input, type InputAddonSelect, type InputProps } from "./components/Input.js";
 export { LineChart, type LineChartProps } from "./components/LineChart.js";
 export { Message, type MessageProps } from "./components/Message.js";
 export { MessageInput, type MessageInputProps } from "./components/MessageInput.js";
