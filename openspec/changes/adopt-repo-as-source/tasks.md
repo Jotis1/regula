@@ -43,7 +43,7 @@
 ## 6. Primera sincronización
 
 - [x] 6.1 Abrir los diseños que usan el artefacto (Scaena, Ornatus y la web de Regula) con el bundle generado en local y anotar las diferencias frente a la copia a mano, incluidas las utilidades de Tailwind que usan y que no están en la hoja generada (decidir si se añade un safelist o se cambia el diseño); verificar con una lista revisada y, si hay alguna que el paquete hace mal, una tarea en el cambio que la corrija antes de publicar
-- [ ] 6.2 Publicar en el artefacto "Jotis.me" la carpeta generada siguiendo `scripts/artifact/README.md`; verificar que `list_files` coincide con `manifest.json`, que la página aparece en solo lectura y que `lastChange` apunta al commit
+- [x] 6.2 Publicar en el artefacto "Jotis.me" la carpeta generada siguiendo `scripts/artifact/README.md`; verificar que `list_files` coincide con `manifest.json`, que la página aparece en solo lectura y que `lastChange` apunta al commit
 - [ ] 6.3 Abrir cinco vistas previas del artefacto publicado (Button, Input, Modal, AppIcon con Scaena y StreamAlert) en claro y en oscuro; verificar a ojo contra la web y dejar las capturas en el PR
 
 ## Workflow follow-up
