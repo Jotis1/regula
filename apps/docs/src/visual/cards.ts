@@ -80,7 +80,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	Tag: 72,
 	TextEditor: 300,
 	Textarea: 200,
-	Toggle: 140,
+	Toggle: 188,
 	Tooltip: 170,
 	TreeView: 330,
 	VideoPlayer: 400,

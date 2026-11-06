@@ -116,7 +116,7 @@ Un `Input` con `type="password"` SHALL incluir un botón para mostrar u ocultar 
 - **THEN** se ve igual que su captura aprobada anterior a este cambio
 
 ### Requirement: Interruptor fino
-`Toggle` SHALL admitir la variante `slim` del Figma: una pista más fina que el tirador, en los dos tamaños, con los mismos estados, teclado y semántica de `role="switch"` del interruptor normal.
+`Toggle` SHALL admitir la variante `slim` del Figma: una pista más pequeña y sin relleno, con el tirador a su misma altura y con borde, en los dos tamaños, con los mismos estados, teclado y semántica de `role="switch"` del interruptor normal.
 
 #### Scenario: Interruptor fino con teclado
 - **WHEN** el foco está en un `Toggle` `slim` apagado y el usuario pulsa Espacio

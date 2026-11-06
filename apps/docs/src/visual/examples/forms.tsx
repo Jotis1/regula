@@ -166,6 +166,12 @@ export function ToggleExample() {
 			<Toggle label="Notificaciones" hint="Recibe un aviso al vencer un pago." defaultChecked />
 			<Toggle label="Modo compacto" size="md" />
 			<Toggle label="Deshabilitado" disabled />
+			<div className="flex flex-wrap items-center gap-6">
+				<Toggle variant="slim" label="Fino" />
+				<Toggle variant="slim" label="Fino" defaultChecked />
+				<Toggle variant="slim" size="md" label="Fino md" />
+				<Toggle variant="slim" size="md" label="Fino md" defaultChecked />
+			</div>
 		</div>
 	);
 }

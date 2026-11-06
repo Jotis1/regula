@@ -69,8 +69,8 @@ Cada grupo trae sus propios tests y su documentación. La referencia visual de c
 
 ## 8. Toggle slim
 
-- [ ] 8.1 Añadir `variant` (`"default"`/`"slim"`) a `Toggle` (D8) mirando los nodos `122:3294` y `1102:4208`. Tests en `test/choices.test.tsx`: Espacio lo enciende, el `role` sigue siendo `switch` y sin `variant` el HTML es el de antes.
-- [ ] 8.2 Actualizar la ficha `toggle.md` y añadir al ejemplo la variante fina en los dos tamaños, apagada y encendida. Recapturar sus dos PNG y revisar que la parte antigua se ve igual.
+- [x] 8.1 Añadir `variant` (`"default"`/`"slim"`) a `Toggle` (D8) mirando los nodos `122:3294` y `1102:4208`. Tests en `test/choices.test.tsx`: Espacio lo enciende, el `role` sigue siendo `switch` y sin `variant` el HTML es el de antes.
+- [x] 8.2 Actualizar la ficha `toggle.md` y añadir al ejemplo la variante fina en los dos tamaños, apagada y encendida. Recapturar sus dos PNG y revisar que la parte antigua se ve igual.
 
 ## 9. Comprobaciones de conjunto y versión
 

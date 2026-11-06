@@ -292,3 +292,54 @@ describe("RadioGroup en tarjetas", () => {
 		);
 	});
 });
+
+describe("Toggle slim", () => {
+	const track = (sw: HTMLElement) =>
+		sw.closest("label")?.querySelector('[aria-hidden="true"]') as HTMLElement;
+
+	it("Espacio lo enciende, sigue siendo role=switch y tiene el foco visible", async () => {
+		const onChange = vi.fn();
+		render(<Toggle variant="slim" label="Avisos" onChange={onChange} />);
+		const sw = screen.getByRole("switch", { name: "Avisos" }) as HTMLInputElement;
+		await userEvent.tab();
+		expect(document.activeElement).toBe(sw);
+		await userEvent.keyboard(" ");
+		expect(onChange).toHaveBeenLastCalledWith(true);
+		expect(sw.checked).toBe(true);
+		expect(track(sw).className).toContain("group-data-selected:bg-brand-solid");
+		expect(track(sw).className).toContain(
+			"group-data-selected:group-data-focus-visible:shadow-focus-ring",
+		);
+	});
+
+	it.each([
+		["sm", "h-4 w-8", "size-4"],
+		["md", "h-5 w-10", "size-5"],
+	] as const)(
+		"tamaño %s: pista sin relleno y tirador a su altura con borde",
+		(size, trackSize, handleSize) => {
+			render(<Toggle variant="slim" size={size} label="Avisos" />);
+			const t = track(screen.getByRole("switch"));
+			expect(t.className).toContain(trackSize);
+			expect(t.className).not.toContain("p-0.5");
+			expect(t.className).toContain("var(--border-secondary)");
+			const handle = t.firstElementChild as HTMLElement;
+			expect(handle.className).toContain(handleSize);
+			expect(handle.className).toContain("var(--toggle-border)");
+		},
+	);
+
+	it("sin variant, la pista de siempre", () => {
+		render(<Toggle label="Avisos" />);
+		expect(track(screen.getByRole("switch")).className).toContain("p-0.5");
+	});
+
+	it("sin infracciones de axe en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<div>
+				<Toggle variant="slim" label="Apagado" />
+				<Toggle variant="slim" size="md" label="Encendido" defaultChecked />
+			</div>,
+		);
+	});
+});

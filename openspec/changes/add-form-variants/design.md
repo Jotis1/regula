@@ -98,7 +98,7 @@ Es una prop nueva. `"default"` (por defecto) es el aspecto de hoy, y la captura 
 - **Semántica:** el teclado y los roles son los del `RadioGroup` de React Aria, igual que hoy.
 
 ### D8. `Toggle` con `variant="slim"`
-`"default"` es lo de hoy. `"slim"` es la pista fina del Figma (`_Toggle base`, Type=Slim): pista de 8px de alto en `sm` y 10px en `md`, con el tirador de su tamaño actual por encima y su sombra. Se cambian solo las clases de la pista; el `Switch` y su semántica no cambian.
+`"default"` es lo de hoy, y su HTML no cambia. `"slim"` es la variante fina del Figma (`_Toggle base`, Type=Slim, nodo `122:3294`): pista de 32×16 en `sm` y 40×20 en `md`, sin relleno, con borde de 1px `border-secondary` mientras está apagada; el tirador mide lo mismo que la pista de alto (16 o 20px), lleva sombra y un borde de 1px `toggle-border`, que encendido pasa a `toggle-slim-border_pressed`. Se cambian solo las clases de la pista y del tirador; el `Switch` y su semántica no cambian. (El primer borrador suponía una pista de 8–10px con el tirador sobresaliendo; el Figma no es así y se corrigió al implementar.)
 
 ### D9. Textos nuevos en `defaultStrings`
 
