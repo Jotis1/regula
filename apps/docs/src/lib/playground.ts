@@ -173,6 +173,13 @@ export const STARTS: Record<string, Start> = {
 	VerificationCodeInput: { props: { label: "Código de verificación" } },
 	Textarea: { props: { label: "Descripción", hint: "Máximo 300 caracteres." } },
 	Select: { props: { label: "Categoría", placeholder: "Elige una", options: ["Casa", "Coche", "Ocio"] } },
+	MultiSelect: {
+		props: {
+			label: "Equipos",
+			placeholder: "Elige equipos",
+			options: ["Ingeniería", "Diseño", "Producto", "Márketing"],
+		},
+	},
 	Checkbox: { props: { label: "Recordarme", hint: "Mantén la sesión 30 días." } },
 	Radio: { props: { name: "plan", value: "mensual", label: "Mensual" } },
 	RadioGroup: {

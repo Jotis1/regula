@@ -51,13 +51,13 @@ Cada grupo trae sus propios tests y su documentación. La referencia visual de c
 
 ## 6. MultiSelect
 
-- [ ] 6.1 Crear `MultiSelect` con `Autocomplete`, `ListBox` múltiple, `Popover` y `TagGroup` (D6), con `options: SelectOption[]`, `value`/`defaultValue`/`onChange` de tipo `string[]`, `emptyLabel` y `size`, mirando los nodos `12206:577041` y `12206:575660`. Exportarlo. Tests:
-  - buscar `ma` y elegir con flechas y Enter deja la etiqueta, la lista abierta y el buscador vacío;
+- [x] 6.1 Crear `MultiSelect` como el Figma (D6): campo con resumen, `Popover` con buscador (`Autocomplete` + `SearchField`), `ListBox` múltiple con casillas y pie con «Restablecer» y «Elegir todo». Props: `options` (`string` o `{ value, label, supporting? }`), `value`/`defaultValue`/`onChange` de tipo `string[]`, `summary`, `summarySupporting`, `placeholder`, los textos y `size`. Mirar los nodos `12206:577041` y `12206:575660` y exportarlo. Tests:
+  - abrir con Enter, buscar `mar` y elegir con flechas y Enter marca la casilla, deja la lista abierta con la búsqueda y el campo dice «1 elegido»;
   - la búsqueda no distingue tildes;
-  - sin resultados se ve «Sin resultados» o el `emptyLabel`;
-  - Escape cierra sin perder la selección y el foco se queda en el campo;
-  - la X de una etiqueta la quita.
-- [ ] 6.2 Añadir un e2e de teclado y otro a 390px en `apps/docs/e2e/` sobre el ejemplo. Página `multi-select.md` con sus «Límites» si el e2e de móvil deja alguno, catálogo, ejemplo con la lista abierta dentro de su caja y sus dos PNG aprobadas. Comprobar que el e2e, el visual y `e2e/a11y.spec.ts` pasan.
+  - sin resultados se ven «Sin resultados» y «Borrar búsqueda», que vacía el buscador, con textos sustituibles;
+  - «Elegir todo» y «Restablecer»;
+  - Escape cierra sin perder la selección y el foco vuelve al campo.
+- [x] 6.2 Añadir un e2e de teclado y otro a 390px en `apps/docs/e2e/` sobre el ejemplo. Página `multi-select.md` con sus «Límites» si el e2e de móvil deja alguno, catálogo, ejemplo con la lista abierta dentro de su caja y sus dos PNG aprobadas. Comprobar que el e2e, el visual y `e2e/a11y.spec.ts` pasan.
 
 ## 7. RadioGroup en tarjetas
 

@@ -7,6 +7,7 @@ import {
 	FileUpload,
 	Input,
 	MessageInput,
+	MultiSelect,
 	NumberInput,
 	Radio,
 	RadioGroup,
@@ -255,6 +256,54 @@ export function VerificationCodeInputExample() {
 				size="sm"
 				defaultValue="7351"
 				error="Ese PIN no es."
+			/>
+		</div>
+	);
+}
+
+const TEAMS = [
+	{ value: "ing", label: "Ingeniería", supporting: "12 usuarios" },
+	{ value: "dis", label: "Diseño", supporting: "10 usuarios" },
+	{ value: "pro", label: "Producto", supporting: "6 usuarios" },
+	{ value: "mkt", label: "Márketing", supporting: "8 usuarios" },
+	{ value: "ven", label: "Ventas" },
+	{ value: "cli", label: "Atención al cliente", supporting: "4 usuarios" },
+	{ value: "ope", label: "Operaciones", supporting: "2 usuarios" },
+];
+// Suma los usuarios de los equipos elegidos para el apoyo del resumen, como el Figma («16 usuarios»).
+const users = (selected: { supporting?: unknown }[]) =>
+	`${selected.reduce((n, o) => n + (Number.parseInt(String(o.supporting ?? "0"), 10) || 0), 0)} usuarios`;
+
+export function MultiSelectExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+			<div className="flex flex-col gap-6">
+				<MultiSelect
+					label="Equipos"
+					required
+					options={TEAMS}
+					placeholder="Elige equipos"
+					hint="Quién verá el informe."
+				/>
+				<MultiSelect
+					label="Equipos"
+					options={TEAMS}
+					defaultValue={["ing", "dis"]}
+					summarySupporting={users}
+				/>
+				<MultiSelect
+					label="Equipos"
+					options={TEAMS}
+					placeholder="Elige equipos"
+					error="Elige al menos uno."
+				/>
+			</div>
+			<MultiSelect
+				label="Equipos"
+				options={TEAMS}
+				defaultValue={["ing", "dis"]}
+				summarySupporting={users}
+				defaultOpen
 			/>
 		</div>
 	);

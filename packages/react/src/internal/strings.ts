@@ -107,6 +107,10 @@ export const defaultStrings = {
 	increment: "Sumar",
 	digitOf: (n: number, total: number) => `Dígito ${n} de ${total}`,
 	addTag: "Añadir etiqueta",
+	selectedCount: (n: number) => (n === 1 ? "1 elegido" : `${n} elegidos`),
+	reset: "Restablecer",
+	selectAll: "Elegir todo",
+	clearSearch: "Borrar búsqueda",
 } as const;
 
 export type Strings = typeof defaultStrings;

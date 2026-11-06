@@ -15,7 +15,7 @@ Con el repo ya como fuente de verdad (`adopt-repo-as-source`), toca añadir lo q
 - **`NumberInput`** (nuevo): campo numérico con botones para sumar y restar, en horizontal o en vertical (Figma «Number counter»).
 - **`TagInput`** (nuevo): campo que convierte lo escrito en etiquetas, con las etiquetas dentro o debajo del campo (Figma «Tags inner/outer»).
 - **`VerificationCodeInput`** (nuevo): código de 4 o 6 dígitos, una casilla por dígito, en tres tamaños (Figma «Verification code input field»).
-- **`MultiSelect`** (nuevo): selector con búsqueda que elige varias opciones y las muestra como etiquetas (Figma «Multi-select»). `Select` sigue siendo el nativo para listas cortas.
+- **`MultiSelect`** (nuevo): selector que elige varias opciones de una lista con casillas y buscador, y resume lo elegido en el campo («2 elegidos»), como el Figma «Multi-select». `Select` sigue siendo el nativo para listas cortas.
 - **`RadioGroup`** gana el aspecto de tarjeta: cada opción es una tarjeta con icono, avatar o logo de pago, en las variantes del Figma («Icon simple», «Icon card», «Avatar», «Payment icon»). El aspecto actual sigue siendo el de por defecto.
 - **`Toggle`** gana la variante `slim` del Figma.
 - Cada componente nuevo o cambiado lleva:

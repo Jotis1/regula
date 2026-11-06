@@ -86,19 +86,23 @@ Un `Input` con `type="password"` SHALL incluir un botón para mostrar u ocultar 
 - **THEN** cada casilla se anuncia como «Dígito 1 de 6» a «Dígito 6 de 6» dentro de un grupo con esa etiqueta, solo admite cifras y la primera pide el autocompletado de código de un solo uso
 
 ### Requirement: Selección múltiple con búsqueda
-`MultiSelect` SHALL dejar elegir varias opciones de una lista que se filtra al escribir. SHALL mostrar las opciones elegidas como etiquetas que se pueden quitar, manejarse entero con teclado y avisar en castellano cuando la búsqueda no encuentra nada.
+`MultiSelect` SHALL dejar elegir varias opciones de una lista con casillas y un buscador en su cabecera. El campo SHALL resumir lo elegido («2 elegidos»). La lista SHALL tener un pie para quitar todo o elegir todo, manejarse entero con teclado y avisar en castellano cuando la búsqueda no encuentra nada.
 
 #### Scenario: Elegir con teclado
-- **WHEN** el foco está en un `MultiSelect`, el usuario escribe `ma`, baja con la flecha a «Marta» y pulsa Enter
-- **THEN** «Marta» queda elegida y se ve como etiqueta en el campo, la lista sigue abierta con «Marta» marcada y el texto buscado se vacía
+- **WHEN** el foco está en un `MultiSelect` sin nada elegido, el usuario pulsa Enter, escribe `mar` en el buscador, baja con la flecha a «Marketing» y pulsa Enter
+- **THEN** «Marketing» queda elegida con su casilla marcada, la lista sigue abierta con el texto buscado y el campo dice «1 elegido»
 
 #### Scenario: Búsqueda sin resultados
-- **WHEN** el usuario escribe un texto que no coincide con ninguna opción
-- **THEN** la lista muestra un texto en castellano que dice que no hay resultados, y ese texto se puede sustituir por prop
+- **WHEN** el usuario escribe en el buscador un texto que no coincide con ninguna opción
+- **THEN** la lista muestra en castellano que no hay resultados y un botón «Borrar búsqueda» que vacía el buscador, con textos sustituibles por props
+
+#### Scenario: Restablecer y elegir todo
+- **WHEN** hay una opción elegida y el usuario pulsa «Elegir todo» y después «Restablecer» en el pie de la lista
+- **THEN** primero quedan elegidas todas las opciones y después ninguna, y el campo vuelve a mostrar su placeholder
 
 #### Scenario: Cerrar sin perder la selección
 - **WHEN** hay dos opciones elegidas y el usuario pulsa Escape
-- **THEN** la lista se cierra, las dos etiquetas siguen en el campo y el foco se queda en el campo
+- **THEN** la lista se cierra, el campo sigue diciendo «2 elegidos» y el foco vuelve al campo
 
 ### Requirement: Opciones en tarjetas
 `RadioGroup` SHALL admitir un aspecto de tarjeta, en el que cada opción es una tarjeta con borde que puede llevar un icono, un avatar o un logo de pago. La tarjeta elegida SHALL marcarse con borde `border-brand` y su indicador. El teclado y la semántica SHALL ser los mismos del grupo normal.

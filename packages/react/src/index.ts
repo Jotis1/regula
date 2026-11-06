@@ -97,6 +97,7 @@ export { Message, type MessageProps } from "./components/Message.js";
 export { MessageInput, type MessageInputProps } from "./components/MessageInput.js";
 export { MetricCard, type MetricCardProps } from "./components/MetricCard.js";
 export { Modal, type ModalProps } from "./components/Modal.js";
+export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from "./components/MultiSelect.js";
 export { Notification, type NotificationProps } from "./components/Notification.js";
 export { NowPlaying, type NowPlayingLabels, type NowPlayingProps } from "./components/NowPlaying.js";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput.js";

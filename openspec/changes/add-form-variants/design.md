@@ -75,13 +75,20 @@ React Aria no tiene un campo OTP. Cada dígito es un `<input inputMode="numeric"
 
 *Alternativa:* un solo `<input>` de seis caracteres pintado como casillas. Se descarta porque el foco visible por casilla y el borrado casilla a casilla, que es lo que dibuja el Figma, son más difíciles de clavar así, y porque el lector de pantalla no puede decir en qué dígito está.
 
-### D6. `MultiSelect` con `Autocomplete`, `ListBox` múltiple, `Popover` y `TagGroup`
-El campo muestra las elegidas como `Tag` con X y un buscador. Al enfocarlo o escribir, se abre un `Popover` con un `ListBox` de `selectionMode="multiple"` filtrado por `Autocomplete`, con `useFilter({ sensitivity: "base" })` para que «mar» encuentre «Mará». Las opciones elegidas llevan el check del Figma («_Multi-select menu item»).
-- **Lista:** elegir no la cierra, y Escape la cierra sin tocar la selección.
-- **Búsqueda:** el texto buscado se vacía al elegir. Sin resultados, se ve `defaultStrings.noResults`, sustituible por `emptyLabel`.
-- **Valor:** `string[]` (`value`/`defaultValue`/`onChange`). Las opciones son las mismas `SelectOption` que en `Select`.
+### D6. `MultiSelect` como el Figma: resumen en el campo, buscador y casillas en la lista
+Es la forma del «Multi-select» del Figma (nodo `12206:577041`). Decisión del usuario durante la implementación: el primer borrador ponía las elegidas como etiquetas en el campo, y el Figma no lo hace.
+- **Campo:** un botón con el marco de `Input`. Sin nada elegido, muestra su `placeholder`. Con algo elegido, muestra un resumen en `text-primary` medium: `summary(elegidas)`, que por defecto es «1 elegido» o «n elegidos». Detrás, opcional, un apoyo en `text-tertiary` (`summarySupporting(elegidas)`, como «16 usuarios»), y el chevron.
+- **Lista:** un `Popover` (`DialogTrigger`) con:
+  - **Cabecera:** un `SearchField` («Buscar», borde inferior `border-secondary`).
+  - **Opciones:** un `ListBox` de `selectionMode="multiple"` filtrado por `Autocomplete` con `useFilter({ sensitivity: "base" })`, para que «mar» encuentre «Márketing». Cada opción lleva la casilla del Figma («_Multi-select menu item»), su texto y su apoyo (`supporting`).
+  - **Pie:** «Restablecer», que quita todo, y «Elegir todo», ambos `Button` secundarios `sm`.
+- **Teclado:** Enter, Espacio o flecha abajo en el campo abren la lista con el foco en el buscador; las flechas recorren las opciones (foco virtual de `Autocomplete`); Enter marca o desmarca. Elegir no cierra la lista ni vacía el buscador, y Escape la cierra sin tocar la selección, con el foco de vuelta en el campo.
+- **Sin resultados:** `noResults` («Sin resultados»), `tryAnother` («Prueba con otra palabra.») y un botón «Borrar búsqueda» que vacía el buscador. Los tres son sustituibles por props.
+- **Valor:** `string[]` (`value`/`defaultValue`/`onChange`). Las opciones son `string` o `{ value, label, supporting? }`.
 
-*Alternativa:* `ComboBox`. Se descarta porque en 1.22.1 solo admite una opción. `Select` de React Aria con selección múltiple tampoco sirve: no tiene búsqueda.
+*Alternativas:*
+- Etiquetas con X en el campo y el buscador en el propio campo (primer borrador): se descarta porque no es lo que dibuja el Figma.
+- `ComboBox`: en 1.22.1 solo admite una opción. `Select` de React Aria con selección múltiple tampoco sirve, porque no tiene búsqueda.
 
 ### D7. `RadioGroup` con `appearance="card"`
 Es una prop nueva. `"default"` (por defecto) es el aspecto de hoy, y la captura aprobada no cambia.
@@ -103,6 +110,10 @@ Es una prop nueva. `"default"` (por defecto) es el aspecto de hoy, y la captura 
 | `increment` | «Sumar» |
 | `digitOf` | «Dígito {n} de {total}» |
 | `addTag` | «Añadir etiqueta» |
+| `selectedCount` | «1 elegido» / «{n} elegidos» |
+| `reset` | «Restablecer» |
+| `selectAll` | «Elegir todo» |
+| `clearSearch` | «Borrar búsqueda» |
 
 Todos se pueden sustituir por props. Para la búsqueda sin resultados de `MultiSelect` se reutiliza el `noResults` que ya existe («Sin resultados»), sin crear otro.
 

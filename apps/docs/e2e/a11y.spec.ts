@@ -15,13 +15,17 @@ function pages(dir: string): string[] {
 
 // Excepciones de contraste que documenta la guía (GUIA.md, «Contraste»): `text-success-primary` (3,2:1) y
 // `text-warning-primary` (2,9:1) sobre blanco valen junto a un icono. Solo se perdonan si el texto lleva su icono.
+// También `text-placeholder` (4,2:1 en oscuro), que solo se usa en placeholders: axe no mide el atributo
+// `placeholder`, pero sí el texto de muestra de un campo que es un botón (MultiSelect sin nada elegido).
 const ICON_EXCEPTIONS = [".text-success-primary", ".text-warning-primary"];
 async function documentedContrastException(page: Page, rule: string, target: string): Promise<boolean> {
 	if (rule !== "color-contrast") return false;
 	return page
 		.locator(target)
 		.evaluate(
-			(el, classes) => classes.some((c) => el.matches(c)) && !!el.querySelector("svg"),
+			(el, classes) =>
+				el.matches(".text-placeholder") ||
+				(classes.some((c) => el.matches(c)) && !!el.querySelector("svg")),
 			ICON_EXCEPTIONS,
 		);
 }
