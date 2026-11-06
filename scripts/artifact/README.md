@@ -1,6 +1,6 @@
 # Artefacto "Jotis.me"
 
-Genera el artefacto "Jotis.me" de Claude (tipo Design System) desde el repo (design D6 y D7 de `openspec/changes/adopt-repo-as-source`). El repo es la fuente de verdad: el artefacto es una copia generada y de solo lectura (`"editing": "code"`).
+Genera el artefacto "Jotis.me" de Claude (tipo Design System) desde el repo (design D6 y D7 de `openspec/changes/archive/2026-11-06-adopt-repo-as-source`). El repo es la fuente de verdad: el artefacto es una copia generada y de solo lectura (`"editing": "code"`).
 
 ```sh
 bunx turbo run build          # el generador lee los paquetes ya construidos

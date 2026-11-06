@@ -28,7 +28,7 @@ Las páginas de color, tipografía, espaciado, radios y sombras SHALL generarse 
 - **THEN** se copia la utilidad (`bg-brand-solid`) al portapapeles y se confirma con un aviso breve
 
 ### Requirement: Página por componente
-La web SHALL tener una página por cada componente con: descripción, su ficha de la guía repartida en "Úsalo así", "Evita", "Detalles" y "Accesibilidad" (sin reescribir su texto), ejemplos vivos de sus variantes y estados, tabla de props generada de sus tipos, fragmento de código para Next.js y para Astro, y lo que amplía o difiere de la guía.
+La web SHALL tener una página por cada componente con: descripción, su ficha repartida en "Úsalo así", "Evita", "Detalles" y "Accesibilidad" (sin reescribir su texto), ejemplos vivos de sus variantes y estados, tabla de props generada de sus tipos, fragmento de código para Next.js y para Astro, y lo que amplía o difiere de la guía. La ficha de cada componente vive en el repo junto a su página y es la misma que se publica en el artefacto generado.
 
 #### Scenario: Página de Button
 - **WHEN** se abre la página de `Button`
@@ -41,6 +41,10 @@ La web SHALL tener una página por cada componente con: descripción, su ficha d
 #### Scenario: Ficha repartida sin reescribir
 - **WHEN** se abre la página de un componente cuya ficha tiene un párrafo "Evita"
 - **THEN** ese párrafo aparece en la sección "Evita" con el texto de la ficha sin cambios
+
+#### Scenario: Misma ficha en el artefacto
+- **WHEN** se compara la ficha de un componente en su página con su `README.md` en el artefacto generado
+- **THEN** tienen el mismo texto
 
 ### Requirement: Galería de iconos
 La web SHALL mostrar todos los iconos del set con buscador por nombre y tamaño de vista previa, y al elegir uno SHALL mostrar un panel con el icono en varios tamaños que permita copiar su nombre, su uso en React, su importación SVG y el SVG en bruto.
@@ -130,11 +134,11 @@ Las páginas de fundamentos y de componente SHALL mostrar migas de pan, un índi
 - **THEN** enlaza a contenido y tono como anterior y a tipografía como siguiente
 
 ### Requirement: Índice de componentes
-La web SHALL tener en `/components/` un índice de todos los componentes agrupados por tipo, con su descripción, incluidos los de Stream.
+La web SHALL tener en `/components/` un índice de todos los componentes del catálogo agrupados por tipo, con su descripción, incluidos los de Stream.
 
 #### Scenario: Todos en el índice
 - **WHEN** se abre `/components/`
-- **THEN** aparecen los 74 componentes, cada uno enlazado a su página
+- **THEN** aparecen todos los componentes que exporta `@jotis-me/react`, cada uno enlazado a su página, y ninguno más
 
 ### Requirement: Historial de cambios
 La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build.
