@@ -1,0 +1,29 @@
+{
+	"name": "@jotis-me/artifact",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Genera el artefacto \"Jotis.me\" de Claude desde el repo (design D6). No se publica.",
+	"type": "module",
+	"scripts": {
+		"artifact:build": "bun run src/build.ts",
+		"test": "bun test ./test",
+		"test:e2e": "bun run src/build.ts && playwright test",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@jotis-me/icons": "workspace:*",
+		"@jotis-me/react": "workspace:*",
+		"@jotis-me/tokens": "workspace:*",
+		"@playwright/test": "^1.64.1",
+		"@tailwindcss/node": "^4.3.3",
+		"@tailwindcss/oxide": "^4.3.3",
+		"@types/bun": "^1.4.4",
+		"@types/node": "^26.6.6",
+		"@types/react": "^19.3.0",
+		"dts-bundle-generator": "^9.5.1",
+		"react-18": "npm:react@18.3.1",
+		"react-dom-18": "npm:react-dom@18.3.1",
+		"tailwindcss": "^4.3.3",
+		"typescript": "^6"
+	}
+}

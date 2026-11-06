@@ -157,6 +157,7 @@ describe("icono maskable", () => {
 	}
 });
 
+// El primer raster carga resvg: con turbo corriendo todas las tareas a la vez, pasa de los 5 s por defecto
 describe("icono de app rasterizado frente a la guía", () => {
 	const raster = (svg: string) => new Resvg(svg, { fitTo: { mode: "width", value: 128 } }).render().pixels;
 	for (const app of Object.keys(apps) as AppName[]) {
@@ -175,4 +176,4 @@ describe("icono de app rasterizado frente a la guía", () => {
 			});
 		}
 	}
-});
+}, 30_000);

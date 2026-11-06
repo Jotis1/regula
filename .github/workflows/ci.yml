@@ -41,6 +41,10 @@ jobs:
               run: bun run check:reference
             - name: Tipos, tests y build
               run: bunx turbo run build typecheck test
+            # El generador del artefacto (design D6) no necesita red: se ejecuta en un espacio de red vacío, como el
+            # usuario del runner (sus tests sin navegador ya corren en el paso anterior, con la red bloqueada).
+            - name: Artefacto "Jotis.me" sin red
+              run: sudo unshare --net --setuid "$(id -u)" --setgid "$(id -g)" -- env "PATH=$PATH" "HOME=$HOME" bun run artifact:build
             - name: Colores fuera de los tokens
               run: bun run check:colors
               working-directory: packages/react
@@ -86,6 +90,10 @@ jobs:
             - name: Ejemplo Astro (sin JS en estáticos, isla con teclado)
               run: bunx playwright test
               working-directory: examples/astro
+            # Aquí y no en Comprobaciones: las vistas previas se comparan con las capturas aprobadas, hechas en Windows
+            - name: Artefacto "Jotis.me" (React 18, hoja y vistas previas frente a las capturas)
+              run: bun run test:e2e
+              working-directory: scripts/artifact
             - name: Lighthouse (móvil, ≥ 90 en rendimiento y accesibilidad)
               id: lighthouse
               shell: bash
@@ -110,6 +118,7 @@ jobs:
                       apps/docs/test-results/
                       apps/docs/.lighthouseci/
                       examples/*/test-results/
+                      scripts/artifact/test-results/
                   retention-days: 7
 
     # Capturas aprobadas (design D4), a mano desde Actions: en Windows, como el job de navegador, para que el render

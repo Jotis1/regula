@@ -1,30 +1,12 @@
 ---
-// Excepciones de contraste de la guía (reference/GUIA.md, «Contraste»), con el contraste de cada tema calculado en
-// el build desde @jotis-me/tokens en lugar de copiado: si un valor cambia, la tabla cambia con él.
-import { colors } from "@jotis-me/tokens";
-import { contrast, ratio } from "../lib/contrast";
+// Excepciones de contraste de la guía (reference/GUIA.md, «Contraste»): los datos y el cálculo viven en
+// lib/contrast-exceptions.ts, que comparte con el README del artefacto generado.
+import { CONTRAST_EXCEPTIONS, type ContrastException, exceptionRatio } from "../lib/contrast-exceptions";
 import { inline } from "../lib/inline";
 
-type Name = keyof typeof colors;
-const bg = colors["bg-primary"];
-// `on`: el token va sobre bg-primary (texto, icono, borde) o lleva blanco encima (rellenos sólidos)
-const exceptions: { name: Name; on: "ground" | "white"; how: string }[] = [
-	{ name: "text-warning-primary", on: "ground", how: "Sobre blanco vale para 24px+ o junto a un icono." },
-	{ name: "text-success-primary", on: "ground", how: "Sobre blanco vale para 24px+ o junto a un icono." },
-	{ name: "fg-quaternary", on: "ground", how: "Es solo decoración." },
-	{ name: "bg-success-solid", on: "white", how: "No admite texto blanco normal." },
-	{ name: "bg-warning-solid", on: "white", how: "No admite texto blanco normal." },
-	{
-		name: "border-primary",
-		on: "ground",
-		how: "Queda por debajo del 3:1 para bordes de control, así que **todo input lleva etiqueta visible**.",
-	},
-	{ name: "text-placeholder", on: "ground", how: "Baja a 4,2:1 en oscuro." },
-];
-const value = (name: Name, on: "ground" | "white", theme: "light" | "dark") => {
-	const r = contrast(colors[name][theme], on === "white" ? "#ffffff" : bg[theme]);
-	return r === undefined ? "—" : ratio(r);
-};
+// Una variable del frontmatter: así Biome ve que el import se usa (no lo pasa a `type`)
+const exceptions = CONTRAST_EXCEPTIONS;
+const value = (e: ContrastException, theme: "light" | "dark") => exceptionRatio(e, theme);
 const cell = "px-5 py-3.5";
 ---
 
@@ -53,8 +35,8 @@ const cell = "px-5 py-3.5";
 							{e.name}
 							{e.on === "white" && <span class="block font-body text-xs font-normal text-quaternary">con texto blanco</span>}
 						</th>
-						<td class={`${cell} text-right whitespace-nowrap text-secondary tabular-nums`}>{value(e.name, e.on, "light")}</td>
-						<td class={`${cell} text-right whitespace-nowrap text-secondary tabular-nums`}>{value(e.name, e.on, "dark")}</td>
+						<td class={`${cell} text-right whitespace-nowrap text-secondary tabular-nums`}>{value(e, "light")}</td>
+						<td class={`${cell} text-right whitespace-nowrap text-secondary tabular-nums`}>{value(e, "dark")}</td>
 						<td class={`${cell} text-tertiary`} set:html={inline(e.how)} />
 					</tr>
 				))

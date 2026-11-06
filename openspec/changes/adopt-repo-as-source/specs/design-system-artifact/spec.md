@@ -56,7 +56,7 @@ El artefacto SHALL registrar de qué repo y commit sale y SHALL republicarse des
 
 #### Scenario: Commit de origen
 - **WHEN** se abre el índice del artefacto publicado
-- **THEN** `lastChange` indica `GitHub - Jotis1/regula@<sha>` y `tokens.json` lleva `meta.source` `github` con el mismo commit
+- **THEN** `lastChange` indica `GitHub · Jotis1/regula@<sha>` y `tokens.json` lleva `meta.source` `github` con el mismo commit
 
 #### Scenario: Versión nueva
 - **WHEN** se publica una versión nueva de `@jotis-me/react`
