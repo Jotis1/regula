@@ -6,7 +6,7 @@ Mantiene la identidad visual común de la suite jotis.me: los iconos de cada app
 ## Requirements
 
 ### Requirement: Registro de apps de la suite
-El sistema SHALL mantener un registro de apps con nombre, letras y tono: Ornatus (Or, `indigo`), Vinculum (Vi, `sky`), Pecunia (Pe, `emerald`), Emptor (Em, `orange`) y Regula (Re, `fuchsia`), y SHALL rechazar en la validación una app con tono `red`, `yellow`, gris o ya usado, o vecino de uno usado.
+El sistema SHALL mantener un registro de apps con nombre, letras y tono: Ornatus (Or, `indigo`), Vinculum (Vi, `sky`), Pecunia (Pe, `emerald`), Emptor (Em, `orange`), Regula (Re, `fuchsia`) y Scaena (Sc, `lime`), y SHALL rechazar en la validación una app con tono `red`, `yellow`, gris o ya usado, o vecino de uno usado.
 
 #### Scenario: App registrada
 - **WHEN** se pide el icono de `pecunia`
@@ -23,6 +23,14 @@ El sistema SHALL mantener un registro de apps con nombre, letras y tono: Ornatus
 #### Scenario: Vecino de Regula
 - **WHEN** se añade al registro una app con tono `purple` o `pink`
 - **THEN** la validación del registro falla porque es vecino de `fuchsia`, el tono de Regula
+
+#### Scenario: Scaena
+- **WHEN** se pide el icono de `scaena`
+- **THEN** se obtiene la baldosa con "Sc" en el tono `lime` y sus cinco variantes coinciden con los SVG de Scaena que añadió la guía
+
+#### Scenario: Vecino de Scaena
+- **WHEN** se añade al registro una app con tono `green`
+- **THEN** la validación del registro falla con un problema que nombra a Scaena por ser vecino de `lime`, además del que nombra a Pecunia por ser vecino de `emerald`
 
 ### Requirement: Construcción fija del icono de app
 `AppIcon` SHALL dibujar la baldosa con tres esquinas de radio 22,5 % del lado y la inferior izquierda a 6/128, la mayúscula en el tono claro y la minúscula en el medio, en Bricolage Grotesque SemiBold convertida a curvas, y la virgulilla de tamaño fijo (40/128) centrada bajo las letras.

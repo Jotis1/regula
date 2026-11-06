@@ -6,7 +6,7 @@ Da a todas las apps de la suite jotis.me los mismos tokens semánticos de diseñ
 ## Requirements
 
 ### Requirement: Tokens semánticos de color con valor claro y oscuro
-El paquete de tokens SHALL exponer cada token de color de la guía (fondos, texto, bordes, `fg-*`, estados, `utility-*`, `alpha-*`, `focus-ring`) con el nombre de la guía y un valor para el tema claro y otro para el oscuro, idénticos a los de `tokens.json` de la guía.
+El paquete de tokens SHALL exponer cada token de color de la guía (fondos, texto, bordes, `fg-*`, estados, `utility-*`, `alpha-*`, `focus-ring`) con el nombre de la guía y un valor para el tema claro y otro para el oscuro, idénticos a los de la fuente de tokens del repo, que es la única fuente de esos valores para el paquete, la web y el artefacto generado.
 
 #### Scenario: Valor claro por defecto
 - **WHEN** una página carga el CSS de tokens sin activar el tema oscuro
@@ -17,8 +17,8 @@ El paquete de tokens SHALL exponer cada token de color de la guía (fondos, text
 - **THEN** `--text-primary` vale `#fafafa` y el resto de tokens toman su valor oscuro
 
 #### Scenario: Paridad con la guía
-- **WHEN** se compara la lista de tokens publicada con `tokens.json` de la guía
-- **THEN** no falta ningún token ni sobra ninguno fuera de los documentados como añadidos
+- **WHEN** se compara la lista de tokens que publica el paquete (variables CSS y exportación de TypeScript) con la lista de nombres de la guía, fijada en los tests del paquete
+- **THEN** coinciden en nombre y orden, y quitar o renombrar un token obliga a cambiar esa lista en el mismo PR
 
 ### Requirement: Utilidades de Tailwind v4 con los nombres de la guía
 El paquete SHALL incluir un fichero CSS para Tailwind v4 que registre los tokens en `@theme`, de modo que cada token sea la utilidad del mismo nombre (`bg-primary`, `text-brand-secondary`, `border-secondary`, `text-fg-quaternary`, `bg-utility-brand-50`, `bg-alpha-white/10`).
