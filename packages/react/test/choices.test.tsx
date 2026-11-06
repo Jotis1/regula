@@ -220,3 +220,75 @@ describe("Toggle", () => {
 		);
 	});
 });
+
+describe("RadioGroup en tarjetas", () => {
+	const PLANS = [
+		{
+			value: "basico",
+			label: "Básico",
+			supporting: "10 €/mes",
+			hint: "Hasta 10 personas.",
+			media: <span data-testid="media-basico" />,
+		},
+		{ value: "equipo", label: "Equipo", supporting: "20 €/mes", hint: "Hasta 20 personas." },
+		{ value: "empresa", label: "Empresa", supporting: "40 €/mes", hint: "Sin límite." },
+	];
+	const card = (name: string) =>
+		screen.getByRole("radio", { name: new RegExp(name) }).closest("label") as HTMLElement;
+
+	it("con flechas cambia la tarjeta elegida y su borde pasa a border-brand", async () => {
+		const onChange = vi.fn();
+		render(
+			<RadioGroup
+				appearance="card"
+				aria-label="Plan"
+				defaultValue="basico"
+				options={PLANS}
+				onChange={onChange}
+			/>,
+		);
+		expect(card("Básico").getAttribute("data-selected")).toBe("true");
+		await userEvent.tab();
+		await userEvent.keyboard("{ArrowDown}");
+		expect(onChange).toHaveBeenLastCalledWith("equipo");
+		expect(card("Equipo").getAttribute("data-selected")).toBe("true");
+		expect(card("Básico").hasAttribute("data-selected")).toBe(false);
+		expect(card("Equipo").className).toContain(
+			"data-selected:shadow-[inset_0_0_0_2px_var(--border-brand)]",
+		);
+		expect(card("Equipo").className).toContain("shadow-[inset_0_0_0_1px_var(--border-secondary)]");
+	});
+
+	it("pinta media, apoyo en línea y pista", () => {
+		render(<RadioGroup appearance="card" aria-label="Plan" options={PLANS} />);
+		expect(screen.getByTestId("media-basico")).toBeTruthy();
+		expect(screen.getByText("10 €/mes").className).toContain("text-tertiary");
+		expect(screen.getByText("Hasta 10 personas.")).toBeTruthy();
+	});
+
+	it("indicador de casilla con check y opción deshabilitada", () => {
+		const { container } = render(
+			<RadioGroup
+				appearance="card"
+				indicator="checkbox"
+				aria-label="Plan"
+				defaultValue="basico"
+				options={[...PLANS.slice(0, 2), { value: "x", label: "Retirado", disabled: true }]}
+			/>,
+		);
+		expect(container.querySelectorAll("svg").length).toBeGreaterThan(0);
+		expect((screen.getByRole("radio", { name: /Retirado/ }) as HTMLInputElement).disabled).toBe(true);
+	});
+
+	it("sin appearance, el aspecto de siempre", () => {
+		const html = renderToString(<RadioGroup aria-label="Plan" options={PLANS} />);
+		expect(html).not.toContain("rounded-xl");
+		expect(html).not.toContain("10 €/mes");
+	});
+
+	it("sin infracciones de axe en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<RadioGroup appearance="card" aria-label="Plan" defaultValue="basico" options={PLANS} />,
+		);
+	});
+});

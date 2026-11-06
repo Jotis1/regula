@@ -1,9 +1,11 @@
 // Puertos de las vistas previas de los componentes de formulario.
 
 import {
+	Avatar,
 	Checkbox,
 	ColorPicker,
 	DatePicker,
+	FeaturedIcon,
 	FileUpload,
 	Input,
 	MessageInput,
@@ -99,15 +101,62 @@ export function RadioExample() {
 
 export function RadioGroupExample() {
 	return (
-		<RadioGroup
-			defaultValue="m"
-			aria-label="Frecuencia"
-			options={[
-				{ value: "d", label: "Diario" },
-				{ value: "m", label: "Mensual", hint: "Resumen el día 1." },
-				{ value: "n", label: "Nunca" },
-			]}
-		/>
+		<div className="flex flex-col gap-6">
+			<RadioGroup
+				defaultValue="m"
+				aria-label="Frecuencia"
+				options={[
+					{ value: "d", label: "Diario" },
+					{ value: "m", label: "Mensual", hint: "Resumen el día 1." },
+					{ value: "n", label: "Nunca" },
+				]}
+			/>
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+				<RadioGroup
+					appearance="card"
+					aria-label="Plan"
+					defaultValue="equipo"
+					options={[
+						{
+							value: "basico",
+							label: "Básico",
+							supporting: "10 €/mes",
+							hint: "Hasta 10 personas.",
+							media: <FeaturedIcon icon="zap" variant="modern" color="gray" size="sm" />,
+						},
+						{
+							value: "equipo",
+							label: "Equipo",
+							supporting: "20 €/mes",
+							hint: "Hasta 20 personas.",
+							media: <FeaturedIcon icon="users-01" variant="modern" color="gray" size="sm" />,
+						},
+					]}
+				/>
+				<RadioGroup
+					appearance="card"
+					indicator="checkbox"
+					aria-label="Responsable"
+					defaultValue="ana"
+					options={[
+						{
+							value: "ana",
+							label: "Ana Díaz",
+							supporting: "@ana",
+							hint: "Producto",
+							media: <Avatar initials="AD" size="sm" alt="" />,
+						},
+						{
+							value: "leo",
+							label: "Leo Martín",
+							supporting: "@leo",
+							hint: "Diseño",
+							media: <Avatar initials="LM" size="sm" alt="" />,
+						},
+					]}
+				/>
+			</div>
+		</div>
 	);
 }
 

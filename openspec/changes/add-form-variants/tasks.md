@@ -61,11 +61,11 @@ Cada grupo trae sus propios tests y su documentación. La referencia visual de c
 
 ## 7. RadioGroup en tarjetas
 
-- [ ] 7.1 Añadir a `RadioGroup` `appearance` (`"default"`/`"card"`), `indicator` (`"radio"`/`"checkbox"`) y `media` en `RadioGroupOption` (D7), mirando los nodos `124:2838` y `1142:87213`. Tests en `test/choices.test.tsx`:
+- [x] 7.1 Añadir a `RadioGroup` `appearance` (`"default"`/`"card"`), `indicator` (`"radio"`/`"checkbox"`) y `media` en `RadioGroupOption` (D7), mirando los nodos `124:2838` y `1142:87213`. Tests en `test/choices.test.tsx`:
   - con flechas cambia la tarjeta elegida y su borde pasa a `border-brand`;
   - `media` se pinta;
   - sin `appearance`, el HTML es el mismo de antes.
-- [ ] 7.2 Actualizar la ficha `radio-group.md` y añadir al ejemplo una fila con tarjetas de icono, avatar y pago. Recapturar sus dos PNG y revisar que la fila antigua se ve igual que antes.
+- [x] 7.2 Actualizar la ficha `radio-group.md` y añadir al ejemplo una fila con tarjetas de icono, avatar y pago. Recapturar sus dos PNG y revisar que la fila antigua se ve igual que antes.
 
 ## 8. Toggle slim
 
