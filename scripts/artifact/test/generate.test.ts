@@ -123,6 +123,13 @@ describe("límites del tipo", () => {
 		expect(manifest.files.length + manifest.assets.length).toBeLessThan(LIMITS.files);
 	});
 
+	it("la hoja mantiene .jm-root de la guía, para los diseños que envuelven con esa clase", () => {
+		const sheet = text("components/bundle.css");
+		expect(sheet).toContain(".jm-root, .jm-root * { box-sizing: border-box; }");
+		expect(sheet).toContain(".jm-root { font-family: var(--font-body); color: var(--text-primary);");
+		expect(text("README.md")).toContain("clase `jm-root`");
+	});
+
 	it("el bundle no pasa de 6 MB ni contiene `</script` ni `<!--`", () => {
 		const bundle = text("components/bundle.js");
 		expect(Buffer.byteLength(bundle)).toBeLessThanOrEqual(LIMITS.bundleBytes);

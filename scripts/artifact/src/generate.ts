@@ -236,6 +236,8 @@ function usage(): string {
 	return `
 ## Uso en este artefacto
 
-Los componentes son los de \`@jotis-me/react\`, compilados para React 18: están en \`window.Jotis\` (\`Jotis.Button\`, \`Jotis.Input\`, \`Jotis.Table\`…) con los mismos nombres y props que en las apps, junto a \`Jotis.iconNames\`. Cada vista previa monta su ejemplo de \`Jotis.previews\`, el mismo que la web compara con su captura aprobada. Para el tema oscuro, pon \`data-theme="dark"\` en \`<html>\` (en las apps, la clase \`dark-mode\`).
+Los componentes son los de \`@jotis-me/react\`, compilados para React 18: están en \`window.Jotis\` (\`Jotis.Button\`, \`Jotis.Input\`, \`Jotis.Table\`…) con los mismos nombres y props que en las apps, junto a \`Jotis.iconNames\`. Cada vista previa monta su ejemplo de \`Jotis.previews\`, el mismo que la web compara con su captura aprobada. Para el tema oscuro, pon \`data-theme="dark"\` en \`<html>\` o en un contenedor (en las apps, la clase \`dark-mode\`).
+
+Envuelve el diseño en un elemento con la clase \`jm-root\`: le da la fuente de texto, el color \`text-primary\` y \`box-sizing: border-box\`. La hoja (\`components/bundle.css\`) es la de las apps, con el reset de Tailwind (preflight) incluido: títulos y párrafos sin margen, listas sin viñetas, imágenes en bloque y botones sin estilo del navegador. Da a tu HTML los márgenes y estilos que necesite, como en una app de la suite.
 `;
 }

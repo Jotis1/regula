@@ -7,6 +7,15 @@ import { DOCS } from "./paths";
 
 const EXAMPLES = join(DOCS, "src/visual");
 
+/**
+ * Compatibilidad con los diseños hechos con la guía (decisión de la 6.1): envuelven su contenido en `.jm-root`, que en
+ * la hoja de la guía daba fuente, color, suavizado y `box-sizing`. Se mantienen las mismas reglas.
+ */
+export const JM_ROOT = `/* Contenedor de los diseños (compatibilidad con la guía) */
+.jm-root, .jm-root * { box-sizing: border-box; }
+.jm-root { font-family: var(--font-body); color: var(--text-primary); -webkit-font-smoothing: antialiased; }
+`;
+
 export async function buildSheet(): Promise<string> {
 	// `source(none)`: sin detección automática; solo las fuentes declaradas (las de styles.css y los ejemplos)
 	const input = [
@@ -23,5 +32,5 @@ export async function buildSheet(): Promise<string> {
 	css = css.replace(/(^|\n)(\s*)\.dark-mode\s*\{/g, '$1$2.dark-mode, [data-theme="dark"] {');
 	// Las fuentes viven en `project/fonts/`; la hoja, en `project/components/`
 	css = css.replace(/url\((["']?)\.\/fonts\//g, "url($1../fonts/");
-	return css;
+	return `${css}\n${JM_ROOT}`;
 }
