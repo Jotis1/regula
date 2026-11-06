@@ -133,11 +133,13 @@ export function VerificationCodeInput({
 			size={size}
 			className={className}
 		>
-			<div
-				role="group"
+			<fieldset
 				aria-labelledby={label ? `${id}-label` : undefined}
 				aria-describedby={message ? `${id}-hint` : undefined}
-				className={cx("flex items-center", size === "sm" ? "gap-2" : "gap-3")}
+				className={cx(
+					"m-0 flex min-w-0 items-center border-0 p-0",
+					size === "sm" ? "gap-2" : "gap-3",
+				)}
 			>
 				{cells.map((cell, i) => (
 					// Las casillas son fijas: el índice es su identidad.
@@ -192,7 +194,7 @@ export function VerificationCodeInput({
 					</span>
 				))}
 				{name ? <input type="hidden" name={name} value={cells.join("")} /> : null}
-			</div>
+			</fieldset>
 		</FieldShell>
 	);
 }
