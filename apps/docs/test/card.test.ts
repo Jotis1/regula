@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { sectionOf, splitCard } from "../src/lib/card";
+import { catalogComponents } from "../src/lib/catalog";
 
 const dir = fileURLToPath(new URL("../src/content/components/", import.meta.url));
 /** Cuerpo de cada ficha: lo que va tras el frontmatter. */
@@ -18,11 +19,11 @@ const paragraphsOf = (body: string) =>
 		.filter(Boolean);
 
 describe("fichas repartidas por etiqueta", () => {
-	it("son las 74 fichas", () => {
-		expect(cards).toHaveLength(74);
+	it("hay una ficha por componente del catálogo", () => {
+		expect(cards).toHaveLength(catalogComponents().length);
 	});
 
-	it("en las 74, cada párrafo acaba una sola vez y sin cambios", () => {
+	it("en todas, cada párrafo acaba una sola vez y sin cambios", () => {
 		for (const { file, body } of cards) {
 			const { sections, props } = splitCard(body);
 			const placed = [...sections.flatMap((s) => s.paragraphs), ...(props ? [props] : [])];

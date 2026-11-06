@@ -87,7 +87,12 @@
         "regula-solid.svg",
         "regula-light.svg",
         "regula-mono.svg",
-        "regula-maskable.svg"
+        "regula-maskable.svg",
+        "scaena-default.svg",
+        "scaena-solid.svg",
+        "scaena-light.svg",
+        "scaena-mono.svg",
+        "scaena-maskable.svg"
       ],
       "files": {
         "ornatus-default.svg": {
@@ -238,6 +243,36 @@
           "name": "regula-maskable.svg",
           "blob": "8f15296f3b5661f3a5d212021f58add2",
           "size": 1320,
+          "type": "image/svg+xml"
+        },
+        "scaena-default.svg": {
+          "name": "scaena-default.svg",
+          "blob": "291b36a0a95d4eda42a81501a197873c",
+          "size": 1670,
+          "type": "image/svg+xml"
+        },
+        "scaena-solid.svg": {
+          "name": "scaena-solid.svg",
+          "blob": "aeedeb3a10e6b1115ddf7965dc981e11",
+          "size": 1539,
+          "type": "image/svg+xml"
+        },
+        "scaena-light.svg": {
+          "name": "scaena-light.svg",
+          "blob": "423d0ea41f12aa1e1a794bd338b98481",
+          "size": 1845,
+          "type": "image/svg+xml"
+        },
+        "scaena-mono.svg": {
+          "name": "scaena-mono.svg",
+          "blob": "c0a17ddfcf2489975f034aaf45c73e95",
+          "size": 1670,
+          "type": "image/svg+xml"
+        },
+        "scaena-maskable.svg": {
+          "name": "scaena-maskable.svg",
+          "blob": "b602d2cb5ac753e117a224a9a7b224bb",
+          "size": 1571,
           "type": "image/svg+xml"
         }
       }
@@ -1477,9 +1512,9 @@
     "sections": []
   },
   "lastChange": {
-    "by": "Claude",
-    "at": "2026-11-02T20:58:00Z",
+    "by": "Jotis",
+    "at": "2026-11-04T15:23:00Z",
     "via": "Claude",
-    "note": "Regula pasa a fucsia: icono de app, SVG del grupo App icons, README y tokens sin la paleta chartreuse."
+    "note": "Scaena entra en la suite: icono Sc en lime en AppIcon, cinco SVG en App icons y fila en la tabla del README."
   }
 }

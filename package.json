@@ -14,6 +14,7 @@
 		"test": "turbo run test",
 		"typecheck": "turbo run typecheck",
 		"lint": "biome check .",
+		"check:reference": "bun run scripts/check-reference.ts",
 		"format": "biome format --write .",
 		"ci": "biome ci . && turbo run typecheck test build",
 		"changeset": "changeset",

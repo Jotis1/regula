@@ -5,21 +5,25 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { Icon, IconBarChart01, IconCalendar, iconNames } from "../src/index.js";
 
-const guide = JSON.parse(
-	readFileSync(join(import.meta.dirname, "../../../reference/design-system.json"), "utf8"),
+// Los 81 nombres de la guía original (grupo Icons de la versión `9fe2`), fijados aquí: el set puede crecer, no perderlos
+const original: string[] = JSON.parse(
+	readFileSync(join(import.meta.dirname, "fixtures/icon-names-guide.json"), "utf8"),
 );
 const dist = join(import.meta.dirname, "../dist/svg");
 
 describe("set de iconos", () => {
-	it("tiene los mismos 81 nombres que la guía", () => {
-		const expected = guide.assetGroups.Icons.order.map((f: string) => f.replace(/\.svg$/, ""));
-		expect([...iconNames].sort()).toEqual([...expected].sort());
-		expect(iconNames).toHaveLength(81);
+	it("incluye los 81 nombres de la guía original", () => {
+		expect(original).toHaveLength(81);
+		expect(original.filter((n) => !iconNames.includes(n as (typeof iconNames)[number]))).toEqual([]);
+	});
+
+	it("no repite nombres", () => {
+		expect(new Set(iconNames).size).toBe(iconNames.length);
 	});
 
 	it("publica un SVG por icono con currentColor, sin relleno ni color fijo", () => {
 		const files = readdirSync(dist);
-		expect(files).toHaveLength(81);
+		expect(files.map((f) => f.replace(/\.svg$/, "")).sort()).toEqual([...iconNames].sort());
 		for (const f of files) {
 			const svg = readFileSync(join(dist, f), "utf8");
 			expect(svg).toContain('viewBox="0 0 24 24"');

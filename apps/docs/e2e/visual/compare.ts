@@ -1,14 +1,15 @@
-// Compara una captura con la de referencia de la guía, píxel a píxel con tolerancia.
+// Compara una captura con la aprobada del componente, píxel a píxel con tolerancia.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 
-/** Ancho de captura: el mismo para las referencias y para las páginas de comparación. */
+/** Ancho de captura: el mismo para las capturas aprobadas y para las páginas de comparación. */
 export const VIEWPORT_WIDTH = 800;
-export const REFERENCE_DIR = join(import.meta.dirname, "reference");
-export const referencePath = (name: string, theme: "light" | "dark") =>
-	join(REFERENCE_DIR, `${name}-${theme}.png`);
+/** Capturas aprobadas, una por componente y tema (design D4: los 74 originales salieron de la guía). */
+export const APPROVED_DIR = join(import.meta.dirname, "approved");
+export const approvedPath = (name: string, theme: "light" | "dark", dir = APPROVED_DIR) =>
+	join(dir, `${name}-${theme}.png`);
 
 export interface Comparison {
 	ratio: number;
@@ -38,7 +39,14 @@ export function compare(actual: Buffer, expected: Buffer, outDir?: string, label
 	return { ratio: bad / (a.width * a.height), sameSize: true, diffPath };
 }
 
-export const hasReference = (name: string) =>
-	existsSync(referencePath(name, "light")) && existsSync(referencePath(name, "dark"));
-export const readReference = (name: string, theme: "light" | "dark") =>
-	readFileSync(referencePath(name, theme));
+export const hasApproved = (name: string, theme: "light" | "dark") => existsSync(approvedPath(name, theme));
+
+/** Componentes a los que les falta captura aprobada en algún tema, como «Nombre (claro|oscuro)». */
+export function missingApproved(names: readonly string[], has = hasApproved): string[] {
+	const label = { light: "claro", dark: "oscuro" } as const;
+	return names.flatMap((name) =>
+		(["light", "dark"] as const).filter((t) => !has(name, t)).map((t) => `${name} (${label[t]})`),
+	);
+}
+export const readApproved = (name: string, theme: "light" | "dark") =>
+	readFileSync(approvedPath(name, theme));

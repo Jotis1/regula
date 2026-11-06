@@ -20,6 +20,7 @@ Cada app de la suite tiene un icono de la misma familia: baldosa con las dos pri
 | Pecunia  | Pe     | `emerald` |
 | Emptor   | Em     | `orange`  |
 | Regula   | Re     | `fuchsia` |
+| Scaena   | Sc     | `lime`    |
 
 **Rasgos de la familia.** Tres cosas, siempre juntas, que distinguen un icono de jotis.me de cualquier baldosa oscura con letras:
 - **Esquina.** Tres esquinas con radio del 22,5 % del lado y la inferior izquierda casi recta (6/128). Es la silueta de la familia y no depende del color.
@@ -53,5 +54,7 @@ Cada app de la suite tiene un icono de la misma familia: baldosa con las dos pri
   - Ni grises: la variante mono ya es la gris.
 
 **Contrastes del icono de Regula (`fuchsia`).** Mayúscula 300 sobre 950, 8,4:1; minúscula 500 sobre 950, 4,2:1; blanco sobre 600 (sólido), 4,7:1; 800 sobre 50 (claro), 7,8:1. Es un tono de la paleta de Tailwind, así que no necesita variables propias en el `theme.css`.
+
+**Contrastes del icono de Scaena (`lime`).** Mayúscula 300 sobre 950, 11,3:1; minúscula 500 sobre 950, 7,5:1; blanco sobre 600 (sólido), 3,1:1, justo por encima del mínimo de 3:1; 800 sobre 50 (claro), 6,8:1. Tampoco necesita variables propias en el `theme.css`.
 
 **En esta web.** Esta documentación es una interfaz clara, así que su cabecera lleva el icono de Regula en la variante Claro en el tema claro, y la principal en el oscuro.

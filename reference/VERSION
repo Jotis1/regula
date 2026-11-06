@@ -1,9 +1,10 @@
 artefacto: Jotis.me (Design System)
 slug: bb424412-8082-461e-a84f-b3704de675c1
 url: https://claude.ai/artifact/Q8AXUzu86MzVrB9Ec3oKSY
-version: 1793653059-466a
-copiado: 2026-11-03
+version: 1793805785-9fe2
+copiado: 2026-11-05
 verificacion: sha256 de cada fichero igual al de list_files de esa version (todos los de project/ salvo los excluidos abajo); SVG de assets/App icons verificados con el sha256 de read_asset
+cambios frente a 1793653059-466a: Scaena (`Sc`, `lime`) en AppIcon (ficha README.md y preview.html), assets/App icons (README.md y los cinco scaena-*.svg), GUIA.md (tabla de iconos de app y contrastes de Scaena), bundle.js (APPICON), index.d.ts (app `scaena`) y design-system.json (grupo App icons y lastChange). Congelada: desde esta versión el repo es la fuente de verdad y nada lee reference/ (openspec adopt-repo-as-source)
 cambios frente a 1793561361-ae73: Regula pasa a `fuchsia` (GUIA.md, AppIcon/README.md, assets/App icons/README.md y regula-*.svg, APPICON de bundle.js) y tokens.json pierde la paleta chartreuse (utility-chartreuse-50…700); design-system.json, solo blobs y nota del cambio. Los regula-*.svg nuevos llevan las letras con transform="translate(…) scale(…)" en lugar de coordenadas absolutas
 cambios frente a 1793369818-a6e0 (versión anterior a esa): 12 componentes de Stream (CamFrame, ChannelBanner, ChannelPanel, ChatBadge, ChatBox, NowPlaying, StreamAlert, StreamCountdown, StreamEvents, StreamGoal, StreamScene, StreamStatus), seccion "Stream (Twitch)" en GUIA.md, bundle.js/bundle.css/index.d.ts y Regula en AppIcon y assets/App icons
 no incluido: fuentes woff2 y lib/react*.js (binarios o ajenos; las fuentes vienen de npm),

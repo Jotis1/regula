@@ -1,5 +1,5 @@
-// Fotos de las cards de /components/ (decisión del usuario, 3 nov): la captura de la vista previa de la guía que usa
-// la paridad visual (e2e/visual/reference/<Nombre>-<light|dark>.png), recortada en el build. Las capturas miden 800px
+// Fotos de las cards de /components/ (decisión del usuario, 3 nov): la captura aprobada que usa la paridad visual
+// (e2e/visual/approved/<Nombre>-<light|dark>.png), recortada en el build. Las capturas miden 800px
 // de ancho con el componente en medio de mucho margen; se quita el margen (el color de la esquina, el fondo de la
 // vista previa), se deja un borde igual alrededor y se pasa a WebP. El test de paridad asegura que nuestro
 // componente se ve como la captura.
@@ -11,7 +11,7 @@ export type PreviewTheme = "light" | "dark";
 
 // Desde la raíz de la web (donde corre `astro build`): en el build el módulo se empaqueta y `import.meta.url` ya
 // no apunta a src/lib
-const REFERENCE = join(process.cwd(), "e2e/visual/reference");
+const APPROVED = join(process.cwd(), "e2e/visual/approved");
 /** Borde alrededor del componente recortado, en px de la captura. */
 const PAD = 24;
 /** Ancho máximo de la foto: el doble del de la card más ancha (~330px), para pantallas de alta densidad. */
@@ -28,7 +28,7 @@ export interface Preview {
 const cache = new Map<string, Promise<Preview>>();
 
 async function build(name: string, theme: PreviewTheme): Promise<Preview> {
-	const source = sharp(join(REFERENCE, `${name}-${theme}.png`));
+	const source = sharp(join(APPROVED, `${name}-${theme}.png`));
 	const { data: corner } = await source
 		.clone()
 		.extract({ left: 0, top: 0, width: 1, height: 1 })

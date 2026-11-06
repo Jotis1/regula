@@ -1,29 +1,23 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
+import { FOUNDATIONS } from "../src/lib/catalog";
 import { nav } from "../src/nav";
 
-// Cada apartado de la guía (## …) tiene su página en la navegación y la página se abre con su título
-const guide = readFileSync(join(import.meta.dirname, "../../../reference/GUIA.md"), "utf8");
-const sections = [...guide.matchAll(/^## (.+)$/gm)].map((m) => m[1] as string);
+// Las páginas de fundamentos son la fuente de la guía (design D6: de ellas sale también el README del artefacto).
+// Cada una tiene su entrada en la navegación y se abre con su título; la instalación con Tailwind v4 vive en /start/.
+const dir = join(import.meta.dirname, "../src/content/foundations");
+const files = readdirSync(dir).filter((f) => /\.mdx?$/.test(f));
+const title = (f: string) => readFileSync(join(dir, f), "utf8").match(/^title: "([^"]+)"/m)?.[1] ?? f;
 const pages: Record<string, string> = {
-	Principios: "/foundations/principles/",
-	"Contenido y tono": "/foundations/content/",
-	Color: "/foundations/color/",
-	Tipografía: "/foundations/typography/",
-	"Espaciado, radios y layout": "/foundations/layout/",
-	"Sombras y estados": "/foundations/states/",
-	Iconografía: "/foundations/iconography/",
-	"Fondos y adornos": "/foundations/backgrounds/",
-	"Stream (Twitch)": "/foundations/stream/",
-	Marca: "/foundations/brand/",
-	"Con Tailwind v4 (Next o Astro)": "/start/install/",
-	// «Uso en el propio sistema» describe el bundle del artefacto; su regla de gráficas está en Color
-	"Uso en el propio sistema": "/foundations/color/",
+	...Object.fromEntries(files.map((f) => [title(f), `/foundations/${f.replace(/\.mdx?$/, "")}/`])),
+	Instalación: "/start/install/",
 };
 
-test("todos los apartados de la guía tienen página", () => {
-	expect(sections.filter((s) => !(s in pages))).toEqual([]);
+test("cada página de fundamentos está en el catálogo y en la navegación", () => {
+	// Stream tiene su propia sección en la cabecera, pero su página vive en /foundations/stream/
+	const slugs = [...FOUNDATIONS.map((f) => f.slug), "stream"];
+	expect(files.map((f) => f.replace(/\.mdx?$/, "")).sort()).toEqual(slugs.sort());
 	const linked = nav.flatMap((s) => s.items.map((i) => i.href));
 	for (const href of Object.values(pages)) expect(linked).toContain(href);
 });

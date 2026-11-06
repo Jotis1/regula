@@ -20,13 +20,15 @@ bunx turbo run build
 bunx biome check .
 ```
 
-| Carpeta      | Contenido                                           |
-| ------------ | --------------------------------------------------- |
-| `packages/`  | Paquetes publicados en npm                          |
-| `apps/docs`  | La web regula.jotis.me (Astro)                      |
-| `examples/`  | Proyectos Next.js y Astro que consumen los paquetes |
-| `reference/` | Copia congelada de la guía original (no se publica) |
-| `openspec/`  | Specs y cambios                                     |
+| Carpeta      | Contenido                                                                           |
+| ------------ | ----------------------------------------------------------------------------------- |
+| `packages/`  | Paquetes publicados en npm                                                          |
+| `apps/docs`  | La web regula.jotis.me (Astro)                                                      |
+| `examples/`  | Proyectos Next.js y Astro que consumen los paquetes                                 |
+| `reference/` | Copia congelada de la guía original (versión `9fe2`): solo procedencia, nada la lee |
+| `openspec/`  | Specs y cambios                                                                     |
+
+El repo es la fuente de verdad del sistema (tokens, iconos, marca, componentes, fichas y guía). El artefacto "Jotis.me" de Claude se genera desde aquí y es de solo lectura.
 
 ## Licencia
 

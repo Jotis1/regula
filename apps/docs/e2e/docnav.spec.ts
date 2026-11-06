@@ -1,5 +1,9 @@
 // Navegación lateral del rediseño (reference/docs-design/DocNav.dc.html), desde el catálogo (design §7).
 import { expect, type Page, test } from "@playwright/test";
+import { COMPONENT_GROUPS } from "../src/lib/catalog";
+
+const countOf = (section: "components" | "stream") =>
+	COMPONENT_GROUPS.filter((g) => g.section === section).reduce((n, g) => n + g.components.length, 0);
 
 const docnav = (page: Page) => page.getByRole("navigation", { name: "Documentación" });
 const group = (page: Page, label: string) =>
@@ -63,8 +67,8 @@ test("tiene las secciones y los recuentos del catálogo", async ({ page }) => {
 		"Empezar",
 		"Fundamentos",
 		"Iconos",
-		/^Componentes\s*62$/,
-		/^Stream\s*12$/,
+		new RegExp(`^Componentes\\s*${countOf("components")}$`),
+		new RegExp(`^Stream\\s*${countOf("stream")}$`),
 	]);
 	await expect(group(page, "Acciones").locator("summary")).toContainText("3");
 	await expect(group(page, "Overlay").locator("summary")).toContainText("7");

@@ -9,6 +9,7 @@
 		"includes": [
 			"**",
 			"!reference",
+			"!packages/icons/assets",
 			"!**/dist",
 			"!**/.astro",
 			"!**/.next",

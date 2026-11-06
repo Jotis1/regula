@@ -9,7 +9,8 @@ import { expectAccessibleInThemes } from "./helpers.js";
 // Tonos de la tabla de la guía que usan los tests (bundle.js, APPICON.hues)
 const HUE = { indigo600: "#4f39f6", indigo950: "#1e1a4d", teal950: "#022f2e" };
 
-const ref = join(import.meta.dirname, "../../../reference/assets/App icons");
+// SVG de los iconos de app de la guía `9fe2`: los fixtures viven en el paquete de iconos
+const ref = join(import.meta.dirname, "../../icons/test/fixtures/app-icons");
 
 /**
  * Números de un trazado en coordenadas absolutas del lienzo de 128. Los SVG de Regula de la guía llevan las letras
@@ -52,7 +53,7 @@ const variants = [
 	["maskable", { shape: "square" }],
 ] as const;
 
-describe("AppIcon frente a reference/assets/App icons", () => {
+describe("AppIcon frente a los SVG de la guía", () => {
 	for (const app of Object.keys(appIcons) as AppName[]) {
 		for (const [file, opts] of variants) {
 			it(`${app}-${file}`, () => {
@@ -64,9 +65,12 @@ describe("AppIcon frente a reference/assets/App icons", () => {
 					const e = expected[i] as (typeof expected)[number];
 					expect(p.cmds).toBe(e.cmds);
 					expect(p.nums.length).toBe(e.nums.length);
-					// La tabla de letras redondea a unidades enteras de la fuente: como mucho 0,04 sobre 128 (design.md §8)
+					// La tabla de letras redondea a unidades enteras de la fuente: como mucho 0,04 sobre 128 (design.md §8).
+					// Los SVG de Scaena de la guía escriben `scale(0.06 -0.06)` (el real es 0,06016) y se desvían hasta 0,11:
+					// el límite sube solo para Scaena (igual que en @jotis-me/icons).
+					const limit = app === "scaena" ? 0.12 : 0.05;
 					for (const [j, v] of p.nums.entries())
-						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(0.05);
+						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(limit);
 				});
 			});
 		}

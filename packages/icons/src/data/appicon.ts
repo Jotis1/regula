@@ -1,4 +1,4 @@
-// Generado por scripts/extract.ts desde reference/components/bundle.js. No editar a mano.
+// Fuente: salió una vez de la guía `9fe2` (bundle.js) con el antiguo scripts/extract.ts. Se edita a mano.
 export const appicon = {
 	geo: {
 		radius: 0.225,
@@ -717,6 +717,11 @@ export const appicon = {
 			name: "Regula",
 			letters: "Re",
 			hue: "fuchsia",
+		},
+		scaena: {
+			name: "Scaena",
+			letters: "Sc",
+			hue: "lime",
 		},
 	},
 };
