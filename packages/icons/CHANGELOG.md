@@ -1,5 +1,11 @@
 # @jotis-me/icons
 
+## 0.3.0
+
+### Minor Changes
+
+- 94ffbf3: Scaena entra en la suite: `apps.scaena` / `appIcons.scaena` (`Sc`, tono `lime`), con sus SVG y PNG en `dist/app-icons/` y `app="scaena"` en `AppIcon`. `lime` no bloquea ningún tono libre: sus vecinos (`yellow` y `green`) ya estaban vetados.
+
 ## 0.2.0
 
 ### Minor Changes
