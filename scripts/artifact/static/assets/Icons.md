@@ -1,0 +1,1 @@
+Iconos de línea del archivo de Figma (24×24, trazo 2px redondeado). Tinta fija `#525252` (`fg-tertiary`) porque una imagen `<img>` no hereda color: en interfaz usa el componente `Icon`, que sí toma `currentColor`. Mismos nombres que en Figma.

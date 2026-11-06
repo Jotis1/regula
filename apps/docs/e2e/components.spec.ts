@@ -193,7 +193,7 @@ test("a 390px ninguna página de componente se desplaza en horizontal: la tabla 
 	await expect(page.getByRole("region", { name: /^Props de / })).toHaveAttribute("tabindex", "0");
 });
 
-test("/components/ lista los 74 componentes, cada uno enlazado a su página, con las anclas de sus grupos", async ({
+test("/components/ lista todos los componentes del catálogo, cada uno enlazado a su página, con las anclas de sus grupos", async ({
 	page,
 }) => {
 	await page.goto("/components/");

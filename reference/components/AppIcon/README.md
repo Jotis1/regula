@@ -1,6 +1,6 @@
 Icono de una app de la suite: baldosa con las dos primeras letras del nombre (mayúscula + minúscula) y una virgulilla debajo, en el tono de la app (guiño al castellano). Misma construcción para todas, como una familia; solo cambia el color.
 
-**Props.** `app` (`ornatus` · `vinculum` · `pecunia` · `emptor` · `regula`), o para una app nueva `letters` (dos letras) + `hue` (tono de la paleta Tailwind); `variant` (`default` · `solid` · `light` · `mono`), `size` (px, 48 por defecto), `shape` (`rounded` · `square` para maskable), `tilde` (forzar o quitar la virgulilla), `label` (nombre accesible; por defecto el de la app).
+**Props.** `app` (`ornatus` · `vinculum` · `pecunia` · `emptor` · `regula` · `scaena`), o para una app nueva `letters` (dos letras) + `hue` (tono de la paleta Tailwind); `variant` (`default` · `solid` · `light` · `mono`), `size` (px, 48 por defecto), `shape` (`rounded` · `square` para maskable), `tilde` (forzar o quitar la virgulilla), `label` (nombre accesible; por defecto el de la app).
 
 **Variantes.** `default`: fondo `{tono}-950`, mayúscula `{tono}-300`, minúscula y virgulilla `{tono}-500`. `solid`: fondo `{tono}-600`, letras blancas, sin virgulilla. `light`: fondo `{tono}-50`, borde de 1px `{tono}-200`, letras `{tono}-800` / `{tono}-600`. `mono`: fondo `neutral-950`, blanco y `neutral-400`. Por debajo de 20px, si no pasas `variant`, sale `solid`; la virgulilla solo se dibuja desde 32px.
 

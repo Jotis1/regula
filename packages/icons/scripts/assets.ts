@@ -47,9 +47,10 @@ for (const app of Object.keys(apps) as AppName[]) {
 }
 console.log(`${Object.keys(icons).length} SVG de iconos y ${Object.keys(apps).length} apps → dist/`);
 
-// Trazos a mano y patrones de la guía: la tinta #171717 pasa a currentColor para que sigan el tema
-// (con `text-primary`: #171717 en claro, #FAFAFA en oscuro). Los rellenos blancos son de clipPath y se quedan.
-const reference = join(import.meta.dirname, "../../../reference/assets");
+// Trazos a mano y patrones (de la guía, grupos Hand-drawn y Patterns): la fuente vive en assets/ con la tinta ya en
+// currentColor para que sigan el tema (con `text-primary`: #171717 en claro, #FAFAFA en oscuro). Los rellenos
+// blancos son de clipPath y se quedan. Se copian tal cual.
+const sources = join(import.meta.dirname, "../assets");
 for (const [group, folder] of [
 	["Hand-drawn", "hand-drawn"],
 	["Patterns", "patterns"],
@@ -57,10 +58,7 @@ for (const [group, folder] of [
 	const target = join(dist, folder);
 	rmSync(target, { recursive: true, force: true });
 	mkdirSync(target, { recursive: true });
-	const files = readdirSync(join(reference, group)).filter((f) => f.endsWith(".svg"));
-	for (const f of files) {
-		const svg = readFileSync(join(reference, group, f), "utf8").replace(/#171717/gi, "currentColor");
-		writeFileSync(join(target, f), svg);
-	}
+	const files = readdirSync(join(sources, folder)).filter((f) => f.endsWith(".svg"));
+	for (const f of files) writeFileSync(join(target, f), readFileSync(join(sources, folder, f)));
 	console.log(`${files.length} SVG de ${group} → dist/${folder}/`);
 }

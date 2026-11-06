@@ -84,7 +84,7 @@ export interface BannerProps { title: ReactNode; description?: ReactNode; icon?:
 export interface BackgroundPatternProps { pattern?: 'grid' | 'grid-dot' | 'grid-check' | 'circles' | 'squares'; size?: 'sm' | 'md' | 'lg'; mask?: 'radial' | 'radial-down' | 'radial-up' | 'linear-down' | 'linear-up' | 'none'; width?: number; height?: number; seed?: number; className?: string; style?: React.CSSProperties; }
 export interface CreditCardProps { theme?: 'brand-dark' | 'brand-light' | 'gray-dark' | 'gray-light' | 'transparent'; company?: ReactNode; holder?: string; expiry?: string; last4?: string; network?: ReactNode; className?: string; style?: React.CSSProperties; }
 export type AppIconHue = 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'orange' | 'amber' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue';
-export interface AppIconProps { app?: 'ornatus' | 'vinculum' | 'pecunia' | 'emptor'; letters?: string; hue?: AppIconHue; variant?: 'default' | 'solid' | 'light' | 'mono'; size?: number; shape?: 'rounded' | 'square'; tilde?: boolean; label?: string; className?: string; style?: React.CSSProperties; }
+export interface AppIconProps { app?: 'ornatus' | 'vinculum' | 'pecunia' | 'emptor' | 'regula' | 'scaena'; letters?: string; hue?: AppIconHue; variant?: 'default' | 'solid' | 'light' | 'mono'; size?: number; shape?: 'rounded' | 'square'; tilde?: boolean; label?: string; className?: string; style?: React.CSSProperties; }
 // Stream (Twitch): siempre en oscuro (cada raíz lleva data-theme="dark").
 export type StreamEventType = 'follow' | 'sub' | 'resub' | 'gift' | 'raid' | 'bits' | 'donation';
 export type ChatBadgeKind = 'broadcaster' | 'mod' | 'vip' | 'sub' | 'bits';

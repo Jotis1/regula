@@ -28,7 +28,10 @@ export interface AppInfo {
 }
 
 /** Apps de la suite. Para añadir una, pasa la validación de `validateApps`. */
-export const apps = data.apps as Record<"ornatus" | "vinculum" | "pecunia" | "emptor" | "regula", AppInfo>;
+export const apps = data.apps as Record<
+	"ornatus" | "vinculum" | "pecunia" | "emptor" | "regula" | "scaena",
+	AppInfo
+>;
 export type AppName = keyof typeof apps;
 
 export const hues = data.hues as Record<

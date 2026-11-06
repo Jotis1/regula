@@ -40,6 +40,7 @@ test("enlaza al historial y a la documentación y la suite", async ({ page }) =>
 		["Pecunia", "https://pecunia.jotis.me"],
 		["Emptor", "https://emptor.jotis.me"],
 		["Ornatus", "https://ornatus.jotis.me"],
+		["Scaena", "https://scaena.jotis.me"],
 	] as const)
 		await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
 	await expect(footer(page)).toContainText("Regula");

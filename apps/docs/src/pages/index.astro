@@ -46,6 +46,7 @@ const apps = [
 	{ app: "pecunia", what: "Finanzas" },
 	{ app: "emptor", what: "Compras con IA" },
 	{ app: "regula", what: "Esta web" },
+	{ app: "scaena", what: "El escenario del canal" },
 ] as const;
 
 // Las cinco reglas, con el texto de la guía (reference/GUIA.md: Principios, Color y Contenido y tono)
@@ -257,7 +258,7 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 			<h2 id="suite-t" class="font-display text-xl font-semibold text-primary lg:text-display-xs">Las apps que lo usan</h2>
 			<p class="hidden text-sm text-tertiary lg:block">Cada una con su tono en el icono. La interfaz, en índigo para todas.</p>
 		</div>
-		<ul class="grid grid-cols-5 gap-2 lg:gap-4">
+		<ul class="grid grid-cols-3 gap-2 sm:grid-cols-6 lg:gap-4">
 			{
 				apps.map(({ app, what }) => (
 					<li class="flex flex-col items-center gap-1.5 lg:flex-row lg:gap-3 lg:rounded-xl lg:p-3 lg:shadow-[inset_0_0_0_1px_var(--border-secondary)]">

@@ -1,52 +1,46 @@
-import { existsSync } from "node:fs";
+// Paridad visual: el ejemplo de cada componente en la web frente a su captura aprobada (design D4). Las 74 originales
+// se capturaron de la guía; las de un componente nuevo, o las de uno que cambia de aspecto, se aprueban en su PR.
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
-import { slugOf } from "../src/visual/registry";
-import { compare, hasReference, readReference, VIEWPORT_WIDTH } from "./visual/compare";
-import { cardHeight, openReference, previewNames } from "./visual/reference";
+import { catalogComponents } from "../src/lib/catalog";
+import { CARD_HEIGHTS, slugOf } from "../src/visual/registry";
+import { compare, hasApproved, missingApproved, readApproved, VIEWPORT_WIDTH } from "./visual/compare";
 
 const MAX_RATIO = 0.02;
-const dist = join(import.meta.dirname, "../dist");
 const results = join(import.meta.dirname, "../test-results/visual");
+const themes = ["light", "dark"] as const;
+const label = { light: "claro", dark: "oscuro" } as const;
 
 test.describe("comparador visual (controles)", () => {
-	test("hay referencia en claro y oscuro de todos los componentes de la guía", () => {
-		const names = previewNames();
-		expect(names).toHaveLength(74);
-		expect(names.filter((n) => !hasReference(n))).toEqual([]);
+	test("hay captura aprobada en claro y en oscuro de cada componente del catálogo", () => {
+		expect(missingApproved(catalogComponents())).toEqual([]);
 	});
 
-	test("una vista previa vuelve a capturarse igual que su referencia", async ({ page }) => {
-		await page.setViewportSize({ width: VIEWPORT_WIDTH, height: cardHeight("Button") });
-		await page.emulateMedia({ reducedMotion: "reduce" });
-		await openReference(page, "Button", false);
-		const shot = await page.screenshot({ animations: "disabled", caret: "hide" });
-		expect(compare(shot, readReference("Button", "light")).ratio).toBeLessThan(0.001);
+	test("si falta una captura, dice qué componente y qué tema", () => {
+		const has = (name: string, theme: "light" | "dark") => !(name === "Button" && theme === "dark");
+		expect(missingApproved(["Button", "Badge"], has)).toEqual(["Button (oscuro)"]);
 	});
 
 	test("detecta diferencias: claro frente a oscuro y tamaños distintos", () => {
 		expect(
-			compare(readReference("Button", "light"), readReference("Button", "dark")).ratio,
+			compare(readApproved("Button", "light"), readApproved("Button", "dark")).ratio,
 		).toBeGreaterThan(MAX_RATIO);
-		expect(compare(readReference("Button", "light"), readReference("Badge", "light")).sameSize).toBe(
-			false,
-		);
+		expect(compare(readApproved("Button", "light"), readApproved("Badge", "light")).sameSize).toBe(false);
 	});
 });
 
-test.describe("paridad visual con la guía", () => {
-	for (const name of previewNames()) {
-		const built = existsSync(join(dist, "visual", slugOf(name), "index.html"));
-		for (const theme of ["light", "dark"] as const) {
-			test(`${name} (${theme === "light" ? "claro" : "oscuro"})`, async ({ page }) => {
-				test.skip(!built, `${name} aún no está portado`);
-				await page.setViewportSize({ width: VIEWPORT_WIDTH, height: cardHeight(name) });
+test.describe("paridad visual con las capturas aprobadas", () => {
+	for (const name of catalogComponents()) {
+		for (const theme of themes) {
+			test(`${name} (${label[theme]})`, async ({ page }) => {
+				test.skip(!hasApproved(name, theme), `${name} no tiene captura aprobada en ${label[theme]}`);
+				await page.setViewportSize({ width: VIEWPORT_WIDTH, height: CARD_HEIGHTS[name] ?? 300 });
 				await page.emulateMedia({ reducedMotion: "reduce" });
 				await page.goto(`/visual/${slugOf(name)}/${theme === "dark" ? "?tema=oscuro" : ""}`);
 				await page.evaluate(() => document.fonts.ready);
 				const shot = await page.screenshot({ animations: "disabled", caret: "hide" });
-				const result = compare(shot, readReference(name, theme), results, `${name}-${theme}`);
-				expect(result.sameSize, "mismo tamaño que la referencia").toBe(true);
+				const result = compare(shot, readApproved(name, theme), results, `${name}-${theme}`);
+				expect(result.sameSize, "mismo tamaño que la captura aprobada").toBe(true);
 				expect(result.ratio, `píxeles distintos (diff en ${result.diffPath})`).toBeLessThan(
 					MAX_RATIO,
 				);

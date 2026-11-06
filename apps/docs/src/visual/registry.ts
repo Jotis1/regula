@@ -165,26 +165,4 @@ export const visualExamples: Record<string, ComponentType> = {
 	ChannelBanner: ChannelBannerExample,
 };
 
-/**
- * Vistas previas que ponen la página entera en oscuro (`data-theme="dark"` en `<html>`): las de Stream, que se
- * dibujan siempre en oscuro (design §12). Su página de comparación va en oscuro también en el tema claro, y en
- * su página de componente los ejemplos van sobre fondo oscuro (StreamCountdown no tiene fondo propio: en una
- * página clara no se leería).
- */
-export const DARK_PREVIEWS = new Set([
-	"StreamAlert",
-	"StreamEvents",
-	"StreamStatus",
-	"ChatBadge",
-	"ChatBox",
-	"CamFrame",
-	"StreamGoal",
-	"NowPlaying",
-	"StreamCountdown",
-	"StreamScene",
-	"ChannelPanel",
-	"ChannelBanner",
-]);
-
-/** `DatePicker` → `date-picker`. */
-export const slugOf = (name: string) => name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+export { CARD_HEIGHTS, DARK_PREVIEWS, slugOf } from "./cards";

@@ -4,7 +4,8 @@ import { Resvg } from "@resvg/resvg-js";
 import { describe, expect, it } from "vitest";
 import { type AppName, appIcon, appIconSvg, apps, validateApps } from "../src/app-icon.js";
 
-const ref = join(import.meta.dirname, "../../../reference/assets/App icons");
+// SVG de los iconos de app de la guía `9fe2`, copiados aquí como fixtures (la carpeta `reference/` no se lee)
+const ref = join(import.meta.dirname, "fixtures/app-icons");
 
 /**
  * Números de un trazado en coordenadas absolutas del lienzo de 128. Los SVG de Regula de la guía
@@ -62,8 +63,12 @@ describe("icono de app frente a los SVG de la guía", () => {
 					// Los SVG de la guía salen de la fuente con unidades fraccionarias; la tabla de letras de bundle.js
 					// las redondea a enteros. La diferencia máxima es 0,04 unidades sobre 128: invisible a cualquier tamaño.
 					// Los de Regula usan ya la tabla de enteros (con transform) y solo difieren en el redondeo: 0,005.
+					// Los de Scaena (guía 1793805785-9fe2) escriben `scale(0.06 -0.06)` redondeado, cuando el factor real
+					// es 0,06016: las letras salen un 0,27 % más pequeñas y se desvían hasta 0,11 sobre 128 (medido).
+					// Sigue siendo invisible; el límite sube solo para Scaena y el raster de abajo vigila el aspecto.
+					const limit = app === "scaena" ? 0.12 : 0.05;
 					for (const [j, v] of nums.entries())
-						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(0.05);
+						expect(Math.abs(v - (e.nums[j] as number))).toBeLessThanOrEqual(limit);
 				});
 			});
 		}
@@ -93,12 +98,26 @@ describe("registro de apps", () => {
 	it("Regula está en el registro: Re, en fuchsia", () => {
 		expect(apps.regula).toEqual({ name: "Regula", letters: "Re", hue: "fuchsia" });
 	});
+	it("Scaena está en el registro: Sc, en lime", () => {
+		expect(apps.scaena).toEqual({ name: "Scaena", letters: "Sc", hue: "lime" });
+	});
+	it("green es vecino de lime (Scaena) y de emerald (Pecunia): el problema nombra a las dos", () => {
+		const problems = validateApps({ ...apps, nueva: { name: "Nueva", letters: "Nu", hue: "green" } });
+		expect(problems.some((p) => p.includes("scaena (lime)") && p.includes("tonos vecinos"))).toBe(true);
+		expect(problems.some((p) => p.includes("pecunia (emerald)") && p.includes("tonos vecinos"))).toBe(
+			true,
+		);
+	});
 	it.each([
 		["red", "reservado para errores"],
 		["yellow", "3:1"],
 		["neutral", "gris"],
 		["indigo", "mismo tono"],
 		["fuchsia", "mismo tono"],
+		["lime", "mismo tono"],
+		["emerald", "mismo tono"],
+		["orange", "mismo tono"],
+		["sky", "mismo tono"],
 		["blue", "vecinos"],
 		["teal", "vecinos"],
 		// purple y pink son los vecinos de fuchsia, el tono de Regula
@@ -138,6 +157,7 @@ describe("icono maskable", () => {
 	}
 });
 
+// El primer raster carga resvg: con turbo corriendo todas las tareas a la vez, pasa de los 5 s por defecto
 describe("icono de app rasterizado frente a la guía", () => {
 	const raster = (svg: string) => new Resvg(svg, { fitTo: { mode: "width", value: 128 } }).render().pixels;
 	for (const app of Object.keys(apps) as AppName[]) {
@@ -156,4 +176,4 @@ describe("icono de app rasterizado frente a la guía", () => {
 			});
 		}
 	}
-});
+}, 30_000);

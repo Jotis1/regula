@@ -9,6 +9,8 @@
 		"includes": [
 			"**",
 			"!reference",
+			"!packages/icons/assets",
+			"!scripts/artifact/static",
 			"!**/dist",
 			"!**/.astro",
 			"!**/.next",
@@ -31,7 +33,9 @@
 			"a11y": {
 				"useValidAriaRole": {
 					"level": "error",
-					"options": { "ignoreNonDom": true }
+					"options": {
+						"ignoreNonDom": true
+					}
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 // La ficha de la guía de cada componente, repartida por etiqueta sin tocar su texto (design §3). Cada párrafo de la
 // ficha empieza por **Etiqueta.**: un diccionario decide su sección y lo que no encaja va a «Detalles», con la
-// etiqueta como título. El párrafo «Props.» va aparte, junto a la tabla de props. Un test comprueba que, en las 74
-// fichas, cada párrafo acaba en una sola sección y sin cambios.
+// etiqueta como título. El párrafo «Props.» va aparte, junto a la tabla de props. Un test comprueba que, en todas
+// las fichas, cada párrafo acaba en una sola sección y sin cambios.
 
 export type CardSectionId = "uso" | "evita" | "accesibilidad" | "amplia" | "detalles";
 

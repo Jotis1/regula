@@ -1,0 +1,3 @@
+Trazos a mano del archivo (página Miscellaneous assets): 10 subrayados, 9 subrayados y 7 círculos a bolígrafo (`scribble-*`), 42 flechas, 17 acentos (destellos, estrellas, rayitas de énfasis, una cara, "NEW!" y "FREE") y 2 líneas sueltas (`line-circle`, `line-squiggle`). Tinta `#171717` (`fg-primary` en claro): sobre fondo oscuro, recolorea a `#FAFAFA` o úsalos como máscara (`mask-image`) con `background: currentColor`.
+
+Úsalos para señalar una cosa en onboarding, estados vacíos o marketing: un subrayado bajo una palabra del titular, una flecha hacia el botón, un círculo alrededor de una cifra. Uno o dos por vista. "NEW!" y "FREE" están en inglés: en la interfaz, mejor un `Badge`.

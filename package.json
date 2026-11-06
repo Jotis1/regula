@@ -7,13 +7,16 @@
 	"workspaces": [
 		"packages/*",
 		"apps/*",
-		"examples/*"
+		"examples/*",
+		"scripts/artifact"
 	],
 	"scripts": {
 		"build": "turbo run build",
 		"test": "turbo run test",
 		"typecheck": "turbo run typecheck",
 		"lint": "biome check .",
+		"check:reference": "bun run scripts/check-reference.ts",
+		"artifact:build": "bun run --cwd scripts/artifact artifact:build",
 		"format": "biome format --write .",
 		"ci": "biome ci . && turbo run typecheck test build",
 		"changeset": "changeset",

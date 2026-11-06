@@ -23,8 +23,9 @@ const collection = readdirSync(dir)
 	});
 
 describe("catálogo de componentes", () => {
-	it("la colección tiene sus 74 fichas, cada una con `name`", () => {
-		expect(collection).toHaveLength(74);
+	// El recuento no es fijo: el catálogo crece con cada componente (test/catalog-sync.test.ts lo cruza con el paquete)
+	it("la colección tiene una ficha por componente del catálogo, cada una con `name`", () => {
+		expect(collection).toHaveLength(catalogComponents().length);
 		expect(collection.filter((c) => !c.name)).toEqual([]);
 	});
 
@@ -56,7 +57,7 @@ describe("catálogo de componentes", () => {
 		expect(new Set(ids).size).toBe(ids.length);
 	});
 
-	it("hay 11 grupos de aplicación y los cuatro de Stream, con sus 62 + 12 componentes", () => {
+	it("hay 11 grupos de aplicación y los cuatro de Stream, y entre todos reparten el catálogo", () => {
 		const count = (s: "components" | "stream") =>
 			COMPONENT_GROUPS.filter((g) => g.section === s).flatMap((g) => g.components).length;
 		expect(COMPONENT_GROUPS.filter((g) => g.section === "components")).toHaveLength(11);
@@ -66,8 +67,8 @@ describe("catálogo de componentes", () => {
 			"Overlay",
 			"Canal",
 		]);
-		expect(count("components")).toBe(62);
-		expect(count("stream")).toBe(12);
+		expect(count("components") + count("stream")).toBe(catalogComponents().length);
+		expect(count("stream")).toBeGreaterThan(0);
 	});
 
 	it("groupOf acepta el nombre o el slug", () => {
