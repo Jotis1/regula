@@ -11,6 +11,7 @@ import {
 	ListBoxItem,
 	Popover,
 	SearchField,
+	Text,
 	useFilter,
 } from "react-aria-components";
 import { choiceBox } from "../internal/choice.js";
@@ -68,6 +69,10 @@ export interface MultiSelectProps extends FieldProps {
 
 const PANEL =
 	"flex max-h-[408px] min-w-60 flex-col overflow-hidden rounded-lg bg-primary font-body shadow-[var(--shadow-lg),inset_0_0_0_1px_var(--border-secondary_alt)] outline-none";
+
+// El buscador no tiene descripción ni error. Sin un valor propio, en el HTML de servidor React Aria apuntaría
+// aria-describedby a los suyos, que no existen; vacío, no apunta a nada.
+const NO_DESCRIPTION = "";
 
 const toOption = (o: MultiSelectOption): Option => (typeof o === "string" ? { value: o, label: o } : o);
 
@@ -128,6 +133,7 @@ export function MultiSelect({
 					<Icon name="search-lg" size={20} />
 					<AriaInput
 						placeholder={searchLabel}
+						aria-describedby={NO_DESCRIPTION}
 						className={cx(nativeClasses(size), "[&::-webkit-search-cancel-button]:hidden")}
 					/>
 				</SearchField>
@@ -178,10 +184,18 @@ export function MultiSelect({
 							<span
 								className={cx("flex min-w-0 gap-1.5", size === "sm" ? "text-sm" : "text-md")}
 							>
-								<span className="truncate font-medium text-primary">{o.label}</span>
-								{o.supporting != null ? (
-									<span className="truncate font-normal text-tertiary">{o.supporting}</span>
-								) : null}
+								{/* Etiqueta y descripción con sus huecos de React Aria: así aria-labelledby y aria-describedby de la
+								    opción apuntan a algo también en el HTML de servidor. El apoyo va dentro de la etiqueta para que el
+								    nombre accesible sea todo lo que se ve; la descripción queda vacía. */}
+								<Text slot="label" className="flex min-w-0 gap-1.5">
+									<span className="truncate font-medium text-primary">{o.label}</span>
+									{o.supporting != null ? (
+										<span className="truncate font-normal text-tertiary">
+											{o.supporting}
+										</span>
+									) : null}
+								</Text>
+								<Text slot="description" className="hidden" />
 							</span>
 						</ListBoxItem>
 					))}

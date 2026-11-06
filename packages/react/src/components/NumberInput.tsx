@@ -108,7 +108,13 @@ export function NumberInput({
 					id={id}
 					aria-labelledby={label ? `${id}-label` : undefined}
 				>
-					<Group className={controlClasses(size, error, disabled, true)}>
+					{/* Como en el campo: estas referencias mandan sobre las de React Aria, que en el HTML de servidor
+					    apuntarían a su etiqueta y su descripción, que aquí no existen. */}
+					<Group
+						aria-labelledby={label ? `${id}-label` : ""}
+						aria-describedby={message ? `${id}-hint` : ""}
+						className={controlClasses(size, error, disabled, true)}
+					>
 						{vertical ? null : (
 							<Button
 								slot="decrement"

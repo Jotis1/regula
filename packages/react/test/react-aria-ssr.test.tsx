@@ -3,6 +3,8 @@ import { Dialog, Heading, Input, Label, Text, TextField } from "react-aria-compo
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { Input as JInput, MultiSelect, NumberInput, TagInput, VerificationCodeInput } from "../src/index.js";
+import { danglingAriaRefs } from "./helpers.js";
 
 // Dialog en línea (sin Modal) y un campo con etiqueta y descripción: las dos cosas que más dependen
 // de ids estables entre servidor y cliente (aria-labelledby, aria-describedby).
@@ -21,6 +23,21 @@ function Demo() {
 		</>
 	);
 }
+
+/** Los campos de formulario de la fase 1, en sus variantes con más piezas de React Aria. */
+const Fields = () => (
+	<form>
+		<JInput label="Web" prefix="https://" hint="Sin barra final." />
+		<JInput label="Teléfono" leadingSelect={{ label: "Prefijo", options: ["+34", "+351"] }} />
+		<JInput label="Contraseña" type="password" />
+		<NumberInput label="Invitados" defaultValue={2} hint="Hasta 12." />
+		<NumberInput label="Horas" orientation="vertical" error="Como mucho, 8." />
+		<TagInput label="Etiquetas" defaultValue={["diseño"]} />
+		<VerificationCodeInput label="Código" defaultValue="48" hint="Por correo." />
+		<MultiSelect label="Equipos" options={["Diseño", "Producto"]} defaultValue={["Diseño"]} />
+		<MultiSelect label="Abierto" options={["Diseño", "Producto"]} defaultOpen />
+	</form>
+);
 
 describe("react-aria-components en SSR", () => {
 	afterEach(() => vi.restoreAllMocks());
@@ -54,6 +71,27 @@ describe("react-aria-components en SSR", () => {
 		expect(document.getElementById(input.getAttribute("aria-describedby") ?? "")?.textContent).toBe(
 			"Solo lo usamos para avisos.",
 		);
+		container.remove();
+	});
+
+	it("los campos de formulario de la fase 1 hidratan sin avisos, con los mismos ids y sin referencias rotas", async () => {
+		const errors = vi.spyOn(console, "error").mockImplementation(() => {});
+		const warns = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const html = renderToString(<Fields />);
+		const container = document.createElement("div");
+		container.innerHTML = html;
+		document.body.append(container);
+		expect(danglingAriaRefs(container)).toEqual([]);
+		const serverIds = [...container.querySelectorAll("[id]")].map((e) => e.id);
+		const recoverable: unknown[] = [];
+		await act(async () => {
+			hydrateRoot(container, <Fields />, { onRecoverableError: (e) => recoverable.push(e) });
+		});
+		expect(recoverable).toEqual([]);
+		expect(errors).not.toHaveBeenCalled();
+		expect(warns).not.toHaveBeenCalled();
+		expect([...container.querySelectorAll("[id]")].map((e) => e.id)).toEqual(serverIds);
+		expect(danglingAriaRefs(container)).toEqual([]);
 		container.remove();
 	});
 });
