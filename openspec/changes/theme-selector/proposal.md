@@ -6,7 +6,7 @@ En escritorio, la cabecera de regula.jotis.me solo alterna entre claro y oscuro:
 
 ## What Changes
 
-- El botón de tema de la cabecera abre un menú con **Sistema**, **Claro** y **Oscuro**, con la opción actual marcada. El icono del botón dice lo elegido: pantalla (sistema), sol (claro) o luna (oscuro). Ocupa lo mismo que el botón de ahora.
+- El botón de tema de la cabecera pasa a ser el `Dropdown` del paquete con su propio botón (secundario, con texto y flecha), que abre un menú con **Sistema**, **Claro** y **Oscuro**, con la opción actual marcada. El botón dice lo elegido con su icono y su nombre: pantalla y «Sistema», sol y «Claro» o luna y «Oscuro». (En una primera versión era un botón solo de icono; el usuario prefirió el `Dropdown` con texto.)
 - Elegir **Sistema** borra la elección guardada y la web vuelve a seguir la preferencia del sistema, también cuando esta cambia con la página abierta. Es lo mismo que ya hace el menú móvil, que no cambia.
 - `Dropdown` de `@jotis-me/react` gana selección única: una opción puede ir marcada (✓) y se anuncia como opción de radio de menú (`menuitemradio`). Es retrocompatible: sin la prop nueva, el menú se comporta como ahora.
 - `@jotis-me/icons` gana el icono de pantalla para «Sistema», sacado del archivo de Figma (página Icons) para mantener el trazo. El set pasa de 81 a 82 iconos.

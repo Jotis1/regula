@@ -101,8 +101,13 @@ test("a 1440px tiene las medidas del diseño", async ({ page }) => {
 		.getByRole("link")
 		.evaluateAll((as) => as.slice(0, 2).map((a) => a.getBoundingClientRect().toJSON()));
 	expect(second.x - (first.x + first.width)).toBe(24);
+	// La búsqueda va pegada al margen derecho y el tema a su izquierda, a 32px (su ancho cambia con lo elegido)
+	const search = await header(page)
+		.getByRole("button", { name: /Buscar en Regula/ })
+		.boundingBox();
+	expect(1440 - ((search?.x ?? 0) + (search?.width ?? 0))).toBe(32);
 	const toggle = await header(page).getByRole("button", { name: /^Tema/ }).boundingBox();
-	expect(1440 - ((toggle?.x ?? 0) + (toggle?.width ?? 0))).toBe(32);
+	expect((search?.x ?? 0) - ((toggle?.x ?? 0) + (toggle?.width ?? 0))).toBe(32);
 	const underline = await sections(page)
 		.locator("a[aria-current]")
 		.evaluate((a) => getComputedStyle(a).boxShadow);

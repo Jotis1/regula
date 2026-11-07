@@ -319,6 +319,10 @@ test("/components/: el tema cambia las vistas previas sin pedir nada; las de Str
 	const requests: string[] = [];
 	page.on("request", (r) => requests.push(r.url()));
 	// El selector de tema de la cabecera: se abre y se elige Oscuro
+	await expect(page.locator("body > header astro-island").filter({ hasText: "Tema:" })).not.toHaveAttribute(
+		"ssr",
+		/.*/,
+	);
 	await page.getByRole("button", { name: /^Tema: / }).click();
 	await page.getByRole("menuitemradio", { name: "Oscuro", exact: true }).click();
 	await expect.poll(() => bg(button)).not.toBe(lightButton);

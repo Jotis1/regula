@@ -19,7 +19,7 @@ La web SHALL ofrecer en la cabecera, en todos los anchos, un selector de tema co
 
 #### Scenario: El selector dice lo elegido
 - **WHEN** el usuario abre el selector de la cabecera
-- **THEN** ve Sistema, Claro y Oscuro con la opción actual marcada, y el botón que lo abre muestra el icono de esa opción (pantalla, sol o luna) y tiene un nombre accesible que dice el tema elegido
+- **THEN** ve Sistema, Claro y Oscuro con la opción actual marcada, y el botón que lo abre muestra el icono y el nombre de esa opción (pantalla y «Sistema», sol y «Claro», luna y «Oscuro») desde la primera pintura, y tiene un nombre accesible que dice el tema elegido
 
 #### Scenario: Mismo estado en los dos selectores
 - **WHEN** el usuario elige "Claro" en la cabecera y después, a 390px, abre el menú móvil

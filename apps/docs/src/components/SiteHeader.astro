@@ -48,8 +48,9 @@ const current = sectionOf(Astro.url.pathname);
 		}
 	</nav>
 	<div class="ml-auto flex items-center gap-1 lg:gap-8">
-		<SiteSearch client:idle />
+		{/* El tema va antes que la búsqueda: su ancho cambia con lo elegido y así no mueve la búsqueda */}
 		<ThemeMenu client:idle />
+		<SiteSearch client:idle />
 		<div class="flex lg:hidden">
 			<MobileMenu client:media="(max-width: 1023.98px)">
 				<SideNav current={Astro.url.pathname} idPrefix="menu" />
