@@ -29,8 +29,20 @@ const usage: Record<string, string> = {
 	ProgressBar: `<ProgressBar value={62} aria-label="Presupuesto usado" />`,
 	AppIcon: `<AppIcon app="pecunia" size={48} />`,
 	Input: `<Input label="Correo" type="email" icon="mail-01" placeholder="tu@jotis.me" required />`,
+	NumberInput: `<NumberInput label="Invitados" defaultValue={2} min={1} max={12} />`,
+	TagInput: `<TagInput label="Etiquetas" defaultValue={["diseño", "código"]} onChange={guardar} />`,
+	VerificationCodeInput: `<VerificationCodeInput label="Código de verificación" onComplete={(code) => verificar(code)} />`,
 	Textarea: `<Textarea label="Descripción" hint="Máximo 300 caracteres." />`,
 	Select: `<Select label="Categoría" placeholder="Elige una" options={["Casa", "Coche", "Ocio"]} />`,
+	MultiSelect: `<MultiSelect
+	label="Equipos"
+	placeholder="Elige equipos"
+	options={[
+		{ value: "ing", label: "Ingeniería", supporting: "12 usuarios" },
+		{ value: "dis", label: "Diseño", supporting: "10 usuarios" },
+	]}
+	onChange={guardar}
+/>`,
 	Checkbox: `<Checkbox label="Recordarme" hint="Mantén la sesión 30 días." />`,
 	Radio: `<Radio name="plan" value="mensual" label="Mensual" defaultChecked />
 <Radio name="plan" value="anual" label="Anual" />`,

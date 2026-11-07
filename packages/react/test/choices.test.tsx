@@ -220,3 +220,126 @@ describe("Toggle", () => {
 		);
 	});
 });
+
+describe("RadioGroup en tarjetas", () => {
+	const PLANS = [
+		{
+			value: "basico",
+			label: "Básico",
+			supporting: "10 €/mes",
+			hint: "Hasta 10 personas.",
+			media: <span data-testid="media-basico" />,
+		},
+		{ value: "equipo", label: "Equipo", supporting: "20 €/mes", hint: "Hasta 20 personas." },
+		{ value: "empresa", label: "Empresa", supporting: "40 €/mes", hint: "Sin límite." },
+	];
+	const card = (name: string) =>
+		screen.getByRole("radio", { name: new RegExp(name) }).closest("label") as HTMLElement;
+
+	it("con flechas cambia la tarjeta elegida y su borde pasa a border-brand", async () => {
+		const onChange = vi.fn();
+		render(
+			<RadioGroup
+				appearance="card"
+				aria-label="Plan"
+				defaultValue="basico"
+				options={PLANS}
+				onChange={onChange}
+			/>,
+		);
+		expect(card("Básico").getAttribute("data-selected")).toBe("true");
+		await userEvent.tab();
+		await userEvent.keyboard("{ArrowDown}");
+		expect(onChange).toHaveBeenLastCalledWith("equipo");
+		expect(card("Equipo").getAttribute("data-selected")).toBe("true");
+		expect(card("Básico").hasAttribute("data-selected")).toBe(false);
+		expect(card("Equipo").className).toContain(
+			"data-selected:shadow-[inset_0_0_0_2px_var(--border-brand)]",
+		);
+		expect(card("Equipo").className).toContain("shadow-[inset_0_0_0_1px_var(--border-secondary)]");
+	});
+
+	it("pinta media, apoyo en línea y pista", () => {
+		render(<RadioGroup appearance="card" aria-label="Plan" options={PLANS} />);
+		expect(screen.getByTestId("media-basico")).toBeTruthy();
+		expect(screen.getByText("10 €/mes").className).toContain("text-tertiary");
+		expect(screen.getByText("Hasta 10 personas.")).toBeTruthy();
+	});
+
+	it("indicador de casilla con check y opción deshabilitada", () => {
+		const { container } = render(
+			<RadioGroup
+				appearance="card"
+				indicator="checkbox"
+				aria-label="Plan"
+				defaultValue="basico"
+				options={[...PLANS.slice(0, 2), { value: "x", label: "Retirado", disabled: true }]}
+			/>,
+		);
+		expect(container.querySelectorAll("svg").length).toBeGreaterThan(0);
+		expect((screen.getByRole("radio", { name: /Retirado/ }) as HTMLInputElement).disabled).toBe(true);
+	});
+
+	it("sin appearance, el aspecto de siempre", () => {
+		const html = renderToString(<RadioGroup aria-label="Plan" options={PLANS} />);
+		expect(html).not.toContain("rounded-xl");
+		expect(html).not.toContain("10 €/mes");
+	});
+
+	it("sin infracciones de axe en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<RadioGroup appearance="card" aria-label="Plan" defaultValue="basico" options={PLANS} />,
+		);
+	});
+});
+
+describe("Toggle slim", () => {
+	const track = (sw: HTMLElement) =>
+		sw.closest("label")?.querySelector('[aria-hidden="true"]') as HTMLElement;
+
+	it("Espacio lo enciende, sigue siendo role=switch y tiene el foco visible", async () => {
+		const onChange = vi.fn();
+		render(<Toggle variant="slim" label="Avisos" onChange={onChange} />);
+		const sw = screen.getByRole("switch", { name: "Avisos" }) as HTMLInputElement;
+		await userEvent.tab();
+		expect(document.activeElement).toBe(sw);
+		await userEvent.keyboard(" ");
+		expect(onChange).toHaveBeenLastCalledWith(true);
+		expect(sw.checked).toBe(true);
+		expect(track(sw).className).toContain("group-data-selected:bg-brand-solid");
+		expect(track(sw).className).toContain(
+			"group-data-selected:group-data-focus-visible:shadow-focus-ring",
+		);
+	});
+
+	it.each([
+		["sm", "h-4 w-8", "size-4"],
+		["md", "h-5 w-10", "size-5"],
+	] as const)(
+		"tamaño %s: pista sin relleno y tirador a su altura con borde",
+		(size, trackSize, handleSize) => {
+			render(<Toggle variant="slim" size={size} label="Avisos" />);
+			const t = track(screen.getByRole("switch"));
+			expect(t.className).toContain(trackSize);
+			expect(t.className).not.toContain("p-0.5");
+			expect(t.className).toContain("var(--border-secondary)");
+			const handle = t.firstElementChild as HTMLElement;
+			expect(handle.className).toContain(handleSize);
+			expect(handle.className).toContain("var(--toggle-border)");
+		},
+	);
+
+	it("sin variant, la pista de siempre", () => {
+		render(<Toggle label="Avisos" />);
+		expect(track(screen.getByRole("switch")).className).toContain("p-0.5");
+	});
+
+	it("sin infracciones de axe en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<div>
+				<Toggle variant="slim" label="Apagado" />
+				<Toggle variant="slim" size="md" label="Encendido" defaultChecked />
+			</div>,
+		);
+	});
+});

@@ -16,14 +16,29 @@ export interface FieldProps {
 
 // Borde de 1px y shadow-xs; en foco, 2px en border-brand. Con teclado, además el anillo de foco.
 const CONTROL =
-	"flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-fg-quaternary transition-shadow duration-100 ease-linear shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)] focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)] has-[:focus-visible]:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand),var(--focus-ring-shadow)]";
+	"flex items-center rounded-lg bg-primary text-fg-quaternary transition-shadow duration-100 ease-linear shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)] focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)] has-[:focus-visible]:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand),var(--focus-ring-shadow)]";
 const CONTROL_ERROR =
 	"shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-error_subtle)] focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error)] has-[:focus-visible]:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error),var(--focus-ring-error-shadow)]";
 const CONTROL_SIZE: Record<FieldSize, string> = {
 	sm: "",
 	md: "min-h-10",
-	lg: "min-h-11 px-3.5 py-2.5",
+	lg: "min-h-11",
 };
+
+/** Relleno del marco, o de cada tramo en los campos partidos (texto delante, desplegables, contador). */
+export const fieldPadding = (size: FieldSize = "md") =>
+	size === "lg" ? "gap-2 px-3.5 py-2.5" : "gap-2 px-3 py-2";
+
+/** Separa un tramo del anterior con el borde de los controles. */
+export const fieldSeparator = "border-l border-primary";
+
+/** Tramo de texto fijo o desplegable nativo dentro del marco: `text-tertiary`, sin fondo propio. */
+export const addonClasses = (size: FieldSize = "md") =>
+	cx(
+		"flex flex-none items-center self-stretch font-body text-md font-normal text-tertiary",
+		size === "sm" && "text-sm",
+		fieldPadding(size),
+	);
 
 /** Clases del elemento nativo: sin borde propio, el control pinta el marco. */
 export const nativeClasses = (size: FieldSize = "md") =>
@@ -32,8 +47,23 @@ export const nativeClasses = (size: FieldSize = "md") =>
 		size === "sm" && "text-sm",
 	);
 
-export const controlClasses = (size: FieldSize | undefined, error: FieldProps["error"], disabled?: boolean) =>
-	cx(CONTROL, size && CONTROL_SIZE[size], error && CONTROL_ERROR, disabled && "opacity-50");
+/**
+ * Clases del marco. Con `flush` no lleva relleno: cada tramo pone el suyo (`fieldPadding`) y el marco
+ * recorta lo que sobresale para que los tramos respeten el radio.
+ */
+export const controlClasses = (
+	size: FieldSize | undefined,
+	error: FieldProps["error"],
+	disabled?: boolean,
+	flush = false,
+) =>
+	cx(
+		CONTROL,
+		flush ? "overflow-hidden" : fieldPadding(size),
+		size && CONTROL_SIZE[size],
+		error && CONTROL_ERROR,
+		disabled && "opacity-50",
+	);
 
 interface FieldShellProps extends FieldProps {
 	id: string;
@@ -57,7 +87,7 @@ export function FieldShell({
 	return (
 		<div className={cx("flex min-w-0 flex-col gap-1.5 font-body", className)}>
 			{label ? (
-				<label htmlFor={id} className="text-sm font-medium text-secondary">
+				<label id={`${id}-label`} htmlFor={id} className="text-sm font-medium text-secondary">
 					{label}
 					{required ? (
 						<span

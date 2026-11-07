@@ -91,14 +91,16 @@ export {
 export { FilterBar, type FilterBarLabels, type FilterBarProps } from "./components/FilterBar.js";
 export { Icon, type IconName, type IconProps } from "./components/Icon.js";
 export { InlineCTA, type InlineCTAProps } from "./components/InlineCTA.js";
-export { Input, type InputProps } from "./components/Input.js";
+export { Input, type InputAddonSelect, type InputProps } from "./components/Input.js";
 export { LineChart, type LineChartProps } from "./components/LineChart.js";
 export { Message, type MessageProps } from "./components/Message.js";
 export { MessageInput, type MessageInputProps } from "./components/MessageInput.js";
 export { MetricCard, type MetricCardProps } from "./components/MetricCard.js";
 export { Modal, type ModalProps } from "./components/Modal.js";
+export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from "./components/MultiSelect.js";
 export { Notification, type NotificationProps } from "./components/Notification.js";
 export { NowPlaying, type NowPlayingLabels, type NowPlayingProps } from "./components/NowPlaying.js";
+export { NumberInput, type NumberInputProps } from "./components/NumberInput.js";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
 export {
 	Pagination,
@@ -140,11 +142,16 @@ export {
 export { Table, type TableColumn, type TableProps } from "./components/Table.js";
 export { type TabItem, Tabs, type TabsProps, type TabsSize, type TabsType } from "./components/Tabs.js";
 export { Tag, type TagProps, type TagSize } from "./components/Tag.js";
+export { TagInput, type TagInputProps } from "./components/TagInput.js";
 export { Textarea, type TextareaProps } from "./components/Textarea.js";
 export { TextEditor, type TextEditorLabels, type TextEditorProps } from "./components/TextEditor.js";
 export { Toggle, type ToggleProps } from "./components/Toggle.js";
 export { Tooltip, type TooltipProps } from "./components/Tooltip.js";
 export { type TreeItem, TreeView, type TreeViewProps } from "./components/TreeView.js";
+export {
+	VerificationCodeInput,
+	type VerificationCodeInputProps,
+} from "./components/VerificationCodeInput.js";
 export { VideoPlayer, type VideoPlayerLabels, type VideoPlayerProps } from "./components/VideoPlayer.js";
 export type { ChartSeries } from "./internal/chart.js";
 export type { ChoiceSize } from "./internal/choice.js";

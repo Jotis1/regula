@@ -125,6 +125,104 @@ describe("Input", () => {
 	});
 });
 
+describe("Input: texto delante, desplegables y contraseña", () => {
+	const control = (input: HTMLElement) => input.closest(".rounded-lg") as HTMLElement;
+
+	it("prefix: se ve delante, separado por el borde y fuera del valor", async () => {
+		const onChange = vi.fn();
+		render(<Input label="Web" prefix="https://" onChange={(e) => onChange(e.target.value)} />);
+		const input = screen.getByLabelText("Web") as HTMLInputElement;
+		const prefix = screen.getByText("https://");
+		expect(prefix.className).toContain("text-tertiary");
+		expect(control(input).contains(prefix)).toBe(true);
+		expect(input.parentElement?.className).toContain("border-l border-primary");
+		await userEvent.type(input, "jotis.me");
+		expect(input.value).toBe("jotis.me");
+		expect(onChange).toHaveBeenLastCalledWith("jotis.me");
+	});
+
+	it("desplegable delante: su onChange va aparte del texto y tiene su propio nombre", async () => {
+		const onPrefix = vi.fn();
+		render(
+			<Input
+				label="Teléfono"
+				defaultValue="612 345 678"
+				leadingSelect={{ label: "Prefijo", options: ["+34", "+351"], onChange: onPrefix }}
+			/>,
+		);
+		const input = screen.getByLabelText("Teléfono") as HTMLInputElement;
+		const select = screen.getByRole("combobox", { name: "Prefijo" });
+		await userEvent.selectOptions(select, "+351");
+		expect(onPrefix).toHaveBeenCalledWith("+351");
+		expect(input.value).toBe("612 345 678");
+		expect(control(input).contains(select)).toBe(true);
+		// Sin separador entre el desplegable y el texto, como en el Figma.
+		expect(input.parentElement?.className).not.toContain("border-l");
+	});
+
+	it("desplegable detrás con su nombre accesible", () => {
+		render(
+			<Input
+				label="Importe"
+				trailingSelect={{ label: "Divisa", options: ["EUR", "USD"], defaultValue: "EUR" }}
+			/>,
+		);
+		const select = screen.getByRole("combobox", { name: "Divisa" }) as HTMLSelectElement;
+		expect(select.value).toBe("EUR");
+		expect(screen.getByRole("textbox", { name: "Importe" })).toBeTruthy();
+	});
+
+	it("el desplegable exige label en el tipo", () => {
+		// @ts-expect-error: sin `label` el desplegable no tendría nombre accesible.
+		const ok = <Input label="Teléfono" leadingSelect={{ options: ["+34"] }} />;
+		expect(ok).toBeTruthy();
+	});
+
+	it("contraseña: el botón muestra y oculta sin perder el texto ni el foco", async () => {
+		render(<Input label="Contraseña" type="password" />);
+		const input = screen.getByLabelText("Contraseña") as HTMLInputElement;
+		await userEvent.type(input, "secreta1");
+		const button = screen.getByRole("button", { name: "Mostrar contraseña" });
+		expect(button.getAttribute("aria-pressed")).toBe("false");
+		await userEvent.click(button);
+		expect(input.type).toBe("text");
+		expect(input.value).toBe("secreta1");
+		expect(document.activeElement).toBe(button);
+		expect(button.getAttribute("aria-label")).toBe("Ocultar contraseña");
+		expect(button.getAttribute("aria-pressed")).toBe("true");
+		await userEvent.click(button);
+		expect(input.type).toBe("password");
+	});
+
+	it("contraseña: nombres sustituibles y sin botón con revealable={false}", () => {
+		const { rerender } = render(
+			<Input label="Clave" type="password" revealLabels={{ show: "Ver", hide: "Tapar" }} />,
+		);
+		expect(screen.getByRole("button", { name: "Ver" })).toBeTruthy();
+		rerender(<Input label="Clave" type="password" revealable={false} />);
+		expect(screen.queryByRole("button")).toBeNull();
+		expect((screen.getByLabelText("Clave") as HTMLInputElement).type).toBe("password");
+	});
+
+	it("un campo de texto se pinta en servidor igual que antes: sin tramos ni botón", () => {
+		const html = renderToStaticMarkup(<Input label="Correo" id="c" hint="Pista" />);
+		expect(html).not.toContain("<button");
+		expect(html).not.toContain("border-l");
+		expect(html).toMatch(/<div class="[^"]*rounded-lg[^"]*"><input id="c"/);
+	});
+
+	it("sin infracciones de axe en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<div>
+				<Input label="Web" prefix="https://" />
+				<Input label="Teléfono" leadingSelect={{ label: "Prefijo", options: ["+34", "+351"] }} />
+				<Input label="Importe" trailingSelect={{ label: "Divisa", options: ["EUR", "USD"] }} />
+				<Input label="Contraseña" type="password" />
+			</div>,
+		);
+	});
+});
+
 describe("Textarea", () => {
 	it("4 filas por defecto, alto mínimo 104px y redimensionable en vertical", () => {
 		render(<Textarea label="Descripción" hint="Máximo 280 caracteres." />);

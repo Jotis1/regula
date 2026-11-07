@@ -101,6 +101,16 @@ export const defaultStrings = {
 	songProgress: "Progreso de la canción",
 	// Como en la vista previa de TextEditor: "421 caracteres restantes"
 	charactersLeft: (n: number) => (n === 1 ? "1 carácter restante" : `${n} caracteres restantes`),
+	showPassword: "Mostrar contraseña",
+	hidePassword: "Ocultar contraseña",
+	decrement: "Restar",
+	increment: "Sumar",
+	digitOf: (n: number, total: number) => `Dígito ${n} de ${total}`,
+	addTag: "Añadir etiqueta",
+	selectedCount: (n: number) => (n === 1 ? "1 elegido" : `${n} elegidos`),
+	reset: "Restablecer",
+	selectAll: "Elegir todo",
+	clearSearch: "Borrar búsqueda",
 } as const;
 
 export type Strings = typeof defaultStrings;

@@ -1,19 +1,25 @@
 // Puertos de las vistas previas de los componentes de formulario.
 
 import {
+	Avatar,
 	Checkbox,
 	ColorPicker,
 	DatePicker,
+	FeaturedIcon,
 	FileUpload,
 	Input,
 	MessageInput,
+	MultiSelect,
+	NumberInput,
 	Radio,
 	RadioGroup,
 	Select,
 	Slider,
+	TagInput,
 	Textarea,
 	TextEditor,
 	Toggle,
+	VerificationCodeInput,
 } from "@jotis-me/react";
 import { row, stack } from "./actions";
 
@@ -37,6 +43,18 @@ export function InputExample() {
 			<Input label="Usuario" disabled defaultValue="jotis" />
 			<Input label="Buscar" size="sm" icon="search-lg" placeholder="sm" />
 			<Input label="Nombre" size="lg" placeholder="lg" />
+			<Input label="Web" prefix="https://" placeholder="jotis.me" />
+			<Input
+				label="Teléfono"
+				placeholder="612 345 678"
+				leadingSelect={{ label: "Prefijo", options: ["+34", "+351", "+33"], defaultValue: "+34" }}
+			/>
+			<Input
+				label="Importe"
+				placeholder="1.000,00"
+				trailingSelect={{ label: "Divisa", options: ["EUR", "USD", "GBP"], defaultValue: "EUR" }}
+			/>
+			<Input label="Contraseña" type="password" defaultValue="secreta1" hint="Al menos 8 caracteres." />
 		</div>
 	);
 }
@@ -83,15 +101,62 @@ export function RadioExample() {
 
 export function RadioGroupExample() {
 	return (
-		<RadioGroup
-			defaultValue="m"
-			aria-label="Frecuencia"
-			options={[
-				{ value: "d", label: "Diario" },
-				{ value: "m", label: "Mensual", hint: "Resumen el día 1." },
-				{ value: "n", label: "Nunca" },
-			]}
-		/>
+		<div className="flex flex-col gap-6">
+			<RadioGroup
+				defaultValue="m"
+				aria-label="Frecuencia"
+				options={[
+					{ value: "d", label: "Diario" },
+					{ value: "m", label: "Mensual", hint: "Resumen el día 1." },
+					{ value: "n", label: "Nunca" },
+				]}
+			/>
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+				<RadioGroup
+					appearance="card"
+					aria-label="Plan"
+					defaultValue="equipo"
+					options={[
+						{
+							value: "basico",
+							label: "Básico",
+							supporting: "10 €/mes",
+							hint: "Hasta 10 personas.",
+							media: <FeaturedIcon icon="zap" variant="modern" color="gray" size="sm" />,
+						},
+						{
+							value: "equipo",
+							label: "Equipo",
+							supporting: "20 €/mes",
+							hint: "Hasta 20 personas.",
+							media: <FeaturedIcon icon="users-01" variant="modern" color="gray" size="sm" />,
+						},
+					]}
+				/>
+				<RadioGroup
+					appearance="card"
+					indicator="checkbox"
+					aria-label="Responsable"
+					defaultValue="ana"
+					options={[
+						{
+							value: "ana",
+							label: "Ana Díaz",
+							supporting: "@ana",
+							hint: "Producto",
+							media: <Avatar initials="AD" size="sm" alt="" />,
+						},
+						{
+							value: "leo",
+							label: "Leo Martín",
+							supporting: "@leo",
+							hint: "Diseño",
+							media: <Avatar initials="LM" size="sm" alt="" />,
+						},
+					]}
+				/>
+			</div>
+		</div>
 	);
 }
 
@@ -101,6 +166,12 @@ export function ToggleExample() {
 			<Toggle label="Notificaciones" hint="Recibe un aviso al vencer un pago." defaultChecked />
 			<Toggle label="Modo compacto" size="md" />
 			<Toggle label="Deshabilitado" disabled />
+			<div className="flex flex-wrap items-center gap-6">
+				<Toggle variant="slim" label="Fino" />
+				<Toggle variant="slim" label="Fino" defaultChecked />
+				<Toggle variant="slim" size="md" label="Fino md" />
+				<Toggle variant="slim" size="md" label="Fino md" defaultChecked />
+			</div>
 		</div>
 	);
 }
@@ -188,6 +259,107 @@ export function MessageInputExample() {
 	return (
 		<div className="max-w-[560px]">
 			<MessageInput placeholder="Pregunta a Emptor…" onAttach={() => {}} onSend={() => {}} />
+		</div>
+	);
+}
+
+export function NumberInputExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-6">
+			<NumberInput
+				label="Invitados"
+				required
+				defaultValue={2}
+				min={1}
+				max={12}
+				hint="Hasta 12 personas."
+			/>
+			<NumberInput label="Horas" orientation="vertical" defaultValue={1.5} step={0.5} min={0} />
+			<NumberInput label="Noches" defaultValue={20} error="Como mucho, 14." />
+			<NumberInput label="Plazas" disabled defaultValue={4} />
+		</div>
+	);
+}
+
+export function TagInputExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-6">
+			<TagInput
+				label="Etiquetas"
+				required
+				defaultValue={["diseño", "código"]}
+				hint="Enter o coma para añadir."
+			/>
+			<TagInput label="Temas" placement="outside" defaultValue={["finanzas", "hogar", "viajes"]} />
+			<TagInput label="Palabras clave" error="Pon al menos una." />
+			<TagInput label="Archivadas" disabled defaultValue={["2025"]} />
+		</div>
+	);
+}
+
+export function VerificationCodeInputExample() {
+	return (
+		<div className="flex flex-col gap-6">
+			<VerificationCodeInput
+				label="Código de verificación"
+				defaultValue="482"
+				hint="Te lo hemos enviado a tu@jotis.me."
+			/>
+			<VerificationCodeInput
+				label="PIN"
+				digits={4}
+				size="sm"
+				defaultValue="7351"
+				error="Ese PIN no es."
+			/>
+		</div>
+	);
+}
+
+const TEAMS = [
+	{ value: "ing", label: "Ingeniería", supporting: "12 usuarios" },
+	{ value: "dis", label: "Diseño", supporting: "10 usuarios" },
+	{ value: "pro", label: "Producto", supporting: "6 usuarios" },
+	{ value: "mkt", label: "Márketing", supporting: "8 usuarios" },
+	{ value: "ven", label: "Ventas" },
+	{ value: "cli", label: "Atención al cliente", supporting: "4 usuarios" },
+	{ value: "ope", label: "Operaciones", supporting: "2 usuarios" },
+];
+// Suma los usuarios de los equipos elegidos para el apoyo del resumen, como el Figma («16 usuarios»).
+const users = (selected: { supporting?: unknown }[]) =>
+	`${selected.reduce((n, o) => n + (Number.parseInt(String(o.supporting ?? "0"), 10) || 0), 0)} usuarios`;
+
+export function MultiSelectExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+			<div className="flex flex-col gap-6">
+				<MultiSelect
+					label="Equipos"
+					required
+					options={TEAMS}
+					placeholder="Elige equipos"
+					hint="Quién verá el informe."
+				/>
+				<MultiSelect
+					label="Equipos"
+					options={TEAMS}
+					defaultValue={["ing", "dis"]}
+					summarySupporting={users}
+				/>
+				<MultiSelect
+					label="Equipos"
+					options={TEAMS}
+					placeholder="Elige equipos"
+					error="Elige al menos uno."
+				/>
+			</div>
+			<MultiSelect
+				label="Equipos"
+				options={TEAMS}
+				defaultValue={["ing", "dis"]}
+				summarySupporting={users}
+				defaultOpen
+			/>
 		</div>
 	);
 }

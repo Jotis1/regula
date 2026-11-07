@@ -36,3 +36,24 @@ export async function expectAccessibleInThemes(ui: ReactElement) {
 	expect(await axeViolations(dark), "tema oscuro").toEqual([]);
 	return { light, dark };
 }
+
+/** Referencias ARIA (`aria-labelledby`, `aria-describedby`, `aria-controls`) que apuntan a un id que no está en `root`. */
+export function danglingAriaRefs(root: ParentNode): string[] {
+	const out: string[] = [];
+	for (const el of root.querySelectorAll("[aria-labelledby],[aria-describedby],[aria-controls]")) {
+		for (const attr of ["aria-labelledby", "aria-describedby", "aria-controls"]) {
+			for (const ref of (el.getAttribute(attr) ?? "").split(/\s+/).filter(Boolean)) {
+				if (!root.querySelector(`[id="${ref}"]`))
+					out.push(`${el.tagName.toLowerCase()} ${attr} → ${ref}`);
+			}
+		}
+	}
+	return out;
+}
+
+/** Pinta en servidor y devuelve las referencias ARIA rotas del HTML resultante (sin hidratar). */
+export function danglingAriaRefsOnServer(html: string): string[] {
+	const host = document.createElement("div");
+	host.innerHTML = html;
+	return danglingAriaRefs(host);
+}
