@@ -20,7 +20,7 @@
 		"format": "biome format --write .",
 		"ci": "biome ci . && turbo run typecheck test build",
 		"changeset": "changeset",
-		"version-packages": "changeset version && bun install",
+		"version-packages": "changeset version && bun install && biome format --write packages",
 		"release": "bun run scripts/release.ts"
 	},
 	"devDependencies": {
