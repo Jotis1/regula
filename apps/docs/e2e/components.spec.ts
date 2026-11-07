@@ -241,3 +241,14 @@ test("/components/: cada card lleva su foto, la de claro o la de oscuro según e
 	// Seis cards ya van en vivo, sin foto (prueba de la tarea 2.4; la 3.1 las pasa todas y este test se reescribe)
 	expect(await page.locator("[data-group] img[loading=lazy]").count()).toBe((pages.length - 6) * 2);
 });
+
+test("/components/: la card enseña la muestra del componente, sobre el damero", async ({ page }) => {
+	await page.goto("/components/");
+	const preview = page.locator('[data-live-preview="Button"]');
+	await preview.scrollIntoViewIfNeeded();
+	// Su muestra (un botón), no el ejemplo del registro con todas las jerarquías y tamaños
+	await expect(preview.locator("button")).toHaveCount(1);
+	await expect(preview.locator("button")).toHaveText("Nuevo gasto");
+	// El damero sutil de fondo (design D4)
+	expect(await preview.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("linear-gradient");
+});

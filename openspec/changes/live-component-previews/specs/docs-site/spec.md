@@ -3,11 +3,15 @@
 ## ADDED Requirements
 
 ### Requirement: Vista previa en vivo en las cards del índice
-Cada card de `/components/` SHALL mostrar el ejemplo del componente pintado con el propio componente, reducido para caber en la card y en el tema de la página. Los de Stream SHALL ir siempre en oscuro. La vista previa SHALL pintarse en el servidor, sin JavaScript propio.
+Cada card de `/components/` SHALL mostrar una muestra con lo más característico del componente, pintada con el propio componente y en el tema de la página, sobre un fondo de cuadros sutil que indica transparencia. Los de Stream SHALL ir siempre en oscuro. La vista previa SHALL pintarse en el servidor, sin JavaScript propio.
 
 #### Scenario: Vista previa con el componente real
 - **WHEN** se abre `/components/` y se mira la card de `ButtonGroup`
-- **THEN** la card contiene el `ButtonGroup` del ejemplo pintado con el componente del paquete, sin imágenes, entero dentro del recuadro de la vista previa
+- **THEN** la card contiene un `ButtonGroup` pintado con el componente del paquete, sin imágenes, entero dentro del recuadro de la vista previa
+
+#### Scenario: Una sola muestra, sobre cuadros
+- **WHEN** se mira la card de `Button`
+- **THEN** su vista previa enseña un botón característico, no todas las jerarquías y tamaños de su ejemplo, sobre un damero de cuadros en `bg-secondary` y `bg-primary` que cambia con el tema
 
 #### Scenario: Sigue el tema
 - **WHEN** se cambia la web a oscuro

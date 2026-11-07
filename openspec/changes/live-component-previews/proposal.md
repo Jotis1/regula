@@ -6,7 +6,7 @@ Las fotos de las cards de `/components/` son las capturas aprobadas de la parida
 
 ## What Changes
 
-- Cada card de `/components/` muestra el ejemplo del registro visual (`visualExamples`) pintado en el servidor y escalado con CSS dentro de un recuadro fijo, en lugar de una imagen.
+- Cada card de `/components/` muestra, en lugar de una imagen, una muestra con lo más característico del componente (un botón, un campo, unas filas de tabla…), pintada en el servidor dentro de un recuadro fijo y sobre un fondo de cuadros sutil, como las vistas previas de Scaena. Las muestras son propias de la card: el ejemplo del registro visual, que tiene todas las variantes, no se toca.
 - La vista previa es decorativa:
   - va en un contenedor `inert` y `aria-hidden`;
   - no se puede enfocar ni se puede usar con el ratón;

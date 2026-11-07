@@ -13,17 +13,21 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
 ## 2. Escenario y prueba con seis componentes
 
 - [x] 2.1 Mover `VIEWPORT_WIDTH` a `src/visual/cards.ts` y que `e2e/visual/compare.ts` lo importe de allí. Comprobar que `e2e/visual.spec.ts -g "controles"` y `bun run test` pasan.
-- [x] 2.2 Crear `src/visual/thumbs.ts` con `PREVIEW_BOX` (288×180), `THUMBS` (zona opcional por componente) y una función pura `thumbOf(name)` que dé zona, escala y desplazamiento (D2). Tests unitarios en `test/thumbs.test.ts`:
-  - sin zona, el ejemplo entero (800 × `CARD_HEIGHTS`) cabe en 288×180;
-  - con zona, la escala llena el escenario sin pasar de 1;
-  - el desplazamiento deja la zona centrada en el escenario;
+- [x] 2.2 Crear `src/visual/thumbs.ts` con `PREVIEW_BOX` (288×180) y una función pura `thumbOf(name)` que encaja el ejemplo entero en el escenario: escala y desplazamiento. Es el respaldo de D2 para un componente sin muestra. Tests unitarios en `test/thumbs.test.ts`:
+  - el ejemplo entero (800 × `CARD_HEIGHTS`) cabe en 288×180 sin pasar de 1 y queda centrado;
   - un componente sin alto en `CARD_HEIGHTS` falla con su nombre.
-- [x] 2.3 Crear `src/components/LivePreview.astro`: el escenario (D2), con `inert`, `aria-hidden`, `pointer-events-none`, `content-visibility` (D5) y `dark-mode` si el componente está en `DARK_PREVIEWS` (D4). Dentro, `VisualExample` sin directiva `client:*` (D1).
-- [ ] 2.4 Montar la card nueva en `index.astro` (D3): vista previa fuera del `<a>`, enlace que cubre la card con `after:inset-0`, y foco y hover en el `<li>`. Activarla solo para Button, Input, Table, DatePicker, StreamAlert y StreamScene; el resto sigue con su foto. Comprobar en local, en claro y en oscuro, a 390, 768 y 1440px, y enseñar capturas de esas seis cards a la persona usuaria antes de seguir (Migration Plan, paso 1).
+- [x] 2.3 Crear `src/components/LivePreview.astro`: el escenario (D2), con `inert`, `aria-hidden`, `pointer-events-none`, `content-visibility` (D5) y `dark-mode` si el componente está en `DARK_PREVIEWS` (D4). Dentro, la muestra del componente (D2) o, si no tiene, su `VisualExample` entero, sin directiva `client:*` (D1).
+- [x] 2.4 Pasar a muestras propias (D2, revisión de la primera prueba):
+  - crear `src/visual/thumbnails.tsx` con las de Button, Input, Table, DatePicker, StreamAlert y StreamScene (esta con `scale` fija, D7);
+  - el fondo de cuadros en el recuadro (D4);
+  - quitar las zonas, `stageScale` y la regla CSS de la primera versión.
+
+  Tests: `test/thumbs.test.ts` sin zonas y un test de que `LivePreview` usa la muestra si existe.
+- [ ] 2.5 Montar la card nueva en `index.astro` (D3): vista previa fuera del `<a>`, enlace que cubre la card con `after:inset-0`, y foco y hover en el `<li>`. Activarla solo para Button, Input, Table, DatePicker, StreamAlert y StreamScene; el resto sigue con su foto. Comprobar en local, en claro y en oscuro, a 390, 768 y 1440px, y enseñar capturas de esas seis cards a la persona usuaria antes de seguir (Migration Plan, paso 1).
 
 ## 3. Todas las cards
 
-- [ ] 3.1 Pasar las 78 cards a vista previa en vivo y quitar la rama de la foto de `index.astro`. Revisar cada card en claro y en oscuro, y añadir a `THUMBS` la zona de las que se vean pequeñas o cortadas (las vacías no deberían quedar: D7). Comprobar con una captura de página completa de `/components/` en los dos temas, que se adjunta a la PR.
+- [ ] 3.1 Escribir en `thumbnails.tsx` la muestra de los 78 componentes, pasar todas las cards a vista previa en vivo y quitar la rama de la foto de `index.astro`. Añadir el test que exige una muestra por componente del catálogo. Revisar cada card en claro y en oscuro. Comprobar con una captura de página completa de `/components/` en los dos temas, que se adjunta a la PR.
 - [ ] 3.2 Reescribir el e2e de las cards en `e2e/components.spec.ts`:
   - la card de `ButtonGroup` contiene un `ButtonGroup` pintado (sin `<img>`);
   - Tab pasa de card a card sin entrar en las vistas previas;
@@ -32,7 +36,7 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
   - al pasar a oscuro, la vista previa cambia sin peticiones nuevas;
   - las de Stream van en oscuro en los dos temas;
   - la página no carga ninguna isla de `VisualExample`;
-  - ninguna de las 78 vistas previas sale vacía (captura del escenario con más de dos colores), que cubre `StreamScene` y `ChannelBanner` con su `stageScale` (D7).
+  - ninguna de las 78 vistas previas sale vacía (captura del escenario con más de dos colores), que cubre `StreamScene` y `ChannelBanner` con su `scale` fija (D7).
 
   Comprobar que pasan este e2e, el que lista el índice y `e2e/a11y.spec.ts -g "/components/ "`, sin ids duplicados.
 - [ ] 3.3 Añadir un test (unitario o e2e) para «Build sin capturas»:
