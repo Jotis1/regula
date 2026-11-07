@@ -13,10 +13,10 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
 ## 2. Escenario y prueba con seis componentes
 
 - [x] 2.1 Mover `VIEWPORT_WIDTH` a `src/visual/cards.ts` y que `e2e/visual/compare.ts` lo importe de allí. Comprobar que `e2e/visual.spec.ts -g "controles"` y `bun run test` pasan.
-- [ ] 2.2 Crear `src/visual/thumbs.ts` con `PREVIEW_BOX` (288×180), `THUMBS` (zona opcional por componente) y una función pura `thumbOf(name)` que dé zona, escala y desplazamiento (D2). Tests unitarios en `test/thumbs.test.ts`:
+- [x] 2.2 Crear `src/visual/thumbs.ts` con `PREVIEW_BOX` (288×180), `THUMBS` (zona opcional por componente) y una función pura `thumbOf(name)` que dé zona, escala y desplazamiento (D2). Tests unitarios en `test/thumbs.test.ts`:
   - sin zona, el ejemplo entero (800 × `CARD_HEIGHTS`) cabe en 288×180;
   - con zona, la escala llena el escenario sin pasar de 1;
-  - el desplazamiento lleva la zona a la esquina del escenario;
+  - el desplazamiento deja la zona centrada en el escenario;
   - un componente sin alto en `CARD_HEIGHTS` falla con su nombre.
 - [ ] 2.3 Crear `src/components/LivePreview.astro`: el escenario (D2), con `inert`, `aria-hidden`, `pointer-events-none`, `content-visibility` (D5) y `dark-mode` si el componente está en `DARK_PREVIEWS` (D4). Dentro, `VisualExample` sin directiva `client:*` (D1).
 - [ ] 2.4 Montar la card nueva en `index.astro` (D3): vista previa fuera del `<a>`, enlace que cubre la card con `after:inset-0`, y foco y hover en el `<li>`. Activarla solo para Button, Input, Table, DatePicker, StreamAlert y StreamScene; el resto sigue con su foto. Comprobar en local, en claro y en oscuro, a 390, 768 y 1440px, y enseñar capturas de esas seis cards a la persona usuaria antes de seguir (Migration Plan, paso 1).
