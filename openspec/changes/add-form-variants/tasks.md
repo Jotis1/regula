@@ -76,7 +76,7 @@ Cada grupo trae sus propios tests y su documentación. La referencia visual de c
 
 - [x] 9.1 Actualizar `packages/react/size-budget.json` solo con las entradas nuevas (`bun run --cwd packages/react check:size --update` y revisar que las existentes no suben). Comprobar que `check:size`, `check:colors` y `check:package` pasan.
 - [x] 9.2 Comprobar la compatibilidad con Next y Astro de los campos: renderizar en servidor `Input`, `NumberInput`, `TagInput`, `VerificationCodeInput` y `MultiSelect` sin errores ni avisos de hidratación. Ampliar `test/react-aria-ssr.test.tsx` o el test equivalente.
-- [ ] 9.3 Comprobar que `bun run artifact:build` genera las cuatro fichas nuevas y que `bun test ./test` de `scripts/artifact` pasa con 78 componentes.
+- [x] 9.3 Comprobar que `bun run artifact:build` genera las cuatro fichas nuevas y que `bun test ./test` de `scripts/artifact` pasa con 78 componentes.
 - [ ] 9.4 Añadir un changeset *minor* de `@jotis-me/react` que liste los componentes y variantes nuevos. Comprobar que `bunx turbo run build test` y el CI completo del PR (los dos jobs) pasan.
 
 ## Workflow follow-up
