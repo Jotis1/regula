@@ -39,7 +39,7 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
   - ninguna de las 78 vistas previas sale vacía (captura del escenario con más de dos colores), que cubre `StreamScene` y `ChannelBanner` con su `scale` fija (D7).
 
   Comprobar que pasan este e2e, el que lista el índice y `e2e/a11y.spec.ts -g "/components/ "`, sin ids duplicados.
-- [ ] 3.3 Añadir un test (unitario o e2e) para «Build sin capturas»:
+- [x] 3.3 Añadir un test (unitario o e2e) para «Build sin capturas»:
   - construye la web con una copia de `e2e/visual/approved/` a la que le falta la PNG de un componente;
   - termina sin errores;
   - la card del componente tiene su vista previa.
@@ -50,8 +50,8 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
 
 ## 4. Limpieza
 
-- [ ] 4.1 Borrar `src/lib/previews.ts`, `src/pages/components/previews/[file].webp.ts` y `test/previews.test.ts`; quitar `sharp` de `apps/docs/package.json` con `bun remove sharp` en `apps/docs`. Comprobar que `bunx turbo run build --filter=docs...`, `bun run test` y `bun run lint` pasan y que `grep -r sharp apps/docs/src` no encuentra nada.
-- [ ] 4.2 Actualizar el `README.md` de `apps/docs`: las cards del índice pintan el ejemplo en vivo con `THUMBS`, y las capturas aprobadas son solo para la paridad visual. Revisar también el paso «Componente nuevo» del README, que ya no necesita la PNG para que el build funcione, aunque el test de catálogo la sigue exigiendo.
+- [x] 4.1 Borrar `src/lib/previews.ts`, `src/pages/components/previews/[file].webp.ts` y `test/previews.test.ts`; quitar `sharp` de `apps/docs/package.json` con `bun remove sharp` en `apps/docs`. Comprobar que `bunx turbo run build --filter=docs...`, `bun run test` y `bun run lint` pasan y que `grep -r sharp apps/docs/src` no encuentra nada.
+- [x] 4.2 Actualizar el `README.md` de `apps/docs`: las cards del índice pintan el ejemplo en vivo con `THUMBS`, y las capturas aprobadas son solo para la paridad visual. Revisar también el paso «Componente nuevo» del README, que ya no necesita la PNG para que el build funcione, aunque el test de catálogo la sigue exigiendo.
 
 ## 5. Medida final y PR
 

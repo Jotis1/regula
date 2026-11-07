@@ -31,8 +31,20 @@ Siempre en Windows, como el job de navegador de CI: el suavizado del texto cambi
 
 1. Ejemplo en el registro (`visualExamples`), con su alto en `CARD_HEIGHTS`.
 2. Su página en `src/content/components/` y su grupo en `src/lib/catalog.ts`.
-3. Revisarlo en la vista previa del deploy (claro y oscuro, con interacción).
-4. Capturar y meter sus dos PNG en el mismo PR. El test de catálogo falla si falta alguna de estas piezas.
+3. Su muestra para la card del índice en `src/visual/thumbnails.tsx` (ver abajo).
+4. Revisarlo en la vista previa del deploy (claro y oscuro, con interacción).
+5. Capturar y meter sus dos PNG en el mismo PR. El build de la web no las necesita, pero el test de catálogo y el visual fallan si falta alguna de estas piezas.
+
+## Cards del índice (`/components/`)
+
+Cada card enseña en vivo la muestra de su componente: lo más característico (un botón, un campo, unas filas de tabla…), con sus propios datos y no el ejemplo del registro, que junta todas las variantes. Las muestras están en `src/visual/thumbnails.tsx` (`THUMBNAILS[nombre]` = `{ render, scale? }`) y las pinta `src/components/LivePreview.astro`:
+
+- **En el servidor y sin JavaScript:** sin directiva `client:*`. Por eso una capa que se abre va en línea (`defaultOpen`, `contained`, `inline`), ya que un portal no se pinta en el servidor. Lo que un componente hace en un efecto tampoco ocurre: a `StreamScene` y `ChannelBanner` se les pasa una `scale` fija.
+- **Escenario de 288×180:** la muestra va centrada a su tamaño natural, y `scale` (menor que 1) la encoge si es más grande. Fondo de cuadros sutil (`bg-secondary` sobre `bg-primary`). Las de `DARK_PREVIEWS` van siempre en oscuro.
+- **Decorativa:** `inert`, `aria-hidden` y fuera del buscador. El enlace de la card cubre toda la card, también la vista previa.
+- **Sin muestra:** la card enseña el ejemplo entero encogido (`src/visual/thumbs.ts`). El test `test/thumbs.test.ts` exige una muestra por componente, y `e2e/components.spec.ts` comprueba que ninguna sale vacía ni repite ids.
+
+Las capturas aprobadas son solo para la paridad visual: el build no las lee (`test/build-without-approved.test.ts`).
 
 ### Cambio de aspecto de un componente que ya tiene captura (también de los 74 originales)
 
