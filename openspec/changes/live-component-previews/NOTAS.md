@@ -31,10 +31,12 @@ El HTML sin comprimir pesa 238.528 bytes y las 156 WebP del endpoint suman 1.198
 
 | | Partida (fotos WebP) | Después |
 |---|---|---|
-| Aserción de `lhci` (mediana de 3, ≥ 0,9) | pasa | |
-| Rendimiento (ejecución representativa) | 84 | |
-| LCP (representativa) | 4,2 s | |
-| TBT (representativa) | 74 ms | |
-| Accesibilidad (representativa) | 100 | |
+| Aserción de `lhci` (mediana de 3, ≥ 0,9) | pasa | pasa |
+| Rendimiento (ejecución representativa) | 84 | 95 |
+| LCP (representativa) | 4,2 s | 2,8 s |
+| TBT (representativa) | 74 ms | 86 ms |
+| Accesibilidad (representativa) | 100 | 100 |
 
 Es una medida ruidosa: en esa misma ejecución `/` dio 88 (TBT 336 ms) y 96 en otras. Se compara con eso en cuenta.
+
+**Después** (ejecución 42380753261, 7 nov): la aserción pasa y la representativa sube de 84 a 95, con el LCP de 4,2 s a 2,8 s, porque ya no hay foto que cargar. El TBT sube 12 ms (74 → 86), dentro del ruido y por el HTML más grande. En la misma ejecución, `/` dio 89 (TBT 353 ms), igual que en la de partida.

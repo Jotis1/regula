@@ -55,8 +55,8 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
 
 ## 5. Medida final y PR
 
-- [ ] 5.1 Repetir las dos medidas de 1.1 y apuntarlas en `NOTAS.md` junto a las de partida. Comprobar que la aserción de `lhci` para `/components/` sigue pasando (mediana de 3 pasadas ≥ 0,9), que la ejecución representativa no empeora respecto a la de partida (rendimiento 84, LCP 4,2 s) teniendo en cuenta lo ruidosa que es, y que en la medida local los nodos, los tiempos y el peso no empeoran sin razón. Si algo empeora, aplicar las salidas del riesgo «DOM grande» del design y volver a medir antes de seguir.
-- [ ] 5.2 Pasar `bun run ci` y la suite de e2e de la web entera (`bunx playwright test`). Abrir la PR con las capturas de 3.1 y las cifras de 5.1, y comprobar que el CI completo pasa.
+- [x] 5.1 Repetir las dos medidas de 1.1 y apuntarlas en `NOTAS.md` junto a las de partida. Comprobar que la aserción de `lhci` para `/components/` sigue pasando (mediana de 3 pasadas ≥ 0,9), que la ejecución representativa no empeora respecto a la de partida (rendimiento 84, LCP 4,2 s) teniendo en cuenta lo ruidosa que es, y que en la medida local los nodos, los tiempos y el peso no empeoran sin razón. Si algo empeora, aplicar las salidas del riesgo «DOM grande» del design y volver a medir antes de seguir.
+- [x] 5.2 Pasar `bun run ci` y la suite de e2e de la web entera (`bunx playwright test`). Abrir la PR con las capturas de 3.1 y las cifras de 5.1, y comprobar que el CI completo pasa.
 
 ## Workflow follow-up
 
