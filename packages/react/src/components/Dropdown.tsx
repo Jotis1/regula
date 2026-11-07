@@ -26,6 +26,11 @@ export interface DropdownAction {
 	/** Acción destructiva: va al final, tras un separador. */
 	danger?: boolean;
 	onSelect?: () => void;
+	/**
+	 * Identifica la opción en un menú con elección (`selectedValue`): con él se marca y se avisa en `onSelectionChange`.
+	 * Cada opción de un menú con elección necesita el suyo.
+	 */
+	value?: string;
 	/** Texto para la búsqueda por teclado si `label` no es texto. */
 	textValue?: string;
 }
@@ -49,6 +54,14 @@ export interface DropdownProps {
 	/** Avisa al abrir y cerrar (ampliación sobre la guía, para el modo controlado). */
 	onOpenChange?: (open: boolean) => void;
 	items: DropdownItem[];
+	/**
+	 * Valor de la opción elegida. Con él, el menú es de elección única: la opción elegida lleva un check a la derecha y se
+	 * anuncia como opción de radio de menú marcada (`menuitemradio`). Es controlado: cambia cuando cambie este valor.
+	 * Sin él, el menú es de acciones, como siempre.
+	 */
+	selectedValue?: string;
+	/** Se llama con el `value` de la opción elegida, que cierra el menú. Solo con `selectedValue`. */
+	onSelectionChange?: (value: string) => void;
 	/** Nombre del menú para lectores de pantalla. Por defecto, el texto del botón. */
 	"aria-label"?: string;
 	className?: string;
@@ -68,6 +81,8 @@ export function Dropdown({
 	defaultOpen = false,
 	onOpenChange,
 	items,
+	selectedValue,
+	onSelectionChange,
 	className,
 	...rest
 }: DropdownProps) {
@@ -77,6 +92,8 @@ export function Dropdown({
 	const [byUser, setByUser] = useState(false);
 	const inline = open && !byUser;
 	const menuLabel = rest["aria-label"] ?? (typeof label === "string" ? label : defaultStrings.options);
+	// Menú de elección única: solo si hay `selectedValue`. Sin él, ni selección ni cambios en las opciones.
+	const choosing = selectedValue !== undefined;
 
 	const panel = (
 		<>
@@ -90,6 +107,17 @@ export function Dropdown({
 				{...(byUser ? {} : { autoFocus: false })}
 				// En línea, fuera de MenuTrigger, nada lo cierra al elegir: se cierra aquí
 				onAction={inline ? () => setOpen(false) : undefined}
+				{...(choosing
+					? {
+							selectionMode: "single" as const,
+							disallowEmptySelection: true,
+							selectedKeys: [selectedValue],
+							onSelectionChange: (keys) => {
+								const [key] = keys === "all" ? [] : keys;
+								if (key !== undefined) onSelectionChange?.(String(key));
+							},
+						}
+					: {})}
 				className="outline-none"
 			>
 				{items.map((item, i) =>
@@ -103,7 +131,7 @@ export function Dropdown({
 						<MenuItem
 							// biome-ignore lint/suspicious/noArrayIndexKey: las etiquetas pueden ser nodos o repetirse
 							key={i}
-							id={i}
+							id={choosing ? (item.value ?? `item-${i}`) : i}
 							textValue={
 								item.textValue ?? (typeof item.label === "string" ? item.label : undefined)
 							}
@@ -115,18 +143,31 @@ export function Dropdown({
 									: "text-secondary data-focused:text-secondary_hover [&_svg]:text-fg-quaternary",
 							)}
 						>
-							{item.icon ? <Icon name={item.icon} size={16} /> : null}
-							{/* Etiqueta, descripción y atajo en sus huecos de React Aria: así aria-labelledby y aria-describedby
-							    de la opción apuntan a algo también en el HTML de servidor. El atajo va dentro de la etiqueta, para
-							    que el nombre accesible sea todo lo que se ve; descripción y teclado quedan vacíos */}
-							<Text slot="label" className="flex min-w-0 flex-1 items-center gap-2">
-								{item.label}
-								{item.shortcut ? (
-									<kbd className={cx(KBD, "ml-auto")}>{item.shortcut}</kbd>
-								) : null}
-							</Text>
-							<Text slot="description" className="hidden" />
-							<Keyboard className="hidden" />
+							{({ isSelected }) => (
+								<>
+									{item.icon ? <Icon name={item.icon} size={16} /> : null}
+									{/* Etiqueta, descripción y atajo en sus huecos de React Aria: así aria-labelledby y aria-describedby
+									    de la opción apuntan a algo también en el HTML de servidor. El atajo va dentro de la etiqueta, para
+									    que el nombre accesible sea todo lo que se ve; descripción y teclado quedan vacíos */}
+									<Text slot="label" className="flex min-w-0 flex-1 items-center gap-2">
+										{item.label}
+										{item.shortcut ? (
+											<kbd className={cx(KBD, "ml-auto")}>{item.shortcut}</kbd>
+										) : null}
+									</Text>
+									<Text slot="description" className="hidden" />
+									<Keyboard className="hidden" />
+									{/* El check de la opción elegida: decorativo, el estado ya lo dice aria-checked. El `!` es para que no
+									    lo pise el color de iconos de la opción (`[&_svg]:text-fg-quaternary`) */}
+									{choosing && isSelected ? (
+										<Icon
+											name="check"
+											size={16}
+											className="flex-none text-fg-brand-primary!"
+										/>
+									) : null}
+								</>
+							)}
 						</MenuItem>
 					),
 				)}

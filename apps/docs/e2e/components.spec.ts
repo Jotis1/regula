@@ -1,7 +1,7 @@
 // Páginas de componente: ficha, ejemplos vivos, props, fragmentos de código y navegación.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 import { PNG } from "pngjs";
 import { labelOf } from "../src/lib/catalog";
 
@@ -104,6 +104,23 @@ test("la ficha se reparte por etiqueta sin cambiar su texto: «Evita» va en la 
 	// Y la de props va junto a su tabla
 	const props = (md.match(/^\*\*Props\.\*\*.*$/m) as RegExpMatchArray)[0];
 	await expect(page.locator("section[aria-labelledby=props] > p").first()).toHaveText(plain(props));
+});
+
+test("Dropdown: la tabla de props lleva la elección y el check de la elegida no se queda en el gris de los iconos", async ({
+	page,
+}) => {
+	await page.goto("/components/dropdown/");
+	const props = page.getByRole("region", { name: "Props de Dropdown" });
+	await expect(props).toContainText("selectedValue");
+	await expect(props).toContainText("onSelectionChange");
+	const examples = page.locator("#variantes + div astro-island");
+	await examples.scrollIntoViewIfNeeded();
+	await expect(examples).not.toHaveAttribute("ssr", /.*/);
+	const checked = examples.locator('[role="menuitemradio"][aria-checked="true"]');
+	await expect(checked).toHaveCount(1);
+	const color = (svg: Locator) => svg.evaluate((el) => getComputedStyle(el).color);
+	// El primer icono es el de la opción (gris, fg-quaternary) y el último el check (de marca)
+	expect(await color(checked.locator("svg").last())).not.toBe(await color(checked.locator("svg").first()));
 });
 
 test("CommandMenu: con el foco en el buscador, la opción activa lleva el anillo de foco; sin foco, solo el fondo", async ({

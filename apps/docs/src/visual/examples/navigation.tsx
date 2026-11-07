@@ -11,6 +11,7 @@ import {
 	Tabs,
 	TreeView,
 } from "@jotis-me/react";
+import { useState } from "react";
 import { stack } from "./actions";
 
 const sections = [
@@ -74,22 +75,44 @@ export function SidebarNavExample() {
 }
 
 export function DropdownExample() {
+	// El de elección única (ampliación sobre la guía, el de tema de la cabecera) es de lectura: el estado es de quien lo usa
+	const [theme, setTheme] = useState("claro");
 	return (
-		<div style={{ height: 310 }}>
-			<Dropdown
-				label="Acciones"
-				defaultOpen
-				header={
-					<AvatarLabel size="md" initials="AD" name="Administrador" supporting="admin@jotis.me" />
-				}
-				items={[
-					{ icon: "user-01", label: "Ver perfil", shortcut: "⌘P" },
-					{ icon: "settings-02", label: "Ajustes", shortcut: "⌘S" },
-					{ icon: "copy-01", label: "Duplicar" },
-					{ divider: true },
-					{ icon: "trash-01", label: "Eliminar", danger: true },
-				]}
-			/>
+		<div style={{ height: 310, display: "flex", alignItems: "flex-start", gap: 24 }}>
+			<div style={{ width: 280 }}>
+				<Dropdown
+					label="Acciones"
+					defaultOpen
+					header={
+						<AvatarLabel
+							size="md"
+							initials="AD"
+							name="Administrador"
+							supporting="admin@jotis.me"
+						/>
+					}
+					items={[
+						{ icon: "user-01", label: "Ver perfil", shortcut: "⌘P" },
+						{ icon: "settings-02", label: "Ajustes", shortcut: "⌘S" },
+						{ icon: "copy-01", label: "Duplicar" },
+						{ divider: true },
+						{ icon: "trash-01", label: "Eliminar", danger: true },
+					]}
+				/>
+			</div>
+			<div style={{ width: 280 }}>
+				<Dropdown
+					label="Tema"
+					defaultOpen
+					selectedValue={theme}
+					onSelectionChange={setTheme}
+					items={[
+						{ icon: "monitor-01", label: "Sistema", value: "sistema" },
+						{ icon: "sun", label: "Claro", value: "claro" },
+						{ icon: "moon-01", label: "Oscuro", value: "oscuro" },
+					]}
+				/>
+			</div>
 		</div>
 	);
 }

@@ -161,6 +161,84 @@ describe("Dropdown", () => {
 		expect(danglingAriaRefsOnServer(html)).toEqual([]);
 		expect(html).not.toMatch(/role="menuitem"[^>]*aria-haspopup/);
 	});
+
+	// Elección única (requisito «Menú con una opción elegida»): el selector de tema de la web
+	const themes = [
+		{ icon: "monitor-01" as const, label: "Sistema", value: "sistema" },
+		{ icon: "sun" as const, label: "Claro", value: "claro" },
+		{ icon: "moon-01" as const, label: "Oscuro", value: "oscuro" },
+	];
+
+	it("con elección, la opción elegida lleva check y se anuncia como menuitemradio marcada", async () => {
+		render(<Dropdown label="Tema" selectedValue="claro" items={themes} />);
+		await userEvent.click(screen.getByRole("button", { name: "Tema" }));
+		const radios = screen.getAllByRole("menuitemradio");
+		expect(radios.map((r) => r.textContent)).toEqual(["Sistema", "Claro", "Oscuro"]);
+		expect(radios.map((r) => r.getAttribute("aria-checked"))).toEqual(["false", "true", "false"]);
+		expect(screen.queryAllByRole("menuitem")).toHaveLength(0);
+		// El check solo en la elegida: 3 iconos de opción + 1 check
+		expect(radios.map((r) => r.querySelectorAll("svg").length)).toEqual([1, 2, 1]);
+	});
+
+	it("con elección, elegir otra con el teclado avisa con su valor, cierra y devuelve el foco al botón", async () => {
+		const onSelectionChange = vi.fn();
+		render(
+			<Dropdown
+				label="Tema"
+				selectedValue="claro"
+				onSelectionChange={onSelectionChange}
+				items={themes}
+			/>,
+		);
+		const trigger = screen.getByRole("button", { name: "Tema" });
+		trigger.focus();
+		await userEvent.keyboard("{Enter}");
+		await userEvent.keyboard("{ArrowDown}{Enter}");
+		expect(onSelectionChange).toHaveBeenCalledExactlyOnceWith("oscuro");
+		expect(screen.queryByRole("menu")).toBeNull();
+		await waitFor(() => expect(document.activeElement).toBe(trigger));
+	});
+
+	it("con elección, la marca sigue a selectedValue cada vez que se abre, lo decide quien lo usa", async () => {
+		const { rerender } = render(<Dropdown label="Tema" selectedValue="claro" items={themes} />);
+		await userEvent.click(screen.getByRole("button", { name: "Tema" }));
+		await userEvent.click(screen.getByRole("menuitemradio", { name: "Oscuro" }));
+		// El menú solo avisa: si quien lo usa no cambia el valor, al abrirlo de nuevo sigue marcada «Claro»
+		await userEvent.click(screen.getByRole("button", { name: "Tema" }));
+		expect(screen.getAllByRole("menuitemradio").map((r) => r.getAttribute("aria-checked"))).toEqual([
+			"false",
+			"true",
+			"false",
+		]);
+		await userEvent.keyboard("{Escape}");
+		rerender(<Dropdown label="Tema" selectedValue="oscuro" items={themes} />);
+		await userEvent.click(screen.getByRole("button", { name: "Tema" }));
+		expect(screen.getAllByRole("menuitemradio").map((r) => r.getAttribute("aria-checked"))).toEqual([
+			"false",
+			"false",
+			"true",
+		]);
+	});
+
+	it("sin elección, los elementos siguen siendo menuitem, sin check, y cada acción llama a su onSelect", async () => {
+		const onSelect = vi.fn();
+		render(<Dropdown label="Acciones" items={make(onSelect)} />);
+		await userEvent.click(screen.getByRole("button", { name: "Acciones" }));
+		expect(screen.getAllByRole("menuitem")).toHaveLength(4);
+		expect(screen.queryAllByRole("menuitemradio")).toHaveLength(0);
+		expect(screen.getByRole("menu").querySelector('[data-selected="true"]')).toBeNull();
+		await userEvent.click(screen.getByRole("menuitem", { name: /Ver perfil/ }));
+		expect(onSelect).toHaveBeenCalledOnce();
+	});
+
+	it("con elección abierta de inicio, el HTML de servidor marca la elegida y no deja referencias rotas", () => {
+		const html = renderToString(
+			<Dropdown label="Tema" defaultOpen selectedValue="oscuro" items={themes} />,
+		);
+		expect(html.match(/role="menuitemradio"/g)).toHaveLength(3);
+		expect(html.match(/aria-checked="true"/g)).toHaveLength(1);
+		expect(danglingAriaRefsOnServer(html)).toEqual([]);
+	});
 });
 
 describe("FilterBar", () => {
