@@ -4,6 +4,13 @@
 
 export type ThemeChoice = "sistema" | "claro" | "oscuro";
 
+/** Las tres opciones, con el nombre que se lee: las usan el selector de la cabecera y el del menú móvil. */
+export const THEME_OPTIONS: { value: ThemeChoice; label: string }[] = [
+	{ value: "sistema", label: "Sistema" },
+	{ value: "claro", label: "Claro" },
+	{ value: "oscuro", label: "Oscuro" },
+];
+
 const KEY = "regula-tema";
 const EVENT = "regula:theme";
 const darkQuery = () => matchMedia("(prefers-color-scheme: dark)");
@@ -31,6 +38,8 @@ export function setTheme(choice: ThemeChoice) {
 		if (choice === "sistema") localStorage.removeItem(KEY);
 		else localStorage.setItem(KEY, choice);
 	} catch {}
+	// `data-tema` lo lee la CSS del selector de la cabecera (el script de <head> lo pone antes de pintar)
+	document.documentElement.dataset.tema = choice;
 	paint(choice === "sistema" ? darkQuery().matches : choice === "oscuro");
 }
 

@@ -20,7 +20,7 @@ test("la cabecera móvil tiene marca, búsqueda, tema y menú, sin las secciones
 	expect((await header.boundingBox())?.height).toBe(56);
 	await expect(header.getByRole("link", { name: "Regula, portada" })).toBeVisible();
 	await expect(header.getByRole("button", { name: /Buscar en Regula/ })).toBeVisible();
-	await expect(header.getByRole("button", { name: /Usar tema/ })).toBeVisible();
+	await expect(header.getByRole("button", { name: /^Tema/ })).toBeVisible();
 	await expect(menuButton(page)).toHaveAttribute("aria-expanded", "false");
 	await expect(page.getByRole("navigation", { name: "Secciones" })).toBeHidden();
 	// La navegación lateral de escritorio no se ve: está en el menú
@@ -66,6 +66,23 @@ test("la búsqueda del menú abre la búsqueda global", async ({ page }) => {
 	await menu(page).getByRole("button", { name: "Buscar en Regula" }).click();
 	await expect(menu(page)).toBeHidden();
 	await expect(page.getByRole("dialog", { name: "Buscar en Regula" })).toBeVisible();
+});
+
+test("la cabecera y el menú móvil comparten la elección de tema", async ({ page }) => {
+	await page.emulateMedia({ colorScheme: "light" });
+	await page.goto("/");
+	const header = page.locator("body > header");
+	await header.getByRole("button", { name: "Tema: Sistema", exact: true }).click();
+	await page.getByRole("menuitemradio", { name: "Claro", exact: true }).click();
+	await expect(header.getByRole("button", { name: "Tema: Claro", exact: true })).toBeVisible();
+	await openMenu(page);
+	const theme = menu(page).getByRole("group", { name: "Tema" });
+	await expect(theme.getByRole("button", { name: "Claro" })).toHaveAttribute("aria-pressed", "true");
+
+	// Y al revés: lo que se elige en el menú móvil lo dice el botón de la cabecera
+	await theme.getByRole("button", { name: "Oscuro" }).click();
+	await expect(page.locator("html")).toHaveClass(/dark-mode/);
+	await expect(header.getByRole("button", { name: "Tema: Oscuro", exact: true })).toBeVisible();
 });
 
 test("«Sistema» sigue al sistema y borra la elección guardada", async ({ page }) => {

@@ -14,9 +14,9 @@
 
 ## 3. Selector de tema en la cabecera
 
-- [ ] 3.1 Hacer que `ThemeScript.astro` y `setTheme()` (`src/lib/theme.ts`) pongan `data-tema="sistema|claro|oscuro"` en `<html>` (design D2). Verificar en el e2e de tema que el atributo está antes de `<body>`, con el mismo truco de `recordThemeAtBody`.
-- [ ] 3.2 Crear `src/components/ThemeMenu.tsx` (isla `client:idle`): disparador con los tres iconos, visibles según `data-tema`, y nombre «Tema: <elección>», más `Dropdown` con Sistema / Claro / Oscuro y `selectedValue` de `themeChoice()`, escuchando `onThemeChange`. Sustituir `ThemeToggle.astro` en `SiteHeader.astro` y borrarlo. Verificar con una captura de la cabecera en claro y oscuro, con el menú abierto, a 1440 y 390px.
-- [ ] 3.3 Actualizar `e2e/theme.spec.ts` a los escenarios de «Tema claro y oscuro»: recordar oscuro sin parpadeo, volver a Sistema en escritorio y seguir un cambio del sistema sin recargar (`emulateMedia`), el botón con el icono y el nombre de lo elegido, y la misma elección en el menú móvil a 390px. Verificar que pasa junto con `header.spec.ts`, `mobile.spec.ts` y `a11y.spec.ts`.
+- [x] 3.1 Hacer que `ThemeScript.astro` y `setTheme()` (`src/lib/theme.ts`) pongan `data-tema="sistema|claro|oscuro"` en `<html>` (design D2). Verificar en el e2e de tema que el atributo está antes de `<body>`, con el mismo truco de `recordThemeAtBody`.
+- [x] 3.2 Crear `src/components/ThemeMenu.tsx` (isla `client:idle`): disparador con los tres iconos, visibles según `data-tema`, y nombre «Tema: <elección>», más `Dropdown` con Sistema / Claro / Oscuro y `selectedValue` de `themeChoice()`, escuchando `onThemeChange`. Sustituir `ThemeToggle.astro` en `SiteHeader.astro` y borrarlo. Verificar con una captura de la cabecera en claro y oscuro, con el menú abierto, a 1440 y 390px.
+- [x] 3.3 Actualizar `e2e/theme.spec.ts` a los escenarios de «Tema claro y oscuro»: recordar oscuro sin parpadeo, volver a Sistema en escritorio y seguir un cambio del sistema sin recargar (`emulateMedia`), el botón con el icono y el nombre de lo elegido, y la misma elección en el menú móvil a 390px. Verificar que pasa junto con `header.spec.ts`, `mobile.spec.ts` y `a11y.spec.ts`.
 
 ## 4. Integración
 

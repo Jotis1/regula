@@ -74,14 +74,14 @@ test("el salto al contenido aparece con el teclado y lleva al contenido", async 
 	await expect(page.locator("#contenido")).toHaveCount(1);
 });
 
-test("la búsqueda tiene aspecto de campo y el conmutador usa los textos del diseño", async ({ page }) => {
+test("la búsqueda tiene aspecto de campo y el selector de tema dice lo elegido", async ({ page }) => {
 	await page.emulateMedia({ colorScheme: "light" });
 	await page.goto("/");
 	const search = header(page).getByRole("button", { name: /Buscar en Regula/ });
 	await expect(search).toContainText("Ctrl K");
 	await expect(search).toHaveAttribute("aria-keyshortcuts", "Control+K Meta+K");
 	expect((await search.boundingBox())?.width).toBe(300);
-	await expect(header(page).getByRole("button", { name: "Usar tema oscuro" })).toBeVisible();
+	await expect(header(page).getByRole("button", { name: "Tema: Sistema" })).toBeVisible();
 });
 
 // Medidas de Header.dc.html a 1440px: alto 64, padding lateral 32, icono 28, huecos de 32 entre bloques y 24
@@ -101,9 +101,7 @@ test("a 1440px tiene las medidas del diseño", async ({ page }) => {
 		.getByRole("link")
 		.evaluateAll((as) => as.slice(0, 2).map((a) => a.getBoundingClientRect().toJSON()));
 	expect(second.x - (first.x + first.width)).toBe(24);
-	const toggle = await header(page)
-		.getByRole("button", { name: /Usar tema/ })
-		.boundingBox();
+	const toggle = await header(page).getByRole("button", { name: /^Tema/ }).boundingBox();
 	expect(1440 - ((toggle?.x ?? 0) + (toggle?.width ?? 0))).toBe(32);
 	const underline = await sections(page)
 		.locator("a[aria-current]")

@@ -4,13 +4,7 @@
 import { AppIcon, ButtonGroup, Icon, Slideout } from "@jotis-me/react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { initDocNav } from "../lib/docnav";
-import { onThemeChange, setTheme, type ThemeChoice, themeChoice } from "../lib/theme";
-
-const THEMES: { value: ThemeChoice; label: string }[] = [
-	{ value: "sistema", label: "Sistema" },
-	{ value: "claro", label: "Claro" },
-	{ value: "oscuro", label: "Oscuro" },
-];
+import { onThemeChange, setTheme, THEME_OPTIONS, type ThemeChoice, themeChoice } from "../lib/theme";
 
 export default function MobileMenu({ children }: { children?: ReactNode }) {
 	const [open, setOpen] = useState(false);
@@ -67,7 +61,7 @@ export default function MobileMenu({ children }: { children?: ReactNode }) {
 						<span className="grow text-sm font-medium text-secondary">Tema</span>
 						<ButtonGroup
 							aria-label="Tema"
-							items={THEMES}
+							items={THEME_OPTIONS}
 							value={theme}
 							onChange={(v) => setTheme(v as ThemeChoice)}
 						/>

@@ -318,7 +318,9 @@ test("/components/: el tema cambia las vistas previas sin pedir nada; las de Str
 	await expect(alert).toHaveClass(/dark-mode/);
 	const requests: string[] = [];
 	page.on("request", (r) => requests.push(r.url()));
-	await page.getByRole("button", { name: /tema/i }).first().click();
+	// El selector de tema de la cabecera: se abre y se elige Oscuro
+	await page.getByRole("button", { name: /^Tema: / }).click();
+	await page.getByRole("menuitemradio", { name: "Oscuro", exact: true }).click();
 	await expect.poll(() => bg(button)).not.toBe(lightButton);
 	expect(requests.filter((u) => /previews|\.webp|\.png/.test(u))).toEqual([]);
 	// Stream no cambia: ya estaba en oscuro
