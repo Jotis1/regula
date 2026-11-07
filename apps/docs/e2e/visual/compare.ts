@@ -4,8 +4,8 @@ import { join } from "node:path";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 
-/** Ancho de captura: el mismo para las capturas aprobadas y para las páginas de comparación. */
-export const VIEWPORT_WIDTH = 800;
+/** Ancho de captura: el mismo para las capturas aprobadas y para las páginas de comparación (se define con las alturas). */
+export { VIEWPORT_WIDTH } from "../../src/visual/cards";
 /** Capturas aprobadas, una por componente y tema (design D4: los 74 originales salieron de la guía). */
 export const APPROVED_DIR = join(import.meta.dirname, "approved");
 export const approvedPath = (name: string, theme: "light" | "dark", dir = APPROVED_DIR) =>

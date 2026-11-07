@@ -6,7 +6,8 @@
 			"url": [
 				"http://localhost:4500/",
 				"http://localhost:4500/foundations/color/",
-				"http://localhost:4500/components/button/"
+				"http://localhost:4500/components/button/",
+				"http://localhost:4500/components/"
 			],
 			"numberOfRuns": 3,
 			"settings": {

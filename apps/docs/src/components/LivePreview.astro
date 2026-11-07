@@ -1,0 +1,58 @@
+---
+// Vista previa en vivo de un componente en su card de /components/ (design D1-D7): su muestra característica
+// (thumbnails.tsx), pintada en el servidor sin directiva `client:*` (cero JavaScript) y centrada en un escenario de
+// 288×180, sobre un damero sutil que indica transparencia, como las vistas previas de Scaena. Si el componente aún no
+// tiene muestra, su ejemplo entero encogido para caber. Es decorativa: inerte, fuera del árbol de accesibilidad y del
+// buscador. Los de Stream van siempre en oscuro.
+import { CARD_HEIGHTS, DARK_PREVIEWS, VIEWPORT_WIDTH } from "../visual/cards";
+import { THUMBNAILS, Thumbnail } from "../visual/thumbnails";
+import { PREVIEW_BOX, thumbOf } from "../visual/thumbs";
+import VisualExample from "../visual/VisualExample";
+
+interface Props {
+	name: string;
+}
+
+const { name } = Astro.props;
+const thumbnail = THUMBNAILS[name];
+const fit = thumbnail ? undefined : thumbOf(name);
+// Damero de cuadros de 8px (el CHECKER de Scaena): `bg-secondary` sobre `bg-primary`, con tokens para que siga el tema
+const CHECKER =
+	"bg-[length:16px_16px] bg-[position:0_0,8px_8px] bg-[image:linear-gradient(45deg,var(--bg-secondary)_25%,transparent_25%,transparent_75%,var(--bg-secondary)_75%),linear-gradient(45deg,var(--bg-secondary)_25%,transparent_25%,transparent_75%,var(--bg-secondary)_75%)]";
+---
+
+<div
+	aria-hidden="true"
+	inert
+	data-pagefind-ignore
+	data-live-preview={name}
+	class:list={[
+		"pointer-events-none flex aspect-[16/10] items-center justify-center overflow-hidden bg-primary p-4 shadow-[inset_0_-1px_0_var(--border-secondary)]",
+		CHECKER,
+		DARK_PREVIEWS.has(name) && "dark-mode",
+	]}
+>
+	<div
+		class="relative flex shrink-0 items-center justify-center overflow-hidden"
+		style={`width:${PREVIEW_BOX.width}px;height:${PREVIEW_BOX.height}px;content-visibility:auto;contain-intrinsic-size:${PREVIEW_BOX.width}px ${PREVIEW_BOX.height}px`}
+	>
+		{
+			thumbnail ? (
+				<div
+					class="flex shrink-0 items-center justify-center font-body text-primary antialiased"
+					style={thumbnail.scale ? `transform:scale(${thumbnail.scale})` : undefined}
+				>
+					<Thumbnail name={name} />
+				</div>
+			) : (
+				/* Sin muestra: el ejemplo entero, como en la página de comparación (800 de ancho con 16px de margen) */
+				<div
+					class="absolute top-0 left-0 box-border origin-top-left bg-primary p-4 font-body text-primary antialiased"
+					style={`width:${VIEWPORT_WIDTH}px;min-height:${CARD_HEIGHTS[name]}px;transform:translate(${fit?.left}px,${fit?.top}px) scale(${fit?.scale})`}
+				>
+					<VisualExample name={name} />
+				</div>
+			)
+		}
+	</div>
+</div>

@@ -1,9 +1,18 @@
 "use client";
 
-import { isValidElement, type ReactElement, type ReactNode, useRef, useState } from "react";
-import { Menu, MenuItem, MenuTrigger, Popover, Pressable, Separator } from "react-aria-components";
+import { isValidElement, type ReactElement, type ReactNode, useState } from "react";
+import {
+	Keyboard,
+	Menu,
+	MenuItem,
+	MenuTrigger,
+	Popover,
+	Pressable,
+	Separator,
+	Text,
+} from "react-aria-components";
 import { cx } from "../internal/cx.js";
-import { Kbd } from "../internal/kbd.js";
+import { KBD } from "../internal/kbd.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
@@ -66,8 +75,7 @@ export function Dropdown({
 	// Abierto por el usuario: menú modal con el foco dentro, y React Aria lo devuelve al disparador al cerrar.
 	// Abierto de inicio (defaultOpen): sin foco ni bloqueo de la página.
 	const [byUser, setByUser] = useState(false);
-	// MenuTrigger abre (no alterna) al pulsar con ratón; el menú abierto de inicio no es modal y nada lo cerraría.
-	const closeOnPress = useRef(false);
+	const inline = open && !byUser;
 	const menuLabel = rest["aria-label"] ?? (typeof label === "string" ? label : defaultStrings.options);
 
 	const panel = (
@@ -77,7 +85,13 @@ export function Dropdown({
 					{header}
 				</div>
 			) : null}
-			<Menu aria-label={menuLabel} {...(byUser ? {} : { autoFocus: false })} className="outline-none">
+			<Menu
+				aria-label={menuLabel}
+				{...(byUser ? {} : { autoFocus: false })}
+				// En línea, fuera de MenuTrigger, nada lo cierra al elegir: se cierra aquí
+				onAction={inline ? () => setOpen(false) : undefined}
+				className="outline-none"
+			>
 				{items.map((item, i) =>
 					isDivider(item) ? (
 						<Separator
@@ -102,8 +116,17 @@ export function Dropdown({
 							)}
 						>
 							{item.icon ? <Icon name={item.icon} size={16} /> : null}
-							{item.label}
-							{item.shortcut ? <Kbd className="ml-auto">{item.shortcut}</Kbd> : null}
+							{/* Etiqueta, descripción y atajo en sus huecos de React Aria: así aria-labelledby y aria-describedby
+							    de la opción apuntan a algo también en el HTML de servidor. El atajo va dentro de la etiqueta, para
+							    que el nombre accesible sea todo lo que se ve; descripción y teclado quedan vacíos */}
+							<Text slot="label" className="flex min-w-0 flex-1 items-center gap-2">
+								{item.label}
+								{item.shortcut ? (
+									<kbd className={cx(KBD, "ml-auto")}>{item.shortcut}</kbd>
+								) : null}
+							</Text>
+							<Text slot="description" className="hidden" />
+							<Keyboard className="hidden" />
 						</MenuItem>
 					),
 				)}
@@ -114,21 +137,21 @@ export function Dropdown({
 	return (
 		<div className={cx("relative inline-block", className)}>
 			<MenuTrigger
-				isOpen={open}
+				// Abierto de inicio, el panel va en línea fuera de MenuTrigger y para React Aria está cerrado. Dentro, cada
+				// MenuItem recibiría las props del disparador (su id, aria-controls…) y el HTML de servidor repetiría el id
+				// del botón en cada opción.
+				isOpen={open && byUser}
 				onOpenChange={(next) => {
+					// Con el menú en línea abierto, el botón lo cierra (MenuTrigger solo abriría el popover)
+					if (next && inline) {
+						setOpen(false);
+						return;
+					}
 					setByUser(next);
 					setOpen(next);
 				}}
 			>
-				<Pressable
-					onPressStart={() => {
-						closeOnPress.current = open && !byUser;
-					}}
-					onPress={() => {
-						if (closeOnPress.current) setOpen(false);
-						closeOnPress.current = false;
-					}}
-				>
+				<Pressable>
 					{trigger && isValidElement(trigger) ? (
 						(trigger as ReactElement)
 					) : (
@@ -137,16 +160,15 @@ export function Dropdown({
 						</Button>
 					)}
 				</Pressable>
-				{open && !byUser ? (
-					// Abierto de inicio (vista previa): el panel va en línea bajo el botón, como en la guía. Un popover
-					// flotante se daría la vuelta, se recortaría a la ventana y se cerraría al desplazar la página.
-					<div className={cx("absolute top-[calc(100%+4px)] left-0 z-30", PANEL)}>{panel}</div>
-				) : (
-					<Popover placement="bottom start" offset={4} className={cx("z-30", PANEL)}>
-						{panel}
-					</Popover>
-				)}
+				<Popover placement="bottom start" offset={4} className={cx("z-30", PANEL)}>
+					{panel}
+				</Popover>
 			</MenuTrigger>
+			{inline ? (
+				// Abierto de inicio (vista previa): el panel va en línea bajo el botón, como en la guía. Un popover
+				// flotante se daría la vuelta, se recortaría a la ventana y se cerraría al desplazar la página.
+				<div className={cx("absolute top-[calc(100%+4px)] left-0 z-30", PANEL)}>{panel}</div>
+			) : null}
 		</div>
 	);
 }

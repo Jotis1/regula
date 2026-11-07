@@ -2,6 +2,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Page, test } from "@playwright/test";
+import { PNG } from "pngjs";
 
 /** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
 async function hydrated(page: Page, selector: string) {
@@ -199,10 +200,11 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 	await page.goto("/components/");
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Componentes");
 	const index = page.locator("article");
-	const links = index.locator("[data-group] a");
+	// El enlace de cada card (las vistas previas pueden llevar enlaces dibujados: Breadcrumbs, SidebarNav…)
+	const links = index.locator("[data-group] > li > a");
 	await expect(links).toHaveCount(pages.length);
 	for (const { slug, name } of pages) {
-		const link = index.locator(`[data-group] a[href="/components/${slug}/"]`);
+		const link = index.locator(`[data-group] > li > a[href="/components/${slug}/"]`);
 		await expect(link).toHaveCount(1);
 		await expect(link.locator("span").first()).toHaveText(name);
 	}
@@ -212,29 +214,114 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 	await expect(page.locator("#seccion-stream + section h3")).toHaveText(/Alertas/);
 });
 
-test("/components/: cada card lleva su foto, la de claro o la de oscuro según el tema", async ({
+// Vistas previas en vivo de las cards (change live-component-previews): la muestra de cada componente, pintada en el
+// servidor, inerte y fuera del enlace, que cubre toda la card.
+const card = (page: Page, slug: string) =>
+	page.locator(`[data-group] > li:has(> a[href="/components/${slug}/"])`);
+
+test("/components/: la card de ButtonGroup pinta un ButtonGroup del paquete, sin imágenes, y su nombre es el de siempre", async ({
 	page,
-	request,
 }) => {
 	await page.goto("/components/");
-	const card = page.locator(`[data-group] a[href="/components/button-group/"]`);
-	const light = card.locator(`img[src="/components/previews/ButtonGroup-light.webp"]`);
-	const dark = card.locator(`img[src="/components/previews/ButtonGroup-dark.webp"]`);
-	await card.scrollIntoViewIfNeeded();
-	await expect(light).toBeVisible();
-	await expect(dark).toBeHidden();
-	// Decorativa: el nombre de la card sigue siendo solo el del componente y su descripción
-	await expect(light).toHaveAttribute("alt", "");
-	await expect(card).toHaveAccessibleName(/^ButtonGroup Grupo segmentado/);
-	await expect.poll(() => light.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
-	expect(
-		(await request.get("/components/previews/StreamScene-dark.webp")).headers()["content-type"],
-	).toContain("image/webp");
-	await page.emulateMedia({ colorScheme: "dark" });
-	await page.reload();
-	await card.scrollIntoViewIfNeeded();
-	await expect(dark).toBeVisible();
-	await expect(light).toBeHidden();
-	// Las fotos van con lazy: al cargar solo se piden las de la vista
-	expect(await page.locator("[data-group] img[loading=lazy]").count()).toBe(pages.length * 2);
+	const c = card(page, "button-group");
+	await c.scrollIntoViewIfNeeded();
+	const preview = c.locator("[data-live-preview]");
+	await expect(preview.locator("button")).toHaveCount(3);
+	await expect(preview.locator("button").nth(1)).toHaveText("7 días");
+	await expect(page.locator("[data-group] img")).toHaveCount(0);
+	await expect(preview).toHaveAttribute("aria-hidden", "true");
+	await expect(preview).toHaveAttribute("inert", "");
+	await expect(c.locator("> a")).toHaveAccessibleName(/^ButtonGroup Grupo segmentado/);
+});
+
+test("/components/: la card enseña la muestra del componente, sobre el damero", async ({ page }) => {
+	await page.goto("/components/");
+	const preview = page.locator('[data-live-preview="Button"]');
+	await preview.scrollIntoViewIfNeeded();
+	// Su muestra (un botón), no el ejemplo del registro con todas las jerarquías y tamaños
+	await expect(preview.locator("button")).toHaveCount(1);
+	await expect(preview.locator("button")).toHaveText("Nuevo gasto");
+	// El damero sutil de fondo (design D4)
+	expect(await preview.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("linear-gradient");
+});
+
+test("/components/: Tab va de card en card sin entrar en las vistas previas", async ({ page }) => {
+	await page.goto("/components/");
+	const first = page.locator("[data-group] > li > a").first();
+	await first.focus();
+	for (let i = 0; i < 12; i++) {
+		const inside = await page.evaluate(() => !!document.activeElement?.closest("[data-live-preview]"));
+		expect(inside).toBe(false);
+		await expect(page.locator(":focus")).toHaveAttribute("href", /^\/components\/[a-z-]+\/$/);
+		await page.keyboard.press("Tab");
+	}
+});
+
+test("/components/: un clic sobre un botón dibujado abre la página del componente", async ({ page }) => {
+	await page.goto("/components/");
+	const button = card(page, "button").locator("[data-live-preview] button");
+	await button.scrollIntoViewIfNeeded();
+	const box = await button.boundingBox();
+	expect(box).not.toBeNull();
+	if (box) await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+	await expect(page).toHaveURL(/\/components\/button\/$/);
+});
+
+test("/components/: el tema cambia las vistas previas sin pedir nada; las de Stream van siempre en oscuro", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	const button = page.locator('[data-live-preview="Button"]');
+	const alert = page.locator('[data-live-preview="StreamAlert"]');
+	const bg = (l: typeof button) => l.evaluate((el) => getComputedStyle(el).backgroundColor);
+	const lightButton = await bg(button);
+	const streamLight = await bg(alert);
+	await expect(alert).toHaveClass(/dark-mode/);
+	const requests: string[] = [];
+	page.on("request", (r) => requests.push(r.url()));
+	await page.getByRole("button", { name: /tema/i }).first().click();
+	await expect.poll(() => bg(button)).not.toBe(lightButton);
+	expect(requests.filter((u) => /previews|\.webp|\.png/.test(u))).toEqual([]);
+	// Stream no cambia: ya estaba en oscuro
+	expect(await bg(alert)).toBe(streamLight);
+});
+
+test("/components/: ninguna vista previa es una isla y la página no carga VisualExample", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	await expect(page.locator("[data-live-preview] astro-island")).toHaveCount(0);
+	await expect(page.locator("astro-island[component-url*='VisualExample']")).toHaveCount(0);
+	// Sin ids repetidos entre las 78 muestras (Dropdown abierto de inicio los repetía en su HTML de servidor)
+	const repeated = await page.evaluate(() => {
+		const seen = new Map<string, number>();
+		for (const el of document.querySelectorAll("[id]")) seen.set(el.id, (seen.get(el.id) ?? 0) + 1);
+		return [...seen].filter(([, n]) => n > 1).map(([id]) => id);
+	});
+	expect(repeated).toEqual([]);
+});
+
+test("/components/: ninguna de las vistas previas sale vacía (también StreamScene y ChannelBanner, con escala fija)", async ({
+	page,
+}) => {
+	test.setTimeout(120_000);
+	await page.goto("/components/");
+	const names = (await page
+		.locator("[data-live-preview]")
+		.evaluateAll((els) => els.map((e) => e.getAttribute("data-live-preview")))) as string[];
+	expect(names).toHaveLength(pages.length);
+	const blank: string[] = [];
+	for (const name of names) {
+		const stage = page.locator(`[data-live-preview="${name}"] > div`);
+		await stage.scrollIntoViewIfNeeded();
+		const shot = PNG.sync.read(await stage.screenshot());
+		const colors = new Set<number>();
+		for (let i = 0; i < shot.data.length; i += 4)
+			colors.add(
+				((shot.data[i] ?? 0) << 16) | ((shot.data[i + 1] ?? 0) << 8) | (shot.data[i + 2] ?? 0),
+			);
+		// Vacía = solo el damero (dos colores) y quizá un borde
+		if (colors.size <= 3) blank.push(name);
+	}
+	expect(blank).toEqual([]);
 });

@@ -3,7 +3,7 @@ import { userEvent } from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Button, Dropdown, FilterBar, SidebarNav } from "../src/index.js";
-import { expectAccessibleInThemes } from "./helpers.js";
+import { danglingAriaRefsOnServer, expectAccessibleInThemes } from "./helpers.js";
 
 describe("SidebarNav", () => {
 	const props = {
@@ -149,6 +149,17 @@ describe("Dropdown", () => {
 
 	it("axe en claro y oscuro, abierto", async () => {
 		await expectAccessibleInThemes(<Dropdown label="Acciones" defaultOpen items={make()} />);
+	});
+
+	it("abierto de inicio, el HTML de servidor no repite ids ni deja referencias rotas", () => {
+		// Antes, el panel en línea iba dentro de MenuTrigger y cada opción recibía el id del botón
+		const html = renderToString(
+			<Dropdown label="Acciones" defaultOpen header={<span>Cabecera</span>} items={make()} />,
+		);
+		const ids = [...html.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
+		expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
+		expect(danglingAriaRefsOnServer(html)).toEqual([]);
+		expect(html).not.toMatch(/role="menuitem"[^>]*aria-haspopup/);
 	});
 });
 
