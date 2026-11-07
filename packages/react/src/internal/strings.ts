@@ -10,6 +10,7 @@ export const defaultStrings = {
 	previous: "Anterior",
 	next: "Siguiente",
 	prevNext: "Anterior y siguiente",
+	copyFailed: "No se pudo copiar: selecciónalo a mano",
 	page: "Página",
 	pagination: "Paginación",
 	breadcrumbs: "Migas de pan",

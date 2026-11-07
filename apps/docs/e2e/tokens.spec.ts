@@ -10,8 +10,13 @@ test("la página de color tiene una fila por token del paquete", async ({ page }
 test("pulsar un token copia su utilidad y lo confirma", async ({ page, context }) => {
 	await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 	await page.goto("/foundations/color/");
+	// La burbuja es una isla `client:idle`: hasta que se hidrata, un clic no copia
+	await expect(
+		page.locator("astro-island").filter({ has: page.locator("[data-copy-tooltip]") }),
+	).not.toHaveAttribute("ssr", /.*/);
 	await page.getByRole("button", { name: "Copiar bg-brand-solid", exact: true }).click();
-	await expect(page.getByRole("status")).toHaveText("Copiado: bg-brand-solid");
+	// Dice solo «Copiado», sin repetir el valor (uno largo desbordaría el aviso)
+	await expect(page.locator("[data-copy-tooltip]")).toHaveText("Copiado");
 	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("bg-brand-solid");
 });
 

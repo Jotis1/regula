@@ -61,6 +61,11 @@ export {
 	type CommandMenuProps,
 } from "./components/CommandMenu.js";
 export { ContentDivider, type ContentDividerProps } from "./components/ContentDivider.js";
+export {
+	CopyTooltip,
+	type CopyTooltipLabels,
+	type CopyTooltipProps,
+} from "./components/CopyTooltip.js";
 export { CreditCard, type CreditCardProps, type CreditCardTheme } from "./components/CreditCard.js";
 export {
 	DatePicker,
@@ -175,3 +180,4 @@ export {
 } from "./internal/format.js";
 export type { StreamEventType, StreamMotion, StreamTime } from "./internal/stream.js";
 export { defaultStrings, type Strings } from "./internal/strings.js";
+export { useCopy } from "./hooks/use-copy.js";

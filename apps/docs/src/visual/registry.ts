@@ -80,6 +80,7 @@ import {
 	ModalExample,
 	NotificationExample,
 	SlideoutExample,
+	CopyTooltipExample,
 	TooltipExample,
 } from "./examples/overlays";
 import {
@@ -142,6 +143,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	Modal: ModalExample,
 	Slideout: SlideoutExample,
 	Tooltip: TooltipExample,
+	CopyTooltip: CopyTooltipExample,
 	Alert: AlertExample,
 	Notification: NotificationExample,
 	Banner: BannerExample,

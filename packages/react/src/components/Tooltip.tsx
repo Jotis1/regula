@@ -9,6 +9,7 @@ import {
 	useId,
 } from "react";
 import { Tooltip as AriaTooltip, Focusable, OverlayArrow, TooltipTrigger } from "react-aria-components";
+import { ARROW, BUBBLE } from "../internal/bubble.js";
 import { cx } from "../internal/cx.js";
 
 // Lo que Focusable de React Aria pide a su hijo: un elemento del DOM que reciba sus props
@@ -24,13 +25,7 @@ export interface TooltipProps {
 	children: ReactNode;
 }
 
-const BUBBLE =
-	"z-20 w-max max-w-[320px] rounded-lg bg-primary-solid font-body text-xs font-semibold text-white shadow-lg";
 const SUB = "mt-1 block font-medium text-tooltip-supporting-text";
-// Flecha de 12×6 centrada abajo, del color de la burbuja
-const ARROW =
-	"after:absolute after:top-full after:left-1/2 after:-ml-1.5 after:border-[6px] after:border-b-0 after:border-transparent after:border-t-[var(--bg-primary-solid)]";
-
 /**
  * Burbuja oscura que explica un control al pasar el ratón o al enfocarlo; Escape la cierra.
  * Nada imprescindible dentro: en móvil no hay hover.

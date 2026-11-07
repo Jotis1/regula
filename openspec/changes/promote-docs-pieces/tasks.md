@@ -29,9 +29,9 @@
 
 ## 6. `useCopy` y `CopyTooltip`
 
-- [ ] 6.1 Sacar las clases de la burbuja de `Tooltip` a un módulo interno y crear `copy`, `useCopy` y `CopyTooltip` (con `copyAttribute`), con tests: copia y burbuja `role="status"` que dice solo «Copiado» (también con un valor largo) sobre el ancla, debajo si no cabe arriba, portapapeles que falla, el aviso se va solo y `CodeSnippet` no muestra burbuja. Verificar con `bun run test`.
-- [ ] 6.2 Sustituir `CopyToast.astro` por `CopyTooltip copyAttribute="data-copy"` en una isla de `Base.astro` y borrar `CopyToast.astro`. Verificar con un e2e que copia desde una tabla de tokens (HTML estático) y desde la galería de iconos (isla) y ve la burbuja «Copiado» sobre el botón pulsado en los dos casos; capturas de los dos casos en claro y oscuro. Actualizar `e2e/tokens.spec.ts`, que hoy espera «Copiado: bg-brand-solid» (sigue comprobando que el portapapeles tiene el valor).
-- [ ] 6.3 Página de `CopyTooltip` (ficha con `useCopy`), capturas aprobadas y grupo «Capas». Verificar que la captura de `Tooltip` no cambia al compartir sus clases. Verificar con `catalog-sync.test.ts`.
+- [x] 6.1 Sacar las clases de la burbuja de `Tooltip` a un módulo interno y crear `copy`, `useCopy` y `CopyTooltip` (con `copyAttribute`), con tests: copia y burbuja `role="status"` que dice solo «Copiado» (también con un valor largo) sobre el ancla, debajo si no cabe arriba, portapapeles que falla, el aviso se va solo y `CodeSnippet` no muestra burbuja. Verificar con `bun run test`.
+- [x] 6.2 Sustituir `CopyToast.astro` por `CopyTooltip copyAttribute="data-copy"` en una isla de `Base.astro` y borrar `CopyToast.astro`. Verificar con un e2e que copia desde una tabla de tokens (HTML estático) y desde la galería de iconos (isla) y ve la burbuja «Copiado» sobre el botón pulsado en los dos casos; capturas de los dos casos en claro y oscuro. Actualizar `e2e/tokens.spec.ts`, que hoy espera «Copiado: bg-brand-solid» (sigue comprobando que el portapapeles tiene el valor).
+- [x] 6.3 Página de `CopyTooltip` (ficha con `useCopy`), capturas aprobadas y grupo «Capas». Verificar que la captura de `Tooltip` no cambia al compartir sus clases. Verificar con `catalog-sync.test.ts`.
 
 ## 7. Integración
 

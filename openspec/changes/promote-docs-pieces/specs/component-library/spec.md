@@ -89,6 +89,10 @@ El hook `useCopy` SHALL copiar un texto al portapapeles y avisar con `CopyToolti
 - **WHEN** en una página se monta un `CopyTooltip` con `copyAttribute="data-copy"` y se pulsa un botón de HTML estático con `data-copy="var(--bg-primary)"`
 - **THEN** se copia `var(--bg-primary)` y la burbuja «Copiado» sale sobre ese botón
 
+#### Scenario: Varios montados
+- **WHEN** hay dos `CopyTooltip` montados en la misma página y se copia un valor
+- **THEN** sale una sola burbuja, la del primero montado
+
 #### Scenario: El portapapeles falla
 - **WHEN** el navegador rechaza escribir en el portapapeles
 - **THEN** la burbuja dice «No se pudo copiar: selecciónalo a mano»

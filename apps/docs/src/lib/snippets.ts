@@ -147,6 +147,8 @@ const usage: Record<string, string> = {
 >
 	<Input label="Concepto" defaultValue="Alquiler" />
 </Slideout>`,
+	CopyTooltip: `<Button onClick={(e) => copiar("bg-brand-solid", e.currentTarget)}>Copiar utilidad</Button>
+<CopyTooltip />`,
 	Tooltip: `<Tooltip title="Exportar a CSV" text="Incluye los movimientos filtrados.">
 	<Button hierarchy="secondary" iconOnly="download-01" label="Exportar" />
 </Tooltip>`,

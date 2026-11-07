@@ -533,6 +533,17 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			</div>
 		),
 	},
+	CopyTooltip: {
+		render: () => (
+			<div style={{ paddingTop: 56 }}>
+				<Tooltip title="Copiado" open>
+					<Button hierarchy="secondary" size="sm" iconLeading="copy-01">
+						Copiar utilidad
+					</Button>
+				</Tooltip>
+			</div>
+		),
+	},
 	Tooltip: {
 		render: () => (
 			<div style={{ paddingTop: 56 }}>

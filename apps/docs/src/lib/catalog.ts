@@ -81,7 +81,12 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 			"Tabs Breadcrumbs Pagination Pager SidebarNav Dropdown CommandMenu TreeView FilterBar",
 		),
 	},
-	{ id: "capas", label: "Capas", section: "components", components: names("Modal Slideout Tooltip") },
+	{
+		id: "capas",
+		label: "Capas",
+		section: "components",
+		components: names("Modal Slideout Tooltip CopyTooltip"),
+	},
 	{
 		id: "avisos-y-carga",
 		label: "Avisos y carga",

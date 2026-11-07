@@ -4,6 +4,7 @@ import {
 	Alert,
 	Banner,
 	Button,
+	CopyTooltip,
 	EmptyState,
 	Input,
 	Modal,
@@ -11,6 +12,7 @@ import {
 	Select,
 	Slideout,
 	Tooltip,
+	useCopy,
 } from "@jotis-me/react";
 import { stack } from "./actions";
 
@@ -75,6 +77,30 @@ export function TooltipExample() {
 			<Tooltip title="Con texto de apoyo" text="Una frase más para explicar el control." open>
 				<Button hierarchy="secondary">Pasa el ratón</Button>
 			</Tooltip>
+		</div>
+	);
+}
+
+function CopyButton({ value, children }: { value: string; children: string }) {
+	const copy = useCopy();
+	return (
+		<Button
+			hierarchy="secondary"
+			size="sm"
+			iconLeading="copy-01"
+			onClick={(e) => void copy(value, e.currentTarget)}
+		>
+			{children}
+		</Button>
+	);
+}
+
+export function CopyTooltipExample() {
+	return (
+		<div style={{ display: "flex", gap: 16 }}>
+			<CopyButton value="bg-brand-solid">Copiar utilidad</CopyButton>
+			<CopyButton value="var(--bg-brand-solid)">Copiar variable</CopyButton>
+			<CopyTooltip />
 		</div>
 	);
 }
