@@ -1,18 +1,12 @@
 {
 	"ci": {
 		"collect": {
-			"startServerCommand": "bun run preview --port 4500",
-			"startServerReadyPattern": "localhost:4500",
-			"url": [
-				"http://localhost:4500/",
-				"http://localhost:4500/foundations/color/",
-				"http://localhost:4500/components/button/",
-				"http://localhost:4500/components/"
-			],
+			"url": ["/", "/foundations/color/", "/components/button/", "/components/"],
 			"numberOfRuns": 3,
 			"settings": {
 				"chromeFlags": "--headless=new --no-sandbox"
-			}
+			},
+			"staticDistDir": "./dist"
 		},
 		"assert": {
 			"assertions": {
