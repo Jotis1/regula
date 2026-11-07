@@ -9,6 +9,7 @@ export const defaultStrings = {
 	loading: "Cargando…",
 	previous: "Anterior",
 	next: "Siguiente",
+	prevNext: "Anterior y siguiente",
 	page: "Página",
 	pagination: "Paginación",
 	breadcrumbs: "Migas de pan",

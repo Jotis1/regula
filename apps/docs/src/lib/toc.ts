@@ -34,7 +34,3 @@ export function initToc(): void {
 /** Clases de un enlace del índice en columna, con la sección actual marcada en la marca. */
 export const TOC_LINK =
 	"block py-1 pl-3 text-[13px] leading-5 text-tertiary shadow-[inset_1px_0_0_var(--border-secondary)] hover:text-primary focus-visible:rounded-sm focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current=true]:font-medium aria-[current=true]:text-primary aria-[current=true]:shadow-[inset_2px_0_0_var(--fg-brand-primary)]";
-
-/** Clases de las tarjetas de anterior y siguiente. */
-export const PAGER =
-	"flex flex-1 basis-60 flex-col gap-0.5 rounded-xl p-4 text-primary no-underline shadow-[inset_0_0_0_1px_var(--border-secondary)] hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none";

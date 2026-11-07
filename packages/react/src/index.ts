@@ -103,6 +103,7 @@ export { Notification, type NotificationProps } from "./components/Notification.
 export { NowPlaying, type NowPlayingLabels, type NowPlayingProps } from "./components/NowPlaying.js";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput.js";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
+export { Pager, type PagerLabels, type PagerLink, type PagerProps } from "./components/Pager.js";
 export {
 	Pagination,
 	type PaginationLabels,

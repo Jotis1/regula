@@ -60,6 +60,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	NowPlaying: 262,
 	PageHeader: 200,
 	Pagination: 80,
+	Pager: 200,
 	PieChart: 240,
 	ProgressBar: 100,
 	Radio: 72,

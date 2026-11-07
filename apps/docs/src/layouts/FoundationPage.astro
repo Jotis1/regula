@@ -2,8 +2,7 @@
 // Página de fundamentos (reference/docs-design/Tone.dc.html y ToneM.dc.html): migas, título y entrada, el índice
 // «En esta página» (columna en escritorio, desplegable en móvil), el contenido y anterior/siguiente en el orden de la
 // guía (catálogo). Sin JavaScript el índice es una lista de enlaces; con él, marca la sección que se lee (design §7).
-import { Breadcrumbs, Button } from "@jotis-me/react";
-import Pager from "../components/Pager.astro";
+import { Breadcrumbs, Button, Pager } from "@jotis-me/react";
 import { FOUNDATIONS } from "../lib/catalog";
 import { TOC_LINK } from "../lib/toc";
 import Base from "./Base.astro";
@@ -63,7 +62,7 @@ const tocLink = TOC_LINK;
 				}
 			</header>
 			<slot />
-			<Pager prev={prev} next={next} />
+			<Pager className="not-prose mt-14" prev={prev} next={next} />
 		</article>
 		<nav aria-label="En esta página" class="sticky top-8 hidden w-[200px] shrink-0 flex-col gap-2 self-start pt-1 xl:flex" data-toc>
 			{

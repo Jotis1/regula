@@ -8,8 +8,8 @@
 
 ## 2. `Pager`
 
-- [ ] 2.1 Crear `Pager` (design D1) con sus textos en `defaultStrings` y tests: solo siguiente, los dos, ninguno (no pinta nada) y nombre de la navegación. Verificar con `bun run test` en `packages/react`.
-- [ ] 2.2 Sustituir `Pager.astro` por `Pager` en `ComponentPage.astro` y en las páginas de fundamentos, borrar `Pager.astro` y la clase `PAGER` si queda sin uso. Página de `Pager` con capturas aprobadas, grupo «Navegación». Verificar con el test «Button: … anterior/siguiente» de `components.spec.ts` y `foundations.spec.ts`.
+- [x] 2.1 Crear `Pager` (design D1) con sus textos en `defaultStrings` y tests: solo siguiente, los dos, ninguno (no pinta nada) y nombre de la navegación. Verificar con `bun run test` en `packages/react`.
+- [x] 2.2 Sustituir `Pager.astro` por `Pager` en `ComponentPage.astro` y en las páginas de fundamentos, borrar `Pager.astro` y la clase `PAGER` si queda sin uso. Página de `Pager` con capturas aprobadas, grupo «Navegación». Verificar con el test «Button: … anterior/siguiente» de `components.spec.ts` y `foundations.spec.ts`.
 
 ## 3. `LinkCard`
 

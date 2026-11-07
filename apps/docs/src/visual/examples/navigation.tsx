@@ -6,6 +6,7 @@ import {
 	CommandMenu,
 	Dropdown,
 	FilterBar,
+	Pager,
 	Pagination,
 	SidebarNav,
 	Tabs,
@@ -52,6 +53,15 @@ export function BreadcrumbsExample() {
 
 export function PaginationExample() {
 	return <Pagination total={10} defaultPage={1} />;
+}
+
+export function PagerExample() {
+	return (
+		<div className={stack}>
+			<Pager prev={{ href: "#", label: "Breadcrumbs" }} next={{ href: "#", label: "Sidebar nav" }} />
+			<Pager next={{ href: "#", label: "Sidebar nav" }} />
+		</div>
+	);
 }
 
 export function SidebarNavExample() {

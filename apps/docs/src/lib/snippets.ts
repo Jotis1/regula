@@ -82,6 +82,10 @@ const usage: Record<string, string> = {
 	]}
 />`,
 	Pagination: `<Pagination total={10} page={pagina} onChange={setPagina} />`,
+	Pager: `<Pager
+	prev={{ href: "/components/badge/", label: "Badge" }}
+	next={{ href: "/components/button/", label: "Button" }}
+/>`,
 	SidebarNav: `<SidebarNav
 	brand="jotis.me"
 	search

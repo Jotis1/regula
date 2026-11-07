@@ -55,6 +55,7 @@ import {
 	NowPlaying,
 	NumberInput,
 	PageHeader,
+	Pager,
 	Pagination,
 	PieChart,
 	ProgressBar,
@@ -363,6 +364,13 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					{ label: "Gastos" },
 				]}
 			/>
+		),
+	},
+	Pager: {
+		render: () => (
+			<div style={box(240)}>
+				<Pager next={{ href: "#", label: "Sidebar nav" }} />
+			</div>
 		),
 	},
 	Pagination: {
