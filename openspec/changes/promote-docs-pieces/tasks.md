@@ -35,7 +35,7 @@
 
 ## 7. Integración
 
-- [ ] 7.1 Changeset `minor` de `@jotis-me/react` con las seis piezas. Pasar `bunx biome ci .`, `bunx turbo run typecheck test build`, el e2e completo de la web y los tests del artefacto (84 componentes), y verificar que todo queda en verde.
+- [x] 7.1 Changeset `minor` de `@jotis-me/react` con las seis piezas. Pasar `bunx biome ci .`, `bunx turbo run typecheck test build`, el e2e completo de la web y los tests del artefacto (84 componentes), y verificar que todo queda en verde.
 
 ## Workflow follow-up
 
