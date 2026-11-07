@@ -12,11 +12,12 @@ import {
 	Text,
 } from "react-aria-components";
 import { cx } from "../internal/cx.js";
-import { KBD } from "../internal/kbd.js";
+
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
 import { Icon, type IconName } from "./Icon.js";
+import { Kbd } from "./Kbd.js";
 
 export interface DropdownAction {
 	icon?: IconName;
@@ -152,7 +153,7 @@ export function Dropdown({
 									<Text slot="label" className="flex min-w-0 flex-1 items-center gap-2">
 										{item.label}
 										{item.shortcut ? (
-											<kbd className={cx(KBD, "ml-auto")}>{item.shortcut}</kbd>
+											<Kbd className="ml-auto">{item.shortcut}</Kbd>
 										) : null}
 									</Text>
 									<Text slot="description" className="hidden" />

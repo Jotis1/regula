@@ -3,7 +3,7 @@
 import { type KeyboardEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { Dialog, Modal, ModalOverlay } from "react-aria-components";
 import { cx } from "../internal/cx.js";
-import { Kbd } from "../internal/kbd.js";
+import { Kbd } from "./Kbd.js";
 import { OVERLAY, OVERLAY_POSITION } from "../internal/overlay.js";
 import { defaultStrings } from "../internal/strings.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";

@@ -19,6 +19,7 @@ const usage: Record<string, string> = {
 	Badge: `<Badge color="success">Pagado</Badge>
 <Badge type="modern" color="success" dot>En línea</Badge>`,
 	Tag: `<Tag size="md" count={5}>Facturas</Tag>`,
+	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
 	AvatarGroup: `<AvatarGroup items={[{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }]} />`,
 	AvatarLabel: `<AvatarLabel initials="AD" name="Responsable de seguridad" supporting="admin@jotis.me" />`,

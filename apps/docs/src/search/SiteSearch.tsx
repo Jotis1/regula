@@ -1,6 +1,6 @@
 // Búsqueda de la web: CommandMenu de @jotis-me/react con Ctrl+K / Cmd+K sobre páginas, componentes, tokens e
 // iconos (índice propio, /search-index.json) y el texto completo de las páginas (Pagefind, solo tras el build).
-import { CommandMenu, Icon, type IconName } from "@jotis-me/react";
+import { CommandMenu, Icon, type IconName, Kbd } from "@jotis-me/react";
 import { useEffect, useRef, useState } from "react";
 import { plain, type SearchEntry, searchGroups } from "./entries";
 
@@ -102,9 +102,9 @@ export default function SiteSearch() {
 			>
 				<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
 				<span className="sr-only min-w-0 grow truncate lg:not-sr-only">Buscar en Regula</span>
-				<kbd className="hidden h-[22px] shrink-0 items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium whitespace-nowrap text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)] lg:inline-flex">
+				<Kbd variant="field" className="hidden shrink-0 whitespace-nowrap lg:inline-flex">
 					{mac ? "⌘ K" : "Ctrl K"}
-				</kbd>
+				</Kbd>
 			</button>
 			{open ? (
 				<CommandMenu

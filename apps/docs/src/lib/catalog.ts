@@ -90,7 +90,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "etiquetas-e-identidad",
 		label: "Etiquetas e identidad",
 		section: "components",
-		components: names("Badge Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon"),
+		components: names("Badge Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon Kbd"),
 	},
 	{
 		id: "datos",

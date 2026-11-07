@@ -13,6 +13,7 @@ import {
 	CodeSnippet,
 	Icon,
 	type IconName,
+	Kbd,
 	StreamStatus,
 } from "@jotis-me/react";
 import { colors } from "@jotis-me/tokens";
@@ -139,7 +140,7 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 					>
 						<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
 						<span class="grow">Busca lo que te falte</span>
-						<kbd class="hidden h-[22px] items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)] lg:inline-flex">Ctrl K</kbd>
+						<Kbd variant="field" className="hidden lg:inline-flex">Ctrl K</Kbd>
 					</button>
 				</div>
 			</div>

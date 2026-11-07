@@ -44,6 +44,7 @@ import {
 	type IconName,
 	InlineCTA,
 	Input,
+	Kbd,
 	LineChart,
 	Message,
 	MessageInput,
@@ -627,6 +628,14 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 				<Badge type="modern" dot color="brand">
 					Nuevo
 				</Badge>
+			</div>
+		),
+	},
+	Kbd: {
+		render: () => (
+			<div style={row}>
+				<Kbd>⌘P</Kbd>
+				<Kbd variant="field">Ctrl K</Kbd>
 			</div>
 		),
 	},
