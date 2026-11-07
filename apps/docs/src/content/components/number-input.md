@@ -10,7 +10,7 @@ astroNote: "Los botones y las flechas necesitan JavaScript: úsalo en una isla c
 
 **Props.** `label`, `required`, `hint`, `error` (como `Input`), `value` / `defaultValue`, `onChange(n)` (recibe `NaN` si se vacía), `min`, `max`, `step` (1 por defecto), `orientation` (`horizontal`: − y + a los lados, separados por un borde; `vertical`: dos chevrons apilados detrás), `size` (`sm` 36px · `md` 40 · `lg` 44), `formatOptions` (decimales, divisa, porcentaje), `placeholder`, `disabled`, `name`, `decrementLabel` / `incrementLabel` («Restar» y «Sumar»).
 
-**Estados.** Los del marco de `Input`: borde `border-primary`, foco de 2px `border-brand` y anillo con teclado, error con `border-error_subtle` y mensaje en `text-error-primary`, deshabilitado al 50%. Los botones pasan a `bg-primary_hover` al pasar el ratón y se deshabilitan solos en el mínimo y en el máximo.
+**Estados.** Los del marco de `Input`: borde `border-primary`, foco de 2px `border-brand` sin anillo exterior, error con `border-error_subtle` y mensaje en `text-error-primary`, deshabilitado al 50%. Los botones pasan a `bg-primary_hover` al pasar el ratón y se deshabilitan solos en el mínimo y en el máximo.
 
 **Teclado.** Flechas arriba y abajo suman y restan el paso; Inicio y Fin van al mínimo y al máximo; Re Pág y Av Pág, diez pasos. Los botones no entran en el orden de tabulación: con teclado basta el campo.
 

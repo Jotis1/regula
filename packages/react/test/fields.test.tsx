@@ -35,7 +35,7 @@ describe("Input", () => {
 		expect(control.className).toContain(
 			"focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error)]",
 		);
-		expect(control.className).toContain("var(--focus-ring-error-shadow)");
+		expect(control.className).not.toContain("focus-ring");
 		expect(control.querySelector(".text-fg-error-secondary svg")).not.toBeNull();
 	});
 
@@ -46,7 +46,7 @@ describe("Input", () => {
 		expect(input.hasAttribute("aria-describedby")).toBe(false);
 	});
 
-	it("en foco usa el borde de 2px border-brand y, con teclado, el anillo de foco", async () => {
+	it("con teclado el foco es solo el borde de 2px border-brand, sin anillo exterior", async () => {
 		render(<Input label="Nombre" />);
 		await userEvent.tab();
 		const input = screen.getByLabelText("Nombre");
@@ -55,9 +55,8 @@ describe("Input", () => {
 		expect(control).toContain(
 			"focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)]",
 		);
-		expect(control).toContain(
-			"has-[:focus-visible]:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand),var(--focus-ring-shadow)]",
-		);
+		expect(control).not.toContain("focus-ring");
+		expect(control).not.toContain("focus-visible");
 	});
 
 	it("asterisco de obligatorio oculto a lectores, en marca y en rojo con error", () => {
@@ -242,6 +241,17 @@ describe("Textarea", () => {
 		expect(description(ta)).toBe("Demasiado larga.");
 		await userEvent.tab();
 		expect(document.activeElement).toBe(ta);
+	});
+
+	it("con teclado el foco es solo el borde de 2px, sin anillo exterior", async () => {
+		render(<Textarea label="Comentario" />);
+		await userEvent.tab();
+		const ta = screen.getByLabelText("Comentario");
+		expect(document.activeElement).toBe(ta);
+		const frame = ta.closest("[class*='focus-within']") as HTMLElement | null;
+		const cls = (frame ?? ta).className;
+		expect(cls).not.toContain("focus-ring");
+		expect(cls).not.toContain("has-[:focus-visible]");
 	});
 
 	it("sin infracciones de axe en claro y oscuro", async () => {

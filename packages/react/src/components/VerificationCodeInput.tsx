@@ -38,11 +38,11 @@ const CELL: Record<FieldSize, string> = {
 	md: "size-20 rounded-xl text-display-lg",
 	lg: "size-24 rounded-xl text-display-xl",
 };
-// Reposo con borde de 1px; con cifra o con foco, 2px en border-brand, y con teclado el anillo de foco.
+// Reposo con borde de 1px; con cifra o con foco, 2px en border-brand (sin anillo exterior).
 const BORDER =
-	"shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)] [&:not(:placeholder-shown)]:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)] focus:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)] focus-visible:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand),var(--focus-ring-shadow)]";
+	"shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)] [&:not(:placeholder-shown)]:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)] focus:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)]";
 const BORDER_ERROR =
-	"shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-error_subtle)] [&:not(:placeholder-shown)]:shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-error_subtle)] focus:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error)] focus-visible:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error),var(--focus-ring-error-shadow)]";
+	"shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-error_subtle)] [&:not(:placeholder-shown)]:shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-error_subtle)] focus:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error)]";
 
 const cellsOf = (code: string, n: number) =>
 	Array.from({ length: n }, (_, i) => code.replace(/\D/g, "")[i] ?? "");

@@ -4,8 +4,8 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 1. Foco de los campos sin doble borde (petición del usuario)
 
-- [ ] 1.1 Quitar el `has-[:focus-visible]` con `focus-ring-shadow` de `CONTROL` y `CONTROL_ERROR` en `packages/react/src/internal/field.tsx` (design D10), y revisar las casillas de `VerificationCodeInput`. Tests: con teclado (Tab) un `Input`, un `Select` y un `Textarea` llevan el borde de 2px y su sombra no incluye el anillo; un `Button` con Tab sigue con su anillo. Captura ampliada de un campo con foco de teclado en claro y oscuro, mirada: un solo borde, como el nodo `7953:158036`.
-- [ ] 1.2 Cambiar las fichas que hablan del anillo en los campos (`apps/docs/src/content/components/input.md` y las que lo repitan: `grep -rn "anillo" apps/docs/src/content/components`) y los tests o e2e que lo esperen en un campo. Verificar `bun run --cwd packages/react test` y los e2e de componentes y `a11y.spec.ts`.
+- [x] 1.1 Quitar el `has-[:focus-visible]` con `focus-ring-shadow` de `CONTROL` y `CONTROL_ERROR` en `packages/react/src/internal/field.tsx` (design D10), y revisar las casillas de `VerificationCodeInput`. Tests: con teclado (Tab) un `Input`, un `Select` y un `Textarea` llevan el borde de 2px y su sombra no incluye el anillo; un `Button` con Tab sigue con su anillo. Captura ampliada de un campo con foco de teclado en claro y oscuro, mirada: un solo borde, como el nodo `7953:158036`.
+- [x] 1.2 Cambiar las fichas que hablan del anillo en los campos (`apps/docs/src/content/components/input.md` y las que lo repitan: `grep -rn "anillo" apps/docs/src/content/components`) y los tests o e2e que lo esperen en un campo. Verificar `bun run --cwd packages/react test` y los e2e de componentes y `a11y.spec.ts`.
 
 ## 2. `Select` con el menú del Figma (petición del usuario)
 
