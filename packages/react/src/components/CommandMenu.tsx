@@ -218,7 +218,7 @@ export function CommandMenu({
 										tabIndex={-1}
 										onMouseEnter={() => setActive(i)}
 										onClick={() => run(item)}
-										className="mx-2 my-0.5 flex cursor-pointer items-center gap-2 rounded-lg py-2 pr-2 pl-2.5 text-sm font-medium text-secondary aria-selected:bg-primary_hover aria-selected:text-secondary_hover [&_svg]:text-fg-quaternary"
+										className="mx-2 my-0.5 flex cursor-pointer items-center gap-2 rounded-lg py-2 pr-2 pl-2.5 text-sm font-medium text-secondary aria-selected:bg-primary_hover aria-selected:text-secondary_hover group-has-[input:focus]/cmd:aria-selected:shadow-focus-ring [&_svg]:text-fg-quaternary"
 									>
 										{item.icon ? <Icon name={item.icon} size={20} /> : null}
 										<span className="flex min-w-0 flex-1 items-baseline gap-2">
@@ -261,7 +261,7 @@ export function CommandMenu({
 		</>
 	);
 	const PANEL =
-		"w-full max-w-[640px] overflow-hidden rounded-xl bg-primary_alt font-body shadow-[var(--shadow-xl),inset_0_0_0_1px_var(--border-secondary_alt)] outline-none";
+		"group/cmd w-full max-w-[640px] overflow-hidden rounded-xl border border-secondary_alt bg-primary_alt font-body shadow-xl outline-none";
 
 	if (contained) {
 		return (

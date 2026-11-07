@@ -70,14 +70,14 @@ export function CalendarView({
 	return (
 		<div
 			className={cx(
-				"overflow-hidden rounded-xl bg-primary font-body shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-secondary)]",
+				"overflow-hidden rounded-xl border border-secondary bg-primary font-body shadow-xs",
 				className,
 			)}
 		>
 			<div className="flex flex-wrap items-center gap-4 px-6 py-5 shadow-[inset_0_-1px_0_var(--border-secondary)]">
 				<div
 					aria-hidden="true"
-					className="flex w-16 flex-col overflow-hidden rounded-lg text-center shadow-[inset_0_0_0_1px_var(--border-secondary)]"
+					className="flex w-16 flex-col overflow-hidden rounded-lg border border-secondary text-center"
 				>
 					<span className="bg-secondary py-1 text-xs font-semibold text-quaternary">
 						{shortMonth}
