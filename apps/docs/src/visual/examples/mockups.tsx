@@ -9,7 +9,10 @@ import {
 	CreditCard,
 	EmptyState,
 	FeaturedIcon,
+	InlineCTA,
 	MetricCard,
+	ScaledPreview,
+	StreamScene,
 	TransparencyGrid,
 	VideoPlayer,
 } from "@jotis-me/react";
@@ -179,6 +182,30 @@ export function TransparencyGridExample() {
 			>
 				<Badge color="brand">Cuadros de 16px</Badge>
 			</TransparencyGrid>
+		</div>
+	);
+}
+
+export function ScaledPreviewExample() {
+	return (
+		<div className="flex flex-wrap items-start gap-6">
+			{/* Una escena de 1920 de ancho en una caja de 360: la escala sale sola (0,1875) */}
+			<ScaledPreview width={1920} box={[360, 203]} className="rounded-lg border border-secondary">
+				<StreamScene scale={1} variant="starting" seconds={300} countdownLabel="Para empezar" />
+			</ScaledPreview>
+			{/* Una pieza de 560 de ancho con la escala dada, 0,6 */}
+			<ScaledPreview
+				width={560}
+				scale={0.6}
+				box={[336, 100]}
+				className="rounded-lg border border-secondary"
+			>
+				<InlineCTA
+					icon="stars-02"
+					title="Conecta tu banco"
+					description="Importa los movimientos cada día sin subir extractos."
+				/>
+			</ScaledPreview>
 		</div>
 	);
 }

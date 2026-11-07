@@ -27,11 +27,15 @@ La librería SHALL exportar cada componente del catálogo del sistema, con su ti
 - **THEN** el damero no añade nada al árbol de accesibilidad y el componente de dentro se anuncia como siempre
 
 ### Requirement: Vista previa encogida
-`ScaledPreview` SHALL pintar su contenido a un ancho real dado y encogerlo para que quepa en una caja de ancho y alto dados, sin desbordarla. Con una escala explícita SHALL usar esa; sin ella, la mayor que cabe.
+`ScaledPreview` SHALL pintar su contenido a un ancho real dado y encogerlo para que quepa en una caja de ancho y alto dados, sin desbordarla. Con una escala explícita SHALL usar esa; sin ella, la mayor que cabe sin pasar de 1: encoge, no amplía.
 
 #### Scenario: Cabe sin escala dada
 - **WHEN** un `ScaledPreview` con ancho real de 1920 y caja de 360×202 pinta una escena
 - **THEN** la caja mide 360×202, el contenido se encoge a 0,1875 y nada sale de la caja
+
+#### Scenario: No amplía
+- **WHEN** un `ScaledPreview` de ancho real 200 se pinta en una caja de 360×100
+- **THEN** el contenido se pinta a escala 1, sin ampliarlo
 
 #### Scenario: Escala dada
 - **WHEN** se le pasa `scale={0.5}` con ancho real de 400 y caja de 300×120

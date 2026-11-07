@@ -56,6 +56,7 @@ import {
 } from "./examples/layout";
 import {
 	BackgroundPatternExample,
+	ScaledPreviewExample,
 	TransparencyGridExample,
 	BrowserFrameExample,
 	CreditCardExample,
@@ -160,6 +161,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	LinkCard: LinkCardExample,
 	BackgroundPattern: BackgroundPatternExample,
 	TransparencyGrid: TransparencyGridExample,
+	ScaledPreview: ScaledPreviewExample,
 	BrowserFrame: BrowserFrameExample,
 	CreditCard: CreditCardExample,
 	VideoPlayer: VideoPlayerExample,

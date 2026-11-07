@@ -24,8 +24,8 @@
 
 ## 5. `ScaledPreview`
 
-- [ ] 5.1 Crear `ScaledPreview` (design D1) con tests de los dos escenarios: 1920 en 360×202 da 0,1875 sin desbordar, y `scale={0.5}` recorta en la caja. Verificar con `bun run test`, también con `renderToString`, para comprobar que funciona sin JavaScript.
-- [ ] 5.2 Página de `ScaledPreview` con un `StreamScene` encogido como ejemplo, capturas aprobadas y grupo «Fondos y maquetas». Verificar con `catalog-sync.test.ts` y `components.spec.ts`.
+- [x] 5.1 Crear `ScaledPreview` (design D1) con tests de los dos escenarios: 1920 en 360×202 da 0,1875 sin desbordar, y `scale={0.5}` recorta en la caja. Verificar con `bun run test`, también con `renderToString`, para comprobar que funciona sin JavaScript.
+- [x] 5.2 Página de `ScaledPreview` con un `StreamScene` encogido como ejemplo, capturas aprobadas y grupo «Fondos y maquetas». Verificar con `catalog-sync.test.ts` y `components.spec.ts`.
 
 ## 6. `useCopy` y `CopyTooltip`
 

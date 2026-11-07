@@ -17,6 +17,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	AvatarLabel: 72,
 	BackgroundPattern: 520,
 	TransparencyGrid: 180,
+	ScaledPreview: 250,
 	Badge: 150,
 	Banner: 540,
 	BarChart: 330,

@@ -84,6 +84,7 @@ import {
 	Textarea,
 	TextEditor,
 	Toggle,
+	ScaledPreview,
 	Tooltip,
 	TransparencyGrid,
 	TreeView,
@@ -1005,6 +1006,22 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 	},
 
 	// Marca y maquetas
+	ScaledPreview: {
+		render: () => (
+			<ScaledPreview
+				width={560}
+				scale={0.45}
+				box={[252, 75]}
+				className="rounded-lg border border-secondary"
+			>
+				<InlineCTA
+					icon="stars-02"
+					title="Conecta tu banco"
+					description="Importa los movimientos cada día sin subir extractos."
+				/>
+			</ScaledPreview>
+		),
+	},
 	TransparencyGrid: {
 		render: () => (
 			<TransparencyGrid

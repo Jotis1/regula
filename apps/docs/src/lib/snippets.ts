@@ -253,6 +253,9 @@ const usage: Record<string, string> = {
 		</>
 	}
 />`,
+	ScaledPreview: `<ScaledPreview width={1920} box={[360, 203]}>
+	<StreamScene scale={1} variant="starting" seconds={300} countdownLabel="Para empezar" />
+</ScaledPreview>`,
 	TransparencyGrid: `<TransparencyGrid size="md" className="rounded-2xl p-6">
 	<CamFrame ratio="16:9" width={400} name="Tu canal" />
 </TransparencyGrid>`,

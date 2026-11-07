@@ -114,6 +114,7 @@ export { PieChart, type PieChartProps, type PieChartSlice } from "./components/P
 export { ProgressBar, type ProgressBarProps } from "./components/ProgressBar.js";
 export { Radio, type RadioProps } from "./components/Radio.js";
 export { RadioGroup, type RadioGroupOption, type RadioGroupProps } from "./components/RadioGroup.js";
+export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPreview.js";
 export { SectionFooter, type SectionFooterProps } from "./components/SectionFooter.js";
 export { SectionHeader, type SectionHeaderProps } from "./components/SectionHeader.js";
 export { Select, type SelectOption, type SelectProps } from "./components/Select.js";
