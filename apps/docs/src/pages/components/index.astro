@@ -5,7 +5,7 @@
 // La vista previa es la muestra del componente pintada en vivo en el servidor (LivePreview.astro, change
 // live-component-previews); ya no son fotos de las capturas aprobadas.
 import { getCollection } from "astro:content";
-import { Breadcrumbs } from "@jotis-me/react";
+import { Breadcrumbs, LinkCard } from "@jotis-me/react";
 import InlineCode from "../../components/InlineCode.astro";
 import LivePreview from "../../components/LivePreview.astro";
 import Base from "../../layouts/Base.astro";
@@ -52,19 +52,11 @@ const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length,
 							</h3>
 							<ul class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3" data-group={group.id}>
 								{group.components.map((name) => (
-									<li class="group relative flex flex-col overflow-hidden rounded-xl border border-secondary text-primary transition-shadow duration-100 has-[a:hover]:border-primary has-[a:hover]:shadow-sm has-[a:focus-visible]:shadow-focus-ring">
-										{/* La vista previa va fuera del enlace (HTML válido y sin nada interactivo dentro de él): el enlace cubre toda la card con su ::after */}
-										<LivePreview name={name} />
-										<a
-											href={`/components/${slugOf(name)}/`}
-											class="flex flex-1 flex-col gap-0.5 p-4 text-primary no-underline outline-none after:absolute after:inset-0 after:content-['']"
-										>
-											<span class="text-md font-semibold group-hover:underline">{labelOf(name)}</span>
-											<span class="text-sm text-tertiary">
-												<InlineCode text={descriptions.get(name) ?? ""} />
-											</span>
-										</a>
-									</li>
+									<LinkCard as="li" href={`/components/${slugOf(name)}/`} title={labelOf(name)}>
+										{/* La vista previa va fuera del enlace (HTML válido y sin nada interactivo dentro de él): LinkCard estira el enlace sobre toda la card */}
+										<LivePreview slot="preview" name={name} />
+										<InlineCode slot="description" text={descriptions.get(name) ?? ""} />
+									</LinkCard>
 								))}
 							</ul>
 						</section>

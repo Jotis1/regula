@@ -13,9 +13,9 @@
 
 ## 3. `LinkCard`
 
-- [ ] 3.1 Antes de nada, comprobar que Astro pasa un componente `.astro` como *slot* `preview` a un componente de React sin isla, ya pintado y sin JavaScript (design, riesgos). Si no funciona, parar y proponer la alternativa antes de seguir.
-- [ ] 3.2 Crear `LinkCard` (design D1) con tests: el nombre accesible del enlace es título + descripción, y la vista previa es inerte y `aria-hidden`. Verificar con `bun run test`.
-- [ ] 3.3 Usar `LinkCard` en `pages/components/index.astro`. Página de `LinkCard` con capturas aprobadas, grupo «Estructura de página». Verificar con los tests de `/components/` de `components.spec.ts` (toda la card lleva al enlace, vista previa inerte, nombre de la card).
+- [x] 3.1 Antes de nada, comprobar que Astro pasa un componente `.astro` como *slot* `preview` a un componente de React sin isla, ya pintado y sin JavaScript (design, riesgos). Si no funciona, parar y proponer la alternativa antes de seguir.
+- [x] 3.2 Crear `LinkCard` (design D1) con tests: el nombre accesible del enlace es título + descripción, y la vista previa es inerte y `aria-hidden`. Verificar con `bun run test`.
+- [x] 3.3 Usar `LinkCard` en `pages/components/index.astro`. Página de `LinkCard` con capturas aprobadas, grupo «Estructura de página». Verificar con los tests de `/components/` de `components.spec.ts` (toda la card lleva al enlace, vista previa inerte, nombre de la card).
 
 ## 4. `TransparencyGrid`
 

@@ -234,6 +234,12 @@ const usage: Record<string, string> = {
 	actions={<Button size="sm" type="submit">Guardar cambios</Button>}
 />`,
 	ContentDivider: `<ContentDivider label="o continúa con" />`,
+	LinkCard: `<LinkCard
+	href="/components/button/"
+	title="Button"
+	description="La acción de la pantalla."
+	preview={<Button size="sm">Nuevo gasto</Button>}
+/>`,
 	InlineCTA: `<InlineCTA
 	icon="stars-02"
 	title="Conecta tu banco"

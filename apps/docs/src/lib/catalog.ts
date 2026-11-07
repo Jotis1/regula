@@ -110,7 +110,9 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "estructura-de-pagina",
 		label: "Estructura de página",
 		section: "components",
-		components: names("PageHeader CardHeader SectionHeader SectionFooter ContentDivider InlineCTA"),
+		components: names(
+			"PageHeader CardHeader SectionHeader SectionFooter ContentDivider InlineCTA LinkCard",
+		),
 	},
 	{
 		id: "contenido-y-medios",

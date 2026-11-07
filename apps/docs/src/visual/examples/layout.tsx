@@ -6,6 +6,7 @@ import {
 	CardHeader,
 	ContentDivider,
 	InlineCTA,
+	LinkCard,
 	PageHeader,
 	SectionFooter,
 	SectionHeader,
@@ -132,5 +133,25 @@ export function InlineCTAExample() {
 				</>
 			}
 		/>
+	);
+}
+
+const sample = (
+	<div className="flex h-28 items-center justify-center bg-secondary">
+		<Button size="sm">Nuevo gasto</Button>
+	</div>
+);
+
+export function LinkCardExample() {
+	return (
+		<div className="grid max-w-[640px] grid-cols-2 gap-4">
+			<LinkCard
+				href="#"
+				title="Button"
+				description="La acción de la pantalla, en cinco jerarquías y cinco tamaños."
+				preview={sample}
+			/>
+			<LinkCard href="#" title="Sin vista previa" description="Solo el título y una línea de apoyo." />
+		</div>
 	);
 }

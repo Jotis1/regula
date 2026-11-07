@@ -46,6 +46,7 @@ import {
 	Input,
 	Kbd,
 	LineChart,
+	LinkCard,
 	Message,
 	MessageInput,
 	MetricCard,
@@ -930,6 +931,22 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		render: () => (
 			<div style={box(260)}>
 				<ContentDivider label="o continúa con" />
+			</div>
+		),
+	},
+	LinkCard: {
+		render: () => (
+			<div style={box(240)}>
+				<LinkCard
+					href="#"
+					title="Button"
+					description="La acción de la pantalla."
+					preview={
+						<div className="flex h-16 items-center justify-center bg-secondary">
+							<Button size="sm">Nuevo gasto</Button>
+						</div>
+					}
+				/>
 			</div>
 		),
 	},
