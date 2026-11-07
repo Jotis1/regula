@@ -73,9 +73,6 @@ export function controlsOf(rows: PropRow[]): Control[] {
 	return controls;
 }
 
-/** Hasta seis valores, un grupo de botones; a partir de siete, un desplegable (design §4). */
-export const usesSelect = (c: Extract<Control, { kind: "choice" }>) => c.values.length >= 7;
-
 /** El valor con el que empieza cada control: el del punto de partida, su valor por defecto o el primero. */
 export function initialState(pg: Pick<Playground, "start" | "controls">): Record<string, string | boolean> {
 	const state: Record<string, string | boolean> = {};

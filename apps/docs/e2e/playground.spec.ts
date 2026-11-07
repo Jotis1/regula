@@ -11,10 +11,7 @@ test("Button: elegir secondary en hierarchy cambia el botón y el código", asyn
 	const preview = pg.locator("[data-playground-preview]");
 	const button = preview.getByRole("button", { name: "Nuevo gasto" });
 	const before = await button.evaluate((b) => getComputedStyle(b).backgroundColor);
-	await pg
-		.getByRole("group", { name: "hierarchy" })
-		.getByRole("button", { name: "secondary", exact: true })
-		.click();
+	await pg.getByRole("combobox", { name: "hierarchy" }).selectOption("secondary");
 	await expect(pg.getByRole("tabpanel")).toContainText(
 		'<Button hierarchy="secondary">Nuevo gasto</Button>',
 	);
@@ -33,22 +30,38 @@ test("el código copiado del playground es el que se ve e importa de @jotis-me/r
 	await page.goto("/components/badge/");
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await expect(pg.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
-	await pg
-		.getByRole("group", { name: "type" })
-		.getByRole("button", { name: "modern", exact: true })
-		.click();
+	await pg.getByRole("combobox", { name: "type" }).selectOption("modern");
 	await pg.getByRole("button", { name: /copiar/i }).click();
 	// El portapapeles de Windows devuelve los saltos como \r\n
 	const copied = (await page.evaluate(() => navigator.clipboard.readText())).replace(/\r\n/g, "\n");
 	expect(copied).toBe('import { Badge } from "@jotis-me/react";\n\n<Badge type="modern">Pagado</Badge>');
 });
 
-test("en móvil cada selector es un desplegable, como ButtonM, y cambia el código", async ({ page }) => {
+test("los controles son desplegables, van encima de la vista previa y el código va aparte", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/components/button/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	await expect(pg.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
+	// Ningún grupo de botones: cada prop con valores cerrados es un desplegable
+	await expect(pg.locator("[data-pg-control=choice] select")).toHaveCount(
+		await pg.locator("[data-pg-control=choice]").count(),
+	);
+	await expect(pg.locator("[data-pg-control=choice] [role=group]")).toHaveCount(0);
+	const controls = await pg.locator("[data-playground-controls]").boundingBox();
+	const preview = await pg.locator("[data-playground-preview]").boundingBox();
+	const code = await pg.getByRole("tablist").boundingBox();
+	expect(controls && preview && controls.y + controls.height <= preview.y).toBe(true);
+	// El código no va pegado: hay hueco entre la caja del ejemplo y el CodeSnippet
+	expect(preview && code && code.y - (preview.y + preview.height)).toBeGreaterThanOrEqual(16);
+});
+
+test("en móvil los desplegables ocupan todo el ancho y cambian el código", async ({ page }) => {
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto("/components/button/");
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await expect(pg.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
-	await expect(pg.getByRole("group", { name: "hierarchy" })).toBeHidden();
 	await pg.getByRole("combobox", { name: "hierarchy" }).selectOption("link-gray");
 	await expect(pg.getByRole("tabpanel")).toContainText(
 		'<Button hierarchy="link-gray">Nuevo gasto</Button>',
@@ -65,13 +78,6 @@ test("un componente sin playground enseña solo sus ejemplos", async ({ page }) 
 /** Elige en cada control su primer o su último valor. */
 async function extremes(page: Page, which: "first" | "last") {
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
-	for (const group of await pg
-		.locator("[data-pg-control=choice] fieldset")
-		.filter({ visible: true })
-		.all()) {
-		const options = group.getByRole("button");
-		await (which === "first" ? options.first() : options.last()).click();
-	}
 	for (const select of await pg
 		.locator("[data-pg-control=choice] select")
 		.filter({ visible: true })
@@ -81,7 +87,7 @@ async function extremes(page: Page, which: "first" | "last") {
 			.evaluateAll((os) => os.map((o) => (o as HTMLOptionElement).value));
 		await select.selectOption(which === "first" ? (values[0] as string) : (values.at(-1) as string));
 	}
-	for (const toggle of await pg.getByRole("switch").all())
+	for (const toggle of await pg.locator("[data-playground-controls]").getByRole("switch").all())
 		if ((await toggle.isChecked()) !== (which === "last")) await flip(page, toggle);
 }
 
@@ -118,7 +124,7 @@ test("BackgroundPattern: el patrón llena su marco y cambia con los controles", 
 	const frame = await preview.locator("> div").first().boundingBox();
 	expect(frame?.height).toBe(200);
 	const before = await preview.locator("svg").innerHTML();
-	await pg.getByRole("button", { name: "circles", exact: true }).click();
+	await pg.getByRole("combobox", { name: "pattern" }).selectOption("circles");
 	await expect.poll(() => preview.locator("svg").innerHTML()).not.toBe(before);
 	await expect(pg.locator("pre")).toContainText('pattern="circles"');
 });
