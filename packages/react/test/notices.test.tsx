@@ -45,6 +45,84 @@ describe("Tooltip", () => {
 		expect(tip.querySelector("span")?.className).toContain("text-tooltip-supporting-text");
 	});
 
+	it("cada posición pone la burbuja y su flecha en su sitio (open)", () => {
+		const cases = [
+			["top", "bottom-[calc(100%+10px)]", "after:top-full"],
+			["bottom", "top-[calc(100%+10px)]", "after:bottom-full"],
+			["left", "right-[calc(100%+10px)]", "after:left-full"],
+			["right", "left-[calc(100%+10px)]", "after:right-full"],
+		] as const;
+		for (const [placement, bubble, arrow] of cases) {
+			const { unmount } = render(
+				<Tooltip title="Un tooltip" open placement={placement}>
+					<Button hierarchy="secondary">Botón</Button>
+				</Tooltip>,
+			);
+			const tip = screen.getByRole("tooltip");
+			expect(tip.className).toContain(bubble);
+			expect(tip.className).toContain(arrow);
+			unmount();
+		}
+	});
+
+	it("la flecha va al principio, al final o centrada del borde, o se quita (open)", () => {
+		const html = (arrow: "center" | "start" | "end" | false) => {
+			const { unmount } = render(
+				<Tooltip title="Un tooltip" open placement="top" arrow={arrow}>
+					<Button hierarchy="secondary">Botón</Button>
+				</Tooltip>,
+			);
+			const cls = screen.getByRole("tooltip").className;
+			unmount();
+			return cls;
+		};
+		expect(html("center")).toContain("after:left-1/2");
+		expect(html("start")).toContain("after:left-3");
+		expect(html("start")).toContain("left-0");
+		expect(html("end")).toContain("after:right-3");
+		expect(html("end")).toContain("right-0");
+		expect(html(false)).not.toContain("after:");
+	});
+
+	it("sin props, el HTML es el de siempre (arriba, flecha centrada)", () => {
+		const bare = renderToString(
+			<Tooltip title="Un tooltip" open>
+				<Button hierarchy="secondary">Botón</Button>
+			</Tooltip>,
+		);
+		const explicit = renderToString(
+			<Tooltip title="Un tooltip" open placement="top" arrow="center">
+				<Button hierarchy="secondary">Botón</Button>
+			</Tooltip>,
+		);
+		expect(explicit).toBe(bare);
+		expect(bare).toContain("bottom-[calc(100%+10px)] left-1/2 -translate-x-1/2");
+	});
+
+	it("con placement a un lado, al enfocar sale ahí con la flecha en el borde contrario; arrow=false la quita", async () => {
+		const { unmount } = render(
+			<Tooltip title="Ayuda" placement="right" arrow="start">
+				<Button hierarchy="secondary" iconOnly="help-circle" label="Ayuda" />
+			</Tooltip>,
+		);
+		await userEvent.tab();
+		const tip = await screen.findByRole("tooltip");
+		expect(tip.className).toContain("after:right-full");
+		expect(tip.className).toContain("after:top-3");
+		await userEvent.keyboard("{Escape}");
+		await waitFor(() => expect(screen.queryByRole("tooltip")).toBeNull());
+		unmount();
+		render(
+			<Tooltip title="Ayuda" placement="bottom" arrow={false}>
+				<Button hierarchy="secondary" iconOnly="help-circle" label="Ayuda" />
+			</Tooltip>,
+		);
+		await userEvent.tab();
+		const bare = await screen.findByRole("tooltip");
+		expect(bare.className).not.toContain("after:");
+		expect(bare.querySelector("svg")).toBeNull();
+	});
+
 	it("axe en claro y oscuro", async () => {
 		await expectAccessibleInThemes(
 			<Tooltip title="Esto es un tooltip" open>
