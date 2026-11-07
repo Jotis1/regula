@@ -1,6 +1,9 @@
 // Tarjeta de cada ejemplo del registro: alto y si va siempre en oscuro. Módulo sin React para que lo lean también
 // el generador del artefacto (scripts/artifact) y los scripts de captura.
 
+/** Ancho de diseño de los ejemplos: el de las capturas aprobadas y el que escala la vista previa de las cards del índice. */
+export const VIEWPORT_WIDTH = 800;
+
 /**
  * Alto en px de la tarjeta de cada ejemplo: el de la captura aprobada (800 de ancho) y el de la vista previa del
  * artefacto generado (`@dsCard height`). Los 74 originales son los de la guía `9fe2`; un componente nuevo trae el suyo.

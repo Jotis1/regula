@@ -12,7 +12,7 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
 
 ## 2. Escenario y prueba con seis componentes
 
-- [ ] 2.1 Mover `VIEWPORT_WIDTH` a `src/visual/cards.ts` y que `e2e/visual/compare.ts` lo importe de allí. Comprobar que `e2e/visual.spec.ts -g "controles"` y `bun run test` pasan.
+- [x] 2.1 Mover `VIEWPORT_WIDTH` a `src/visual/cards.ts` y que `e2e/visual/compare.ts` lo importe de allí. Comprobar que `e2e/visual.spec.ts -g "controles"` y `bun run test` pasan.
 - [ ] 2.2 Crear `src/visual/thumbs.ts` con `PREVIEW_BOX` (288×180), `THUMBS` (zona opcional por componente) y una función pura `thumbOf(name)` que dé zona, escala y desplazamiento (D2). Tests unitarios en `test/thumbs.test.ts`:
   - sin zona, el ejemplo entero (800 × `CARD_HEIGHTS`) cabe en 288×180;
   - con zona, la escala llena el escenario sin pasar de 1;
