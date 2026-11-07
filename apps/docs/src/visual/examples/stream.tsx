@@ -17,6 +17,7 @@ import {
 	StreamGoal,
 	StreamScene,
 	StreamStatus,
+	TransparencyGrid,
 } from "@jotis-me/react";
 import { useState } from "react";
 
@@ -145,24 +146,16 @@ export function ChatBoxExample() {
 	);
 }
 
-// Cuadrícula de damas: así se ve que el interior del marco está vacío (en OBS, ahí va la cámara).
-const CHECKER = {
-	backgroundImage:
-		"linear-gradient(45deg, var(--bg-tertiary) 25%, transparent 25%, transparent 75%, var(--bg-tertiary) 75%), linear-gradient(45deg, var(--bg-tertiary) 25%, transparent 25%, transparent 75%, var(--bg-tertiary) 75%)",
-	backgroundSize: "32px 32px",
-	backgroundPosition: "0 0, 16px 16px",
-};
-
 export function CamFrameExample() {
 	return (
 		<div className="p-2">
-			<div className="rounded-2xl bg-secondary p-6" style={CHECKER}>
+			<TransparencyGrid size="md" className="rounded-2xl p-6">
 				<div className="flex items-end gap-6">
 					<CamFrame ratio="16:9" width={400} live name="Tu canal" role="ella/él" />
 					<CamFrame ratio="4:3" width={280} name="Invitada" />
 					<CamFrame ratio="1:1" width={200} name="Mod" />
 				</div>
-			</div>
+			</TransparencyGrid>
 		</div>
 	);
 }

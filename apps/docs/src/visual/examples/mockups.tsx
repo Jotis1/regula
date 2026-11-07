@@ -4,11 +4,13 @@ import {
 	BackgroundPattern,
 	type BackgroundPatternMask,
 	type BackgroundPatternName,
+	Badge,
 	BrowserFrame,
 	CreditCard,
 	EmptyState,
 	FeaturedIcon,
 	MetricCard,
+	TransparencyGrid,
 	VideoPlayer,
 } from "@jotis-me/react";
 
@@ -161,6 +163,22 @@ export function VideoPlayerExample() {
 	return (
 		<div style={{ maxWidth: 640 }}>
 			<VideoPlayer duration={252} />
+		</div>
+	);
+}
+
+export function TransparencyGridExample() {
+	return (
+		<div className="flex flex-wrap gap-6">
+			<TransparencyGrid className="flex h-32 w-64 items-center justify-center rounded-xl border border-secondary">
+				<Badge color="brand">Cuadros de 8px</Badge>
+			</TransparencyGrid>
+			<TransparencyGrid
+				size="md"
+				className="flex h-32 w-64 items-center justify-center rounded-xl border border-secondary"
+			>
+				<Badge color="brand">Cuadros de 16px</Badge>
+			</TransparencyGrid>
 		</div>
 	);
 }

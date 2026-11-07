@@ -85,6 +85,7 @@ import {
 	TextEditor,
 	Toggle,
 	Tooltip,
+	TransparencyGrid,
 	TreeView,
 	VerificationCodeInput,
 	VideoPlayer,
@@ -1004,6 +1005,16 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 	},
 
 	// Marca y maquetas
+	TransparencyGrid: {
+		render: () => (
+			<TransparencyGrid
+				size="md"
+				className="flex h-24 w-56 items-center justify-center rounded-xl border border-secondary"
+			>
+				<Badge color="brand">Transparente</Badge>
+			</TransparencyGrid>
+		),
+	},
 	BackgroundPattern: {
 		render: () => (
 			<div

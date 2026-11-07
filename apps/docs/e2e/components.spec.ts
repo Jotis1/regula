@@ -106,6 +106,46 @@ test("la ficha se reparte por etiqueta sin cambiar su texto: «Evita» va en la 
 	await expect(page.locator("section[aria-labelledby=props] > p").first()).toHaveText(plain(props));
 });
 
+test("TransparencyGrid: los cuadros usan los colores del tema, en claro y en oscuro", async ({ page }) => {
+	const read = async (scheme: "light" | "dark") => {
+		await page.emulateMedia({ colorScheme: scheme });
+		await page.goto("/components/transparency-grid/");
+		// El primer damero de la caja de ejemplos: el que lleva el texto «Cuadros de 8px»
+		const grid = page
+			.locator("#variantes + div div")
+			.filter({ has: page.getByText("Cuadros de 8px") })
+			.last();
+		await expect(grid).toBeVisible();
+		return grid.evaluate((el) => {
+			// El color real de cada token en este tema, medido con un elemento de prueba dentro del propio damero
+			const probe = (token: string) => {
+				const p = document.createElement("div");
+				p.style.background = `var(${token})`;
+				el.appendChild(p);
+				const color = getComputedStyle(p).backgroundColor;
+				p.remove();
+				return color;
+			};
+			const style = getComputedStyle(el);
+			return {
+				bg: style.backgroundColor,
+				image: style.backgroundImage,
+				primary: probe("--bg-primary"),
+				secondary: probe("--bg-secondary"),
+			};
+		});
+	};
+	const light = await read("light");
+	const dark = await read("dark");
+	for (const theme of [light, dark]) {
+		expect(theme.bg).toBe(theme.primary);
+		expect(theme.image).toContain("linear-gradient");
+		expect(theme.image).toContain(theme.secondary);
+	}
+	expect(dark.primary).not.toBe(light.primary);
+	expect(dark.secondary).not.toBe(light.secondary);
+});
+
 test("Dropdown: la tabla de props lleva la elección y el check de la elegida no se queda en el gris de los iconos", async ({
 	page,
 }) => {

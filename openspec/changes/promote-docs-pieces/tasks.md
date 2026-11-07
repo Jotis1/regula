@@ -19,8 +19,8 @@
 
 ## 4. `TransparencyGrid`
 
-- [ ] 4.1 Crear `TransparencyGrid` (`size` `sm` y `md`) con tests: los colores siguen el tema y no aporta nada al árbol de accesibilidad. Verificar con `bun run test`.
-- [ ] 4.2 Usarlo en `LivePreview.astro` (`sm`) y en el ejemplo de CamFrame (`md`). Volver a aprobar la captura de CamFrame tras mirarla (cambio buscado, design D1); las de las cards no cambian. Página de `TransparencyGrid` con capturas, grupo «Fondos y maquetas». Verificar con el test del damero de `components.spec.ts` y `visual.spec.ts`.
+- [x] 4.1 Crear `TransparencyGrid` (`size` `sm` y `md`) con tests: los colores siguen el tema y no aporta nada al árbol de accesibilidad. Verificar con `bun run test`.
+- [x] 4.2 Usarlo en `LivePreview.astro` (`sm`) y en el ejemplo de CamFrame (`md`). Volver a aprobar la captura de CamFrame tras mirarla (cambio buscado, design D1); las de las cards no cambian. Página de `TransparencyGrid` con capturas, grupo «Fondos y maquetas». Verificar con el test del damero de `components.spec.ts` y `visual.spec.ts`.
 
 ## 5. `ScaledPreview`
 

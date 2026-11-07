@@ -150,6 +150,11 @@ export { Textarea, type TextareaProps } from "./components/Textarea.js";
 export { TextEditor, type TextEditorLabels, type TextEditorProps } from "./components/TextEditor.js";
 export { Toggle, type ToggleProps } from "./components/Toggle.js";
 export { Tooltip, type TooltipProps } from "./components/Tooltip.js";
+export {
+	TransparencyGrid,
+	type TransparencyGridProps,
+	type TransparencyGridSize,
+} from "./components/TransparencyGrid.js";
 export { type TreeItem, TreeView, type TreeViewProps } from "./components/TreeView.js";
 export {
 	VerificationCodeInput,

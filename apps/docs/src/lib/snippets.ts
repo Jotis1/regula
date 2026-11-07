@@ -253,6 +253,9 @@ const usage: Record<string, string> = {
 		</>
 	}
 />`,
+	TransparencyGrid: `<TransparencyGrid size="md" className="rounded-2xl p-6">
+	<CamFrame ratio="16:9" width={400} name="Tu canal" />
+</TransparencyGrid>`,
 	BackgroundPattern: `<div className="relative">
 	<BackgroundPattern pattern="grid" size="sm" mask="radial" />
 	<div className="relative">Contenido</div>
