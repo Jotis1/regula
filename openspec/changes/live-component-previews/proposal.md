@@ -38,4 +38,4 @@ Ninguna.
   - cambia el e2e de las cards en `e2e/components.spec.ts`.
 - **Dependencias:** sale `sharp` de `apps/docs`, que solo lo usaba el recorte de fotos.
 - **Rendimiento:** la página deja de descargar unos 560 KB de WebP, pero su HTML crece con 78 ejemplos pintados. El design fija cómo se mide y se contiene.
-- **Sin cambios en los paquetes publicados** (`@jotis-me/*`): no lleva changeset.
+- **Un arreglo en `@jotis-me/react`** (changeset *patch*): `Dropdown` abierto de inicio repetía ids y dejaba referencias ARIA rotas en su HTML de servidor. En su página lo tapaba la hidratación; en la muestra del índice, que no se hidrata, no. Decisión del usuario durante la implementación: arreglarlo en el paquete.

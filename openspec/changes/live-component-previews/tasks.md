@@ -23,12 +23,12 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
   - quitar las zonas, `stageScale` y la regla CSS de la primera versión.
 
   Tests: `test/thumbs.test.ts` sin zonas y un test de que `LivePreview` usa la muestra si existe.
-- [ ] 2.5 Montar la card nueva en `index.astro` (D3): vista previa fuera del `<a>`, enlace que cubre la card con `after:inset-0`, y foco y hover en el `<li>`. Activarla solo para Button, Input, Table, DatePicker, StreamAlert y StreamScene; el resto sigue con su foto. Comprobar en local, en claro y en oscuro, a 390, 768 y 1440px, y enseñar capturas de esas seis cards a la persona usuaria antes de seguir (Migration Plan, paso 1).
+- [x] 2.5 Montar la card nueva en `index.astro` (D3): vista previa fuera del `<a>`, enlace que cubre la card con `after:inset-0`, y foco y hover en el `<li>`. Activarla solo para Button, Input, Table, DatePicker, StreamAlert y StreamScene; el resto sigue con su foto. Comprobar en local, en claro y en oscuro, a 390, 768 y 1440px, y enseñar capturas de esas seis cards a la persona usuaria antes de seguir (Migration Plan, paso 1).
 
 ## 3. Todas las cards
 
-- [ ] 3.1 Escribir en `thumbnails.tsx` la muestra de los 78 componentes, pasar todas las cards a vista previa en vivo y quitar la rama de la foto de `index.astro`. Añadir el test que exige una muestra por componente del catálogo. Revisar cada card en claro y en oscuro. Comprobar con una captura de página completa de `/components/` en los dos temas, que se adjunta a la PR.
-- [ ] 3.2 Reescribir el e2e de las cards en `e2e/components.spec.ts`:
+- [x] 3.1 Escribir en `thumbnails.tsx` la muestra de los 78 componentes, pasar todas las cards a vista previa en vivo y quitar la rama de la foto de `index.astro`. Añadir el test que exige una muestra por componente del catálogo. Revisar cada card en claro y en oscuro. Comprobar con una captura de página completa de `/components/` en los dos temas, que se adjunta a la PR.
+- [x] 3.2 Reescribir el e2e de las cards en `e2e/components.spec.ts`:
   - la card de `ButtonGroup` contiene un `ButtonGroup` pintado (sin `<img>`);
   - Tab pasa de card a card sin entrar en las vistas previas;
   - el nombre accesible de la card es el de siempre;
@@ -45,6 +45,8 @@ Todo en `apps/docs`. Tests unitarios con `bun run test`; e2e con `bunx playwrigh
   - la card del componente tiene su vista previa.
 
   Si construir dos veces es demasiado lento para el CI, que el test compruebe que ningún módulo de `src/` lee `e2e/visual/approved/` (como hace `check:reference` con `reference/`), y hacer a mano la prueba del build una vez.
+
+- [x] 3.4 Arreglar en `@jotis-me/react` los ids repetidos de `Dropdown` con `defaultOpen` en el HTML de servidor (decisión del usuario, lo encontró el e2e de 3.2): panel en línea fuera de `MenuTrigger` y opciones con sus huecos de React Aria. Test de SSR en `test/menus.test.tsx` (ids únicos y sin referencias rotas), paridad visual de `Dropdown` igual, `axe` de su página en verde y changeset *patch*.
 
 ## 4. Limpieza
 

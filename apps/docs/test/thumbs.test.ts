@@ -37,6 +37,10 @@ describe("muestras de las cards", () => {
 		}
 	});
 
+	it("cada componente del catálogo tiene su muestra (sin ella, la card enseña el ejemplo entero)", () => {
+		expect(catalogComponents().filter((n) => !THUMBNAILS[n])).toEqual([]);
+	});
+
 	it("solo hay muestras de componentes del catálogo", () => {
 		const catalog = new Set(catalogComponents());
 		expect(Object.keys(THUMBNAILS).filter((n) => !catalog.has(n))).toEqual([]);

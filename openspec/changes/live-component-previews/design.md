@@ -87,7 +87,7 @@ El README de `apps/docs` deja de decir que las fotos del índice salen de las ca
 
 - **[78 muestras que mantener]** Un componente que cambia de API puede romper su muestra → la muestra usa el paquete con sus tipos (`astro check` y el build fallan si no compila). El test de catálogo exige una muestra por componente.
 - **[La muestra no es el ejemplo que compara la paridad visual]** → La muestra usa el componente real del paquete, así que su aspecto es el que ya vigila la paridad. Solo cambian los datos y la variante.
-- **[Ids repetidos]** Las muestras usan `useId` → La pasada de axe sobre `/components/` detecta ids duplicados.
+- **[Ids repetidos]** Las muestras usan `useId` → Un e2e comprueba que `/components/` no repite ningún id. Lo hizo saltar `Dropdown` con `defaultOpen`: su panel en línea iba dentro de `MenuTrigger` y cada opción recibía las props del botón (también su `id`). Se arregló en el paquete (decisión del usuario): el panel va fuera de `MenuTrigger`, y etiqueta, descripción y atajo van en sus huecos de React Aria, con un test de SSR y un changeset *patch*.
 - **[DOM grande]** → Las muestras son mucho más pequeñas que los ejemplos enteros (una variante en lugar de todas), más `content-visibility` (D5) y la medida antes y después.
 - **[Card más estrecha que 288px]** → A 390px la card mide unos 326px de ancho útil. Por debajo, el escenario se recorta por los lados (`overflow-hidden`), sin romper la card.
 
