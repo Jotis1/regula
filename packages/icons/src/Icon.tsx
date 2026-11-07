@@ -3,7 +3,7 @@ import { icons } from "./data/icons.js";
 
 export type IconName = keyof typeof icons;
 
-/** Los nombres de los 81 iconos del set, en el orden de la guía. */
+/** Los nombres de los iconos del set: los de la guía original, en su orden, y los que se han añadido después. */
 export const iconNames = Object.keys(icons) as IconName[];
 
 export interface IconProps extends Omit<SVGProps<SVGSVGElement>, "name" | "children"> {

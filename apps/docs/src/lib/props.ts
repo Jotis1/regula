@@ -28,7 +28,7 @@ export function propsOf(file: string, name: string): PropRow[] {
 	if (!doc) throw new Error(`No encuentro el componente ${name} en ${file}`);
 	return Object.values(doc.props).map((p) => {
 		const values = p.type.name === "enum" ? (p.type.value as { value: string }[] | undefined) : undefined;
-		// Los 81 nombres de icono no caben: se muestran como su tipo (la lista está en /icons/)
+		// Los nombres de icono no caben: se muestran como su tipo (la lista está en /icons/)
 		const isIcon = values?.every((v) => icons.has(v.value.replace(/^"|"$/g, "")));
 		return {
 			name: p.name,

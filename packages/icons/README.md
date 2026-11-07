@@ -1,6 +1,6 @@
 # @jotis-me/icons
 
-Los 81 iconos de línea de la suite jotis.me (24×24, trazo de 2px redondeado) como componentes React y como SVG, y los iconos de app de cada producto.
+Los 82 iconos de línea de la suite jotis.me (24×24, trazo de 2px redondeado) como componentes React y como SVG, y los iconos de app de cada producto.
 
 Documentación y galería: [regula.jotis.me](https://regula.jotis.me).
 

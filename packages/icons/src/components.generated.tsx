@@ -55,6 +55,7 @@ export const IconRefreshCw01 = (props: IconComponentProps) => <Icon name="refres
 export const IconGrid01 = (props: IconComponentProps) => <Icon name="grid-01" {...props} />;
 export const IconSun = (props: IconComponentProps) => <Icon name="sun" {...props} />;
 export const IconMoon01 = (props: IconComponentProps) => <Icon name="moon-01" {...props} />;
+export const IconMonitor01 = (props: IconComponentProps) => <Icon name="monitor-01" {...props} />;
 export const IconGlobe01 = (props: IconComponentProps) => <Icon name="globe-01" {...props} />;
 export const IconShieldTick = (props: IconComponentProps) => <Icon name="shield-tick" {...props} />;
 export const IconZap = (props: IconComponentProps) => <Icon name="zap" {...props} />;
