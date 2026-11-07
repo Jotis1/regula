@@ -32,7 +32,7 @@ export default function Playground({ playground }: { playground: Data }) {
 								label={c.prop}
 								size="sm"
 								value={String(state[c.prop])}
-								onChange={(e) => set(c.prop)(e.target.value)}
+								onChange={set(c.prop)}
 								options={c.values}
 							/>
 						</div>

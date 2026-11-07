@@ -15,7 +15,7 @@ const BASE = "http://localhost:4321";
 const args = process.argv.slice(2);
 const outIndex = args.indexOf("--out");
 const outDir = outIndex >= 0 ? resolve(args[outIndex + 1] ?? "") : APPROVED_DIR;
-const rest = args.filter((a, i) => a !== "--all" && i !== outIndex && i !== outIndex + 1);
+const rest = args.filter((a, i) => a !== "--all" && (outIndex < 0 || (i !== outIndex && i !== outIndex + 1)));
 const catalog = catalogComponents();
 const names = args.includes("--all") ? catalog : rest;
 

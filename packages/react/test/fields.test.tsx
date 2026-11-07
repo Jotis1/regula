@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
@@ -150,24 +150,35 @@ describe("Input: texto delante, desplegables y contraseña", () => {
 			/>,
 		);
 		const input = screen.getByLabelText("Teléfono") as HTMLInputElement;
-		const select = screen.getByRole("combobox", { name: "Prefijo" });
-		await userEvent.selectOptions(select, "+351");
+		const select = screen.getByRole("button", { name: /Prefijo/ });
+		expect(select.textContent).toBe("+34");
+		await userEvent.click(select);
+		await userEvent.click(screen.getByRole("option", { name: "+351" }));
 		expect(onPrefix).toHaveBeenCalledWith("+351");
+		expect(select.textContent).toBe("+351");
 		expect(input.value).toBe("612 345 678");
 		expect(control(input).contains(select)).toBe(true);
 		// Sin separador entre el desplegable y el texto, como en el Figma.
 		expect(input.parentElement?.className).not.toContain("border-l");
 	});
 
-	it("desplegable detrás con su nombre accesible", () => {
-		render(
-			<Input
-				label="Importe"
-				trailingSelect={{ label: "Divisa", options: ["EUR", "USD"], defaultValue: "EUR" }}
-			/>,
+	it("desplegable detrás con su nombre accesible, y su valor viaja con `name`", () => {
+		const { container } = render(
+			<form>
+				<Input
+					label="Importe"
+					trailingSelect={{
+						label: "Divisa",
+						name: "divisa",
+						options: ["EUR", "USD"],
+						defaultValue: "EUR",
+					}}
+				/>
+			</form>,
 		);
-		const select = screen.getByRole("combobox", { name: "Divisa" }) as HTMLSelectElement;
-		expect(select.value).toBe("EUR");
+		const select = screen.getByRole("button", { name: /Divisa/ });
+		expect(select.textContent).toBe("EUR");
+		expect(new FormData(container.querySelector("form") as HTMLFormElement).get("divisa")).toBe("EUR");
 		expect(screen.getByRole("textbox", { name: "Importe" })).toBeTruthy();
 	});
 
@@ -260,41 +271,126 @@ describe("Textarea", () => {
 });
 
 describe("Select", () => {
-	it("nativo, con placeholder no seleccionable y opciones en texto u objeto", () => {
+	it("no es un menú nativo: un botón con la lista y un <select> oculto para el formulario", async () => {
 		render(
 			<Select
 				label="Categoría"
+				name="categoria"
 				placeholder="Elige una"
 				options={["Hogar", { value: "ocio", label: "Ocio" }]}
 			/>,
 		);
-		const select = screen.getByLabelText("Categoría") as HTMLSelectElement;
-		expect(select.tagName).toBe("SELECT");
-		expect(select.value).toBe("");
-		const opts = screen.getAllByRole("option") as HTMLOptionElement[];
-		expect(opts.map((o) => o.textContent)).toEqual(["Elige una", "Hogar", "Ocio"]);
-		expect(opts[0]?.disabled).toBe(true);
-		expect(opts[2]?.value).toBe("ocio");
+		const trigger = screen.getByRole("button", { name: /Categoría/ });
+		expect(trigger.tagName).toBe("BUTTON");
+		expect(trigger.getAttribute("aria-haspopup")).toBe("listbox");
+		expect(screen.queryByRole("listbox")).toBeNull();
+		expect(trigger.textContent).toBe("Elige una");
+		await userEvent.click(trigger);
+		const opts = screen.getAllByRole("option");
+		expect(opts.map((o) => o.textContent)).toEqual(["Hogar", "Ocio"]);
 	});
 
-	it("controlado con value/onChange y teclado", async () => {
+	it("↓ abre la lista, elige y Enter devuelve el foco al campo con el valor", async () => {
+		const onChange = vi.fn();
+		render(
+			<Select label="Categoría" placeholder="Elige" options={["Hogar", "Ocio"]} onChange={onChange} />,
+		);
+		const trigger = screen.getByRole("button", { name: /Categoría/ });
+		await userEvent.tab();
+		expect(document.activeElement).toBe(trigger);
+		await userEvent.keyboard("{ArrowDown}");
+		expect(screen.getByRole("listbox")).not.toBeNull();
+		await userEvent.keyboard("{ArrowDown}{Enter}");
+		expect(onChange).toHaveBeenCalledWith("Ocio");
+		expect(screen.queryByRole("listbox")).toBeNull();
+		expect(document.activeElement).toBe(trigger);
+		expect(trigger.textContent).toBe("Ocio");
+	});
+
+	it("controlado: el campo enseña `value` y `onChange` recibe el valor, no el evento", async () => {
 		const onChange = vi.fn();
 		render(<Select label="Categoría" options={["Hogar", "Ocio"]} value="Hogar" onChange={onChange} />);
-		const select = screen.getByLabelText("Categoría");
-		await userEvent.tab();
-		expect(document.activeElement).toBe(select);
-		await userEvent.selectOptions(select, "Ocio");
-		expect(onChange).toHaveBeenCalledOnce();
+		const trigger = screen.getByRole("button", { name: /Categoría/ });
+		expect(trigger.textContent).toBe("Hogar");
+		await userEvent.click(trigger);
+		await userEvent.click(screen.getByRole("option", { name: "Ocio" }));
+		expect(onChange).toHaveBeenCalledExactlyOnceWith("Ocio");
+		expect(trigger.textContent).toBe("Hogar");
 	});
 
-	it("error con aria-invalid, pista enlazada, chevron e icono", () => {
+	it("sin placeholder parte con la primera opción; la elegida lleva un check", async () => {
+		render(<Select label="Categoría" options={["Hogar", "Ocio"]} />);
+		const trigger = screen.getByRole("button", { name: /Categoría/ });
+		expect(trigger.textContent).toBe("Hogar");
+		await userEvent.click(trigger);
+		const chosen = screen.getByRole("option", { name: "Hogar" });
+		expect(chosen.getAttribute("aria-selected")).toBe("true");
+		expect(chosen.querySelector("svg")).not.toBeNull();
+		expect(chosen.querySelector(".text-fg-brand-primary")).not.toBeNull();
+		expect(screen.getByRole("option", { name: "Ocio" }).querySelector("svg")).toBeNull();
+	});
+
+	it("el valor viaja en un formulario con `name`", async () => {
+		const { container } = render(
+			<form>
+				<Select label="Categoría" name="categoria" options={["Hogar", "Ocio"]} defaultValue="Ocio" />
+			</form>,
+		);
+		const form = container.querySelector("form") as HTMLFormElement;
+		expect(new FormData(form).get("categoria")).toBe("Ocio");
+		await userEvent.click(screen.getByRole("button", { name: /Categoría/ }));
+		await userEvent.click(screen.getByRole("option", { name: "Hogar" }));
+		expect(new FormData(form).get("categoria")).toBe("Hogar");
+	});
+
+	it("deshabilitado: no abre", async () => {
+		render(<Select label="Categoría" options={["Hogar"]} disabled />);
+		const trigger = screen.getByRole("button", { name: /Categoría/ }) as HTMLButtonElement;
+		expect(trigger.disabled).toBe(true);
+		await userEvent.click(trigger);
+		expect(screen.queryByRole("listbox")).toBeNull();
+	});
+
+	it("opciones con apoyo, icono, avatar y punto: el apoyo y el icono salen también en el campo", async () => {
+		render(
+			<Select
+				label="Responsable"
+				icon="user-01"
+				defaultValue="olivia"
+				options={[
+					{
+						value: "olivia",
+						label: "Olivia Rhye",
+						supporting: "@olivia",
+						avatar: {},
+					},
+					{ value: "phoenix", label: "Phoenix Baker", icon: "user-01" },
+					{ value: "lana", label: "Lana Steiner", dot: "success", disabled: true },
+				]}
+			/>,
+		);
+		const trigger = screen.getByRole("button", { name: /Responsable/ });
+		expect(trigger.textContent).toContain("Olivia Rhye");
+		expect(trigger.textContent).toContain("@olivia");
+		expect(trigger.querySelectorAll("svg").length).toBeGreaterThanOrEqual(2); // icono del campo + chevron
+		expect(within(trigger).getByText("@olivia").className).toContain("text-tertiary");
+		await userEvent.click(trigger);
+		const opts = screen.getAllByRole("option");
+		expect(opts[0]?.textContent).toContain("@olivia");
+		expect(opts[0]?.querySelector("svg")).not.toBeNull(); // el avatar sin foto es el icono de usuario
+		expect(opts[1]?.querySelector("svg")).not.toBeNull();
+		expect(opts[2]?.querySelector(".bg-utility-green-500")).not.toBeNull();
+		expect(opts[2]?.getAttribute("aria-disabled")).toBe("true");
+	});
+
+	it("error marcado, pista enlazada, chevron e icono", () => {
 		render(
 			<Select label="Categoría" icon="search-lg" options={["Hogar"]} error="Elige una categoría." />,
 		);
-		const select = screen.getByLabelText("Categoría");
-		expect(select.getAttribute("aria-invalid")).toBe("true");
-		expect(description(select)).toBe("Elige una categoría.");
-		expect(controlOf(select).querySelectorAll("svg")).toHaveLength(2);
+		const select = screen.getByRole("button", { name: /Categoría/ });
+		expect(select.closest("[data-invalid]")).not.toBeNull();
+		expect(description(select).trim()).toBe("Elige una categoría.");
+		expect(select.querySelectorAll("svg")).toHaveLength(2);
 	});
 
 	it("sin infracciones de axe en claro y oscuro", async () => {

@@ -56,10 +56,10 @@ import {
 } from "./examples/layout";
 import {
 	BackgroundPatternExample,
-	ScaledPreviewExample,
-	TransparencyGridExample,
 	BrowserFrameExample,
 	CreditCardExample,
+	ScaledPreviewExample,
+	TransparencyGridExample,
 	VideoPlayerExample,
 } from "./examples/mockups";
 import {
@@ -76,11 +76,11 @@ import {
 import {
 	AlertExample,
 	BannerExample,
+	CopyTooltipExample,
 	EmptyStateExample,
 	ModalExample,
 	NotificationExample,
 	SlideoutExample,
-	CopyTooltipExample,
 	TooltipExample,
 } from "./examples/overlays";
 import {

@@ -167,6 +167,7 @@ export {
 	type VerificationCodeInputProps,
 } from "./components/VerificationCodeInput.js";
 export { VideoPlayer, type VideoPlayerLabels, type VideoPlayerProps } from "./components/VideoPlayer.js";
+export { useCopy } from "./hooks/use-copy.js";
 export type { ChartSeries } from "./internal/chart.js";
 export type { ChoiceSize } from "./internal/choice.js";
 export type { FieldProps, FieldSize } from "./internal/field.js";
@@ -180,4 +181,3 @@ export {
 } from "./internal/format.js";
 export type { StreamEventType, StreamMotion, StreamTime } from "./internal/stream.js";
 export { defaultStrings, type Strings } from "./internal/strings.js";
-export { useCopy } from "./hooks/use-copy.js";

@@ -1,21 +1,20 @@
-import { type ReactNode, type SelectHTMLAttributes, useId } from "react";
-import { cx } from "../internal/cx.js";
-import {
-	controlClasses,
-	describedBy,
-	type FieldProps,
-	FieldShell,
-	type FieldSize,
-	nativeClasses,
-} from "../internal/field.js";
-import { Icon, type IconName } from "./Icon.js";
+"use client";
 
-export type SelectOption = string | { value: string; label: ReactNode };
+import { useId } from "react";
+import { type FieldProps, FieldShell, type FieldSize } from "../internal/field.js";
+import { OptionSelect, type SelectOption } from "../internal/option-select.js";
+import type { IconName } from "./Icon.js";
 
-export interface SelectProps extends FieldProps, Omit<SelectHTMLAttributes<HTMLSelectElement>, "size"> {
+export type { SelectOption };
+
+export interface SelectProps extends FieldProps {
 	/** Lista corta (hasta ~12). Con más o con búsqueda, usa otro componente. */
 	options: SelectOption[];
-	/** Primera opción, no seleccionable, mientras no haya valor. */
+	value?: string;
+	defaultValue?: string;
+	/** Recibe el valor de la opción elegida (no el evento). */
+	onChange?: (value: string) => void;
+	/** Lo que dice el campo sin nada elegido. Sin él, parte con la primera opción elegida. */
 	placeholder?: string;
 	/**
 	 * Alto: `sm` 36 · `md` 40 · `lg` 44.
@@ -24,9 +23,20 @@ export interface SelectProps extends FieldProps, Omit<SelectHTMLAttributes<HTMLS
 	size?: FieldSize;
 	/** Icono inicial, 20px en `fg-quaternary`. */
 	icon?: IconName;
+	disabled?: boolean;
+	/** Nombre del campo al enviar el formulario. */
+	name?: string;
+	form?: string;
+	autoComplete?: string;
+	/** Nombre accesible si no hay `label` visible. */
+	"aria-label"?: string;
+	/** Abierto de inicio, para vistas previas. */
+	defaultOpen?: boolean;
+	id?: string;
+	className?: string;
 }
 
-/** Desplegable nativo con el aspecto de `Input` y un chevron, para una lista corta. */
+/** Desplegable de lista corta con el aspecto de `Input`: opciones con apoyo, icono, avatar o punto, y check en la elegida. */
 export function Select({
 	label,
 	required,
@@ -43,6 +53,7 @@ export function Select({
 }: SelectProps) {
 	const autoId = useId();
 	const id = givenId ?? autoId;
+	const message = typeof error === "string" && error ? error : hint;
 	return (
 		<FieldShell
 			id={id}
@@ -53,35 +64,20 @@ export function Select({
 			size={size}
 			className={className}
 		>
-			<div className={controlClasses(size, error, disabled)}>
-				{icon ? <Icon name={icon} size={20} /> : null}
-				<select
-					id={id}
-					required={required}
-					disabled={disabled}
-					defaultValue={rest.value === undefined && placeholder ? "" : undefined}
-					{...describedBy(id, { hint, error })}
-					{...rest}
-					className={cx(nativeClasses(size), "cursor-pointer appearance-none")}
-				>
-					{placeholder ? (
-						<option value="" disabled>
-							{placeholder}
-						</option>
-					) : null}
-					{options.map((o) => {
-						const { value, label } = typeof o === "string" ? { value: o, label: o } : o;
-						return (
-							<option key={value} value={value}>
-								{label}
-							</option>
-						);
-					})}
-				</select>
-				<span className="pointer-events-none inline-flex">
-					<Icon name="chevron-down" size={20} />
-				</span>
-			</div>
+			<OptionSelect
+				{...rest}
+				id={id}
+				variant="field"
+				options={options}
+				placeholder={placeholder}
+				size={size}
+				icon={icon}
+				disabled={disabled}
+				required={required}
+				invalid={Boolean(error)}
+				aria-labelledby={label ? `${id}-label` : undefined}
+				aria-describedby={message ? `${id}-hint` : undefined}
+			/>
 		</FieldShell>
 	);
 }
