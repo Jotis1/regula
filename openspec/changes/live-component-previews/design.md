@@ -75,12 +75,20 @@ El escenario usa el fondo de la página (`bg-primary`), que cambia solo con el t
 
 El README de `apps/docs` deja de decir que las fotos del índice salen de las capturas.
 
+### D7. Los lienzos de Stream que se miden con un efecto llevan escala fija
+`StreamStage` (lo usan solo `StreamScene` y `ChannelBanner`) mide el ancho de su contenedor en un efecto y deja el contenido `invisible` hasta tener la medida, para que no se vea un instante a tamaño real. Sin JavaScript no llega a medir, y en la prueba de las 78 cards fueron las dos únicas que salieron en blanco. Decisión del usuario: no hidratarlas ni tocar el paquete.
+- **Dato:** `THUMBS[name].stageScale`, la escala que tendría el lienzo en el ejemplo (ancho que ocupa entre ancho del lienzo): `StreamScene` 376/1920 (dos escenas por fila) y `ChannelBanner` 768/1200.
+- **Efecto:** la vista previa pone `data-stage-scale` y `--stage-scale`, y una regla CSS global la aplica al lienzo (`[data-stage-scale] .origin-top-left.invisible`): lo muestra con esa escala.
+- **Red:** es un acoplamiento a las clases internas de `StreamStage`. Un e2e comprueba que ninguna de las 78 vistas previas sale vacía y un test fija qué componentes llevan `stageScale`.
+
+*Alternativas:* hidratar esas dos con `client:visible` (rompe «sin JavaScript» y manda JS de Stream a la página); y una escala inicial en `StreamStage` (cambia el paquete publicado y obliga a una versión antes de cerrar la web).
+
 ## Risks / Trade-offs
 
 - **[El HTML de servidor de algún ejemplo no es el que se ve hidratado (efectos, medidas)]** → Revisión de las 78 cards en claro y oscuro (tarea). Si alguna se ve mal, se encuadra en otra zona del ejemplo con `THUMBS`.
 - **[Ids repetidos o estados globales]** Los ejemplos usan `useId` y pueden abrir capas en línea (`defaultOpen`, `contained`) → Dentro de un escenario con `overflow-hidden` no se salen. La pasada de axe sobre `/components/` detecta ids duplicados.
 - **[DOM grande: 78 ejemplos, algunos pesados (StreamScene a 1920, CalendarView, Table)]** → `content-visibility` (D5) y la medida antes y después. Si Lighthouse empeora, se encuadran los pesados con su zona mínima o se sustituyen por un ejemplo reducido solo para la card. Esa decisión iría a la persona usuaria.
-- **[Animaciones de entrada que dejan el componente invisible sin JS]** → Las de Stream usan CSS y se ven al terminar. Se comprueba en la revisión.
+- **[Componentes que esperan a JavaScript para verse]** → La prueba de las 78 cards encontró dos (D7). Un e2e comprueba que ninguna vista previa sale vacía, así que un componente nuevo que dependa de un efecto no pasa desapercibido.
 - **[Card más estrecha que 288px]** → A 390px la card mide unos 326px de ancho útil. Por debajo, el escenario se recorta por los lados (`overflow-hidden`), sin romper la card.
 
 ## Migration Plan

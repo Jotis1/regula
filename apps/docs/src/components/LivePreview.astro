@@ -1,0 +1,54 @@
+---
+// Vista previa en vivo de un componente en su card de /components/ (design D1-D5): el ejemplo del registro visual, pintado
+// en el servidor sin directiva `client:*` (cero JavaScript), a su ancho de diseño y encogido con `transform: scale()`
+// dentro de un escenario de tamaño fijo, como el `Scaled` de Scaena. Es decorativa: inerte, fuera del árbol de
+// accesibilidad y del buscador. Ocupa toda el área 16/10 de la card; los de Stream van siempre en oscuro.
+import { CARD_HEIGHTS, DARK_PREVIEWS, VIEWPORT_WIDTH } from "../visual/cards";
+import { PREVIEW_BOX, thumbOf } from "../visual/thumbs";
+import VisualExample from "../visual/VisualExample";
+
+interface Props {
+	name: string;
+}
+
+const { name } = Astro.props;
+const { scale, left, top, stageScale } = thumbOf(name);
+---
+
+<div
+	aria-hidden="true"
+	inert
+	data-pagefind-ignore
+	data-live-preview={name}
+	data-stage-scale={stageScale === undefined ? undefined : ""}
+	style={stageScale === undefined ? undefined : `--stage-scale:${stageScale}`}
+	class:list={[
+		"pointer-events-none flex aspect-[16/10] items-center justify-center overflow-hidden bg-primary p-4 shadow-[inset_0_-1px_0_var(--border-secondary)]",
+		DARK_PREVIEWS.has(name) && "dark-mode",
+	]}
+>
+	<div
+		class="relative shrink-0 overflow-hidden"
+		style={`width:${PREVIEW_BOX.width}px;height:${PREVIEW_BOX.height}px;content-visibility:auto;contain-intrinsic-size:${PREVIEW_BOX.width}px ${PREVIEW_BOX.height}px`}
+	>
+		{/* El ejemplo entero, como en la página de comparación (800 de ancho con 16px de margen y el alto de su captura aprobada): la zona de THUMBS es solo lo que se ve de él */}
+		<div
+			class="absolute top-0 left-0 box-border origin-top-left bg-primary p-4 font-body text-primary antialiased"
+			style={`width:${VIEWPORT_WIDTH}px;min-height:${CARD_HEIGHTS[name]}px;transform:translate(${left}px,${top}px) scale(${scale})`}
+		>
+			<VisualExample name={name} />
+		</div>
+	</div>
+</div>
+
+<style is:global>
+	/*
+	 * Lienzo de Stream (StreamStage) en una vista previa: sin JavaScript no llega a medir su contenedor y se queda
+	 * invisible y sin escala. Aquí se muestra con la escala fija de THUMBS (--stage-scale). Depende de las clases del
+	 * lienzo; test/thumbs.test.ts y la encuesta de e2e/components.spec.ts avisan si deja de funcionar.
+	 */
+	[data-stage-scale] .origin-top-left.invisible {
+		visibility: visible;
+		transform: scale(var(--stage-scale));
+	}
+</style>

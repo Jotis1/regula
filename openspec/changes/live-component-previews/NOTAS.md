@@ -25,9 +25,14 @@ El HTML sin comprimir pesa 238.528 bytes y las 156 WebP del endpoint suman 1.198
 
 ### CI (Lighthouse)
 
-`/components/` se añade a `lighthouserc.json` en el primer commit de la PR, que no cambia nada más. La nota de ese commit es la de partida.
+`/components/` se añade a `lighthouserc.json` en el segundo commit de la PR #16, que no cambia nada más (ejecución 42373677196, 7 nov). Lighthouse CI comprueba la mediana de tres pasadas por URL (`aggregationMethod: median-run`, umbral 0,9) y la anotación del CI enseña otra, la ejecución «representativa». Por eso la anotación puede estar por debajo de 0,9 con la aserción en verde, como aquí.
 
-| | Partida | Después |
+| | Partida (fotos WebP) | Después |
 |---|---|---|
-| Rendimiento (mediana) | | |
-| Accesibilidad (mediana) | | |
+| Aserción de `lhci` (mediana de 3, ≥ 0,9) | pasa | |
+| Rendimiento (ejecución representativa) | 84 | |
+| LCP (representativa) | 4,2 s | |
+| TBT (representativa) | 74 ms | |
+| Accesibilidad (representativa) | 100 | |
+
+Es una medida ruidosa: en esa misma ejecución `/` dio 88 (TBT 336 ms) y 96 en otras. Se compara con eso en cuenta.

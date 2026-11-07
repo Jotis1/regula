@@ -6,7 +6,7 @@ import { PREVIEW_BOX, THUMBS, thumbOf } from "../src/visual/thumbs";
 describe("encuadre de la vista previa de las cards", () => {
 	it("sin zona, el ejemplo entero cabe en el escenario", () => {
 		for (const name of catalogComponents()) {
-			if (THUMBS[name]) continue;
+			if (THUMBS[name]?.zone) continue;
 			const { zone, scale } = thumbOf(name);
 			expect(zone, name).toEqual({ x: 0, y: 0, width: VIEWPORT_WIDTH, height: CARD_HEIGHTS[name] });
 			expect(zone.width * scale, name).toBeLessThanOrEqual(PREVIEW_BOX.width + 1e-9);
@@ -30,7 +30,7 @@ describe("encuadre de la vista previa de las cards", () => {
 	});
 
 	it("una zona pequeña no se agranda más de su tamaño real y queda centrada", () => {
-		THUMBS.__prueba = { x: 100, y: 40, width: 100, height: 50 };
+		THUMBS.__prueba = { zone: { x: 100, y: 40, width: 100, height: 50 } };
 		try {
 			const t = thumbOf("__prueba");
 			// 288/100 = 2,88 y 180/50 = 3,6: sin el tope valdría 2,88, pero no pasa de 1
@@ -44,7 +44,7 @@ describe("encuadre de la vista previa de las cards", () => {
 	});
 
 	it("una zona grande se encoge y el desplazamiento la deja centrada en el escenario", () => {
-		THUMBS.__prueba = { x: 50, y: 20, width: 576, height: 200 };
+		THUMBS.__prueba = { zone: { x: 50, y: 20, width: 576, height: 200 } };
 		try {
 			const t = thumbOf("__prueba");
 			expect(t.scale).toBeCloseTo(0.5, 10); // 288/576
@@ -62,5 +62,19 @@ describe("encuadre de la vista previa de las cards", () => {
 
 	it("todos los componentes del catálogo tienen encuadre", () => {
 		for (const name of catalogComponents()) expect(() => thumbOf(name), name).not.toThrow();
+	});
+});
+
+describe("escala fija de los lienzos de Stream", () => {
+	it("solo la tienen los componentes con StreamStage, con una escala entre 0 y 1", () => {
+		const withScale = Object.keys(THUMBS).filter((n) => THUMBS[n]?.stageScale !== undefined);
+		expect(withScale.sort()).toEqual(["ChannelBanner", "StreamScene"]);
+		for (const name of withScale) expect(thumbOf(name).stageScale, name).toBeGreaterThan(0);
+		for (const name of withScale) expect(thumbOf(name).stageScale as number, name).toBeLessThanOrEqual(1);
+	});
+
+	it("la escala de StreamScene sale de dos escenas por fila de 1920 en un ejemplo de 800 con 16px de margen", () => {
+		expect(thumbOf("StreamScene").stageScale).toBeCloseTo((VIEWPORT_WIDTH - 32 - 16) / 2 / 1920, 10);
+		expect(thumbOf("ChannelBanner").stageScale).toBeCloseTo((VIEWPORT_WIDTH - 32) / 1200, 10);
 	});
 });

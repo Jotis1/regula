@@ -217,7 +217,9 @@ test("/components/: cada card lleva su foto, la de claro o la de oscuro según e
 	request,
 }) => {
 	await page.goto("/components/");
-	const card = page.locator(`[data-group] a[href="/components/button-group/"]`);
+	// La foto va fuera del enlace, en la misma card (el enlace cubre toda la card con su ::after)
+	const card = page.locator(`[data-group] li:has(> a[href="/components/button-group/"])`);
+	const link = card.locator("> a");
 	const light = card.locator(`img[src="/components/previews/ButtonGroup-light.webp"]`);
 	const dark = card.locator(`img[src="/components/previews/ButtonGroup-dark.webp"]`);
 	await card.scrollIntoViewIfNeeded();
@@ -225,7 +227,7 @@ test("/components/: cada card lleva su foto, la de claro o la de oscuro según e
 	await expect(dark).toBeHidden();
 	// Decorativa: el nombre de la card sigue siendo solo el del componente y su descripción
 	await expect(light).toHaveAttribute("alt", "");
-	await expect(card).toHaveAccessibleName(/^ButtonGroup Grupo segmentado/);
+	await expect(link).toHaveAccessibleName(/^ButtonGroup Grupo segmentado/);
 	await expect.poll(() => light.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
 	expect(
 		(await request.get("/components/previews/StreamScene-dark.webp")).headers()["content-type"],
@@ -236,5 +238,6 @@ test("/components/: cada card lleva su foto, la de claro o la de oscuro según e
 	await expect(dark).toBeVisible();
 	await expect(light).toBeHidden();
 	// Las fotos van con lazy: al cargar solo se piden las de la vista
-	expect(await page.locator("[data-group] img[loading=lazy]").count()).toBe(pages.length * 2);
+	// Seis cards ya van en vivo, sin foto (prueba de la tarea 2.4; la 3.1 las pasa todas y este test se reescribe)
+	expect(await page.locator("[data-group] img[loading=lazy]").count()).toBe((pages.length - 6) * 2);
 });

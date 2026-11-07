@@ -7,9 +7,13 @@
 import { getCollection } from "astro:content";
 import { Breadcrumbs } from "@jotis-me/react";
 import InlineCode from "../../components/InlineCode.astro";
+import LivePreview from "../../components/LivePreview.astro";
 import Base from "../../layouts/Base.astro";
 import { COMPONENT_GROUPS, slugOf } from "../../lib/catalog";
 import { type Preview, preview, previewUrl } from "../../lib/previews";
+
+// Prueba (tarea 2.4): solo estas seis cards usan la vista previa en vivo; el resto sigue con su foto hasta la 3.1.
+const LIVE = new Set(["Button", "Input", "Table", "DatePicker", "StreamAlert", "StreamScene"]);
 
 const pages = await getCollection("components");
 const descriptions = new Map(pages.map((p) => [p.data.name, p.data.description]));
@@ -65,12 +69,12 @@ const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length,
 							</h3>
 							<ul class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3" data-group={group.id}>
 								{group.components.map((name) => (
-									<li class="flex">
-										<a
-											href={`/components/${slugOf(name)}/`}
-											class="group flex flex-1 flex-col overflow-hidden rounded-xl border border-secondary text-primary no-underline transition-shadow duration-100 hover:border-primary hover:shadow-sm focus-visible:shadow-focus-ring focus-visible:outline-none"
-										>
-											{/* El fondo de la card es el de la captura, para que la foto no se vea como un recuadro */}
+									<li class="group relative flex flex-col overflow-hidden rounded-xl border border-secondary text-primary transition-shadow duration-100 has-[a:hover]:border-primary has-[a:hover]:shadow-sm has-[a:focus-visible]:shadow-focus-ring">
+										{/* La vista previa va fuera del enlace (HTML válido y sin nada interactivo dentro de él): el enlace cubre toda la card con su ::after */}
+										{LIVE.has(name) ? (
+											<LivePreview name={name} />
+										) : (
+											/* El fondo de la card es el de la captura, para que la foto no se vea como un recuadro */
 											<div
 												class="flex aspect-[16/10] items-center justify-center overflow-hidden bg-[var(--photo-light)] p-4 shadow-[inset_0_-1px_0_var(--border-secondary)] dark:bg-[var(--photo-dark)]"
 												style={`--photo-light:${photos.get(name)?.light.background};--photo-dark:${photos.get(name)?.dark.background}`}
@@ -87,12 +91,15 @@ const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length,
 													/>
 												))}
 											</div>
-											<div class="flex flex-col gap-0.5 p-4">
-												<span class="text-md font-semibold group-hover:underline">{name}</span>
-												<span class="text-sm text-tertiary">
-													<InlineCode text={descriptions.get(name) ?? ""} />
-												</span>
-											</div>
+										)}
+										<a
+											href={`/components/${slugOf(name)}/`}
+											class="flex flex-1 flex-col gap-0.5 p-4 text-primary no-underline outline-none after:absolute after:inset-0 after:content-['']"
+										>
+											<span class="text-md font-semibold group-hover:underline">{name}</span>
+											<span class="text-sm text-tertiary">
+												<InlineCode text={descriptions.get(name) ?? ""} />
+											</span>
 										</a>
 									</li>
 								))}
