@@ -172,6 +172,16 @@ export function slugOf(name: string): string {
 	return name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 }
 
+/**
+ * `CodeSnippet` → `Code snippet`: el nombre que se lee (títulos, navegación, cards, buscador). El identificador
+ * (`CodeSnippet`) se queda en el código: importaciones, props y referencias en las fichas. Las siglas no se
+ * tocan (`InlineCTA` → `Inline CTA`).
+ */
+export function labelOf(name: string): string {
+	const words = name.match(/[A-Z]+(?![a-z])|[A-Z]?[a-z0-9]+/g) ?? [name];
+	return words.map((w, i) => (i === 0 || /^[A-Z]{2,}$/.test(w) ? w : w.toLowerCase())).join(" ");
+}
+
 /** Todos los componentes del catálogo, en el orden de la navegación. */
 export function catalogComponents(): string[] {
 	return COMPONENT_GROUPS.flatMap((g) => [...g.components]);

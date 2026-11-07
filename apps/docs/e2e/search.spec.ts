@@ -52,9 +52,10 @@ test("cada componente lleva su grupo del catálogo como descripción", async ({ 
 	await expect(
 		page.getByRole("group", { name: "Componentes" }).getByRole("option", { name: /^Modal/ }),
 	).toContainText("Capas");
+	// El nombre se lee separado («Stream alert»), pero el identificador sigue encontrándolo
 	await search.fill("streamalert");
 	await expect(
-		page.getByRole("group", { name: "Componentes" }).getByRole("option", { name: /^StreamAlert/ }),
+		page.getByRole("group", { name: "Componentes" }).getByRole("option", { name: /^Stream alert/ }),
 	).toContainText("Stream · Alertas");
 });
 

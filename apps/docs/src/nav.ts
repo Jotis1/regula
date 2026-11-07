@@ -1,7 +1,7 @@
 // Navegación de la web, desde el catálogo (src/lib/catalog.ts): las páginas que no son de componente, que usan
 // también la búsqueda y los tests, y la navegación lateral completa de DocNav.dc.html, con los componentes por
 // grupos. Los textos van en castellano; las URLs, en inglés.
-import { COMPONENT_GROUPS, COMPONENT_KEYWORDS, FOUNDATIONS, slugOf } from "./lib/catalog";
+import { COMPONENT_GROUPS, COMPONENT_KEYWORDS, FOUNDATIONS, labelOf, slugOf } from "./lib/catalog";
 
 export interface NavItem {
 	label: string;
@@ -28,9 +28,9 @@ const groupsOf = (section: "components" | "stream"): NavGroup[] =>
 		id: g.id,
 		label: g.label,
 		items: g.components.map((name) => ({
-			label: name,
+			label: labelOf(name),
 			href: `/components/${slugOf(name)}/`,
-			keywords: COMPONENT_KEYWORDS[slugOf(name)],
+			keywords: [name, COMPONENT_KEYWORDS[slugOf(name)]].filter(Boolean).join(" "),
 		})),
 	}));
 const countOf = (groups: NavGroup[]) => groups.reduce((n, g) => n + g.items.length, 0);

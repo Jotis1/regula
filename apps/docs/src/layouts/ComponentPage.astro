@@ -11,7 +11,7 @@ import Playground from "../components/Playground";
 import PropsTable from "../components/PropsTable.astro";
 import StreamNote from "../components/StreamNote.astro";
 import type { SplitCard } from "../lib/card";
-import { groupOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
+import { groupOf, labelOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
 import { inline } from "../lib/inline";
 import type { Playground as PlaygroundData } from "../lib/playground";
 import type { PropRow } from "../lib/props";
@@ -52,10 +52,11 @@ const {
 
 const group = groupOf(name);
 const section = SECTIONS.find((s) => s.id === (group?.section ?? "components"));
+const label = labelOf(name);
 const crumbs = [
 	...(section ? [{ label: section.label, href: section.href }] : []),
 	...(group ? [{ label: group.label, href: `/components/#${group.id}` }] : []),
-	{ label: name },
+	{ label },
 ];
 const { prev, next: following, related } = neighborsOf(name);
 const href = (c: string) => `/components/${slugOf(c)}/`;
@@ -74,7 +75,7 @@ const toc = [
 ].filter((t): t is { slug: string; text: string } => !!t);
 ---
 
-<Base title={name} description={description}>
+<Base title={label} description={description}>
 	<div class="flex gap-12">
 		<article class="prose min-w-0 max-w-none flex-1">
 			<header class="not-prose mb-10 flex flex-col gap-3.5">
@@ -82,7 +83,7 @@ const toc = [
 				<Breadcrumbs items={crumbs} className="hidden md:block" />
 				<Breadcrumbs items={[crumbs[0], crumbs.at(-1)].filter((c) => c !== undefined)} className="md:hidden" />
 				<div class="flex flex-wrap items-center gap-x-4 gap-y-3">
-					<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">{name}</h1>
+					<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">{label}</h1>
 					{group && <Badge color="gray" size="sm">{stream ? `Stream · ${group.label}` : group.label}</Badge>}
 					{stream && <Badge color="gray" size="sm" icon="moon-01">Siempre en oscuro</Badge>}
 				</div>
@@ -138,7 +139,7 @@ const toc = [
 				<div
 					data-pagefind-ignore
 					role="region"
-					aria-label={`Variantes de ${name}`}
+					aria-label={`Variantes de ${label}`}
 					tabindex="0"
 					class:list={[
 						"@container not-prose my-4 flex flex-col gap-6 overflow-x-auto rounded-xl p-6 shadow-[inset_0_0_0_1px_var(--border-secondary)] focus-visible:shadow-focus-ring focus-visible:outline-none",
@@ -155,7 +156,7 @@ const toc = [
 				<!-- En móvil la tabla se desplaza dentro de su caja; con teclado, la caja recibe el foco para desplazarla -->
 				<div
 					role="region"
-					aria-label={`Props de ${name}`}
+					aria-label={`Props de ${label}`}
 					tabindex="0"
 					class="overflow-x-auto rounded-sm focus-visible:shadow-focus-ring focus-visible:outline-none"
 				>
@@ -200,8 +201,8 @@ const toc = [
 			<CardSections card={card} part="detalles" />
 
 			<Pager
-				prev={prev ? { href: href(prev), label: prev } : undefined}
-				next={following ? { href: href(following), label: following } : undefined}
+				prev={prev ? { href: href(prev), label: labelOf(prev) } : undefined}
+				next={following ? { href: href(following), label: labelOf(following) } : undefined}
 			/>
 		</article>
 		<nav aria-label="En esta página" class="sticky top-8 hidden w-[184px] shrink-0 flex-col gap-2 self-start pt-1 xl:flex" data-toc>
@@ -219,7 +220,7 @@ const toc = [
 						<p class="mt-5 mb-1 text-xs font-semibold text-quaternary">Relacionados</p>
 						{related.map((c) => (
 							<a href={href(c)} class={TOC_LINK}>
-								{c}
+								{labelOf(c)}
 							</a>
 						))}
 						{stream && (

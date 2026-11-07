@@ -79,7 +79,7 @@ test("un componente de Stream sin lienzo fijo no enlaza a tamaño real; uno de a
 test("StreamAlert: en escritorio las variantes caben en su caja, en una columna", async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto("/components/stream-alert/");
-	const box = page.locator('[aria-label="Variantes de StreamAlert"]');
+	const box = page.locator('[aria-label="Variantes de Stream alert"]');
 	await box.scrollIntoViewIfNeeded();
 	await expect(box.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
 	const [client, scroll] = await box.evaluate((el) => [el.clientWidth, el.scrollWidth]);

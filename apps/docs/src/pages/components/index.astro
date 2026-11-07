@@ -9,7 +9,7 @@ import { Breadcrumbs } from "@jotis-me/react";
 import InlineCode from "../../components/InlineCode.astro";
 import LivePreview from "../../components/LivePreview.astro";
 import Base from "../../layouts/Base.astro";
-import { COMPONENT_GROUPS, slugOf } from "../../lib/catalog";
+import { COMPONENT_GROUPS, labelOf, slugOf } from "../../lib/catalog";
 
 const pages = await getCollection("components");
 const descriptions = new Map(pages.map((p) => [p.data.name, p.data.description]));
@@ -59,7 +59,7 @@ const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length,
 											href={`/components/${slugOf(name)}/`}
 											class="flex flex-1 flex-col gap-0.5 p-4 text-primary no-underline outline-none after:absolute after:inset-0 after:content-['']"
 										>
-											<span class="text-md font-semibold group-hover:underline">{name}</span>
+											<span class="text-md font-semibold group-hover:underline">{labelOf(name)}</span>
 											<span class="text-sm text-tertiary">
 												<InlineCode text={descriptions.get(name) ?? ""} />
 											</span>
