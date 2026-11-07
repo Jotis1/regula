@@ -15,7 +15,7 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 3. Listas en el historial de cambios (petición del usuario)
 
-- [ ] 3.1 Añadir a `apps/docs/src/lib/changelog.ts` la división del texto de una entrada en bloques de párrafo y de lista (design D11) y pintarlos en `src/pages/changelog.astro` con `<p>` y `<ul>`/`<li>`, los dos con `InlineCode`. Test unitario en `test/changelog.test.ts` con la entrada de la 0.4.0 (dos listas y un párrafo entre ellas) y un e2e que cuenta los `li` de esa entrada en `/changelog/` y comprueba que no quedan guiones sueltos. Captura de la entrada en claro y oscuro, mirada.
+- [x] 3.1 Añadir a `apps/docs/src/lib/changelog.ts` la división del texto de una entrada en bloques de párrafo y de lista (design D11) y pintarlos en `src/pages/changelog.astro` con `<p>` y `<ul>`/`<li>`, los dos con `InlineCode`. Test unitario en `test/changelog.test.ts` con la entrada de la 0.4.0 (dos listas y un párrafo entre ellas) y un e2e que cuenta los `li` de esa entrada en `/changelog/` y comprueba que no quedan guiones sueltos. Captura de la entrada en claro y oscuro, mirada.
 
 ## 4. `Tooltip` con posición y `HelpIcon`
 
