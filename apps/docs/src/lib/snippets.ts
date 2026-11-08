@@ -92,6 +92,7 @@ const usage: Record<string, string> = {
 		{ label: "Gastos de octubre" },
 	]}
 />`,
+	PaginationDots: `<PaginationDots total={5} current={pagina} onChange={setPagina} variant="line" aria-label="Diapositivas" />`,
 	Pagination: `<Pagination total={10} page={pagina} onChange={setPagina} />`,
 	Pager: `<Pager
 	prev={{ href: "/components/badge/", label: "Badge" }}
@@ -281,6 +282,10 @@ const usage: Record<string, string> = {
 	<MetricCard label="Gasto de octubre" value="1.284,50 €" />
 </BrowserFrame>`,
 	CreditCard: `<CreditCard theme="brand-dark" company="Pecunia" holder="Administrador" expiry="06/29" last4="4821" />`,
+	Carousel: `<Carousel
+	aria-label="Novedades"
+	slides={[<Tarjeta titulo="Importa tus extractos" />, <Tarjeta titulo="Categoriza solo" />, <Tarjeta titulo="Comparte informes" />]}
+/>`,
 	VideoPlayer: `<VideoPlayer src="/videos/presentacion.mp4" poster="/videos/presentacion.jpg" />`,
 	LineChart: `<LineChart
 	aria-label="Gastos de agosto a octubre"

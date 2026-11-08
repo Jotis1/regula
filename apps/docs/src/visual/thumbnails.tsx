@@ -21,6 +21,7 @@ import {
 	CalendarView,
 	CamFrame,
 	CardHeader,
+	Carousel,
 	ChannelBanner,
 	ChannelPanel,
 	ChartLegend,
@@ -59,6 +60,7 @@ import {
 	PageHeader,
 	Pager,
 	Pagination,
+	PaginationDots,
 	PieChart,
 	ProgressBar,
 	ProgressCircle,
@@ -376,6 +378,22 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		render: () => (
 			<div style={box(240)}>
 				<Pager next={{ href: "#", label: "Sidebar nav" }} />
+			</div>
+		),
+	},
+	PaginationDots: {
+		render: () => (
+			<div
+				style={{
+					...box(240),
+					display: "flex",
+					flexDirection: "column",
+					gap: 20,
+					alignItems: "center",
+				}}
+			>
+				<PaginationDots total={4} current={2} size="lg" />
+				<PaginationDots total={4} current={2} size="lg" variant="line" />
 			</div>
 		),
 	},
@@ -1041,6 +1059,25 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		render: () => (
 			<div style={box(330)}>
 				<CodeSnippet code={CODE} />
+			</div>
+		),
+	},
+	Carousel: {
+		scale: 0.5,
+		render: () => (
+			<div style={box(480)}>
+				<Carousel
+					aria-label="Novedades"
+					slides={[
+						<div
+							key="a"
+							className="flex h-[240px] items-center justify-center bg-brand-secondary text-display-xs font-semibold text-primary"
+						>
+							Importa tus extractos
+						</div>,
+						<div key="b" className="h-[240px] bg-success-secondary" />,
+					]}
+				/>
 			</div>
 		),
 	},

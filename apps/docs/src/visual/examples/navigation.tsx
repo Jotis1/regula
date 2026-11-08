@@ -8,6 +8,7 @@ import {
 	FilterBar,
 	Pager,
 	Pagination,
+	PaginationDots,
 	SidebarNav,
 	Tabs,
 	TreeView,
@@ -207,5 +208,32 @@ export function TreeViewExample() {
 				{ id: "arch", label: "Archivo", icon: "inbox-01" },
 			]}
 		/>
+	);
+}
+
+export function PaginationDotsExample() {
+	const [page, setPage] = useState(2);
+	return (
+		<div className="grid grid-cols-2 gap-x-10 gap-y-8 rounded-xl bg-secondary p-8">
+			{(["md", "lg"] as const).map((size) => (
+				<div key={size} className="flex flex-col items-start gap-6">
+					<PaginationDots total={3} current={2} size={size} />
+					<PaginationDots total={3} current={2} size={size} framed />
+					<PaginationDots total={3} current={2} size={size} variant="line" />
+					<PaginationDots total={3} current={2} size={size} variant="line" framed />
+				</div>
+			))}
+			<div className="col-span-2 flex flex-col items-start gap-3">
+				<p className="m-0 text-sm text-tertiary">Con onChange, cada punto lleva a su página.</p>
+				<PaginationDots
+					total={5}
+					current={page}
+					onChange={setPage}
+					variant="line"
+					framed
+					aria-label="Diapositivas"
+				/>
+			</div>
+		</div>
 	);
 }

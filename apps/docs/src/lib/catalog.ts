@@ -78,7 +78,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		label: "Navegación",
 		section: "components",
 		components: names(
-			"Tabs Breadcrumbs Pagination Pager SidebarNav Dropdown CommandMenu TreeView FilterBar",
+			"Tabs Breadcrumbs Pagination PaginationDots Pager SidebarNav Dropdown CommandMenu TreeView FilterBar",
 		),
 	},
 	{
@@ -125,7 +125,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "contenido-y-medios",
 		label: "Contenido y medios",
 		section: "components",
-		components: names("Message MessageInput CodeSnippet VideoPlayer"),
+		components: names("Message MessageInput CodeSnippet VideoPlayer Carousel"),
 	},
 	{
 		id: "fondos-y-maquetas",

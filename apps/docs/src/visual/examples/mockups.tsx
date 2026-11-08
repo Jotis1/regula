@@ -6,6 +6,7 @@ import {
 	type BackgroundPatternName,
 	Badge,
 	BrowserFrame,
+	Carousel,
 	CreditCard,
 	EmptyState,
 	FeaturedIcon,
@@ -206,6 +207,57 @@ export function ScaledPreviewExample() {
 					description="Importa los movimientos cada día sin subir extractos."
 				/>
 			</ScaledPreview>
+		</div>
+	);
+}
+
+const NEWS = [
+	{
+		icon: "download-01",
+		title: "Importa tus extractos",
+		text: "Sube el archivo del banco y Regula lee los movimientos.",
+		tone: "bg-brand-secondary",
+	},
+	{
+		icon: "bar-chart-01",
+		title: "Categoriza solo",
+		text: "Aprende de tus cambios y ordena el gasto por ti.",
+		tone: "bg-success-secondary",
+	},
+	{
+		icon: "mail-01",
+		title: "Comparte informes",
+		text: "Envía un resumen mensual a quien lo necesite.",
+		tone: "bg-warning-secondary",
+	},
+] as const;
+
+function NewsSlide({ item, height }: { item: (typeof NEWS)[number]; height: number }) {
+	return (
+		<div
+			className={`flex flex-col items-center justify-center gap-4 px-24 text-center ${item.tone}`}
+			style={{ height }}
+		>
+			<FeaturedIcon icon={item.icon} variant="modern" size="xl" color="gray" />
+			<p className="m-0 font-display text-display-xs font-semibold text-primary">{item.title}</p>
+			<p className="m-0 max-w-[360px] text-md text-secondary">{item.text}</p>
+		</div>
+	);
+}
+
+export function CarouselExample() {
+	return (
+		<div className="flex flex-col gap-6">
+			<Carousel
+				aria-label="Novedades"
+				slides={NEWS.map((n) => <NewsSlide key={n.title} item={n} height={320} />)}
+			/>
+			<Carousel
+				aria-label="Novedades grandes"
+				size="lg"
+				defaultIndex={1}
+				slides={NEWS.map((n) => <NewsSlide key={n.title} item={n} height={320} />)}
+			/>
 		</div>
 	);
 }

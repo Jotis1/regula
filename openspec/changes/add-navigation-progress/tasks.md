@@ -34,9 +34,9 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 7. `PaginationDots` y `Carousel`
 
-- [ ] 7.1 Crear `PaginationDots` (design D4) mirando los nodos `1111:1` y `1111:38`. Tests: indicador con «n de N» para lectores y sin botones; con `onChange`, botones «Ir a la página n de N» con `aria-current`; `dot`/`line`, `md`/`lg` y `framed`.
-- [ ] 7.2 Crear `Carousel` (design D4) mirando los nodos `1253:164` y `1253:237`. Tests: flechas que pasan y se deshabilitan en los extremos, puntos que llevan a cada diapositiva, ← y → con el foco dentro, deslizar con eventos de puntero (umbral de 48px), diapositivas ocultas con `inert` y `aria-hidden`, región con `aria-roledescription="carrusel"`, sin transición con movimiento reducido.
-- [ ] 7.3 Páginas de `PaginationDots` («Navegación») y `Carousel` («Contenido y medios»), con diapositivas hechas con componentes (sin fotos), muestras, fragmentos y capturas aprobadas. Un e2e que pasa diapositivas deslizando con la emulación táctil de Chromium.
+- [x] 7.1 Crear `PaginationDots` (design D4) mirando los nodos `1111:1` y `1111:38`. Tests: indicador con «n de N» para lectores y sin botones; con `onChange`, botones «Ir a la página n de N» con `aria-current`; `dot`/`line`, `md`/`lg` y `framed`.
+- [x] 7.2 Crear `Carousel` (design D4) mirando los nodos `1253:164` y `1253:237`. Tests: flechas que pasan y se deshabilitan en los extremos, puntos que llevan a cada diapositiva, ← y → con el foco dentro, deslizar con eventos de puntero (umbral de 48px), diapositivas ocultas con `inert` y `aria-hidden`, región con `aria-roledescription="carrusel"`, sin transición con movimiento reducido.
+- [x] 7.3 Páginas de `PaginationDots` («Navegación») y `Carousel` («Contenido y medios»), con diapositivas hechas con componentes (sin fotos), muestras, fragmentos y capturas aprobadas. Un e2e que pasa diapositivas deslizando con la emulación táctil de Chromium.
 
 ## 8. `Tabs` verticales
 

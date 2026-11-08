@@ -36,6 +36,12 @@ export { type CalendarEvent, CalendarView, type CalendarViewProps } from "./comp
 export { CamFrame, type CamFrameProps, type CamFrameRatio } from "./components/CamFrame.js";
 export { CardHeader, type CardHeaderProps } from "./components/CardHeader.js";
 export {
+	Carousel,
+	type CarouselLabels,
+	type CarouselProps,
+	type CarouselSize,
+} from "./components/Carousel.js";
+export {
 	ChannelBanner,
 	type ChannelBannerProps,
 	type ChannelBannerSlot,
@@ -116,6 +122,13 @@ export {
 	type PaginationLabels,
 	type PaginationProps,
 } from "./components/Pagination.js";
+export {
+	PaginationDots,
+	type PaginationDotsLabels,
+	type PaginationDotsProps,
+	type PaginationDotsSize,
+	type PaginationDotsVariant,
+} from "./components/PaginationDots.js";
 export { PieChart, type PieChartProps, type PieChartSlice } from "./components/PieChart.js";
 export { ProgressBar, type ProgressBarProps } from "./components/ProgressBar.js";
 export {
