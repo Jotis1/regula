@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
@@ -302,8 +302,9 @@ describe("Select", () => {
 		expect(screen.getByRole("listbox")).not.toBeNull();
 		await userEvent.keyboard("{ArrowDown}{Enter}");
 		expect(onChange).toHaveBeenCalledWith("Ocio");
-		expect(screen.queryByRole("listbox")).toBeNull();
-		expect(document.activeElement).toBe(trigger);
+		await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+		// React Aria devuelve el foco al cerrar la lista, en otra tarea
+		await waitFor(() => expect(document.activeElement).toBe(trigger));
 		expect(trigger.textContent).toBe("Ocio");
 	});
 
