@@ -23,6 +23,7 @@ import {
 import {
 	FeaturedIconExample,
 	ProgressBarExample,
+	ProgressCircleExample,
 	SkeletonExample,
 	SpinnerExample,
 } from "./examples/feedback";
@@ -103,6 +104,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	AppIcon: AppIconExample,
 	FeaturedIcon: FeaturedIconExample,
 	ProgressBar: ProgressBarExample,
+	ProgressCircle: ProgressCircleExample,
 	Skeleton: SkeletonExample,
 	Spinner: SpinnerExample,
 	Avatar: AvatarExample,

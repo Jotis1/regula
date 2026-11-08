@@ -118,6 +118,12 @@ export {
 } from "./components/Pagination.js";
 export { PieChart, type PieChartProps, type PieChartSlice } from "./components/PieChart.js";
 export { ProgressBar, type ProgressBarProps } from "./components/ProgressBar.js";
+export {
+	ProgressCircle,
+	type ProgressCircleProps,
+	type ProgressCircleShape,
+	type ProgressCircleSize,
+} from "./components/ProgressCircle.js";
 export { Radio, type RadioProps } from "./components/Radio.js";
 export { RadioGroup, type RadioGroupOption, type RadioGroupProps } from "./components/RadioGroup.js";
 export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPreview.js";

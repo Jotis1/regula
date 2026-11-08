@@ -28,6 +28,8 @@ const usage: Record<string, string> = {
 	Skeleton: `<Skeleton circle width={40} height={40} />
 <Skeleton lines={3} />`,
 	ProgressBar: `<ProgressBar value={62} aria-label="Presupuesto usado" />`,
+	ProgressCircle: `<ProgressCircle value={40} label="Usuarios activos" />
+<ProgressCircle value={40} shape="half" size="sm" label="Usuarios activos" />`,
 	AppIcon: `<AppIcon app="pecunia" size={48} />`,
 	Input: `<Input label="Correo" type="email" icon="mail-01" placeholder="tu@jotis.me" required />`,
 	NumberInput: `<NumberInput label="Invitados" defaultValue={2} min={1} max={12} />`,

@@ -1,6 +1,6 @@
-// Puertos de las vistas previas de FeaturedIcon, Spinner, Skeleton y ProgressBar.
+// Puertos de las vistas previas de FeaturedIcon, Spinner, Skeleton, ProgressBar y ProgressCircle.
 
-import { FeaturedIcon, ProgressBar, Skeleton, Spinner } from "@jotis-me/react";
+import { FeaturedIcon, ProgressBar, ProgressCircle, Skeleton, Spinner } from "@jotis-me/react";
 import { row, stack } from "./actions";
 
 export function FeaturedIconExample() {
@@ -55,6 +55,28 @@ export function ProgressBarExample() {
 			<div className="max-w-[360px]">
 				<ProgressBar value={30} label="bottom" aria-label="Subida" />
 			</div>
+		</div>
+	);
+}
+
+const SIZES = ["xxs", "xs", "sm", "md", "lg"] as const;
+
+export function ProgressCircleExample() {
+	return (
+		<div className="flex flex-col gap-10">
+			{(["circle", "half"] as const).map((shape) => (
+				<div key={shape} className="flex flex-wrap items-end gap-x-8 gap-y-6">
+					{SIZES.map((size) => (
+						<ProgressCircle
+							key={size}
+							size={size}
+							shape={shape}
+							value={40}
+							label={size === "xxs" ? "Usuarios" : "Usuarios activos"}
+						/>
+					))}
+				</div>
+			))}
 		</div>
 	);
 }

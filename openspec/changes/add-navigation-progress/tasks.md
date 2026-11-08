@@ -24,8 +24,8 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 5. `ProgressCircle`
 
-- [ ] 5.1 Crear `ProgressCircle` (design D3) con medidas y grosores del nodo `1084:2717`. Tests: `role="progressbar"`, `aria-valuenow` y nombre, el arco cubre el valor (largo del trazo), `shape="half"`, valores fuera de 0–100 recortados y se pinta en el servidor.
-- [ ] 5.2 Página en «Avisos y carga» con ejemplo de los cinco tamaños en círculo y semicírculo, muestra, fragmento y capturas aprobadas.
+- [x] 5.1 Crear `ProgressCircle` (design D3) con medidas y grosores del nodo `1084:2717`. Tests: `role="progressbar"`, `aria-valuenow` y nombre, el arco cubre el valor (largo del trazo), `shape="half"`, valores fuera de 0–100 recortados y se pinta en el servidor.
+- [x] 5.2 Página en «Avisos y carga» con ejemplo de los cinco tamaños en círculo y semicírculo, muestra, fragmento y capturas aprobadas.
 
 ## 6. `ProgressSteps`
 

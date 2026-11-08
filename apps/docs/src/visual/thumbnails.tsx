@@ -61,6 +61,7 @@ import {
 	Pagination,
 	PieChart,
 	ProgressBar,
+	ProgressCircle,
 	Radio,
 	RadioGroup,
 	ScaledPreview,
@@ -628,6 +629,13 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					description="Ningún movimiento coincide con «León»."
 					actions={<Button iconLeading="plus">Nuevo movimiento</Button>}
 				/>
+			</div>
+		),
+	},
+	ProgressCircle: {
+		render: () => (
+			<div style={{ ...box(248), display: "flex", justifyContent: "center" }}>
+				<ProgressCircle value={40} size="xs" label="Usuarios activos" />
 			</div>
 		),
 	},
