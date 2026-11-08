@@ -216,19 +216,19 @@ const NEWS = [
 		icon: "download-01",
 		title: "Importa tus extractos",
 		text: "Sube el archivo del banco y Regula lee los movimientos.",
-		tone: "bg-brand-secondary",
+		tone: "bg-tertiary",
 	},
 	{
 		icon: "bar-chart-01",
 		title: "Categoriza solo",
 		text: "Aprende de tus cambios y ordena el gasto por ti.",
-		tone: "bg-success-secondary",
+		tone: "bg-secondary_alt",
 	},
 	{
 		icon: "mail-01",
 		title: "Comparte informes",
 		text: "Envía un resumen mensual a quien lo necesite.",
-		tone: "bg-warning-secondary",
+		tone: "bg-secondary",
 	},
 ] as const;
 
