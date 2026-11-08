@@ -185,6 +185,19 @@ describe("Slideout", () => {
 		await waitFor(() => expect(document.activeElement).toBe(opener));
 	});
 
+	it("side: por defecto sale a la derecha; con `left`, a la izquierda, y el filo pasa al lado contrario", () => {
+		const overlay = (el: HTMLElement) => el.parentElement as HTMLElement;
+		const { rerender } = render(<Slideout contained title="Alquiler" />);
+		let panel = screen.getByRole("dialog", { name: "Alquiler" });
+		expect(overlay(panel).className).toContain("justify-end");
+		expect(panel.className).toContain("inset_1px_0_0");
+		rerender(<Slideout contained title="Alquiler" side="left" />);
+		panel = screen.getByRole("dialog", { name: "Alquiler" });
+		expect(overlay(panel).className).toContain("justify-start");
+		expect(overlay(panel).className).not.toContain("justify-end");
+		expect(panel.className).toContain("inset_-1px_0_0");
+	});
+
 	it("cabecera con X, cuerpo con el contenido, pie a la derecha con línea; ancho por defecto 400", () => {
 		render(
 			<Slideout

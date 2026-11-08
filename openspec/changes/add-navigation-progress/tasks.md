@@ -51,7 +51,7 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 10. `HeaderNav`
 
-- [ ] 10.1 Añadir `side` a `Slideout` (`right` por defecto, `left`). Test del lado y verificar que la captura de `Slideout` no cambia.
+- [x] 10.1 Añadir `side` a `Slideout` (`right` por defecto, `left`). Test del lado y verificar que la captura de `Slideout` no cambia.
 - [ ] 10.2 Crear `HeaderNav` en escritorio con los cuatro tipos (design D5) mirando los nodos `1208:104342`, `1208:101427`, `11910:608084`, `11910:613771`, `1152:89220` y `1165:736`. Tests: `banner`, navegación con `aria-current="page"`, segunda fila con subsecciones en `dual-tier`, `tabs` (enlaces con aspecto de pestaña, sin `tablist`) y `centered`, y acciones y cuenta.
 - [ ] 10.3 Añadir el menú móvil (design D5) mirando los nodos `1208:104358`, `1208:101749`, `11910:613336`, `11910:613804`, `1152:90366` y `1161:14070`: botón de menú bajo `lg`, `Slideout` desde la izquierda con buscador, navegación con secciones desplegables, enlaces de pie y cuenta. Tests: foco atrapado, Escape devuelve el foco al botón y `aria-expanded` al desplegar.
 - [ ] 10.4 Página en «Navegación» con los cuatro tipos, muestra, fragmento y capturas aprobadas, y un e2e a 1440 y 390px: secciones, segunda fila, menú móvil abierto y cerrado, sin desplazamiento horizontal.

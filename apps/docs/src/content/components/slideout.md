@@ -6,7 +6,7 @@ interactive: true
 astroNote: "`onClose` es una función y abrirlo necesita estado: envuélvelo en un `.tsx` con el botón que lo abre y úsalo con `client:load`."
 ---
 
-**Props.** `open`, `title`, `description`, `children`, `actions` (botones del pie, a la derecha), `onClose`, `width` (400 por defecto), `contained`.
+**Props.** `open`, `title`, `description`, `children`, `actions` (botones del pie, a la derecha), `onClose`, `width` (400 por defecto), `side` (`right` por defecto · `left`: de qué lado sale; el filo con la página pasa al lado contrario) y `contained`.
 
 **Visual.** Panel `bg-primary_alt` a toda la altura, `shadow-xl`; cabecera con padding `spacing-3xl` y botón de cerrar; pie con línea `border-secondary`. Fondo `bg-overlay` al 70% con desenfoque, igual que el modal.
 

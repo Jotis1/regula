@@ -1,6 +1,7 @@
 "use client";
 
 import { type ReactNode, useId } from "react";
+import { cx } from "../internal/cx.js";
 import { Layer } from "../internal/layer.js";
 import { CloseButton } from "./CloseButton.js";
 
@@ -23,6 +24,11 @@ export interface SlideoutProps {
 	 * @default 400
 	 */
 	width?: number | string;
+	/**
+	 * Lado del que sale el panel: a la derecha, o a la izquierda (el menú móvil de `HeaderNav`).
+	 * @default "right"
+	 */
+	side?: "right" | "left";
 	/** Se pinta dentro de su contenedor (posición relativa) en vez de sobre toda la página, sin atrapar el foco. */
 	contained?: boolean;
 }
@@ -39,6 +45,7 @@ export function Slideout({
 	actions,
 	onClose,
 	width,
+	side = "right",
 	contained,
 }: SlideoutProps) {
 	const id = useId();
@@ -47,8 +54,15 @@ export function Slideout({
 		<Layer
 			contained={contained}
 			onClose={onClose}
-			overlayClassName="items-stretch justify-end p-0"
-			panelClassName="flex h-full w-full max-w-[400px] flex-col bg-primary_alt font-body shadow-[var(--shadow-xl),inset_1px_0_0_var(--border-secondary_alt)]"
+			overlayClassName={
+				side === "left" ? "items-stretch justify-start p-0" : "items-stretch justify-end p-0"
+			}
+			panelClassName={cx(
+				"flex h-full w-full max-w-[400px] flex-col bg-primary_alt font-body",
+				side === "left"
+					? "shadow-[var(--shadow-xl),inset_-1px_0_0_var(--border-secondary_alt)]"
+					: "shadow-[var(--shadow-xl),inset_1px_0_0_var(--border-secondary_alt)]",
+			)}
 			panelStyle={width !== undefined ? { maxWidth: width } : undefined}
 			labelledBy={`${id}-title`}
 			describedBy={description ? `${id}-desc` : undefined}
