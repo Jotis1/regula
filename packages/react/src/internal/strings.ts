@@ -93,6 +93,8 @@ export const defaultStrings = {
 	stepCurrent: "actual",
 	stepPending: "pendiente",
 	stepOf: (n: number, total: number) => `Paso ${n} de ${total}`,
+	subsections: "Subsecciones",
+	openMenu: "Abrir menú",
 	pageOf: (n: number, total: number) => `${n} de ${total}`,
 	goToPage: (n: number, total: number) => `Ir a la página ${n} de ${total}`,
 	carousel: "carrusel",

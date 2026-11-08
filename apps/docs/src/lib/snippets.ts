@@ -108,6 +108,24 @@ const usage: Record<string, string> = {
 	footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/ajustes/" }]}
 	user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 />`,
+	HeaderNav: `<HeaderNav
+	type="dual-tier"
+	brand={<AppIcon app="regula" size={32} />}
+	items={[
+		{ label: "Inicio", href: "/" },
+		{
+			label: "Panel",
+			href: "/panel/",
+			current: true,
+			children: [
+				{ label: "Resumen", href: "/panel/", current: true },
+				{ label: "Informes", href: "/panel/informes/" },
+			],
+		},
+	]}
+	search={<Input aria-label="Buscar" placeholder="Buscar" icon="search-lg" />}
+	account={<Dropdown label="Cuenta" items={[{ label: "Perfil" }]} />}
+/>`,
 	ContextMenu: `<ContextMenu
 	aria-label="Acciones de la fila"
 	items={[

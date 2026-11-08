@@ -1,15 +1,21 @@
 // Puertos de las vistas previas de navegación de la guía (reference/components/*/preview.html).
 
 import {
+	AppIcon,
 	AvatarLabel,
 	Breadcrumbs,
+	Button,
 	CommandMenu,
 	ContextMenu,
 	Dropdown,
 	FilterBar,
+	HeaderNav,
+	type HeaderNavItem,
+	Input,
 	Pager,
 	Pagination,
 	PaginationDots,
+	ScaledPreview,
 	SidebarNav,
 	Tabs,
 	TreeView,
@@ -177,6 +183,113 @@ export function ContextMenuExample() {
 					Botón derecho aquí
 				</span>
 			</ContextMenu>
+		</div>
+	);
+}
+
+const headerBrand = (
+	<span className="inline-flex items-center gap-2 font-display text-lg font-bold text-primary">
+		<AppIcon app="regula" size={32} />
+		Regula
+	</span>
+);
+
+const headerItems: HeaderNavItem[] = [
+	{ label: "Inicio", href: "#", icon: "home-line" },
+	{
+		label: "Panel",
+		href: "#",
+		icon: "bar-chart-01",
+		current: true,
+		children: [
+			{ label: "Resumen", href: "#", current: true },
+			{ label: "Avisos", href: "#", badge: 2 },
+			{ label: "Analítica", href: "#" },
+			{ label: "Informes guardados", href: "#" },
+			{ label: "Informes programados", href: "#" },
+		],
+	},
+	{ label: "Proyectos", href: "#", icon: "inbox-01", children: [{ label: "Todos", href: "#" }] },
+	{ label: "Tareas", href: "#", icon: "check-circle", badge: 8 },
+	{ label: "Usuarios", href: "#", icon: "users-01" },
+];
+
+const headerActions = (
+	<>
+		<Button hierarchy="tertiary" iconOnly="search-lg" label="Buscar" />
+		<Button hierarchy="tertiary" iconOnly="settings-02" label="Ajustes" />
+		<Button hierarchy="tertiary" iconOnly="bell-01" label="Avisos" />
+	</>
+);
+const headerAccount = <Dropdown label="Cuenta" items={[{ label: "Perfil" }, { label: "Salir" }]} />;
+const headerSearch = <Input aria-label="Buscar" placeholder="Buscar" icon="search-lg" size="sm" />;
+
+/** Una cabecera a 1280px de ancho (la CSS elige escritorio por el ancho de la propia cabecera), encogida a la caja. */
+function HeaderPreview({ height, children }: { height: number; children: React.ReactNode }) {
+	return (
+		<ScaledPreview width={1280} scale={0.6} box={[768, Math.round(height * 0.6)]}>
+			{children}
+		</ScaledPreview>
+	);
+}
+
+export function HeaderNavExample() {
+	return (
+		<div className="flex flex-col gap-4">
+			<HeaderPreview height={65}>
+				<HeaderNav
+					brand={headerBrand}
+					items={headerItems}
+					actions={headerActions}
+					account={headerAccount}
+				/>
+			</HeaderPreview>
+			<HeaderPreview height={129}>
+				<HeaderNav
+					type="dual-tier"
+					brand={headerBrand}
+					items={headerItems}
+					search={headerSearch}
+					actions={headerActions}
+					account={headerAccount}
+				/>
+			</HeaderPreview>
+			<HeaderPreview height={109}>
+				<HeaderNav
+					type="tabs"
+					brand={headerBrand}
+					items={headerItems}
+					actions={headerActions}
+					account={headerAccount}
+				/>
+			</HeaderPreview>
+			<HeaderPreview height={129}>
+				<HeaderNav
+					type="centered"
+					brand={headerBrand}
+					items={headerItems}
+					account={
+						<>
+							<Button hierarchy="secondary">Entrar</Button>
+							<Button>Hazte PRO</Button>
+						</>
+					}
+				/>
+			</HeaderPreview>
+			<div className="w-[375px] overflow-hidden rounded-xl border border-secondary">
+				<HeaderNav
+					brand={headerBrand}
+					items={headerItems}
+					search={headerSearch}
+					mobile={{
+						footerItems: [
+							{ label: "Ajustes", href: "#", icon: "settings-02" },
+							{ label: "Soporte", href: "#", icon: "user-01" },
+						],
+						footer: <AvatarLabel initials="OR" name="Olivia Rhye" supporting="olivia@jotis.me" />,
+					}}
+				/>
+			</div>
 		</div>
 	);
 }

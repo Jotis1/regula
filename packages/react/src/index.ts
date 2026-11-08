@@ -108,6 +108,14 @@ export {
 	type UploadFile,
 } from "./components/FileUpload.js";
 export { FilterBar, type FilterBarLabels, type FilterBarProps } from "./components/FilterBar.js";
+export {
+	HeaderNav,
+	type HeaderNavItem,
+	type HeaderNavLabels,
+	type HeaderNavMobile,
+	type HeaderNavProps,
+	type HeaderNavType,
+} from "./components/HeaderNav.js";
 export { HelpIcon, type HelpIconProps } from "./components/HelpIcon.js";
 export { Icon, type IconName, type IconProps } from "./components/Icon.js";
 export { InlineCTA, type InlineCTAProps } from "./components/InlineCTA.js";

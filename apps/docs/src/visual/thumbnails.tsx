@@ -42,6 +42,7 @@ import {
 	FeaturedIcon,
 	FileUpload,
 	FilterBar,
+	HeaderNav,
 	HelpIcon,
 	Icon,
 	type IconName,
@@ -420,6 +421,31 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					]}
 					user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 				/>
+			</div>
+		),
+	},
+	HeaderNav: {
+		render: () => (
+			<div style={box(248)}>
+				<ScaledPreview width={1280} scale={0.19} box={[248, 62]}>
+					<HeaderNav
+						type="dual-tier"
+						brand={<AppIcon app="regula" size={32} />}
+						items={[
+							{ label: "Inicio", href: "#" },
+							{
+								label: "Panel",
+								href: "#",
+								current: true,
+								children: [
+									{ label: "Resumen", href: "#", current: true },
+									{ label: "Avisos", href: "#" },
+								],
+							},
+							{ label: "Tareas", href: "#" },
+						]}
+					/>
+				</ScaledPreview>
 			</div>
 		),
 	},

@@ -78,7 +78,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		label: "Navegación",
 		section: "components",
 		components: names(
-			"Tabs Breadcrumbs Pagination PaginationDots Pager SidebarNav Dropdown ContextMenu CommandMenu TreeView FilterBar",
+			"Tabs Breadcrumbs Pagination PaginationDots Pager SidebarNav Dropdown ContextMenu HeaderNav CommandMenu TreeView FilterBar",
 		),
 	},
 	{
