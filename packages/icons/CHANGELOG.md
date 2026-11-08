@@ -1,5 +1,11 @@
 # @jotis-me/icons
 
+## 0.5.0
+
+### Minor Changes
+
+- 858d806: Icono nuevo `monitor-01` (pantalla), del archivo de Figma, para representar «Sistema» en el selector de tema. El set pasa de 81 a 82 iconos.
+
 ## 0.4.0
 
 No changes in this release.
