@@ -58,7 +58,7 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 11. Integración
 
-- [ ] 11.1 Changeset `minor` de `@jotis-me/react` (que avisa del cambio de `onChange` en `Select`, design D9). Pasar `bunx biome ci .`, `bunx turbo run typecheck test build`, el e2e completo de la web y los tests del artefacto (91 componentes), y verificar que todo queda en verde.
+- [x] 11.1 Changeset `minor` de `@jotis-me/react` (que avisa del cambio de `onChange` en `Select`, design D9). Pasar `bunx biome ci .`, `bunx turbo run typecheck test build`, el e2e completo de la web y los tests del artefacto (91 componentes), y verificar que todo queda en verde.
 
 ## Workflow follow-up
 

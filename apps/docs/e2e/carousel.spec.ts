@@ -18,7 +18,7 @@ const open = async (page: Page) => {
 
 const swipe = async (page: Page, from: { x: number; y: number }, dx: number) => {
 	const cdp = await page.context().newCDPSession(page);
-	const touch = (type: string, x: number) =>
+	const touch = (type: "touchStart" | "touchMove" | "touchEnd", x: number) =>
 		cdp.send("Input.dispatchTouchEvent", {
 			type,
 			touchPoints: type === "touchEnd" ? [] : [{ x, y: from.y }],

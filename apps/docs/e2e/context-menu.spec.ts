@@ -41,7 +41,7 @@ test("cerca del borde de la ventana el menú se voltea y cabe", async ({ page })
 	// Casi en la esquina inferior derecha de la ventana
 	await page.evaluate(() => window.scrollTo(0, 0));
 	const at = {
-		x: Math.min(view.x ?? 0, box.x + box.width - 10),
+		x: Math.min(view.width - 20, box.x + box.width - 10),
 		y: Math.min(view.height - 20, box.y + box.height - 10),
 	};
 	await page.mouse.click(at.x, at.y, { button: "right" });

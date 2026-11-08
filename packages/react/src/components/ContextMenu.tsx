@@ -258,7 +258,8 @@ export function ContextMenu({
 				}}
 			>
 				<Pressable>
-					<span
+					<button
+						type="button"
 						// React Aria nombra el menú con su disparador (`aria-labelledby`): el invisible lleva el nombre del menú
 						aria-label={label}
 						aria-hidden="true"
