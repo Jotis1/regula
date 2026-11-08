@@ -45,9 +45,9 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 9. `ContextMenu`
 
-- [ ] 9.1 Sacar el pintado de las opciones de `Dropdown` a un módulo interno compartido (design D6) y verificar que los tests y la captura de `Dropdown` no cambian.
-- [ ] 9.2 Crear `ContextMenu` (design D6) mirando los nodos `11547:540792`, `11546:537565` y `11546:538631`: clic derecho en el punto del puntero, Mayús+F10 y tecla de menú, atajos, iconos, secciones con check (múltiple) y punto (única), separadores y submenús. Tests: el menú del navegador no sale, foco en la primera opción, elegir cierra, → abre el submenú y ← lo cierra, Escape devuelve el foco y las marcas de elección se anuncian.
-- [ ] 9.3 Página en «Navegación» con el ejemplo simple y el avanzado del Figma, muestra, fragmento y capturas aprobadas, y un e2e con clic derecho real, también cerca del borde de la ventana.
+- [x] 9.1 Sacar el pintado de las opciones de `Dropdown` a un módulo interno compartido (design D6) y verificar que los tests y la captura de `Dropdown` no cambian.
+- [x] 9.2 Crear `ContextMenu` (design D6) mirando los nodos `11547:540792`, `11546:537565` y `11546:538631`: clic derecho en el punto del puntero, Mayús+F10 y tecla de menú, atajos, iconos, secciones con check (múltiple) y punto (única), separadores y submenús. Tests: el menú del navegador no sale, foco en la primera opción, elegir cierra, → abre el submenú y ← lo cierra, Escape devuelve el foco y las marcas de elección se anuncian.
+- [x] 9.3 Página en «Navegación» con el ejemplo simple y el avanzado del Figma, muestra, fragmento y capturas aprobadas, y un e2e con clic derecho real, también cerca del borde de la ventana.
 
 ## 10. `HeaderNav`
 

@@ -34,6 +34,7 @@ import {
 	ColorPicker,
 	CommandMenu,
 	ContentDivider,
+	ContextMenu,
 	CreditCard,
 	DatePicker,
 	Dropdown,
@@ -419,6 +420,25 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					]}
 					user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 				/>
+			</div>
+		),
+	},
+	ContextMenu: {
+		scale: 0.7,
+		render: () => (
+			<div style={box(280)}>
+				<ContextMenu
+					defaultOpen
+					previewAt={{ x: 8, y: 8 }}
+					items={[
+						{ label: "Cortar", shortcut: "⌘X" },
+						{ label: "Copiar", shortcut: "⌘C" },
+						{ divider: true },
+						{ label: "Ver detalles", items: [{ label: "Historial" }] },
+					]}
+				>
+					<div style={{ height: 160 }} />
+				</ContextMenu>
 			</div>
 		),
 	},

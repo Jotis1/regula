@@ -108,6 +108,19 @@ const usage: Record<string, string> = {
 	footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/ajustes/" }]}
 	user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 />`,
+	ContextMenu: `<ContextMenu
+	aria-label="Acciones de la fila"
+	items={[
+		{ icon: "copy-01", label: "Copiar", shortcut: "⌘C", onSelect: copiar },
+		{ icon: "edit-02", label: "Editar", onSelect: editar },
+		{ divider: true },
+		{ label: "Más herramientas", items: [{ label: "Exportar a CSV" }, { label: "Imprimir" }] },
+		{ divider: true },
+		{ icon: "trash-01", label: "Eliminar", danger: true, onSelect: eliminar },
+	]}
+>
+	<Fila />
+</ContextMenu>`,
 	Dropdown: `<Dropdown
 	label="Acciones"
 	items={[

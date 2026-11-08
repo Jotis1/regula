@@ -68,6 +68,7 @@ import {
 import {
 	BreadcrumbsExample,
 	CommandMenuExample,
+	ContextMenuExample,
 	DropdownExample,
 	FilterBarExample,
 	PagerExample,
@@ -145,6 +146,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	Pager: PagerExample,
 	SidebarNav: SidebarNavExample,
 	Dropdown: DropdownExample,
+	ContextMenu: ContextMenuExample,
 	FilterBar: FilterBarExample,
 	CommandMenu: CommandMenuExample,
 	TreeView: TreeViewExample,

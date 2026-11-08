@@ -68,6 +68,14 @@ export {
 } from "./components/CommandMenu.js";
 export { ContentDivider, type ContentDividerProps } from "./components/ContentDivider.js";
 export {
+	ContextMenu,
+	type ContextMenuAction,
+	type ContextMenuChoice,
+	type ContextMenuItem,
+	type ContextMenuProps,
+	type ContextMenuSection,
+} from "./components/ContextMenu.js";
+export {
 	CopyTooltip,
 	type CopyTooltipLabels,
 	type CopyTooltipProps,

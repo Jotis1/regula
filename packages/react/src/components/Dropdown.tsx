@@ -1,23 +1,13 @@
 "use client";
 
 import { isValidElement, type ReactElement, type ReactNode, useState } from "react";
-import {
-	Keyboard,
-	Menu,
-	MenuItem,
-	MenuTrigger,
-	Popover,
-	Pressable,
-	Separator,
-	Text,
-} from "react-aria-components";
+import { Menu, MenuItem, MenuTrigger, Popover, Pressable, Separator } from "react-aria-components";
 import { cx } from "../internal/cx.js";
-
+import { MENU_PANEL, MenuItemContent, menuItemClasses } from "../internal/menu-item.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
-import { Icon, type IconName } from "./Icon.js";
-import { Kbd } from "./Kbd.js";
+import type { IconName } from "./Icon.js";
 
 export interface DropdownAction {
 	icon?: IconName;
@@ -68,8 +58,7 @@ export interface DropdownProps {
 	className?: string;
 }
 
-const PANEL =
-	"min-w-60 rounded-lg bg-primary_alt py-1 font-body shadow-[var(--shadow-lg),inset_0_0_0_1px_var(--border-secondary_alt)] outline-none";
+const PANEL = MENU_PANEL;
 
 const isDivider = (item: DropdownItem): item is { divider: true } => "divider" in item;
 
@@ -137,37 +126,15 @@ export function Dropdown({
 								item.textValue ?? (typeof item.label === "string" ? item.label : undefined)
 							}
 							onAction={() => item.onSelect?.()}
-							className={cx(
-								"mx-1.5 my-px flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-[9px] text-sm font-medium outline-none data-focused:bg-primary_hover",
-								item.danger
-									? "text-error-primary [&_svg]:text-fg-error-secondary"
-									: "text-secondary data-focused:text-secondary_hover [&_svg]:text-fg-quaternary",
-							)}
+							className={menuItemClasses(item.danger)}
 						>
 							{({ isSelected }) => (
-								<>
-									{item.icon ? <Icon name={item.icon} size={16} /> : null}
-									{/* Etiqueta, descripción y atajo en sus huecos de React Aria: así aria-labelledby y aria-describedby
-									    de la opción apuntan a algo también en el HTML de servidor. El atajo va dentro de la etiqueta, para
-									    que el nombre accesible sea todo lo que se ve; descripción y teclado quedan vacíos */}
-									<Text slot="label" className="flex min-w-0 flex-1 items-center gap-2">
-										{item.label}
-										{item.shortcut ? (
-											<Kbd className="ml-auto">{item.shortcut}</Kbd>
-										) : null}
-									</Text>
-									<Text slot="description" className="hidden" />
-									<Keyboard className="hidden" />
-									{/* El check de la opción elegida: decorativo, el estado ya lo dice aria-checked. El `!` es para que no
-									    lo pise el color de iconos de la opción (`[&_svg]:text-fg-quaternary`) */}
-									{choosing && isSelected ? (
-										<Icon
-											name="check"
-											size={16}
-											className="flex-none text-fg-brand-primary!"
-										/>
-									) : null}
-								</>
+								<MenuItemContent
+									icon={item.icon}
+									label={item.label}
+									shortcut={item.shortcut}
+									checked={choosing && isSelected}
+								/>
 							)}
 						</MenuItem>
 					),

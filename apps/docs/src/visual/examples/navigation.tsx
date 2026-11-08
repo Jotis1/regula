@@ -4,6 +4,7 @@ import {
 	AvatarLabel,
 	Breadcrumbs,
 	CommandMenu,
+	ContextMenu,
 	Dropdown,
 	FilterBar,
 	Pager,
@@ -98,6 +99,84 @@ export function SidebarNavExample() {
 				footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/" }]}
 				user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 			/>
+		</div>
+	);
+}
+
+const zone =
+	"flex items-center justify-center rounded-xl border border-dashed border-primary text-sm text-tertiary";
+
+export function ContextMenuExample() {
+	const [bars, setBars] = useState(["marcadores"]);
+	const [profile, setProfile] = useState("olivia");
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] items-start gap-6">
+			<ContextMenu
+				defaultOpen
+				previewAt={{ x: 16, y: 16 }}
+				aria-label="Acciones"
+				items={[
+					{ label: "Cortar", shortcut: "⌘X" },
+					{ label: "Copiar", shortcut: "⌘C" },
+					{ label: "Pegar", shortcut: "⌘V" },
+					{ divider: true },
+					{ label: "Editar" },
+					{ label: "Duplicar" },
+					{ label: "Eliminar" },
+					{ divider: true },
+					{ label: "Ver detalles", items: [{ label: "Historial" }, { label: "Propiedades" }] },
+				]}
+				className={zone}
+			>
+				<span style={{ height: 360 }} className="flex items-end pb-3">
+					Botón derecho aquí
+				</span>
+			</ContextMenu>
+			<ContextMenu
+				defaultOpen
+				previewAt={{ x: 16, y: 16 }}
+				aria-label="Navegador"
+				items={[
+					{ icon: "arrow-left", label: "Atrás" },
+					{ icon: "arrow-right", label: "Adelante" },
+					{ icon: "refresh-cw-01", label: "Recargar", shortcut: "⌘R" },
+					{ icon: "edit-02", label: "Editar página" },
+					{ icon: "star-01", label: "Añadir a favoritos" },
+					{ divider: true },
+					{
+						section: "Barras",
+						selection: "multiple",
+						selected: bars,
+						onSelectionChange: setBars,
+						items: [
+							{ value: "marcadores", label: "Mostrar marcadores" },
+							{ value: "urls", label: "Mostrar URL completas" },
+						],
+					},
+					{ divider: true },
+					{
+						section: "Perfil",
+						selection: "single",
+						selected: profile,
+						onSelectionChange: setProfile,
+						items: [
+							{ value: "olivia", label: "Olivia Rhye" },
+							{ value: "sienna", label: "Sienna Hewitt" },
+						],
+					},
+					{ divider: true },
+					{
+						icon: "code-01",
+						label: "Más herramientas",
+						items: [{ label: "Guardar como", icon: "download-01" }, { label: "Desarrollador" }],
+					},
+				]}
+				className={zone}
+			>
+				<span style={{ height: 480 }} className="flex items-end pb-3">
+					Botón derecho aquí
+				</span>
+			</ContextMenu>
 		</div>
 	);
 }
