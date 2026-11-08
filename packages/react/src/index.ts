@@ -179,7 +179,14 @@ export {
 	type StreamStatusValue,
 } from "./components/StreamStatus.js";
 export { Table, type TableColumn, type TableProps } from "./components/Table.js";
-export { type TabItem, Tabs, type TabsProps, type TabsSize, type TabsType } from "./components/Tabs.js";
+export {
+	type TabItem,
+	Tabs,
+	type TabsOrientation,
+	type TabsProps,
+	type TabsSize,
+	type TabsType,
+} from "./components/Tabs.js";
 export { Tag, type TagProps, type TagSize } from "./components/Tag.js";
 export { TagInput, type TagInputProps } from "./components/TagInput.js";
 export { Textarea, type TextareaProps } from "./components/Textarea.js";

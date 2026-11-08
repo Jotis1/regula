@@ -40,8 +40,8 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 8. `Tabs` verticales
 
-- [ ] 8.1 Añadir `orientation`, `button-minimal` y `line` a `Tabs` (design D8), con el `Select` nativo por debajo de `lg` en vertical, mirando los nodos `43:2412`, `1397:9880` y `1118:69893`. Tests: `aria-orientation="vertical"`, ↓ pasa a la siguiente, raya de 2px de la actual en `line`, el desplegable cambia el panel, `line` en horizontal se pinta como `underline` y, sin props nuevas, el HTML es el de hoy.
-- [ ] 8.2 Añadir al ejemplo de `Tabs` las verticales (`line` y `button-minimal`), volver a aprobar sus capturas tras mirarlas y un e2e a 390px con el desplegable. Ficha actualizada.
+- [x] 8.1 Añadir `orientation`, `button-minimal` y `line` a `Tabs` (design D8), con el `Select` nativo por debajo de `lg` en vertical, mirando los nodos `43:2412`, `1397:9880` y `1118:69893`. Tests: `aria-orientation="vertical"`, ↓ pasa a la siguiente, raya de 2px de la actual en `line`, el desplegable cambia el panel, `line` en horizontal se pinta como `underline` y, sin props nuevas, el HTML es el de hoy.
+- [x] 8.2 Añadir al ejemplo de `Tabs` las verticales (`line` y `button-minimal`), volver a aprobar sus capturas tras mirarlas y un e2e a 390px con el desplegable. Ficha actualizada.
 
 ## 9. `ContextMenu`
 
