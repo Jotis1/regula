@@ -13,13 +13,13 @@ import {
 	fieldSeparator,
 	nativeClasses,
 } from "../internal/field.js";
+import { OptionSelect, type SelectOption } from "../internal/option-select.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Icon, type IconName } from "./Icon.js";
-import type { SelectOption } from "./Select.js";
 
-/** Desplegable nativo dentro del campo: prefijo telefónico, divisa… Su valor va aparte del texto. */
+/** Desplegable dentro del campo: prefijo telefónico, divisa… Su valor va aparte del texto. */
 export interface InputAddonSelect {
-	/** Lista corta de opciones, como en `Select`. */
+	/** Lista corta de opciones, como en `Select` (texto, o con apoyo, icono, avatar o punto). */
 	options: SelectOption[];
 	value?: string;
 	defaultValue?: string;
@@ -69,41 +69,19 @@ function AddonSelect({
 	disabled?: boolean;
 }) {
 	const { options, value, defaultValue, onChange, label, name } = select;
-	const leading = position === "leading";
 	return (
-		<span className="relative flex flex-none items-center self-stretch">
-			<select
-				aria-label={label}
-				name={name}
-				value={value}
-				defaultValue={defaultValue}
-				disabled={disabled}
-				onChange={onChange ? (e) => onChange(e.target.value) : undefined}
-				className={cx(
-					addonClasses(size),
-					"cursor-pointer appearance-none border-0 bg-transparent outline-none disabled:cursor-not-allowed",
-					// El chevron (16px) va encima del hueco derecho, a 2px del texto como en el Figma.
-					leading ? "pr-[18px]" : size === "lg" ? "pr-[32px]" : "pr-[30px]",
-				)}
-			>
-				{options.map((o) => {
-					const { value: v, label: l } = typeof o === "string" ? { value: o, label: o } : o;
-					return (
-						<option key={v} value={v}>
-							{l}
-						</option>
-					);
-				})}
-			</select>
-			<span
-				className={cx(
-					"pointer-events-none absolute inline-flex",
-					leading ? "right-0" : size === "lg" ? "right-3.5" : "right-3",
-				)}
-			>
-				<Icon name="chevron-down" size={16} />
-			</span>
-		</span>
+		<OptionSelect
+			variant="addon"
+			position={position}
+			size={size}
+			options={options}
+			value={value}
+			defaultValue={defaultValue}
+			onChange={onChange}
+			name={name}
+			disabled={disabled}
+			aria-label={label}
+		/>
 	);
 }
 

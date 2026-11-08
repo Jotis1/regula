@@ -67,14 +67,50 @@ export function TextareaExample() {
 	);
 }
 
+const MEMBERS = [
+	{ value: "phoenix", label: "Phoenix Baker", supporting: "@phoenix", avatar: {} },
+	{ value: "olivia", label: "Olivia Rhye", supporting: "@olivia", avatar: {} },
+	{ value: "lana", label: "Lana Steiner", supporting: "@lana", avatar: {} },
+	{ value: "demi", label: "Demi Wilkinson", supporting: "@demi", avatar: {} },
+	{ value: "candice", label: "Candice Wu", supporting: "@candice", avatar: {} },
+	{ value: "natali", label: "Natali Craig", supporting: "@natali", avatar: {} },
+];
+
 export function SelectExample() {
 	return (
-		<div className="max-w-[320px]">
-			<Select
-				label="Categoría"
-				placeholder="Elige una"
-				options={["Hogar", "Transporte", "Ocio", "Suscripciones"]}
-			/>
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+			<div className="flex flex-col gap-6">
+				<Select
+					label="Categoría"
+					placeholder="Elige una"
+					options={["Hogar", "Transporte", "Ocio", "Suscripciones"]}
+				/>
+				<Select
+					label="Estado"
+					defaultValue="activo"
+					options={[
+						{ value: "activo", label: "Activo", dot: "success" },
+						{ value: "pausa", label: "En pausa", dot: "warning" },
+						{ value: "baja", label: "De baja", dot: "error" },
+					]}
+				/>
+				<Select
+					label="País"
+					icon="globe-01"
+					defaultValue="es"
+					options={[
+						{ value: "es", label: "España", supporting: "+34" },
+						{ value: "pt", label: "Portugal", supporting: "+351" },
+					]}
+				/>
+				<Select
+					label="Categoría"
+					placeholder="Elige una"
+					options={["Hogar", "Ocio"]}
+					error="Elige una categoría."
+				/>
+			</div>
+			<Select label="Responsable" required defaultValue="olivia" options={MEMBERS} defaultOpen />
 		</div>
 	);
 }

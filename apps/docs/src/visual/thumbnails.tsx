@@ -21,6 +21,7 @@ import {
 	CalendarView,
 	CamFrame,
 	CardHeader,
+	Carousel,
 	ChannelBanner,
 	ChannelPanel,
 	ChartLegend,
@@ -33,6 +34,7 @@ import {
 	ColorPicker,
 	CommandMenu,
 	ContentDivider,
+	ContextMenu,
 	CreditCard,
 	DatePicker,
 	Dropdown,
@@ -40,11 +42,15 @@ import {
 	FeaturedIcon,
 	FileUpload,
 	FilterBar,
+	HeaderNav,
+	HelpIcon,
 	Icon,
 	type IconName,
 	InlineCTA,
 	Input,
+	Kbd,
 	LineChart,
+	LinkCard,
 	Message,
 	MessageInput,
 	MetricCard,
@@ -54,11 +60,16 @@ import {
 	NowPlaying,
 	NumberInput,
 	PageHeader,
+	Pager,
 	Pagination,
+	PaginationDots,
 	PieChart,
 	ProgressBar,
+	ProgressCircle,
+	ProgressSteps,
 	Radio,
 	RadioGroup,
+	ScaledPreview,
 	SectionFooter,
 	SectionHeader,
 	Select,
@@ -82,6 +93,7 @@ import {
 	TextEditor,
 	Toggle,
 	Tooltip,
+	TransparencyGrid,
 	TreeView,
 	VerificationCodeInput,
 	VideoPlayer,
@@ -364,6 +376,29 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			/>
 		),
 	},
+	Pager: {
+		render: () => (
+			<div style={box(240)}>
+				<Pager next={{ href: "#", label: "Sidebar nav" }} />
+			</div>
+		),
+	},
+	PaginationDots: {
+		render: () => (
+			<div
+				style={{
+					...box(240),
+					display: "flex",
+					flexDirection: "column",
+					gap: 20,
+					alignItems: "center",
+				}}
+			>
+				<PaginationDots total={4} current={2} size="lg" />
+				<PaginationDots total={4} current={2} size="lg" variant="line" />
+			</div>
+		),
+	},
 	Pagination: {
 		scale: 0.52,
 		render: () => (
@@ -386,6 +421,50 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					]}
 					user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 				/>
+			</div>
+		),
+	},
+	HeaderNav: {
+		render: () => (
+			<div style={box(248)}>
+				<ScaledPreview width={1280} scale={0.19} box={[248, 62]}>
+					<HeaderNav
+						type="dual-tier"
+						brand={<AppIcon app="regula" size={32} />}
+						items={[
+							{ label: "Inicio", href: "#" },
+							{
+								label: "Panel",
+								href: "#",
+								current: true,
+								children: [
+									{ label: "Resumen", href: "#", current: true },
+									{ label: "Avisos", href: "#" },
+								],
+							},
+							{ label: "Tareas", href: "#" },
+						]}
+					/>
+				</ScaledPreview>
+			</div>
+		),
+	},
+	ContextMenu: {
+		scale: 0.7,
+		render: () => (
+			<div style={box(280)}>
+				<ContextMenu
+					defaultOpen
+					previewAt={{ x: 8, y: 8 }}
+					items={[
+						{ label: "Cortar", shortcut: "⌘X" },
+						{ label: "Copiar", shortcut: "⌘C" },
+						{ divider: true },
+						{ label: "Ver detalles", items: [{ label: "Historial" }] },
+					]}
+				>
+					<div style={{ height: 160 }} />
+				</ContextMenu>
 			</div>
 		),
 	},
@@ -521,6 +600,27 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			</div>
 		),
 	},
+	CopyTooltip: {
+		render: () => (
+			<div style={{ paddingTop: 56 }}>
+				<Tooltip title="Copiado" open>
+					<Button hierarchy="secondary" size="sm" iconLeading="copy-01">
+						Copiar utilidad
+					</Button>
+				</Tooltip>
+			</div>
+		),
+	},
+	HelpIcon: {
+		render: () => (
+			<div style={{ paddingTop: 64, paddingLeft: 24 }}>
+				<span className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary">
+					Cuota mensual
+					<HelpIcon title="Qué incluye" text="Impuestos incluidos." open />
+				</span>
+			</div>
+		),
+	},
 	Tooltip: {
 		render: () => (
 			<div style={{ paddingTop: 56 }}>
@@ -597,6 +697,30 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			</div>
 		),
 	},
+	ProgressSteps: {
+		scale: 0.8,
+		render: () => (
+			<div style={box(300)}>
+				<ProgressSteps
+					aria-label="Alta"
+					current={1}
+					size="sm"
+					steps={[
+						{ title: "Datos", description: "Nombre" },
+						{ title: "Empresa", description: "Web" },
+						{ title: "Equipo", description: "Invita" },
+					]}
+				/>
+			</div>
+		),
+	},
+	ProgressCircle: {
+		render: () => (
+			<div style={{ ...box(248), display: "flex", justifyContent: "center" }}>
+				<ProgressCircle value={40} size="xs" label="Usuarios activos" />
+			</div>
+		),
+	},
 	ProgressBar: {
 		render: () => (
 			<div style={box(240)}>
@@ -627,6 +751,14 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 				<Badge type="modern" dot color="brand">
 					Nuevo
 				</Badge>
+			</div>
+		),
+	},
+	Kbd: {
+		render: () => (
+			<div style={row}>
+				<Kbd>⌘P</Kbd>
+				<Kbd variant="field">Ctrl K</Kbd>
 			</div>
 		),
 	},
@@ -916,6 +1048,22 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			</div>
 		),
 	},
+	LinkCard: {
+		render: () => (
+			<div style={box(240)}>
+				<LinkCard
+					href="#"
+					title="Button"
+					description="La acción de la pantalla."
+					preview={
+						<div className="flex h-16 items-center justify-center bg-secondary">
+							<Button size="sm">Nuevo gasto</Button>
+						</div>
+					}
+				/>
+			</div>
+		),
+	},
 	InlineCTA: {
 		scale: 0.5,
 		render: () => (
@@ -960,6 +1108,25 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			</div>
 		),
 	},
+	Carousel: {
+		scale: 0.5,
+		render: () => (
+			<div style={box(480)}>
+				<Carousel
+					aria-label="Novedades"
+					slides={[
+						<div
+							key="a"
+							className="flex h-[240px] items-center justify-center bg-brand-secondary text-display-xs font-semibold text-primary"
+						>
+							Importa tus extractos
+						</div>,
+						<div key="b" className="h-[240px] bg-success-secondary" />,
+					]}
+				/>
+			</div>
+		),
+	},
 	VideoPlayer: {
 		scale: 0.58,
 		render: () => (
@@ -970,6 +1137,32 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 	},
 
 	// Marca y maquetas
+	ScaledPreview: {
+		render: () => (
+			<ScaledPreview
+				width={560}
+				scale={0.45}
+				box={[252, 75]}
+				className="rounded-lg border border-secondary"
+			>
+				<InlineCTA
+					icon="stars-02"
+					title="Conecta tu banco"
+					description="Importa los movimientos cada día sin subir extractos."
+				/>
+			</ScaledPreview>
+		),
+	},
+	TransparencyGrid: {
+		render: () => (
+			<TransparencyGrid
+				size="md"
+				className="flex h-24 w-56 items-center justify-center rounded-xl border border-secondary"
+			>
+				<Badge color="brand">Transparente</Badge>
+			</TransparencyGrid>
+		),
+	},
 	BackgroundPattern: {
 		render: () => (
 			<div

@@ -1,22 +1,13 @@
 "use client";
 
 import { isValidElement, type ReactElement, type ReactNode, useState } from "react";
-import {
-	Keyboard,
-	Menu,
-	MenuItem,
-	MenuTrigger,
-	Popover,
-	Pressable,
-	Separator,
-	Text,
-} from "react-aria-components";
+import { Menu, MenuItem, MenuTrigger, Popover, Pressable, Separator } from "react-aria-components";
 import { cx } from "../internal/cx.js";
-import { KBD } from "../internal/kbd.js";
+import { MENU_PANEL, MenuItemContent, menuItemClasses } from "../internal/menu-item.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
-import { Icon, type IconName } from "./Icon.js";
+import type { IconName } from "./Icon.js";
 
 export interface DropdownAction {
 	icon?: IconName;
@@ -26,6 +17,11 @@ export interface DropdownAction {
 	/** Acción destructiva: va al final, tras un separador. */
 	danger?: boolean;
 	onSelect?: () => void;
+	/**
+	 * Identifica la opción en un menú con elección (`selectedValue`): con él se marca y se avisa en `onSelectionChange`.
+	 * Cada opción de un menú con elección necesita el suyo.
+	 */
+	value?: string;
 	/** Texto para la búsqueda por teclado si `label` no es texto. */
 	textValue?: string;
 }
@@ -49,13 +45,20 @@ export interface DropdownProps {
 	/** Avisa al abrir y cerrar (ampliación sobre la guía, para el modo controlado). */
 	onOpenChange?: (open: boolean) => void;
 	items: DropdownItem[];
+	/**
+	 * Valor de la opción elegida. Con él, el menú es de elección única: la opción elegida lleva un check a la derecha y se
+	 * anuncia como opción de radio de menú marcada (`menuitemradio`). Es controlado: cambia cuando cambie este valor.
+	 * Sin él, el menú es de acciones, como siempre.
+	 */
+	selectedValue?: string;
+	/** Se llama con el `value` de la opción elegida, que cierra el menú. Solo con `selectedValue`. */
+	onSelectionChange?: (value: string) => void;
 	/** Nombre del menú para lectores de pantalla. Por defecto, el texto del botón. */
 	"aria-label"?: string;
 	className?: string;
 }
 
-const PANEL =
-	"min-w-60 rounded-lg bg-primary_alt py-1 font-body shadow-[var(--shadow-lg),inset_0_0_0_1px_var(--border-secondary_alt)] outline-none";
+const PANEL = MENU_PANEL;
 
 const isDivider = (item: DropdownItem): item is { divider: true } => "divider" in item;
 
@@ -68,6 +71,8 @@ export function Dropdown({
 	defaultOpen = false,
 	onOpenChange,
 	items,
+	selectedValue,
+	onSelectionChange,
 	className,
 	...rest
 }: DropdownProps) {
@@ -77,6 +82,8 @@ export function Dropdown({
 	const [byUser, setByUser] = useState(false);
 	const inline = open && !byUser;
 	const menuLabel = rest["aria-label"] ?? (typeof label === "string" ? label : defaultStrings.options);
+	// Menú de elección única: solo si hay `selectedValue`. Sin él, ni selección ni cambios en las opciones.
+	const choosing = selectedValue !== undefined;
 
 	const panel = (
 		<>
@@ -90,6 +97,17 @@ export function Dropdown({
 				{...(byUser ? {} : { autoFocus: false })}
 				// En línea, fuera de MenuTrigger, nada lo cierra al elegir: se cierra aquí
 				onAction={inline ? () => setOpen(false) : undefined}
+				{...(choosing
+					? {
+							selectionMode: "single" as const,
+							disallowEmptySelection: true,
+							selectedKeys: [selectedValue],
+							onSelectionChange: (keys) => {
+								const [key] = keys === "all" ? [] : keys;
+								if (key !== undefined) onSelectionChange?.(String(key));
+							},
+						}
+					: {})}
 				className="outline-none"
 			>
 				{items.map((item, i) =>
@@ -103,30 +121,21 @@ export function Dropdown({
 						<MenuItem
 							// biome-ignore lint/suspicious/noArrayIndexKey: las etiquetas pueden ser nodos o repetirse
 							key={i}
-							id={i}
+							id={choosing ? (item.value ?? `item-${i}`) : i}
 							textValue={
 								item.textValue ?? (typeof item.label === "string" ? item.label : undefined)
 							}
 							onAction={() => item.onSelect?.()}
-							className={cx(
-								"mx-1.5 my-px flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-[9px] text-sm font-medium outline-none data-focused:bg-primary_hover",
-								item.danger
-									? "text-error-primary [&_svg]:text-fg-error-secondary"
-									: "text-secondary data-focused:text-secondary_hover [&_svg]:text-fg-quaternary",
-							)}
+							className={menuItemClasses(item.danger)}
 						>
-							{item.icon ? <Icon name={item.icon} size={16} /> : null}
-							{/* Etiqueta, descripción y atajo en sus huecos de React Aria: así aria-labelledby y aria-describedby
-							    de la opción apuntan a algo también en el HTML de servidor. El atajo va dentro de la etiqueta, para
-							    que el nombre accesible sea todo lo que se ve; descripción y teclado quedan vacíos */}
-							<Text slot="label" className="flex min-w-0 flex-1 items-center gap-2">
-								{item.label}
-								{item.shortcut ? (
-									<kbd className={cx(KBD, "ml-auto")}>{item.shortcut}</kbd>
-								) : null}
-							</Text>
-							<Text slot="description" className="hidden" />
-							<Keyboard className="hidden" />
+							{({ isSelected }) => (
+								<MenuItemContent
+									icon={item.icon}
+									label={item.label}
+									shortcut={item.shortcut}
+									checked={choosing && isSelected}
+								/>
+							)}
 						</MenuItem>
 					),
 				)}

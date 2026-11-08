@@ -77,20 +77,29 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "navegacion",
 		label: "Navegación",
 		section: "components",
-		components: names("Tabs Breadcrumbs Pagination SidebarNav Dropdown CommandMenu TreeView FilterBar"),
+		components: names(
+			"Tabs Breadcrumbs Pagination PaginationDots Pager SidebarNav Dropdown ContextMenu HeaderNav CommandMenu TreeView FilterBar",
+		),
 	},
-	{ id: "capas", label: "Capas", section: "components", components: names("Modal Slideout Tooltip") },
+	{
+		id: "capas",
+		label: "Capas",
+		section: "components",
+		components: names("Modal Slideout Tooltip HelpIcon CopyTooltip"),
+	},
 	{
 		id: "avisos-y-carga",
 		label: "Avisos y carga",
 		section: "components",
-		components: names("Alert Notification Banner EmptyState ProgressBar Spinner Skeleton"),
+		components: names(
+			"Alert Notification Banner EmptyState ProgressBar ProgressCircle ProgressSteps Spinner Skeleton",
+		),
 	},
 	{
 		id: "etiquetas-e-identidad",
 		label: "Etiquetas e identidad",
 		section: "components",
-		components: names("Badge Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon"),
+		components: names("Badge Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon Kbd"),
 	},
 	{
 		id: "datos",
@@ -108,19 +117,21 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "estructura-de-pagina",
 		label: "Estructura de página",
 		section: "components",
-		components: names("PageHeader CardHeader SectionHeader SectionFooter ContentDivider InlineCTA"),
+		components: names(
+			"PageHeader CardHeader SectionHeader SectionFooter ContentDivider InlineCTA LinkCard",
+		),
 	},
 	{
 		id: "contenido-y-medios",
 		label: "Contenido y medios",
 		section: "components",
-		components: names("Message MessageInput CodeSnippet VideoPlayer"),
+		components: names("Message MessageInput CodeSnippet VideoPlayer Carousel"),
 	},
 	{
 		id: "fondos-y-maquetas",
 		label: "Fondos y maquetas",
 		section: "components",
-		components: names("BackgroundPattern CreditCard BrowserFrame AppIcon"),
+		components: names("BackgroundPattern TransparencyGrid ScaledPreview CreditCard BrowserFrame AppIcon"),
 	},
 	{ id: "stream-alertas", label: "Alertas", section: "stream", components: names("StreamAlert") },
 	{
@@ -170,6 +181,16 @@ export const COMPONENT_KEYWORDS: Readonly<Record<string, string>> = {
 /** `ButtonGroup` → `button-group`: el nombre de la ficha y de su URL (`/components/<slug>/`). */
 export function slugOf(name: string): string {
 	return name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+}
+
+/**
+ * `CodeSnippet` → `Code snippet`: el nombre que se lee (títulos, navegación, cards, buscador). El identificador
+ * (`CodeSnippet`) se queda en el código: importaciones, props y referencias en las fichas. Las siglas no se
+ * tocan (`InlineCTA` → `Inline CTA`).
+ */
+export function labelOf(name: string): string {
+	const words = name.match(/[A-Z]+(?![a-z])|[A-Z]?[a-z0-9]+/g) ?? [name];
+	return words.map((w, i) => (i === 0 || /^[A-Z]{2,}$/.test(w) ? w : w.toLowerCase())).join(" ");
 }
 
 /** Todos los componentes del catálogo, en el orden de la navegación. */

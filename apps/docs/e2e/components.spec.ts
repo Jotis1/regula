@@ -1,8 +1,9 @@
 // Páginas de componente: ficha, ejemplos vivos, props, fragmentos de código y navegación.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 import { PNG } from "pngjs";
+import { labelOf } from "../src/lib/catalog";
 
 /** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
 async function hydrated(page: Page, selector: string) {
@@ -12,27 +13,31 @@ async function hydrated(page: Page, selector: string) {
 }
 
 const dir = join(import.meta.dirname, "../src/content/components");
-const pages = readdirSync(dir).map((f) => ({
-	slug: f.replace(/\.md$/, ""),
-	name: (readFileSync(join(dir, f), "utf8").match(/^name: (.+)$/m) as RegExpMatchArray)[1] as string,
-}));
+const pages = readdirSync(dir)
+	.map((f) => ({
+		slug: f.replace(/\.md$/, ""),
+		name: (readFileSync(join(dir, f), "utf8").match(/^name: (.+)$/m) as RegExpMatchArray)[1] as string,
+	}))
+	.map((p) => ({ ...p, label: labelOf(p.name) }));
 
 test("la navegación lateral lista todas las páginas de componente", async ({ page }) => {
 	await page.goto("/foundations/principles/"); // la portada va sin navegación lateral
 	const nav = page.getByRole("navigation", { name: "Documentación" });
-	for (const { name, slug } of pages)
-		await expect(nav.getByRole("link", { name, exact: true, includeHidden: true })).toHaveAttribute(
-			"href",
-			`/components/${slug}/`,
-		);
+	for (const { label, slug } of pages)
+		await expect(
+			nav.getByRole("link", { name: label, exact: true, includeHidden: true }),
+		).toHaveAttribute("href", `/components/${slug}/`);
 });
 
-for (const { slug, name } of pages) {
+for (const { slug, name, label } of pages) {
 	test(`${name}: ficha, ejemplos vivos, props y código`, async ({ page }) => {
 		await page.goto(`/components/${slug}/`);
-		// La primera: el ejemplo de PageHeader pinta su propio <h1>
-		await expect(page.getByRole("heading", { level: 1 }).first()).toHaveText(name);
-		await expect(page.getByRole("link", { name, exact: true })).toHaveAttribute("aria-current", "page");
+		// La primera: el ejemplo de PageHeader pinta su propio <h1>. Se lee «Code snippet», no «CodeSnippet»
+		await expect(page.getByRole("heading", { level: 1 }).first()).toHaveText(label);
+		await expect(page.getByRole("link", { name: label, exact: true })).toHaveAttribute(
+			"aria-current",
+			"page",
+		);
 		// La isla de ejemplos se hidrata al verse: después tiene contenido
 		const examples = page.locator("#variantes + div astro-island");
 		await examples.scrollIntoViewIfNeeded();
@@ -101,6 +106,80 @@ test("la ficha se reparte por etiqueta sin cambiar su texto: «Evita» va en la 
 	await expect(page.locator("section[aria-labelledby=props] > p").first()).toHaveText(plain(props));
 });
 
+test("TransparencyGrid: los cuadros usan los colores del tema, en claro y en oscuro", async ({ page }) => {
+	const read = async (scheme: "light" | "dark") => {
+		await page.emulateMedia({ colorScheme: scheme });
+		await page.goto("/components/transparency-grid/");
+		// El primer damero de la caja de ejemplos: el que lleva el texto «Cuadros de 8px»
+		const grid = page
+			.locator("#variantes + div div")
+			.filter({ has: page.getByText("Cuadros de 8px") })
+			.last();
+		await expect(grid).toBeVisible();
+		return grid.evaluate((el) => {
+			// El color real de cada token en este tema, medido con un elemento de prueba dentro del propio damero
+			const probe = (token: string) => {
+				const p = document.createElement("div");
+				p.style.background = `var(${token})`;
+				el.appendChild(p);
+				const color = getComputedStyle(p).backgroundColor;
+				p.remove();
+				return color;
+			};
+			const style = getComputedStyle(el);
+			return {
+				bg: style.backgroundColor,
+				image: style.backgroundImage,
+				primary: probe("--bg-primary"),
+				secondary: probe("--bg-secondary"),
+			};
+		});
+	};
+	const light = await read("light");
+	const dark = await read("dark");
+	for (const theme of [light, dark]) {
+		expect(theme.bg).toBe(theme.primary);
+		expect(theme.image).toContain("linear-gradient");
+		expect(theme.image).toContain(theme.secondary);
+	}
+	expect(dark.primary).not.toBe(light.primary);
+	expect(dark.secondary).not.toBe(light.secondary);
+});
+
+test("Dropdown: la tabla de props lleva la elección y el check de la elegida no se queda en el gris de los iconos", async ({
+	page,
+}) => {
+	await page.goto("/components/dropdown/");
+	const props = page.getByRole("region", { name: "Props de Dropdown" });
+	await expect(props).toContainText("selectedValue");
+	await expect(props).toContainText("onSelectionChange");
+	const examples = page.locator("#variantes + div astro-island");
+	await examples.scrollIntoViewIfNeeded();
+	await expect(examples).not.toHaveAttribute("ssr", /.*/);
+	const checked = examples.locator('[role="menuitemradio"][aria-checked="true"]');
+	await expect(checked).toHaveCount(1);
+	const color = (svg: Locator) => svg.evaluate((el) => getComputedStyle(el).color);
+	// El primer icono es el de la opción (gris, fg-quaternary) y el último el check (de marca)
+	expect(await color(checked.locator("svg").last())).not.toBe(await color(checked.locator("svg").first()));
+});
+
+test("CommandMenu: con el foco en el buscador, la opción activa lleva el anillo de foco; sin foco, solo el fondo", async ({
+	page,
+}) => {
+	await page.goto("/components/command-menu/");
+	const examples = page.locator("#variantes + div astro-island");
+	await examples.scrollIntoViewIfNeeded();
+	await expect(examples).not.toHaveAttribute("ssr", /.*/);
+	const search = examples.getByRole("combobox").first();
+	const active = examples.locator('[role="option"][aria-selected="true"]').first();
+	const ring = () => active.evaluate((el) => getComputedStyle(el).boxShadow);
+	expect(await ring()).toBe("none");
+	await search.focus();
+	await expect.poll(ring).toContain("rgb(97, 95, 255)"); // focus-ring #615FFF
+	await search.blur();
+	await expect.poll(ring).toBe("none");
+});
+
 test("pestañas de código: flechas para cambiar, Astro con client:load en un interactivo", async ({
 	page,
 }) => {
@@ -157,8 +236,8 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 	const toc = page.getByRole("navigation", { name: "En esta página" }).last();
 	await expect(toc.getByRole("link", { name: "Props" })).toHaveAttribute("href", "#props");
 	for (const [name, slug] of [
-		["ButtonGroup", "button-group"],
-		["CloseButton", "close-button"],
+		["Button group", "button-group"],
+		["Close button", "close-button"],
 	])
 		await expect(toc.getByRole("link", { name, exact: true })).toHaveAttribute(
 			"href",
@@ -166,7 +245,7 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 		);
 	const pager = page.getByRole("navigation", { name: "Anterior y siguiente" });
 	await expect(pager.getByRole("link")).toHaveCount(1);
-	await expect(pager.getByRole("link", { name: /Siguiente\s*ButtonGroup/ })).toHaveAttribute(
+	await expect(pager.getByRole("link", { name: /Siguiente\s*Button group/ })).toHaveAttribute(
 		"href",
 		"/components/button-group/",
 	);
@@ -176,7 +255,7 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 		"Stream",
 	);
 	await expect(page.getByRole("navigation", { name: "Anterior y siguiente" }).getByRole("link")).toHaveText(
-		/StreamScene/,
+		/Stream scene/,
 	);
 });
 
@@ -203,10 +282,10 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 	// El enlace de cada card (las vistas previas pueden llevar enlaces dibujados: Breadcrumbs, SidebarNav…)
 	const links = index.locator("[data-group] > li > a");
 	await expect(links).toHaveCount(pages.length);
-	for (const { slug, name } of pages) {
+	for (const { slug, label } of pages) {
 		const link = index.locator(`[data-group] > li > a[href="/components/${slug}/"]`);
 		await expect(link).toHaveCount(1);
-		await expect(link.locator("span").first()).toHaveText(name);
+		await expect(link.locator("span").first()).toHaveText(label);
 	}
 	// Las migas de cada página apuntan a estas anclas (/components/#acciones)
 	for (const id of ["acciones", "formularios", "stream-escenas", "stream-canal"])
@@ -219,7 +298,7 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 const card = (page: Page, slug: string) =>
 	page.locator(`[data-group] > li:has(> a[href="/components/${slug}/"])`);
 
-test("/components/: la card de ButtonGroup pinta un ButtonGroup del paquete, sin imágenes, y su nombre es el de siempre", async ({
+test("/components/: la card de ButtonGroup pinta un ButtonGroup del paquete, sin imágenes, y su nombre se lee separado", async ({
 	page,
 }) => {
 	await page.goto("/components/");
@@ -231,7 +310,7 @@ test("/components/: la card de ButtonGroup pinta un ButtonGroup del paquete, sin
 	await expect(page.locator("[data-group] img")).toHaveCount(0);
 	await expect(preview).toHaveAttribute("aria-hidden", "true");
 	await expect(preview).toHaveAttribute("inert", "");
-	await expect(c.locator("> a")).toHaveAccessibleName(/^ButtonGroup Grupo segmentado/);
+	await expect(c.locator("> a")).toHaveAccessibleName(/^Button group Grupo segmentado/);
 });
 
 test("/components/: la card enseña la muestra del componente, sobre el damero", async ({ page }) => {
@@ -279,7 +358,13 @@ test("/components/: el tema cambia las vistas previas sin pedir nada; las de Str
 	await expect(alert).toHaveClass(/dark-mode/);
 	const requests: string[] = [];
 	page.on("request", (r) => requests.push(r.url()));
-	await page.getByRole("button", { name: /tema/i }).first().click();
+	// El selector de tema de la cabecera: se abre y se elige Oscuro
+	await expect(page.locator("body > header astro-island").filter({ hasText: "Tema:" })).not.toHaveAttribute(
+		"ssr",
+		/.*/,
+	);
+	await page.getByRole("button", { name: /^Tema: / }).click();
+	await page.getByRole("menuitemradio", { name: "Oscuro", exact: true }).click();
 	await expect.poll(() => bg(button)).not.toBe(lightButton);
 	expect(requests.filter((u) => /previews|\.webp|\.png/.test(u))).toEqual([]);
 	// Stream no cambia: ya estaba en oscuro

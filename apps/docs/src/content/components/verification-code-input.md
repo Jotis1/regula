@@ -12,7 +12,7 @@ astroNote: "Pasar de casilla en casilla, pegar y autocompletar necesitan JavaScr
 
 **Comportamiento.** Escribir una cifra pasa a la casilla siguiente; Retroceso borra la cifra y, en una casilla vacía, borra la anterior y vuelve a ella; las flechas se mueven entre casillas. Pegar el código entero, o que el sistema lo autocomplete desde el SMS (`autocomplete="one-time-code"` en la primera casilla), rellena todas a la vez. Solo entran cifras.
 
-**Aspecto.** Cifras en `font-display` medium (`display-lg`; `display-xl` en `lg`) y en `text-brand-tertiary_alt`, con el `0` de muestra en `text-placeholder`. Casilla en reposo con borde `border-primary`; con cifra o con el foco, 2px en `border-brand`, y con teclado el anillo de foco. Con 6 dígitos, un guion decorativo en `utility-neutral-300` separa los dos grupos de tres.
+**Aspecto.** Cifras en `font-display` medium (`display-lg`; `display-xl` en `lg`) y en `text-brand-tertiary_alt`, con el `0` de muestra en `text-placeholder`. Casilla en reposo con borde `border-primary`; con cifra o con el foco, 2px en `border-brand` (sin anillo exterior). Con 6 dígitos, un guion decorativo en `utility-neutral-300` separa los dos grupos de tres.
 
 **Accesibilidad.** Las casillas van en un grupo que se llama como la etiqueta, y cada una se anuncia como «Dígito n de N». La etiqueta visible lleva a la primera casilla. El error se enlaza al grupo y marca cada casilla con `aria-invalid`.
 

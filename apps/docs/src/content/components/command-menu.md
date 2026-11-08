@@ -14,7 +14,7 @@ astroNote: "`onClose` y los `onSelect` son funciones y abrirlo necesita estado: 
 
 **El atajo es de la app.** El componente se abre y se cierra con `open` y `onClose`; el atajo ⌘K / Ctrl K lo registra la app.
 
-**Accesibilidad.** Sobre toda la página es un diálogo modal: el foco no sale de él, Escape o un clic fuera lo cierran y el foco vuelve a quien lo abrió. El buscador es un `combobox` que marca la opción activa con `aria-activedescendant`; el primer resultado está activo desde el principio, así que Enter lo ejecuta sin moverse. Sin resultados se anuncia "Sin resultados".
+**Accesibilidad.** Sobre toda la página es un diálogo modal: el foco no sale de él, Escape o un clic fuera lo cierran y el foco vuelve a quien lo abrió. El buscador es un `combobox` que marca la opción activa con `aria-activedescendant`; el primer resultado está activo desde el principio, así que Enter lo ejecuta sin moverse. Mientras el foco está en el buscador, la opción activa lleva, además del fondo `bg-primary_hover`, el anillo de foco (`focus-ring-shadow`): el foco de verdad sigue en el buscador, y el anillo enseña qué opción va a ejecutar Enter. Sin resultados se anuncia "Sin resultados".
 
 **Vistas previas.** `contained` lo pinta dentro de su contenedor (con posición relativa) sin atrapar el foco, y `autoFocus={false}` no lleva el foco al buscador. Así está en esta página. `labels` cambia sus textos.
 

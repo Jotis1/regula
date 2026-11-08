@@ -1,6 +1,6 @@
 ---
 // Cabecera de la web: en escritorio, reference/docs-design/Header.dc.html (icono de Regula y nombre, las cinco
-// secciones con la actual marcada, búsqueda con aspecto de campo y conmutador de tema); por debajo de lg,
+// secciones con la actual marcada, búsqueda con aspecto de campo y selector de tema); por debajo de lg,
 // HeaderM.dc.html (icono y nombre, botones de búsqueda y tema, y el menú a pantalla completa). El icono va en la
 // variante Claro en el tema claro, como pide la guía dentro de una interfaz clara, y en la principal en el oscuro
 // (design §9).
@@ -9,7 +9,7 @@ import { SECTIONS, sectionOf } from "../lib/catalog";
 import SiteSearch from "../search/SiteSearch";
 import MobileMenu from "./MobileMenu";
 import SideNav from "./SideNav.astro";
-import ThemeToggle from "./ThemeToggle.astro";
+import ThemeMenu from "./ThemeMenu";
 
 const current = sectionOf(Astro.url.pathname);
 ---
@@ -48,8 +48,9 @@ const current = sectionOf(Astro.url.pathname);
 		}
 	</nav>
 	<div class="ml-auto flex items-center gap-1 lg:gap-8">
+		{/* El tema va antes que la búsqueda: su ancho cambia con lo elegido y así no mueve la búsqueda */}
+		<ThemeMenu client:idle />
 		<SiteSearch client:idle />
-		<ThemeToggle />
 		<div class="flex lg:hidden">
 			<MobileMenu client:media="(max-width: 1023.98px)">
 				<SideNav current={Astro.url.pathname} idPrefix="menu" />

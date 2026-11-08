@@ -6,10 +6,10 @@ import "../styles/global.css";
 import appleTouchIcon from "@jotis-me/icons/app-icons/regula-apple-touch-icon.png?no-inline";
 import favicon from "@jotis-me/icons/app-icons/regula-favicon.svg?no-inline";
 import favicon32 from "@jotis-me/icons/app-icons/regula-favicon-32.png?no-inline";
+import { CopyTooltip } from "@jotis-me/react";
 import bricolage from "@jotis-me/tokens/fonts/BricolageGrotesque-Variable-latin.woff2?url";
 import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
 import geistMono from "@jotis-me/tokens/fonts/GeistMono-Variable.woff2?url";
-import CopyToast from "../components/CopyToast.astro";
 import SideNav from "../components/SideNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
@@ -79,6 +79,6 @@ const current = Astro.url.pathname;
 			)
 		}
 		{!bare && <SiteFooter />}
-		{!bare && <CopyToast />}
+		{!bare && <CopyTooltip client:idle copyAttribute="data-copy" />}
 	</body>
 </html>

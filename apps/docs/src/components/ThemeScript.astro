@@ -1,15 +1,18 @@
 ---
-// Aplica el tema antes de pintar: lo elegido antes (localStorage) o, la primera vez, lo que pida el sistema.
+// Aplica el tema antes de pintar: lo elegido antes (localStorage) o, la primera vez, lo que pida el sistema. Además
+// deja la elección en `data-tema` de <html> («sistema», «claro» u «oscuro»): el selector de la cabecera la usa para
+// enseñar desde la primera pintura el icono de lo elegido, sin esperar a que cargue su JavaScript.
 ---
 
 <script is:inline>
 	(() => {
-		let theme = null;
+		let stored = null;
 		try {
-			theme = localStorage.getItem("regula-tema");
+			stored = localStorage.getItem("regula-tema");
 		} catch {}
-		if (theme !== "oscuro" && theme !== "claro")
-			theme = matchMedia("(prefers-color-scheme: dark)").matches ? "oscuro" : "claro";
-		document.documentElement.classList.toggle("dark-mode", theme === "oscuro");
+		const choice = stored === "oscuro" || stored === "claro" ? stored : "sistema";
+		const dark = choice === "sistema" ? matchMedia("(prefers-color-scheme: dark)").matches : choice === "oscuro";
+		document.documentElement.classList.toggle("dark-mode", dark);
+		document.documentElement.dataset.tema = choice;
 	})();
 </script>

@@ -16,4 +16,4 @@ astroNote: "Sin directiva funciona como campo nativo dentro de un `<form>`, tamb
 
 **Reglas.** Etiqueta siempre visible (el borde del campo es suave, la etiqueta es lo que lo identifica). El placeholder es un ejemplo, nunca la etiqueta. El valor se escribe a 16px en `md`/`lg` para que iOS no haga zoom. Los desplegables son para listas cortas, como `Select`; para elegir varias cosas, `MultiSelect`.
 
-**Foco.** Con el foco el borde pasa a 2px `border-brand`, como dice la ficha; con teclado se suma además el anillo `focus-ring-shadow` que piden los estados comunes (`focus-ring-error-shadow` si hay error). El error se enlaza al campo con `aria-invalid` y `aria-describedby`.
+**Foco.** Con el foco el borde pasa a 2px `border-brand`, como dice la ficha; con ratón y con teclado es el mismo, sin anillo exterior (en el Figma solo se dibuja el borde). El error se enlaza al campo con `aria-invalid` y `aria-describedby`.

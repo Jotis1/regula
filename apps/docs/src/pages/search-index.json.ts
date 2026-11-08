@@ -5,7 +5,7 @@ import { getCollection } from "astro:content";
 import { iconNames } from "@jotis-me/icons";
 import { colors, radius, shadows, spacing, type } from "@jotis-me/tokens";
 import type { APIRoute } from "astro";
-import { COMPONENT_KEYWORDS, groupOf, slugOf } from "../lib/catalog";
+import { COMPONENT_KEYWORDS, groupOf, labelOf, slugOf } from "../lib/catalog";
 import { colorGroups, radiusRows, shadowRows, spacingRows } from "../lib/tokens";
 import { nav } from "../nav";
 import type { SearchEntry } from "../search/entries";
@@ -33,11 +33,11 @@ export const GET: APIRoute = async () => {
 		...components
 			.map((c) => ({
 				group: "components" as const,
-				label: c.data.name,
+				label: labelOf(c.data.name),
 				description: groupLabel(c.data.name) ?? c.data.description,
 				href: `/components/${c.id}/`,
 				// La descripción de la ficha sigue siendo buscable aunque ya no se muestre
-				keywords: [COMPONENT_KEYWORDS[slugOf(c.data.name)], c.data.description]
+				keywords: [c.data.name, COMPONENT_KEYWORDS[slugOf(c.data.name)], c.data.description]
 					.filter(Boolean)
 					.join(" "),
 			}))

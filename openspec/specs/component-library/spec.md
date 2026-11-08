@@ -10,7 +10,7 @@ La librería SHALL exportar cada componente del catálogo del sistema, con su ti
 
 #### Scenario: Exportaciones
 - **WHEN** se lista lo que exporta el punto de entrada del paquete
-- **THEN** aparecen, como mínimo, ActivityFeed, Alert, AppIcon, Avatar, AvatarGroup, AvatarLabel, BackgroundPattern, Badge, Banner, BarChart, Breadcrumbs, BrowserFrame, Button, ButtonGroup, CalendarView, CardHeader, ChartLegend, Checkbox, CloseButton, CodeSnippet, ColorPicker, CommandMenu, ContentDivider, CreditCard, DatePicker, Dropdown, EmptyState, FeaturedIcon, FileUpload, FilterBar, Icon, InlineCTA, Input, LineChart, Message, MessageInput, MetricCard, Modal, MultiSelect, Notification, NumberInput, PageHeader, Pagination, PieChart, ProgressBar, Radio, RadioGroup, SectionFooter, SectionHeader, Select, SidebarNav, Skeleton, Slideout, Slider, Spinner, Table, Tabs, Tag, TagInput, TextEditor, Textarea, Toggle, Tooltip, TreeView, VerificationCodeInput y VideoPlayer, y los de Stream: CamFrame, ChannelBanner, ChannelPanel, ChatBadge, ChatBox, NowPlaying, StreamAlert, StreamCountdown, StreamEvents, StreamGoal, StreamScene y StreamStatus, todos con sus tipos de props
+- **THEN** aparecen, como mínimo, ActivityFeed, Alert, AppIcon, Avatar, AvatarGroup, AvatarLabel, BackgroundPattern, Badge, Banner, BarChart, Breadcrumbs, BrowserFrame, Button, ButtonGroup, CalendarView, CardHeader, Carousel, ChartLegend, Checkbox, CloseButton, CodeSnippet, ColorPicker, CommandMenu, ContentDivider, ContextMenu, CopyTooltip, CreditCard, DatePicker, Dropdown, EmptyState, FeaturedIcon, FileUpload, FilterBar, HeaderNav, HelpIcon, Icon, InlineCTA, Input, Kbd, LineChart, LinkCard, Message, MessageInput, MetricCard, Modal, MultiSelect, Notification, NumberInput, PageHeader, Pager, Pagination, PaginationDots, PieChart, ProgressBar, ProgressCircle, ProgressSteps, Radio, RadioGroup, ScaledPreview, SectionFooter, SectionHeader, Select, SidebarNav, Skeleton, Slideout, Slider, Spinner, Table, Tabs, Tag, TagInput, TextEditor, Textarea, Toggle, Tooltip, TransparencyGrid, TreeView, VerificationCodeInput y VideoPlayer, y los de Stream: CamFrame, ChannelBanner, ChannelPanel, ChatBadge, ChatBox, NowPlaying, StreamAlert, StreamCountdown, StreamEvents, StreamGoal, StreamScene y StreamStatus, todos con sus tipos de props
 
 #### Scenario: Catálogo coherente
 - **WHEN** se compara lo que exporta el paquete con los componentes que tienen página en la web
@@ -47,11 +47,15 @@ Cada componente SHALL reproducir, en claro y en oscuro, la captura aprobada de s
 - **THEN** no aparece ningún color hex ni utilidad de paleta cruda de Tailwind, salvo en los componentes cuya paleta fija documenta la guía: AppIcon (el tono de cada app), CreditCard (la tarjeta es un objeto y no cambia con el tema), BrowserFrame (el semáforo) y VideoPlayer (controles en blanco y negro sobre el vídeo); y las líneas sueltas que la guía fija y que se marcan con su motivo, como el brillo interior del botón primario
 
 ### Requirement: Estados comunes de interacción
-Los controles SHALL mostrar hover cambiando el fondo o el texto un escalón, deshabilitado al 50 % de opacidad en todo el control y foco de teclado con `focus-ring-shadow` (`focus-ring-error-shadow` si hay error), con transiciones de color de 100–150 ms y sin animaciones decorativas, salvo la entrada y salida de la familia Stream (requisito propio).
+Los controles SHALL mostrar hover cambiando el fondo o el texto un escalón, deshabilitado al 50 % de opacidad en todo el control y foco de teclado con `focus-ring-shadow` (`focus-ring-error-shadow` si hay error), salvo los campos de formulario, cuyo foco es solo el borde de 2px `border-brand` (`border-error` si hay error), como en el Figma, con transiciones de color de 100–150 ms y sin animaciones decorativas, salvo la entrada y salida de la familia Stream (requisito propio).
 
 #### Scenario: Foco con teclado
 - **WHEN** el usuario llega a un `Input` con Tab
-- **THEN** el control muestra el anillo de foco de la guía y el borde `border-brand`
+- **THEN** el borde del control pasa a 2px `border-brand` y no hay anillo de foco por fuera, ni con teclado ni con ratón
+
+#### Scenario: Foco con teclado en un botón
+- **WHEN** el usuario llega a un `Button` con Tab
+- **THEN** el botón muestra el anillo de foco `focus-ring-shadow`
 
 #### Scenario: Deshabilitado
 - **WHEN** un `Button` tiene `disabled`
@@ -263,3 +267,252 @@ Un `Input` con `type="password"` SHALL incluir un botón para mostrar u ocultar 
 #### Scenario: Interruptor fino con teclado
 - **WHEN** el foco está en un `Toggle` `slim` apagado y el usuario pulsa Espacio
 - **THEN** pasa a encendido con la pista en `bg-brand-solid` y el anillo de foco visible, y un lector de pantalla lo anuncia como interruptor activado
+
+### Requirement: Menú con una opción elegida
+`Dropdown` SHALL admitir, además de acciones, una elección única entre sus opciones: la opción elegida se marca con un check a la derecha y se anuncia como opción de radio de menú marcada. Elegir otra opción SHALL avisar con su valor y cerrar el menú. Sin elección configurada, el menú SHALL comportarse como hasta ahora.
+
+#### Scenario: Opción elegida
+- **WHEN** se pinta un `Dropdown` con las opciones Sistema, Claro y Oscuro y Claro como elegida, y se abre
+- **THEN** Claro lleva el check y se anuncia como `menuitemradio` con `aria-checked="true"`, y Sistema y Oscuro como `menuitemradio` con `aria-checked="false"`
+
+#### Scenario: Elegir otra
+- **WHEN** en ese menú se elige Oscuro con el teclado (flechas y Enter)
+- **THEN** el menú avisa con el valor de Oscuro, se cierra y el foco vuelve al botón que lo abrió
+
+#### Scenario: Sin elección
+- **WHEN** se pinta un `Dropdown` solo con acciones, como antes de este cambio
+- **THEN** sus elementos se anuncian como `menuitem`, sin check, y cada acción llama a su `onSelect`
+
+### Requirement: Damero de transparencia
+`TransparencyGrid` SHALL pintar detrás de su contenido un damero que indica transparencia, hecho con los tokens de fondo para que siga el tema. SHALL ofrecer un tamaño de cuadro pequeño y otro grande, y ser decorativo: sin papel en el árbol de accesibilidad.
+
+#### Scenario: Sigue el tema
+- **WHEN** un `TransparencyGrid` se pinta en claro y después dentro de un contenedor con `dark-mode`
+- **THEN** sus cuadros usan en cada caso los colores de `bg-primary` y `bg-secondary` de ese tema
+
+#### Scenario: Decorativo
+- **WHEN** se pinta con un componente dentro
+- **THEN** el damero no añade nada al árbol de accesibilidad y el componente de dentro se anuncia como siempre
+
+### Requirement: Vista previa encogida
+`ScaledPreview` SHALL pintar su contenido a un ancho real dado y encogerlo para que quepa en una caja de ancho y alto dados, sin desbordarla. Con una escala explícita SHALL usar esa; sin ella, la mayor que cabe sin pasar de 1: encoge, no amplía.
+
+#### Scenario: Cabe sin escala dada
+- **WHEN** un `ScaledPreview` con ancho real de 1920 y caja de 360×202 pinta una escena
+- **THEN** la caja mide 360×202, el contenido se encoge a 0,1875 y nada sale de la caja
+
+#### Scenario: No amplía
+- **WHEN** un `ScaledPreview` de ancho real 200 se pinta en una caja de 360×100
+- **THEN** el contenido se pinta a escala 1, sin ampliarlo
+
+#### Scenario: Escala dada
+- **WHEN** se le pasa `scale={0.5}` con ancho real de 400 y caja de 300×120
+- **THEN** el contenido se pinta a 400 de ancho encogido a la mitad y lo que no cabe queda recortado por la caja
+
+### Requirement: Tecla de atajo
+`Kbd` SHALL pintar una tecla o atajo como elemento `kbd` en dos variantes: `menu`, la de los atajos de los menús, y `field`, la de la pista de un campo como «Ctrl K». Dropdown y CommandMenu SHALL usar la variante `menu`, con el mismo aspecto que hasta ahora.
+
+#### Scenario: Dos variantes
+- **WHEN** se pinta `<Kbd>⌘K</Kbd>` y `<Kbd variant="field">Ctrl K</Kbd>`
+- **THEN** los dos son `kbd`; el primero lleva el texto de 12px de la fuente del cuerpo con filo `border-secondary`, y el segundo mide 22px de alto, con fondo `bg-secondary` y Geist Mono
+
+#### Scenario: Menús sin cambios
+- **WHEN** se compara la captura aprobada de Dropdown y CommandMenu antes y después de este cambio
+- **THEN** son iguales
+
+### Requirement: Card enlazada
+`LinkCard` SHALL ser una card cuyo enlace cubre toda su superficie, con título, descripción y una zona de vista previa opcional que queda fuera del enlace, inerte y oculta a los lectores de pantalla. El foco y el paso del ratón SHALL marcar la card entera.
+
+#### Scenario: Toda la card lleva al enlace
+- **WHEN** se pulsa en cualquier punto de una `LinkCard`, también sobre su vista previa
+- **THEN** se abre su enlace, cuyo nombre accesible es el título seguido de la descripción
+
+#### Scenario: Vista previa inerte
+- **WHEN** la vista previa contiene botones o enlaces dibujados
+- **THEN** no reciben foco ni clics, y no aparecen en el árbol de accesibilidad
+
+### Requirement: Anterior y siguiente
+`Pager` SHALL pintar al final de una página una navegación «Anterior y siguiente» con hasta dos enlaces, cada uno con su dirección y el nombre de la página a la que lleva. Sin ninguno de los dos, no SHALL pintar nada.
+
+#### Scenario: Solo siguiente
+- **WHEN** se pinta un `Pager` con `next={{ href: "/b/", label: "Button group" }}` y sin `prev`
+- **THEN** hay una navegación llamada «Anterior y siguiente» con un solo enlace, que lleva a `/b/` y dice «Siguiente» y «Button group»
+
+### Requirement: Copiar con aviso junto a lo pulsado
+El hook `useCopy` SHALL copiar un texto al portapapeles y avisar con `CopyTooltip`: una burbuja como la de `Tooltip`, junto al elemento pulsado, que dice solo «Copiado» (sin repetir lo copiado) o que no se pudo copiar. El aviso SHALL anunciarse sin mover el foco y desaparecer solo. `CodeSnippet` SHALL conservar su propia confirmación.
+
+#### Scenario: Copia bien
+- **WHEN** se pulsa un botón que copia `bg-brand-solid`
+- **THEN** el portapapeles tiene `bg-brand-solid` y sobre el botón aparece una burbuja con `role="status"` que dice solo «Copiado», con el aspecto de `Tooltip`, y se va sola
+
+#### Scenario: Valor largo
+- **WHEN** se copia una variable de 60 caracteres
+- **THEN** la burbuja sigue diciendo solo «Copiado» y mide lo mismo que con un valor corto
+
+#### Scenario: Sin sitio arriba
+- **WHEN** el elemento pulsado está pegado al borde superior de la ventana
+- **THEN** la burbuja aparece debajo del elemento, sin salirse de la ventana
+
+#### Scenario: HTML sin JavaScript propio
+- **WHEN** en una página se monta un `CopyTooltip` con `copyAttribute="data-copy"` y se pulsa un botón de HTML estático con `data-copy="var(--bg-primary)"`
+- **THEN** se copia `var(--bg-primary)` y la burbuja «Copiado» sale sobre ese botón
+
+#### Scenario: Varios montados
+- **WHEN** hay dos `CopyTooltip` montados en la misma página y se copia un valor
+- **THEN** sale una sola burbuja, la del primero montado
+
+#### Scenario: El portapapeles falla
+- **WHEN** el navegador rechaza escribir en el portapapeles
+- **THEN** la burbuja dice «No se pudo copiar: selecciónalo a mano»
+
+#### Scenario: CodeSnippet no cambia
+- **WHEN** se copia el código de un `CodeSnippet`
+- **THEN** el botón muestra su ✓ y «Copiado» como hasta ahora, sin burbuja
+
+### Requirement: Desplegable con el menú del Figma
+`Select` SHALL abrir, en lugar del menú nativo del navegador, una lista bajo el campo como la del Figma: cada opción con su texto, un texto de apoyo opcional y un icono, avatar o punto delante, y la elegida con un check de marca. SHALL elegirse con ratón y con teclado, y enviar su valor en un formulario con `name`. Los desplegables de `Input` SHALL usar la misma lista.
+
+#### Scenario: Abrir y elegir
+- **WHEN** se pulsa un `Select` de miembros del equipo y se elige «Olivia Rhye»
+- **THEN** se abre una lista de opciones bajo el campo (no el menú del sistema), «Olivia Rhye» queda en el campo con su texto de apoyo «@olivia» y, al volver a abrir, lleva el check de marca
+
+#### Scenario: Teclado
+- **WHEN** con el foco en el campo se pulsa ↓, después ↓ y Enter
+- **THEN** la lista se abre, se mueve a la siguiente opción y la elige, y el foco vuelve al campo
+
+#### Scenario: Formulario
+- **WHEN** un `Select` con `name="miembro"` está dentro de un formulario que se envía
+- **THEN** el formulario envía `miembro` con el valor de la opción elegida
+
+#### Scenario: Desplegable de un Input
+- **WHEN** se abre el `leadingSelect` de prefijo telefónico de un `Input`
+- **THEN** se abre la misma lista del Figma, no el menú del sistema
+
+### Requirement: Pasos de un proceso
+`ProgressSteps` SHALL pintar los pasos de un proceso, cada uno completo, actual o pendiente, en los cinco tipos del Figma: iconos centrados, iconos con texto, texto con línea, iconos mínimos e iconos mínimos unidos. El paso actual SHALL marcarse con `aria-current="step"` y el estado de cada paso SHALL poder leerse, no solo verse.
+
+#### Scenario: Paso actual
+- **WHEN** se pinta un `ProgressSteps` de cuatro pasos con el segundo como actual
+- **THEN** es una lista ordenada, el segundo paso lleva `aria-current="step"`, el primero se anuncia como completo y el tercero y el cuarto como pendientes
+
+#### Scenario: Iconos mínimos
+- **WHEN** se pinta en el tipo de iconos mínimos con el tercero de cuatro como actual
+- **THEN** se ve «Paso 3 de 4» junto a los cuatro iconos, sin los títulos de los pasos
+
+#### Scenario: Número y check
+- **WHEN** los pasos usan el marcador de número
+- **THEN** los pendientes y el actual enseñan su número, y los completos un círculo verde (`bg-success-solid`) con un check
+
+### Requirement: Pasos en columna
+`ProgressSteps` SHALL admitir orientación horizontal y vertical: en vertical, cada paso pone su título y su texto de apoyo a la derecha del marcador, y la línea que los une va en vertical.
+
+#### Scenario: Vertical
+- **WHEN** se pinta con `orientation="vertical"`
+- **THEN** los pasos se apilan, el texto de cada uno queda a la derecha de su marcador y la línea entre marcadores es vertical
+
+### Requirement: Progreso circular
+`ProgressCircle` SHALL pintar un valor de 0 a 100 como un arco sobre una pista, en círculo o semicírculo, con el valor en el centro y una etiqueta opcional, en los tamaños `xxs`, `xs`, `sm`, `md` y `lg`. SHALL anunciarse como barra de progreso con su valor.
+
+#### Scenario: Valor
+- **WHEN** se pinta un `ProgressCircle` de valor 40 con la etiqueta «Usuarios activos»
+- **THEN** tiene `role="progressbar"` con `aria-valuenow="40"`, nombre «Usuarios activos», el centro dice «40%» y el arco cubre el 40 % de la pista
+
+#### Scenario: Semicírculo
+- **WHEN** se pinta con `shape="half"`
+- **THEN** la pista y el arco son medio círculo y la caja mide la mitad de alto más el valor
+
+### Requirement: Puntos de paginación
+`PaginationDots` SHALL pintar un punto o una raya por página, con la actual en `bg-brand-solid`, en `md` y `lg`, con o sin marco. Con `onChange` SHALL ser un control que lleva a cada página; sin él, una indicación que dice «n de N» a los lectores de pantalla.
+
+#### Scenario: Indicador
+- **WHEN** se pinta con 3 páginas y la segunda como actual, sin `onChange`
+- **THEN** se ven tres puntos, el segundo en color de marca, y un lector oye «2 de 3»
+
+#### Scenario: Control
+- **WHEN** se pinta con `onChange` y se pulsa el tercer punto
+- **THEN** se llama a `onChange(3)`, y cada punto es un botón con nombre «Ir a la página n de 3»
+
+### Requirement: Carrusel
+`Carousel` SHALL pasar diapositivas de una en una con flechas a los lados, puntos de paginación, las flechas del teclado y deslizando el dedo, sin pasar solo. Las flechas SHALL deshabilitarse en la primera y en la última diapositiva.
+
+#### Scenario: Pasar con las flechas
+- **WHEN** en un `Carousel` de tres diapositivas se pulsa la flecha de la derecha
+- **THEN** se ve la segunda diapositiva, el segundo punto pasa a actual y la flecha de la izquierda deja de estar deshabilitada
+
+#### Scenario: Teclado
+- **WHEN** con el foco dentro del carrusel se pulsa → y después ←
+- **THEN** pasa a la siguiente diapositiva y vuelve a la anterior
+
+#### Scenario: Accesible
+- **WHEN** un lector de pantalla recorre el carrusel
+- **THEN** lo anuncia como región con `aria-roledescription="carrusel"` y su nombre, cada diapositiva como «Diapositiva n de N», y las diapositivas que no se ven quedan fuera del árbol de accesibilidad
+
+### Requirement: Cabecera de navegación
+`HeaderNav` SHALL pintar la cabecera de una app en los tipos Simple, Dual-tier, Tabs y Centered, con marca, secciones, acciones y cuenta. La sección actual SHALL llevar `aria-current="page"`. En Dual-tier y Tabs SHALL haber una segunda fila con las subsecciones de la sección actual.
+
+#### Scenario: Simple
+- **WHEN** se pinta un `HeaderNav` Simple con cinco secciones y la segunda como actual
+- **THEN** hay un `banner` con la marca, una navegación con las cinco secciones y la segunda con `aria-current="page"`, y las acciones y la cuenta a la derecha
+
+#### Scenario: Dual-tier
+- **WHEN** se pinta Dual-tier con subsecciones en la sección actual
+- **THEN** debajo de la primera fila hay otra navegación con las subsecciones y la actual marcada
+
+#### Scenario: Tabs
+- **WHEN** se pinta con el tipo Tabs
+- **THEN** las subsecciones van como pestañas `underline` bajo la primera fila
+
+### Requirement: Menú móvil de la cabecera
+Por debajo del ancho de escritorio, `HeaderNav` SHALL sustituir las secciones por un botón de menú que abre un panel a pantalla completa con buscador opcional, la navegación (las secciones con subsecciones se despliegan), los enlaces de pie y la cuenta. El panel SHALL atrapar el foco y cerrarse con Escape, devolviendo el foco al botón.
+
+#### Scenario: Abrir y cerrar
+- **WHEN** a 390px se pulsa el botón de menú y después Escape
+- **THEN** el panel se abre con la navegación y el foco dentro, y al cerrarse el foco vuelve al botón
+
+#### Scenario: Desplegar una sección
+- **WHEN** en el panel se pulsa una sección con subsecciones
+- **THEN** se despliegan sus subsecciones debajo y el botón de la sección pasa a `aria-expanded="true"`
+
+### Requirement: Menú contextual
+`ContextMenu` SHALL abrirse sobre una zona con el botón derecho, en el punto del puntero, o con el teclado (Mayús+F10 o la tecla de menú), con opciones que pueden llevar icono, atajo, marca de check o de punto, separadores y submenús. Escape SHALL cerrarlo y devolver el foco.
+
+#### Scenario: Botón derecho
+- **WHEN** se hace clic derecho dentro de la zona de un `ContextMenu`
+- **THEN** no sale el menú del navegador, se abre el menú en el punto del clic con el foco en la primera opción, y elegir una opción la ejecuta y lo cierra
+
+#### Scenario: Submenú
+- **WHEN** con el foco en una opción con submenú se pulsa →
+- **THEN** se abre el submenú a su lado con el foco en su primera opción, y ← lo cierra y vuelve a la opción
+
+#### Scenario: Teclado
+- **WHEN** con el foco en la zona se pulsa Mayús+F10
+- **THEN** se abre el menú junto a la zona
+
+### Requirement: Icono de ayuda
+`HelpIcon` SHALL ser un botón con el icono de ayuda de 16px en `fg-quaternary` que, al pasar el ratón o enfocarlo, abre un tooltip con un título y un texto de apoyo opcional, en la posición que se le dé.
+
+#### Scenario: Ayuda
+- **WHEN** se enfoca un `HelpIcon` con título «Qué es esto» y posición `right`
+- **THEN** es un botón con nombre «Ayuda: Qué es esto» y se abre a su derecha un tooltip con ese título
+
+### Requirement: Pestañas verticales
+`Tabs` SHALL admitir `orientation="vertical"`, que apila las pestañas y se recorre con ↑ y ↓, y los tipos `button-minimal` y, solo en vertical, `line`. Por debajo del ancho de escritorio, las pestañas verticales SHALL pasar a un desplegable con las mismas opciones. Sin las props nuevas, `Tabs` SHALL comportarse como hasta ahora.
+
+#### Scenario: Vertical
+- **WHEN** se pinta un `Tabs` con `orientation="vertical"` y `type="line"` y se pulsa ↓ sobre la primera pestaña
+- **THEN** la lista tiene `aria-orientation="vertical"`, pasa a la segunda pestaña y la actual lleva una raya vertical de 2px en `fg-brand-primary`
+
+#### Scenario: En móvil
+- **WHEN** se pinta en vertical a 390px
+- **THEN** en lugar de las pestañas se ve un desplegable con la actual elegida, y elegir otra cambia el panel
+
+### Requirement: Tooltip con posición
+`Tooltip` SHALL admitir la posición (arriba, abajo, izquierda o derecha), la alineación de la flecha (al centro, al principio o al final) y quitar la flecha. Sin esas props SHALL comportarse como hasta ahora: arriba y con la flecha centrada.
+
+#### Scenario: Abajo
+- **WHEN** se pinta un `Tooltip` con `placement="bottom"`
+- **THEN** la burbuja sale debajo del elemento con la flecha arriba, apuntándole
+
+#### Scenario: Sin cambios
+- **WHEN** se compara la captura aprobada de `Tooltip` antes y después de este cambio
+- **THEN** son iguales

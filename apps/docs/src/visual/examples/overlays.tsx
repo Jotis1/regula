@@ -4,13 +4,16 @@ import {
 	Alert,
 	Banner,
 	Button,
+	CopyTooltip,
 	EmptyState,
+	HelpIcon,
 	Input,
 	Modal,
 	Notification,
 	Select,
 	Slideout,
 	Tooltip,
+	useCopy,
 } from "@jotis-me/react";
 import { stack } from "./actions";
 
@@ -75,6 +78,64 @@ export function TooltipExample() {
 			<Tooltip title="Con texto de apoyo" text="Una frase más para explicar el control." open>
 				<Button hierarchy="secondary">Pasa el ratón</Button>
 			</Tooltip>
+		</div>
+	);
+}
+
+const helpCell = { display: "flex", justifyContent: "center", alignItems: "center", height: 120 } as const;
+
+export function HelpIconExample() {
+	return (
+		<div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", padding: "8px 0" }}>
+			<div style={helpCell}>
+				<HelpIcon title="Esto es un tooltip" open />
+			</div>
+			<div style={helpCell}>
+				<HelpIcon title="Esto es un tooltip" open arrow="start" placement="top" />
+			</div>
+			<div style={helpCell}>
+				<HelpIcon title="Esto es un tooltip" open arrow="end" />
+			</div>
+			<div style={helpCell}>
+				<HelpIcon title="Esto es un tooltip" open placement="bottom" />
+			</div>
+			<div style={{ ...helpCell, justifyContent: "flex-start", paddingLeft: 24 }}>
+				<HelpIcon title="Esto es un tooltip" open placement="right" />
+			</div>
+			<div style={{ ...helpCell, justifyContent: "flex-end", paddingRight: 24 }}>
+				<HelpIcon title="Esto es un tooltip" open placement="left" />
+			</div>
+			<div style={{ ...helpCell, gridColumn: "1 / -1", height: 150, alignItems: "flex-end" }}>
+				<HelpIcon
+					title="Esto es un tooltip"
+					text="Se usan para describir o identificar un elemento y ayudan a entender su significado o su función."
+					open
+				/>
+			</div>
+		</div>
+	);
+}
+
+function CopyButton({ value, children }: { value: string; children: string }) {
+	const copy = useCopy();
+	return (
+		<Button
+			hierarchy="secondary"
+			size="sm"
+			iconLeading="copy-01"
+			onClick={(e) => void copy(value, e.currentTarget)}
+		>
+			{children}
+		</Button>
+	);
+}
+
+export function CopyTooltipExample() {
+	return (
+		<div style={{ display: "flex", gap: 16 }}>
+			<CopyButton value="bg-brand-solid">Copiar utilidad</CopyButton>
+			<CopyButton value="var(--bg-brand-solid)">Copiar variable</CopyButton>
+			<CopyTooltip />
 		</div>
 	);
 }

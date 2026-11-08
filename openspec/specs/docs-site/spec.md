@@ -58,7 +58,7 @@ La web SHALL mostrar todos los iconos del set con buscador por nombre y tamaño 
 - **THEN** el panel muestra `calendar` y su código usa el paquete `@jotis-me/icons`
 
 ### Requirement: Tema claro y oscuro
-La web SHALL ofrecer un conmutador de tema que aplique `dark-mode` a toda la página, recuerde la elección entre visitas y use la preferencia del sistema la primera vez, sin parpadeo del tema equivocado al cargar. En el menú móvil SHALL ofrecer además volver a la preferencia del sistema.
+La web SHALL ofrecer en la cabecera, en todos los anchos, un selector de tema con tres opciones: Sistema, Claro y Oscuro. Claro y Oscuro aplican o quitan `dark-mode` en toda la página y se recuerdan entre visitas; Sistema borra la elección guardada y sigue la preferencia del sistema, también si cambia con la página abierta. La primera vez la web SHALL usar la del sistema, sin parpadeo del tema equivocado al cargar. El menú móvil SHALL ofrecer las mismas tres opciones.
 
 #### Scenario: Recordar tema
 - **WHEN** el usuario elige oscuro y recarga la página
@@ -67,6 +67,18 @@ La web SHALL ofrecer un conmutador de tema que aplique `dark-mode` a toda la pá
 #### Scenario: Volver al sistema
 - **WHEN** el usuario elige "Sistema" en el menú móvil con el sistema en oscuro
 - **THEN** la página pasa a oscuro y deja de recordar una elección propia
+
+#### Scenario: Volver al sistema en escritorio
+- **WHEN** en escritorio, con oscuro elegido y el sistema en claro, el usuario abre el selector de la cabecera y elige "Sistema"
+- **THEN** la página pasa a claro, deja de recordar una elección propia y, si el sistema cambia a oscuro sin recargar, la página pasa a oscuro
+
+#### Scenario: El selector dice lo elegido
+- **WHEN** el usuario abre el selector de la cabecera
+- **THEN** ve Sistema, Claro y Oscuro con la opción actual marcada, y el botón que lo abre muestra el icono y el nombre de esa opción (pantalla y «Sistema», sol y «Claro», luna y «Oscuro») desde la primera pintura, y tiene un nombre accesible que dice el tema elegido
+
+#### Scenario: Mismo estado en los dos selectores
+- **WHEN** el usuario elige "Claro" en la cabecera y después, a 390px, abre el menú móvil
+- **THEN** el selector del menú móvil tiene "Claro" elegido
 
 ### Requirement: La web sigue el propio sistema
 La web SHALL construirse con los paquetes del propio monorepo y cumplir las reglas de la guía: textos en castellano de España con tuteo, sin emojis y una acción principal por vista. La cabecera SHALL mostrar el icono de app de Regula junto al nombre "Regula" en Bricolage Grotesque bold.
@@ -141,11 +153,15 @@ La web SHALL tener en `/components/` un índice de todos los componentes del cat
 - **THEN** aparecen todos los componentes que exporta `@jotis-me/react`, cada uno enlazado a su página, y ninguno más
 
 ### Requirement: Historial de cambios
-La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build.
+La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build. El texto de cada entrada SHALL pintarse con su formato: párrafos, listas (también las que van dentro de una entrada) y código en línea.
 
 #### Scenario: Versión publicada
 - **WHEN** se publica una versión con una entrada en el CHANGELOG
 - **THEN** tras el despliegue `/changelog/` muestra esa versión con su entrada
+
+#### Scenario: Entrada con listas
+- **WHEN** se abre `/changelog/` y se mira la entrada de la 0.4.0, que lista los componentes nuevos y después las variantes
+- **THEN** cada lista se pinta como una lista con un elemento por línea, sin los guiones del Markdown, y el texto de entre las dos listas como un párrafo
 
 ### Requirement: Lienzos a tamaño real
 Los componentes de tamaño fijo (`StreamScene` y `ChannelBanner`) SHALL tener una página `/components/<slug>/full/` que los muestra a su tamaño de Twitch, sin escalar, enlazada desde su página.

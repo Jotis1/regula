@@ -14,11 +14,11 @@ export interface FieldProps {
 	error?: string | boolean;
 }
 
-// Borde de 1px y shadow-xs; en foco, 2px en border-brand. Con teclado, además el anillo de foco.
+// Borde de 1px y shadow-xs; en foco, solo el borde de 2px en border-brand (sin anillo exterior, como el Figma).
 const CONTROL =
-	"flex items-center rounded-lg bg-primary text-fg-quaternary transition-shadow duration-100 ease-linear shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)] focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)] has-[:focus-visible]:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand),var(--focus-ring-shadow)]";
+	"flex items-center rounded-lg bg-primary text-fg-quaternary transition-shadow duration-100 ease-linear shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)] focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)]";
 const CONTROL_ERROR =
-	"shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-error_subtle)] focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error)] has-[:focus-visible]:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error),var(--focus-ring-error-shadow)]";
+	"shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-error_subtle)] focus-within:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-error)]";
 const CONTROL_SIZE: Record<FieldSize, string> = {
 	sm: "",
 	md: "min-h-10",

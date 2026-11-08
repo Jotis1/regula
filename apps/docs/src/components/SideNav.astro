@@ -4,6 +4,7 @@
 // atajo "/", solo aparece cuando hay JavaScript, que es quien lo hace funcionar.
 import chevron from "@jotis-me/icons/svg/chevron-right.svg?raw";
 import filter from "@jotis-me/icons/svg/filter-lines.svg?raw";
+import { Kbd } from "@jotis-me/react";
 import { docNav } from "../nav";
 import { fold } from "../search/entries";
 
@@ -33,7 +34,7 @@ const link =
 				aria-keyshortcuts="/"
 				class="min-w-0 grow border-0 bg-transparent text-sm text-primary outline-none placeholder:text-placeholder"
 			/>
-			<kbd class="inline-flex h-[22px] shrink-0 items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)]">/</kbd>
+			<Kbd variant="field" className="shrink-0">/</Kbd>
 		</div>
 	</div>
 	{
@@ -86,10 +87,7 @@ const link =
 		))
 	}
 	<p class="px-2.5 text-sm text-tertiary" data-docnav-empty hidden>
-		Nada se llama así. Prueba la búsqueda global con <kbd
-			class="inline-flex h-[22px] items-center rounded-sm bg-secondary px-1.5 font-mono text-xs font-medium text-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)]"
-			>Ctrl K</kbd
-		>, que también mira tokens e iconos.
+		Nada se llama así. Prueba la búsqueda global con <Kbd variant="field">Ctrl K</Kbd>, que también mira tokens e iconos.
 	</p>
 </nav>
 

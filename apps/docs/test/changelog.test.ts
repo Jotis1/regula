@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mergeChangelogs, parseChangelog } from "../src/lib/changelog";
+import { changeBlocks, mergeChangelogs, parseChangelog } from "../src/lib/changelog";
 
 // CHANGELOG de ejemplo con el formato de Changesets
 const react = `# @jotis-me/react
@@ -74,5 +74,46 @@ describe("historial de cambios desde los CHANGELOG de los paquetes", () => {
 	it("sin CHANGELOG no hay versiones", () => {
 		expect(mergeChangelogs([])).toEqual([]);
 		expect(mergeChangelogs(["# @jotis-me/react\n"])).toEqual([]);
+	});
+});
+
+// La entrada de la 0.4.0: un párrafo con su lista pegada, un párrafo entre las dos y otra lista
+const v040 = [
+	"# @jotis-me/react",
+	"",
+	"## 0.4.0",
+	"",
+	"### Minor Changes",
+	"",
+	"- ebf83b3: Formularios del Figma, fase 1. Cuatro componentes nuevos:",
+	"  - `NumberInput`: campo numérico.",
+	"  - `TagInput`: convierte lo escrito",
+	"    en etiquetas.",
+	"",
+	"  Y variantes nuevas, sin cambiar lo que ya había:",
+	"  - `Input`: `prefix` y desplegables.",
+	'  - `Toggle`: `variant="slim"`.',
+	"",
+].join("\n");
+
+describe("bloques de una entrada: párrafos y listas", () => {
+	it("la entrada de la 0.4.0 sale como párrafo, lista, párrafo y lista, sin guiones sueltos", () => {
+		const text = parseChangelog(v040).versions[0]?.entries[0]?.text ?? "";
+		expect(changeBlocks(text)).toEqual([
+			{ type: "p", text: "Formularios del Figma, fase 1. Cuatro componentes nuevos:" },
+			{
+				type: "ul",
+				items: ["`NumberInput`: campo numérico.", "`TagInput`: convierte lo escrito en etiquetas."],
+			},
+			{ type: "p", text: "Y variantes nuevas, sin cambiar lo que ya había:" },
+			{ type: "ul", items: ["`Input`: `prefix` y desplegables.", '`Toggle`: `variant="slim"`.'] },
+		]);
+	});
+
+	it("un texto sin listas son sus párrafos, separados por líneas en blanco", () => {
+		expect(changeBlocks("Uno.\n\nDos,\ncontinúa.")).toEqual([
+			{ type: "p", text: "Uno." },
+			{ type: "p", text: "Dos, continúa." },
+		]);
 	});
 });

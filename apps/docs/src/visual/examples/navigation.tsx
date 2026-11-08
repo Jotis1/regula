@@ -1,22 +1,40 @@
 // Puertos de las vistas previas de navegación de la guía (reference/components/*/preview.html).
 
 import {
+	AppIcon,
 	AvatarLabel,
 	Breadcrumbs,
+	Button,
 	CommandMenu,
+	ContextMenu,
 	Dropdown,
 	FilterBar,
+	HeaderNav,
+	type HeaderNavItem,
+	Input,
+	Pager,
 	Pagination,
+	PaginationDots,
+	ScaledPreview,
 	SidebarNav,
 	Tabs,
 	TreeView,
 } from "@jotis-me/react";
+import { useState } from "react";
 import { stack } from "./actions";
 
 const sections = [
 	{ id: "a", label: "Resumen" },
 	{ id: "b", label: "Movimientos" },
 	{ id: "c", label: "Ajustes" },
+];
+
+const settings = [
+	{ id: "datos", label: "Mis datos" },
+	{ id: "perfil", label: "Perfil" },
+	{ id: "equipo", label: "Equipo" },
+	{ id: "avisos", label: "Avisos", count: 2 },
+	{ id: "api", label: "API" },
 ];
 
 export function TabsExample() {
@@ -33,6 +51,15 @@ export function TabsExample() {
 			<Tabs aria-label="Vista" type="button-brand" items={sections} />
 			<Tabs aria-label="Periodo" type="button-gray" items={sections} />
 			<Tabs aria-label="Modo" type="button-border" items={sections} />
+			<div className="flex flex-wrap gap-x-16 gap-y-8">
+				<Tabs aria-label="Ajustes con raya" orientation="vertical" type="line" items={settings} />
+				<Tabs
+					aria-label="Ajustes minimal"
+					orientation="vertical"
+					type="button-minimal"
+					items={settings}
+				/>
+			</div>
 		</div>
 	);
 }
@@ -51,6 +78,15 @@ export function BreadcrumbsExample() {
 
 export function PaginationExample() {
 	return <Pagination total={10} defaultPage={1} />;
+}
+
+export function PagerExample() {
+	return (
+		<div className={stack}>
+			<Pager prev={{ href: "#", label: "Breadcrumbs" }} next={{ href: "#", label: "Sidebar nav" }} />
+			<Pager next={{ href: "#", label: "Sidebar nav" }} />
+		</div>
+	);
 }
 
 export function SidebarNavExample() {
@@ -73,23 +109,230 @@ export function SidebarNavExample() {
 	);
 }
 
-export function DropdownExample() {
+const zone =
+	"flex items-center justify-center rounded-xl border border-dashed border-primary text-sm text-tertiary";
+
+export function ContextMenuExample() {
+	const [bars, setBars] = useState(["marcadores"]);
+	const [profile, setProfile] = useState("olivia");
 	return (
-		<div style={{ height: 310 }}>
-			<Dropdown
-				label="Acciones"
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] items-start gap-6">
+			<ContextMenu
 				defaultOpen
-				header={
-					<AvatarLabel size="md" initials="AD" name="Administrador" supporting="admin@jotis.me" />
-				}
+				previewAt={{ x: 16, y: 16 }}
+				aria-label="Acciones"
 				items={[
-					{ icon: "user-01", label: "Ver perfil", shortcut: "⌘P" },
-					{ icon: "settings-02", label: "Ajustes", shortcut: "⌘S" },
-					{ icon: "copy-01", label: "Duplicar" },
+					{ label: "Cortar", shortcut: "⌘X" },
+					{ label: "Copiar", shortcut: "⌘C" },
+					{ label: "Pegar", shortcut: "⌘V" },
 					{ divider: true },
-					{ icon: "trash-01", label: "Eliminar", danger: true },
+					{ label: "Editar" },
+					{ label: "Duplicar" },
+					{ label: "Eliminar" },
+					{ divider: true },
+					{ label: "Ver detalles", items: [{ label: "Historial" }, { label: "Propiedades" }] },
 				]}
-			/>
+				className={zone}
+			>
+				<span style={{ height: 360 }} className="flex items-end pb-3">
+					Botón derecho aquí
+				</span>
+			</ContextMenu>
+			<ContextMenu
+				defaultOpen
+				previewAt={{ x: 16, y: 16 }}
+				aria-label="Navegador"
+				items={[
+					{ icon: "arrow-left", label: "Atrás" },
+					{ icon: "arrow-right", label: "Adelante" },
+					{ icon: "refresh-cw-01", label: "Recargar", shortcut: "⌘R" },
+					{ icon: "edit-02", label: "Editar página" },
+					{ icon: "star-01", label: "Añadir a favoritos" },
+					{ divider: true },
+					{
+						section: "Barras",
+						selection: "multiple",
+						selected: bars,
+						onSelectionChange: setBars,
+						items: [
+							{ value: "marcadores", label: "Mostrar marcadores" },
+							{ value: "urls", label: "Mostrar URL completas" },
+						],
+					},
+					{ divider: true },
+					{
+						section: "Perfil",
+						selection: "single",
+						selected: profile,
+						onSelectionChange: setProfile,
+						items: [
+							{ value: "olivia", label: "Olivia Rhye" },
+							{ value: "sienna", label: "Sienna Hewitt" },
+						],
+					},
+					{ divider: true },
+					{
+						icon: "code-01",
+						label: "Más herramientas",
+						items: [{ label: "Guardar como", icon: "download-01" }, { label: "Desarrollador" }],
+					},
+				]}
+				className={zone}
+			>
+				<span style={{ height: 480 }} className="flex items-end pb-3">
+					Botón derecho aquí
+				</span>
+			</ContextMenu>
+		</div>
+	);
+}
+
+const headerBrand = (
+	<span className="inline-flex items-center gap-2 font-display text-lg font-bold text-primary">
+		<AppIcon app="regula" size={32} />
+		Regula
+	</span>
+);
+
+const headerItems: HeaderNavItem[] = [
+	{ label: "Inicio", href: "#", icon: "home-line" },
+	{
+		label: "Panel",
+		href: "#",
+		icon: "bar-chart-01",
+		current: true,
+		children: [
+			{ label: "Resumen", href: "#", current: true },
+			{ label: "Avisos", href: "#", badge: 2 },
+			{ label: "Analítica", href: "#" },
+			{ label: "Informes guardados", href: "#" },
+			{ label: "Informes programados", href: "#" },
+		],
+	},
+	{ label: "Proyectos", href: "#", icon: "inbox-01", children: [{ label: "Todos", href: "#" }] },
+	{ label: "Tareas", href: "#", icon: "check-circle", badge: 8 },
+	{ label: "Usuarios", href: "#", icon: "users-01" },
+];
+
+const headerActions = (
+	<>
+		<Button hierarchy="tertiary" iconOnly="search-lg" label="Buscar" />
+		<Button hierarchy="tertiary" iconOnly="settings-02" label="Ajustes" />
+		<Button hierarchy="tertiary" iconOnly="bell-01" label="Avisos" />
+	</>
+);
+const headerAccount = <Dropdown label="Cuenta" items={[{ label: "Perfil" }, { label: "Salir" }]} />;
+const headerSearch = <Input aria-label="Buscar" placeholder="Buscar" icon="search-lg" size="sm" />;
+
+/** Una cabecera a 1280px de ancho (la CSS elige escritorio por el ancho de la propia cabecera), encogida a la caja. */
+function HeaderPreview({ height, children }: { height: number; children: React.ReactNode }) {
+	return (
+		<ScaledPreview width={1280} scale={0.6} box={[768, Math.round(height * 0.6)]}>
+			{children}
+		</ScaledPreview>
+	);
+}
+
+export function HeaderNavExample() {
+	return (
+		<div className="flex flex-col gap-4">
+			<HeaderPreview height={65}>
+				<HeaderNav
+					brand={headerBrand}
+					items={headerItems}
+					actions={headerActions}
+					account={headerAccount}
+				/>
+			</HeaderPreview>
+			<HeaderPreview height={129}>
+				<HeaderNav
+					type="dual-tier"
+					brand={headerBrand}
+					items={headerItems}
+					search={headerSearch}
+					actions={headerActions}
+					account={headerAccount}
+				/>
+			</HeaderPreview>
+			<HeaderPreview height={109}>
+				<HeaderNav
+					type="tabs"
+					brand={headerBrand}
+					items={headerItems}
+					actions={headerActions}
+					account={headerAccount}
+				/>
+			</HeaderPreview>
+			<HeaderPreview height={129}>
+				<HeaderNav
+					type="centered"
+					brand={headerBrand}
+					items={headerItems}
+					account={
+						<>
+							<Button hierarchy="secondary">Entrar</Button>
+							<Button>Hazte PRO</Button>
+						</>
+					}
+				/>
+			</HeaderPreview>
+			<div className="w-[375px] overflow-hidden rounded-xl border border-secondary">
+				<HeaderNav
+					brand={headerBrand}
+					items={headerItems}
+					search={headerSearch}
+					mobile={{
+						footerItems: [
+							{ label: "Ajustes", href: "#", icon: "settings-02" },
+							{ label: "Soporte", href: "#", icon: "user-01" },
+						],
+						footer: <AvatarLabel initials="OR" name="Olivia Rhye" supporting="olivia@jotis.me" />,
+					}}
+				/>
+			</div>
+		</div>
+	);
+}
+
+export function DropdownExample() {
+	// El de elección única (ampliación sobre la guía, el de tema de la cabecera) es de lectura: el estado es de quien lo usa
+	const [theme, setTheme] = useState("claro");
+	return (
+		<div style={{ height: 310, display: "flex", alignItems: "flex-start", gap: 24 }}>
+			<div style={{ width: 280 }}>
+				<Dropdown
+					label="Acciones"
+					defaultOpen
+					header={
+						<AvatarLabel
+							size="md"
+							initials="AD"
+							name="Administrador"
+							supporting="admin@jotis.me"
+						/>
+					}
+					items={[
+						{ icon: "user-01", label: "Ver perfil", shortcut: "⌘P" },
+						{ icon: "settings-02", label: "Ajustes", shortcut: "⌘S" },
+						{ icon: "copy-01", label: "Duplicar" },
+						{ divider: true },
+						{ icon: "trash-01", label: "Eliminar", danger: true },
+					]}
+				/>
+			</div>
+			<div style={{ width: 280 }}>
+				<Dropdown
+					label="Tema"
+					defaultOpen
+					selectedValue={theme}
+					onSelectionChange={setTheme}
+					items={[
+						{ icon: "monitor-01", label: "Sistema", value: "sistema" },
+						{ icon: "sun", label: "Claro", value: "claro" },
+						{ icon: "moon-01", label: "Oscuro", value: "oscuro" },
+					]}
+				/>
+			</div>
 		</div>
 	);
 }
@@ -174,5 +417,32 @@ export function TreeViewExample() {
 				{ id: "arch", label: "Archivo", icon: "inbox-01" },
 			]}
 		/>
+	);
+}
+
+export function PaginationDotsExample() {
+	const [page, setPage] = useState(2);
+	return (
+		<div className="grid grid-cols-2 gap-x-10 gap-y-8 rounded-xl bg-secondary p-8">
+			{(["md", "lg"] as const).map((size) => (
+				<div key={size} className="flex flex-col items-start gap-6">
+					<PaginationDots total={3} current={2} size={size} />
+					<PaginationDots total={3} current={2} size={size} framed />
+					<PaginationDots total={3} current={2} size={size} variant="line" />
+					<PaginationDots total={3} current={2} size={size} variant="line" framed />
+				</div>
+			))}
+			<div className="col-span-2 flex flex-col items-start gap-3">
+				<p className="m-0 text-sm text-tertiary">Con onChange, cada punto lleva a su página.</p>
+				<PaginationDots
+					total={5}
+					current={page}
+					onChange={setPage}
+					variant="line"
+					framed
+					aria-label="Diapositivas"
+				/>
+			</div>
+		</div>
 	);
 }

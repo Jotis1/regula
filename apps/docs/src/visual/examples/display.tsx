@@ -1,6 +1,6 @@
 // Puertos de las vistas previas de Badge, Tag y los avatares (reference/components/*/preview.html).
 
-import { Avatar, AvatarGroup, AvatarLabel, Badge, Tag } from "@jotis-me/react";
+import { Avatar, AvatarGroup, AvatarLabel, Badge, Kbd, Tag } from "@jotis-me/react";
 import { row, stack } from "./actions";
 
 const noop = () => {};
@@ -91,6 +91,24 @@ export function AvatarLabelExample() {
 				supporting="admin@jotis.me"
 				status="online"
 			/>
+		</div>
+	);
+}
+
+export function KbdExample() {
+	return (
+		<div className={stack}>
+			<div className={row}>
+				<Kbd>⌘P</Kbd>
+				<Kbd>⌘K</Kbd>
+				<Kbd>esc</Kbd>
+				<Kbd>↵</Kbd>
+			</div>
+			<div className={row}>
+				<Kbd variant="field">Ctrl K</Kbd>
+				<Kbd variant="field">⌘ K</Kbd>
+				<Kbd variant="field">/</Kbd>
+			</div>
 		</div>
 	);
 }

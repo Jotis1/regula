@@ -19,6 +19,7 @@ const usage: Record<string, string> = {
 	Badge: `<Badge color="success">Pagado</Badge>
 <Badge type="modern" color="success" dot>En línea</Badge>`,
 	Tag: `<Tag size="md" count={5}>Facturas</Tag>`,
+	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
 	AvatarGroup: `<AvatarGroup items={[{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }]} />`,
 	AvatarLabel: `<AvatarLabel initials="AD" name="Responsable de seguridad" supporting="admin@jotis.me" />`,
@@ -27,6 +28,17 @@ const usage: Record<string, string> = {
 	Skeleton: `<Skeleton circle width={40} height={40} />
 <Skeleton lines={3} />`,
 	ProgressBar: `<ProgressBar value={62} aria-label="Presupuesto usado" />`,
+	ProgressSteps: `<ProgressSteps
+	aria-label="Alta"
+	current={1}
+	steps={[
+		{ title: "Tus datos", description: "Nombre y correo" },
+		{ title: "Tu empresa", description: "Web y ubicación" },
+		{ title: "Tu equipo", description: "Empieza a colaborar" },
+	]}
+/>`,
+	ProgressCircle: `<ProgressCircle value={40} label="Usuarios activos" />
+<ProgressCircle value={40} shape="half" size="sm" label="Usuarios activos" />`,
 	AppIcon: `<AppIcon app="pecunia" size={48} />`,
 	Input: `<Input label="Correo" type="email" icon="mail-01" placeholder="tu@jotis.me" required />`,
 	NumberInput: `<NumberInput label="Invitados" defaultValue={2} min={1} max={12} />`,
@@ -80,7 +92,12 @@ const usage: Record<string, string> = {
 		{ label: "Gastos de octubre" },
 	]}
 />`,
+	PaginationDots: `<PaginationDots total={5} current={pagina} onChange={setPagina} variant="line" aria-label="Diapositivas" />`,
 	Pagination: `<Pagination total={10} page={pagina} onChange={setPagina} />`,
+	Pager: `<Pager
+	prev={{ href: "/components/badge/", label: "Badge" }}
+	next={{ href: "/components/button/", label: "Button" }}
+/>`,
 	SidebarNav: `<SidebarNav
 	brand="jotis.me"
 	search
@@ -91,6 +108,37 @@ const usage: Record<string, string> = {
 	footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/ajustes/" }]}
 	user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 />`,
+	HeaderNav: `<HeaderNav
+	type="dual-tier"
+	brand={<AppIcon app="regula" size={32} />}
+	items={[
+		{ label: "Inicio", href: "/" },
+		{
+			label: "Panel",
+			href: "/panel/",
+			current: true,
+			children: [
+				{ label: "Resumen", href: "/panel/", current: true },
+				{ label: "Informes", href: "/panel/informes/" },
+			],
+		},
+	]}
+	search={<Input aria-label="Buscar" placeholder="Buscar" icon="search-lg" />}
+	account={<Dropdown label="Cuenta" items={[{ label: "Perfil" }]} />}
+/>`,
+	ContextMenu: `<ContextMenu
+	aria-label="Acciones de la fila"
+	items={[
+		{ icon: "copy-01", label: "Copiar", shortcut: "⌘C", onSelect: copiar },
+		{ icon: "edit-02", label: "Editar", onSelect: editar },
+		{ divider: true },
+		{ label: "Más herramientas", items: [{ label: "Exportar a CSV" }, { label: "Imprimir" }] },
+		{ divider: true },
+		{ icon: "trash-01", label: "Eliminar", danger: true, onSelect: eliminar },
+	]}
+>
+	<Fila />
+</ContextMenu>`,
 	Dropdown: `<Dropdown
 	label="Acciones"
 	items={[
@@ -142,9 +190,12 @@ const usage: Record<string, string> = {
 >
 	<Input label="Concepto" defaultValue="Alquiler" />
 </Slideout>`,
+	CopyTooltip: `<Button onClick={(e) => copiar("bg-brand-solid", e.currentTarget)}>Copiar utilidad</Button>
+<CopyTooltip />`,
 	Tooltip: `<Tooltip title="Exportar a CSV" text="Incluye los movimientos filtrados.">
 	<Button hierarchy="secondary" iconOnly="download-01" label="Exportar" />
 </Tooltip>`,
+	HelpIcon: `<label>Cuota mensual <HelpIcon title="Qué incluye" text="Impuestos incluidos, sin descuentos." placement="right" /></label>`,
 	Alert: `<Alert color="error" title="No se pudo sincronizar" description="Revisa la conexión con el banco." />`,
 	Notification: `<Notification
 	color="success"
@@ -229,6 +280,12 @@ const usage: Record<string, string> = {
 	actions={<Button size="sm" type="submit">Guardar cambios</Button>}
 />`,
 	ContentDivider: `<ContentDivider label="o continúa con" />`,
+	LinkCard: `<LinkCard
+	href="/components/button/"
+	title="Button"
+	description="La acción de la pantalla."
+	preview={<Button size="sm">Nuevo gasto</Button>}
+/>`,
 	InlineCTA: `<InlineCTA
 	icon="stars-02"
 	title="Conecta tu banco"
@@ -242,6 +299,12 @@ const usage: Record<string, string> = {
 		</>
 	}
 />`,
+	ScaledPreview: `<ScaledPreview width={1920} box={[360, 203]}>
+	<StreamScene scale={1} variant="starting" seconds={300} countdownLabel="Para empezar" />
+</ScaledPreview>`,
+	TransparencyGrid: `<TransparencyGrid size="md" className="rounded-2xl p-6">
+	<CamFrame ratio="16:9" width={400} name="Tu canal" />
+</TransparencyGrid>`,
 	BackgroundPattern: `<div className="relative">
 	<BackgroundPattern pattern="grid" size="sm" mask="radial" />
 	<div className="relative">Contenido</div>
@@ -250,6 +313,10 @@ const usage: Record<string, string> = {
 	<MetricCard label="Gasto de octubre" value="1.284,50 €" />
 </BrowserFrame>`,
 	CreditCard: `<CreditCard theme="brand-dark" company="Pecunia" holder="Administrador" expiry="06/29" last4="4821" />`,
+	Carousel: `<Carousel
+	aria-label="Novedades"
+	slides={[<Tarjeta titulo="Importa tus extractos" />, <Tarjeta titulo="Categoriza solo" />, <Tarjeta titulo="Comparte informes" />]}
+/>`,
 	VideoPlayer: `<VideoPlayer src="/videos/presentacion.mp4" poster="/videos/presentacion.jpg" />`,
 	LineChart: `<LineChart
 	aria-label="Gastos de agosto a octubre"

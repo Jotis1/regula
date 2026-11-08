@@ -108,7 +108,7 @@ export function CodeSnippet({ code, language, tabs, lineNumbers = true, classNam
 	return (
 		<div
 			className={cx(
-				"relative overflow-hidden rounded-xl bg-primary font-body shadow-[inset_0_0_0_1px_var(--border-secondary)]",
+				"relative overflow-hidden rounded-xl border border-secondary bg-primary font-body",
 				className,
 			)}
 		>

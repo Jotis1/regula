@@ -36,6 +36,12 @@ export { type CalendarEvent, CalendarView, type CalendarViewProps } from "./comp
 export { CamFrame, type CamFrameProps, type CamFrameRatio } from "./components/CamFrame.js";
 export { CardHeader, type CardHeaderProps } from "./components/CardHeader.js";
 export {
+	Carousel,
+	type CarouselLabels,
+	type CarouselProps,
+	type CarouselSize,
+} from "./components/Carousel.js";
+export {
 	ChannelBanner,
 	type ChannelBannerProps,
 	type ChannelBannerSlot,
@@ -61,6 +67,19 @@ export {
 	type CommandMenuProps,
 } from "./components/CommandMenu.js";
 export { ContentDivider, type ContentDividerProps } from "./components/ContentDivider.js";
+export {
+	ContextMenu,
+	type ContextMenuAction,
+	type ContextMenuChoice,
+	type ContextMenuItem,
+	type ContextMenuProps,
+	type ContextMenuSection,
+} from "./components/ContextMenu.js";
+export {
+	CopyTooltip,
+	type CopyTooltipLabels,
+	type CopyTooltipProps,
+} from "./components/CopyTooltip.js";
 export { CreditCard, type CreditCardProps, type CreditCardTheme } from "./components/CreditCard.js";
 export {
 	DatePicker,
@@ -89,10 +108,21 @@ export {
 	type UploadFile,
 } from "./components/FileUpload.js";
 export { FilterBar, type FilterBarLabels, type FilterBarProps } from "./components/FilterBar.js";
+export {
+	HeaderNav,
+	type HeaderNavItem,
+	type HeaderNavLabels,
+	type HeaderNavMobile,
+	type HeaderNavProps,
+	type HeaderNavType,
+} from "./components/HeaderNav.js";
+export { HelpIcon, type HelpIconProps } from "./components/HelpIcon.js";
 export { Icon, type IconName, type IconProps } from "./components/Icon.js";
 export { InlineCTA, type InlineCTAProps } from "./components/InlineCTA.js";
 export { Input, type InputAddonSelect, type InputProps } from "./components/Input.js";
+export { Kbd, type KbdProps, type KbdVariant } from "./components/Kbd.js";
 export { LineChart, type LineChartProps } from "./components/LineChart.js";
+export { LinkCard, type LinkCardProps } from "./components/LinkCard.js";
 export { Message, type MessageProps } from "./components/Message.js";
 export { MessageInput, type MessageInputProps } from "./components/MessageInput.js";
 export { MetricCard, type MetricCardProps } from "./components/MetricCard.js";
@@ -102,15 +132,40 @@ export { Notification, type NotificationProps } from "./components/Notification.
 export { NowPlaying, type NowPlayingLabels, type NowPlayingProps } from "./components/NowPlaying.js";
 export { NumberInput, type NumberInputProps } from "./components/NumberInput.js";
 export { PageHeader, type PageHeaderProps } from "./components/PageHeader.js";
+export { Pager, type PagerLabels, type PagerLink, type PagerProps } from "./components/Pager.js";
 export {
 	Pagination,
 	type PaginationLabels,
 	type PaginationProps,
 } from "./components/Pagination.js";
+export {
+	PaginationDots,
+	type PaginationDotsLabels,
+	type PaginationDotsProps,
+	type PaginationDotsSize,
+	type PaginationDotsVariant,
+} from "./components/PaginationDots.js";
 export { PieChart, type PieChartProps, type PieChartSlice } from "./components/PieChart.js";
 export { ProgressBar, type ProgressBarProps } from "./components/ProgressBar.js";
+export {
+	ProgressCircle,
+	type ProgressCircleProps,
+	type ProgressCircleShape,
+	type ProgressCircleSize,
+} from "./components/ProgressCircle.js";
+export {
+	type ProgressStep,
+	ProgressSteps,
+	type ProgressStepsLabels,
+	type ProgressStepsMarker,
+	type ProgressStepsOrientation,
+	type ProgressStepsProps,
+	type ProgressStepsSize,
+	type ProgressStepsType,
+} from "./components/ProgressSteps.js";
 export { Radio, type RadioProps } from "./components/Radio.js";
 export { RadioGroup, type RadioGroupOption, type RadioGroupProps } from "./components/RadioGroup.js";
+export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPreview.js";
 export { SectionFooter, type SectionFooterProps } from "./components/SectionFooter.js";
 export { SectionHeader, type SectionHeaderProps } from "./components/SectionHeader.js";
 export { Select, type SelectOption, type SelectProps } from "./components/Select.js";
@@ -140,19 +195,32 @@ export {
 	type StreamStatusValue,
 } from "./components/StreamStatus.js";
 export { Table, type TableColumn, type TableProps } from "./components/Table.js";
-export { type TabItem, Tabs, type TabsProps, type TabsSize, type TabsType } from "./components/Tabs.js";
+export {
+	type TabItem,
+	Tabs,
+	type TabsOrientation,
+	type TabsProps,
+	type TabsSize,
+	type TabsType,
+} from "./components/Tabs.js";
 export { Tag, type TagProps, type TagSize } from "./components/Tag.js";
 export { TagInput, type TagInputProps } from "./components/TagInput.js";
 export { Textarea, type TextareaProps } from "./components/Textarea.js";
 export { TextEditor, type TextEditorLabels, type TextEditorProps } from "./components/TextEditor.js";
 export { Toggle, type ToggleProps } from "./components/Toggle.js";
 export { Tooltip, type TooltipProps } from "./components/Tooltip.js";
+export {
+	TransparencyGrid,
+	type TransparencyGridProps,
+	type TransparencyGridSize,
+} from "./components/TransparencyGrid.js";
 export { type TreeItem, TreeView, type TreeViewProps } from "./components/TreeView.js";
 export {
 	VerificationCodeInput,
 	type VerificationCodeInputProps,
 } from "./components/VerificationCodeInput.js";
 export { VideoPlayer, type VideoPlayerLabels, type VideoPlayerProps } from "./components/VideoPlayer.js";
+export { useCopy } from "./hooks/use-copy.js";
 export type { ChartSeries } from "./internal/chart.js";
 export type { ChoiceSize } from "./internal/choice.js";
 export type { FieldProps, FieldSize } from "./internal/field.js";

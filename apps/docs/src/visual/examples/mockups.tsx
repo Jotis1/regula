@@ -4,11 +4,17 @@ import {
 	BackgroundPattern,
 	type BackgroundPatternMask,
 	type BackgroundPatternName,
+	Badge,
 	BrowserFrame,
+	Carousel,
 	CreditCard,
 	EmptyState,
 	FeaturedIcon,
+	InlineCTA,
 	MetricCard,
+	ScaledPreview,
+	StreamScene,
+	TransparencyGrid,
 	VideoPlayer,
 } from "@jotis-me/react";
 
@@ -161,6 +167,97 @@ export function VideoPlayerExample() {
 	return (
 		<div style={{ maxWidth: 640 }}>
 			<VideoPlayer duration={252} />
+		</div>
+	);
+}
+
+export function TransparencyGridExample() {
+	return (
+		<div className="flex flex-wrap gap-6">
+			<TransparencyGrid className="flex h-32 w-64 items-center justify-center rounded-xl border border-secondary">
+				<Badge color="brand">Cuadros de 8px</Badge>
+			</TransparencyGrid>
+			<TransparencyGrid
+				size="md"
+				className="flex h-32 w-64 items-center justify-center rounded-xl border border-secondary"
+			>
+				<Badge color="brand">Cuadros de 16px</Badge>
+			</TransparencyGrid>
+		</div>
+	);
+}
+
+export function ScaledPreviewExample() {
+	return (
+		<div className="flex flex-wrap items-start gap-6">
+			{/* Una escena de 1920 de ancho en una caja de 360: la escala sale sola (0,1875) */}
+			<ScaledPreview width={1920} box={[360, 203]} className="rounded-lg border border-secondary">
+				<StreamScene scale={1} variant="starting" seconds={300} countdownLabel="Para empezar" />
+			</ScaledPreview>
+			{/* Una pieza de 560 de ancho con la escala dada, 0,6 */}
+			<ScaledPreview
+				width={560}
+				scale={0.6}
+				box={[336, 100]}
+				className="rounded-lg border border-secondary"
+			>
+				<InlineCTA
+					icon="stars-02"
+					title="Conecta tu banco"
+					description="Importa los movimientos cada día sin subir extractos."
+				/>
+			</ScaledPreview>
+		</div>
+	);
+}
+
+const NEWS = [
+	{
+		icon: "download-01",
+		title: "Importa tus extractos",
+		text: "Sube el archivo del banco y Regula lee los movimientos.",
+		tone: "bg-tertiary",
+	},
+	{
+		icon: "bar-chart-01",
+		title: "Categoriza solo",
+		text: "Aprende de tus cambios y ordena el gasto por ti.",
+		tone: "bg-secondary_alt",
+	},
+	{
+		icon: "mail-01",
+		title: "Comparte informes",
+		text: "Envía un resumen mensual a quien lo necesite.",
+		tone: "bg-secondary",
+	},
+] as const;
+
+function NewsSlide({ item, height }: { item: (typeof NEWS)[number]; height: number }) {
+	return (
+		<div
+			className={`flex flex-col items-center justify-center gap-4 px-24 text-center ${item.tone}`}
+			style={{ height }}
+		>
+			<FeaturedIcon icon={item.icon} variant="modern" size="xl" color="gray" />
+			<p className="m-0 font-display text-display-xs font-semibold text-primary">{item.title}</p>
+			<p className="m-0 max-w-[360px] text-md text-secondary">{item.text}</p>
+		</div>
+	);
+}
+
+export function CarouselExample() {
+	return (
+		<div className="flex flex-col gap-6">
+			<Carousel
+				aria-label="Novedades"
+				slides={NEWS.map((n) => <NewsSlide key={n.title} item={n} height={320} />)}
+			/>
+			<Carousel
+				aria-label="Novedades grandes"
+				size="lg"
+				defaultIndex={1}
+				slides={NEWS.map((n) => <NewsSlide key={n.title} item={n} height={320} />)}
+			/>
 		</div>
 	);
 }

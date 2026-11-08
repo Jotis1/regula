@@ -4,7 +4,7 @@
 import { Breadcrumbs, EmptyState } from "@jotis-me/react";
 import InlineCode from "../components/InlineCode.astro";
 import Base from "../layouts/Base.astro";
-import { type ChangeKind, mergeChangelogs } from "../lib/changelog";
+import { type ChangeKind, changeBlocks, mergeChangelogs } from "../lib/changelog";
 
 // Fuera del grafo de la web si no existen: `glob` devuelve `{}` y la página enseña el estado vacío
 const files = import.meta.glob<string>("../../../../packages/*/CHANGELOG.md", {
@@ -59,11 +59,21 @@ const short = (pkgs: string[]) =>
 										.filter((e) => e.kind === kind)
 										.map((e) => (
 											<li class="flex flex-col gap-2 text-md text-secondary">
-												{e.text.split(/\n{2,}/).map((p) => (
-													<p>
-														<InlineCode text={p} />
-													</p>
-												))}
+												{changeBlocks(e.text).map((b) =>
+													b.type === "p" ? (
+														<p>
+															<InlineCode text={b.text} />
+														</p>
+													) : (
+														<ul class="flex list-disc flex-col gap-1.5 pl-5 marker:text-quaternary">
+															{b.items.map((item) => (
+																<li>
+																	<InlineCode text={item} />
+																</li>
+															))}
+														</ul>
+													),
+												)}
 												{short(e.pkgs) && <span class="font-mono text-xs text-quaternary">{short(e.pkgs)}</span>}
 											</li>
 										))}

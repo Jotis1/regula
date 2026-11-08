@@ -73,9 +73,6 @@ export function controlsOf(rows: PropRow[]): Control[] {
 	return controls;
 }
 
-/** Hasta seis valores, un grupo de botones; a partir de siete, un desplegable (design §4). */
-export const usesSelect = (c: Extract<Control, { kind: "choice" }>) => c.values.length >= 7;
-
 /** El valor con el que empieza cada control: el del punto de partida, su valor por defecto o el primero. */
 export function initialState(pg: Pick<Playground, "start" | "controls">): Record<string, string | boolean> {
 	const state: Record<string, string | boolean> = {};
@@ -167,6 +164,7 @@ export const STARTS: Record<string, Start> = {
 	Skeleton: { props: { width: 160, height: 40 } },
 	AppIcon: { props: { app: "regula", size: 64 } },
 	Icon: { props: { name: "refresh-cw-01", size: 24 } },
+	HelpIcon: { props: { title: "Qué incluye", text: "Impuestos incluidos, sin descuentos." } },
 	Input: { props: { label: "Correo", type: "email", placeholder: "tu@jotis.me" } },
 	NumberInput: { props: { label: "Invitados", defaultValue: 2, min: 1, max: 12 } },
 	TagInput: { props: { label: "Etiquetas", defaultValue: ["diseño", "código"] } },

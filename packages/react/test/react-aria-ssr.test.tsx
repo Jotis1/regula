@@ -3,7 +3,14 @@ import { Dialog, Heading, Input, Label, Text, TextField } from "react-aria-compo
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { Input as JInput, MultiSelect, NumberInput, TagInput, VerificationCodeInput } from "../src/index.js";
+import {
+	Input as JInput,
+	MultiSelect,
+	NumberInput,
+	Select,
+	TagInput,
+	VerificationCodeInput,
+} from "../src/index.js";
 import { danglingAriaRefs } from "./helpers.js";
 
 // Dialog en línea (sin Modal) y un campo con etiqueta y descripción: las dos cosas que más dependen
@@ -36,6 +43,12 @@ const Fields = () => (
 		<VerificationCodeInput label="Código" defaultValue="48" hint="Por correo." />
 		<MultiSelect label="Equipos" options={["Diseño", "Producto"]} defaultValue={["Diseño"]} />
 		<MultiSelect label="Abierto" options={["Diseño", "Producto"]} defaultOpen />
+		<Select
+			label="Categoría"
+			options={["Hogar", { value: "ocio", label: "Ocio", supporting: "@ocio" }]}
+			defaultValue="ocio"
+		/>
+		<Select label="Sin elegir" placeholder="Elige" options={["Hogar", "Ocio"]} />
 	</form>
 );
 
