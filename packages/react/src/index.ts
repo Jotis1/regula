@@ -94,6 +94,7 @@ export {
 	type UploadFile,
 } from "./components/FileUpload.js";
 export { FilterBar, type FilterBarLabels, type FilterBarProps } from "./components/FilterBar.js";
+export { HelpIcon, type HelpIconProps } from "./components/HelpIcon.js";
 export { Icon, type IconName, type IconProps } from "./components/Icon.js";
 export { InlineCTA, type InlineCTAProps } from "./components/InlineCTA.js";
 export { Input, type InputAddonSelect, type InputProps } from "./components/Input.js";

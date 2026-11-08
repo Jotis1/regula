@@ -85,7 +85,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "capas",
 		label: "Capas",
 		section: "components",
-		components: names("Modal Slideout Tooltip CopyTooltip"),
+		components: names("Modal Slideout Tooltip HelpIcon CopyTooltip"),
 	},
 	{
 		id: "avisos-y-carga",

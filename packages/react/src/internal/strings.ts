@@ -88,6 +88,7 @@ export const defaultStrings = {
 	removeFile: (name: string) => `Quitar ${name}`,
 	uploadProgress: (name: string) => `Progreso de ${name}`,
 	showMore: (n: number) => `${n} más…`,
+	help: (title: string) => `Ayuda: ${title}`,
 	streamLive: "En directo",
 	streamRerun: "Reemisión",
 	streamOffline: "Sin directo",

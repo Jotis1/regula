@@ -20,7 +20,7 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 ## 4. `Tooltip` con posición y `HelpIcon`
 
 - [x] 4.1 Añadir `placement` y `arrow` a `Tooltip` (design D7), con las flechas de izquierda y derecha en `internal/bubble.ts`, mirando el nodo `1052:489`. Tests: cada posición pone la burbuja y su flecha en su sitio (en `open`), `arrow={false}` la quita y, sin props, el HTML es el de hoy. Verificar que la captura aprobada de `Tooltip` no cambia.
-- [ ] 4.2 Crear `HelpIcon` (design D7) mirando el nodo `1054:13`. Tests: es un botón con nombre «Ayuda: <título>», abre el tooltip al enfocarlo y pasa `placement`. Página en el grupo «Capas» con su ficha, ejemplo (posiciones y con texto de apoyo), muestra, fragmento y capturas aprobadas.
+- [x] 4.2 Crear `HelpIcon` (design D7) mirando el nodo `1054:13`. Tests: es un botón con nombre «Ayuda: <título>», abre el tooltip al enfocarlo y pasa `placement`. Página en el grupo «Capas» con su ficha, ejemplo (posiciones y con texto de apoyo), muestra, fragmento y capturas aprobadas.
 
 ## 5. `ProgressCircle`
 

@@ -91,6 +91,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	Toggle: 188,
 	Tooltip: 170,
 	CopyTooltip: 72,
+	HelpIcon: 460,
 	TreeView: 330,
 	VideoPlayer: 400,
 };

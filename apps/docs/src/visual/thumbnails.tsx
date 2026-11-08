@@ -40,6 +40,7 @@ import {
 	FeaturedIcon,
 	FileUpload,
 	FilterBar,
+	HelpIcon,
 	Icon,
 	type IconName,
 	InlineCTA,
@@ -541,6 +542,16 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 						Copiar utilidad
 					</Button>
 				</Tooltip>
+			</div>
+		),
+	},
+	HelpIcon: {
+		render: () => (
+			<div style={{ paddingTop: 64, paddingLeft: 24 }}>
+				<span className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary">
+					Cuota mensual
+					<HelpIcon title="Qué incluye" text="Impuestos incluidos." open />
+				</span>
 			</div>
 		),
 	},

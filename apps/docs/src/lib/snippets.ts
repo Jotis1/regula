@@ -152,6 +152,7 @@ const usage: Record<string, string> = {
 	Tooltip: `<Tooltip title="Exportar a CSV" text="Incluye los movimientos filtrados.">
 	<Button hierarchy="secondary" iconOnly="download-01" label="Exportar" />
 </Tooltip>`,
+	HelpIcon: `<label>Cuota mensual <HelpIcon title="Qué incluye" text="Impuestos incluidos, sin descuentos." placement="right" /></label>`,
 	Alert: `<Alert color="error" title="No se pudo sincronizar" description="Revisa la conexión con el banco." />`,
 	Notification: `<Notification
 	color="success"
