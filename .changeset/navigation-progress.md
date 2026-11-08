@@ -4,7 +4,7 @@
 
 Navegación y progreso del Figma, fase 2: siete componentes nuevos y el catálogo pasa de 84 a 91.
 
-**Cambio que rompe: `Select`.** Deja de ser el menú nativo del navegador y pasa a ser el del Figma, una lista bajo el campo hecha con el `Select` de React Aria. Su `onChange` ya no recibe el evento del `<select>`, sino el valor elegido: donde leías `event.target.value`, pasa a leer el argumento (`onChange={(valor) => …}`). El resto (`value`, `defaultValue`, `name`, `disabled`, `placeholder`, `size`) sigue igual, y el valor sigue viajando en un formulario con `name`.
+**Cambio que rompe: `Select`.** Deja de ser el menú nativo del navegador y pasa a ser el del Figma, una lista bajo el campo hecha con el `Select` de React Aria. Su `onChange` ya no recibe el evento del `<select>`, sino el valor elegido: donde leías `event.target.value`, pasa a leer el argumento (`onChange={(valor) => …}`). El resto (`value`, `defaultValue`, `name`, `disabled`, `placeholder`, `size`) sigue igual, y el valor sigue viajando en un formulario con `name`. Pesa más: la lista de React Aria lleva `Select` de unos 25 a unos 85 kB en gzip (como `Dropdown` o `MultiSelect`), y con él `Input` (por `leadingSelect` y `trailingSelect`), `Tabs` y lo que usa un campo (`Banner`, `FilterBar`, `SidebarNav`, `ColorPicker`).
 
 Componentes nuevos:
 
