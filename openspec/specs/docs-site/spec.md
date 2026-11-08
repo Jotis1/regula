@@ -153,11 +153,15 @@ La web SHALL tener en `/components/` un índice de todos los componentes del cat
 - **THEN** aparecen todos los componentes que exporta `@jotis-me/react`, cada uno enlazado a su página, y ninguno más
 
 ### Requirement: Historial de cambios
-La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build.
+La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build. El texto de cada entrada SHALL pintarse con su formato: párrafos, listas (también las que van dentro de una entrada) y código en línea.
 
 #### Scenario: Versión publicada
 - **WHEN** se publica una versión con una entrada en el CHANGELOG
 - **THEN** tras el despliegue `/changelog/` muestra esa versión con su entrada
+
+#### Scenario: Entrada con listas
+- **WHEN** se abre `/changelog/` y se mira la entrada de la 0.4.0, que lista los componentes nuevos y después las variantes
+- **THEN** cada lista se pinta como una lista con un elemento por línea, sin los guiones del Markdown, y el texto de entre las dos listas como un párrafo
 
 ### Requirement: Lienzos a tamaño real
 Los componentes de tamaño fijo (`StreamScene` y `ChannelBanner`) SHALL tener una página `/components/<slug>/full/` que los muestra a su tamaño de Twitch, sin escalar, enlazada desde su página.
