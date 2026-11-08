@@ -24,6 +24,7 @@ import {
 	FeaturedIconExample,
 	ProgressBarExample,
 	ProgressCircleExample,
+	ProgressStepsExample,
 	SkeletonExample,
 	SpinnerExample,
 } from "./examples/feedback";
@@ -105,6 +106,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	FeaturedIcon: FeaturedIconExample,
 	ProgressBar: ProgressBarExample,
 	ProgressCircle: ProgressCircleExample,
+	ProgressSteps: ProgressStepsExample,
 	Skeleton: SkeletonExample,
 	Spinner: SpinnerExample,
 	Avatar: AvatarExample,

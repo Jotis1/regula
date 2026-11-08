@@ -29,8 +29,8 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 6. `ProgressSteps`
 
-- [ ] 6.1 Crear `ProgressSteps` (design D2) con los cinco tipos, los tres marcadores, `sm` y `md` y las dos orientaciones, mirando los nodos `1138:23`, `1138:1954`, `1141:76669`, `1254:144290`, `1139:79465`, `1139:79149` y `1139:79128`. Tests: lista ordenada, `aria-current="step"` en el actual, estado de cada paso para lectores, «Paso 3 de 4» en los mínimos, check en `fg-success-primary` con números, y vertical con la línea entre marcadores.
-- [ ] 6.2 Página en «Avisos y carga» con ejemplo de los tipos (horizontal y vertical), muestra, fragmento y capturas aprobadas, mirando que coinciden con el Figma.
+- [x] 6.1 Crear `ProgressSteps` (design D2) con los cinco tipos, los tres marcadores, `sm` y `md` y las dos orientaciones, mirando los nodos `1138:23`, `1138:1954`, `1141:76669`, `1254:144290`, `1139:79465`, `1139:79149` y `1139:79128`. Tests: lista ordenada, `aria-current="step"` en el actual, estado de cada paso para lectores, «Paso 3 de 4» en los mínimos, check en `fg-success-primary` con números, y vertical con la línea entre marcadores.
+- [x] 6.2 Página en «Avisos y carga» con ejemplo de los tipos (horizontal y vertical), muestra, fragmento y capturas aprobadas, mirando que coinciden con el Figma.
 
 ## 7. `PaginationDots` y `Carousel`
 

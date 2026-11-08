@@ -62,6 +62,7 @@ import {
 	PieChart,
 	ProgressBar,
 	ProgressCircle,
+	ProgressSteps,
 	Radio,
 	RadioGroup,
 	ScaledPreview,
@@ -628,6 +629,23 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					title="Sin resultados"
 					description="Ningún movimiento coincide con «León»."
 					actions={<Button iconLeading="plus">Nuevo movimiento</Button>}
+				/>
+			</div>
+		),
+	},
+	ProgressSteps: {
+		scale: 0.8,
+		render: () => (
+			<div style={box(300)}>
+				<ProgressSteps
+					aria-label="Alta"
+					current={1}
+					size="sm"
+					steps={[
+						{ title: "Datos", description: "Nombre" },
+						{ title: "Empresa", description: "Web" },
+						{ title: "Equipo", description: "Invita" },
+					]}
 				/>
 			</div>
 		),

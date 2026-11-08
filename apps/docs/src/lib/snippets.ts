@@ -28,6 +28,15 @@ const usage: Record<string, string> = {
 	Skeleton: `<Skeleton circle width={40} height={40} />
 <Skeleton lines={3} />`,
 	ProgressBar: `<ProgressBar value={62} aria-label="Presupuesto usado" />`,
+	ProgressSteps: `<ProgressSteps
+	aria-label="Alta"
+	current={1}
+	steps={[
+		{ title: "Tus datos", description: "Nombre y correo" },
+		{ title: "Tu empresa", description: "Web y ubicación" },
+		{ title: "Tu equipo", description: "Empieza a colaborar" },
+	]}
+/>`,
 	ProgressCircle: `<ProgressCircle value={40} label="Usuarios activos" />
 <ProgressCircle value={40} shape="half" size="sm" label="Usuarios activos" />`,
 	AppIcon: `<AppIcon app="pecunia" size={48} />`,

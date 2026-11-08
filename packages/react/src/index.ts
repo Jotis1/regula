@@ -124,6 +124,16 @@ export {
 	type ProgressCircleShape,
 	type ProgressCircleSize,
 } from "./components/ProgressCircle.js";
+export {
+	type ProgressStep,
+	ProgressSteps,
+	type ProgressStepsLabels,
+	type ProgressStepsMarker,
+	type ProgressStepsOrientation,
+	type ProgressStepsProps,
+	type ProgressStepsSize,
+	type ProgressStepsType,
+} from "./components/ProgressSteps.js";
 export { Radio, type RadioProps } from "./components/Radio.js";
 export { RadioGroup, type RadioGroupOption, type RadioGroupProps } from "./components/RadioGroup.js";
 export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPreview.js";

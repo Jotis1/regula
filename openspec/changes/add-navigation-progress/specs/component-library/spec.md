@@ -63,7 +63,7 @@ Los controles SHALL mostrar hover cambiando el fondo o el texto un escalón, des
 
 #### Scenario: Número y check
 - **WHEN** los pasos usan el marcador de número
-- **THEN** los pendientes y el actual enseñan su número, y los completos un check en `fg-success-primary`
+- **THEN** los pendientes y el actual enseñan su número, y los completos un círculo verde (`bg-success-solid`) con un check
 
 ### Requirement: Pasos en columna
 `ProgressSteps` SHALL admitir orientación horizontal y vertical: en vertical, cada paso pone su título y su texto de apoyo a la derecha del marcador, y la línea que los une va en vertical.
@@ -77,7 +77,7 @@ Los controles SHALL mostrar hover cambiando el fondo o el texto un escalón, des
 
 #### Scenario: Valor
 - **WHEN** se pinta un `ProgressCircle` de valor 40 con la etiqueta «Usuarios activos»
-- **THEN** tiene `role="progressbar"` con `aria-valuenow="40"`, nombre «Usuarios activos», el centro dice «40 %» y el arco cubre el 40 % de la pista
+- **THEN** tiene `role="progressbar"` con `aria-valuenow="40"`, nombre «Usuarios activos», el centro dice «40%» y el arco cubre el 40 % de la pista
 
 #### Scenario: Semicírculo
 - **WHEN** se pinta con `shape="half"`

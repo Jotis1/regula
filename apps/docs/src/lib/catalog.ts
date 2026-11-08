@@ -91,7 +91,9 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "avisos-y-carga",
 		label: "Avisos y carga",
 		section: "components",
-		components: names("Alert Notification Banner EmptyState ProgressBar ProgressCircle Spinner Skeleton"),
+		components: names(
+			"Alert Notification Banner EmptyState ProgressBar ProgressCircle ProgressSteps Spinner Skeleton",
+		),
 	},
 	{
 		id: "etiquetas-e-identidad",

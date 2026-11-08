@@ -1,6 +1,6 @@
 // Puertos de las vistas previas de FeaturedIcon, Spinner, Skeleton, ProgressBar y ProgressCircle.
 
-import { FeaturedIcon, ProgressBar, ProgressCircle, Skeleton, Spinner } from "@jotis-me/react";
+import { FeaturedIcon, ProgressBar, ProgressCircle, ProgressSteps, Skeleton, Spinner } from "@jotis-me/react";
 import { row, stack } from "./actions";
 
 export function FeaturedIconExample() {
@@ -77,6 +77,61 @@ export function ProgressCircleExample() {
 					))}
 				</div>
 			))}
+		</div>
+	);
+}
+
+const STEPS = [
+	{ title: "Tus datos", description: "Nombre y correo", icon: "user-01" as const },
+	{ title: "Tu empresa", description: "Web y ubicación", icon: "home-line" as const },
+	{ title: "Tu equipo", description: "Empieza a colaborar", icon: "users-01" as const },
+	{ title: "Tus redes", description: "Publicación automática", icon: "stars-02" as const },
+];
+
+export function ProgressStepsExample() {
+	return (
+		<div className="flex flex-col gap-10">
+			<ProgressSteps aria-label="Alta" steps={STEPS} current={1} />
+			<ProgressSteps
+				aria-label="Alta con números"
+				steps={STEPS}
+				current={2}
+				marker="number"
+				size="sm"
+			/>
+			<ProgressSteps aria-label="Alta con iconos" steps={STEPS} current={1} marker="featured" />
+			<ProgressSteps aria-label="Alta con rayas" steps={STEPS} current={1} type="text-line" />
+			<div className="flex flex-wrap items-center gap-x-10 gap-y-4">
+				<ProgressSteps aria-label="Alta mínima" steps={STEPS} current={2} type="minimal" />
+				<ProgressSteps
+					aria-label="Alta mínima con números"
+					steps={STEPS}
+					current={2}
+					type="minimal"
+					marker="number"
+				/>
+				<ProgressSteps aria-label="Alta unida" steps={STEPS} current={1} type="minimal-connected" />
+			</div>
+			<div className="grid grid-cols-3 gap-8">
+				<ProgressSteps aria-label="Alta en columna" steps={STEPS} current={1} type="icons-text" />
+				<ProgressSteps
+					aria-label="Alta en columna con números"
+					steps={STEPS}
+					current={1}
+					type="icons-centered"
+					orientation="vertical"
+					marker="number"
+					size="sm"
+				/>
+				<ProgressSteps
+					aria-label="Alta en columna con rayas"
+					steps={STEPS}
+					current={1}
+					type="text-line"
+					orientation="vertical"
+					size="sm"
+				/>
+			</div>
 		</div>
 	);
 }

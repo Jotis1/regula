@@ -67,6 +67,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	PieChart: 240,
 	ProgressBar: 100,
 	ProgressCircle: 930,
+	ProgressSteps: 880,
 	Radio: 72,
 	RadioGroup: 316,
 	SectionFooter: 80,
