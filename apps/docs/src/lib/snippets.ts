@@ -14,6 +14,7 @@ const usage: Record<string, string> = {
 	]}
 />`,
 	CloseButton: `<CloseButton label="Cerrar aviso" />`,
+	ButtonUtility: `<ButtonUtility icon="copy-01" label="Copiar enlace" onClick={copiar} />`,
 	Icon: `<Icon name="calendar" size={20} />
 <Icon name="check-circle" title="Pagado" />`,
 	Badge: `<Badge color="success">Pagado</Badge>

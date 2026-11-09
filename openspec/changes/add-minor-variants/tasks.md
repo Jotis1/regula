@@ -8,7 +8,7 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 2. `ButtonUtility`
 
-- [ ] 2.1 Crear `ButtonUtility` (design D4) mirando el nodo `8003:526508` y sus estados. Tests: nombre accesible desde `label`, tooltip con ese texto al enfocar con Tab y al pasar el ratón, `tooltip={false}` sin tooltip, `disabled` sin tooltip ni respuesta, `href` pinta un enlace, anillo de foco con teclado. Límite en `size-budget.json`. Página en «Acciones» con ficha, ejemplo (los dos tamaños y jerarquías, en una barra de herramientas), muestra, fragmento y capturas aprobadas.
+- [x] 2.1 Crear `ButtonUtility` (design D4) mirando el nodo `8003:526508` y sus estados. Tests: nombre accesible desde `label`, tooltip con ese texto al enfocar con Tab y al pasar el ratón, `tooltip={false}` sin tooltip, `disabled` sin tooltip ni respuesta, `href` pinta un enlace, anillo de foco con teclado. Límite en `size-budget.json`. Página en «Acciones» con ficha, ejemplo (los dos tamaños y jerarquías, en una barra de herramientas), muestra, fragmento y capturas aprobadas.
 
 ## 3. `BadgeGroup`
 

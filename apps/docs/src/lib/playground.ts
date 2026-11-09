@@ -164,6 +164,7 @@ export const STARTS: Record<string, Start> = {
 	Skeleton: { props: { width: 160, height: 40 } },
 	AppIcon: { props: { app: "regula", size: 64 } },
 	Icon: { props: { name: "refresh-cw-01", size: 24 } },
+	ButtonUtility: { props: { icon: "copy-01", label: "Copiar" } },
 	HelpIcon: { props: { title: "Qué incluye", text: "Impuestos incluidos, sin descuentos." } },
 	Input: { props: { label: "Correo", type: "email", placeholder: "tu@jotis.me" } },
 	NumberInput: { props: { label: "Invitados", defaultValue: 2, min: 1, max: 12 } },

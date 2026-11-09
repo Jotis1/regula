@@ -35,6 +35,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	ChatBox: 500,
 	Checkbox: 170,
 	CloseButton: 64,
+	ButtonUtility: 170,
 	CodeSnippet: 260,
 	ColorPicker: 420,
 	CommandMenu: 520,

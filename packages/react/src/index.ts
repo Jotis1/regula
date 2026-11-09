@@ -32,6 +32,12 @@ export { type BreadcrumbItem, Breadcrumbs, type BreadcrumbsProps } from "./compo
 export { BrowserFrame, type BrowserFrameProps } from "./components/BrowserFrame.js";
 export { Button, type ButtonHierarchy, type ButtonProps, type ButtonSize } from "./components/Button.js";
 export { ButtonGroup, type ButtonGroupItem, type ButtonGroupProps } from "./components/ButtonGroup.js";
+export {
+	ButtonUtility,
+	type ButtonUtilityHierarchy,
+	type ButtonUtilityProps,
+	type ButtonUtilitySize,
+} from "./components/ButtonUtility.js";
 export { type CalendarEvent, CalendarView, type CalendarViewProps } from "./components/CalendarView.js";
 export { CamFrame, type CamFrameProps, type CamFrameRatio } from "./components/CamFrame.js";
 export { CardHeader, type CardHeaderProps } from "./components/CardHeader.js";

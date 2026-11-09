@@ -18,6 +18,7 @@ import {
 	BrowserFrame,
 	Button,
 	ButtonGroup,
+	ButtonUtility,
 	CalendarView,
 	CamFrame,
 	CardHeader,
@@ -191,6 +192,15 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	CloseButton: { render: () => <CloseButton /> },
+	ButtonUtility: {
+		render: () => (
+			<div className="flex items-center gap-1" style={{ paddingTop: 48 }}>
+				<ButtonUtility icon="copy-01" label="Copiar" tooltipOpen />
+				<ButtonUtility icon="edit-02" label="Editar" />
+				<ButtonUtility icon="trash-01" label="Borrar" />
+			</div>
+		),
+	},
 
 	// Formularios
 	Input: {

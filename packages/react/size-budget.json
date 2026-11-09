@@ -13,6 +13,7 @@
 	"BrowserFrame": 25088,
 	"Button": 26112,
 	"ButtonGroup": 25088,
+	"ButtonUtility": 43008,
 	"CalendarView": 28160,
 	"CamFrame": 12288,
 	"CardHeader": 29184,

@@ -2,7 +2,7 @@
 // `jm-stack` = columna con gap 16; `jm-row` = fila que envuelve con gap 12.
 
 import { iconNames } from "@jotis-me/icons";
-import { Button, ButtonGroup, CloseButton, Icon } from "@jotis-me/react";
+import { Button, ButtonGroup, ButtonUtility, CloseButton, Icon } from "@jotis-me/react";
 
 export const stack = "flex flex-col gap-4";
 export const row = "flex flex-wrap items-center gap-3";
@@ -46,6 +46,36 @@ export function CloseButtonExample() {
 	return (
 		<div className={row}>
 			<CloseButton />
+		</div>
+	);
+}
+
+/** Barra de herramientas de una fila: las dos jerarquías en sus dos tamaños, una con el tooltip abierto y una deshabilitada. */
+export function ButtonUtilityExample() {
+	const tools = (hierarchy: "secondary" | "tertiary", size: "xs" | "sm", first?: boolean) => (
+		<div className="flex items-center gap-1">
+			<ButtonUtility
+				icon="copy-01"
+				label="Copiar"
+				hierarchy={hierarchy}
+				size={size}
+				tooltipOpen={first}
+			/>
+			<ButtonUtility icon="edit-02" label="Editar" hierarchy={hierarchy} size={size} />
+			<ButtonUtility icon="download-01" label="Descargar" hierarchy={hierarchy} size={size} />
+			<ButtonUtility icon="trash-01" label="Borrar" hierarchy={hierarchy} size={size} disabled />
+		</div>
+	);
+	return (
+		<div className={`${stack} pt-12`}>
+			<div className={`${row} gap-8`}>
+				{tools("secondary", "sm", true)}
+				{tools("secondary", "xs")}
+			</div>
+			<div className={`${row} gap-8`}>
+				{tools("tertiary", "sm")}
+				{tools("tertiary", "xs")}
+			</div>
 		</div>
 	);
 }

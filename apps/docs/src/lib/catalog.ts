@@ -63,7 +63,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "acciones",
 		label: "Acciones",
 		section: "components",
-		components: names("Button ButtonGroup CloseButton"),
+		components: names("Button ButtonGroup ButtonUtility CloseButton"),
 	},
 	{
 		id: "formularios",
