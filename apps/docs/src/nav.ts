@@ -55,7 +55,15 @@ export const docNav: NavSection[] = [
 		items: FOUNDATIONS.map((f) => ({ label: f.label, href: `/foundations/${f.slug}/` })),
 		groups: [],
 	},
-	{ id: "icons", title: "Iconos", items: [{ label: "Galería de iconos", href: "/icons/" }], groups: [] },
+	{
+		id: "icons",
+		title: "Iconos",
+		items: [
+			{ label: "Galería de iconos", href: "/icons/" },
+			{ label: "Logos de terceros", href: "/icons/logos/" },
+		],
+		groups: [],
+	},
 	{ id: "components", title: "Componentes", items: [], groups: components, count: countOf(components) },
 	{
 		id: "stream",
