@@ -107,7 +107,13 @@ export {
 	type DropdownItem,
 	type DropdownProps,
 } from "./components/Dropdown.js";
-export { EmptyState, type EmptyStateProps } from "./components/EmptyState.js";
+export {
+	EmptyState,
+	type EmptyStateIllustration,
+	type EmptyStateMedia,
+	type EmptyStateProps,
+	type EmptyStateSize,
+} from "./components/EmptyState.js";
 export {
 	FeaturedIcon,
 	type FeaturedIconProps,

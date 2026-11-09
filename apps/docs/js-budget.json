@@ -4,6 +4,7 @@
 	"pages": {
 		"/": 211,
 		"/icons/": 211,
+		"/icons/logos/": 231,
 		"/components/*/": 350,
 		"/visual/*/": 341
 	}
