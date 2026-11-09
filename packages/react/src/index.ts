@@ -26,6 +26,13 @@ export {
 	type BadgeType,
 	type StatusColor,
 } from "./components/Badge.js";
+export {
+	BadgeGroup,
+	type BadgeGroupColor,
+	type BadgeGroupProps,
+	type BadgeGroupSize,
+	type BadgeGroupType,
+} from "./components/BadgeGroup.js";
 export { Banner, type BannerEmail, type BannerProps } from "./components/Banner.js";
 export { BarChart, type BarChartProps } from "./components/BarChart.js";
 export { type BreadcrumbItem, Breadcrumbs, type BreadcrumbsProps } from "./components/Breadcrumbs.js";

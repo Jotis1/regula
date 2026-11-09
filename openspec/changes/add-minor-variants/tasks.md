@@ -12,7 +12,7 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 3. `BadgeGroup`
 
-- [ ] 3.1 Crear `BadgeGroup` (design D2) mirando el nodo `1046:8088`. Tests: badge delante y detrás, `pill` y `modern`, cinco colores, `md` y `lg`; con `href` es un enlace con la flecha y con `onClick` un botón; sin acción no es interactivo ni lleva flecha; el nombre accesible incluye el badge y el mensaje. Límite en `size-budget.json`. Página en «Etiquetas e identidad» con ficha, ejemplo, muestra, fragmento y capturas aprobadas, comparadas con el Figma.
+- [x] 3.1 Crear `BadgeGroup` (design D2) mirando el nodo `1046:8088`. Tests: badge delante y detrás, `pill` y `modern`, cinco colores, `md` y `lg`; con `href` es un enlace con la flecha y con `onClick` un botón; sin acción no es interactivo ni lleva flecha; el nombre accesible incluye el badge y el mensaje. Límite en `size-budget.json`. Página en «Etiquetas e identidad» con ficha, ejemplo, muestra, fragmento y capturas aprobadas, comparadas con el Figma.
 
 ## 4. `SectionLabel`
 

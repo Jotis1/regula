@@ -19,6 +19,9 @@ const usage: Record<string, string> = {
 <Icon name="check-circle" title="Pagado" />`,
 	Badge: `<Badge color="success">Pagado</Badge>
 <Badge type="modern" color="success" dot>En línea</Badge>`,
+	BadgeGroup: `<BadgeGroup badge="Nuevo" href="/novedades/">
+	Hemos publicado los estados vacíos
+</BadgeGroup>`,
 	Tag: `<Tag size="md" count={5}>Facturas</Tag>`,
 	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,

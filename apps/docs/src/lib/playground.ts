@@ -153,6 +153,7 @@ export function playgroundOf(
 export const STARTS: Record<string, Start> = {
 	Button: { children: "Nuevo gasto" },
 	Badge: { children: "Pagado" },
+	BadgeGroup: { props: { badge: "Nuevo", href: "#" }, children: "Hemos publicado los estados vacíos" },
 	Tag: { children: "Facturas" },
 	Avatar: { props: { initials: "AD", alt: "Administrador" } },
 	AvatarGroup: { props: { items: [{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }] } },

@@ -23,6 +23,7 @@ import {
 	AvatarGroupExample,
 	AvatarLabelExample,
 	BadgeExample,
+	BadgeGroupExample,
 	KbdExample,
 	TagExample,
 } from "./examples/display";
@@ -123,6 +124,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	AvatarGroup: AvatarGroupExample,
 	AvatarLabel: AvatarLabelExample,
 	Badge: BadgeExample,
+	BadgeGroup: BadgeGroupExample,
 	Tag: TagExample,
 	Kbd: KbdExample,
 	Button: ButtonExample,

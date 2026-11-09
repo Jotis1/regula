@@ -12,6 +12,7 @@ import {
 	AvatarLabel,
 	BackgroundPattern,
 	Badge,
+	BadgeGroup,
 	Banner,
 	BarChart,
 	Breadcrumbs,
@@ -761,6 +762,18 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 				<Badge type="modern" dot color="brand">
 					Nuevo
 				</Badge>
+			</div>
+		),
+	},
+	BadgeGroup: {
+		render: () => (
+			<div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 12 }}>
+				<BadgeGroup badge="Nuevo" size="lg" href="#">
+					Hemos publicado los estados vacíos
+				</BadgeGroup>
+				<BadgeGroup badge="Ver" type="modern" badgePosition="trailing" size="lg" href="#">
+					Novedades de noviembre
+				</BadgeGroup>
 			</div>
 		),
 	},
