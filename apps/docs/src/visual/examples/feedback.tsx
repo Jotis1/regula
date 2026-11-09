@@ -25,10 +25,19 @@ export function FeaturedIconExample() {
 
 export function SpinnerExample() {
 	return (
-		<div className={`${row} items-start gap-12`}>
-			<Spinner size="sm" label={false} />
-			<Spinner size="md" />
-			<Spinner size="lg" label="Importando extracto…" />
+		<div className="flex flex-col gap-10">
+			{(["line-simple", "line-spinner", "dot-circle"] as const).map((variant) => (
+				<div key={variant} className={`${row} items-start gap-12`}>
+					<Spinner variant={variant} size="sm" label={false} />
+					<Spinner variant={variant} size="md" label={false} />
+					<Spinner variant={variant} size="lg" label={false} />
+					<Spinner
+						variant={variant}
+						size="xl"
+						label={variant === "line-simple" ? "Importando extracto…" : false}
+					/>
+				</div>
+			))}
 		</div>
 	);
 }

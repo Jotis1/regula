@@ -80,7 +80,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	Skeleton: 120,
 	Slideout: 520,
 	Slider: 64,
-	Spinner: 130,
+	Spinner: 330,
 	StreamAlert: 490,
 	StreamCountdown: 190,
 	StreamEvents: 585,
