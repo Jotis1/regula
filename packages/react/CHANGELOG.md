@@ -1,5 +1,46 @@
 # @jotis-me/react
 
+## 0.5.0
+
+### Minor Changes
+
+- a375e45: Dropdown admite elección única: con `selectedValue` el menú elige una opción entre varias, marcada con un check a la derecha y anunciada como `menuitemradio` con `aria-checked`. Cada opción lleva su `value` y `onSelectionChange(value)` avisa al elegir y cierra el menú. Sin `selectedValue`, el menú de acciones se comporta como siempre.
+- 71d7816: Navegación y progreso del Figma, fase 2: siete componentes nuevos y el catálogo pasa de 84 a 91.
+
+  **Cambio que rompe: `Select`.** Deja de ser el menú nativo del navegador y pasa a ser el del Figma, una lista bajo el campo hecha con el `Select` de React Aria. Su `onChange` ya no recibe el evento del `<select>`, sino el valor elegido: donde leías `event.target.value`, pasa a leer el argumento (`onChange={(valor) => …}`). El resto (`value`, `defaultValue`, `name`, `disabled`, `placeholder`, `size`) sigue igual, y el valor sigue viajando en un formulario con `name`. Pesa más: la lista de React Aria lleva `Select` de unos 25 a unos 85 kB en gzip (como `Dropdown` o `MultiSelect`), y con él `Input` (por `leadingSelect` y `trailingSelect`), `Tabs` y lo que usa un campo (`Banner`, `FilterBar`, `SidebarNav`, `ColorPicker`).
+
+  Componentes nuevos:
+  - `ProgressSteps`: los pasos de un proceso (completo, actual, pendiente) en cinco tipos (`icons-centered`, `icons-text`, `text-line`, `minimal`, `minimal-connected`), con marcadores de check, número o icono, tamaños `sm` y `md` y orientación horizontal o vertical.
+  - `ProgressCircle`: progreso en círculo o semicírculo, con su valor y una etiqueta, de `xxs` a `lg`. Se pinta en el servidor.
+  - `PaginationDots`: puntos o rayas que dicen en qué página estás, en `md` y `lg`, con o sin marco; con `onChange` llevan a otra página.
+  - `Carousel`: pasa diapositivas con flechas, puntos, ← y → y deslizando el dedo; las diapositivas ocultas quedan inertes.
+  - `HeaderNav`: la cabecera de una app en cuatro tipos (`simple`, `dual-tier`, `tabs` y `centered`), con su menú móvil, que abre un panel desde la izquierda.
+  - `ContextMenu`: menú del botón derecho (o de Mayús+F10 y la tecla de menú) sobre una zona, con atajos, iconos, grupos con check o punto y submenús.
+  - `HelpIcon`: el icono de ayuda de 16px que abre un tooltip al pasar el ratón o enfocarlo.
+
+  Y variantes nuevas, sin cambiar lo que ya había:
+  - `Select` e `Input` (`leadingSelect` y `trailingSelect`): opciones con texto de apoyo, icono, avatar o punto delante y un check en la elegida.
+  - `Tabs`: `orientation="vertical"` (por debajo de `lg` pasa a un desplegable) y los tipos `button-minimal` y `line`.
+  - `Tooltip`: `placement` (arriba, abajo, izquierda o derecha) y `arrow` (centrada, al principio, al final o sin flecha).
+  - `Slideout`: `side="left"` para abrirlo desde la izquierda.
+  - Los campos con foco (`Input`, `Select`, `Textarea`, `NumberInput`, `TagInput`, `MultiSelect`, `VerificationCodeInput`) llevan solo el borde de 2px de marca, sin el anillo exterior que se sumaba con teclado y se veía como un borde doble.
+- a27c3e8: Seis piezas de la web de documentación pasan al paquete, y el catálogo crece de 78 a 84 componentes:
+  - `TransparencyGrid`: fondo de damero que indica transparencia y sigue el tema, en cuadros de 8 o 16px.
+  - `ScaledPreview`: pinta una pieza a su ancho real y la encoge para que quepa en una caja, sin JavaScript.
+  - `Kbd`: tecla o atajo con dos variantes, `menu` (la de los atajos de Dropdown y CommandMenu, que ya existía privada) y `field` (la pista «Ctrl K» de un campo de búsqueda).
+  - `LinkCard`: card cuyo enlace cubre toda su superficie, con una vista previa opcional inerte y fuera del enlace.
+  - `Pager`: navegación «Anterior y siguiente» al final de una página.
+  - `CopyTooltip` y el hook `useCopy`: copiar al portapapeles con una burbuja «Copiado», como la de `Tooltip`, junto al elemento pulsado. `CodeSnippet` conserva su propia confirmación.
+
+### Patch Changes
+
+- 0c76166: CommandMenu: con el foco en el buscador, la opción activa lleva también el anillo de foco.
+
+  Bordes que tapaban los fondos de dentro: CodeSnippet (columna de números y pestañas), CalendarView (fila de los días de la semana, días de otro mes y la fecha de la cabecera) y CommandMenu (pie) llevan ahora un borde de verdad en lugar de una sombra interior, así que se ve entero.
+- Updated dependencies [858d806]
+  - @jotis-me/icons@0.5.0
+  - @jotis-me/tokens@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes
