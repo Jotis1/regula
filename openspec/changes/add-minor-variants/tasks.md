@@ -16,7 +16,7 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 4. `SectionLabel`
 
-- [ ] 4.1 Crear `SectionLabel` (design D3) mirando el nodo `5013:376534`, con el texto «obligatorio» en `defaultStrings`. Tests: `h3` por defecto y `as`; asterisco con `aria-hidden` y texto para lectores con `required`; `HelpIcon` con `help`; acciones debajo; `sm` y `md`. Límite en `size-budget.json`. Página en «Estructura de página» con ficha, ejemplo (los dos tamaños, con y sin acciones, junto a unos campos de ajustes), muestra, fragmento y capturas aprobadas.
+- [x] 4.1 Crear `SectionLabel` (design D3) mirando el nodo `5013:376534`, con el texto «obligatorio» en `defaultStrings`. Tests: `h3` por defecto y `as`; asterisco con `aria-hidden` y texto para lectores con `required`; `HelpIcon` con `help`; acciones debajo; `sm` y `md`. Límite en `size-budget.json`. Página en «Estructura de página» con ficha, ejemplo (los dos tamaños, con y sin acciones, junto a unos campos de ajustes), muestra, fragmento y capturas aprobadas.
 
 ## 5. Logos de terceros en `@jotis-me/icons`
 

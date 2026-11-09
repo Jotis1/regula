@@ -6,10 +6,12 @@ import {
 	CardHeader,
 	ContentDivider,
 	InlineCTA,
+	Input,
 	LinkCard,
 	PageHeader,
 	SectionFooter,
 	SectionHeader,
+	SectionLabel,
 } from "@jotis-me/react";
 
 export function PageHeaderExample() {
@@ -55,6 +57,41 @@ export function CardHeaderExample() {
 					</>
 				}
 			/>
+		</div>
+	);
+}
+
+/** Dos filas de una página de ajustes: la etiqueta a la izquierda y los campos a la derecha, en `sm` y en `md`. */
+export function SectionLabelExample() {
+	const field = (label: string, value: string) => <Input label={label} defaultValue={value} />;
+	return (
+		<div className="flex max-w-[720px] flex-col gap-8">
+			<div className="grid grid-cols-[280px_1fr] gap-8">
+				<SectionLabel
+					title="Equipo"
+					required
+					help="Quién puede ver y editar el proyecto."
+					description="Gestiona quién entra y con qué permisos."
+					actions={
+						<>
+							<Button hierarchy="link-gray" size="sm">
+								Ver todos
+							</Button>
+							<Button hierarchy="link-color" size="sm">
+								Invitar
+							</Button>
+						</>
+					}
+				/>
+				<div className="flex flex-col gap-4">
+					{field("Responsable", "Olivia Rhye")}
+					{field("Correo del equipo", "equipo@jotis.me")}
+				</div>
+			</div>
+			<div className="grid grid-cols-[280px_1fr] gap-8">
+				<SectionLabel size="md" title="Facturación" description="Datos para tus facturas." />
+				<div className="flex flex-col gap-4">{field("Razón social", "Jotis S. L.")}</div>
+			</div>
 		</div>
 	);
 }

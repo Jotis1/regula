@@ -74,6 +74,7 @@ import {
 	ScaledPreview,
 	SectionFooter,
 	SectionHeader,
+	SectionLabel,
 	Select,
 	SidebarNav,
 	Skeleton,
@@ -1040,6 +1041,23 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					actions={
 						<Button size="sm" iconLeading="plus">
 							Nuevo contacto
+						</Button>
+					}
+				/>
+			</div>
+		),
+	},
+	SectionLabel: {
+		render: () => (
+			<div style={{ paddingTop: 48 }}>
+				<SectionLabel
+					title="Equipo"
+					required
+					help="Quién puede ver y editar el proyecto."
+					description="Gestiona quién entra y con qué permisos."
+					actions={
+						<Button hierarchy="link-color" size="sm">
+							Invitar
 						</Button>
 					}
 				/>

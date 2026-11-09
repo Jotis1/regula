@@ -62,6 +62,7 @@ import {
 	PageHeaderExample,
 	SectionFooterExample,
 	SectionHeaderExample,
+	SectionLabelExample,
 } from "./examples/layout";
 import {
 	BackgroundPatternExample,
@@ -179,6 +180,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	PageHeader: PageHeaderExample,
 	CardHeader: CardHeaderExample,
 	SectionHeader: SectionHeaderExample,
+	SectionLabel: SectionLabelExample,
 	SectionFooter: SectionFooterExample,
 	ContentDivider: ContentDividerExample,
 	InlineCTA: InlineCTAExample,

@@ -279,6 +279,13 @@ const usage: Record<string, string> = {
 	description="Personas y empresas con las que tratas."
 	actions={<Button size="sm" iconLeading="plus">Nuevo contacto</Button>}
 />`,
+	SectionLabel: `<SectionLabel
+	title="Equipo"
+	required
+	help="Quién puede ver y editar el proyecto."
+	description="Gestiona quién entra y con qué permisos."
+	actions={<Button hierarchy="link-color" size="sm">Invitar</Button>}
+/>`,
 	SectionFooter: `<SectionFooter
 	start={<Button hierarchy="link-gray" href="/ayuda">Ver ayuda</Button>}
 	actions={<Button size="sm" type="submit">Guardar cambios</Button>}

@@ -301,6 +301,13 @@ export const STARTS: Record<string, Start> = {
 		props: { title: "Contactos", description: "Personas y empresas con las que tratas." },
 		wide: true,
 	},
+	SectionLabel: {
+		props: {
+			title: "Equipo",
+			help: "Quién puede ver y editar el proyecto.",
+			description: "Gestiona quién entra y con qué permisos.",
+		},
+	},
 	ContentDivider: { props: { label: "o continúa con" }, wide: true },
 	BackgroundPattern: { props: { width: 480, height: 200 }, fill: 200 },
 	BrowserFrame: { props: { url: "pecunia.jotis.me/resumen", height: 200 }, wide: true },

@@ -181,6 +181,7 @@ export { RadioGroup, type RadioGroupOption, type RadioGroupProps } from "./compo
 export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPreview.js";
 export { SectionFooter, type SectionFooterProps } from "./components/SectionFooter.js";
 export { SectionHeader, type SectionHeaderProps } from "./components/SectionHeader.js";
+export { SectionLabel, type SectionLabelProps, type SectionLabelSize } from "./components/SectionLabel.js";
 export { Select, type SelectOption, type SelectProps } from "./components/Select.js";
 export {
 	SidebarNav,
