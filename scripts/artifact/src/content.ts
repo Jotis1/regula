@@ -152,6 +152,20 @@ export function assets(): Asset[] {
 				readFileSync(join(iconsDir, `${name}.svg`), "utf8").replace(/currentColor/g, "#525252"),
 			),
 		);
+	// Logos de terceros de @jotis-me/icons/logos, en un grupo aparte del «Logos» publicado (que no sale del repo)
+	for (const set of ["app", "integration", "social"]) {
+		const dir = join(ICONS, "dist/logos", set);
+		for (const f of readdirSync(dir)
+			.filter((x) => x.endsWith(".svg"))
+			.sort())
+			out.push(
+				svg(
+					"Marcas",
+					`${set}-${f}`,
+					readFileSync(join(dir, f), "utf8").replace(/currentColor/g, "#525252"),
+				),
+			);
+	}
 	for (const [group, folder] of [
 		["Hand-drawn", "hand-drawn"],
 		["Patterns", "patterns"],
@@ -170,6 +184,7 @@ export const ASSET_GROUPS = [
 	["Logos", "l"],
 	["App icons", "m"],
 	["Icons", "xs"],
+	["Marcas", "xs"],
 	["Hand-drawn", "m"],
 	["Patterns", "l"],
 ] as const;

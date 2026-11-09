@@ -32,7 +32,7 @@ Cada grupo trae sus propios tests, su página y sus capturas, y acaba en un comm
 
 ## 7. Cierre
 
-- [ ] 7.1 Changeset `minor` de `@jotis-me/react` con los tres componentes y las variantes. Verificar el catálogo en 94 (`apps/docs` `test/catalog.test.ts`), el artefacto (`bun run artifact:build` y `bun test` y `test:e2e` en `scripts/artifact`) con el grupo de assets «Marcas» (design D8), `check:size`, `check:js` y el e2e completo de `apps/docs` con Firefox y WebKit.
+- [x] 7.1 Changeset `minor` de `@jotis-me/react` con los tres componentes y las variantes. Verificar el catálogo en 94 (`apps/docs` `test/catalog.test.ts`), el artefacto (`bun run artifact:build` y `bun test` y `test:e2e` en `scripts/artifact`) con el grupo de assets «Marcas» (design D8), `check:size`, `check:js` y el e2e completo de `apps/docs` con Firefox y WebKit.
 
 ## Workflow follow-up
 
