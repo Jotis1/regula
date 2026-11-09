@@ -9,17 +9,17 @@ export interface LogoProps extends Omit<SVGProps<SVGSVGElement>, "children" | "d
 	title?: string;
 }
 
-const escape = (s: string) => s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+const escapeText = (s: string) => s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
 /**
  * Crea el componente de un logo a partir de su SVG. Los generados en `logos.generated.tsx` la llaman con
  * `@__PURE__`: un bundler deja fuera los logos que no se importan.
  */
 export function makeLogo(width: number, height: number, viewBox: string, inner: string) {
+	// biome-ignore lint/correctness/noComponentHookFactories: se llama una vez por logo al cargar el módulo, no al pintar
 	function Logo({ size, title, ...rest }: LogoProps) {
 		const h = size ?? height;
 		return (
-			// biome-ignore lint/a11y/noSvgWithoutTitle: con `title` lleva <title>; sin él es decorativo y va con aria-hidden
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width={(h * width) / height}
@@ -31,7 +31,9 @@ export function makeLogo(width: number, height: number, viewBox: string, inner: 
 				focusable="false"
 				{...rest}
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: SVG del propio paquete, generado del Figma
-				dangerouslySetInnerHTML={{ __html: (title ? `<title>${escape(title)}</title>` : "") + inner }}
+				dangerouslySetInnerHTML={{
+					__html: (title ? `<title>${escapeText(title)}</title>` : "") + inner,
+				}}
 			/>
 		);
 	}
