@@ -3,17 +3,15 @@
 //
 // Arriba van los controles: un desplegable por cada prop con valores cerrados (tamaños, variantes…) y un
 // interruptor por cada booleano. Debajo, la vista previa, y aparte, separado, el código.
-import * as Regula from "@jotis-me/react";
 import { BackgroundPattern, CodeSnippet, Select, Toggle } from "@jotis-me/react";
-import { type ComponentType, useState } from "react";
+import { useState } from "react";
 import { codeOf, type Playground as Data, initialState, propsFor } from "../lib/playground";
+import { playgroundComponents } from "../lib/playground-components";
 
 export default function Playground({ playground }: { playground: Data }) {
 	const [state, setState] = useState(() => initialState(playground));
 	const set = (prop: string) => (value: string | boolean) => setState((s) => ({ ...s, [prop]: value }));
-	const Component = (Regula as unknown as Record<string, ComponentType<Record<string, unknown>>>)[
-		playground.name
-	];
+	const Component = playgroundComponents[playground.name];
 	if (!Component) return null;
 	const { next, astro } = codeOf(playground, state);
 	const choices = playground.controls.filter((c) => c.kind === "choice");
