@@ -48,7 +48,7 @@ export function parseSvg(text: string): El {
 }
 
 const attr = (el: El, name: string) => el.attrs.find(([k]) => k === name)?.[1];
-const unescape = (s: string) =>
+const decodeEntities = (s: string) =>
 	s.replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&#34;", '"');
 const walk = (el: El, fn: (e: El) => void) => {
 	fn(el);
@@ -131,7 +131,7 @@ export function cut(root: El, el: El, box: [number, number, number, number], pre
 	const conic = (e: El): string | undefined => {
 		const raw = attr(e, "data-figma-gradient-fill");
 		if (!raw || attr(e, "fill")) return undefined;
-		const g = JSON.parse(unescape(raw)) as {
+		const g = JSON.parse(decodeEntities(raw)) as {
 			stops: { color: { r: number; g: number; b: number; a: number }; position: number }[];
 		};
 		const id = `${prefix}-g${extraDefs.length}`;
@@ -193,7 +193,9 @@ function findLogo(root: El, set: LogoSet, name: string, category: string): El {
 	const top = root.children.find((c) => c.tag === "g") as El;
 	const parent =
 		set === "app"
-			? (top.children.find((c) => unescape(attr(c, "id") ?? "") === `App icons / ${category}`) as El)
+			? (top.children.find(
+					(c) => decodeEntities(attr(c, "id") ?? "") === `App icons / ${category}`,
+				) as El)
 			: top;
 	// Figma no repite ids en todo el SVG: si el nombre ya salió antes (en otra categoría o en una capa de otro logo), lo
 	// llama «<nombre>_2», «_3»… Por anchura, el componente es la coincidencia más cercana a la raíz de su categoría.
@@ -203,7 +205,7 @@ function findLogo(root: El, set: LogoSet, name: string, category: string): El {
 	const queue = parent ? [...parent.children] : [];
 	while (queue.length && !found) {
 		const c = queue.shift() as El;
-		if (matches(unescape(attr(c, "id") ?? ""))) found = c;
+		if (matches(decodeEntities(attr(c, "id") ?? ""))) found = c;
 		else queue.push(...c.children);
 	}
 	if (!found)
