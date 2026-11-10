@@ -40,11 +40,11 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 - [x] 1.3 Banderas en `@jotis-me/icons/flags` (design D2) desde `11834:15048`. Test de nombres (261 × circle, square, rectangle), `viewBox`, sin ids y accesibilidad con y sin `title`.
 - [x] 1.4 Pagos en `@jotis-me/icons/payments` desde `1142:83268` (56 × `sm`, `md`), con los mismos tests.
 - [x] 1.5 Archivos (`4916:411695`, 153) y carpetas (`7585:9240`, 8) en `@jotis-me/icons/files`, con los mismos tests.
-- [ ] 1.6 Emojis (`1244:296`, 18) en `@jotis-me/icons/emoji` y cursores (`9342:257073`, 50) en `@jotis-me/icons/cursors`, con los mismos tests y un e2e que use un cursor en CSS.
+- [x] 1.6 Cursores (`9342:257073`, 50) en `@jotis-me/icons/cursors`, con los mismos tests y un e2e que use un cursor en CSS. Los emojis del Figma (18 PNG con el arte de emoji de Apple) se dejan fuera por licencia (decisión del usuario).
 - [ ] 1.7 `exports`, `check:package` (`publint`, `attw`) y medida del tarball con `scripts/pack.ts` antes y después, anotada. Si pasa de 15 MB sin comprimir, parar y preguntar (Risks). Changeset `minor` de `@jotis-me/icons` con la ruptura de `IconName` declarada.
 - [ ] 1.8 Galerías de la web (design D9):
   - `/icons/` con los 1.172 y el código de `IconXxx` para los que no están en el núcleo;
-  - páginas de banderas, pagos, archivos, emojis y cursores en `IconsNav.astro` y en la navegación lateral;
+  - páginas de banderas, pagos, archivos y cursores en `IconsNav.astro` y en la navegación lateral;
   - nota de la ruptura en `/icons/`.
 
   E2E: buscar y copiar en cada galería. `check:js` dentro de límite y HTML de `/icons/` bajo 400 kB, o paginado por categoría.
@@ -169,4 +169,4 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 ## Workflow follow-up
 
 - Abrir la PR como borrador tras el grupo 1 para que CI vaya corriendo; una sola PR con todo.
-- Después de publicar la versión, sincronizar el artefacto: 27 componentes nuevos, el set completo de iconos y los grupos de banderas, pagos, archivos, emojis y cursores. Son unas 90 tandas de 25, con los ids de blob sacados del JSONL de la sesión.
+- Después de publicar la versión, sincronizar el artefacto: 27 componentes nuevos, el set completo de iconos y los grupos de banderas, pagos, archivos y cursores. Son unas 90 tandas de 25, con los ids de blob sacados del JSONL de la sesión.

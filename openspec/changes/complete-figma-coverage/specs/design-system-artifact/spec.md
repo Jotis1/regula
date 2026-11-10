@@ -7,7 +7,7 @@ Un comando del repo SHALL generar, sin red, la carpeta `project/` del artefacto 
 - el índice, `tokens.json`, la guía (`README.md` y secciones) y las fuentes;
 - cada componente del catálogo con su ficha y su vista previa;
 - el bundle, la hoja y los tipos;
-- los grupos de assets de iconos de app, adornos, patrones, logos de terceros, iconos de línea del set completo, banderas, pagos, archivos, emojis y cursores.
+- los grupos de assets de iconos de app, adornos, patrones, logos de terceros, iconos de línea del set completo, banderas, pagos, archivos y cursores.
 
 #### Scenario: Un componente por ficha
 - **WHEN** se genera el artefacto
@@ -32,5 +32,4 @@ Un comando del repo SHALL generar, sin red, la carpeta `project/` del artefacto 
   - banderas
   - pagos
   - archivos y carpetas
-  - emojis
   - cursores

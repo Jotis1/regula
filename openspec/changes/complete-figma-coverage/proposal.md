@@ -10,7 +10,7 @@ Todo va en una sola PR y en este orden: cimientos de iconos, variantes de los co
 
 - **Cimientos de iconos** en `@jotis-me/icons`:
   - Set de iconos de línea completo: de 82 a los 1.172 del Figma.
-  - Entradas nuevas: banderas (261 países y regiones × círculo, cuadrado y rectángulo), métodos de pago (56 × `sm`/`md`), tipos de archivo (153), carpetas (8), emojis (18) y cursores (50).
+  - Entradas nuevas: banderas (261 países y regiones × círculo, cuadrado y rectángulo), métodos de pago (56 × `sm`/`md`), tipos de archivo (153), carpetas (8) y cursores (50).
 - **Variantes en componentes que ya existen**, como en el Figma:
   - Identidad y etiquetas: `Avatar` (verificado, contador, avatar de empresa), `AvatarGroup` (botón de añadir), `AvatarLabel` (tamaños), `Badge` (bandera, avatar, icono detrás, solo icono), `Tag` (bandera, avatar, casilla).
   - Botones: `ButtonGroup` (tamaños, solo icono, punto), `CloseButton` (tamaños, fondo oscuro).
@@ -37,6 +37,7 @@ Todo va en una sola PR y en este orden: cimientos de iconos, variantes de los co
   - Las páginas de ejemplos de aplicación y de marketing, y Utility.
   - El logo «Logo/Logomark» de la plantilla: Regula tiene su propia marca.
   - Los logos de empresa (Company logo) y de prensa (Press logo) de la página «Logos» del Figma (decisión del usuario).
+  - Los 18 emojis del Figma: son PNG con el arte de emoji de Apple, que no se puede redistribuir en un paquete público (decisión del usuario).
 
 ## Capabilities
 
@@ -52,7 +53,7 @@ Ninguna.
   - Los `icon` de los componentes aceptan también un nodo con cualquier icono del set completo.
 - `icon-set`:
   - El set completo pasa a 1.172 iconos y el núcleo con nombre queda aparte.
-  - Entradas nuevas para banderas, pagos, tipos de archivo, carpetas, emojis y cursores.
+  - Entradas nuevas para banderas, pagos, tipos de archivo, carpetas y cursores.
 - `docs-site`:
   - La galería de iconos cubre el set completo y los sets nuevos.
   - Modal y Slideout tienen página de composiciones.
@@ -70,10 +71,10 @@ Ninguna.
   - 27 componentes nuevos y cambios retrocompatibles en unos 45, salvo los que se declaren como ruptura en design.md.
   - Textos en `defaultStrings`, tests y límites en `size-budget.json`.
   - Changeset `minor`.
-  - `@jotis-me/react` no importa banderas, pagos, archivos, emojis, cursores ni logos: los recibe como nodos.
+  - `@jotis-me/react` no importa banderas, pagos, archivos, cursores ni logos: los recibe como nodos.
 - `apps/docs`:
   - 27 páginas, nuevas capturas de los componentes con variantes nuevas, y las páginas de composiciones de Modal y Slideout.
   - La galería de iconos, con paginación o carga diferida para que no se pase del límite de JS ni de HTML.
   - Muchas capturas nuevas que mirar en claro y oscuro.
-- Artefacto: 27 componentes más y miles de assets nuevos (iconos, banderas, pagos, archivos, emojis y cursores) en la sincronización tras publicar. Son unas 90 tandas de 25.
+- Artefacto: 27 componentes más y miles de assets nuevos (iconos, banderas, pagos, archivos y cursores) en la sincronización tras publicar. Son unas 90 tandas de 25.
 - Tamaño de la PR: es la más grande del proyecto. Cada pieza va en su propio commit y cada grupo de tasks se puede revisar por separado.

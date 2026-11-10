@@ -64,7 +64,7 @@ Nodos del Figma. Las piezas internas («_») de cada fila se leen dentro de su n
 | Featured icon | `1102:5338` |
 | Check icon / Check item / Star icon / Ratings badge | `1254:137887` / `1345:1610` / `1232:9` / `7460:158976` |
 | Iconos de línea (19 marcos de categoría) | página `3463:407484` (`3463:407486` … `3463:408638`) |
-| Banderas / Pagos / Archivos / Carpetas / Emoji / Cursor | `11834:15048` / `1142:83268` / `4916:411695` / `7585:9240` / `1244:296` / `9342:257073` |
+| Banderas / Pagos / Archivos / Carpetas / Cursor | `11834:15048` / `1142:83268` / `4916:411695` / `7585:9240` / `9342:257073` |
 | Dropdown header nav / Full-width header nav | `1288:26576` / `1287:2392` |
 | Footer (links column, link) | `1517:334473` (`3288:570969`, `3288:570928`) |
 | Blog post card / Blog subscribe card | `1390:58` / `1391:213014` |
@@ -100,19 +100,19 @@ Nodos del Figma. Las piezas internas («_») de cada fila se leen dentro de su n
 - *Alternativa:* carga diferida por nombre. No funciona sin JavaScript ni en el servidor. Se descarta.
 
 ### D2. Sets de color en entradas propias
-- **Entradas nuevas:** `flags`, `payments`, `files` (archivos y carpetas), `emoji` y `cursors`, con el patrón de `logos`:
+- **Entradas nuevas:** `flags`, `payments`, `files` (archivos y carpetas) y `cursors`, con el patrón de `logos`:
   - SVG guardados en `packages/icons/assets/<set>/`;
-  - componentes generados sueltos (`FlagEsCircle`, `PaymentVisaMd`, `FileTypePdfGray`, `FolderBrandOpen`, `EmojiThumbsUp`, `CursorHandGrab`);
+  - componentes generados sueltos (`FlagEsCircle`, `PaymentVisaMd`, `FileTypePdfGray`, `FolderBrandOpen`, `CursorHandGrab`);
   - `<set>Names`;
   - `"./<set>"` y `"./<set>/*"` en `exports`.
 - **Nombres:**
   - banderas por el país o la región en kebab-case, no por código ISO (PT, IT y MD se repiten y 11 regiones no tienen): `FlagSpainCircle`, `FlagScotlandSquare`, `FlagCanaryIslandsRectangle`;
-  - pagos, archivos, emojis y cursores por su nombre del Figma en kebab-case.
+  - pagos, archivos y cursores por su nombre del Figma en kebab-case.
 - **Accesibilidad:** sin `title`, `aria-hidden`; con `title`, `role="img"`.
 - **Recorte:** un script por familia, con un test que compara los nombres guardados con la lista esperada (261 × 3, 56 × 2, 153, 8, 18, 50) y comprueba `viewBox` e ids únicos en cada SVG.
 
 ### D3. `@jotis-me/react` no importa recursos de color
-Banderas, pagos, archivos, emojis, cursores y logos llegan a los componentes como `ReactNode`, como ya pasa con los logos en `EmptyState`. Props afectadas:
+Banderas, pagos, archivos, cursores y logos llegan a los componentes como `ReactNode`, como ya pasa con los logos en `EmptyState`. Props afectadas:
 - `flag` en `Badge` y `Tag`;
 - `paymentIcon` en `RadioGroup`;
 - `fileIcon` en `FileUpload` y en la celda de archivo de `Table`;
@@ -235,7 +235,7 @@ Las que cambian de forma:
 - **Lo demás:** retrocompatible. Si al implementar una variante solo puede entrar cambiando una prop existente, se para, se anota en `NOTAS.md` y se pregunta al usuario antes de seguir.
 
 ### D9. Galerías de recursos en la web
-- **Páginas:** `/icons/` pasa a enseñar los 1.172 iconos. Los sets nuevos tienen página propia (`/icons/flags/`, `/icons/payments/`, `/icons/files/`, `/icons/emoji/`, `/icons/cursors/`) en el selector `IconsNav.astro`. `/icons/logos/` no cambia.
+- **Páginas:** `/icons/` pasa a enseñar los 1.172 iconos. Los sets nuevos tienen página propia (`/icons/flags/`, `/icons/payments/`, `/icons/files/`, `/icons/cursors/`) en el selector `IconsNav.astro`. `/icons/logos/` no cambia.
 - **Carga:** las galerías cargan los SVG como `<img loading="lazy">` desde URLs (`import.meta.glob` con `?no-inline`), igual que `LogoGallery`, y la lista de nombres va en el HTML. Así el JS de cada página no crece con el número de iconos.
 - **Iconos de línea:** usan `mask-image` con `bg-fg-primary` para tomar el color del tema.
 - **Rendimiento:** si el HTML de `/icons/` pasa de 400 kB, la rejilla se pagina por categoría (los 19 marcos del Figma) con un filtro, sin cambiar el buscador.

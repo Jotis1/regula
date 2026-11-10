@@ -48,3 +48,7 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 - **50 cursores** en `@jotis-me/icons/cursors` (`scripts/import-cursors.ts`): 29 clásicos y 21 de macOS 26. Nombres en kebab-case; los de macOS llevan el prefijo `macos-` (`macos-resize-north-south`, `CursorMacosResizeNorthSouth`).
 - **Tamaño.** Los clásicos miden 20×20, como su caja del Figma. Varios de macOS 26 sobresalen de su caja (la flecha llega unos píxeles más abajo; la del menú mide 28×38), así que su `viewBox` crece por ese lado para no recortarlos. Los `size` de los componentes son el alto.
 - **Sin punto activo.** El SVG no lleva el hotspot del cursor: se pasa en la regla de CSS, `cursor: url(".../hand-grab.svg") 6 4, grab`. Un e2e comprueba que Chromium acepta un cursor así y que cada SVG de color del paquete (1.400+) se decodifica como imagen.
+
+## Emojis (fuera)
+
+- **Los 18 emojis del Figma no se publican.** Son PNG de 160×160 con el arte de emoji de Apple (corazones, pulgares, caras, ojos), no vectores. Redistribuirlos en un paquete npm público puede incumplir la licencia de Apple. Decisión del usuario: se omiten. Los emojis nativos del sistema cubren el caso. Salen de proposal, design, specs y tasks.

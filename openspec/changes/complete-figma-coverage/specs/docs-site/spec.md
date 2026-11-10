@@ -3,7 +3,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Galería de iconos
-La web SHALL mostrar los 1.172 iconos del set completo, todos los logos de terceros y los sets de banderas, pagos, archivos, emojis y cursores. Cada galería SHALL tener buscador por nombre y tamaño de vista previa. Al elegir uno SHALL mostrar un panel con el icono o recurso en varios tamaños que permita copiar su nombre, su uso en React, su importación SVG y el SVG en bruto. Cada galería SHALL cargar solo los dibujos que están a la vista y quedar dentro del límite de JavaScript de su página.
+La web SHALL mostrar los 1.172 iconos del set completo, todos los logos de terceros y los sets de banderas, pagos, archivos y cursores. Cada galería SHALL tener buscador por nombre y tamaño de vista previa. Al elegir uno SHALL mostrar un panel con el icono o recurso en varios tamaños que permita copiar su nombre, su uso en React, su importación SVG y el SVG en bruto. Cada galería SHALL cargar solo los dibujos que están a la vista y quedar dentro del límite de JavaScript de su página.
 
 #### Scenario: Buscar un icono
 - **WHEN** el usuario escribe "cal" en el buscador de iconos

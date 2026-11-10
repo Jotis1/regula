@@ -37,9 +37,13 @@ El paquete SHALL publicar los 56 iconos de métodos de pago del Figma en `sm` y 
 - **WHEN** una app importa el icono de archivo PDF en gris y lo empaqueta
 - **THEN** el resultado no contiene ningún otro icono de archivo
 
-### Requirement: Emojis y cursores
-El paquete SHALL publicar los 18 emojis del Figma en `@jotis-me/icons/emoji` y los 50 cursores (los clásicos y los de macOS 26) en `@jotis-me/icons/cursors`, como componentes sueltos y como SVG. Los cursores SHALL poder usarse como valor de `cursor` en CSS a partir de su SVG.
+### Requirement: Cursores
+El paquete SHALL publicar los 50 cursores del Figma (29 clásicos y 21 de macOS 26) en `@jotis-me/icons/cursors`, como componentes sueltos y como SVG. Cada SVG SHALL poder usarse como valor de `cursor` en CSS, con el punto activo que indique quien lo usa.
 
 #### Scenario: Cursor en CSS
-- **WHEN** una página usa el SVG del cursor «hand-grab» en `cursor: url(…), grab`
-- **THEN** el puntero se ve con el dibujo del Figma sobre ese elemento
+- **WHEN** una página usa el SVG del cursor «hand-grab» en `cursor: url(…) 6 4, grab`
+- **THEN** el navegador acepta la regla con ese cursor sobre el elemento y la imagen se decodifica con el tamaño de su SVG
+
+#### Scenario: Cursor de macOS 26 que sobresale
+- **WHEN** se usa un cursor de macOS 26 cuyo dibujo sobresale de la caja de 20×20 del Figma
+- **THEN** su SVG es más grande que 20×20 y no lleva el dibujo recortado
