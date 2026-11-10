@@ -211,7 +211,12 @@ export {
 } from "./components/SidebarNav.js";
 export { Skeleton, type SkeletonProps } from "./components/Skeleton.js";
 export { Slideout, type SlideoutProps } from "./components/Slideout.js";
-export { Slider, type SliderProps } from "./components/Slider.js";
+export {
+	type RangeSliderProps,
+	type SingleSliderProps,
+	Slider,
+	type SliderProps,
+} from "./components/Slider.js";
 export { Spinner, type SpinnerProps, type SpinnerSize, type SpinnerVariant } from "./components/Spinner.js";
 export { StreamAlert, type StreamAlertProps } from "./components/StreamAlert.js";
 export {

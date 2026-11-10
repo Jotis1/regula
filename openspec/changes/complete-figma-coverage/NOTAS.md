@@ -171,3 +171,18 @@ Nodos: `Input field` `1090:57817` (`Payment input`, `Trailing button`, `Date and
 - **`Textarea` con `tags`/`defaultTags`:** delega en `TagInput` con la nueva prop `multiline` (caja de 104 px, etiquetas y texto fluyen juntos, un clic enfoca). Enter o coma crean la etiqueta, como `TagInput`: no hay texto libre en este modo (en un textarea Enter es salto de línea y no hay forma de distinguir). `tagPlacement` `inside`/`outside` como los `Tags inner/outer` del Figma. El `size` `sm` del Figma (160 px de alto) no se añade: `Textarea` no tiene `size` y la spec no lo pide.
 - **Peso:** `Textarea` pasa de 10 a 26 kB gzip porque importa `TagInput` (y con él `Tag`) aunque no se usen las etiquetas. Límite a 29.184. Si molestara, se puede partir `Textarea` en dos entradas; no se hace ahora. `Input` 87,8 kB (límite 94,0, sin cambios).
 - **Ejemplos y e2e:** Input con tarjeta (logos de `@jotis-me/icons/payments`), botón, fecha y archivo; Textarea con las tres variantes; e2e con Chromium de tarjeta (agrupa mientras se escribe), selector de archivo con el ratón y con el teclado y Tab al botón.
+
+## ProgressBar y Slider (4.3)
+
+Nodos: `Progress bar` `1085:57382` (`Top floating`, `Bottom floating`), `Slider` `1086:534` y `_Control handle` `3287:442783` (`Text`, `Tooltip`).
+
+- **`ProgressBar` `top-floating` / `bottom-floating`:** burbuja de `bg-primary_alt` con filo `border-secondary_alt`, `radius-md`, 12 y 8 px de relleno, 12px semibold y `shadow-lg`, centrada en el final del relleno (el Figma la coloca a −21 px del borde derecho, o sea centrada). Arriba queda a 12 px de la barra y abajo a 8 px (`top-4`).
+  - La barra no recorta la burbuja (las variantes de siempre sí llevan `overflow-hidden`). El hueco que ocupa se reserva con relleno (42 px arriba, 38 abajo): el Figma deja la burbuja saliendo de una caja de 8 px y pisaría lo de al lado.
+  - La burbuja es decorativa (`aria-hidden`): el valor ya lo dice `aria-valuenow`, así no se lee dos veces.
+- **`Slider` `range`:** dos mandos con React Aria. El valor es `[mínimo, máximo]`; el tipo es una unión (`range: true` exige pares y `onChange` los devuelve). El relleno va entre los dos, redondeado, como la línea del Figma. El mínimo no pasa del máximo (lo impone React Aria). Nombre accesible de cada mando: «Mínimo» y «Máximo» (`thumbLabels`); el lector lee «Precio Mínimo».
+- **`label`:** `bottom` (16 px medium bajo el mando) y `top-floating` (burbuja encima, 8 y 6 px de relleno, a 38 px sobre el mando), ambas dentro del propio mando para que lo sigan. `formatValue(n)` decide el texto; por defecto, el número (el Figma pone «%» porque su escala es 0–100). Decorativas: lo que anuncia el mando es el número, sin pasar por `formatValue`. Si hiciera falta anunciar «40 %», habría que pasar `aria-valuetext`, que React Aria no deja cambiar por mando; no se hace.
+- **Hueco:** con `label` el componente reserva 46 px arriba o 44 abajo (`pt`/`pb`). Sin `label`, el HTML es el de antes salvo el id que reparte React Aria al montar (el test lo normaliza). La diferencia con la vista previa de la guía (1 px por la línea base) sigue como estaba.
+- **`step`** se añade porque un rango sin salto configurable es poco útil; no lo pide la spec.
+- **No se añaden** los estados `Hover` y `Focused` de `_Control handle`: los cubren `:hover` y `data-focus-visible` del mando existente (`shadow-focus-ring`).
+- **Ejemplos y e2e:** cinco sliders (simple, con etiqueta debajo y flotante, rango con las dos etiquetas) y cuatro barras; e2e con Chromium del rango (teclado en cada mando, tope, Tab y arrastre).
+- **Peso:** `Slider` pasa de 22 a 25,6 kB gzip (límite 26,0, sin cambios: cabe). `ProgressBar` 9,5 kB (10,5).

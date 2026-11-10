@@ -80,6 +80,8 @@ export const defaultStrings = {
 	previousMonth: "Mes anterior",
 	nextMonth: "Mes siguiente",
 	noResults: "Sin resultados",
+	sliderMin: "Mínimo",
+	sliderMax: "Máximo",
 	chooseFile: "Elegir archivo",
 	noFileChosen: "Ningún archivo seleccionado",
 	switchAccount: "Cambiar de cuenta",

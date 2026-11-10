@@ -76,7 +76,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
   - archivo.
 
   Tests de formato de tarjeta y del botón. `Textarea` (`1238:278`): `tags` + `tagPlacement` reutilizando `TagInput`. Ejemplos y capturas.
-- [ ] 4.3 `ProgressBar`: etiquetas `top-floating` y `bottom-floating` (`1085:57382`). `Slider` (`1086:534`, `3287:442783`): `range`, `label` y `formatValue`, con tests de teclado de los dos mandos (el mínimo no pasa del máximo, un nombre por mando). Ejemplos y capturas.
+- [x] 4.3 `ProgressBar`: etiquetas `top-floating` y `bottom-floating` (`1085:57382`). `Slider` (`1086:534`, `3287:442783`): `range`, `label` y `formatValue`, con tests de teclado de los dos mandos (el mínimo no pasa del máximo, un nombre por mando). Ejemplos y capturas.
 - [ ] 4.4 `RadioGroup`: `icon-simple`, avatar e icono de pago por opción (`1142:87213`, `124:2838`). `Select`: `searchable` y `type="tags"` (`3281:377673`), con tests de filtrado y de Enter. Ejemplos con pagos de `@jotis-me/icons/payments` y capturas.
 - [ ] 4.5 `TextEditor` (`9292:559325`, `9291:557668`, `9291:557669`): `toolbar` `simple`, `advanced` y `floating`, `size` y tooltips por botón. Tests: aparece al seleccionar, Escape la cierra y los botones tienen nombre. Ejemplos y capturas.
 

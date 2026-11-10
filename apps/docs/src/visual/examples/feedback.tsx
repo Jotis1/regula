@@ -64,6 +64,12 @@ export function ProgressBarExample() {
 			<div className="max-w-[360px]">
 				<ProgressBar value={30} label="bottom" aria-label="Subida" />
 			</div>
+			<div className="max-w-[360px]">
+				<ProgressBar value={50} label="top-floating" aria-label="Importación" />
+			</div>
+			<div className="max-w-[360px]">
+				<ProgressBar value={70} label="bottom-floating" aria-label="Copia de seguridad" />
+			</div>
 		</div>
 	);
 }

@@ -248,9 +248,22 @@ export function ToggleExample() {
 }
 
 export function SliderExample() {
+	const percent = (v: number) => `${v}%`;
 	return (
-		<div className="max-w-[360px] pt-3">
-			<Slider defaultValue={40} aria-label="Presupuesto" />
+		<div className="flex max-w-[360px] flex-col gap-8">
+			<div className="pt-3">
+				<Slider defaultValue={40} aria-label="Presupuesto" />
+			</div>
+			<Slider defaultValue={40} aria-label="Volumen" label="bottom" formatValue={percent} />
+			<Slider defaultValue={40} aria-label="Brillo" label="top-floating" formatValue={percent} />
+			<Slider range defaultValue={[25, 50]} aria-label="Precio" label="bottom" formatValue={percent} />
+			<Slider
+				range
+				defaultValue={[25, 50]}
+				aria-label="Rango"
+				label="top-floating"
+				formatValue={percent}
+			/>
 		</div>
 	);
 }
