@@ -185,4 +185,4 @@ Nodos: `Progress bar` `1085:57382` (`Top floating`, `Bottom floating`), `Slider`
 - **`step`** se añade porque un rango sin salto configurable es poco útil; no lo pide la spec.
 - **No se añaden** los estados `Hover` y `Focused` de `_Control handle`: los cubren `:hover` y `data-focus-visible` del mando existente (`shadow-focus-ring`).
 - **Ejemplos y e2e:** cinco sliders (simple, con etiqueta debajo y flotante, rango con las dos etiquetas) y cuatro barras; e2e con Chromium del rango (teclado en cada mando, tope, Tab y arrastre).
-- **Peso:** `Slider` pasa de 22 a 25,6 kB gzip (límite 26,0, sin cambios: cabe). `ProgressBar` 9,5 kB (10,5).
+- **Peso:** `Slider` mide 25,6 kB gzip y cabe en su límite de 26,0, que no se toca. `ProgressBar` 9,5 kB (10,5).
