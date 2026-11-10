@@ -146,7 +146,13 @@ export {
 export { HelpIcon, type HelpIconProps } from "./components/HelpIcon.js";
 export { Icon, type IconName, type IconProps } from "./components/Icon.js";
 export { InlineCTA, type InlineCTAProps } from "./components/InlineCTA.js";
-export { Input, type InputAddonSelect, type InputProps } from "./components/Input.js";
+export {
+	type CardNetwork,
+	Input,
+	type InputAddonSelect,
+	type InputProps,
+	type InputTrailingButton,
+} from "./components/Input.js";
 export { Kbd, type KbdProps, type KbdVariant } from "./components/Kbd.js";
 export { LineChart, type LineChartProps } from "./components/LineChart.js";
 export { LinkCard, type LinkCardProps } from "./components/LinkCard.js";

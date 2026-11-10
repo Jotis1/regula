@@ -69,7 +69,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
   - `triggerVariant="link"`.
 
   Tests de teclado de la búsqueda y del cambio de cuenta. Ejemplos con logos de integraciones y capturas.
-- [ ] 4.2 `Input` (`1090:57817`):
+- [x] 4.2 `Input` (`1090:57817`):
   - `type="card"` con agrupado y logo de red por `cardLogos`;
   - `trailingButton`;
   - fecha y hora;

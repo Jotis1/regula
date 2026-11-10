@@ -80,6 +80,8 @@ export const defaultStrings = {
 	previousMonth: "Mes anterior",
 	nextMonth: "Mes siguiente",
 	noResults: "Sin resultados",
+	chooseFile: "Elegir archivo",
+	noFileChosen: "Ningún archivo seleccionado",
 	switchAccount: "Cambiar de cuenta",
 	addAccount: "Añadir cuenta",
 	required: "obligatorio",

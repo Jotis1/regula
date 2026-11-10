@@ -1,6 +1,13 @@
 // Puertos de las vistas previas de los componentes de formulario.
 
 import {
+	PaymentAmexMd,
+	PaymentDiscoverMd,
+	PaymentMaestroMd,
+	PaymentMastercardMd,
+	PaymentVisaMd,
+} from "@jotis-me/icons/payments";
+import {
 	Avatar,
 	Checkbox,
 	ColorPicker,
@@ -55,14 +62,42 @@ export function InputExample() {
 				trailingSelect={{ label: "Divisa", options: ["EUR", "USD", "GBP"], defaultValue: "EUR" }}
 			/>
 			<Input label="Contraseña" type="password" defaultValue="secreta1" hint="Al menos 8 caracteres." />
+			<Input
+				label="Número de tarjeta"
+				type="card"
+				defaultValue="4242424242424242"
+				hint="Se agrupa de cuatro en cuatro."
+				cardLogos={{
+					visa: <PaymentVisaMd />,
+					mastercard: <PaymentMastercardMd />,
+					amex: <PaymentAmexMd />,
+					maestro: <PaymentMaestroMd />,
+					discover: <PaymentDiscoverMd />,
+				}}
+			/>
+			<Input
+				label="Web"
+				defaultValue="www.jotis.me"
+				trailingButton={{ label: "Copiar", icon: "copy-01" }}
+				hint="Botón pegado al campo."
+			/>
+			<Input label="Fecha" type="datetime-local" defaultValue="2028-04-16T10:30" />
+			<Input label="Subir archivo" type="file" hint="SVG, PNG, JPG o GIF (máx. 800x400px)." />
 		</div>
 	);
 }
 
 export function TextareaExample() {
 	return (
-		<div className="max-w-[420px]">
+		<div className="grid max-w-[720px] grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
 			<Textarea label="Descripción" placeholder="Escribe una nota…" hint="Máximo 280 caracteres." />
+			<Textarea label="Etiquetas" defaultTags={["Diseño", "Marketing"]} hint="Dentro del campo." />
+			<Textarea
+				label="Etiquetas fuera"
+				defaultTags={["Diseño", "Marketing"]}
+				tagPlacement="outside"
+				hint="Debajo del campo."
+			/>
 		</div>
 	);
 }
