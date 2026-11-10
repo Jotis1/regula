@@ -10,6 +10,8 @@ export const ALLOWED: Record<string, string> = {
 		"La tarjeta es un objeto: sus colores no cambian con el tema (ficha de CreditCard).",
 	"components/BrowserFrame.tsx": "Los colores del semáforo son fijos (ficha de BrowserFrame).",
 	"components/VideoPlayer.tsx": "Controles en blanco y negro fijos sobre el vídeo (ficha de VideoPlayer).",
+	"components/TextEditor.tsx":
+		"Las 16 muestras del selector de color del texto son datos que se escriben en el contenido, no estilo (ficha de TextEditor).",
 };
 
 const PALETTE =

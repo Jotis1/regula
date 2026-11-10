@@ -170,7 +170,7 @@ export function assetCode(
 	let react = `import { ${imports} } from "${importPath(kind)}";\n\n${components.map(tag).join("\n")}`;
 	if (kind === "icons") {
 		react = core
-			? `import { Icon, ${first} } from "@jotis-me/icons";\n\n<${first} size={20} />\n\n// o por nombre, entre los 82 del núcleo\n<Icon name="${entry.name}" size={20} />`
+			? `import { Icon, ${first} } from "@jotis-me/icons";\n\n<${first} size={20} />\n\n// o por nombre, entre los 83 del núcleo\n<Icon name="${entry.name}" size={20} />`
 			: `import { ${first} } from "@jotis-me/icons";\n\n<${first} size={20} />`;
 	}
 	const mod = svgModule(kind, preview.slug);

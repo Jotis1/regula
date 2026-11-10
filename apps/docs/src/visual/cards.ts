@@ -94,7 +94,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	Tabs: 400,
 	Tag: 152,
 	Kbd: 96,
-	TextEditor: 300,
+	TextEditor: 900,
 	Textarea: 460,
 	Toggle: 188,
 	Tooltip: 170,

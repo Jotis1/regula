@@ -13,8 +13,9 @@ const original: Record<string, string[]> = JSON.parse(
 );
 
 describe("núcleo y set completo", () => {
-	it("el núcleo son los 82 de antes", () => {
-		expect([...iconNames].sort()).toEqual(Object.keys(original).sort());
+	it("el núcleo son los 82 de antes más los que han pedido los componentes", () => {
+		// Cada icono nuevo del núcleo lo pide un componente de @jotis-me/react: type-01, el selector de letra de TextEditor
+		expect([...iconNames].sort()).toEqual([...Object.keys(original), "type-01"].sort());
 	});
 
 	it("el set completo tiene los 1.172 iconos, núcleo incluido, y coincide con los datos", () => {

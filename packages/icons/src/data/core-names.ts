@@ -66,6 +66,7 @@ export const coreNames = [
 	"trend-down-01",
 	"currency-euro",
 	"stars-02",
+	"type-01",
 	"loading-02",
 	"paperclip",
 	"bold-01",

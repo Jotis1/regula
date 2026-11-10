@@ -428,12 +428,30 @@ export function ColorPickerExample() {
 }
 
 export function TextEditorExample() {
+	const text =
+		"<p>Revisar el <b>seguro del coche</b> antes del 15.</p><p>Comparar <i>dos ofertas</i> y llamar al banco.</p>";
 	return (
-		<div className="max-w-[640px]">
+		<div className="grid max-w-[1040px] grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-x-8 gap-y-10">
 			<TextEditor
 				label="Notas"
 				maxLength={500}
 				defaultValue="<p>Revisar el <b>seguro del coche</b> antes del 15.</p><ul><li>Comparar dos ofertas</li><li>Llamar al banco</li></ul>"
+			/>
+			<TextEditor label="Simple" toolbar="simple" size="sm" maxLength={500} defaultValue={text} />
+			<TextEditor
+				className="col-span-full"
+				label="Avanzada"
+				toolbar="advanced"
+				maxLength={500}
+				defaultValue={text}
+				onGenerate={() => {}}
+			/>
+			<TextEditor
+				label="Flotante"
+				toolbar="floating"
+				size="sm"
+				hint="Selecciona texto para ver la barra."
+				defaultValue={text}
 			/>
 		</div>
 	);

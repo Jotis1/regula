@@ -251,7 +251,12 @@ export {
 export { Tag, type TagProps, type TagSize } from "./components/Tag.js";
 export { TagInput, type TagInputProps } from "./components/TagInput.js";
 export { Textarea, type TextareaProps } from "./components/Textarea.js";
-export { TextEditor, type TextEditorLabels, type TextEditorProps } from "./components/TextEditor.js";
+export {
+	TextEditor,
+	type TextEditorLabels,
+	type TextEditorProps,
+	type TextEditorToolbar,
+} from "./components/TextEditor.js";
 export { Toggle, type ToggleProps } from "./components/Toggle.js";
 export { Tooltip, type TooltipProps } from "./components/Tooltip.js";
 export {
