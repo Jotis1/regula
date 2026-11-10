@@ -47,7 +47,7 @@ La web SHALL tener una página por cada componente con: descripción, su ficha r
 - **THEN** tienen el mismo texto
 
 ### Requirement: Galería de iconos
-La web SHALL mostrar todos los iconos del set con buscador por nombre y tamaño de vista previa, y al elegir uno SHALL mostrar un panel con el icono en varios tamaños que permita copiar su nombre, su uso en React, su importación SVG y el SVG en bruto.
+La web SHALL mostrar todos los iconos del set y todos los logos de terceros con buscador por nombre y tamaño de vista previa, y al elegir uno SHALL mostrar un panel con el icono o logo en varios tamaños que permita copiar su nombre, su uso en React, su importación SVG y el SVG en bruto.
 
 #### Scenario: Buscar un icono
 - **WHEN** el usuario escribe "cal" en el buscador de iconos
@@ -56,6 +56,10 @@ La web SHALL mostrar todos los iconos del set con buscador por nombre y tamaño 
 #### Scenario: Elegir un icono
 - **WHEN** el usuario pulsa el icono `calendar`
 - **THEN** el panel muestra `calendar` y su código usa el paquete `@jotis-me/icons`
+
+#### Scenario: Elegir un logo
+- **WHEN** el usuario busca "github" y pulsa el logo de GitHub del set social
+- **THEN** el panel muestra sus variantes en color y en gris y su código importa ese logo de `@jotis-me/icons/logos`
 
 ### Requirement: Tema claro y oscuro
 La web SHALL ofrecer en la cabecera, en todos los anchos, un selector de tema con tres opciones: Sistema, Claro y Oscuro. Claro y Oscuro aplican o quitan `dark-mode` en toda la página y se recuerdan entre visitas; Sistema borra la elección guardada y sigue la preferencia del sistema, también si cambia con la página abierta. La primera vez la web SHALL usar la del sistema, sin parpadeo del tema equivocado al cargar. El menú móvil SHALL ofrecer las mismas tres opciones.
@@ -117,8 +121,8 @@ La web SHALL servirse como sitio estático en `https://regula.jotis.me` con HTTP
 Las páginas de la web SHALL pasar axe sin violaciones serias o críticas y SHALL obtener al menos 90 en Lighthouse en rendimiento y accesibilidad en móvil.
 
 #### Scenario: Auditoría en CI
-- **WHEN** se ejecuta la auditoría sobre la portada, una página de fundamentos y una de componente
-- **THEN** las tres superan los umbrales
+- **WHEN** se ejecuta la auditoría sobre la portada, el índice de componentes, una página de fundamentos y una de componente
+- **THEN** las cuatro superan los umbrales
 
 ### Requirement: Portada
 La portada SHALL presentar qué es Regula, llevar a la instalación como acción principal, abrir la búsqueda y enlazar a Fundamentos, Componentes, Stream e Iconos con sus cifras reales, calculadas en el build.
@@ -217,3 +221,18 @@ El build de la web SHALL funcionar sin leer las capturas aprobadas de la paridad
 #### Scenario: Componente nuevo sin captura
 - **WHEN** se añade un componente al catálogo con su ficha y su ejemplo, todavía sin sus PNG aprobadas, y se construye la web
 - **THEN** el build termina sin errores y su card muestra la vista previa en vivo; el test de catálogo y el visual siguen fallando por la captura que falta
+
+### Requirement: JavaScript solo de lo que se usa
+Cada página de la web SHALL descargar solo el código de los componentes que usan sus islas, y el JavaScript de cada página SHALL quedar dentro de un límite guardado en el repo y comprobado en CI. Subir un límite SHALL ser un cambio explícito de ese fichero.
+
+#### Scenario: Componentes que la página no usa
+- **WHEN** se abre `/` o `/components/`
+- **THEN** ninguno de los archivos JavaScript que descarga contiene el código de componentes que ninguna de sus islas usa, como `Carousel`, `CalendarView`, `ColorPicker` o `StreamScene`
+
+#### Scenario: Página que se pasa del límite
+- **WHEN** un cambio hace que el JavaScript de `/` supere su límite
+- **THEN** el paso de CI que mide el JavaScript falla y dice qué página, cuánto pesa y cuál es su límite
+
+#### Scenario: Componente nuevo en el paquete
+- **WHEN** se añade al paquete un componente que no usa ninguna isla de `/`
+- **THEN** el JavaScript que descarga `/` no cambia

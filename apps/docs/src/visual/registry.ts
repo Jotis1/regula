@@ -1,7 +1,13 @@
 // Ejemplos para la paridad visual: cada uno reproduce la vista previa de la guía de su componente
 // (reference/components/<Nombre>/preview.html) con los componentes de @jotis-me/react.
 import type { ComponentType } from "react";
-import { ButtonExample, ButtonGroupExample, CloseButtonExample, IconExample } from "./examples/actions";
+import {
+	ButtonExample,
+	ButtonGroupExample,
+	ButtonUtilityExample,
+	CloseButtonExample,
+	IconExample,
+} from "./examples/actions";
 import { AppIconExample } from "./examples/brand";
 import { BarChartExample, ChartLegendExample, LineChartExample, PieChartExample } from "./examples/charts";
 import {
@@ -17,6 +23,7 @@ import {
 	AvatarGroupExample,
 	AvatarLabelExample,
 	BadgeExample,
+	BadgeGroupExample,
 	KbdExample,
 	TagExample,
 } from "./examples/display";
@@ -55,6 +62,7 @@ import {
 	PageHeaderExample,
 	SectionFooterExample,
 	SectionHeaderExample,
+	SectionLabelExample,
 } from "./examples/layout";
 import {
 	BackgroundPatternExample,
@@ -117,11 +125,13 @@ export const visualExamples: Record<string, ComponentType> = {
 	AvatarGroup: AvatarGroupExample,
 	AvatarLabel: AvatarLabelExample,
 	Badge: BadgeExample,
+	BadgeGroup: BadgeGroupExample,
 	Tag: TagExample,
 	Kbd: KbdExample,
 	Button: ButtonExample,
 	ButtonGroup: ButtonGroupExample,
 	CloseButton: CloseButtonExample,
+	ButtonUtility: ButtonUtilityExample,
 	Icon: IconExample,
 	Input: InputExample,
 	Select: SelectExample,
@@ -170,6 +180,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	PageHeader: PageHeaderExample,
 	CardHeader: CardHeaderExample,
 	SectionHeader: SectionHeaderExample,
+	SectionLabel: SectionLabelExample,
 	SectionFooter: SectionFooterExample,
 	ContentDivider: ContentDividerExample,
 	InlineCTA: InlineCTAExample,

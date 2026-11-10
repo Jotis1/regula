@@ -14,10 +14,14 @@ const usage: Record<string, string> = {
 	]}
 />`,
 	CloseButton: `<CloseButton label="Cerrar aviso" />`,
+	ButtonUtility: `<ButtonUtility icon="copy-01" label="Copiar enlace" onClick={copiar} />`,
 	Icon: `<Icon name="calendar" size={20} />
 <Icon name="check-circle" title="Pagado" />`,
 	Badge: `<Badge color="success">Pagado</Badge>
 <Badge type="modern" color="success" dot>En línea</Badge>`,
+	BadgeGroup: `<BadgeGroup badge="Nuevo" href="/novedades/">
+	Hemos publicado los estados vacíos
+</BadgeGroup>`,
 	Tag: `<Tag size="md" count={5}>Facturas</Tag>`,
 	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
@@ -274,6 +278,13 @@ const usage: Record<string, string> = {
 	title="Contactos"
 	description="Personas y empresas con las que tratas."
 	actions={<Button size="sm" iconLeading="plus">Nuevo contacto</Button>}
+/>`,
+	SectionLabel: `<SectionLabel
+	title="Equipo"
+	required
+	help="Quién puede ver y editar el proyecto."
+	description="Gestiona quién entra y con qué permisos."
+	actions={<Button hierarchy="link-color" size="sm">Invitar</Button>}
 />`,
 	SectionFooter: `<SectionFooter
 	start={<Button hierarchy="link-gray" href="/ayuda">Ver ayuda</Button>}

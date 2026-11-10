@@ -195,3 +195,48 @@ describe("ProgressBar", () => {
 		await expectAccessibleInThemes(<ProgressBar value={62} aria-label="Presupuesto usado" />);
 	});
 });
+
+describe("Spinner con estilos", () => {
+	// HTML de `<Spinner />` antes de añadir `variant`: el estilo por defecto no cambia
+	const BEFORE =
+		'<div role="status" aria-live="polite" class="inline-flex flex-col items-center gap-4 font-body"><svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true" class="animate-spin motion-reduce:animate-[spin_3s_linear_infinite]"><circle cx="24" cy="24" r="21" fill="none" stroke-width="6" class="stroke-(color:--bg-tertiary)"></circle><circle cx="24" cy="24" r="21" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="32.98672286269283 131.94689145077132" class="stroke-fg-brand-primary"></circle></svg><span class="text-sm font-medium text-secondary">Cargando…</span></div>';
+
+	it("sin variant, el HTML es el de antes, igual que line-simple", () => {
+		expect(renderToStaticMarkup(<Spinner />)).toBe(BEFORE);
+		expect(renderToStaticMarkup(<Spinner variant="line-simple" />)).toBe(BEFORE);
+	});
+
+	it("line-spinner pinta solo el arco, más largo, sin pista", () => {
+		const { container } = render(<Spinner variant="line-spinner" />);
+		const circles = container.querySelectorAll("circle");
+		expect(circles).toHaveLength(1);
+		const c = 2 * Math.PI * 21;
+		expect(circles[0]?.getAttribute("stroke-dasharray")).toBe(`${c * 0.6} ${c}`);
+		expect(circles[0]?.getAttribute("class")).toContain("stroke-fg-brand-primary");
+	});
+
+	it("dot-circle pinta dieciséis puntos de opacidad decreciente en el color de marca", () => {
+		const { container } = render(<Spinner variant="dot-circle" size="sm" />);
+		const dots = [...container.querySelectorAll("circle")];
+		expect(dots).toHaveLength(16);
+		const opacities = dots.map((d) => Number(d.getAttribute("opacity")));
+		expect(opacities[0]).toBe(1);
+		for (let i = 1; i < opacities.length; i++)
+			expect(opacities[i]).toBeLessThan(opacities[i - 1] as number);
+		// En sm el trazo es de 4: cada punto, de radio 2
+		expect(dots[0]?.getAttribute("r")).toBe("2");
+		expect(dots[0]?.getAttribute("class")).toContain("fill-fg-brand-primary");
+	});
+
+	it("todos giran, más despacio con movimiento reducido, y anuncian Cargando…", () => {
+		for (const variant of ["line-simple", "line-spinner", "dot-circle"] as const) {
+			const { container, unmount } = render(<Spinner variant={variant} />);
+			const svg = container.querySelector("svg") as SVGElement;
+			expect(svg.getAttribute("class")).toContain("animate-spin");
+			expect(svg.getAttribute("class")).toContain("motion-reduce:animate-[spin_3s_linear_infinite]");
+			expect(svg.getAttribute("aria-hidden")).toBe("true");
+			expect(screen.getByRole("status").textContent).toBe("Cargando…");
+			unmount();
+		}
+	});
+});

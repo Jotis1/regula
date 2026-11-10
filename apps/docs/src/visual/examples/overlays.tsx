@@ -1,7 +1,22 @@
 // Puertos de las vistas previas de superposiciones y avisos de la guía (reference/components/*/preview.html).
 
 import {
+	IntegrationClaudeLogo,
+	IntegrationFigmaLogo,
+	IntegrationGithubLogo,
+	IntegrationNextjsLogo,
+	IntegrationReactLogo,
+	IntegrationTailwindCssLogo,
+	IntegrationViteLogo,
+	SocialDiscord01Logo,
+	SocialNotionLogo,
+	SocialSlackLogo,
+	SocialSpotifyLogo,
+	SocialStripeLogo,
+} from "@jotis-me/icons/logos";
+import {
 	Alert,
+	Avatar,
 	Banner,
 	Button,
 	CopyTooltip,
@@ -251,18 +266,110 @@ export function BannerExample() {
 	);
 }
 
+/** Avatares de iniciales para las cabeceras de usuarios: en una app pueden ser fotos; aquí no, para no cargar peso. */
+const PEOPLE = ["OR", "PB", "LS", "DW", "CW", "NC", "DG", "AM", "KL", "ZB"].map((i) => (
+	<Avatar key={i} initials={i} size="md" />
+));
+const LOGOS = [
+	IntegrationReactLogo,
+	IntegrationNextjsLogo,
+	IntegrationViteLogo,
+	IntegrationTailwindCssLogo,
+	IntegrationGithubLogo,
+	IntegrationFigmaLogo,
+	IntegrationClaudeLogo,
+	SocialSlackLogo,
+	SocialNotionLogo,
+	SocialStripeLogo,
+	SocialSpotifyLogo,
+	SocialDiscord01Logo,
+].map((Logo) => <Logo key={Logo.name} size={24} />);
+
 export function EmptyStateExample() {
+	const card = "rounded-xl shadow-[inset_0_0_0_1px_var(--border-secondary)] overflow-hidden";
 	return (
-		<EmptyState
-			icon="search-lg"
-			title="Sin resultados"
-			description="Ningún movimiento coincide con «León». Prueba con otro término o quita filtros."
-			actions={
-				<>
-					<Button hierarchy="secondary">Limpiar búsqueda</Button>
-					<Button iconLeading="plus">Nuevo movimiento</Button>
-				</>
-			}
-		/>
+		<div className="flex flex-col gap-6">
+			<EmptyState
+				icon="search-lg"
+				title="Sin resultados"
+				description="Ningún movimiento coincide con «León». Prueba con otro término o quita filtros."
+				actions={
+					<>
+						<Button hierarchy="secondary">Limpiar búsqueda</Button>
+						<Button iconLeading="plus">Nuevo movimiento</Button>
+					</>
+				}
+			/>
+			<div className="grid grid-cols-2 gap-4">
+				<EmptyState
+					className={card}
+					media="illustration"
+					illustration="cloud"
+					title="Sin proyectos"
+					description="Ningún proyecto coincide con tu búsqueda."
+				/>
+				<EmptyState
+					className={card}
+					media="illustration"
+					illustration="box"
+					title="Aún no hay archivos"
+					description="Arrastra aquí tus extractos para importarlos."
+				/>
+				<EmptyState
+					className={card}
+					media="illustration"
+					illustration="documents"
+					title="Sin documentos"
+					description="Sube facturas o recibos para tenerlos a mano."
+				/>
+				<EmptyState
+					className={card}
+					media="illustration"
+					illustration="credit-card"
+					title="Sin tarjetas"
+					description="Añade una tarjeta para pagar tus suscripciones."
+				/>
+				<EmptyState
+					className={card}
+					media="file"
+					title="Sin archivos"
+					description="Esta carpeta está vacía."
+				/>
+				<EmptyState
+					className={card}
+					media="folder"
+					title="Sin carpetas"
+					description="Crea una carpeta para ordenar tus gastos."
+				/>
+				<EmptyState
+					className={card}
+					media="folder-glass"
+					title="Sin resultados"
+					description="Ninguna carpeta se llama así."
+				/>
+				<EmptyState
+					className={card}
+					media="users-radius"
+					items={PEOPLE}
+					title="Sin usuarios"
+					description="Nadie coincide con tu búsqueda."
+				/>
+				<EmptyState
+					className={card}
+					media="users-row"
+					icon="user-plus-01"
+					items={PEOPLE}
+					title="Invita a tu equipo"
+					description="Añade a las personas con las que compartes gastos."
+				/>
+				<EmptyState
+					className={card}
+					media="integrations"
+					items={LOGOS}
+					title="Sin integraciones"
+					description="Conecta tus herramientas para traer los datos."
+				/>
+			</div>
+		</div>
 	);
 }

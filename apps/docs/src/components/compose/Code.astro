@@ -1,7 +1,8 @@
 ---
 // Bloque de código en MDX: el `CodeSnippet` de @jotis-me/react, con su resaltado (los colores de la ficha), y no el
 // de Astro. Con `tabs`, una pestaña por versión; con `code`, un solo bloque.
-import { CodeSnippet, type CodeSnippetTab } from "@jotis-me/react";
+import type { CodeSnippetTab } from "@jotis-me/react";
+import CodeSnippet from "../CodeSnippetIsland";
 
 interface Props {
 	code?: string;

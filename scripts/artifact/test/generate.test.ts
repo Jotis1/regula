@@ -176,6 +176,17 @@ describe("tokens, fuentes y assets", () => {
 		expect(icon).not.toContain("currentColor");
 		expect(text("assets/Hand-drawn/arrow-01.svg")).toContain("#171717");
 	});
+
+	it("los logos de terceros van en «Marcas», aparte del grupo «Logos», con los grises en la tinta de los iconos", () => {
+		const marcas = manifest.assets.filter((a) => a.group === "Marcas").map((a) => a.name);
+		expect(marcas).toHaveLength(232 + 32 + 68);
+		expect(marcas).toContain("social-github-gray.svg");
+		expect(marcas).toContain("app-zapier.svg");
+		const gray = text("assets/Marcas/social-github-gray.svg");
+		expect(gray).toContain("#525252");
+		expect(gray).not.toContain("currentColor");
+		expect(manifest.assets.filter((a) => a.group === "Logos")).toEqual([]);
+	});
 });
 
 describe("índice", () => {

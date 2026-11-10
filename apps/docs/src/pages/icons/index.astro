@@ -3,12 +3,14 @@
 // tamaño y el panel responden al momento. Sin JavaScript se ven todos los iconos y el panel del primero.
 import { iconNames } from "@jotis-me/icons";
 import IconGallery from "../../components/IconGallery";
+import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
 <Base title="Iconos" description={`Los ${iconNames.length} iconos de línea de la suite: 24×24, trazo de 2px redondeado.`}>
 	<div class="flex flex-col gap-7">
 		<header class="flex max-w-[720px] flex-col gap-3.5">
+			<IconsNav current="icons" />
 			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Iconos</h1>
 			<p class="text-md text-tertiary lg:text-lg">
 				Los {iconNames.length} iconos de línea de la suite: 24 × 24, trazo de 2 px con extremos redondos y sin relleno.

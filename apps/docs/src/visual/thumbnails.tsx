@@ -12,12 +12,14 @@ import {
 	AvatarLabel,
 	BackgroundPattern,
 	Badge,
+	BadgeGroup,
 	Banner,
 	BarChart,
 	Breadcrumbs,
 	BrowserFrame,
 	Button,
 	ButtonGroup,
+	ButtonUtility,
 	CalendarView,
 	CamFrame,
 	CardHeader,
@@ -72,6 +74,7 @@ import {
 	ScaledPreview,
 	SectionFooter,
 	SectionHeader,
+	SectionLabel,
 	Select,
 	SidebarNav,
 	Skeleton,
@@ -191,6 +194,15 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	CloseButton: { render: () => <CloseButton /> },
+	ButtonUtility: {
+		render: () => (
+			<div className="flex items-center gap-1" style={{ paddingTop: 48 }}>
+				<ButtonUtility icon="copy-01" label="Copiar" tooltipOpen />
+				<ButtonUtility icon="edit-02" label="Editar" />
+				<ButtonUtility icon="trash-01" label="Borrar" />
+			</div>
+		),
+	},
 
 	// Formularios
 	Input: {
@@ -754,6 +766,18 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			</div>
 		),
 	},
+	BadgeGroup: {
+		render: () => (
+			<div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 12 }}>
+				<BadgeGroup badge="Nuevo" size="lg" href="#">
+					Hemos publicado los estados vacíos
+				</BadgeGroup>
+				<BadgeGroup badge="Ver" type="modern" badgePosition="trailing" size="lg" href="#">
+					Novedades de noviembre
+				</BadgeGroup>
+			</div>
+		),
+	},
 	Kbd: {
 		render: () => (
 			<div style={row}>
@@ -1017,6 +1041,23 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					actions={
 						<Button size="sm" iconLeading="plus">
 							Nuevo contacto
+						</Button>
+					}
+				/>
+			</div>
+		),
+	},
+	SectionLabel: {
+		render: () => (
+			<div style={{ paddingTop: 48 }}>
+				<SectionLabel
+					title="Equipo"
+					required
+					help="Quién puede ver y editar el proyecto."
+					description="Gestiona quién entra y con qué permisos."
+					actions={
+						<Button hierarchy="link-color" size="sm">
+							Invitar
 						</Button>
 					}
 				/>

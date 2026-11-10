@@ -153,6 +153,7 @@ export function playgroundOf(
 export const STARTS: Record<string, Start> = {
 	Button: { children: "Nuevo gasto" },
 	Badge: { children: "Pagado" },
+	BadgeGroup: { props: { badge: "Nuevo", href: "#" }, children: "Hemos publicado los estados vacíos" },
 	Tag: { children: "Facturas" },
 	Avatar: { props: { initials: "AD", alt: "Administrador" } },
 	AvatarGroup: { props: { items: [{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }] } },
@@ -164,6 +165,7 @@ export const STARTS: Record<string, Start> = {
 	Skeleton: { props: { width: 160, height: 40 } },
 	AppIcon: { props: { app: "regula", size: 64 } },
 	Icon: { props: { name: "refresh-cw-01", size: 24 } },
+	ButtonUtility: { props: { icon: "copy-01", label: "Copiar" } },
 	HelpIcon: { props: { title: "Qué incluye", text: "Impuestos incluidos, sin descuentos." } },
 	Input: { props: { label: "Correo", type: "email", placeholder: "tu@jotis.me" } },
 	NumberInput: { props: { label: "Invitados", defaultValue: 2, min: 1, max: 12 } },
@@ -298,6 +300,13 @@ export const STARTS: Record<string, Start> = {
 	SectionHeader: {
 		props: { title: "Contactos", description: "Personas y empresas con las que tratas." },
 		wide: true,
+	},
+	SectionLabel: {
+		props: {
+			title: "Equipo",
+			help: "Quién puede ver y editar el proyecto.",
+			description: "Gestiona quién entra y con qué permisos.",
+		},
 	},
 	ContentDivider: { props: { label: "o continúa con" }, wide: true },
 	BackgroundPattern: { props: { width: 480, height: 200 }, fill: 200 },

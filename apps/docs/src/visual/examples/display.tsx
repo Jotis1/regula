@@ -1,9 +1,48 @@
 // Puertos de las vistas previas de Badge, Tag y los avatares (reference/components/*/preview.html).
 
-import { Avatar, AvatarGroup, AvatarLabel, Badge, Kbd, Tag } from "@jotis-me/react";
+import { Avatar, AvatarGroup, AvatarLabel, Badge, BadgeGroup, Kbd, Tag } from "@jotis-me/react";
 import { row, stack } from "./actions";
 
 const noop = () => {};
+
+/** Los cinco colores en `pill` con el badge delante, y `modern` y el badge detrás en los dos tamaños. */
+export function BadgeGroupExample() {
+	return (
+		<div className="flex flex-col items-start gap-4">
+			<BadgeGroup badge="Versión 0.6" color="gray" href="#">
+				Ya puedes exportar a CSV
+			</BadgeGroup>
+			<BadgeGroup badge="Nuevo" href="#">
+				Hemos publicado los estados vacíos
+			</BadgeGroup>
+			<BadgeGroup badge="Error" color="error" href="#">
+				No se pudo sincronizar el banco
+			</BadgeGroup>
+			<BadgeGroup badge="Aviso" color="warning" href="#">
+				Tu tarjeta caduca este mes
+			</BadgeGroup>
+			<BadgeGroup badge="Listo" color="success" href="#">
+				Has completado tu perfil
+			</BadgeGroup>
+			<BadgeGroup badge="Ver" badgePosition="trailing" size="lg" href="#">
+				Novedades de noviembre
+			</BadgeGroup>
+			<BadgeGroup badge="Nuevo" type="modern" href="#">
+				Hemos publicado los estados vacíos
+			</BadgeGroup>
+			<BadgeGroup
+				badge="Arreglar"
+				type="modern"
+				color="error"
+				badgePosition="trailing"
+				size="lg"
+				href="#"
+			>
+				No se pudo sincronizar el banco
+			</BadgeGroup>
+		</div>
+	);
+}
 
 export function BadgeExample() {
 	return (

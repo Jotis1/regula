@@ -26,12 +26,25 @@ export {
 	type BadgeType,
 	type StatusColor,
 } from "./components/Badge.js";
+export {
+	BadgeGroup,
+	type BadgeGroupColor,
+	type BadgeGroupProps,
+	type BadgeGroupSize,
+	type BadgeGroupType,
+} from "./components/BadgeGroup.js";
 export { Banner, type BannerEmail, type BannerProps } from "./components/Banner.js";
 export { BarChart, type BarChartProps } from "./components/BarChart.js";
 export { type BreadcrumbItem, Breadcrumbs, type BreadcrumbsProps } from "./components/Breadcrumbs.js";
 export { BrowserFrame, type BrowserFrameProps } from "./components/BrowserFrame.js";
 export { Button, type ButtonHierarchy, type ButtonProps, type ButtonSize } from "./components/Button.js";
 export { ButtonGroup, type ButtonGroupItem, type ButtonGroupProps } from "./components/ButtonGroup.js";
+export {
+	ButtonUtility,
+	type ButtonUtilityHierarchy,
+	type ButtonUtilityProps,
+	type ButtonUtilitySize,
+} from "./components/ButtonUtility.js";
 export { type CalendarEvent, CalendarView, type CalendarViewProps } from "./components/CalendarView.js";
 export { CamFrame, type CamFrameProps, type CamFrameRatio } from "./components/CamFrame.js";
 export { CardHeader, type CardHeaderProps } from "./components/CardHeader.js";
@@ -94,7 +107,13 @@ export {
 	type DropdownItem,
 	type DropdownProps,
 } from "./components/Dropdown.js";
-export { EmptyState, type EmptyStateProps } from "./components/EmptyState.js";
+export {
+	EmptyState,
+	type EmptyStateIllustration,
+	type EmptyStateMedia,
+	type EmptyStateProps,
+	type EmptyStateSize,
+} from "./components/EmptyState.js";
 export {
 	FeaturedIcon,
 	type FeaturedIconProps,
@@ -168,6 +187,7 @@ export { RadioGroup, type RadioGroupOption, type RadioGroupProps } from "./compo
 export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPreview.js";
 export { SectionFooter, type SectionFooterProps } from "./components/SectionFooter.js";
 export { SectionHeader, type SectionHeaderProps } from "./components/SectionHeader.js";
+export { SectionLabel, type SectionLabelProps, type SectionLabelSize } from "./components/SectionLabel.js";
 export { Select, type SelectOption, type SelectProps } from "./components/Select.js";
 export {
 	SidebarNav,
@@ -178,7 +198,7 @@ export {
 export { Skeleton, type SkeletonProps } from "./components/Skeleton.js";
 export { Slideout, type SlideoutProps } from "./components/Slideout.js";
 export { Slider, type SliderProps } from "./components/Slider.js";
-export { Spinner, type SpinnerProps, type SpinnerSize } from "./components/Spinner.js";
+export { Spinner, type SpinnerProps, type SpinnerSize, type SpinnerVariant } from "./components/Spinner.js";
 export { StreamAlert, type StreamAlertProps } from "./components/StreamAlert.js";
 export {
 	StreamCountdown,

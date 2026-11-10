@@ -1,0 +1,30 @@
+---
+// Selector entre la galería de iconos y la de logos de terceros: dos enlaces con el aspecto de las pestañas
+// `button-minimal`, sin JavaScript. La página actual lleva `aria-current`.
+interface Props {
+	current: "icons" | "logos";
+}
+const { current } = Astro.props;
+const links = [
+	{ id: "icons", label: "Iconos", href: "/icons/" },
+	{ id: "logos", label: "Logos", href: "/icons/logos/" },
+] as const;
+---
+
+<nav aria-label="Iconos y logos">
+	<ul class="m-0 inline-flex list-none gap-1 rounded-lg bg-secondary_alt p-1 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+		{
+			links.map((l) => (
+				<li>
+					<a
+						href={l.href}
+						aria-current={l.id === current ? "page" : undefined}
+						class="inline-flex h-9 items-center rounded-md px-3 text-sm font-semibold text-quaternary no-underline transition-colors duration-100 hover:text-secondary focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current=page]:bg-primary_alt aria-[current=page]:text-secondary aria-[current=page]:shadow-[var(--shadow-sm),inset_0_0_0_1px_var(--border-primary)]"
+					>
+						{l.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>

@@ -11,7 +11,8 @@
 		"typecheck": "astro check",
 		"test:e2e": "playwright test",
 		"test": "vitest run",
-		"test:lighthouse": "lhci autorun"
+		"test:lighthouse": "lhci autorun",
+		"check:js": "bun run scripts/js-weight.ts"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^8.1.2",

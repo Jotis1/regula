@@ -133,7 +133,7 @@ describe("catálogo de secciones y fundamentos", () => {
 		expect(neighborsOf("Button")).toEqual({
 			prev: undefined,
 			next: "ButtonGroup",
-			related: ["ButtonGroup", "CloseButton"],
+			related: ["ButtonGroup", "ButtonUtility", "CloseButton"],
 		});
 		expect(neighborsOf("CloseButton").next).toBe("Input");
 		// El último de Componentes no salta a Stream, ni el primero de Stream vuelve a Componentes

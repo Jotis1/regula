@@ -63,7 +63,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "acciones",
 		label: "Acciones",
 		section: "components",
-		components: names("Button ButtonGroup CloseButton"),
+		components: names("Button ButtonGroup ButtonUtility CloseButton"),
 	},
 	{
 		id: "formularios",
@@ -99,7 +99,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "etiquetas-e-identidad",
 		label: "Etiquetas e identidad",
 		section: "components",
-		components: names("Badge Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon Kbd"),
+		components: names("Badge BadgeGroup Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon Kbd"),
 	},
 	{
 		id: "datos",
@@ -118,7 +118,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		label: "Estructura de página",
 		section: "components",
 		components: names(
-			"PageHeader CardHeader SectionHeader SectionFooter ContentDivider InlineCTA LinkCard",
+			"PageHeader CardHeader SectionHeader SectionLabel SectionFooter ContentDivider InlineCTA LinkCard",
 		),
 	},
 	{

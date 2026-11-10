@@ -4,8 +4,11 @@ import { expect, type Locator, type Page, test } from "@playwright/test";
 
 /** La burbuja es una isla `client:idle`: hasta que se hidrata, un clic en un `data-copy` no copia nada. */
 async function hydrated(page: Page) {
-	// La isla propia del componente, la de la página (Base): una página puede llevar más CopyTooltip dentro de otras islas
-	await expect(page.locator("astro-island[component-export=CopyTooltip]")).not.toHaveAttribute("ssr", /.*/);
+	// La isla de la página (Base, `CopyTooltipIsland`): una página puede llevar más CopyTooltip dentro de otras islas
+	await expect(page.locator("astro-island[component-url*=CopyTooltipIsland]")).not.toHaveAttribute(
+		"ssr",
+		/.*/,
+	);
 }
 
 const tooltip = (page: Page) => page.locator("[data-copy-tooltip]");
