@@ -57,3 +57,12 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 
 - **`@jotis-me/icons` 0.6.0 → este cambio:** 597 → 2.815 ficheros; 2,98 → 8,99 MB sin comprimir; tarball de 1,03 → 2,73 MB (`scripts/pack.ts`). Muy por debajo del umbral de 15 MB del design, así que los sets de color se quedan en el mismo paquete. Un import suelto empaquetado con `bun build` pesa lo que su dibujo: menos de 20 kB en todos los casos, 30 kB las carpetas con textura.
 - `check:package` (`publint` y `attw` con el perfil `esm-only`) pasa con las nueve entradas y sus comodines.
+
+## Galerías de la web
+
+- **Una sola isla para cinco galerías.** `AssetGallery` sustituye a `IconGallery` y sirve iconos, banderas, pagos, archivos y cursores (`/icons/`, `/icons/flags/`, `/icons/payments/`, `/icons/files/`, `/icons/cursors/`). Los logos siguen con su `LogoGallery`. `IconsNav` enlaza las seis y la navegación lateral y el índice de búsqueda tienen las cuatro nuevas; el índice lleva los 1.172 iconos.
+- **Nada de dibujos dentro de la isla.** Recibe las URL de los SVG (`import.meta.glob` con `?no-inline`) y los pinta como `<img loading="lazy">`. La rejilla enseña 96 y «Mostrar más» añade 240; buscar y filtrar recorren todo. Los iconos de línea son negros de origen (`currentColor` no llega a una `<img>`): en oscuro se invierten (`[.dark-mode_&]:invert`).
+- **Pesos.** HTML de `/icons/` 333 kB (antes de comprimir las props 614 kB), banderas 298 kB, pagos 228, archivos 237, cursores 224: todo bajo los 400 kB. Las props van como una cadena (`encodeUrls`) y no como un objeto por recurso. JS de las cinco páginas: 212,6 kB gzip, por el `Select` de la librería del filtro; `js-budget.json` sube a 234.
+- **Vite junta los SVG idénticos.** Ocho iconos tienen el mismo dibujo que otro y comparten fichero (y URL, con el nombre del primero). El nombre sale de la ruta del fichero, no de la URL, y viaja junto a ella.
+- **Código del panel.** Un icono del núcleo ofrece `IconXxx` y `<Icon name>`; uno fuera del núcleo, solo `IconXxx`. Los cursores añaden una pestaña CSS (el punto activo lo pones tú). El SVG de las carpetas con textura se recorta en el panel (lleva un PNG en base64).
+- **Aviso en `/icons/`** para quien viene de una versión anterior: `Icon name` acepta solo los 82 del núcleo.

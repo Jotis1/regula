@@ -165,11 +165,14 @@ function main() {
 	const check = process.argv.includes("--check");
 	if (!dir) throw new Error("Uso: bun run scripts/import-icons.ts <carpeta> [--check]");
 	const all = new Map<string, Parsed>();
+	// Categoría del Figma de cada icono (un marco por categoría), para el filtro de la galería de la web
+	const categories: Record<string, string[]> = {};
 	const warnings: string[] = [];
 	for (const [frame, expected] of Object.entries(EXPECTED)) {
 		const items = parseFrame(frame, readFileSync(join(dir, `${frame}.svg`), "utf8"));
 		if (items.length !== expected)
 			warnings.push(`${frame}: ${items.length} iconos, se esperaban ${expected}`);
+		categories[frame] = items.map((i) => i.name);
 		for (const it of items) {
 			// «colors» está en dos categorías (Images y Editor) con el mismo dibujo: cuenta como un icono
 			const prev = all.get(it.name);
@@ -198,6 +201,11 @@ function main() {
 		)
 		.join("");
 	const header = readFileSync(join(import.meta.dirname, "../src/data/icons.ts"), "utf8").split("\n")[0];
+	writeFileSync(
+		join(import.meta.dirname, "../assets/icon-categories.json"),
+		`${JSON.stringify(categories, null, 1)}
+`,
+	);
 	writeFileSync(
 		join(import.meta.dirname, "../src/data/icons.ts"),
 		`${header}\n// Los iconos que no vienen de la guía original salen del Figma con scripts/import-icons.ts.\n// Las claves se quedan como unión de nombres y los trazos como \`readonly string[]\`: con \`as const\`, 1.172 iconos son\n// un tipo demasiado complejo para TypeScript.\nconst defineIcons = <K extends string>(icons: { [P in K]: readonly string[] }) => icons;\n\nexport const icons = defineIcons({\n${body}});\n`,

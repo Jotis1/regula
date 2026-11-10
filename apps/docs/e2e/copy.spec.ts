@@ -60,6 +60,8 @@ for (const scheme of ["light", "dark"] as const) {
 			page.locator("astro-island").filter({ has: page.locator("#icon-search") }),
 		).not.toHaveAttribute("ssr", /.*/);
 		await hydrated(page);
+		// La galería enseña los primeros iconos: «calendar» se busca
+		await page.getByLabel("Buscar icono").fill("calendar");
 		await page.locator('[data-select="calendar"]').click();
 		const button = page.getByRole("button", { name: "Copiar nombre" });
 		await copyFrom(page, button);

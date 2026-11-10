@@ -21,6 +21,14 @@ La web SHALL mostrar los 1.172 iconos del set completo, todos los logos de terce
 - **WHEN** el usuario busca "github" y pulsa el logo de GitHub del set social
 - **THEN** el panel muestra sus variantes en color y en gris y su código importa ese logo de `@jotis-me/icons/logos`
 
+#### Scenario: Galería larga
+- **WHEN** se abre la galería de iconos, que tiene 1.172
+- **THEN** se ven los primeros con el recuento total («1172 iconos») y un botón «Mostrar más» que añade más, sin pedir los dibujos de los que no están a la vista, y el buscador recorre los 1.172
+
+#### Scenario: Filtrar por categoría
+- **WHEN** el usuario elige la categoría «Tiempo» en la galería de iconos
+- **THEN** solo quedan los iconos de esa categoría del Figma y el recuento dice cuántos son del total
+
 #### Scenario: Elegir una bandera
 - **WHEN** el usuario busca "spain" en la galería de banderas y pulsa la bandera
 - **THEN** el panel enseña el círculo, el cuadrado y el rectángulo, y su código importa de `@jotis-me/icons/flags`

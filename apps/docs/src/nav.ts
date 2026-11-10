@@ -61,6 +61,14 @@ export const docNav: NavSection[] = [
 		items: [
 			{ label: "Galería de iconos", href: "/icons/" },
 			{ label: "Logos de terceros", href: "/icons/logos/" },
+			{ label: "Banderas", href: "/icons/flags/", keywords: "paises countries" },
+			{
+				label: "Métodos de pago",
+				href: "/icons/payments/",
+				keywords: "pagos tarjetas visa mastercard",
+			},
+			{ label: "Iconos de archivo", href: "/icons/files/", keywords: "carpetas pdf extensiones" },
+			{ label: "Cursores", href: "/icons/cursors/", keywords: "puntero mouse" },
 		],
 		groups: [],
 	},

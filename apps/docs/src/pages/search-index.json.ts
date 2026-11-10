@@ -2,7 +2,7 @@
 // mismas fuentes que la web. La isla de búsqueda lo descarga al abrirse; el texto completo lo pone Pagefind.
 
 import { getCollection } from "astro:content";
-import { iconNames } from "@jotis-me/icons";
+import { allIconNames } from "@jotis-me/icons";
 import { colors, radius, shadows, spacing, type } from "@jotis-me/tokens";
 import type { APIRoute } from "astro";
 import { COMPONENT_KEYWORDS, groupOf, labelOf, slugOf } from "../lib/catalog";
@@ -73,7 +73,7 @@ export const GET: APIRoute = async () => {
 			href: "/foundations/states/",
 			keywords: row.name,
 		})),
-		...iconNames.map((name) => ({
+		...allIconNames.map((name) => ({
 			group: "icons" as const,
 			label: name,
 			description: "Icono",
