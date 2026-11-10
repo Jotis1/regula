@@ -21,3 +21,10 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 - **`Button iconOnly` se queda en `IconName`.** `ReactNode` incluye `undefined`, y rompería el discriminante entre botón con texto y botón de solo icono. Los iconos de cualquier set van en `iconLeading`/`iconTrailing`, que ya aceptaban nodos.
 - `ButtonUtility icon` usa `IconName | NonNullable<ReactNode>` para seguir siendo obligatorio.
 - Un icono pasado como nodo lleva el tamaño que le dé quien lo pasa (20 por defecto); el componente no lo fuerza.
+
+## Banderas
+
+- **261 países, no 260.** El marco del Figma trae 261 «Country»: 260 con componentes y uno con marcos normales (3 × 261 = 783 banderas). Se importan las 783.
+- **Nombre por país o región, no por código ISO.** Los códigos se repiten (Portugal y Azores = PT, Italia y Cerdeña = IT, Moldavia y Transnistria = MD) y 11 regiones no tienen (Canary Islands, Sicily, Tibet…), así que no dan nombres únicos. Los componentes son `FlagSpainCircle`, `FlagScotlandSquare`, `FlagCanaryIslandsRectangle`, y los ficheros `spain-circle.svg`. La galería busca por nombre en inglés, como los demás nombres del paquete.
+- **Importación** (`scripts/import-flags.ts`): la caja de cada bandera sale de la rejilla del marco (14 columnas cada 134 px, filas cada 52 px; círculo, cuadrado a +36 y rectángulo a +72) y se comprueba contra sus trazos. 34 círculos se pasan ~1 px de su caja (el marco del Figma los recorta): con el viewBox de la caja quedan recortados igual.
+- Las banderas reutilizan `makeLogo`, así que `size` es el alto en px y el ancho sigue la proporción (30×20 para el rectángulo).

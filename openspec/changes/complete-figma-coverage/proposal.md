@@ -10,7 +10,7 @@ Todo va en una sola PR y en este orden: cimientos de iconos, variantes de los co
 
 - **Cimientos de iconos** en `@jotis-me/icons`:
   - Set de iconos de línea completo: de 82 a los 1.172 del Figma.
-  - Entradas nuevas: banderas (260 países y regiones × círculo, cuadrado y rectángulo), métodos de pago (56 × `sm`/`md`), tipos de archivo (153), carpetas (8), emojis (18) y cursores (50).
+  - Entradas nuevas: banderas (261 países y regiones × círculo, cuadrado y rectángulo), métodos de pago (56 × `sm`/`md`), tipos de archivo (153), carpetas (8), emojis (18) y cursores (50).
 - **Variantes en componentes que ya existen**, como en el Figma:
   - Identidad y etiquetas: `Avatar` (verificado, contador, avatar de empresa), `AvatarGroup` (botón de añadir), `AvatarLabel` (tamaños), `Badge` (bandera, avatar, icono detrás, solo icono), `Tag` (bandera, avatar, casilla).
   - Botones: `ButtonGroup` (tamaños, solo icono, punto), `CloseButton` (tamaños, fondo oscuro).

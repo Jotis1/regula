@@ -75,3 +75,14 @@ for (const set of ["app", "integration", "social"]) {
 	}
 }
 console.log(`${logoCount} SVG de logos → dist/logos/`);
+
+// Banderas: @jotis-me/icons/flags/<pais>-<forma>.svg
+const flags = join(dist, "flags");
+rmSync(flags, { recursive: true, force: true });
+mkdirSync(flags, { recursive: true });
+let flagCount = 0;
+for (const f of readdirSync(join(sources, "flags")).filter((f) => f.endsWith(".svg"))) {
+	writeFileSync(join(flags, f), readFileSync(join(sources, "flags", f)));
+	flagCount++;
+}
+console.log(`${flagCount} SVG de banderas → dist/flags/`);

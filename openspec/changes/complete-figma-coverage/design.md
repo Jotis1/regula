@@ -106,10 +106,10 @@ Nodos del Figma. Las piezas internas («_») de cada fila se leen dentro de su n
   - `<set>Names`;
   - `"./<set>"` y `"./<set>/*"` en `exports`.
 - **Nombres:**
-  - banderas por código ISO o, si no lo hay, por nombre en kebab-case (`es`, `gb-sct`, `canary-islands`);
+  - banderas por el país o la región en kebab-case, no por código ISO (PT, IT y MD se repiten y 11 regiones no tienen): `FlagSpainCircle`, `FlagScotlandSquare`, `FlagCanaryIslandsRectangle`;
   - pagos, archivos, emojis y cursores por su nombre del Figma en kebab-case.
 - **Accesibilidad:** sin `title`, `aria-hidden`; con `title`, `role="img"`.
-- **Recorte:** un script por familia, con un test que compara los nombres guardados con la lista esperada (260 × 3, 56 × 2, 153, 8, 18, 50) y comprueba `viewBox` e ids únicos en cada SVG.
+- **Recorte:** un script por familia, con un test que compara los nombres guardados con la lista esperada (261 × 3, 56 × 2, 153, 8, 18, 50) y comprueba `viewBox` e ids únicos en cada SVG.
 
 ### D3. `@jotis-me/react` no importa recursos de color
 Banderas, pagos, archivos, emojis, cursores y logos llegan a los componentes como `ReactNode`, como ya pasa con los logos en `EmptyState`. Props afectadas:

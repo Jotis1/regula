@@ -22,7 +22,7 @@ La web SHALL mostrar los 1.172 iconos del set completo, todos los logos de terce
 - **THEN** el panel muestra sus variantes en color y en gris y su código importa ese logo de `@jotis-me/icons/logos`
 
 #### Scenario: Elegir una bandera
-- **WHEN** el usuario busca "españa" en la galería de banderas y pulsa la bandera
+- **WHEN** el usuario busca "spain" en la galería de banderas y pulsa la bandera
 - **THEN** el panel enseña el círculo, el cuadrado y el rectángulo, y su código importa de `@jotis-me/icons/flags`
 
 ## ADDED Requirements

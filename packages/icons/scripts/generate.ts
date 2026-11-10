@@ -117,3 +117,72 @@ ${logoLines.join("\n")}
 `,
 );
 console.log(`${logoLines.length} componentes de logo → src/logos.generated.tsx`);
+
+// Familias planas de recursos en color (assets/<carpeta>/<nombre>.svg): un componente suelto por fichero, con su SVG en
+// línea y marcado como puro, y la lista de nombres, en src/<entrada>.generated.tsx. Se reutiliza `makeLogo`.
+interface Family {
+	/** Entrada del paquete (`@jotis-me/icons/flags`) y nombre del fichero generado. */
+	entry: string;
+	/** Carpeta de assets. */
+	dir: string;
+	/** Nombre del componente a partir del nombre del fichero sin extensión. */
+	componentName: (slug: string) => string;
+	/** Nombre de la lista exportada (`flagNames`). */
+	listName: string;
+	description: string;
+}
+const pascalCase = (s: string) =>
+	s
+		.split("-")
+		.map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+		.join("");
+
+function generateFamily(f: Family) {
+	const dir = join(import.meta.dirname, "../assets", f.dir);
+	const files = readdirSync(dir)
+		.filter((x) => x.endsWith(".svg"))
+		.sort();
+	const seenNames = new Map<string, string>();
+	const slugs: string[] = [];
+	const lines: string[] = [];
+	for (const file of files) {
+		const slug = file.slice(0, -4);
+		const svg = readFileSync(join(dir, file), "utf8").trim();
+		const m = svg.match(
+			/^<svg [^>]*width="([\d.]+)" height="([\d.]+)" viewBox="([^"]+)"[^>]*>([\s\S]*)<\/svg>$/,
+		);
+		if (!m) throw new Error(`SVG inesperado: ${f.dir}/${file}`);
+		const [, w, h, viewBox, inner] = m;
+		const name = f.componentName(slug);
+		if (seenNames.has(name))
+			throw new Error(`${file} y ${seenNames.get(name)} dan el mismo componente ${name}`);
+		seenNames.set(name, file);
+		slugs.push(slug);
+		lines.push(
+			`export const ${name} = /* @__PURE__ */ makeLogo(${w}, ${h}, ${JSON.stringify(viewBox)}, ${JSON.stringify(inner)});`,
+		);
+	}
+	writeFileSync(
+		join(import.meta.dirname, `../src/${f.entry}.generated.tsx`),
+		`// Generado por scripts/generate.ts desde assets/${f.dir}/. No editar a mano.
+import { makeLogo } from "./logo.js";
+
+/** ${f.description} (\`@jotis-me/icons/${f.entry}/<nombre>.svg\`). */
+export const ${f.listName} = ${JSON.stringify(slugs)} as const;
+
+${lines.join("\n")}
+`,
+	);
+	console.log(`${lines.length} componentes de ${f.entry} → src/${f.entry}.generated.tsx`);
+}
+
+generateFamily({
+	entry: "flags",
+	dir: "flags",
+	listName: "flagNames",
+	description: "Los nombres de las banderas, como sus ficheros SVG: país o región y forma (`spain-circle`)",
+	componentName: (slug) => {
+		const m = slug.match(/^(.*)-(circle|square|rectangle)$/) as RegExpMatchArray;
+		return `Flag${pascalCase(m[1] as string)}${pascalCase(m[2] as string)}`;
+	},
+});

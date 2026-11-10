@@ -24,7 +24,7 @@ El paquete de iconos SHALL incluir los 1.172 iconos de línea del Figma «Yoruve
 ## ADDED Requirements
 
 ### Requirement: Banderas
-El paquete SHALL publicar en `@jotis-me/icons/flags` las 260 banderas del Figma, en círculo, cuadrado y rectángulo, como componentes sueltos y como SVG, con nombre por código de país o región y decorativas salvo que lleven `title`.
+El paquete SHALL publicar en `@jotis-me/icons/flags` las 261 banderas del Figma, en círculo, cuadrado y rectángulo, como componentes sueltos y como SVG, con nombre por el país o la región en kebab-case y decorativas salvo que lleven `title`.
 
 #### Scenario: Bandera con nombre
 - **WHEN** se pinta la bandera de España en círculo con `title="España"`
