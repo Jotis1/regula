@@ -6,11 +6,11 @@ import { cx } from "../internal/cx.js";
 import { OVERLAY, OVERLAY_POSITION } from "../internal/overlay.js";
 import { defaultStrings } from "../internal/strings.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import { Icon, type IconName } from "./Icon.js";
+import { Icon, type IconName, iconSlot } from "./Icon.js";
 import { Kbd } from "./Kbd.js";
 
 export interface CommandItem {
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	label: string;
 	/** Texto de apoyo tras la etiqueta, en `text-tertiary`. */
 	description?: string;
@@ -220,7 +220,7 @@ export function CommandMenu({
 										onClick={() => run(item)}
 										className="mx-2 my-0.5 flex cursor-pointer items-center gap-2 rounded-lg py-2 pr-2 pl-2.5 text-sm font-medium text-secondary aria-selected:bg-primary_hover aria-selected:text-secondary_hover group-has-[input:focus]/cmd:aria-selected:shadow-focus-ring [&_svg]:text-fg-quaternary"
 									>
-										{item.icon ? <Icon name={item.icon} size={20} /> : null}
+										{item.icon ? iconSlot(item.icon, 20) : null}
 										<span className="flex min-w-0 flex-1 items-baseline gap-2">
 											{/* La etiqueta no se parte: si no cabe todo, se recorta la descripción */}
 											<span className="shrink-0 whitespace-nowrap">{item.label}</span>

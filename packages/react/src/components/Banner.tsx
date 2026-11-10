@@ -23,7 +23,7 @@ export interface BannerProps {
 	title: ReactNode;
 	description?: ReactNode;
 	/** Icono destacado de 48px: `modern` en el tema por defecto y `light` en `brand`. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	actions?: ReactNode;
 	/** Campo de correo de 360px con botón, para captar suscripciones. */
 	email?: BannerEmail;

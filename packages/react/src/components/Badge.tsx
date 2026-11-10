@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon, type IconName } from "./Icon.js";
+import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 export type StatusColor = "gray" | "brand" | "error" | "warning" | "success";
 export type BadgeColor = StatusColor | "slate" | "sky" | "blue" | "indigo" | "purple" | "pink" | "orange";
@@ -18,7 +18,7 @@ export interface BadgeProps {
 	/** Punto de color antes del texto. */
 	dot?: boolean;
 	/** Icono de 12px antes del texto. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** Muestra una X para quitarlo. */
 	onRemove?: () => void;
 	/** Nombre accesible de la X. Por defecto, "Quitar". */
@@ -142,7 +142,7 @@ export function Badge({
 			{dot ? (
 				<span aria-hidden="true" className={cx("m-px size-1.5 shrink-0 rounded-full", palette.dot)} />
 			) : null}
-			{icon ? <Icon name={icon} size={12} /> : null}
+			{icon ? iconSlot(icon, 12) : null}
 			{children}
 			{onRemove ? (
 				<button

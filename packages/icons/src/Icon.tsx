@@ -1,10 +1,15 @@
 import type { SVGProps } from "react";
-import { icons } from "./data/icons.js";
+import { coreIcons } from "./data/core.generated.js";
+import { coreNames, type IconName } from "./data/core-names.js";
+import { IconSvg } from "./icon-svg.js";
 
-export type IconName = keyof typeof icons;
+export type { IconName };
 
-/** Los nombres de los iconos del set: los de la guía original, en su orden, y los que se han añadido después. */
-export const iconNames = Object.keys(icons) as IconName[];
+/**
+ * Los nombres que acepta `Icon`: los 82 del núcleo. Todo el set del Figma (`allIconNames`) se pinta con su componente
+ * suelto (`IconRocket02`), que lleva su propio dibujo y no pesa nada si no se importa.
+ */
+export const iconNames: readonly IconName[] = coreNames;
 
 export interface IconProps extends Omit<SVGProps<SVGSVGElement>, "name" | "children"> {
 	name: IconName;
@@ -17,41 +22,13 @@ export interface IconProps extends Omit<SVGProps<SVGSVGElement>, "name" | "child
 	spin?: boolean;
 }
 
-const SPIN_CSS =
-	"@keyframes jm-icon-spin{to{transform:rotate(360deg)}}.jm-icon-spin{animation:jm-icon-spin 1s linear infinite;transform-origin:center}@media (prefers-reduced-motion:reduce){.jm-icon-spin{animation:none}}";
-
-/** Icono de línea del set (24×24, trazo de 2px redondeado) que toma el color del texto. */
-export function Icon({ name, size = 20, strokeWidth = 2, title, spin, className, ...rest }: IconProps) {
-	const paths: readonly string[] = icons[name] ?? [];
-	const classes = [spin ? "jm-icon-spin" : "", className ?? ""].filter(Boolean).join(" ") || undefined;
-	return (
-		// biome-ignore lint/a11y/noSvgWithoutTitle: con `title` lleva <title>; sin él es decorativo y va con aria-hidden
-		<svg
-			width={size}
-			height={size}
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth={strokeWidth}
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			aria-hidden={title ? undefined : true}
-			role={title ? "img" : undefined}
-			focusable="false"
-			className={classes}
-			{...rest}
-		>
-			{title ? <title>{title}</title> : null}
-			{spin ? <style>{SPIN_CSS}</style> : null}
-			{paths.map((d) => (
-				<path key={d} d={d} />
-			))}
-		</svg>
-	);
+/** Icono de línea del núcleo (24×24, trazo de 2px redondeado) que toma el color del texto. */
+export function Icon({ name, ...rest }: IconProps) {
+	return <IconSvg paths={coreIcons[name] ?? []} {...rest} />;
 }
 
 /** El icono como SVG independiente con `currentColor`, para Astro o HTML sin React. */
 export function iconSvg(name: IconName, size = 24): string {
-	const paths = icons[name].map((d) => `<path d="${d}"/>`).join("");
+	const paths = coreIcons[name].map((d) => `<path d="${d}"/>`).join("");
 	return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 }

@@ -4,13 +4,13 @@ import { type ReactNode, useState } from "react";
 import { TreeItem as AriaTreeItem, type Key, Tree, TreeItemContent } from "react-aria-components";
 import { cx } from "../internal/cx.js";
 import { useControllable } from "../internal/use-controllable.js";
-import { Icon, type IconName } from "./Icon.js";
+import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 export interface TreeItem {
 	id: string;
 	label: ReactNode;
 	/** Icono de 16px. Por defecto, `folder` si tiene hijos y `file-04` si no. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** Dato a la derecha, como el tamaño del archivo. */
 	meta?: ReactNode;
 	children?: TreeItem[];
@@ -107,7 +107,7 @@ export function TreeView({
 										/>
 									) : null}
 								</span>
-								<Icon name={item.icon ?? (kids ? "folder" : "file-04")} size={16} />
+								{iconSlot(item.icon ?? (kids ? "folder" : "file-04"), 16)}
 								<span className="min-w-0 flex-1 truncate">{item.label}</span>
 								{item.meta != null ? (
 									<span className="text-xs font-medium text-quaternary">{item.meta}</span>

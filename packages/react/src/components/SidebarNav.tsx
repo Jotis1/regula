@@ -4,11 +4,11 @@ import { defaultStrings } from "../internal/strings.js";
 import { AvatarLabel, type AvatarLabelProps } from "./AvatarLabel.js";
 import { Badge } from "./Badge.js";
 import { Button } from "./Button.js";
-import { Icon, type IconName } from "./Icon.js";
+import { type IconName, iconSlot } from "./Icon.js";
 import { Input } from "./Input.js";
 
 export interface SidebarNavItem {
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	label: ReactNode;
 	href?: string;
 	/** Página actual: fondo `bg-secondary_hover` y `aria-current="page"`. */
@@ -54,7 +54,7 @@ function NavList({ items }: { items: SidebarNavItem[] }) {
 			{items.map((item, i) => {
 				const content = (
 					<>
-						{item.icon ? <Icon name={item.icon} size={24} /> : null}
+						{item.icon ? iconSlot(item.icon, 24) : null}
 						{item.label}
 						{item.badge != null ? (
 							<Badge size="sm" color="gray" className="ml-auto">

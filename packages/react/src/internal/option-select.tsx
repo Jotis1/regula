@@ -12,7 +12,7 @@ import {
 } from "react-aria-components";
 import { Avatar, type AvatarProps } from "../components/Avatar.js";
 import { COLOR, type StatusColor } from "../components/Badge.js";
-import { Icon, type IconName } from "../components/Icon.js";
+import { Icon, type IconName, iconSlot } from "../components/Icon.js";
 import { cx } from "./cx.js";
 import { addonClasses, controlClasses, type FieldSize } from "./field.js";
 
@@ -25,7 +25,7 @@ export type SelectOption =
 			/** Texto de apoyo tras la etiqueta, en `text-tertiary` (p. ej. "@olivia"). */
 			supporting?: ReactNode;
 			/** Icono delante, 20px en `fg-quaternary`. */
-			icon?: IconName;
+			icon?: IconName | ReactNode;
 			/** Avatar delante (`xs`, 24px). */
 			avatar?: Pick<AvatarProps, "src" | "alt" | "initials">;
 			/** Punto de estado delante, del color indicado. */
@@ -39,7 +39,7 @@ interface Option {
 	value: string;
 	label: ReactNode;
 	supporting?: ReactNode;
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	avatar?: Pick<AvatarProps, "src" | "alt" | "initials">;
 	dot?: StatusColor;
 	disabled?: boolean;
@@ -59,9 +59,7 @@ function OptionBody({ option }: { option: Option }) {
 	return (
 		<>
 			{option.icon ? (
-				<span className="inline-flex flex-none text-fg-quaternary">
-					<Icon name={option.icon} size={20} />
-				</span>
+				<span className="inline-flex flex-none text-fg-quaternary">{iconSlot(option.icon, 20)}</span>
 			) : null}
 			{option.avatar ? (
 				<span aria-hidden="true" className="inline-flex flex-none">
@@ -107,7 +105,7 @@ export interface OptionSelectProps {
 	/** Con `addon`, a qué lado del valor va. */
 	position?: "leading" | "trailing";
 	/** Icono inicial del campo, 20px en `fg-quaternary`. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	className?: string;
 }
 
@@ -185,9 +183,7 @@ export function OptionSelect({
 				}
 			>
 				{field && icon ? (
-					<span className="inline-flex flex-none text-fg-quaternary">
-						<Icon name={icon} size={20} />
-					</span>
+					<span className="inline-flex flex-none text-fg-quaternary">{iconSlot(icon, 20)}</span>
 				) : null}
 				<SelectValue
 					className={cx(

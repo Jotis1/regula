@@ -18,7 +18,7 @@ import { Icon, type IconName } from "./Icon.js";
 
 /** Una acción del menú, o un submenú si lleva `items`. */
 export interface ContextMenuAction {
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	label: ReactNode;
 	/** Atajo de teclado que se muestra a la derecha (solo texto; no lo registra). */
 	shortcut?: string;

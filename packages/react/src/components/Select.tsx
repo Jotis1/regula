@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { type ReactNode, useId } from "react";
 import { type FieldProps, FieldShell, type FieldSize } from "../internal/field.js";
 import { OptionSelect, type SelectOption } from "../internal/option-select.js";
 import type { IconName } from "./Icon.js";
@@ -22,7 +22,7 @@ export interface SelectProps extends FieldProps {
 	 */
 	size?: FieldSize;
 	/** Icono inicial, 20px en `fg-quaternary`. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	disabled?: boolean;
 	/** Nombre del campo al enviar el formulario. */
 	name?: string;

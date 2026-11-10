@@ -10,7 +10,7 @@ import { Button } from "./Button.js";
 import type { IconName } from "./Icon.js";
 
 export interface DropdownAction {
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	label: ReactNode;
 	/** Atajo de teclado que se muestra a la derecha (solo texto; no lo registra). */
 	shortcut?: string;

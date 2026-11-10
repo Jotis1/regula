@@ -8,7 +8,7 @@ import { type IconName, iconSlot } from "./Icon.js";
 export interface ButtonGroupItem {
 	value: string;
 	label?: ReactNode;
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 }
 
 export interface ButtonGroupProps {

@@ -15,7 +15,7 @@ import {
 } from "../internal/field.js";
 import { OptionSelect, type SelectOption } from "../internal/option-select.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon, type IconName } from "./Icon.js";
+import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 /** Desplegable dentro del campo: prefijo telefónico, divisa… Su valor va aparte del texto. */
 export interface InputAddonSelect {
@@ -39,9 +39,9 @@ export interface InputProps
 	 */
 	size?: FieldSize;
 	/** Icono inicial, 20px en `fg-quaternary`. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** Icono final, 16px. Con error se sustituye por el de alerta. */
-	trailing?: IconName;
+	trailing?: IconName | ReactNode;
 	/** Texto fijo delante del valor (`https://`), en `text-tertiary` y separado por un borde. No forma parte del valor. */
 	prefix?: ReactNode;
 	/** Desplegable delante del valor, sin separador (prefijo telefónico). */
@@ -113,7 +113,7 @@ export function Input({
 
 	const field = (
 		<>
-			{icon ? <Icon name={icon} size={20} /> : null}
+			{icon ? iconSlot(icon, 20) : null}
 			<input
 				id={id}
 				type={password && revealed ? "text" : type}
@@ -128,9 +128,7 @@ export function Input({
 					<Icon name="alert-circle" size={16} />
 				</span>
 			) : trailing && !password ? (
-				<span className="inline-flex">
-					<Icon name={trailing} size={16} />
-				</span>
+				<span className="inline-flex">{iconSlot(trailing, 16)}</span>
 			) : null}
 			{password ? (
 				<button

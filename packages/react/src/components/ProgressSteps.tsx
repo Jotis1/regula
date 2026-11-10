@@ -19,7 +19,7 @@ export interface ProgressStep {
 	/** Texto de apoyo bajo el título. */
 	description?: ReactNode;
 	/** Icono del marcador `featured`. Sin él, ese paso enseña su número. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 }
 
 export interface ProgressStepsLabels {
@@ -81,7 +81,7 @@ function Marker({
 	size: ProgressStepsSize;
 	state: State;
 	index: number;
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 }) {
 	const base = cx("relative flex flex-none items-center justify-center rounded-full", MARK[size]);
 	if (marker === "featured" && icon)

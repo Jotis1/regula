@@ -1,9 +1,9 @@
 "use client";
 
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactElement } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactElement, ReactNode } from "react";
 import type { BubbleSide } from "../internal/bubble.js";
 import { cx } from "../internal/cx.js";
-import { Icon, type IconName } from "./Icon.js";
+import { type IconName, iconSlot } from "./Icon.js";
 import { Tooltip } from "./Tooltip.js";
 
 export type ButtonUtilityHierarchy = "secondary" | "tertiary";
@@ -11,7 +11,7 @@ export type ButtonUtilitySize = "xs" | "sm";
 
 interface Base {
 	/** Icono del botón: 16px en `xs`, 20px en `sm`. */
-	icon: IconName;
+	icon: IconName | NonNullable<ReactNode>;
 	/** Nombre accesible y texto del tooltip. Obligatorio: el botón no lleva texto visible. */
 	label: string;
 	/**
@@ -75,7 +75,7 @@ export function ButtonUtility({
 	...rest
 }: ButtonUtilityProps) {
 	const classes = cx(BASE, HIERARCHY[hierarchy], className);
-	const glyph = <Icon name={icon} size={size === "xs" ? 16 : 20} />;
+	const glyph = iconSlot(icon, size === "xs" ? 16 : 20);
 	let control: ReactElement;
 	let inactive: boolean;
 	if ("href" in rest && rest.href !== undefined) {

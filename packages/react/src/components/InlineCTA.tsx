@@ -11,7 +11,7 @@ export interface InlineCTAProps {
 	/** Los botones: siempre uno para descartar ("Ahora no") y la acción, la última. */
 	actions?: ReactNode;
 	/** Icono destacado (`FeaturedIcon` modern gris de 48px) sobre el título. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** Imagen a la izquierda (240px de ancho): una URL o un nodo. */
 	image?: string | ReactNode;
 	/** Texto alternativo de la imagen cuando es una URL. Sin él, la imagen es decorativa. */

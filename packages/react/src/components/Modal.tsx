@@ -18,7 +18,7 @@ export interface ModalProps {
 	title: ReactNode;
 	description?: ReactNode;
 	/** Icono destacado sobre el título (`FeaturedIcon` de 48px). */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** Color del icono. Por defecto, `brand` (`error` si es `destructive`). */
 	color?: StatusColor;
 	/**

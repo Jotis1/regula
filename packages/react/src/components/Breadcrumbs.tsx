@@ -1,13 +1,13 @@
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon, type IconName } from "./Icon.js";
+import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 export interface BreadcrumbItem {
 	label: string;
 	href?: string;
 	/** Icono en lugar del texto (el texto queda para lectores de pantalla). Pensado para el primero, `home-line`. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 }
 
 export interface BreadcrumbsProps {
@@ -33,7 +33,7 @@ export function Breadcrumbs({ items, className, ...rest }: BreadcrumbsProps) {
 					const content =
 						item.icon && !last ? (
 							<>
-								<Icon name={item.icon} size={20} />
+								{iconSlot(item.icon, 20)}
 								<span className="sr-only">{item.label}</span>
 							</>
 						) : (

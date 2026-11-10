@@ -5,7 +5,7 @@ import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Badge } from "./Badge.js";
 import { Button } from "./Button.js";
-import { Icon, type IconName } from "./Icon.js";
+import { Icon, type IconName, iconSlot } from "./Icon.js";
 import { Slideout } from "./Slideout.js";
 
 export type HeaderNavType = "simple" | "dual-tier" | "tabs" | "centered";
@@ -18,7 +18,7 @@ export interface HeaderNavItem {
 	/** Contador a la derecha, en un `Badge` gris. */
 	badge?: ReactNode;
 	/** Icono del menú móvil (24px). En el escritorio no se pinta. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/**
 	 * Subsecciones. En `dual-tier`, `tabs` y `centered`, las de la sección actual van en una segunda fila; en el menú móvil,
 	 * la sección se despliega.
@@ -122,7 +122,7 @@ function MobileSection({ item, onNavigate }: { item: HeaderNavItem; onNavigate: 
 	const [open, setOpen] = useState(Boolean(item.current && item.children?.length));
 	const content = (
 		<>
-			{item.icon ? <Icon name={item.icon} size={24} /> : null}
+			{item.icon ? iconSlot(item.icon, 24) : null}
 			{item.label}
 			{item.badge != null ? (
 				<Badge size="sm" color="gray" className="ml-auto">
@@ -296,7 +296,7 @@ export function HeaderNav({
 												onClick={close}
 												className={cx(MOBILE_ITEM, MOBILE_LINK)}
 											>
-												{item.icon ? <Icon name={item.icon} size={24} /> : null}
+												{item.icon ? iconSlot(item.icon, 24) : null}
 												{item.label}
 												{item.badge != null ? (
 													<span className="ml-auto">{item.badge}</span>

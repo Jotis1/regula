@@ -15,3 +15,4 @@ export {
 } from "./app-icon.js";
 export * from "./components.generated.js";
 export { Icon, type IconName, type IconProps, iconNames, iconSvg } from "./Icon.js";
+export { type AnyIconName, allIconNames } from "./names.generated.js";

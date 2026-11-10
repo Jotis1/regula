@@ -1,13 +1,14 @@
+import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import type { StatusColor } from "./Badge.js";
-import { Icon, type IconName } from "./Icon.js";
+import { type IconName, iconSlot } from "./Icon.js";
 
 export type FeaturedIconSize = "sm" | "md" | "lg" | "xl";
 export type FeaturedIconVariant = "light" | "modern" | "outline";
 
 export interface FeaturedIconProps {
 	/** Por defecto, `check-circle`. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** Tiene que coincidir con el significado del contenedor: un modal de borrado lleva `error`. */
 	color?: StatusColor;
 	/** Lado: `sm` 32 · `md` 40 · `lg` 48 · `xl` 56. */
@@ -68,7 +69,7 @@ export function FeaturedIcon({
 				className,
 			)}
 		>
-			<Icon name={icon} size={ICON_SIZE[size]} />
+			{iconSlot(icon, ICON_SIZE[size])}
 		</span>
 	);
 }

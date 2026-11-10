@@ -26,7 +26,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
   - cada dibujo tiene trazo `currentColor` y viewBox 24×24.
 
   Mirar una muestra por categoría en claro y oscuro.
-- [ ] 1.2 Separar el set núcleo del completo (design D1):
+- [x] 1.2 Separar el set núcleo del completo (design D1):
   - `src/data/core.ts` con `IconName` y `iconNames`, y `allIconNames`;
   - `scripts/generate.ts` crea cada `IconXxx` con su dibujo en línea;
   - `dist/svg/` con los 1.172.

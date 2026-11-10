@@ -21,7 +21,7 @@ export interface AlertProps {
 	/** Nombre de la X. @default "Descartar" */
 	closeLabel?: string;
 	/** Icono propio. Por defecto, uno según el color (`alert-circle` en error, `check-circle` en éxito…). */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/**
 	 * `floating`: tarjeta con borde y radio. `full`: a todo el ancho, sin radio y con línea inferior.
 	 * @default "floating"
