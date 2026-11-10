@@ -14,7 +14,7 @@ Comandos: `bun run --cwd apps/docs build`, `bunx biome ci .`, `bunx turbo run ty
 ## 3. Límites en CI
 
 - [x] 3.1 Crear `apps/docs/js-budget.json` con un `default` y las rutas que necesiten más, a partir de lo medido tras el arreglo más un 10 % (design D3), y hacer que `check:js` falle con la página, su peso y su límite. Test: un `dist` de prueba que se pasa del límite hace fallar el comando con ese mensaje.
-- [ ] 3.2 Añadir `bun run --cwd apps/docs check:js` al job de CI que construye la web (`.github/workflows/ci.yml`), tras el build y junto a `check:size`. Verificar en el CI del PR que el paso pasa y que Lighthouse da al menos 90 en rendimiento móvil en las cuatro páginas; si no, aplicar design D4 y anotar lo medido.
+- [x] 3.2 Añadir `bun run --cwd apps/docs check:js` al job de CI que construye la web (`.github/workflows/ci.yml`), tras el build y junto a `check:size`. Verificar en el CI del PR que el paso pasa y que Lighthouse da al menos 90 en rendimiento móvil en las cuatro páginas; si no, aplicar design D4 y anotar lo medido. **Hecho en la PR #22: el paso pasa; Lighthouse dio 88 en `/components/` en el primer intento (FCP 2,0 s y LCP 3,7 s, la inestabilidad conocida del runner) y en el reintento `/` 96, `/components/` 96, `/components/button/` 93 y `/foundations/color/` 98, todas con TBT 0 ms y accesibilidad 100. No hizo falta D4.**
 
 ## Workflow follow-up
 
