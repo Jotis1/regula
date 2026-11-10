@@ -186,3 +186,14 @@ generateFamily({
 		return `Flag${pascalCase(m[1] as string)}${pascalCase(m[2] as string)}`;
 	},
 });
+
+generateFamily({
+	entry: "payments",
+	dir: "payments",
+	listName: "paymentNames",
+	description: "Los nombres de los iconos de pago, como sus ficheros SVG: método y tamaño (`visa-md`)",
+	componentName: (slug) => {
+		const m = slug.match(/^(.*)-(sm|md)$/) as RegExpMatchArray;
+		return `Payment${pascalCase(m[1] as string)}${pascalCase(m[2] as string)}`;
+	},
+});

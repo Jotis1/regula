@@ -38,7 +38,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 
   En `@jotis-me/react`, comprobar que `iconSlot` y las props `icon*` aceptan nodos (requisito «Iconos de cualquier set en los componentes») y medir `check:size`.
 - [x] 1.3 Banderas en `@jotis-me/icons/flags` (design D2) desde `11834:15048`. Test de nombres (261 × circle, square, rectangle), `viewBox`, sin ids y accesibilidad con y sin `title`.
-- [ ] 1.4 Pagos en `@jotis-me/icons/payments` desde `1142:83268` (56 × `sm`, `md`), con los mismos tests.
+- [x] 1.4 Pagos en `@jotis-me/icons/payments` desde `1142:83268` (56 × `sm`, `md`), con los mismos tests.
 - [ ] 1.5 Archivos (`4916:411695`, 153) y carpetas (`7585:9240`, 8) en `@jotis-me/icons/files`, con los mismos tests.
 - [ ] 1.6 Emojis (`1244:296`, 18) en `@jotis-me/icons/emoji` y cursores (`9342:257073`, 50) en `@jotis-me/icons/cursors`, con los mismos tests y un e2e que use un cursor en CSS.
 - [ ] 1.7 `exports`, `check:package` (`publint`, `attw`) y medida del tarball con `scripts/pack.ts` antes y después, anotada. Si pasa de 15 MB sin comprimir, parar y preguntar (Risks). Changeset `minor` de `@jotis-me/icons` con la ruptura de `IconName` declarada.

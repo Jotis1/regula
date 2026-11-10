@@ -33,12 +33,17 @@
 			"types": "./dist/flags.d.ts",
 			"default": "./dist/flags.js"
 		},
+		"./payments": {
+			"types": "./dist/payments.d.ts",
+			"default": "./dist/payments.js"
+		},
 		"./svg/*": "./dist/svg/*",
 		"./app-icons/*": "./dist/app-icons/*",
 		"./hand-drawn/*": "./dist/hand-drawn/*",
 		"./patterns/*": "./dist/patterns/*",
 		"./logos/*": "./dist/logos/*",
 		"./flags/*": "./dist/flags/*",
+		"./payments/*": "./dist/payments/*",
 		"./package.json": "./package.json"
 	},
 	"scripts": {

@@ -76,13 +76,15 @@ for (const set of ["app", "integration", "social"]) {
 }
 console.log(`${logoCount} SVG de logos → dist/logos/`);
 
-// Banderas: @jotis-me/icons/flags/<pais>-<forma>.svg
-const flags = join(dist, "flags");
-rmSync(flags, { recursive: true, force: true });
-mkdirSync(flags, { recursive: true });
-let flagCount = 0;
-for (const f of readdirSync(join(sources, "flags")).filter((f) => f.endsWith(".svg"))) {
-	writeFileSync(join(flags, f), readFileSync(join(sources, "flags", f)));
-	flagCount++;
+// Recursos en color de carpeta plana, uno por entrada: @jotis-me/icons/<entrada>/<nombre>.svg
+for (const [folder, what] of [
+	["flags", "banderas"],
+	["payments", "iconos de pago"],
+] as const) {
+	const target = join(dist, folder);
+	rmSync(target, { recursive: true, force: true });
+	mkdirSync(target, { recursive: true });
+	const files = readdirSync(join(sources, folder)).filter((f) => f.endsWith(".svg"));
+	for (const f of files) writeFileSync(join(target, f), readFileSync(join(sources, folder, f)));
+	console.log(`${files.length} SVG de ${what} → dist/${folder}/`);
 }
-console.log(`${flagCount} SVG de banderas → dist/flags/`);
