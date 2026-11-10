@@ -20,10 +20,6 @@ export type FlagShape = (typeof SHAPES)[number]["name"];
 const GRID = { x0: 16, y0: 16, dx: 134, dy: 52, cols: 14, h: 20 };
 
 const attr = (el: El, name: string) => el.attrs.find(([k]) => k === name)?.[1];
-const walk = (el: El, fn: (e: El) => void) => {
-	fn(el);
-	for (const c of el.children) walk(c, fn);
-};
 // Lo que no se pinta tal cual (máscaras, recortes, patrones, filtros y definiciones) no cuenta para medir la caja
 const NOT_DRAWN = new Set(["mask", "clipPath", "pattern", "filter", "defs"]);
 const walkDrawn = (el: El, fn: (e: El) => void) => {
