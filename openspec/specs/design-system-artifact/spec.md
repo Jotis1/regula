@@ -17,7 +17,7 @@ Los tokens, iconos, iconos de app, adornos, componentes, fichas y la guía SHALL
 - **THEN** la página está en solo lectura e indica que se cambia en el código
 
 ### Requirement: Generación completa del artefacto
-Un comando del repo SHALL generar, sin red, la carpeta `project/` del artefacto con: el índice, `tokens.json`, la guía (`README.md` y secciones), las fuentes, cada componente del catálogo con su ficha y su vista previa, el bundle, la hoja y los tipos, y los grupos de assets de iconos de app, adornos y patrones.
+Un comando del repo SHALL generar, sin red, la carpeta `project/` del artefacto con: el índice, `tokens.json`, la guía (`README.md` y secciones), las fuentes, cada componente del catálogo con su ficha y su vista previa, el bundle, la hoja y los tipos, y los grupos de assets de iconos de app, adornos, patrones y logos de terceros.
 
 #### Scenario: Un componente por ficha
 - **WHEN** se genera el artefacto
@@ -30,6 +30,10 @@ Un comando del repo SHALL generar, sin red, la carpeta `project/` del artefacto 
 #### Scenario: Límites del tipo
 - **WHEN** se genera el artefacto
 - **THEN** ningún fichero pasa de 15 MiB, el bundle no pasa de 6 MB ni contiene `</script` ni `<!--`, y el total queda por debajo de 1.008 ficheros
+
+#### Scenario: Logos de terceros
+- **WHEN** se genera el artefacto
+- **THEN** su índice tiene un grupo de assets con cada logo de `@jotis-me/icons/logos` en SVG, separado del grupo «Logos» que se conserva del publicado
 
 ### Requirement: Componentes reales en el artefacto
 El bundle del artefacto SHALL ser `@jotis-me/react` compilado como un único script clásico que lee React de `window.React` y expone los componentes en `window.Jotis` con los mismos nombres y props que el paquete.
