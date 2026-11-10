@@ -117,8 +117,8 @@ La web SHALL servirse como sitio estático en `https://regula.jotis.me` con HTTP
 Las páginas de la web SHALL pasar axe sin violaciones serias o críticas y SHALL obtener al menos 90 en Lighthouse en rendimiento y accesibilidad en móvil.
 
 #### Scenario: Auditoría en CI
-- **WHEN** se ejecuta la auditoría sobre la portada, una página de fundamentos y una de componente
-- **THEN** las tres superan los umbrales
+- **WHEN** se ejecuta la auditoría sobre la portada, el índice de componentes, una página de fundamentos y una de componente
+- **THEN** las cuatro superan los umbrales
 
 ### Requirement: Portada
 La portada SHALL presentar qué es Regula, llevar a la instalación como acción principal, abrir la búsqueda y enlazar a Fundamentos, Componentes, Stream e Iconos con sus cifras reales, calculadas en el build.
@@ -217,3 +217,18 @@ El build de la web SHALL funcionar sin leer las capturas aprobadas de la paridad
 #### Scenario: Componente nuevo sin captura
 - **WHEN** se añade un componente al catálogo con su ficha y su ejemplo, todavía sin sus PNG aprobadas, y se construye la web
 - **THEN** el build termina sin errores y su card muestra la vista previa en vivo; el test de catálogo y el visual siguen fallando por la captura que falta
+
+### Requirement: JavaScript solo de lo que se usa
+Cada página de la web SHALL descargar solo el código de los componentes que usan sus islas, y el JavaScript de cada página SHALL quedar dentro de un límite guardado en el repo y comprobado en CI. Subir un límite SHALL ser un cambio explícito de ese fichero.
+
+#### Scenario: Componentes que la página no usa
+- **WHEN** se abre `/` o `/components/`
+- **THEN** ninguno de los archivos JavaScript que descarga contiene el código de componentes que ninguna de sus islas usa, como `Carousel`, `CalendarView`, `ColorPicker` o `StreamScene`
+
+#### Scenario: Página que se pasa del límite
+- **WHEN** un cambio hace que el JavaScript de `/` supere su límite
+- **THEN** el paso de CI que mide el JavaScript falla y dice qué página, cuánto pesa y cuál es su límite
+
+#### Scenario: Componente nuevo en el paquete
+- **WHEN** se añade al paquete un componente que no usa ninguna isla de `/`
+- **THEN** el JavaScript que descarga `/` no cambia
