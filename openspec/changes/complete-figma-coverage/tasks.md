@@ -52,7 +52,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 ## 2. Variantes: identidad y etiquetas
 
 - [x] 2.1 `Avatar`: `badge` `verified`, `count` y `company` en los seis tamaños (`11008:45389`, `11008:45024`), con texto para lectores, y el icono de usuario sin foto. `AvatarGroup`: `onAdd`/`addLabel` (`1102:4864`). `AvatarLabel`: `size` (`82:2793`). Tests, ejemplos y capturas.
-- [ ] 2.2 `Badge`: `flag`, `avatar`, `iconTrailing` e `iconOnly` con `label` obligatorio (`1046:3819`). Ejemplos con banderas de `@jotis-me/icons/flags`.
+- [x] 2.2 `Badge`: `flag`, `avatar`, `iconTrailing` e `iconOnly` con `label` obligatorio (`1046:3819`). Ejemplos con banderas de `@jotis-me/icons/flags`.
 - [ ] 2.3 `Tag`: `flag`, `avatar` y `checkable`/`checked`/`onCheckedChange` (`3307:417515`, `3308:406033`). Tests de teclado de la casilla. Ejemplos y capturas.
 
 ## 3. Variantes: botones y comprobaciones

@@ -1,5 +1,6 @@
 // Puertos de las vistas previas de Badge, Tag y los avatares (reference/components/*/preview.html).
 
+import { FlagMexicoCircle, FlagPortugalCircle, FlagSpainCircle } from "@jotis-me/icons/flags";
 import { SocialStripeLogo } from "@jotis-me/icons/logos";
 import { Avatar, AvatarGroup, AvatarLabel, Badge, BadgeGroup, Kbd, Tag } from "@jotis-me/react";
 import { row, stack } from "./actions";
@@ -71,6 +72,35 @@ export function BadgeExample() {
 				<Badge color="gray" onRemove={noop}>
 					Filtro
 				</Badge>
+			</div>
+			<div className={row}>
+				<Badge size="sm" flag={<FlagSpainCircle />}>
+					España
+				</Badge>
+				<Badge type="badge" color="brand" flag={<FlagPortugalCircle />}>
+					Portugal
+				</Badge>
+				<Badge type="modern" size="lg" flag={<FlagMexicoCircle />}>
+					México
+				</Badge>
+				<Badge color="success" avatar={<Avatar size="xs" />}>
+					Lucía
+				</Badge>
+			</div>
+			<div className={row}>
+				<Badge size="sm" color="brand" iconTrailing="arrow-right">
+					Ver
+				</Badge>
+				<Badge type="badge" iconTrailing="arrow-up-right">
+					Abrir
+				</Badge>
+				<Badge type="modern" size="lg" color="error" iconTrailing="arrow-right">
+					Revisar
+				</Badge>
+				<Badge size="sm" iconOnly="plus" label="Añadir" />
+				<Badge color="brand" iconOnly="plus" label="Añadir" />
+				<Badge type="badge" size="lg" color="success" iconOnly="check" label="Hecho" />
+				<Badge type="modern" iconOnly="arrow-right" label="Siguiente" />
 			</div>
 		</div>
 	);

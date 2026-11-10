@@ -1,11 +1,11 @@
 {
-	"$comment": "JS estático por página, en kB gzip (KiB, gzip de Bun, que es el de CI). Lo medido con `check:js` tras trim-docs-js más un 10 %. `*` es un segmento de la ruta; gana la ruta exacta y, si no hay, el primer patrón que encaje. Subir un límite es un cambio de este fichero, con su motivo en el PR. Las galerías de iconos, banderas, pagos, archivos y cursores (complete-figma-coverage) comparten una isla que lleva el Select de la librería para filtrar por categoría: 212,6 kB medidos, más un 10 %. Las páginas /visual/ cargan todos los ejemplos del registro: suben con cada ejemplo nuevo (las insignias de Avatar, con un logo, y el botón de añadir de AvatarGroup, con su tooltip, las llevaron de 341,0 a 341,4 kB; límite a 343).",
+	"$comment": "JS estático por página, en kB gzip (KiB, gzip de Bun, que es el de CI). Lo medido con `check:js` tras trim-docs-js más un 10 %. `*` es un segmento de la ruta; gana la ruta exacta y, si no hay, el primer patrón que encaje. Subir un límite es un cambio de este fichero, con su motivo en el PR. Las galerías de iconos, banderas, pagos, archivos y cursores (complete-figma-coverage) comparten una isla que lleva el Select de la librería para filtrar por categoría: 212,6 kB medidos, más un 10 %. Las páginas /visual/ cargan todos los ejemplos del registro: suben con cada ejemplo nuevo (las insignias de Avatar, con un logo, y el botón de añadir de AvatarGroup, con su tooltip, las llevaron de 341,0 a 341,4 kB; límite a 343). /components/*/ carga la misma isla VisualExample con todo el registro: 349,0 → 350,4 kB con las banderas y variantes de Badge; límite a 352.",
 	"default": 192,
 	"pages": {
 		"/": 211,
 		"/icons/": 234,
 		"/icons/logos/": 231,
-		"/components/*/": 350,
+		"/components/*/": 352,
 		"/visual/*/": 343,
 		"/icons/flags/": 234,
 		"/icons/payments/": 234,

@@ -8,7 +8,7 @@ export type BadgeColor = StatusColor | "slate" | "sky" | "blue" | "indigo" | "pu
 export type BadgeType = "pill" | "badge" | "modern";
 export type BadgeSize = "sm" | "md" | "lg";
 
-export interface BadgeProps {
+interface BadgeBase {
 	/** Escala utility: fondo `-50`, borde `-200`, texto `-700`, punto `-500`. */
 	color?: BadgeColor;
 	/** `pill` redonda · `badge` con `radius-md` · `modern` blanca con sombra. */
@@ -19,14 +19,35 @@ export interface BadgeProps {
 	dot?: boolean;
 	/** Icono de 12px antes del texto. */
 	icon?: IconName | ReactNode;
+	/** Bandera de 16px antes del texto, como `FlagSpainCircle` de `@jotis-me/icons/flags`. */
+	flag?: ReactNode;
+	/** Avatar de 16px antes del texto: la URL de una foto o un nodo. */
+	avatar?: string | ReactNode;
+	/** Icono de 12px después del texto. */
+	iconTrailing?: IconName | ReactNode;
 	/** Muestra una X para quitarlo. */
 	onRemove?: () => void;
 	/** Nombre accesible de la X. Por defecto, "Quitar". */
 	removeLabel?: string;
-	/** Una o dos palabras: el estado no puede depender solo del color. */
-	children: ReactNode;
 	className?: string;
 }
+
+interface BadgeWithText extends BadgeBase {
+	iconOnly?: undefined;
+	label?: undefined;
+	/** Una o dos palabras: el estado no puede depender solo del color. */
+	children: ReactNode;
+}
+
+interface BadgeIconOnly extends BadgeBase {
+	/** Solo el icono, de 12px, en un badge cuadrado (o redondo en `pill`) de 22, 24 o 28px. */
+	iconOnly: IconName | NonNullable<ReactNode>;
+	/** Lo que significa el icono, para lectores de pantalla. Obligatorio: no hay texto visible. */
+	label: string;
+	children?: undefined;
+}
+
+export type BadgeProps = BadgeWithText | BadgeIconOnly;
 
 interface Palette {
 	/** Fondo, texto y borde del badge. */
@@ -112,6 +133,28 @@ const PADDING: Record<BadgeType, Record<BadgeSize, string>> = {
 	modern: { sm: "px-2 py-0.5", md: "px-2 py-0.5", lg: "px-2.5 py-1 rounded-lg" },
 };
 
+// Rellenos del Figma (Badge, 1046:3819) cuando delante va una bandera o un avatar de 16px, cuando solo hay un icono
+// detrás y cuando solo hay un icono. `pill` y los dos tipos `badge` tienen los suyos.
+type Variant = "lead" | "trail" | "only";
+const FIGMA: Record<Variant, Record<"pill" | "badge", Record<BadgeSize, string>>> = {
+	lead: {
+		pill: { sm: "gap-1 pl-[3px] pr-2", md: "gap-1.5 pl-1 pr-2.5", lg: "gap-1.5 pl-1.5 pr-3" },
+		badge: { sm: "gap-1 pl-1 pr-1.5", md: "gap-1.5 pl-1.5 pr-2", lg: "gap-1.5 pl-2 pr-2.5" },
+	},
+	trail: {
+		pill: { sm: "gap-0.5 pl-2 pr-1.5", md: "gap-1 pl-2.5 pr-2", lg: "gap-1 pl-3 pr-2.5" },
+		badge: { sm: "gap-0.5 pl-2 pr-1.5", md: "gap-1 pl-2 pr-1.5", lg: "gap-1 pl-2.5 pr-2" },
+	},
+	only: {
+		pill: { sm: "p-[5px]", md: "p-1.5", lg: "p-2" },
+		badge: { sm: "p-[5px]", md: "p-1.5", lg: "p-2" },
+	},
+};
+
+// color-fijo: borde interior de 0,33px al 16 % negro del avatar del Figma, por encima de la foto
+const AVATAR_EDGE =
+	"after:absolute after:inset-0 after:rounded-full after:shadow-[inset_0_0_0_0.33px_#00000029]";
+
 /** Etiqueta de estado o categoría de una o dos palabras. */
 export function Badge({
 	color = "gray",
@@ -119,6 +162,11 @@ export function Badge({
 	size = "md",
 	dot,
 	icon,
+	flag,
+	avatar,
+	iconTrailing,
+	iconOnly,
+	label,
 	onRemove,
 	removeLabel = defaultStrings.remove,
 	children,
@@ -126,6 +174,14 @@ export function Badge({
 }: BadgeProps) {
 	const palette = COLOR[color];
 	const modern = type === "modern";
+	const lead = flag ?? avatar;
+	const variant: Variant | undefined = iconOnly
+		? "only"
+		: lead
+			? "lead"
+			: iconTrailing && !dot && !icon && !onRemove
+				? "trail"
+				: undefined;
 	return (
 		<span
 			className={cx(
@@ -136,6 +192,7 @@ export function Badge({
 				modern && MODERN,
 				PADDING[type][size],
 				dot && type === "pill" && "pl-2",
+				variant && FIGMA[variant][type === "pill" ? "pill" : "badge"][size],
 				className,
 			)}
 		>
@@ -143,7 +200,34 @@ export function Badge({
 				<span aria-hidden="true" className={cx("m-px size-1.5 shrink-0 rounded-full", palette.dot)} />
 			) : null}
 			{icon ? iconSlot(icon, 12) : null}
-			{children}
+			{flag ? (
+				<span aria-hidden="true" className="flex size-4 shrink-0 [&>*]:size-full">
+					{flag}
+				</span>
+			) : avatar ? (
+				<span
+					aria-hidden="true"
+					className={cx(
+						"relative flex size-4 shrink-0 overflow-hidden rounded-full [&>*]:size-full",
+						AVATAR_EDGE,
+					)}
+				>
+					{typeof avatar === "string" ? (
+						<img src={avatar} alt="" className="object-cover" />
+					) : (
+						avatar
+					)}
+				</span>
+			) : null}
+			{iconOnly ? (
+				<>
+					{iconSlot(iconOnly, 12)}
+					<span className="sr-only">{label}</span>
+				</>
+			) : (
+				children
+			)}
+			{iconTrailing ? iconSlot(iconTrailing, 12) : null}
 			{onRemove ? (
 				<button
 					type="button"

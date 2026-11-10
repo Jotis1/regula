@@ -20,6 +20,13 @@ const COLORS: [BadgeColor, string][] = [
 	["orange", "orange"],
 ];
 
+// HTML de `Badge` antes de añadir `flag`, `avatar`, `iconTrailing` e `iconOnly` (0.6.0)
+const BADGE_BEFORE = [
+	'<span class="inline-flex items-center whitespace-nowrap font-body font-medium inset-ring rounded-full gap-1 text-xs bg-utility-brand-50 text-utility-brand-700 inset-ring-utility-brand-200 px-2 py-0.5 pl-2"><span aria-hidden="true" class="m-px size-1.5 shrink-0 rounded-full bg-utility-brand-500"></span>Activo</span>',
+	'<span class="inline-flex items-center gap-1.5 whitespace-nowrap font-body text-sm font-medium inset-ring bg-utility-red-50 text-utility-red-700 inset-ring-utility-red-200 px-2.5 py-1 rounded-lg"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"></path></svg>Error<button type="button" aria-label="Quitar" class="-my-0.5 -mr-1 -ml-0.5 inline-flex cursor-pointer rounded-sm bg-transparent p-0.5 transition-colors duration-100 focus-visible:shadow-focus-ring focus-visible:outline-none text-utility-red-500 hover:bg-utility-red-200"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6L6 18M6 6L18 18"></path></svg></button></span>',
+	'<span class="inline-flex items-center gap-1.5 whitespace-nowrap font-body text-sm font-medium inset-ring rounded-md bg-primary text-secondary inset-ring-primary shadow-xs px-2 py-0.5">Nuevo</span>',
+];
+
 describe("Badge", () => {
 	it("es pill, gris y md por defecto", () => {
 		render(<Badge>Borrador</Badge>);
@@ -103,6 +110,114 @@ describe("Badge", () => {
 		expect(renderToStaticMarkup(<Badge color="success">Pagado</Badge>)).toContain("Pagado");
 	});
 
+	it("sin las props nuevas, el HTML es el de antes", () => {
+		expect(
+			renderToStaticMarkup(
+				<Badge color="brand" type="pill" size="sm" dot>
+					Activo
+				</Badge>,
+			),
+		).toBe(BADGE_BEFORE[0]);
+		expect(
+			renderToStaticMarkup(
+				<Badge color="error" type="badge" size="lg" icon="alert-circle" onRemove={() => {}}>
+					Error
+				</Badge>,
+			),
+		).toBe(BADGE_BEFORE[1]);
+		expect(
+			renderToStaticMarkup(
+				<Badge type="modern" size="md">
+					Nuevo
+				</Badge>,
+			),
+		).toBe(BADGE_BEFORE[2]);
+	});
+
+	it.each([
+		["pill", "sm", ["gap-1", "pl-[3px]", "pr-2"]],
+		["pill", "md", ["gap-1.5", "pl-1", "pr-2.5"]],
+		["pill", "lg", ["gap-1.5", "pl-1.5", "pr-3"]],
+		["badge", "sm", ["gap-1", "pl-1", "pr-1.5"]],
+		["modern", "md", ["gap-1.5", "pl-1.5", "pr-2"]],
+		["badge", "lg", ["gap-1.5", "pl-2", "pr-2.5"]],
+	] as const)(
+		"flag en %s %s: bandera de 16px delante con los rellenos del Figma",
+		(type, size, classes) => {
+			render(
+				<Badge type={type} size={size} flag={<svg data-testid="flag" />}>
+					España
+				</Badge>,
+			);
+			const badge = screen.getByText("España");
+			for (const c of classes) expect(badge.className.split(" ")).toContain(c);
+			const flag = screen.getByTestId("flag").parentElement as HTMLElement;
+			expect(flag.className).toContain("size-4");
+			expect(flag.getAttribute("aria-hidden")).toBe("true");
+			expect(badge.firstElementChild).toBe(flag);
+		},
+	);
+
+	it("avatar acepta una URL (foto redonda decorativa) o un nodo", () => {
+		const { container } = render(
+			<>
+				<Badge avatar="/foto.jpg">Lucía</Badge>
+				<Badge avatar={<span data-testid="ini">LP</span>}>Lucía</Badge>
+			</>,
+		);
+		const img = container.querySelector("img[src='/foto.jpg']") as HTMLElement;
+		expect(img.getAttribute("alt")).toBe("");
+		expect(img.parentElement?.className).toContain("rounded-full");
+		expect(img.parentElement?.className).toContain("size-4");
+		expect(screen.getByTestId("ini").parentElement?.getAttribute("aria-hidden")).toBe("true");
+	});
+
+	it.each([
+		["pill", "sm", ["gap-0.5", "pl-2", "pr-1.5"]],
+		["pill", "md", ["gap-1", "pl-2.5", "pr-2"]],
+		["pill", "lg", ["gap-1", "pl-3", "pr-2.5"]],
+		["badge", "md", ["gap-1", "pl-2", "pr-1.5"]],
+		["badge", "lg", ["gap-1", "pl-2.5", "pr-2"]],
+	] as const)(
+		"iconTrailing en %s %s: icono de 12px detrás con los rellenos del Figma",
+		(type, size, classes) => {
+			render(
+				<Badge type={type} size={size} iconTrailing="arrow-right">
+					Ver
+				</Badge>,
+			);
+			const badge = screen.getByText("Ver");
+			for (const c of classes) expect(badge.className.split(" ")).toContain(c);
+			const svg = badge.lastElementChild as SVGElement;
+			expect(svg.tagName).toBe("svg");
+			expect(svg.getAttribute("width")).toBe("12");
+		},
+	);
+
+	it.each([
+		["sm", "p-[5px]"],
+		["md", "p-1.5"],
+		["lg", "p-2"],
+	] as const)("iconOnly en %s: solo el icono, con %s, y el label para lectores", (size, padding) => {
+		const { container } = render(<Badge size={size} iconOnly="plus" label="Añadir" />);
+		const badge = container.firstElementChild as HTMLElement;
+		expect(badge.className.split(" ")).toContain(padding);
+		expect(badge.querySelector("svg")?.getAttribute("width")).toBe("12");
+		expect(screen.getByText("Añadir").className).toContain("sr-only");
+	});
+
+	it("iconOnly exige label y no admite texto (tipos)", () => {
+		// @ts-expect-error: sin label
+		const sinLabel = <Badge iconOnly="plus" />;
+		const conTexto = (
+			// @ts-expect-error: iconOnly con texto visible
+			<Badge iconOnly="plus" label="Añadir">
+				Añadir
+			</Badge>
+		);
+		expect([sinLabel, conTexto]).toHaveLength(2);
+	});
+
 	it("sin infracciones de axe", async () => {
 		await expectAccessibleInThemes(
 			<div>
@@ -111,6 +226,10 @@ describe("Badge", () => {
 					En línea
 				</Badge>
 				<Badge onRemove={() => {}}>Filtro</Badge>
+				<Badge flag={<svg aria-hidden="true" />}>España</Badge>
+				<Badge avatar="/foto.jpg">Lucía</Badge>
+				<Badge iconTrailing="arrow-right">Ver</Badge>
+				<Badge iconOnly="plus" label="Añadir" color="brand" type="badge" />
 			</div>,
 		);
 	});
