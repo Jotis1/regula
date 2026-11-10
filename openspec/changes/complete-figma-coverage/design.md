@@ -243,6 +243,13 @@ Las que cambian de forma:
 ### D10. Orden y commits
 El orden pedido es: variantes, base nuevos, complejos nuevos. Los cimientos de iconos (D1 y D2) van antes porque las variantes los usan en sus ejemplos: banderas en `Badge`, pagos en `RadioGroup`, archivos en `FileUpload`. No se exporta ningún componente nuevo de React antes de su grupo. Hay un commit por componente o por familia de recursos. Changesets: `@jotis-me/icons` `minor` con la ruptura declarada (0.x) y `@jotis-me/react` `minor`.
 
+
+### D11. Cada página carga solo los ejemplos de su componente
+- **Problema.** La isla `VisualExample` importa `src/visual/registry.ts`, que importa todos los ficheros de ejemplos. Cada página de componente y cada `/visual/<nombre>/` descargaba el registro entero (72 kB gzip al cerrar el grupo 2) y sus límites de `check:js` había que subirlos en cada tarea.
+- **Decisión.** La isla carga con `React.lazy` solo el fichero de `src/visual/examples/` que exporta `<Nombre>Example`, a través de `import.meta.glob`; cada fichero es su propio trozo. El servidor espera al `lazy` (Suspense) y pinta el mismo HTML que antes. `registry.ts` no cambia: lo siguen usando el artefacto, los tests y las rutas.
+- **Mapa nombre → fichero** en `src/visual/example-files.ts`, guardado por un test contra el registro.
+- *Alternativa:* una isla por fichero de ejemplos elegida en Astro con doce condiciones por página. Más código y Astro no hidrata componentes dinámicos. Se descarta.
+
 ## Risks / Trade-offs
 
 - **[PR enorme y CI lento]** → Un commit por pieza y el changelog por grupos. Se ejecutan las pruebas del paquete afectado en cada commit y el e2e completo solo al cerrar cada grupo de tasks. La PR se abre como borrador pronto para que CI vaya corriendo.

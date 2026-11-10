@@ -5,6 +5,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import { gzipSync } from "node:zlib";
+import { EXAMPLE_FILES } from "../src/visual/example-files.ts";
 
 export interface Size {
 	raw: number;
@@ -50,12 +51,35 @@ function follow(dist: string, entries: Iterable<string>) {
 	return seen;
 }
 
+/** Trozos de `src/visual/examples/` que pedirán las islas VisualExample de la página, según el `name` de cada una. */
+export function exampleChunks(dist: string, html: string): string[] {
+	const out: string[] = [];
+	for (const m of html.matchAll(
+		/component-url="([^"]*\/VisualExample\.[^"]+\.js)"[^>]*\bprops="([^"]+)"/g,
+	)) {
+		const props = JSON.parse((m[2] as string).replaceAll("&quot;", '"')) as { name?: [number, string] };
+		const file = props.name ? EXAMPLE_FILES[props.name[1]] : undefined;
+		if (!file) continue;
+		const url = m[1] as string;
+		const src = readFileSync(join(dist, url), "utf8");
+		const chunk = src.match(
+			new RegExp(`examples/${file}\\.tsx["']:\\s*\\(\\)\\s*=>[^\`"']*[\`"'](\\.{1,2}/[^\`"']+\\.js)`),
+		);
+		if (!chunk) throw new Error(`No encuentro el trozo de examples/${file}.tsx en ${url}`);
+		out.push(posix.normalize(posix.join(posix.dirname(url), chunk[1] as string)));
+	}
+	return out;
+}
+
 export function weighPage(dist: string, htmlFile: string): PageWeight {
 	const html = readFileSync(join(dist, htmlFile), "utf8");
 	const entries = new Set<string>();
 	for (const m of html.matchAll(/<script[^>]*\bsrc="([^"]+\.js)"/g)) entries.add(m[1] as string);
 	for (const m of html.matchAll(/(?:component|renderer)-url="([^"]+\.js)"/g)) entries.add(m[1] as string);
 	for (const m of html.matchAll(/import\s*["'](\/[^"']+\.js)["']/g)) entries.add(m[1] as string);
+	// La isla VisualExample carga después el fichero de ejemplos de su componente (design D11): ese trozo también lo
+	// descarga la página, así que cuenta como suyo
+	for (const url of exampleChunks(dist, html)) entries.add(url);
 	const islands = [...html.matchAll(/<astro-island[^>]*\bopts="([^"]+)"/g)].map(
 		(m) => (JSON.parse((m[1] as string).replaceAll("&quot;", '"')) as { name: string }).name,
 	);

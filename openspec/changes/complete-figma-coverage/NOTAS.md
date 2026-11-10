@@ -97,3 +97,11 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 - **Pequeñas incoherencias del Figma.** La casilla en `sm` deja 5 px a la izquierda y en `md` 4; se copian tal cual. El hueco derecho con X (4 px en el Figma) no cambia: es el de los tags con X de antes, y tocarlo cambiaría su HTML sin props nuevas.
 - **Ejemplo.** Avatares con el icono de usuario, como en `Badge`.
 - **JS de `/visual/`:** 343,3 kB con estos ejemplos; límite a 346.
+
+## Ejemplos por página (2.4, design D11)
+
+- **Antes:** la isla `VisualExample` importaba `registry.ts` y, con él, los doce ficheros de ejemplos. Cada página de componente descargaba 350,4 kB gzip y cada `/visual/<nombre>/` 343,3; los límites subían en cada tarea.
+- **Ahora:** la isla carga con `React.lazy` (vía `import.meta.glob`) solo el fichero de `src/visual/examples/` de su componente, según `src/visual/example-files.ts`, guardado por un test contra el registro. El servidor espera al `lazy` y el HTML lleva el ejemplo como antes (con las marcas de Suspense de React); la hidratación espera a que llegue el trozo.
+- **`check:js` honesto:** el trozo del ejemplo lo pide la página después, como import dinámico, y antes no contaba. `js-weight.ts` lo suma a la página a partir del `name` de la isla (test con un dist de prueba). Medido con él: páginas de componente 277–306 kB (el resto es sobre todo el `Playground`), `/visual/` 107–250 kB. Límites: 337 y 275 (medido más un 10 %).
+- **Granularidad:** por fichero de ejemplos, no por componente: la página de `Avatar` también carga los ejemplos de `Badge` y `Tag` (`display.tsx`). Partir los ficheros por componente bajaría algo más, pero no hace falta ahora.
+- **Tests de las páginas de componente.** Con el `lazy`, la isla empieza por la marca de Suspense de React (`<!--$-->`). Como es `display: contents`, Playwright no puede hacer scroll a ella y `client:visible` no llegaba a hidratarla en el test (en el navegador no pasa: Astro observa los hijos elemento). Los cuatro sitios de `components.spec.ts` y `copy.spec.ts` hacen scroll a su primer elemento. E2E completo: 906/907, solo la captura de `Select` en oscuro de este PC.

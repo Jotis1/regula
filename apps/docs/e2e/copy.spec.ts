@@ -102,7 +102,8 @@ test("la página de CopyTooltip: useCopy desde una isla y, con dos CopyTooltip m
 	await page.goto("/components/copy-tooltip/");
 	// La isla de los ejemplos y la del CopyTooltip de la página tienen que estar hidratadas
 	const examples = page.locator("#variantes + div astro-island");
-	await examples.scrollIntoViewIfNeeded();
+	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
+	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
 	await expect(examples).not.toHaveAttribute("ssr", /.*/);
 	await hydrated(page);
 	// El de la página (Base) y el del ejemplo están montados a la vez

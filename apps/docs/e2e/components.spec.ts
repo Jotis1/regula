@@ -40,7 +40,8 @@ for (const { slug, name, label } of pages) {
 		);
 		// La isla de ejemplos se hidrata al verse: después tiene contenido
 		const examples = page.locator("#variantes + div astro-island");
-		await examples.scrollIntoViewIfNeeded();
+		// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
+		await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
 		await expect(examples).not.toHaveAttribute("ssr", /.*/);
 		await expect(examples.locator(":scope > *").first()).toBeVisible();
 		expect(await page.locator("section[aria-labelledby=props] tbody tr").count()).toBeGreaterThan(0);
@@ -154,7 +155,8 @@ test("Dropdown: la tabla de props lleva la elección y el check de la elegida no
 	await expect(props).toContainText("selectedValue");
 	await expect(props).toContainText("onSelectionChange");
 	const examples = page.locator("#variantes + div astro-island");
-	await examples.scrollIntoViewIfNeeded();
+	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
+	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
 	await expect(examples).not.toHaveAttribute("ssr", /.*/);
 	const checked = examples.locator('[role="menuitemradio"][aria-checked="true"]');
 	await expect(checked).toHaveCount(1);
@@ -168,7 +170,8 @@ test("CommandMenu: con el foco en el buscador, la opción activa lleva el anillo
 }) => {
 	await page.goto("/components/command-menu/");
 	const examples = page.locator("#variantes + div astro-island");
-	await examples.scrollIntoViewIfNeeded();
+	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
+	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
 	await expect(examples).not.toHaveAttribute("ssr", /.*/);
 	const search = examples.getByRole("combobox").first();
 	const active = examples.locator('[role="option"][aria-selected="true"]').first();

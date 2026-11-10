@@ -55,6 +55,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 - [x] 2.2 `Badge`: `flag`, `avatar`, `iconTrailing` e `iconOnly` con `label` obligatorio (`1046:3819`). Ejemplos con banderas de `@jotis-me/icons/flags`.
 - [x] 2.3 `Tag`: `flag`, `avatar` y `checkable`/`checked`/`onCheckedChange` (`3307:417515`, `3308:406033`). Tests de teclado de la casilla. Ejemplos y capturas.
 
+- [x] 2.4 Web: cada página carga solo los ejemplos de su componente (design D11). La isla `VisualExample` deja de importar el registro entero y carga con `React.lazy` el fichero de `src/visual/examples/` que exporta `<Nombre>Example`. Tests: cada nombre del registro tiene fichero y export, y la isla de una página no incluye los ejemplos de otros ficheros. `check:js` con límites nuevos medidos (más un 10 %) y paridad visual y e2e de interacción sin cambios. Añadida a petición del usuario al cerrar el grupo 2.
 ## 3. Variantes: botones y comprobaciones
 
 - [ ] 3.1 `ButtonGroup`: `size`, `iconOnly` + `label` y `dot` en los elementos (`1046:10171`). `CloseButton`: `size` y `onDark` (`2763:420129`). Tests, ejemplos y capturas.
