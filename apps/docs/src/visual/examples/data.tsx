@@ -160,16 +160,36 @@ export function CalendarViewExample() {
 	);
 }
 
+const SNIPPET_LONG = Array.from({ length: 24 }, (_, i) => `  clave${i + 1}: "valor ${i + 1}",`).join("\n");
+
+/** La horizontal con pestañas, la vertical con pestañas y recortada con «Ver más», y la vertical simple con ampliar. */
 export function CodeSnippetExample() {
 	return (
-		<CodeSnippet
-			tabs={[
-				{
-					label: "js",
-					code: "// Cargar el sistema\nimport { Button } from 'jotis'\n\nexport const guardar = new Button({\n  hierarchy: 'primary',\n  label: 'Guardar',\n})\n",
-				},
-				{ label: "bash", code: "npm install jotis" },
-			]}
-		/>
+		<div className="flex flex-col gap-6">
+			<CodeSnippet
+				tabs={[
+					{
+						label: "js",
+						code: "// Cargar el sistema\nimport { Button } from 'jotis'\n\nexport const guardar = new Button({\n  hierarchy: 'primary',\n  label: 'Guardar',\n})\n",
+					},
+					{ label: "bash", code: "npm install jotis" },
+				]}
+			/>
+			<CodeSnippet
+				variant="vertical"
+				maxHeight={220}
+				tabs={[
+					{ label: "npm", code: `export const colores = {\n${SNIPPET_LONG}\n}` },
+					{ label: "yarn", code: "yarn add jotis" },
+					{ label: "bun", code: "bun add jotis" },
+				]}
+			/>
+			<CodeSnippet
+				variant="vertical"
+				onExpand={() => {}}
+				code={"// Instalar\nnpm install jotis"}
+				language="bash"
+			/>
+		</div>
 	);
 }

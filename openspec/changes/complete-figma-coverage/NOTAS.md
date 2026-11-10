@@ -115,3 +115,24 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 - **Estados `Disabled` del Figma:** no se añaden. Los elementos del grupo no tienen `disabled` hoy y la spec no lo pide.
 - **`CloseButton`** (`2763:420129`): `sm` 36 px, `md` 40 px y `lg` 44 px con X de 24 px. `onDark`: fondo blanco al 20 % al pasar por encima, como el Figma. El color de la X en reposo sobre oscuro (`text-fg-white/70`) es una elección nuestra: el Figma usa la imagen de la X sin color de capa y no se puede leer como token.
 - **Ejemplos:** `ButtonGroup` enseña `md` y `sm` con texto, icono, punto y solo icono (cuadrícula, lista, añadir); `CloseButton` enseña los tres tamaños en claro y sobre `bg-brand-solid`. El Figma usa flechas y un `+` en el ejemplo de solo icono; aquí cuadrícula y lista, que son el uso típico. `list` no está en el set núcleo, así que la lista usa `align-left`.
+
+## Tabs y CodeSnippet frente al Figma (3.2)
+
+**Tabs** (página `43:0`):
+- **Ya estaba:** los seis `type` (Button brand, gray, border, minimal, Underline y Line vertical), `sm` y `md`, horizontal y vertical, y la variante `Mobile` (en vertical, el desplegable por debajo de `lg`; en horizontal el diseño adaptable).
+- **Faltaba y se añade: `Full width`.** `fullWidth` reparte el ancho: cada pestaña `flex-1` y centrada; los segmentados (`button-border`, `button-minimal`) pasan de `inline-flex w-fit` a `flex w-full`. Solo en horizontal. Sin la prop, el HTML es el de antes (test con las cadenas de antes).
+- **Iconos delante de la pestaña (16 px) en el Figma:** no se añade prop. `label` ya es un `ReactNode` y admite un `Icon`. Separación icono-texto: 8 px de Regula frente a 4 + 2 del Figma; diferencia aceptada, para no cambiar el HTML.
+- **Estados `Focus` y `Hover` del Figma:** ya los cubren los `data-focus-visible` y `data-hovered` de React Aria.
+
+**CodeSnippet** (página `1221:106300`):
+- **Ya estaba:** `Horizontal` (columna de números, código, botón de copiar), las pestañas y el copiar con el estado «Copiado».
+- **Faltaba y se añade:**
+  - `variant="vertical"`: tarjeta gris `bg-secondary_alt` con `radius-3xl` que enmarca el código en otra tarjeta blanca con sombra grande y sin números de línea (los admite con `lineNumbers`).
+  - `Vertical with tabs`: con `tabs`, las pestañas de texto pasan a una cabecera (`rounded-t-xl`) con el botón de copiar.
+  - `maxHeight`: recorte con degradado y botón «Ver más» / «Ver menos» (`Show more` del Figma, con `aria-expanded`). Se decide por el número de líneas (20 px cada una más 40 de relleno), no midiendo, para pintar lo mismo en servidor y cliente.
+  - `onExpand`: botón de ampliar (`maximize-01`) junto al de copiar, con nombre «Ampliar código». Es un aviso: qué amplía lo decide quien lo use; el paquete no inventa un modal.
+- **Un solo botón de copiar con pestañas verticales.** El Figma pinta dos (cabecera y tarjeta). Dos botones con el mismo nombre confunden a los lectores, así que va uno, en la cabecera, y copia la pestaña activa.
+- **Sin `Disabled`/`Hover` de las pestañas de código a parte:** el hover es `hover:text-primary`, como el del Figma.
+- **Colores del resaltado:** siguen los de la ficha de la guía (comentarios `utility-green-700` por contraste); el Figma usa `#16a34a`, `#db2777`, `#2563eb` y `#dc2626` para `export`/`=`. No se cambia el resaltado.
+- **Textos nuevos en `defaultStrings`:** `expandCode`, `showMoreCode`, `showLessCode`.
+- **Ejemplo:** horizontal con pestañas, vertical con pestañas y recortada, y vertical simple con ampliar.

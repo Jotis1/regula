@@ -22,6 +22,19 @@ export interface CodeSnippetProps {
 	 * @default true
 	 */
 	lineNumbers?: boolean;
+	/**
+	 * `horizontal` (por defecto): tarjeta con la columna de números a la izquierda. `vertical`: tarjeta gris que enmarca el
+	 * código, sin números de línea salvo que se pidan, y con las pestañas (si hay) en su cabecera.
+	 * @default "horizontal"
+	 */
+	variant?: "horizontal" | "vertical";
+	/**
+	 * Alto máximo en píxeles. Si el código es más largo, se recorta con un degradado y un botón "Ver más" lo despliega
+	 * (`Show more` del Figma).
+	 */
+	maxHeight?: number;
+	/** Con él, aparece el botón de ampliar junto al de copiar y se llama al pulsarlo. Qué amplía lo decide quien lo usa. */
+	onExpand?: () => void;
 	className?: string;
 }
 
@@ -72,10 +85,22 @@ export function highlight(src: string): ReactNode[] {
 }
 
 /** Bloque de código con números de línea, resaltado sencillo, pestañas y botón de copiar. */
-export function CodeSnippet({ code, language, tabs, lineNumbers = true, className }: CodeSnippetProps) {
+export function CodeSnippet({
+	code,
+	language,
+	tabs,
+	lineNumbers: lineNumbersProp,
+	variant = "horizontal",
+	maxHeight,
+	onExpand,
+	className,
+}: CodeSnippetProps) {
+	const vertical = variant === "vertical";
+	const lineNumbers = lineNumbersProp ?? !vertical;
 	const list = tabs ?? [{ label: language ?? defaultStrings.code, code: code ?? "" }];
 	const [index, setIndex] = useState(0);
 	const [copied, setCopied] = useState(false);
+	const [expanded, setExpanded] = useState(false);
 	const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 	const id = useId();
 	const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -105,6 +130,169 @@ export function CodeSnippet({ code, language, tabs, lineNumbers = true, classNam
 	};
 
 	const multi = list.length > 1;
+	// Cada línea mide 20 px y el bloque lleva 20 de relleno arriba y abajo: se sabe sin medir si hace falta el recorte
+	const collapsible = maxHeight !== undefined && lines.length * 20 + 40 > maxHeight;
+	const collapsed = collapsible && !expanded;
+	const headerCopy = vertical && multi;
+
+	const buttonBase =
+		"inline-flex cursor-pointer rounded-md border-0 bg-primary p-1.5 text-fg-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)] hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none";
+	const copyButton = (position: string) => (
+		<button
+			type="button"
+			onClick={copy}
+			aria-label={copied ? defaultStrings.copied : defaultStrings.copyCode}
+			className={cx(position, buttonBase)}
+		>
+			<Icon name={copied ? "check" : "copy-01"} size={16} />
+		</button>
+	);
+
+	const tablist = multi ? (
+		<div
+			role="tablist"
+			aria-label={defaultStrings.code}
+			className={
+				vertical
+					? "flex flex-1 items-start"
+					: "flex gap-1 bg-secondary px-3 py-2 shadow-[inset_0_-1px_0_var(--border-secondary)]"
+			}
+		>
+			{list.map((t, i) => (
+				<button
+					// biome-ignore lint/suspicious/noArrayIndexKey: las pestañas pueden repetir etiqueta
+					key={i}
+					ref={(el) => {
+						tabRefs.current[i] = el;
+					}}
+					type="button"
+					role="tab"
+					id={`${id}-tab-${i}`}
+					aria-selected={i === index}
+					aria-controls={`${id}-panel`}
+					tabIndex={i === index ? 0 : -1}
+					onClick={() => setIndex(i)}
+					onKeyDown={(e) => onTabKey(e, i)}
+					className={
+						vertical
+							? "cursor-pointer rounded-sm border-0 bg-transparent px-2 py-1 font-body text-sm font-semibold text-quaternary hover:text-primary focus-visible:shadow-focus-ring focus-visible:outline-none aria-selected:text-primary"
+							: "cursor-pointer rounded-md border-0 bg-transparent px-2 py-1 font-body text-sm font-semibold text-quaternary focus-visible:shadow-focus-ring focus-visible:outline-none aria-selected:bg-primary aria-selected:text-primary aria-selected:shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-secondary)]"
+					}
+				>
+					{t.label}
+				</button>
+			))}
+		</div>
+	) : null;
+
+	const showMore = collapsible ? (
+		<div
+			className={
+				collapsed
+					? "absolute inset-x-0 bottom-0 flex justify-center px-8 pb-8"
+					: "flex justify-center px-8 pt-2 pb-5"
+			}
+		>
+			<button
+				type="button"
+				aria-expanded={expanded}
+				aria-controls={`${id}-code`}
+				onClick={() => setExpanded(!expanded)}
+				className="inline-flex cursor-pointer items-center rounded-lg border-0 bg-primary px-3 py-2 font-body text-sm font-semibold text-secondary shadow-[var(--shadow-xs-skeuomorphic),inset_0_0_0_1px_var(--border-primary)] hover:bg-primary_hover hover:text-secondary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
+			>
+				{expanded ? defaultStrings.showLessCode : defaultStrings.showMoreCode}
+			</button>
+		</div>
+	) : null;
+
+	const body = (
+		<div
+			className="relative flex"
+			{...(multi
+				? { role: "tabpanel", id: `${id}-panel`, "aria-labelledby": `${id}-tab-${index}` }
+				: {})}
+		>
+			{lineNumbers ? (
+				<div
+					aria-hidden="true"
+					className="flex-none bg-secondary px-4 py-5 text-right font-mono text-code-sm text-quaternary shadow-[inset_-1px_0_0_var(--border-secondary)] select-none"
+				>
+					{lines.map((_, i) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: un número por línea
+						<div key={i}>{i + 1}</div>
+					))}
+				</div>
+			) : null}
+			<pre
+				id={collapsible ? `${id}-code` : undefined}
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: si una línea no cabe, el bloque se desplaza y tiene que poder hacerse con teclado
+				tabIndex={0}
+				className={`m-0 flex-1 overflow-auto p-5 ${onExpand ? "pr-20" : "pr-14"} font-mono text-code-sm text-primary [tab-size:2] focus-visible:shadow-[inset_0_0_0_2px_var(--focus-ring)] focus-visible:outline-none`}
+			>
+				<code>{highlight(lines.join("\n"))}</code>
+			</pre>
+			{headerCopy ? null : copyButton(vertical ? "absolute top-2 right-2" : "absolute top-3 right-3")}
+			{onExpand ? (
+				<button
+					type="button"
+					onClick={onExpand}
+					aria-label={defaultStrings.expandCode}
+					className={cx(
+						vertical ? "absolute top-2 right-10" : "absolute top-3 right-11",
+						buttonBase,
+					)}
+				>
+					<Icon name="maximize-01" size={16} />
+				</button>
+			) : null}
+			<span className="sr-only" aria-live="polite">
+				{copied ? defaultStrings.copied : ""}
+			</span>
+		</div>
+	);
+
+	// El recorte lo lleva el contenedor de la tarjeta, y el degradado solo el código: el botón queda por encima
+	const clipped = collapsible ? (
+		<div
+			className={cx(
+				"relative",
+				collapsed &&
+					"overflow-hidden [mask-image:linear-gradient(to_bottom,#000_calc(100%-96px),transparent)]",
+			)}
+			style={collapsed ? { maxHeight } : undefined}
+		>
+			{body}
+		</div>
+	) : (
+		body
+	);
+
+	if (vertical) {
+		return (
+			<div
+				className={cx(
+					"relative border border-secondary bg-secondary_alt font-body shadow-[var(--shadow-xs)]",
+					multi ? "rounded-t-xl rounded-b-3xl" : "rounded-3xl",
+					className,
+				)}
+			>
+				{multi ? (
+					<div className="flex items-start gap-3 pt-2 pr-2 pl-3">
+						{tablist}
+						{copyButton("")}
+					</div>
+				) : null}
+				<div className="p-2">
+					<div className="relative overflow-hidden rounded-xl border border-secondary_alt bg-primary_alt shadow-[var(--shadow-lg)]">
+						{clipped}
+						{collapsed ? showMore : null}
+						{expanded ? showMore : null}
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div
 			className={cx(
@@ -112,70 +300,10 @@ export function CodeSnippet({ code, language, tabs, lineNumbers = true, classNam
 				className,
 			)}
 		>
-			{multi ? (
-				<div
-					role="tablist"
-					aria-label={defaultStrings.code}
-					className="flex gap-1 bg-secondary px-3 py-2 shadow-[inset_0_-1px_0_var(--border-secondary)]"
-				>
-					{list.map((t, i) => (
-						<button
-							// biome-ignore lint/suspicious/noArrayIndexKey: las pestañas pueden repetir etiqueta
-							key={i}
-							ref={(el) => {
-								tabRefs.current[i] = el;
-							}}
-							type="button"
-							role="tab"
-							id={`${id}-tab-${i}`}
-							aria-selected={i === index}
-							aria-controls={`${id}-panel`}
-							tabIndex={i === index ? 0 : -1}
-							onClick={() => setIndex(i)}
-							onKeyDown={(e) => onTabKey(e, i)}
-							className="cursor-pointer rounded-md border-0 bg-transparent px-2 py-1 font-body text-sm font-semibold text-quaternary focus-visible:shadow-focus-ring focus-visible:outline-none aria-selected:bg-primary aria-selected:text-primary aria-selected:shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-secondary)]"
-						>
-							{t.label}
-						</button>
-					))}
-				</div>
-			) : null}
-			<div
-				className="relative flex"
-				{...(multi
-					? { role: "tabpanel", id: `${id}-panel`, "aria-labelledby": `${id}-tab-${index}` }
-					: {})}
-			>
-				{lineNumbers ? (
-					<div
-						aria-hidden="true"
-						className="flex-none bg-secondary px-4 py-5 text-right font-mono text-code-sm text-quaternary shadow-[inset_-1px_0_0_var(--border-secondary)] select-none"
-					>
-						{lines.map((_, i) => (
-							// biome-ignore lint/suspicious/noArrayIndexKey: un número por línea
-							<div key={i}>{i + 1}</div>
-						))}
-					</div>
-				) : null}
-				<pre
-					// biome-ignore lint/a11y/noNoninteractiveTabindex: si una línea no cabe, el bloque se desplaza y tiene que poder hacerse con teclado
-					tabIndex={0}
-					className="m-0 flex-1 overflow-auto p-5 pr-14 font-mono text-code-sm text-primary [tab-size:2] focus-visible:shadow-[inset_0_0_0_2px_var(--focus-ring)] focus-visible:outline-none"
-				>
-					<code>{highlight(lines.join("\n"))}</code>
-				</pre>
-				<button
-					type="button"
-					onClick={copy}
-					aria-label={copied ? defaultStrings.copied : defaultStrings.copyCode}
-					className="absolute top-3 right-3 inline-flex cursor-pointer rounded-md border-0 bg-primary p-1.5 text-fg-quaternary shadow-[inset_0_0_0_1px_var(--border-secondary)] hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
-				>
-					<Icon name={copied ? "check" : "copy-01"} size={16} />
-				</button>
-				<span className="sr-only" aria-live="polite">
-					{copied ? defaultStrings.copied : ""}
-				</span>
-			</div>
+			{tablist}
+			{clipped}
+			{collapsed ? showMore : null}
+			{expanded ? showMore : null}
 		</div>
 	);
 }

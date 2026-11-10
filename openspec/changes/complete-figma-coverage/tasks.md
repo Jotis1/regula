@@ -59,7 +59,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 ## 3. Variantes: botones y comprobaciones
 
 - [x] 3.1 `ButtonGroup`: `size`, `iconOnly` + `label` y `dot` en los elementos (`1046:10171`). `CloseButton`: `size` y `onDark` (`2763:420129`). Tests, ejemplos y capturas.
-- [ ] 3.2 Comparar `Tabs` (página `43:0`, `Full width`) y `CodeSnippet` (página `1221:106300`, `Horizontal` y `Vertical`) con el Figma. Añadir lo que falte con tests y capturas, o anotar en `NOTAS.md` que ya estaba.
+- [x] 3.2 Comparar `Tabs` (página `43:0`, `Full width`) y `CodeSnippet` (página `1221:106300`, `Horizontal` y `Vertical`) con el Figma. Añadir lo que falte con tests y capturas, o anotar en `NOTAS.md` que ya estaba.
 
 ## 4. Variantes: formularios
 

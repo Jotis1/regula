@@ -51,6 +51,8 @@ export function TabsExample() {
 			<Tabs aria-label="Vista" type="button-brand" items={sections} />
 			<Tabs aria-label="Periodo" type="button-gray" items={sections} />
 			<Tabs aria-label="Modo" type="button-border" items={sections} />
+			<Tabs aria-label="Secciones a todo el ancho" fullWidth items={sections} />
+			<Tabs aria-label="Modo a todo el ancho" type="button-border" fullWidth items={sections} />
 			<div className="flex flex-wrap gap-x-16 gap-y-8">
 				<Tabs aria-label="Ajustes con raya" orientation="vertical" type="line" items={settings} />
 				<Tabs

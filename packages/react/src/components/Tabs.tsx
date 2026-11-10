@@ -48,6 +48,12 @@ export interface TabsProps {
 	 * @default "sm"
 	 */
 	size?: TabsSize;
+	/**
+	 * Las pestañas se reparten todo el ancho disponible (`Full width` del Figma). Solo en horizontal: en vertical la
+	 * lista ya ocupa su columna.
+	 * @default false
+	 */
+	fullWidth?: boolean;
 	/** Nombre de la lista de pestañas para lectores de pantalla. */
 	"aria-label"?: string;
 	/**
@@ -90,12 +96,14 @@ export function Tabs({
 	orientation = "horizontal",
 	type: givenType = "underline",
 	size = "sm",
+	fullWidth = false,
 	children,
 	className,
 	...rest
 }: TabsProps) {
 	const [current, setCurrent] = useControllable<string | undefined>(value, defaultValue ?? items[0]?.id);
 	const vertical = orientation === "vertical";
+	const stretch = fullWidth && !vertical;
 	// La raya lateral solo tiene sentido en vertical, y la raya inferior solo en horizontal
 	const type: TabsType =
 		givenType === "line" && !vertical
@@ -121,7 +129,8 @@ export function Tabs({
 					"flex gap-1 font-body",
 					// Vertical: columna en escritorio y, por debajo de `lg`, el desplegable ocupa su lugar
 					vertical && "max-lg:hidden flex-col items-stretch lg:flex-none",
-					LIST[type],
+					// Los segmentados son `inline-flex w-fit`: a todo el ancho pasan a `flex w-full`
+					stretch ? LIST[type].replace("inline-flex w-fit", "flex w-full") : LIST[type],
 				)}
 			>
 				{items.map((item) => (
@@ -138,6 +147,7 @@ export function Tabs({
 							"group inline-flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-md px-3 py-2 font-semibold text-quaternary outline-none transition-colors duration-100 data-hovered:text-secondary data-focus-visible:shadow-focus-ring",
 							size === "md" ? "h-11 text-md" : "h-9 text-sm",
 							vertical && "justify-start",
+							stretch && "flex-1 justify-center",
 							TAB[type],
 						)}
 					>
