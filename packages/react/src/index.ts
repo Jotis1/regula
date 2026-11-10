@@ -9,7 +9,13 @@ export {
 	type AppName,
 	appIcons,
 } from "./components/AppIcon.js";
-export { Avatar, type AvatarProps, type AvatarSize, type AvatarStatus } from "./components/Avatar.js";
+export {
+	Avatar,
+	type AvatarBadge,
+	type AvatarProps,
+	type AvatarSize,
+	type AvatarStatus,
+} from "./components/Avatar.js";
 export { AvatarGroup, type AvatarGroupProps } from "./components/AvatarGroup.js";
 export { AvatarLabel, type AvatarLabelProps } from "./components/AvatarLabel.js";
 export {

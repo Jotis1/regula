@@ -1,5 +1,6 @@
 // Puertos de las vistas previas de Badge, Tag y los avatares (reference/components/*/preview.html).
 
+import { SocialStripeLogo } from "@jotis-me/icons/logos";
 import { Avatar, AvatarGroup, AvatarLabel, Badge, BadgeGroup, Kbd, Tag } from "@jotis-me/react";
 import { row, stack } from "./actions";
 
@@ -92,11 +93,17 @@ export function TagExample() {
 	);
 }
 
+const AVATAR_SIZES = ["xs", "sm", "md", "lg", "xl", "2xl"] as const;
+
+/**
+ * Los seis tamaños con iniciales, el estado y el icono sin foto, y las tres insignias del Figma (verificado,
+ * contador y empresa) en los seis tamaños. El logo de empresa es uno de `@jotis-me/icons/logos`.
+ */
 export function AvatarExample() {
 	return (
 		<div className={stack}>
 			<div className={row}>
-				{(["xs", "sm", "md", "lg", "xl", "2xl"] as const).map((size) => (
+				{AVATAR_SIZES.map((size) => (
 					<Avatar key={size} size={size} initials="AD" alt="Administrador" />
 				))}
 			</div>
@@ -106,30 +113,77 @@ export function AvatarExample() {
 					items={[{ initials: "AB" }, { initials: "CD" }, { initials: "EF" }, { initials: "+3" }]}
 				/>
 			</div>
+			<div className={row}>
+				{AVATAR_SIZES.map((size) => (
+					<Avatar key={size} size={size} initials="LP" alt="Lucía Pérez" badge="verified" />
+				))}
+			</div>
+			<div className={row}>
+				{AVATAR_SIZES.map((size) => (
+					<Avatar key={size} size={size} initials="MG" alt="Marta Gil" badge="count" count={8} />
+				))}
+			</div>
+			<div className={row}>
+				{AVATAR_SIZES.map((size) => (
+					<Avatar
+						key={size}
+						size={size}
+						initials="JR"
+						alt="Javier Ruiz"
+						badge="company"
+						company={<SocialStripeLogo />}
+						badgeLabel="Stripe"
+					/>
+				))}
+			</div>
 		</div>
 	);
 }
 
+/** El grupo en `md` y, con `onAdd`, el botón de añadir en los tres tamaños del Figma. */
 export function AvatarGroupExample() {
 	return (
-		<div className={row}>
-			<AvatarGroup
-				size="md"
-				items={[{ initials: "AB" }, { initials: "CD" }, { initials: "EF" }, { initials: "GH" }]}
-			/>
+		<div className={stack}>
+			<div className={row}>
+				<AvatarGroup
+					size="md"
+					items={[{ initials: "AB" }, { initials: "CD" }, { initials: "EF" }, { initials: "GH" }]}
+				/>
+			</div>
+			{(["xs", "sm", "md"] as const).map((size) => (
+				<div key={size} className={row}>
+					<AvatarGroup
+						size={size}
+						items={[
+							{ initials: "AB" },
+							{ initials: "CD" },
+							{ initials: "EF" },
+							{ initials: "+5" },
+						]}
+						onAdd={noop}
+						addLabel="Invitar"
+					/>
+				</div>
+			))}
 		</div>
 	);
 }
 
+/** Los tres tamaños del Figma: `sm`, `md` (el de siempre) y `lg`. */
 export function AvatarLabelExample() {
 	return (
-		<div className={row}>
-			<AvatarLabel
-				initials="AD"
-				name="Responsable de seguridad"
-				supporting="admin@jotis.me"
-				status="online"
-			/>
+		<div className={stack}>
+			{(["sm", "md", "lg"] as const).map((size) => (
+				<div key={size} className={row}>
+					<AvatarLabel
+						size={size}
+						initials="AD"
+						name="Responsable de seguridad"
+						supporting="admin@jotis.me"
+						status="online"
+					/>
+				</div>
+			))}
 		</div>
 	);
 }

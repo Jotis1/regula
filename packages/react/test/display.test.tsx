@@ -167,6 +167,15 @@ describe("Tag", () => {
 	});
 });
 
+// HTML de `Avatar`, `AvatarGroup` y `AvatarLabel` antes de añadir `badge`, `onAdd` y `size` (0.6.0)
+const BEFORE = {
+	avatar: '<span role="img" aria-label="Administrador, En línea" class="relative inline-flex shrink-0 items-center justify-center rounded-full bg-avatar-styles-bg-neutral font-semibold text-(color:--bg-secondary-solid) size-12 text-lg leading-[normal] shadow-[inset_0_0_0_0.5px_#00000029]"><span aria-hidden="true">AD</span><span aria-hidden="true" class="absolute right-0 bottom-0 size-[30%] min-h-1.5 min-w-1.5 rounded-full shadow-[0_0_0_1.5px_var(--bg-primary)] bg-fg-success-secondary"></span></span>',
+	avatarIcon:
+		'<span class="relative inline-flex shrink-0 items-center justify-center rounded-full bg-avatar-styles-bg-neutral font-semibold text-(color:--bg-secondary-solid) size-10 text-md leading-[normal] shadow-[inset_0_0_0_0.5px_#00000029]"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21C20 19.6044 20 18.9067 19.8278 18.3389C19.44 17.0605 18.4395 16.06 17.1611 15.6722C16.5933 15.5 15.8956 15.5 14.5 15.5H9.5C8.10444 15.5 7.40665 15.5 6.83886 15.6722C5.56045 16.06 4.56004 17.0605 4.17224 18.3389C4 18.9067 4 19.6044 4 21M16.5 7.5C16.5 9.98528 14.4853 12 12 12C9.51472 12 7.5 9.98528 7.5 7.5C7.5 5.01472 9.51472 3 12 3C14.4853 3 16.5 5.01472 16.5 7.5Z"></path></svg><span aria-hidden="true" class="absolute right-0 bottom-0 size-[30%] min-h-1.5 min-w-1.5 rounded-full shadow-[0_0_0_1.5px_var(--bg-primary)] bg-fg-quaternary"></span><span class="sr-only">Desconectado</span></span>',
+	group: '<span class="inline-flex [&amp;&gt;*+*]:-ml-2 x"><span class="relative inline-flex shrink-0 items-center justify-center rounded-full bg-avatar-styles-bg-neutral font-semibold text-(color:--bg-secondary-solid) size-8 text-sm leading-[normal] shadow-[0_0_0_1.5px_var(--bg-primary),inset_0_0_0_0.5px_#00000029]"><span>AB</span></span><span class="relative inline-flex shrink-0 items-center justify-center rounded-full bg-avatar-styles-bg-neutral font-semibold text-(color:--bg-secondary-solid) size-8 text-sm leading-[normal] shadow-[0_0_0_1.5px_var(--bg-primary),inset_0_0_0_0.5px_#00000029]"><span>+3</span></span></span>',
+	label: '<span class="inline-flex items-center gap-2 font-body"><span class="relative inline-flex shrink-0 items-center justify-center rounded-full bg-avatar-styles-bg-neutral font-semibold text-(color:--bg-secondary-solid) size-10 text-md leading-[normal] shadow-[inset_0_0_0_0.5px_#00000029]"><span>AD</span><span aria-hidden="true" class="absolute right-0 bottom-0 size-[30%] min-h-1.5 min-w-1.5 rounded-full shadow-[0_0_0_1.5px_var(--bg-primary)] bg-fg-success-secondary"></span><span class="sr-only">En línea</span></span><span><span class="block text-sm font-semibold text-primary">Ana</span><span class="block text-sm text-tertiary">ana@jotis.me</span></span></span>',
+};
+
 describe("Avatar", () => {
 	it("con iniciales y alt es una imagen con nombre y las iniciales quedan ocultas", () => {
 		render(<Avatar initials="AD" alt="Administrador" />);
@@ -219,12 +228,93 @@ describe("Avatar", () => {
 		expect(container.firstElementChild?.className).toContain("var(--bg-primary)");
 	});
 
+	it("sin badge, el HTML es el de antes", () => {
+		expect(
+			renderToStaticMarkup(<Avatar initials="AD" alt="Administrador" status="online" size="lg" />),
+		).toBe(BEFORE.avatar);
+		expect(renderToStaticMarkup(<Avatar status="offline" />)).toBe(BEFORE.avatarIcon);
+	});
+
+	it.each([
+		["xs", "size-2.5"],
+		["sm", "size-3"],
+		["md", "size-3.5"],
+		["lg", "size-4"],
+		["xl", "size-4.5"],
+		["2xl", "size-5"],
+	] as const)("la insignia en %s mide %s y sobresale 2px de la esquina", (size, cls) => {
+		const { container } = render(<Avatar size={size} badge="verified" />);
+		const badge = container.querySelector("svg[viewBox='0 0 16 16']")?.parentElement as HTMLElement;
+		expect(badge.className).toContain(cls);
+		expect(badge.className).toContain("-right-0.5");
+		expect(badge.className).toContain("-bottom-0.5");
+		expect(badge.getAttribute("aria-hidden")).toBe("true");
+	});
+
+	it("verified pinta el sello azul con tick y lo dice a los lectores", () => {
+		const { container } = render(<Avatar badge="verified" />);
+		const [seal, tick] = [...container.querySelectorAll("path")].slice(-2);
+		expect(seal?.getAttribute("class")).toBe("fill-utility-blue-500");
+		expect(tick?.getAttribute("class")).toBe("fill-fg-white");
+		expect(screen.getByText("Verificado").className).toContain("sr-only");
+	});
+
+	it("count escribe el número, pasa a «99+» desde 100 y se anuncia", () => {
+		render(
+			<>
+				<Avatar initials="AD" badge="count" count={8} />
+				<Avatar initials="AD" badge="count" count={1} />
+				<Avatar initials="AD" badge="count" count={120} />
+			</>,
+		);
+		const eight = screen.getByText("8");
+		expect(eight.className).toContain("bg-fg-error-secondary");
+		expect(eight.className).toContain("text-fg-white");
+		expect(screen.getByText("8 notificaciones").className).toContain("sr-only");
+		expect(screen.getByText("1 notificación")).toBeTruthy();
+		expect(screen.getByText("99+")).toBeTruthy();
+	});
+
+	it("company pinta el logo; es decorativo salvo que badgeLabel lo nombre", () => {
+		const { container } = render(
+			<>
+				<Avatar initials="AD" badge="company" company="/empresa.png" />
+				<Avatar initials="LP" badge="company" company="/empresa.png" badgeLabel="Empresa: Pecunia" />
+			</>,
+		);
+		const logos = container.querySelectorAll("img[src='/empresa.png']");
+		expect(logos).toHaveLength(2);
+		expect(logos[0]?.getAttribute("alt")).toBe("");
+		expect(screen.getByText("Empresa: Pecunia").className).toContain("sr-only");
+	});
+
+	it("company acepta un nodo, como un logo de @jotis-me/icons, y lo estira al círculo", () => {
+		const { container } = render(
+			<Avatar initials="AD" badge="company" company={<svg data-testid="logo" viewBox="0 0 24 24" />} />,
+		);
+		const logo = container.querySelector("[data-testid='logo']");
+		expect(logo?.parentElement?.className).toContain("[&>*]:size-full");
+		expect(logo?.parentElement?.className).toContain("rounded-full");
+	});
+
+	it("con alt e iniciales, la insignia entra en el nombre y sustituye al punto de estado", () => {
+		const { container } = render(
+			<Avatar initials="AD" alt="Administrador" status="online" badge="verified" />,
+		);
+		expect(screen.getByRole("img", { name: "Administrador, Verificado" })).toBeTruthy();
+		expect(container.querySelector(".bg-fg-success-secondary")).toBeNull();
+		expect(container.querySelector(".sr-only")).toBeNull();
+	});
+
 	it("sin infracciones de axe", async () => {
 		await expectAccessibleInThemes(
 			<div>
 				<Avatar initials="AD" alt="Administrador" status="online" />
 				<Avatar src="/foto.jpg" alt="Lucía Pérez" status="offline" />
 				<Avatar size="md" status="online" />
+				<Avatar initials="AD" alt="Administrador" badge="verified" />
+				<Avatar size="lg" badge="count" count={3} />
+				<Avatar src="/foto.jpg" alt="Lucía Pérez" badge="company" company="/empresa.png" />
 			</div>,
 		);
 	});
@@ -255,9 +345,60 @@ describe("AvatarGroup", () => {
 		expect(b?.className).toContain("size-12");
 	});
 
+	it("sin onAdd, el HTML es el de antes", () => {
+		expect(
+			renderToStaticMarkup(
+				<AvatarGroup items={[{ initials: "AB" }, { initials: "+3" }]} className="x" />,
+			),
+		).toBe(BEFORE.group);
+	});
+
+	it("onAdd añade al final un botón con su nombre que avisa al pulsarlo", async () => {
+		const onAdd = vi.fn();
+		const { container } = render(
+			<AvatarGroup
+				items={[{ initials: "AB" }, { initials: "CD" }]}
+				onAdd={onAdd}
+				addLabel="Invitar"
+				className="x"
+			/>,
+		);
+		const wrapper = container.firstElementChild as HTMLElement;
+		expect(wrapper.className).toContain("gap-2");
+		expect(wrapper.className).toContain("x");
+		// Los avatares siguen solapados en su propio grupo; el botón va aparte, a 8px
+		expect(wrapper.children[0]?.className).toContain("[&>*+*]:-ml-2");
+		const button = screen.getByRole("button", { name: "Invitar" });
+		expect(button.className).toContain("border-dashed");
+		expect(button.className).toContain("size-8");
+		expect(button.querySelector("svg")?.getAttribute("width")).toBe("16");
+		await userEvent.click(button);
+		expect(onAdd).toHaveBeenCalledOnce();
+	});
+
+	it("el botón de añadir toma el tamaño del grupo y por defecto se llama «Añadir persona»", () => {
+		render(<AvatarGroup size="md" items={[{ initials: "AB" }]} onAdd={() => {}} />);
+		const button = screen.getByRole("button", { name: "Añadir persona" });
+		expect(button.className).toContain("size-10");
+		expect(button.querySelector("svg")?.getAttribute("width")).toBe("20");
+	});
+
+	it("el tooltip del botón dice lo mismo que su nombre", async () => {
+		render(<AvatarGroup items={[{ initials: "AB" }]} onAdd={() => {}} addLabel="Invitar" />);
+		await userEvent.tab();
+		expect((await screen.findByRole("tooltip")).textContent).toBe("Invitar");
+	});
+
 	it("sin infracciones de axe", async () => {
 		await expectAccessibleInThemes(
 			<AvatarGroup items={[{ initials: "AB", alt: "Ana Benítez" }, { initials: "+3" }]} />,
+		);
+		await expectAccessibleInThemes(
+			<AvatarGroup
+				items={[{ initials: "AB", alt: "Ana Benítez" }]}
+				onAdd={() => {}}
+				addLabel="Invitar"
+			/>,
 		);
 	});
 });
@@ -277,6 +418,27 @@ describe("AvatarLabel", () => {
 		expect(name.className).toContain("text-primary");
 		expect(screen.getByText("admin@jotis.me").className).toContain("text-tertiary");
 		expect(screen.getByText("En línea").className).toContain("sr-only");
+	});
+
+	it("sin size, el HTML es el de antes", () => {
+		expect(
+			renderToStaticMarkup(
+				<AvatarLabel initials="AD" name="Ana" supporting="ana@jotis.me" status="online" />,
+			),
+		).toBe(BEFORE.label);
+	});
+
+	it.each([
+		["sm", "size-8", "text-sm", "text-xs"],
+		["md", "size-10", "text-sm", "text-sm"],
+		["lg", "size-12", "text-md", "text-md"],
+	] as const)("size %s: avatar %s, nombre %s y apoyo %s", (size, avatar, name, supporting) => {
+		const { container } = render(
+			<AvatarLabel size={size} initials="AD" name="Ana" supporting="ana@jotis.me" />,
+		);
+		expect(container.querySelector(".rounded-full")?.className).toContain(avatar);
+		expect(screen.getByText("Ana").className).toContain(name);
+		expect(screen.getByText("ana@jotis.me").className).toContain(supporting);
 	});
 
 	it("sin apoyo no pinta la segunda línea", () => {

@@ -5,4 +5,4 @@ description: "Avatar con nombre y una línea de apoyo (correo, rol), para cabece
 interactive: false
 ---
 
-**Props.** Las de `Avatar` más `name` y `supporting`. Nombre `text-sm-semibold` en `text-primary`; apoyo `text-sm-regular` en `text-tertiary`.
+**Props.** Las de `Avatar` más `name` y `supporting`. `size` cambia el avatar y el texto, como el Figma: `sm` (avatar de 32, nombre `text-sm-semibold`, apoyo `text-xs`), `md` (por defecto: avatar de 40, `text-sm` en las dos líneas) y `lg` (avatar de 48, `text-md` en las dos). El resto de tamaños de `Avatar` llevan el texto de `md`. Nombre en `text-primary`; apoyo en `text-tertiary`.

@@ -143,7 +143,7 @@ Reglas comunes:
 - Los textos nuevos van en `defaultStrings`.
 
 Las que cambian de forma:
-- **`Avatar`:** `badge` (`verified`, `count`, `company`) junto al `status` actual, con `count` y `companySrc`.
+- **`Avatar`:** `badge` (`verified`, `count`, `company`) junto al `status` actual, con `count` y `company` (URL de imagen o nodo, por D3; ver `NOTAS.md`).
 - **`AvatarGroup`:** `onAdd` y `addLabel`.
 - **`AvatarLabel`:** `size`.
 - **`Badge`:** `flag`, `avatar`, `iconTrailing` e `iconOnly`. Con `iconOnly`, `label` es obligatorio.
