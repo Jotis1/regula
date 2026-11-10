@@ -158,7 +158,10 @@ test("Dropdown: la tabla de props lleva la elección y el check de la elegida no
 	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
 	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
 	await expect(examples).not.toHaveAttribute("ssr", /.*/);
-	const checked = examples.locator('[role="menuitemradio"][aria-checked="true"]');
+	// El menú de tema (el de elección única); el de cuentas también marca una con su radio
+	const checked = examples
+		.getByRole("menu", { name: "Tema" })
+		.locator('[role="menuitemradio"][aria-checked="true"]');
 	await expect(checked).toHaveCount(1);
 	const color = (svg: Locator) => svg.evaluate((el) => getComputedStyle(el).color);
 	// El primer icono es el de la opción (gris, fg-quaternary) y el último el check (de marca)

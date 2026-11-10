@@ -43,7 +43,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	ContentDivider: 200,
 	CreditCard: 460,
 	DatePicker: 540,
-	Dropdown: 330,
+	Dropdown: 1290,
 	ContextMenu: 530,
 	HeaderNav: 440,
 	EmptyState: 1680,

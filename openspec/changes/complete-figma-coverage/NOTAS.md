@@ -136,3 +136,22 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 - **Colores del resaltado:** siguen los de la ficha de la guía (comentarios `utility-green-700` por contraste); el Figma usa `#16a34a`, `#db2777`, `#2563eb` y `#dc2626` para `export`/`=`. No se cambia el resaltado.
 - **Textos nuevos en `defaultStrings`:** `expandCode`, `showMoreCode`, `showLessCode`.
 - **Ejemplo:** horizontal con pestañas, vertical con pestañas y recortada, y vertical simple con ampliar.
+
+## Dropdown (4.1)
+
+Nodos: `Dropdown menu` `3281:383083`, cabecera `11553:542017`, pie `11553:541939`, elemento `11546:537618`.
+
+- **`searchable`** (Search simple/advanced): `Autocomplete` + `SearchField` de React Aria. El foco se queda en el buscador mientras se filtra, ↓ pasa a las opciones, Enter elige y Escape vacía y, con la búsqueda vacía, cierra. Filtra por `textValue` (o el texto de `label`). Se vacía al cerrar. Sin coincidencias, `emptyLabel`.
+- **`footer`** (texto o botón): un hueco `ReactNode` con la raya superior y `px-4 py-3`. Con un botón de ancho completo, el relleno es de 16 px a los lados y no los 12 del Figma (`_Dropdown menu footer` con botón); diferencia aceptada, para que el pie de texto y el de botón compartan caja.
+- **Título de grupo** (`{ heading }`, el «Switch account» y «Company» del Figma): hace falta en las cuentas y es útil fuera. Sale como `MenuSection` con su `Header`, así los lectores lo anuncian como grupo con nombre.
+- **`variant="integrations"`:** es el botón de siempre con el panel de 216 px y los logos (nodos) a 20 px dentro del hueco de 16. Los logos los pasa quien lo usa (D3); la web usa los `*Gray` de `@jotis-me/icons/logos`. `terminal-square` no está en el set núcleo: el ejemplo usa `code-01`.
+- **Cuentas** (`account-button`, `-avatar`, `-card-xs/sm/md`, `-breadcrumb`): `accounts` con una cuenta elegida (`account`/`defaultAccount`/`onAccountChange`). La lista va en una `MenuSection` con su propia selección única (radio de marca a la derecha), separada de `selectedValue`, que sigue siendo de las acciones. `{ accounts: true }` en `items` fija el sitio; sin él va al final tras un separador. `onAddAccount` pone la fila «Añadir cuenta», fuera del grupo de selección.
+  - `account-button` es el botón de siempre y `account-avatar` es solo el avatar con el nombre del menú como texto oculto (un `aria-label` chocaba con las iniciales visibles: regla `label-content-name-mismatch` de axe).
+  - Las tarjetas `xs` (152×36), `sm` (168×44) y `md` (240×56, con correo) y las migas (28 de alto, sin caja, filas de dos líneas con correo) enseñan la cuenta elegida.
+  - Cabecera de cuenta («Cuenta PRO / se renueva…»): va en `header`, que ya existía.
+- **Sin el interruptor «Modo oscuro» ni el submenú «Support» del Figma:** `items` no tiene submenús ni controles dentro de una fila, y la spec no los pide. Quien lo necesite puede hacer un menú con una opción de elección única (como el selector de tema).
+- **Submenús (`Inset icon=True, State=Open` del elemento, con `chevron`)** y checkboxes dentro de las opciones (`Search advanced`, «Untitled UI» con minus): no se añaden. La spec de la tarea habla de búsqueda, pie, cuentas, integraciones y enlace.
+- **`triggerVariant="link"`** (`12006:557415`): texto semibold con chevron `fg-quaternary`, sin caja ni relleno; con `selectedValue` marca la opción elegida.
+- **Rellenos de las filas de cuenta:** el avatar de 20 px de las filas (Figma) es un `Avatar xs` reducido a `size-5`; en las migas, `md` de 40.
+- **Peso:** `Dropdown` pasa de 77 a 86,8 kB gzip (`Autocomplete`, `SearchField` y `Avatar`); límite a 97.792 (más un 10 %).
+- **Ejemplo** con seis menús (acciones, tema, búsqueda con título y pie, integraciones con logos, cuenta `md` y los disparadores cerrados) y e2e con Chromium real de la búsqueda y del cambio de cuenta.

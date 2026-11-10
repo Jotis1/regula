@@ -63,7 +63,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 
 ## 4. Variantes: formularios
 
-- [ ] 4.1 `Dropdown` (`3281:383083`):
+- [x] 4.1 `Dropdown` (`3281:383083`):
   - `searchable` y `footer`;
   - `variant` de integraciones y las seis de cuenta, con `accounts`;
   - `triggerVariant="link"`.

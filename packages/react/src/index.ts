@@ -109,9 +109,11 @@ export {
 } from "./components/DatePicker.js";
 export {
 	Dropdown,
+	type DropdownAccount,
 	type DropdownAction,
 	type DropdownItem,
 	type DropdownProps,
+	type DropdownVariant,
 } from "./components/Dropdown.js";
 export {
 	EmptyState,

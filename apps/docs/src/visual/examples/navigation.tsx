@@ -1,6 +1,14 @@
 // Puertos de las vistas previas de navegación de la guía (reference/components/*/preview.html).
 
 import {
+	IntegrationChatgptLogoGray,
+	IntegrationClaudeLogoGray,
+	IntegrationCursorLogoGray,
+	IntegrationFigmaLogoGray,
+	IntegrationGeminiLogoGray,
+	IntegrationGithubLogoGray,
+} from "@jotis-me/icons/logos";
+import {
 	AppIcon,
 	AvatarLabel,
 	Breadcrumbs,
@@ -296,12 +304,23 @@ export function HeaderNavExample() {
 	);
 }
 
+const DD_ACCOUNTS = [
+	{
+		value: "olivia",
+		name: "Olivia Rhye",
+		email: "olivia@jotis.me",
+		initials: "OR",
+		status: "online" as const,
+	},
+	{ value: "sienna", name: "Sienna Hewitt", email: "sienna@jotis.me", initials: "SH" },
+];
+
 export function DropdownExample() {
 	// El de elección única (ampliación sobre la guía, el de tema de la cabecera) es de lectura: el estado es de quien lo usa
 	const [theme, setTheme] = useState("claro");
 	return (
-		<div style={{ height: 310, display: "flex", alignItems: "flex-start", gap: 24 }}>
-			<div style={{ width: 280 }}>
+		<div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-start", gap: 24 }}>
+			<div style={{ width: 280, height: 310 }}>
 				<Dropdown
 					label="Acciones"
 					defaultOpen
@@ -322,7 +341,7 @@ export function DropdownExample() {
 					]}
 				/>
 			</div>
-			<div style={{ width: 280 }}>
+			<div style={{ width: 280, height: 310 }}>
 				<Dropdown
 					label="Tema"
 					defaultOpen
@@ -332,6 +351,106 @@ export function DropdownExample() {
 						{ icon: "monitor-01", label: "Sistema", value: "sistema" },
 						{ icon: "sun", label: "Claro", value: "claro" },
 						{ icon: "moon-01", label: "Oscuro", value: "oscuro" },
+					]}
+				/>
+			</div>
+			{/* Búsqueda dentro del menú, con título de grupo y pie de texto */}
+			<div style={{ width: 280, height: 400 }}>
+				<Dropdown
+					label="Gestionar acceso"
+					defaultOpen
+					searchable
+					footer={
+						<>
+							<span>© Jotis</span>
+							<span>v1.0.0</span>
+						</>
+					}
+					items={[
+						{ heading: "Equipos" },
+						{ label: "Contabilidad" },
+						{ label: "Ventas" },
+						{ label: "Soporte" },
+						{ divider: true },
+						{ icon: "plus", label: "Crear equipo" },
+					]}
+				/>
+			</div>
+			{/* Integraciones: logos de 20px, secciones separadas */}
+			<div style={{ width: 280, height: 400 }}>
+				<Dropdown
+					label="Copiar"
+					variant="integrations"
+					defaultOpen
+					items={[
+						{ icon: "code-01", label: "Ver como markdown" },
+						{ icon: "copy-01", label: "Copiar como markdown" },
+						{ divider: true },
+						{ icon: <IntegrationClaudeLogoGray />, label: "Abrir en Claude" },
+						{ icon: <IntegrationCursorLogoGray />, label: "Abrir en Cursor" },
+						{ icon: <IntegrationChatgptLogoGray />, label: "Abrir en ChatGPT" },
+						{ icon: <IntegrationGeminiLogoGray />, label: "Abrir en Gemini" },
+						{ divider: true },
+						{ icon: <IntegrationFigmaLogoGray />, label: "Abrir en Figma" },
+						{ icon: <IntegrationGithubLogoGray />, label: "Crear Gist en GitHub" },
+					]}
+				/>
+			</div>
+			{/* Cuenta: tarjeta md con cabecera, la lista de cuentas y pie con botón */}
+			<div style={{ width: 280, height: 520 }}>
+				<Dropdown
+					variant="account-card-md"
+					defaultOpen
+					accounts={DD_ACCOUNTS}
+					onAddAccount={() => {}}
+					header={
+						<div className="flex min-w-0 flex-col text-sm">
+							<span className="font-semibold text-primary">Cuenta PRO</span>
+							<span className="text-tertiary">Se renueva el 10 de agosto de 2028</span>
+						</div>
+					}
+					footer={<span>© Jotis</span>}
+					items={[
+						{ icon: "user-01", label: "Ver perfil", shortcut: "⌘P" },
+						{ icon: "settings-02", label: "Ajustes", shortcut: "⌘S" },
+						{ divider: true },
+						{ accounts: true },
+						{ divider: true },
+						{ icon: "log-out-01", label: "Cerrar sesión" },
+					]}
+				/>
+			</div>
+			{/* Disparadores: avatar, migas y enlace, con el menú cerrado */}
+			<div style={{ width: 280, height: 520 }} className="flex flex-col items-start gap-6">
+				<Dropdown
+					variant="account-avatar"
+					label="Cuenta"
+					accounts={DD_ACCOUNTS}
+					items={[{ label: "Ver perfil" }]}
+				/>
+				<Dropdown
+					variant="account-card-xs"
+					accounts={DD_ACCOUNTS}
+					items={[{ label: "Ver perfil" }]}
+				/>
+				<Dropdown
+					variant="account-card-sm"
+					accounts={DD_ACCOUNTS}
+					items={[{ label: "Ver perfil" }]}
+				/>
+				<Dropdown
+					variant="account-breadcrumb"
+					accounts={DD_ACCOUNTS}
+					items={[{ label: "Ver perfil" }]}
+				/>
+				<Dropdown
+					label="Puede editar"
+					triggerVariant="link"
+					selectedValue="edit"
+					items={[
+						{ label: "Propietario", value: "owner" },
+						{ label: "Puede editar", value: "edit" },
+						{ label: "Puede ver", value: "view" },
 					]}
 				/>
 			</div>

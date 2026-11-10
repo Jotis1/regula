@@ -80,6 +80,8 @@ export const defaultStrings = {
 	previousMonth: "Mes anterior",
 	nextMonth: "Mes siguiente",
 	noResults: "Sin resultados",
+	switchAccount: "Cambiar de cuenta",
+	addAccount: "Añadir cuenta",
 	required: "obligatorio",
 	upload: "Haz clic para subir",
 	orDrag: "o arrastra y suelta",
