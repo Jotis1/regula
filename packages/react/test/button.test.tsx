@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
-import { Button, ButtonGroup, CloseButton } from "../src/index.js";
+import { Button, ButtonGroup, type ButtonGroupItem, CloseButton } from "../src/index.js";
 import { expectAccessibleInThemes } from "./helpers.js";
 
 describe("Button", () => {
@@ -120,6 +120,13 @@ describe("Button", () => {
 	});
 });
 
+const CLOSE_BEFORE = [
+	'<button type="button" aria-label="Cerrar" class="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-transparent p-2 text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6L6 18M6 6L18 18"></path></svg></button>',
+	'<button type="button" aria-label="Cerrar aviso" class="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-transparent p-2 text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6L6 18M6 6L18 18"></path></svg></button>',
+];
+const GROUP_BEFORE =
+	'<fieldset aria-label="Periodo" class="m-0 inline-flex min-w-0 overflow-hidden border-0 p-0 rounded-lg shadow-[var(--shadow-xs-skeuomorphic),inset_0_0_0_1px_var(--border-primary)]"><button type="button" aria-pressed="false" class="inline-flex h-10 cursor-pointer items-center gap-2 border-l border-primary bg-primary px-4 py-2.5 font-body text-sm font-semibold text-secondary transition-colors duration-100 first:border-l-0 hover:bg-primary_hover hover:text-secondary_hover focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus-ring focus-visible:outline-none aria-pressed:bg-secondary_hover aria-pressed:text-secondary_hover [&amp;_svg]:text-fg-quaternary">12 meses</button><button type="button" aria-pressed="true" class="inline-flex h-10 cursor-pointer items-center gap-2 border-l border-primary bg-primary px-4 py-2.5 font-body text-sm font-semibold text-secondary transition-colors duration-100 first:border-l-0 hover:bg-primary_hover hover:text-secondary_hover focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus-ring focus-visible:outline-none aria-pressed:bg-secondary_hover aria-pressed:text-secondary_hover [&amp;_svg]:text-fg-quaternary">30 días</button><button type="button" aria-pressed="false" class="inline-flex h-10 cursor-pointer items-center gap-2 border-l border-primary bg-primary px-4 py-2.5 font-body text-sm font-semibold text-secondary transition-colors duration-100 first:border-l-0 hover:bg-primary_hover hover:text-secondary_hover focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus-ring focus-visible:outline-none aria-pressed:bg-secondary_hover aria-pressed:text-secondary_hover [&amp;_svg]:text-fg-quaternary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 6V12L16 14M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"></path></svg>24 horas</button></fieldset>';
+
 describe("CloseButton", () => {
 	it("se llama «Cerrar» por defecto y admite otro nombre", () => {
 		render(
@@ -132,8 +139,33 @@ describe("CloseButton", () => {
 		expect(screen.getByRole("button", { name: "Cerrar aviso" })).toBeTruthy();
 	});
 
+	it("sin las props nuevas, el HTML es el de antes", () => {
+		expect(renderToStaticMarkup(<CloseButton />)).toBe(CLOSE_BEFORE[0]);
+		expect(renderToStaticMarkup(<CloseButton label="Cerrar aviso" />)).toBe(CLOSE_BEFORE[1]);
+	});
+
+	it.each([
+		["sm", "size-9", "20"],
+		["md", "size-10", "20"],
+		["lg", "size-11", "24"],
+	] as const)("tamaño %s: caja %s y X de %s px", (size, box, icon) => {
+		render(<CloseButton size={size} />);
+		const button = screen.getByRole("button", { name: "Cerrar" });
+		expect(button.className).toContain(box);
+		expect(button.querySelector("svg")?.getAttribute("width")).toBe(icon);
+	});
+
+	it("onDark pinta la X clara y el fondo blanco translúcido al pasar por encima", () => {
+		render(<CloseButton onDark />);
+		const { className } = screen.getByRole("button", { name: "Cerrar" });
+		expect(className).toContain("text-fg-white/70");
+		expect(className).toContain("hover:bg-fg-white/20");
+		expect(className).not.toContain("text-fg-quaternary");
+	});
+
 	it("es accesible", async () => {
 		await expectAccessibleInThemes(<CloseButton />);
+		await expectAccessibleInThemes(<CloseButton size="lg" onDark />);
 	});
 });
 
@@ -172,7 +204,91 @@ describe("ButtonGroup", () => {
 		expect(screen.getByRole("button", { name: "12 meses" }).getAttribute("aria-pressed")).toBe("true");
 	});
 
+	it("sin las props nuevas, el HTML es el de antes", () => {
+		expect(
+			renderToStaticMarkup(<ButtonGroup aria-label="Periodo" items={items} defaultValue="b" />),
+		).toBe(GROUP_BEFORE);
+	});
+
+	it("size: md mide 40 px y sm 36 px, con los rellenos del Figma", () => {
+		const { rerender } = render(
+			<ButtonGroup
+				aria-label="Vista"
+				size="sm"
+				items={[
+					{ value: "a", label: "Texto" },
+					{ value: "b", label: "Reloj", icon: "clock" },
+				]}
+			/>,
+		);
+		const [text, withIcon] = screen.getAllByRole("button");
+		expect(text?.className).toContain("h-9");
+		expect(text?.className).toContain("px-3.5");
+		expect(withIcon?.className).toContain("pl-3");
+		expect(withIcon?.className).toContain("pr-3.5");
+		expect(withIcon?.className).toContain("gap-1.5");
+		rerender(<ButtonGroup aria-label="Vista" items={[{ value: "a", label: "Texto" }]} />);
+		expect(screen.getByRole("button", { name: "Texto" }).className).toContain("h-10");
+	});
+
+	it("iconOnly enseña solo el icono y se llama como su label", async () => {
+		const onChange = vi.fn();
+		render(
+			<ButtonGroup
+				aria-label="Vista"
+				onChange={onChange}
+				items={[
+					{ value: "grid", iconOnly: "grid-01", label: "Cuadrícula" },
+					{ value: "list", iconOnly: "align-left", label: "Lista" },
+				]}
+			/>,
+		);
+		const grid = screen.getByRole("button", { name: "Cuadrícula" });
+		expect(grid.querySelector("svg")).toBeTruthy();
+		expect(grid.textContent).toBe("Cuadrícula");
+		expect(grid.querySelector(".sr-only")?.textContent).toBe("Cuadrícula");
+		expect(grid.className).toContain("px-3");
+		await userEvent.click(screen.getByRole("button", { name: "Lista" }));
+		expect(onChange).toHaveBeenCalledWith("list");
+	});
+
+	it("iconOnly exige label y no admite texto (tipos)", () => {
+		// @ts-expect-error sin label no hay nombre accesible
+		const sinLabel: ButtonGroupItem = { value: "a", iconOnly: "grid-01" };
+		// @ts-expect-error con iconOnly no se admite icon
+		const conIcon: ButtonGroupItem = { value: "a", iconOnly: "grid-01", label: "A", icon: "clock" };
+		expect([sinLabel, conIcon]).toHaveLength(2);
+	});
+
+	it("dot pinta un punto decorativo que los lectores no anuncian", () => {
+		render(
+			<ButtonGroup
+				aria-label="Estado"
+				items={[
+					{ value: "on", label: "Activo", dot: true },
+					{ value: "off", label: "Inactivo" },
+				]}
+			/>,
+		);
+		const on = screen.getByRole("button", { name: "Activo" });
+		const dot = on.querySelector("span[aria-hidden=true]");
+		expect(dot?.className).toContain("size-2.5");
+		expect(dot?.className).toContain("rounded-full");
+		expect(screen.getByRole("button", { name: "Inactivo" }).querySelector("span")).toBeNull();
+	});
+
 	it("es accesible", async () => {
 		await expectAccessibleInThemes(<ButtonGroup aria-label="Periodo" items={items} defaultValue="a" />);
+		await expectAccessibleInThemes(
+			<ButtonGroup
+				aria-label="Vista"
+				size="sm"
+				defaultValue="grid"
+				items={[
+					{ value: "grid", iconOnly: "grid-01", label: "Cuadrícula" },
+					{ value: "on", label: "Activo", dot: true },
+				]}
+			/>,
+		);
 	});
 });

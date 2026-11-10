@@ -42,10 +42,20 @@ export function ButtonExample() {
 	);
 }
 
+/** Los tres tamaños sobre fondo claro y la versión para fondo oscuro. */
 export function CloseButtonExample() {
 	return (
-		<div className={row}>
-			<CloseButton />
+		<div className={stack}>
+			<div className={row}>
+				<CloseButton size="sm" />
+				<CloseButton size="md" />
+				<CloseButton size="lg" />
+			</div>
+			<div className={`${row} rounded-xl bg-brand-solid p-4`}>
+				<CloseButton size="sm" onDark />
+				<CloseButton size="md" onDark />
+				<CloseButton size="lg" onDark />
+			</div>
 		</div>
 	);
 }
@@ -80,18 +90,37 @@ export function ButtonUtilityExample() {
 	);
 }
 
+/** Texto, con icono y con punto en `md`; los mismos en `sm`, y los de solo icono. */
 export function ButtonGroupExample() {
+	const periods = [
+		{ value: "a", label: "12 meses" },
+		{ value: "b", label: "30 días" },
+		{ value: "m", label: "7 días" },
+		{ value: "d", label: "24 horas", icon: "clock" as const },
+	];
+	const dots = [
+		{ value: "on", label: "Activos", dot: true },
+		{ value: "off", label: "Pausados", dot: true },
+		{ value: "all", label: "Todos" },
+	];
+	const views = [
+		{ value: "grid", iconOnly: "grid-01" as const, label: "Cuadrícula" },
+		{ value: "list", iconOnly: "align-left" as const, label: "Lista" },
+		{ value: "add", iconOnly: "plus" as const, label: "Añadir vista" },
+	];
 	return (
-		<ButtonGroup
-			defaultValue="m"
-			aria-label="Periodo"
-			items={[
-				{ value: "a", label: "12 meses" },
-				{ value: "b", label: "30 días" },
-				{ value: "m", label: "7 días" },
-				{ value: "d", label: "24 horas", icon: "clock" },
-			]}
-		/>
+		<div className={stack}>
+			<div className={row}>
+				<ButtonGroup defaultValue="m" aria-label="Periodo" items={periods} />
+				<ButtonGroup defaultValue="on" aria-label="Estado" items={dots} />
+				<ButtonGroup defaultValue="grid" aria-label="Vista" items={views} />
+			</div>
+			<div className={row}>
+				<ButtonGroup size="sm" defaultValue="m" aria-label="Periodo (pequeño)" items={periods} />
+				<ButtonGroup size="sm" defaultValue="on" aria-label="Estado (pequeño)" items={dots} />
+				<ButtonGroup size="sm" defaultValue="grid" aria-label="Vista (pequeño)" items={views} />
+			</div>
+		</div>
 	);
 }
 
