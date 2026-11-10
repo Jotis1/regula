@@ -3,7 +3,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Set completo de iconos de la guía
-El paquete de iconos SHALL incluir los 1.173 iconos de línea del Figma «Yoruverse UI v8.0» con sus nombres del Figma en kebab-case, dibujados en 24×24 con trazo de 2px, extremos redondeados y sin relleno. Cada icono SHALL publicarse como componente React suelto que lleva su propio dibujo y como fichero SVG. El componente `Icon` con `name` SHALL cubrir un set núcleo, que incluye como mínimo los 81 de la guía original y los que usan los componentes de `@jotis-me/react`, sin cargar los demás. La lista del set completo SHALL ser la que use el artefacto generado.
+El paquete de iconos SHALL incluir los 1.172 iconos de línea del Figma «Yoruverse UI v8.0» con sus nombres del Figma en kebab-case, dibujados en 24×24 con trazo de 2px, extremos redondeados y sin relleno. Cada icono SHALL publicarse como componente React suelto que lleva su propio dibujo y como fichero SVG. El componente `Icon` con `name` SHALL cubrir un set núcleo, que incluye como mínimo los 81 de la guía original y los que usan los componentes de `@jotis-me/react`, sin cargar los demás. La lista del set completo SHALL ser la que use el artefacto generado.
 
 #### Scenario: Paridad de nombres
 - **WHEN** se compara la lista del set completo exportada con la de `iconNames` del artefacto generado
@@ -15,7 +15,7 @@ El paquete de iconos SHALL incluir los 1.173 iconos de línea del Figma «Yoruve
 
 #### Scenario: Set completo
 - **WHEN** se lista el set completo exportado
-- **THEN** tiene 1.173 iconos, los mismos nombres que el Figma y ninguno repetido
+- **THEN** tiene 1.172 iconos: los del Figma (1.173 componentes, con «colors» repetido en las categorías Images y Editor y con el mismo dibujo), sin ningún nombre repetido
 
 #### Scenario: Un icono suelto
 - **WHEN** una app importa solo `IconRocket02` y se empaqueta

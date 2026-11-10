@@ -20,8 +20,8 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 
 ## 1. Cimientos de iconos (`@jotis-me/icons`)
 
-- [ ] 1.1 Importar los 1.173 iconos de línea de los 19 marcos de la página `3463:407484` con un script (export por marco con `download_assets` y recorte local, como `import-logos.ts`) a `src/data/icons.ts`. Tests:
-  - 1.173 nombres sin repetir;
+- [x] 1.1 Importar los 1.172 iconos de línea de los 19 marcos de la página `3463:407484` con un script (export por marco con `download_assets` y recorte local, como `import-logos.ts`) a `src/data/icons.ts`. Tests:
+  - 1.172 nombres sin repetir («colors» está en dos categorías del Figma con el mismo dibujo: cuenta una vez);
   - los 82 de hoy conservan nombre y dibujo (fixture);
   - cada dibujo tiene trazo `currentColor` y viewBox 24×24.
 
@@ -29,7 +29,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 - [ ] 1.2 Separar el set núcleo del completo (design D1):
   - `src/data/core.ts` con `IconName` y `iconNames`, y `allIconNames`;
   - `scripts/generate.ts` crea cada `IconXxx` con su dibujo en línea;
-  - `dist/svg/` con los 1.173.
+  - `dist/svg/` con los 1.172.
 
   Tests:
   - un import suelto de `IconRocket02` empaquetado no contiene otros dibujos;
@@ -43,7 +43,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 - [ ] 1.6 Emojis (`1244:296`, 18) en `@jotis-me/icons/emoji` y cursores (`9342:257073`, 50) en `@jotis-me/icons/cursors`, con los mismos tests y un e2e que use un cursor en CSS.
 - [ ] 1.7 `exports`, `check:package` (`publint`, `attw`) y medida del tarball con `scripts/pack.ts` antes y después, anotada. Si pasa de 15 MB sin comprimir, parar y preguntar (Risks). Changeset `minor` de `@jotis-me/icons` con la ruptura de `IconName` declarada.
 - [ ] 1.8 Galerías de la web (design D9):
-  - `/icons/` con los 1.173 y el código de `IconXxx` para los que no están en el núcleo;
+  - `/icons/` con los 1.172 y el código de `IconXxx` para los que no están en el núcleo;
   - páginas de banderas, pagos, archivos, emojis y cursores en `IconsNav.astro` y en la navegación lateral;
   - nota de la ruptura en `/icons/`.
 

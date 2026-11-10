@@ -9,7 +9,7 @@ El inventario del Figma «Yoruverse UI v8.0» hecho el 10 de noviembre de 2026 e
 Todo va en una sola PR y en este orden: cimientos de iconos, variantes de los componentes que ya existen, componentes base nuevos y componentes complejos nuevos.
 
 - **Cimientos de iconos** en `@jotis-me/icons`:
-  - Set de iconos de línea completo: de 82 a los 1.173 del Figma.
+  - Set de iconos de línea completo: de 82 a los 1.172 del Figma.
   - Entradas nuevas: banderas (260 países y regiones × círculo, cuadrado y rectángulo), métodos de pago (56 × `sm`/`md`), tipos de archivo (153), carpetas (8), emojis (18) y cursores (50).
 - **Variantes en componentes que ya existen**, como en el Figma:
   - Identidad y etiquetas: `Avatar` (verificado, contador, avatar de empresa), `AvatarGroup` (botón de añadir), `AvatarLabel` (tamaños), `Badge` (bandera, avatar, icono detrás, solo icono), `Tag` (bandera, avatar, casilla).
@@ -29,7 +29,7 @@ Todo va en una sola PR y en este orden: cimientos de iconos, variantes de los co
   - Piezas de marketing que no son secciones: `MarketingNav` (desplegable y a todo el ancho), `Footer`, `BlogPostCard`, `SubscribeCard`, `PricingCard`, `Accordion` (el FAQ item), `TeamMemberCard`, `Testimonial` y `JobPostCard`.
 - **Composiciones en la web**:
   - Los ~49 tipos de `Modal`, los 23 de `Slideout` y el `Color picker modal` del Figma se montan como ejemplos en la web con componentes de Regula. No se exportan del paquete.
-- **BREAKING** (`@jotis-me/icons`): `Icon` con `name` e `IconName` se quedan en un set núcleo (los 82 de hoy más los que usen los componentes). El set completo se publica como componentes sueltos (`IconXxx`, cada uno con su propio dibujo) y como SVG. Así un import de un icono no arrastra los 1.173. Los nombres que ya existían no cambian.
+- **BREAKING** (`@jotis-me/icons`): `Icon` con `name` e `IconName` se quedan en un set núcleo (los 82 de hoy más los que usen los componentes). El set completo se publica como componentes sueltos (`IconXxx`, cada uno con su propio dibujo) y como SVG. Así un import de un icono no arrastra los 1.172. Los nombres que ya existían no cambian.
 - El catálogo pasa de 94 a 121 componentes, cada uno con página, ficha, ejemplo, muestra y capturas aprobadas.
 - **Fuera de alcance**:
   - Las secciones de página: todas las `… section` de Marketing, los page headers de Blog, Pricing y Contact, las páginas Log in, Sign up, Forgot password, Email verification y 404, y Email templates.
@@ -51,7 +51,7 @@ Ninguna.
   - Cada componente que gana variantes tiene un requisito nuevo.
   - Los `icon` de los componentes aceptan también un nodo con cualquier icono del set completo.
 - `icon-set`:
-  - El set completo pasa a 1.173 iconos y el núcleo con nombre queda aparte.
+  - El set completo pasa a 1.172 iconos y el núcleo con nombre queda aparte.
   - Entradas nuevas para banderas, pagos, tipos de archivo, carpetas, emojis y cursores.
 - `docs-site`:
   - La galería de iconos cubre el set completo y los sets nuevos.

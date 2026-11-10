@@ -16,7 +16,7 @@
   El test de catálogo falla si falta algo. `apps/docs` tiene límite de JS por página (`check:js`). Nunca se pone `client:*` en un componente del paquete: se usan islas propias de la web.
 - **Figma frente a tokens.** El Figma usa la paleta de Tailwind v3, no los tokens. De él se toman forma, medidas y estados, y el color se traduce al token semántico. Cuando el Figma y la spec no coinciden, se construye como el Figma y se actualiza la spec (regla del usuario).
 - **Cómo se importan los recursos.** Los recursos de muchos nodos se importan exportando cada marco entero con `download_assets` (conserva los nombres de capa como `id`) y recortándolo en local con un script. Es el mismo método que `packages/icons/scripts/import-logos.ts`: `use_figma` devuelve 48 kB como mucho.
-- **Cómo funcionan hoy los iconos.** `Icon` importa el mapa entero `src/data/icons.ts` (82 iconos), y cada `IconXxx` generado envuelve `Icon`. Con 1.173 iconos, cualquier uso cargaría el set entero. `@jotis-me/react` usa `IconName` en sus props y `iconSlot()`, que ya acepta un `ReactNode`.
+- **Cómo funcionan hoy los iconos.** `Icon` importa el mapa entero `src/data/icons.ts` (82 iconos), y cada `IconXxx` generado envuelve `Icon`. Con 1.172 iconos, cualquier uso cargaría el set entero. `@jotis-me/react` usa `IconName` en sus props y `iconSlot()`, que ya acepta un `ReactNode`.
 - **Ya existe y no se rehace:** los patrones «Line pattern» (`@jotis-me/icons/patterns/pattern-*.svg`), los 87 trazos a mano y los sets Social, Integration y App icons de `@jotis-me/icons/logos`.
 
 Nodos del Figma. Las piezas internas («_») de cada fila se leen dentro de su nodo padre.
@@ -92,11 +92,11 @@ Nodos del Figma. Las piezas internas («_») de cada fila se leen dentro de su n
 ## Decisions
 
 ### D1. Set núcleo con nombre y set completo suelto (`@jotis-me/icons`)
-- **Datos:** `src/data/icons.ts` pasa a tener los 1.173 dibujos, importados del Figma con un script (como `import-logos.ts`), con sus nombres en kebab-case. Los 82 actuales conservan nombre y dibujo; un test lo comprueba contra el fixture.
+- **Datos:** `src/data/icons.ts` pasa a tener los 1.172 dibujos, importados del Figma con un script (como `import-logos.ts`), con sus nombres en kebab-case. Los 82 actuales conservan nombre y dibujo; un test lo comprueba contra el fixture.
 - **Núcleo:** `src/data/core.ts` lista los nombres que puede pintar `Icon name`: los 82 de hoy más los que usen los componentes de `@jotis-me/react`. `IconName` es la unión del núcleo. Un test comprueba que cada icono que nombran las fuentes de `packages/react` está en el núcleo.
-- **Set completo:** `scripts/generate.ts` genera cada `IconXxx` con su propio dibujo en línea, sin depender del mapa. `allIconNames` lista los 1.173. Los SVG de `dist/svg/` pasan a ser los 1.173.
+- **Set completo:** `scripts/generate.ts` genera cada `IconXxx` con su propio dibujo en línea, sin depender del mapa. `allIconNames` lista los 1.172. Los SVG de `dist/svg/` pasan a ser los 1.172.
 - **Ruptura:** `IconName` y `iconNames` ya no incluyen los nuevos (sí todos los de hoy), y `Icon name="..."` con un nombre fuera del núcleo no compila. Se declara como ruptura en el changeset y en el changelog, y la página de iconos lo explica.
-- *Alternativa:* un `Icon` con los 1.173. Cargaría unos 200 kB gzip en cada componente que pinte un icono. Se descarta.
+- *Alternativa:* un `Icon` con los 1.172. Cargaría unos 200 kB gzip en cada componente que pinte un icono. Se descarta.
 - *Alternativa:* carga diferida por nombre. No funciona sin JavaScript ni en el servidor. Se descarta.
 
 ### D2. Sets de color en entradas propias
@@ -235,7 +235,7 @@ Las que cambian de forma:
 - **Lo demás:** retrocompatible. Si al implementar una variante solo puede entrar cambiando una prop existente, se para, se anota en `NOTAS.md` y se pregunta al usuario antes de seguir.
 
 ### D9. Galerías de recursos en la web
-- **Páginas:** `/icons/` pasa a enseñar los 1.173 iconos. Los sets nuevos tienen página propia (`/icons/flags/`, `/icons/payments/`, `/icons/files/`, `/icons/emoji/`, `/icons/cursors/`) en el selector `IconsNav.astro`. `/icons/logos/` no cambia.
+- **Páginas:** `/icons/` pasa a enseñar los 1.172 iconos. Los sets nuevos tienen página propia (`/icons/flags/`, `/icons/payments/`, `/icons/files/`, `/icons/emoji/`, `/icons/cursors/`) en el selector `IconsNav.astro`. `/icons/logos/` no cambia.
 - **Carga:** las galerías cargan los SVG como `<img loading="lazy">` desde URLs (`import.meta.glob` con `?no-inline`), igual que `LogoGallery`, y la lista de nombres va en el HTML. Así el JS de cada página no crece con el número de iconos.
 - **Iconos de línea:** usan `mask-image` con `bg-fg-primary` para tomar el color del tema.
 - **Rendimiento:** si el HTML de `/icons/` pasa de 400 kB, la rejilla se pagina por categoría (los 19 marcos del Figma) con un filtro, sin cambiar el buscador.

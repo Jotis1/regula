@@ -23,7 +23,7 @@ Cada componente del Figma «Yoruverse UI v8.0» que no sea una sección de pági
 - **THEN** hay una forma documentada de pintar ese valor con los componentes de Regula
 
 ### Requirement: Iconos de cualquier set en los componentes
-Las props de icono de los componentes (`icon`, `iconLeading`, `iconTrailing` y similares) SHALL aceptar el nombre de un icono del set núcleo o un nodo ya pintado, de modo que se pueda usar cualquiera de los 1.173 iconos del set completo sin que el componente cargue el set entero.
+Las props de icono de los componentes (`icon`, `iconLeading`, `iconTrailing` y similares) SHALL aceptar el nombre de un icono del set núcleo o un nodo ya pintado, de modo que se pueda usar cualquiera de los 1.172 iconos del set completo sin que el componente cargue el set entero.
 
 #### Scenario: Icono fuera del núcleo
 - **WHEN** se pinta `Button` con `iconLeading={<IconRocket02 />}`, un icono que no está en el núcleo
