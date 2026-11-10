@@ -235,6 +235,12 @@ describe("Badge", () => {
 	});
 });
 
+// HTML de `Tag` antes de añadir `flag`, `avatar` y `checkable` (0.6.0)
+const TAG_BEFORE = [
+	'<span class="inline-flex items-center gap-[3px] whitespace-nowrap rounded-md bg-primary font-body font-medium text-secondary inset-ring inset-ring-primary px-[9px] py-0.5 text-sm"><span aria-hidden="true" class="m-px size-1.5 shrink-0 rounded-full bg-fg-success-secondary"></span>Facturas<span class="rounded-[3px] bg-tertiary px-[5px] text-xs text-secondary">5</span></span>',
+	'<span class="inline-flex items-center gap-[3px] whitespace-nowrap rounded-md bg-primary font-body font-medium text-secondary inset-ring inset-ring-primary px-2.5 py-1 text-sm">León<button type="button" aria-label="Quitar León" class="inline-flex cursor-pointer rounded-[3px] bg-transparent p-0.5 text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6L6 18M6 6L18 18"></path></svg></button></span>',
+];
+
 describe("Tag", () => {
 	it("sm por defecto, neutro con borde", () => {
 		render(<Tag>Diseño</Tag>);
@@ -276,11 +282,131 @@ describe("Tag", () => {
 		expect(onRemove).toHaveBeenCalledOnce();
 	});
 
+	it("sin las props nuevas, el HTML es el de antes", () => {
+		expect(
+			renderToStaticMarkup(
+				<Tag size="md" count={5} dot>
+					Facturas
+				</Tag>,
+			),
+		).toBe(TAG_BEFORE[0]);
+		expect(
+			renderToStaticMarkup(
+				<Tag size="lg" onRemove={() => {}}>
+					León
+				</Tag>,
+			),
+		).toBe(TAG_BEFORE[1]);
+	});
+
+	it.each([
+		["sm", "pl-1", "gap-1"],
+		["md", "pl-[5px]", "gap-[5px]"],
+		["lg", "pl-[7px]", "gap-1.5"],
+	] as const)("flag en %s: bandera de 13px delante, con %s y %s", (size, pad, gap) => {
+		render(
+			<Tag size={size} flag={<svg data-testid="flag" />}>
+				España
+			</Tag>,
+		);
+		const tag = screen.getByText("España");
+		expect(tag.className.split(" ")).toContain(pad);
+		const box = screen.getByTestId("flag").parentElement as HTMLElement;
+		expect(box.className).toContain("size-[13.33px]");
+		expect(box.getAttribute("aria-hidden")).toBe("true");
+		expect(box.parentElement?.className.split(" ")).toContain(gap);
+	});
+
+	it("avatar acepta una URL (foto redonda decorativa) o un nodo", () => {
+		const { container } = render(
+			<>
+				<Tag avatar="/foto.jpg">Lucía</Tag>
+				<Tag avatar={<span data-testid="ini">LP</span>}>Lucía</Tag>
+			</>,
+		);
+		const img = container.querySelector("img[src='/foto.jpg']") as HTMLElement;
+		expect(img.getAttribute("alt")).toBe("");
+		expect(img.parentElement?.className).toContain("size-4");
+		expect(screen.getByTestId("ini").parentElement?.getAttribute("aria-hidden")).toBe("true");
+	});
+
+	it.each([
+		["sm", "size-3.5", "10"],
+		["md", "size-4", "12"],
+		["lg", "size-4.5", "14"],
+	] as const)(
+		"checkable en %s: casilla de %s con check de %spx, con el texto como nombre",
+		(size, box, check) => {
+			render(
+				<Tag size={size} checkable>
+					Diseño
+				</Tag>,
+			);
+			const checkbox = screen.getByRole("checkbox", { name: "Diseño" });
+			const visual = checkbox.nextElementSibling as HTMLElement;
+			expect(visual.className).toContain(box);
+			expect(visual.querySelector("svg")?.getAttribute("width")).toBe(check);
+			expect(checkbox.closest("label")?.className).toContain("cursor-pointer");
+		},
+	);
+
+	it("la casilla se marca con un clic en el texto y con Espacio, y avisa", async () => {
+		const onCheckedChange = vi.fn();
+		render(
+			<Tag checkable onCheckedChange={onCheckedChange}>
+				Diseño
+			</Tag>,
+		);
+		const checkbox = screen.getByRole("checkbox", { name: "Diseño" }) as HTMLInputElement;
+		await userEvent.click(screen.getByText("Diseño"));
+		expect(checkbox.checked).toBe(true);
+		expect(onCheckedChange).toHaveBeenLastCalledWith(true);
+		await userEvent.keyboard(" ");
+		expect(checkbox.checked).toBe(false);
+		expect(onCheckedChange).toHaveBeenLastCalledWith(false);
+		await userEvent.tab();
+		expect(document.activeElement).not.toBe(checkbox);
+		await userEvent.tab({ shift: true });
+		expect(document.activeElement).toBe(checkbox);
+	});
+
+	it("checked controla la casilla; la X sigue siendo un botón aparte que no la marca", async () => {
+		const onRemove = vi.fn();
+		const onCheckedChange = vi.fn();
+		render(
+			<Tag checkable checked onCheckedChange={onCheckedChange} onRemove={onRemove}>
+				León
+			</Tag>,
+		);
+		const checkbox = screen.getByRole("checkbox", { name: /León/ }) as HTMLInputElement;
+		expect(checkbox.checked).toBe(true);
+		await userEvent.click(screen.getByRole("button", { name: "Quitar León" }));
+		expect(onRemove).toHaveBeenCalledOnce();
+		expect(onCheckedChange).not.toHaveBeenCalled();
+		expect(checkbox.checked).toBe(true);
+	});
+
+	it("con casilla y bandera, la casilla va primero y el hueco izquierdo es el de la casilla", () => {
+		render(
+			<Tag size="sm" checkable flag={<svg data-testid="flag" />}>
+				España
+			</Tag>,
+		);
+		const group = screen.getByTestId("flag").parentElement?.parentElement as HTMLElement;
+		expect(group.firstElementChild?.tagName).toBe("INPUT");
+		expect(group.parentElement?.className.split(" ")).toContain("pl-[5px]");
+	});
+
 	it("sin infracciones de axe", async () => {
 		await expectAccessibleInThemes(
 			<div>
 				<Tag count={5}>Facturas</Tag>
 				<Tag onRemove={() => {}}>León</Tag>
+				<Tag flag={<svg aria-hidden="true" />}>España</Tag>
+				<Tag avatar="/foto.jpg">Lucía</Tag>
+				<Tag checkable defaultChecked onRemove={() => {}}>
+					Diseño
+				</Tag>
 			</div>,
 		);
 	});

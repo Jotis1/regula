@@ -106,19 +106,42 @@ export function BadgeExample() {
 	);
 }
 
+/** Lo de siempre, bandera y avatar delante, y la casilla del Figma en los tres tamaños (se marca sin hidratar: es nativa). */
 export function TagExample() {
 	return (
-		<div className={row}>
-			<Tag>Diseño</Tag>
-			<Tag size="md" count={5}>
-				Facturas
-			</Tag>
-			<Tag size="md" onRemove={noop}>
-				León
-			</Tag>
-			<Tag size="lg" dot>
-				Sincronizado
-			</Tag>
+		<div className={stack}>
+			<div className={row}>
+				<Tag>Diseño</Tag>
+				<Tag size="md" count={5}>
+					Facturas
+				</Tag>
+				<Tag size="md" onRemove={noop}>
+					León
+				</Tag>
+				<Tag size="lg" dot>
+					Sincronizado
+				</Tag>
+			</div>
+			<div className={row}>
+				<Tag flag={<FlagSpainCircle />}>España</Tag>
+				<Tag size="md" flag={<FlagPortugalCircle />} onRemove={noop}>
+					Portugal
+				</Tag>
+				<Tag size="lg" avatar={<Avatar size="xs" />} count={3}>
+					Lucía
+				</Tag>
+			</div>
+			<div className={row}>
+				<Tag checkable defaultChecked>
+					Diseño
+				</Tag>
+				<Tag size="md" checkable flag={<FlagMexicoCircle />}>
+					México
+				</Tag>
+				<Tag size="lg" checkable defaultChecked avatar={<Avatar size="xs" />} onRemove={noop}>
+					Lucía
+				</Tag>
+			</div>
 		</div>
 	);
 }

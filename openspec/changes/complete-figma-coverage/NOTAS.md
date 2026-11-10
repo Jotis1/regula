@@ -89,3 +89,11 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 - **`iconOnly` exige `label` y no admite texto** (unión de tipos, con test de tipos). El `label` va como texto oculto dentro del badge, no como `aria-label` de un `span`, que los lectores no anuncian en todos los casos.
 - **Ejemplo.** Avatar con el icono de usuario, no con iniciales: a 16 px las iniciales no se leen.
 - **JS de `/components/*/`.** Las páginas de componente cargan la isla `VisualExample` con el registro entero de ejemplos (72 kB gzip): 349,0 → 350,4 kB con las banderas y variantes de Badge; límite a 352. Crecerá con cada tarea del cambio (ver `/visual/` en 2.1).
+
+## Tag (2.3)
+
+- **Casilla nativa.** `checkable` convierte el tag en la etiqueta (`<label>`) de un `<input type="checkbox">` oculto, con la caja pintada al lado por `peer-*`, como `Checkbox`. Se marca con un clic en el texto o con Espacio, el texto es su nombre accesible y funciona sin hidratar (`defaultChecked`); `checked` + `onCheckedChange` para controlarlo, y `name`/`value` para formularios. La X sigue siendo un botón aparte: pulsarla no marca la casilla (test).
+- **Medidas del Figma** (`Tag`, `3307:417515`; `Tag checkbox`, `3308:406033`): caja de 14, 16 y 18 px con radio de 4 px (`radius-sm` de Regula: el `radius-xs` del Figma mide 4 y el de Regula 2), check de 10, 12 y 14 px en `bg-brand-solid` (`_hover` al pasar por encima). Bandera de 13,33 px y avatar de 16. Lo de delante se separa 4, 5 y 6 px del texto; el hueco izquierdo pasa a 5, 4 y 5 px con casilla y a 4, 5 y 7 con bandera o avatar.
+- **Pequeñas incoherencias del Figma.** La casilla en `sm` deja 5 px a la izquierda y en `md` 4; se copian tal cual. El hueco derecho con X (4 px en el Figma) no cambia: es el de los tags con X de antes, y tocarlo cambiaría su HTML sin props nuevas.
+- **Ejemplo.** Avatares con el icono de usuario, como en `Badge`.
+- **JS de `/visual/`:** 343,3 kB con estos ejemplos; límite a 346.
