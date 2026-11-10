@@ -12,7 +12,7 @@ const walk = (dir: string): string[] =>
 	});
 
 describe("SVG de color", () => {
-	for (const family of ["logos", "flags", "payments", "files"]) {
+	for (const family of ["logos", "flags", "payments", "files", "cursors"]) {
 		it(`los de ${family} son XML válido`, () => {
 			const bad: string[] = [];
 			const parser = new DOMParser();

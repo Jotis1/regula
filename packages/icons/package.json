@@ -41,6 +41,10 @@
 			"types": "./dist/files.d.ts",
 			"default": "./dist/files.js"
 		},
+		"./cursors": {
+			"types": "./dist/cursors.d.ts",
+			"default": "./dist/cursors.js"
+		},
 		"./svg/*": "./dist/svg/*",
 		"./app-icons/*": "./dist/app-icons/*",
 		"./hand-drawn/*": "./dist/hand-drawn/*",
@@ -49,6 +53,7 @@
 		"./flags/*": "./dist/flags/*",
 		"./payments/*": "./dist/payments/*",
 		"./files/*": "./dist/files/*",
+		"./cursors/*": "./dist/cursors/*",
 		"./package.json": "./package.json"
 	},
 	"scripts": {

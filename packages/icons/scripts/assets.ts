@@ -81,6 +81,7 @@ for (const [folder, what] of [
 	["flags", "banderas"],
 	["payments", "iconos de pago"],
 	["files", "iconos de archivo y carpetas"],
+	["cursors", "cursores"],
 ] as const) {
 	const target = join(dist, folder);
 	rmSync(target, { recursive: true, force: true });

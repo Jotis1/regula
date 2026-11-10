@@ -42,3 +42,9 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 - **Desenfoque de fondo.** Las carpetas «noise» y «transparent» llevan un desenfoque de lo que hay detrás (`backdrop-filter` dentro de un `foreignObject`). No cabe en un SVG suelto, así que se quita junto con su recorte. Diferencia aceptada: se ven igual sobre un fondo liso y algo menos «de cristal» sobre una imagen.
 - **Textura de ruido.** Estas mismas carpetas usan un PNG de 128×128 (`noise.png`) como textura. No tiene versión vectorial: se conserva como `<image>` con data URI dentro del SVG (unos 27 kB por carpeta, solo en estas cuatro).
 - **`xlink`.** Figma exporta la imagen con `xlink:href` sin declarar `xmlns:xlink`; como imagen el SVG se rompía. Se añade la declaración, y un test comprueba que todos los SVG de color del paquete (logos, banderas, pagos y archivos) son XML válido.
+
+## Cursores
+
+- **50 cursores** en `@jotis-me/icons/cursors` (`scripts/import-cursors.ts`): 29 clásicos y 21 de macOS 26. Nombres en kebab-case; los de macOS llevan el prefijo `macos-` (`macos-resize-north-south`, `CursorMacosResizeNorthSouth`).
+- **Tamaño.** Los clásicos miden 20×20, como su caja del Figma. Varios de macOS 26 sobresalen de su caja (la flecha llega unos píxeles más abajo; la del menú mide 28×38), así que su `viewBox` crece por ese lado para no recortarlos. Los `size` de los componentes son el alto.
+- **Sin punto activo.** El SVG no lleva el hotspot del cursor: se pasa en la regla de CSS, `cursor: url(".../hand-grab.svg") 6 4, grab`. Un e2e comprueba que Chromium acepta un cursor así y que cada SVG de color del paquete (1.400+) se decodifica como imagen.

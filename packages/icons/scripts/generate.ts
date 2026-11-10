@@ -207,3 +207,12 @@ generateFamily({
 	componentName: (slug) =>
 		slug.startsWith("folder-") ? `Folder${pascalCase(slug.slice(7))}` : `File${pascalCase(slug)}`,
 });
+
+generateFamily({
+	entry: "cursors",
+	dir: "cursors",
+	listName: "cursorNames",
+	description:
+		"Los nombres de los cursores, como sus ficheros SVG (`hand-grab`, `macos-resize-north-south`)",
+	componentName: (slug) => `Cursor${pascalCase(slug)}`,
+});
