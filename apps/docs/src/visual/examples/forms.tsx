@@ -146,6 +146,19 @@ export function SelectExample() {
 				/>
 			</div>
 			<Select label="Responsable" required defaultValue="olivia" options={MEMBERS} defaultOpen />
+			<Select
+				label="Ciudad"
+				searchable
+				placeholder="Buscar ciudad"
+				hint="Escribe para filtrar la lista."
+				options={["Madrid", "Valencia", "Sevilla", "Barcelona", "Bilbao"]}
+			/>
+			<Select
+				type="tags"
+				label="Equipo"
+				defaultValue={["olivia", "phoenix", "lana"]}
+				options={MEMBERS}
+			/>
 		</div>
 	);
 }
@@ -223,6 +236,93 @@ export function RadioGroupExample() {
 							supporting: "@leo",
 							hint: "Diseño",
 							media: <Avatar initials="LM" size="sm" alt="" />,
+						},
+					]}
+				/>
+			</div>
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+				<RadioGroup
+					appearance="icon-simple"
+					aria-label="Plan con icono"
+					defaultValue="basico"
+					options={[
+						{
+							value: "basico",
+							label: "Básico",
+							supporting: "10 €/mes",
+							hint: "Hasta 10 personas.",
+							icon: "star-01",
+						},
+						{
+							value: "pro",
+							label: "Pro",
+							supporting: "20 €/mes",
+							hint: "Hasta 20 personas.",
+							icon: "zap",
+						},
+					]}
+				/>
+				<RadioGroup
+					appearance="icon-simple"
+					indicator="checkbox"
+					aria-label="Responsable"
+					defaultValue="olivia"
+					options={[
+						{
+							value: "olivia",
+							label: "Olivia Rhye",
+							supporting: "@olivia",
+							hint: "Producto, Integraciones",
+							avatar: { initials: "OR", alt: "" },
+						},
+						{
+							value: "phoenix",
+							label: "Phoenix Baker",
+							supporting: "@phoenix",
+							hint: "Frontend, Pagos",
+							avatar: { initials: "PB", alt: "" },
+						},
+					]}
+				/>
+				<RadioGroup
+					appearance="icon-simple"
+					indicator="checkbox"
+					aria-label="Método de pago"
+					defaultValue="visa"
+					options={[
+						{
+							value: "visa",
+							label: "Visa terminada en 1234",
+							hint: "Caduca 06/2028",
+							paymentIcon: <PaymentVisaMd />,
+						},
+						{
+							value: "mc",
+							label: "Mastercard terminada en 1234",
+							hint: "Caduca 08/2029",
+							paymentIcon: <PaymentMastercardMd />,
+						},
+					]}
+				/>
+				<RadioGroup
+					appearance="icon-simple"
+					size="md"
+					aria-label="Plan md"
+					defaultValue="pro"
+					options={[
+						{
+							value: "basico",
+							label: "Básico",
+							supporting: "10 €/mes",
+							hint: "Hasta 10 personas.",
+							icon: "star-01",
+						},
+						{
+							value: "pro",
+							label: "Pro",
+							supporting: "20 €/mes",
+							hint: "Hasta 20 personas.",
+							icon: "zap",
 						},
 					]}
 				/>

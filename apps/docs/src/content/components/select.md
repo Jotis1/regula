@@ -8,7 +8,7 @@ astroNote: "Abrir la lista y elegir necesitan JavaScript: úsalo en una isla con
 
 **Cuándo usarlo.** Elegir una opción de una lista corta y conocida (hasta ~12): categoría, responsable, estado. Para varias opciones o con búsqueda, `MultiSelect`.
 
-**Props.** `label`, `required`, `hint`, `error` (como `Input`), `options`, `placeholder`, `value` / `defaultValue` (`string`), `onChange(value)`, `size` (`sm` 36px · `md` 40 · `lg` 44), `icon`, `disabled`, `name` (el valor viaja en el formulario), `defaultOpen` (abierto de inicio, para vistas previas). Cada opción es un `string` o `{ value, label, supporting?, icon?, avatar?, dot?, disabled? }`: `supporting` es el texto de apoyo («@olivia»), `icon` un icono de 20px, `avatar` (`src`, o sin nada para el icono de usuario) un avatar `xs`; con `initials` los lectores de pantalla leen las iniciales antes del nombre, así que mejor una foto y `dot` un punto de color (`gray`, `brand`, `error`, `warning`, `success`).
+**Props.** `label`, `required`, `hint`, `error` (como `Input`), `options`, `placeholder`, `value` / `defaultValue` (`string`), `onChange(value)`, `size` (`sm` 36px · `md` 40 · `lg` 44), `icon`, `disabled`, `name` (el valor viaja en el formulario), `defaultOpen` (abierto de inicio, para vistas previas), `searchable` y `type="tags"`. Cada opción es un `string` o `{ value, label, supporting?, icon?, avatar?, dot?, disabled? }`: `supporting` es el texto de apoyo («@olivia»), `icon` un icono de 20px, `avatar` (`src`, o sin nada para el icono de usuario) un avatar `xs`; con `initials` los lectores de pantalla leen las iniciales antes del nombre, así que mejor una foto y `dot` un punto de color (`gray`, `brand`, `error`, `warning`, `success`).
 
 **Cambia `onChange`.** Antes recibía el evento del `<select>` nativo; ahora recibe el valor elegido (`onChange={(valor) => …}`). Quien leía `event.target.value` debe pasar a leer el argumento.
 
@@ -17,5 +17,9 @@ astroNote: "Abrir la lista y elegir necesitan JavaScript: úsalo en una isla con
 **Teclado.** Enter, Espacio o flecha abajo abren la lista; las flechas recorren las opciones, escribir una letra salta a la que empieza por ella, Enter elige y cierra devolviendo el foco al campo, y Escape cierra sin cambiar nada.
 
 **Estados.** Los del marco de `Input`; abierto o con foco, borde de 2px `border-brand` (`border-error` con error), sin anillo exterior. Deshabilitado al 50%. Una opción `disabled` se ve al 50% y no se puede elegir.
+
+**Con búsqueda.** Con `searchable` el campo es un cuadro de texto (un combobox de React Aria) con la lupa delante, `placeholder` «Buscar» por defecto y el chevron detrás: al escribir, la lista solo enseña las opciones cuyo texto contiene lo escrito, sin distinguir mayúsculas ni acentos, y la primera queda marcada, así que Enter la elige. Las flechas recorren las que quedan, Escape cierra la lista y, al salir del campo, vuelve el texto de la opción elegida. Sin coincidencias sale `emptyLabel` («Sin resultados»). El texto del campo es el de la opción (`textValue`, o su etiqueta si es texto): el icono, el avatar o el punto solo salen en la lista. No admite `defaultOpen`.
+
+**Con etiquetas.** Con `type="tags"` se eligen varias: `value` y `defaultValue` pasan a ser listas (`string[]`) y `onChange` recibe todas las elegidas. Es un `MultiSelect` que pinta cada elegida como etiqueta dentro del campo (el campo crece en alto si no caben); la lista lleva buscador y casillas, y las etiquetas se quitan desmarcándolas en ella (no llevan X propia, para no meter botones dentro del botón del campo). Con `name`, los valores viajan separados por comas.
 
 **Dentro de `Input`.** `leadingSelect` y `trailingSelect` usan esta misma lista, sin marco propio.

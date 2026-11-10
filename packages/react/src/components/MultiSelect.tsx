@@ -27,6 +27,7 @@ import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
 import { Icon } from "./Icon.js";
+import { Tag } from "./Tag.js";
 
 export type MultiSelectOption = string | { value: string; label: string; supporting?: ReactNode };
 interface Option {
@@ -42,6 +43,13 @@ export interface MultiSelectProps extends FieldProps {
 	onChange?: (values: string[]) => void;
 	/** Lo que dice el campo sin nada elegido. */
 	placeholder?: string;
+	/**
+	 * `summary` (por defecto): el campo resume lo elegido. `tags`: cada elegida es una etiqueta dentro del campo, que
+	 * crece en alto si no caben en una línea (así se pinta `Select type="tags"`). Las etiquetas no llevan X: se quitan
+	 * desmarcando la opción en la lista.
+	 * @default "summary"
+	 */
+	display?: "summary" | "tags";
 	/** Resumen de lo elegido. Por defecto, "1 elegido" o "n elegidos". */
 	summary?: (selected: Option[]) => ReactNode;
 	/** Apoyo tras el resumen, en `text-tertiary` (p. ej. "16 usuarios"). */
@@ -87,6 +95,7 @@ export function MultiSelect({
 	defaultValue = [],
 	onChange,
 	placeholder,
+	display = "summary",
 	summary = (selected) => defaultStrings.selectedCount(selected.length),
 	summarySupporting,
 	size = "md",
@@ -246,9 +255,16 @@ export function MultiSelect({
 							className={cx(
 								"flex min-w-0 flex-1 gap-1.5",
 								size === "sm" ? "text-sm" : "text-md",
+								display === "tags" && "flex-wrap",
 							)}
 						>
-							{chosen.length ? (
+							{chosen.length && display === "tags" ? (
+								chosen.map((o) => (
+									<Tag key={o.value} size="md">
+										{o.label}
+									</Tag>
+								))
+							) : chosen.length ? (
 								<>
 									<span className="truncate font-medium text-primary">
 										{summary(chosen)}

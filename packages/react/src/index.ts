@@ -202,7 +202,13 @@ export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPrevi
 export { SectionFooter, type SectionFooterProps } from "./components/SectionFooter.js";
 export { SectionHeader, type SectionHeaderProps } from "./components/SectionHeader.js";
 export { SectionLabel, type SectionLabelProps, type SectionLabelSize } from "./components/SectionLabel.js";
-export { Select, type SelectOption, type SelectProps } from "./components/Select.js";
+export {
+	Select,
+	type SelectOption,
+	type SelectProps,
+	type SingleSelectProps,
+	type TagsSelectProps,
+} from "./components/Select.js";
 export {
 	SidebarNav,
 	type SidebarNavItem,

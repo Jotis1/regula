@@ -3,8 +3,8 @@
 import type { ReactNode } from "react";
 import { Tabs as AriaTabs, Tab, TabList, TabPanel } from "react-aria-components";
 import { cx } from "../internal/cx.js";
+import { OptionSelect } from "../internal/option-select.js";
 import { useControllable } from "../internal/use-controllable.js";
-import { Select } from "./Select.js";
 
 export type TabsType =
 	| "underline"
@@ -163,19 +163,24 @@ export function Tabs({
 			{vertical ? (
 				// El desplegable de por debajo de `lg`: las mismas opciones, enlazado al mismo estado. Con `display: none` en
 				// escritorio, no cuenta para los lectores.
+				// La misma caja que el campo de `Select` sin etiqueta ni pista. Se usa `OptionSelect` y no `Select` para no traer el
+				// buscador y las etiquetas de `Select` a quien solo pinta pestañas.
 				<div className="lg:hidden">
-					<Select
-						aria-label={rest["aria-label"]}
-						size={size}
-						value={current}
-						onChange={choose}
-						options={items.map((item) => ({
-							value: item.id,
-							label: item.label,
-							supporting: item.count != null ? item.count : undefined,
-							textValue: typeof item.label === "string" ? item.label : item.id,
-						}))}
-					/>
+					<div className="flex min-w-0 flex-col gap-1.5 font-body">
+						<OptionSelect
+							variant="field"
+							aria-label={rest["aria-label"]}
+							size={size}
+							value={current}
+							onChange={choose}
+							options={items.map((item) => ({
+								value: item.id,
+								label: item.label,
+								supporting: item.count != null ? item.count : undefined,
+								textValue: typeof item.label === "string" ? item.label : item.id,
+							}))}
+						/>
+					</div>
 				</div>
 			) : null}
 			{children

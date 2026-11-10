@@ -35,7 +35,7 @@ export type SelectOption =
 			textValue?: string;
 	  };
 
-interface Option {
+export interface Option {
 	value: string;
 	label: ReactNode;
 	supporting?: ReactNode;
@@ -46,7 +46,7 @@ interface Option {
 	textValue: string;
 }
 
-const toOption = (o: SelectOption): Option => {
+export const toOption = (o: SelectOption): Option => {
 	const full = typeof o === "string" ? { value: o, label: o } : o;
 	return {
 		...full,
@@ -55,7 +55,7 @@ const toOption = (o: SelectOption): Option => {
 };
 
 /** Lo que va en una opción y en el campo: lo de delante, la etiqueta y el apoyo. */
-function OptionBody({ option }: { option: Option }) {
+export function OptionBody({ option }: { option: Option }) {
 	return (
 		<>
 			{option.icon ? (
