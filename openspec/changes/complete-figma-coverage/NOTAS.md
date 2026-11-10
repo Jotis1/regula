@@ -52,3 +52,8 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 ## Emojis (fuera)
 
 - **Los 18 emojis del Figma no se publican.** Son PNG de 160×160 con el arte de emoji de Apple (corazones, pulgares, caras, ojos), no vectores. Redistribuirlos en un paquete npm público puede incumplir la licencia de Apple. Decisión del usuario: se omiten. Los emojis nativos del sistema cubren el caso. Salen de proposal, design, specs y tasks.
+
+## Tamaño del paquete de iconos
+
+- **`@jotis-me/icons` 0.6.0 → este cambio:** 597 → 2.815 ficheros; 2,98 → 8,99 MB sin comprimir; tarball de 1,03 → 2,73 MB (`scripts/pack.ts`). Muy por debajo del umbral de 15 MB del design, así que los sets de color se quedan en el mismo paquete. Un import suelto empaquetado con `bun build` pesa lo que su dibujo: menos de 20 kB en todos los casos, 30 kB las carpetas con textura.
+- `check:package` (`publint` y `attw` con el perfil `esm-only`) pasa con las nueve entradas y sus comodines.

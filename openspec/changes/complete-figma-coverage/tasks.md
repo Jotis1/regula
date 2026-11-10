@@ -41,7 +41,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 - [x] 1.4 Pagos en `@jotis-me/icons/payments` desde `1142:83268` (56 × `sm`, `md`), con los mismos tests.
 - [x] 1.5 Archivos (`4916:411695`, 153) y carpetas (`7585:9240`, 8) en `@jotis-me/icons/files`, con los mismos tests.
 - [x] 1.6 Cursores (`9342:257073`, 50) en `@jotis-me/icons/cursors`, con los mismos tests y un e2e que use un cursor en CSS. Los emojis del Figma (18 PNG con el arte de emoji de Apple) se dejan fuera por licencia (decisión del usuario).
-- [ ] 1.7 `exports`, `check:package` (`publint`, `attw`) y medida del tarball con `scripts/pack.ts` antes y después, anotada. Si pasa de 15 MB sin comprimir, parar y preguntar (Risks). Changeset `minor` de `@jotis-me/icons` con la ruptura de `IconName` declarada.
+- [x] 1.7 `exports`, `check:package` (`publint`, `attw`) y medida del tarball con `scripts/pack.ts` antes y después, anotada. Si pasa de 15 MB sin comprimir, parar y preguntar (Risks). Changeset `minor` de `@jotis-me/icons` con la ruptura de `IconName` declarada.
 - [ ] 1.8 Galerías de la web (design D9):
   - `/icons/` con los 1.172 y el código de `IconXxx` para los que no están en el núcleo;
   - páginas de banderas, pagos, archivos y cursores en `IconsNav.astro` y en la navegación lateral;
