@@ -197,3 +197,13 @@ generateFamily({
 		return `Payment${pascalCase(m[1] as string)}${pascalCase(m[2] as string)}`;
 	},
 });
+
+generateFamily({
+	entry: "files",
+	dir: "files",
+	listName: "fileNames",
+	description:
+		"Los nombres de los iconos de archivo y de carpeta, como sus ficheros SVG: tipo y variante (`document-pdf-gray`, `folder-brand-open`)",
+	componentName: (slug) =>
+		slug.startsWith("folder-") ? `Folder${pascalCase(slug.slice(7))}` : `File${pascalCase(slug)}`,
+});

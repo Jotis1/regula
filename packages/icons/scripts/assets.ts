@@ -80,6 +80,7 @@ console.log(`${logoCount} SVG de logos → dist/logos/`);
 for (const [folder, what] of [
 	["flags", "banderas"],
 	["payments", "iconos de pago"],
+	["files", "iconos de archivo y carpetas"],
 ] as const) {
 	const target = join(dist, folder);
 	rmSync(target, { recursive: true, force: true });

@@ -24,6 +24,13 @@ const walk = (el: El, fn: (e: El) => void) => {
 	fn(el);
 	for (const c of el.children) walk(c, fn);
 };
+// Lo que no se pinta tal cual (máscaras, recortes, patrones, filtros y definiciones) no cuenta para medir la caja
+const NOT_DRAWN = new Set(["mask", "clipPath", "pattern", "filter", "defs"]);
+const walkDrawn = (el: El, fn: (e: El) => void) => {
+	if (NOT_DRAWN.has(el.tag)) return;
+	fn(el);
+	for (const c of el.children) walkDrawn(c, fn);
+};
 
 /**
  * Nombre de la bandera como se escribe en el Figma («Scotland-GB-SCT», «Canary-Islands») → su nombre de fichero, el del
@@ -49,8 +56,9 @@ export function bboxOf(el: El): [number, number, number, number] | null {
 		minY = Math.min(minY, y);
 		maxY = Math.max(maxY, y);
 	};
-	walk(el, (e) => {
+	walkDrawn(el, (e) => {
 		if (e.tag === "rect") {
+			if (attr(e, "transform")) return; // se coloca con transform: sus x e y no son del lienzo
 			const [x, y, w, h] = ["x", "y", "width", "height"].map((k) =>
 				Number.parseFloat(attr(e, k) ?? "0"),
 			);

@@ -37,6 +37,10 @@
 			"types": "./dist/payments.d.ts",
 			"default": "./dist/payments.js"
 		},
+		"./files": {
+			"types": "./dist/files.d.ts",
+			"default": "./dist/files.js"
+		},
 		"./svg/*": "./dist/svg/*",
 		"./app-icons/*": "./dist/app-icons/*",
 		"./hand-drawn/*": "./dist/hand-drawn/*",
@@ -44,6 +48,7 @@
 		"./logos/*": "./dist/logos/*",
 		"./flags/*": "./dist/flags/*",
 		"./payments/*": "./dist/payments/*",
+		"./files/*": "./dist/files/*",
 		"./package.json": "./package.json"
 	},
 	"scripts": {

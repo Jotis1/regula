@@ -34,3 +34,11 @@ Decisiones y diferencias aceptadas que salen al implementar. Lo que cambia la sp
 - **56 métodos × `sm` (34×24) y `md` (46×32) = 112**, importados de `Payment method icon` (`1142:83268`) con `scripts/import-payments.ts`. La caja de cada variante sale de la rejilla del conjunto (tres columnas, filas cada 48 px) y se comprueba contra sus trazos.
 - **Nombres:** kebab-case de la propiedad `Payment method` (`visa-md`, `cash-app-pay-sm`). Se separan las palabras que el Figma escribe juntas (`ApplePay` → `apple-pay`, `GooglePay`, `BitcoinCash`, `DinersClub`) y se corrigen tres erratas del Figma: `Etherium` → `ethereum`, `Lightcoin` → `litecoin` y `Ayden` → `adyen`. El dibujo no cambia.
 - Cada marca es de su dueño: se usan para representar el método de pago, sin cambiar su forma ni sus colores.
+
+## Iconos de archivo y carpetas
+
+- **153 tipos de archivo + 8 carpetas = 161**, en `@jotis-me/icons/files` (`scripts/import-files.ts`). Los tipos son 40×40; las carpetas, 48×48 cerradas y 54×48 abiertas.
+- **Nombres:** `<categoria>-<tipo>` con `-gray` o `-solid` (el default no lleva sufijo): `document-pdf`, `design-fig-gray`, `image-png-solid`. Los paréntesis del Figma salen (`FIG (Figma)` → `fig`). Los diez iconos sin extensión que el Figma llama «Simple» o «Default» según su variante son `generic-*` (`generic-folder`, `generic-video-01-solid`). Los componentes son `FileDocumentPdf`, `FileDesignFigGray`; las carpetas, `FolderBrand`, `FolderBrandOpen`, `FolderNoise`, `FolderTransparent`.
+- **Desenfoque de fondo.** Las carpetas «noise» y «transparent» llevan un desenfoque de lo que hay detrás (`backdrop-filter` dentro de un `foreignObject`). No cabe en un SVG suelto, así que se quita junto con su recorte. Diferencia aceptada: se ven igual sobre un fondo liso y algo menos «de cristal» sobre una imagen.
+- **Textura de ruido.** Estas mismas carpetas usan un PNG de 128×128 (`noise.png`) como textura. No tiene versión vectorial: se conserva como `<image>` con data URI dentro del SVG (unos 27 kB por carpeta, solo en estas cuatro).
+- **`xlink`.** Figma exporta la imagen con `xlink:href` sin declarar `xmlns:xlink`; como imagen el SVG se rompía. Se añade la declaración, y un test comprueba que todos los SVG de color del paquete (logos, banderas, pagos y archivos) son XML válido.
