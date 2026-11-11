@@ -238,6 +238,15 @@ export { LaptopMockup, type LaptopMockupProps } from "./components/LaptopMockup.
 export { LineChart, type LineChartProps } from "./components/LineChart.js";
 export { LinkCard, type LinkCardProps } from "./components/LinkCard.js";
 export {
+	MarketingNav,
+	type MarketingNavItem,
+	type MarketingNavLabels,
+	type MarketingNavMenu,
+	type MarketingNavPanel,
+	type MarketingNavProps,
+	type MarketingNavType,
+} from "./components/MarketingNav.js";
+export {
 	Message,
 	type MessageAction,
 	type MessageAudio,
@@ -433,5 +442,11 @@ export {
 	formatNumber,
 	formatPercent,
 } from "./internal/format.js";
+export {
+	NavMenu,
+	type NavMenuCardProps,
+	type NavMenuItemProps,
+	type NavMenuSectionProps,
+} from "./internal/nav-menu.js";
 export type { StreamEventType, StreamMotion, StreamTime } from "./internal/stream.js";
 export { defaultStrings, type Strings } from "./internal/strings.js";

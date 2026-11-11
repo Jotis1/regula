@@ -508,3 +508,13 @@ Nodos: `Background overlay` `4896:411056`, `Screen mockup 3:2` `1293:158480`, `M
 ## Cierre del grupo 10
 
 E2E completo de docs: 1.043 pasan; fallaron el de `CopyTooltip` (de carga, conocido) y el de accesibilidad de `/components/color-picker-dropdown/` en los dos temas: `label-content-name-mismatch`, porque los disparadores con texto visible llevaban `aria-label` («Color: #7F56D9») que no contenía el texto («Color», «7F56D9 100%»). Ahora el valor va en `sr-only` junto al texto visible; solo las muestras sin texto llevan `aria-label`. Repetido: pasa.
+
+## Grupo «Web de marketing» y MarketingNav (11.1 y 11.2)
+
+Nodos: `Dropdown header navigation` `1288:26576` y `Full-width header navigation` `1287:2392`. El grupo nuevo «Web de marketing» (catálogo 112 → 113; test de catálogo de 11 a 12 grupos, y los vecinos: `AppIcon` ya no es el último de Componentes) empieza con `MarketingNav`, que no puede ir antes porque el catálogo no admite grupos vacíos. Página interactiva, ficha, ejemplo (`examples/marketing.tsx`), muestra, fragmento, límite, capturas y e2e de teclado (`marketing-nav.spec.ts`, escritorio a 1440 con `full-width` y móvil a 390).
+
+- **Tipos:** catorce disposiciones (`type`, siete desplegables y siete a todo el ancho) y `floating` cubren los veinte tipos del Figma (seis de ellos son «Floating …»). El tipo da el ancho del desplegable (336, 640, 768 u 800) y si la columna aparte va a la izquierda (`blog-posts-with-sidebar`); las columnas se reparten a partes iguales.
+- **Paneles:** `panel` {`columns`, `header`, `aside`, `footer`} con nodos, como pide design.md. Las plantillas se exportan en el objeto `NavMenu` (`NavMenu.Section`, `NavMenu.Item`, `NavMenu.Card`) y no como `NavMenuItem`/`NavMenuCard` sueltos: el test de catálogo cuenta como componente cada función exportada con nombre en mayúscula (mismo criterio que `SidebarCards`).
+- **Menús:** `DialogTrigger` + `Popover` de React Aria; a todo el ancho, el popover toma la cabecera como `triggerRef` y su ancho (`--trigger-width`). Escape cierra y devuelve el foco al botón. El menú móvil es otro popover bajo la cabecera, con cada apartado desplegable en una caja (`aria-expanded`), los enlaces del pie en dos columnas y las acciones a todo el ancho. Escritorio o móvil por consulta de contenedor (`@5xl`), como `HeaderNav`.
+- **Vista previa:** `previewItem` pinta un menú en línea, sin popover ni foco (como `MultiSelect defaultOpen`), para las capturas, que son estáticas; el ejemplo pinta las cabeceras a 1280 en `ScaledPreview` para que se vea el escritorio en la captura de 800.
+- **Peso:** 58,1 kB, límite 61.440. `/components/*/` de `js-budget` pasa de 365 a 370 (Tabs 365,5 kB); el playground por página sigue pendiente (el paquete solo exporta `.`).

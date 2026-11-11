@@ -139,6 +139,12 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 			"BackgroundPattern BackgroundOverlay TransparencyGrid ScaledPreview CreditCard BrowserFrame ScreenMockup LaptopMockup PhoneMockup AppIcon",
 		),
 	},
+	{
+		id: "web-de-marketing",
+		label: "Web de marketing",
+		section: "components",
+		components: names("MarketingNav"),
+	},
 	{ id: "stream-alertas", label: "Alertas", section: "stream", components: names("StreamAlert") },
 	{
 		id: "stream-escenas",

@@ -226,6 +226,26 @@ const usage: Record<string, string> = {
 	FilterPanel: `<Slideout title="Filtros" description="Añade filtros para acotar los resultados." onClose={cerrar}>
 	<FilterPanel fields={campos} operators={operadores} defaultValue={filtros} onApply={aplicar} />
 </Slideout>`,
+	MarketingNav: `<MarketingNav
+	brand={<a href="/">Regula</a>}
+	menu="dropdown"
+	type="featured-card"
+	items={[
+		{
+			label: "Recursos",
+			panel: {
+				columns: [
+					<NavMenu.Section title="Recursos">
+						<NavMenu.Item href="/blog" icon="stars-02" title="Blog" description="Ideas y guías." />
+					</NavMenu.Section>,
+				],
+				aside: <NavMenu.Card title="Ya está aquí el nuevo panel" description="Más claro y más rápido." />,
+			},
+		},
+		{ label: "Precios", href: "/precios" },
+	]}
+	actions={<Button size="sm">Empezar gratis</Button>}
+/>`,
 	FilterBar: `<FilterBar
 	segments={[
 		{ value: "todo", label: "Todo" },

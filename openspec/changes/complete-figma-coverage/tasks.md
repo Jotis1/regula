@@ -139,8 +139,8 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 
 ## 11. Piezas de marketing
 
-- [ ] 11.1 Grupo «Web de marketing» en `catalog.ts`; el test de catálogo pasa de 11 a 12 grupos (design D4).
-- [ ] 11.2 `MarketingNav` (`1288:26576`, `1287:2392`):
+- [x] 11.1 Grupo «Web de marketing» en `catalog.ts`; el test de catálogo pasa de 11 a 12 grupos (design D4).
+- [x] 11.2 `MarketingNav` (`1288:26576`, `1287:2392`):
   - `menu` `dropdown` y `full-width`, con los veinte `type` y `floating`;
   - plantillas `NavMenuItem` y `NavMenuCard`;
   - menú móvil con submenús.

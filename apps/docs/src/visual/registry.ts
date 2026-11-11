@@ -78,6 +78,7 @@ import {
 	SectionHeaderExample,
 	SectionLabelExample,
 } from "./examples/layout";
+import { MarketingNavExample } from "./examples/marketing";
 import { MessageExample } from "./examples/message";
 import {
 	BackgroundPatternExample,
@@ -184,6 +185,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	ContextMenu: ContextMenuExample,
 	HeaderNav: HeaderNavExample,
 	FilterBar: FilterBarExample,
+	MarketingNav: MarketingNavExample,
 	FilterMenu: FilterMenuExample,
 	FilterPanel: FilterPanelExample,
 	CommandMenu: CommandMenuExample,

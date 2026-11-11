@@ -72,6 +72,7 @@ import {
 	LaptopMockup,
 	LineChart,
 	LinkCard,
+	MarketingNav,
 	Message,
 	MessageInput,
 	MetricCard,
@@ -618,6 +619,22 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 								{ id: "leeme", label: "LEEME.md", meta: "2 KB" },
 							],
 						},
+					]}
+				/>
+			</div>
+		),
+	},
+	MarketingNav: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 1100 }}>
+				<MarketingNav
+					brand={<span style={{ fontWeight: 600, fontSize: 20 }}>Regula</span>}
+					items={[
+						{ label: "Producto", href: "#" },
+						{ label: "Precios", href: "#" },
+						{ label: "Recursos", href: "#" },
+						{ label: "Quiénes somos", href: "#" },
 					]}
 				/>
 			</div>
