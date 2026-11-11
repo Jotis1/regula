@@ -20,6 +20,7 @@ import {
 	StoreGooglePlayLogo,
 } from "@jotis-me/icons/logos";
 import {
+	Accordion,
 	AppStoreBadge,
 	AvatarGroup,
 	Badge,
@@ -41,6 +42,8 @@ import {
 	RatingBadge,
 	ScaledPreview,
 	SubscribeCard,
+	TeamMemberCard,
+	type TeamMemberCardType,
 } from "@jotis-me/react";
 import type { ReactNode } from "react";
 
@@ -700,6 +703,112 @@ export function JobPostCardExample() {
 				<JobPostCard {...OFERTA} type="card-01" location="En remoto" />
 				<JobPostCard {...OFERTA} type="card-02" location="Madrid" />
 			</div>
+		</div>
+	);
+}
+
+const PREGUNTAS = [
+	{
+		id: "prueba",
+		title: "¿Hay una prueba gratis?",
+		content:
+			"Sí: 30 días, sin tarjeta. Si quieres, te ayudamos a importar tus cuentas en una llamada de media hora.",
+	},
+	{
+		id: "cambiar",
+		title: "¿Puedo cambiar de plan?",
+		content: "Cuando quieras. El cambio se aplica al momento y se prorratea en la siguiente factura.",
+	},
+	{
+		id: "cancelar",
+		title: "¿Cómo cancelo?",
+		content: "Desde Ajustes, en Suscripción. Tus datos se quedan descargables durante 90 días.",
+	},
+];
+
+/** Icono a la derecha y a la izquierda, con y sin divisor; el segundo con `single`. */
+export function AccordionExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-12">
+			<Accordion items={PREGUNTAS} defaultExpanded={["prueba"]} />
+			<Accordion items={PREGUNTAS} iconPosition="left" divider single defaultExpanded={["cambiar"]} />
+		</div>
+	);
+}
+
+/** Una foto sin foto: un retrato dibujado con formas de color. */
+const Retrato = ({ tono }: { tono: string }) => (
+	<div
+		role="img"
+		aria-label="Retrato de Ana Martín"
+		className={`relative flex size-full items-end justify-center overflow-hidden ${tono}`}
+	>
+		<div className="absolute top-[22%] size-[34%] rounded-full bg-primary/70" />
+		<div className="h-[38%] w-[70%] rounded-t-full bg-primary/70" />
+	</div>
+);
+const redesEquipo = (
+	<>
+		{(
+			[
+				["X", SocialXLogoGray],
+				["LinkedIn", SocialLinkedinLogoGray],
+			] as const
+		).map(([name, Logo]) => (
+			<a
+				key={name}
+				href={`/redes/${name.toLowerCase()}`}
+				aria-label={`${name} de Ana Martín`}
+				className="flex"
+			>
+				<Logo size={20} />
+			</a>
+		))}
+	</>
+);
+
+/** Los siete tipos. */
+export function TeamMemberCardExample() {
+	const tipos: TeamMemberCardType[] = [
+		"simple-left",
+		"simple-left-top",
+		"simple-center",
+		"image-top",
+		"image-glass-floating",
+		"image-glass-full-width",
+	];
+	return (
+		<div className="flex flex-col gap-12">
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] items-start gap-10">
+				{tipos.map((type, i) => (
+					<TeamMemberCard
+						key={type}
+						type={type}
+						name="Ana Martín"
+						role="Fundadora y directora"
+						bio="Diez años ordenando las cuentas de otros; ahora, las tuyas."
+						image={
+							<Retrato
+								tono={
+									["bg-utility-brand-200", "bg-utility-sky-200", "bg-utility-pink-200"][
+										i % 3
+									] as string
+								}
+							/>
+						}
+						socials={redesEquipo}
+						href="/equipo/ana"
+					/>
+				))}
+			</div>
+			<TeamMemberCard
+				type="image-left"
+				name="Ana Martín"
+				role="Fundadora y directora"
+				bio="Diez años ordenando las cuentas de otros; ahora, las tuyas."
+				image={<Retrato tono="bg-utility-green-200" />}
+				socials={redesEquipo}
+			/>
 		</div>
 	);
 }

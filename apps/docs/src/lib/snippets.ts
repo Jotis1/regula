@@ -235,6 +235,19 @@ const usage: Record<string, string> = {
 	author={{ name: "Ana Martín", date: "20 ene 2027" }}
 />`,
 	SubscribeCard: `<SubscribeCard description="Una vez a la semana, sin spam." onSubscribe={suscribir} />`,
+	Accordion: `<Accordion
+	single
+	items={[
+		{ id: "prueba", title: "¿Hay una prueba gratis?", content: "Sí: 30 días, sin tarjeta." },
+		{ id: "cancelar", title: "¿Cómo cancelo?", content: "Desde Ajustes, en Suscripción." },
+	]}
+/>`,
+	TeamMemberCard: `<TeamMemberCard
+	type="image-top"
+	name="Ana Martín"
+	role="Fundadora y directora"
+	image={<img src="/equipo/ana.jpg" alt="Ana Martín" />}
+/>`,
 	PricingCard: `<PricingCard
 	type="icon"
 	name="Básico"

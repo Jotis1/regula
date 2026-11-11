@@ -542,3 +542,11 @@ Nodos: `_Pricing tier card` `1346:182709` y `_Job post` `1506:244681`. En «Web 
 
 - **`PricingCard`:** los diez tipos con las mismas piezas (`name`, `price`/`period`, `description`, `badge`, `icon`, `features`, `featuresTitle`/`featuresDescription`, `actions`, `banner`, `callout`); el tipo decide el orden, si los botones van antes o después de la lista, el pie gris (`icon`), la banda (`banner`), el icono sobre el borde (`icon-offset`), la lista en dos columnas desde 480 px de contenedor (`dual-check-items`) y el estilo de los checks (`CheckItem` tintado, de contorno o lleno, en marca o éxito, como el Figma). La nota de `call-out` (en el Figma, una flecha manuscrita) es un texto de marca encima, sin la flecha. Los `primary-*` van sobre `bg-brand-primary_alt`: con `bg-brand-primary`, en oscuro el fondo era morado vivo y el texto no se leía (se vio en la captura). 27,9 kB, límite 30.720.
 - **`JobPostCard`:** `simple`, `card-01` y `card-02`; un solo enlace (el puesto) con el área en toda la tarjeta; lugar, jornada y sueldo con sus iconos (`marker-pin-01` y `currency-dollar-circle` del set completo, no del núcleo); en estrecho (`@md`) las etiquetas bajan bajo el título. 26,3 kB, límite 28.672.
+
+## Accordion y TeamMemberCard (11.6)
+
+Nodos: `_FAQ item` `1358:191490` y `_Team member` `1458:240598`. En «Web de marketing» (catálogo 118 → 120), con página, ficha, ejemplo, muestra, fragmento, límite y capturas.
+
+- **`Accordion`:** cada pregunta es un encabezado (`headingLevel`, 3) con un botón `aria-expanded`/`aria-controls` y la respuesta en una región con el nombre de la pregunta (`hidden` si está cerrada). `single`, `iconPosition` (`left`/`right`, más/menos en círculo del set completo), `divider`, controlado o no. Teclado: Enter y Espacio (botón nativo), flechas arriba y abajo con vuelta, Inicio y Fin. 10,4 kB, límite 12.288.
+- **`TeamMemberCard`:** siete tipos; `image-left` en fila desde 512 px de contenedor. El panel de cristal del Figma es blanco translúcido con texto blanco: sin contraste sobre una foto clara (axe lo marcó con el ejemplo); aquí es `bg-overlay/60` con desenfoque, con borde `fg-white` al 30 % (sin colores crudos). 26,7 kB, límite 29.696.
+- **`Avatar`:** llegó justo a su límite (26,0 kB de 26.624) sin cambios propios, por lo que comparte; sube a 27.136.

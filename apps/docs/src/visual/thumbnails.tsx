@@ -12,6 +12,7 @@ import {
 	StoreGooglePlayOutlineLogo,
 } from "@jotis-me/icons/logos";
 import {
+	Accordion,
 	ActivityFeed,
 	ActivityGauge,
 	Alert,
@@ -124,6 +125,7 @@ import {
 	Tabs,
 	Tag,
 	TagInput,
+	TeamMemberCard,
 	Textarea,
 	TextEditor,
 	Toggle,
@@ -683,6 +685,31 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					description="Buscamos a alguien para el equipo de diseño."
 					location="En remoto"
 					employment="Jornada completa"
+				/>
+			</div>
+		),
+	},
+	Accordion: {
+		render: () => (
+			<div style={{ width: 300 }}>
+				<Accordion
+					defaultExpanded={["a"]}
+					items={[
+						{ id: "a", title: "¿Hay prueba gratis?", content: "Sí, 30 días." },
+						{ id: "b", title: "¿Puedo cancelar?", content: "Cuando quieras." },
+					]}
+				/>
+			</div>
+		),
+	},
+	TeamMemberCard: {
+		render: () => (
+			<div style={{ width: 300 }}>
+				<TeamMemberCard
+					type="simple-left"
+					name="Ana Martín"
+					role="Fundadora y directora"
+					bio="Diez años ordenando cuentas."
 				/>
 			</div>
 		),

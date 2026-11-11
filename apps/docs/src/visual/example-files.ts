@@ -61,6 +61,8 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	SubscribeCard: "marketing",
 	PricingCard: "marketing",
 	JobPostCard: "marketing",
+	Accordion: "marketing",
+	TeamMemberCard: "marketing",
 	FilterBar: "filter-bar",
 	FilterMenu: "filter-bar",
 	FilterPanel: "filter-bar",

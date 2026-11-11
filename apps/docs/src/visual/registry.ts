@@ -79,12 +79,14 @@ import {
 	SectionLabelExample,
 } from "./examples/layout";
 import {
+	AccordionExample,
 	BlogPostCardExample,
 	FooterExample,
 	JobPostCardExample,
 	MarketingNavExample,
 	PricingCardExample,
 	SubscribeCardExample,
+	TeamMemberCardExample,
 } from "./examples/marketing";
 import { MessageExample } from "./examples/message";
 import {
@@ -198,6 +200,8 @@ export const visualExamples: Record<string, ComponentType> = {
 	SubscribeCard: SubscribeCardExample,
 	PricingCard: PricingCardExample,
 	JobPostCard: JobPostCardExample,
+	Accordion: AccordionExample,
+	TeamMemberCard: TeamMemberCardExample,
 	FilterMenu: FilterMenuExample,
 	FilterPanel: FilterPanelExample,
 	CommandMenu: CommandMenuExample,

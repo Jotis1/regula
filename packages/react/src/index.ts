@@ -1,3 +1,4 @@
+export { Accordion, type AccordionItem, type AccordionProps } from "./components/Accordion.js";
 export {
 	type ActivityDivider,
 	ActivityFeed,
@@ -416,6 +417,11 @@ export {
 } from "./components/Tabs.js";
 export { Tag, type TagProps, type TagSize } from "./components/Tag.js";
 export { TagInput, type TagInputProps } from "./components/TagInput.js";
+export {
+	TeamMemberCard,
+	type TeamMemberCardProps,
+	type TeamMemberCardType,
+} from "./components/TeamMemberCard.js";
 export { Textarea, type TextareaProps } from "./components/Textarea.js";
 export {
 	TextEditor,

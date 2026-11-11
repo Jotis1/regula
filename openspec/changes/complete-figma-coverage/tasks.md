@@ -149,7 +149,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 - [x] 11.3 `Footer` (`1517:334473`): veinte tipos, dos temas, columnas apiladas en móvil. Mismos entregables.
 - [x] 11.4 `BlogPostCard` (`1390:58`) y `SubscribeCard` (`1391:213014`). Mismos entregables.
 - [x] 11.5 `PricingCard` (`1346:182709`, diez tipos) y `JobPostCard` (`1506:244681`). Mismos entregables.
-- [ ] 11.6 `Accordion` (`1358:191490`): `aria-expanded`, región, icono a izquierda o derecha, divisor y `single`. Tests de teclado. `TeamMemberCard` (`1458:240598`, siete tipos). Mismos entregables.
+- [x] 11.6 `Accordion` (`1358:191490`): `aria-expanded`, región, icono a izquierda o derecha, divisor y `single`. Tests de teclado. `TeamMemberCard` (`1458:240598`, siete tipos). Mismos entregables.
 - [ ] 11.7 `Testimonial` (`1376:1163`) y `arrowStyle` en `Carousel` (`1374:440`). Mismos entregables. Captura de `Carousel` vuelta a aprobar solo si cambia su ejemplo.
 
 ## 12. Composiciones
