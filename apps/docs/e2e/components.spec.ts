@@ -54,7 +54,8 @@ test("los ejemplos vivos no heredan los estilos del texto largo (tablas, listas,
 	page,
 }) => {
 	await page.goto("/components/date-picker/");
-	const grid = page.locator("#variantes + div table");
+	// El ejemplo de DatePicker lleva dos calendarios (rango y horas): basta con el primero
+	const grid = page.locator("#variantes + div table").first();
 	await grid.scrollIntoViewIfNeeded();
 	const css = await grid.evaluate((t) => {
 		const th = t.querySelector("th") as Element;
