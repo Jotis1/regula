@@ -137,11 +137,17 @@ import {
 	VideoPlayer,
 } from "@jotis-me/react";
 import type { CSSProperties, ReactNode } from "react";
+import type { Crop } from "./thumbs";
 
 export interface Thumbnail {
-	/** La muestra, centrada en el escenario a su tamaño natural. */
+	/** La muestra a su tamaño natural: nunca se encoge. Si no cabe en el escenario, se recorta con un fundido. */
 	render: () => ReactNode;
-	/** Si es más grande que el escenario, lo que se encoge desde el centro (menor que 1). */
+	/** Dónde se ancla una muestra más grande que el escenario: en el centro (por defecto), arriba o arriba a la izquierda. */
+	crop?: Crop;
+	/**
+	 * @deprecated Las muestras no se encogen: se rehacen a tamaño real (tarea 2.2 de docs-site-with-own-components).
+	 * Solo queda en las pendientes de esa tarea, que lista test/thumbs.test.ts.
+	 */
 	scale?: number;
 }
 

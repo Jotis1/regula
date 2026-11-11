@@ -8,7 +8,7 @@ Comandos: `bun run --cwd apps/docs build`, `bun run --cwd apps/docs test`, `bun 
 
 ## 2. Muestras del índice a tamaño real
 
-- [ ] 2.1 Quitar `scale` y `ScaledPreview` de `visual/thumbnails.tsx` y añadir a `LivePreview.astro` el recorte con ancla (`crop`) y fundido con `mask-image` (design D2). Añadir el test unitario que falla si alguna muestra declara una escala, y el e2e sobre `/components/` que comprueba que ninguna vista previa tiene una transformación con escala menor que 1. Este test fallará hasta 2.2.
+- [x] 2.1 Quitar `scale` y `ScaledPreview` de `visual/thumbnails.tsx` y añadir a `LivePreview.astro` el recorte con ancla (`crop`) y fundido con `mask-image` (design D2). Añadir el test unitario que falla si alguna muestra declara una escala, y el e2e sobre `/components/` que comprueba que ninguna vista previa tiene una transformación con escala menor que 1. Este test fallará hasta 2.2.
 - [ ] 2.2 Rehacer las 60 muestras encogidas para que enseñen una pieza a tamaño real (`Table` con cabecera y tres filas, `CalendarView` con una semana, gráficas a ancho de la caja, `Banner` flotante…), por grupos del catálogo. Verificar que pasan el test y el e2e de 2.1 y los de «Vista previa decorativa». Revisar las capturas de `/components/` en claro y oscuro: ningún texto por debajo de 12 px.
 
 ## 3. Estructura con los componentes del paquete

@@ -1,14 +1,14 @@
 ---
 // Vista previa en vivo de un componente en su card de /components/ (design D1-D7): su muestra característica
 // (thumbnails.tsx), pintada en el servidor sin directiva `client:*` (cero JavaScript) y centrada en un escenario de
-// 288×180, sobre un damero sutil que indica transparencia (TransparencyGrid), como las vistas previas de Scaena. Si el componente aún no
-// tiene muestra, su ejemplo entero encogido para caber. Es decorativa: inerte, fuera del árbol de accesibilidad y del
-// buscador. Los de Stream van siempre en oscuro.
+// 288×180, sobre un damero sutil que indica transparencia (TransparencyGrid), como las vistas previas de Scaena. La
+// muestra se pinta a su tamaño real y nunca se encoge: si no cabe en el escenario, se recorta desde su ancla (`crop`)
+// con un fundido en el borde (design D2). Es decorativa: inerte, fuera del árbol de accesibilidad y del buscador. Los
+// de Stream van siempre en oscuro.
 import { TransparencyGrid } from "@jotis-me/react";
-import { CARD_HEIGHTS, DARK_PREVIEWS, VIEWPORT_WIDTH } from "../visual/cards";
+import { DARK_PREVIEWS } from "../visual/cards";
 import { THUMBNAILS, Thumbnail } from "../visual/thumbnails";
-import { PREVIEW_BOX, thumbOf } from "../visual/thumbs";
-import VisualExample from "../visual/VisualExample";
+import { CROP_ALIGN, fadeMask, PREVIEW_BOX } from "../visual/thumbs";
 
 interface Props {
 	name: string;
@@ -16,7 +16,8 @@ interface Props {
 
 const { name } = Astro.props;
 const thumbnail = THUMBNAILS[name];
-const fit = thumbnail ? undefined : thumbOf(name);
+const crop = thumbnail?.crop ?? "center";
+const mask = fadeMask(crop);
 ---
 
 <TransparencyGrid
@@ -27,24 +28,18 @@ const fit = thumbnail ? undefined : thumbOf(name);
 	className={`pointer-events-none flex aspect-[16/10] items-center justify-center overflow-hidden p-4 shadow-[inset_0_-1px_0_var(--border-secondary)]${DARK_PREVIEWS.has(name) ? " dark-mode" : ""}`}
 >
 	<div
-		class="relative flex shrink-0 items-center justify-center overflow-hidden"
-		style={`width:${PREVIEW_BOX.width}px;height:${PREVIEW_BOX.height}px;content-visibility:auto;contain-intrinsic-size:${PREVIEW_BOX.width}px ${PREVIEW_BOX.height}px`}
+		data-thumb-stage
+		class={`relative flex shrink-0 overflow-hidden ${CROP_ALIGN[crop]}`}
+		style={`width:${PREVIEW_BOX.width}px;height:${PREVIEW_BOX.height}px;content-visibility:auto;contain-intrinsic-size:${PREVIEW_BOX.width}px ${PREVIEW_BOX.height}px;-webkit-mask-image:${mask};-webkit-mask-composite:source-in;mask-image:${mask};mask-composite:intersect`}
 	>
 		{
-			thumbnail ? (
+			thumbnail && (
 				<div
+					data-thumb
 					class="flex shrink-0 items-center justify-center font-body text-primary antialiased"
 					style={thumbnail.scale ? `transform:scale(${thumbnail.scale})` : undefined}
 				>
 					<Thumbnail name={name} />
-				</div>
-			) : (
-				/* Sin muestra: el ejemplo entero, como en la página de comparación (800 de ancho con 16px de margen) */
-				<div
-					class="absolute top-0 left-0 box-border origin-top-left bg-primary p-4 font-body text-primary antialiased"
-					style={`width:${VIEWPORT_WIDTH}px;min-height:${CARD_HEIGHTS[name]}px;transform:translate(${fit?.left}px,${fit?.top}px) scale(${fit?.scale})`}
-				>
-					<VisualExample name={name} />
 				</div>
 			)
 		}
