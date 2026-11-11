@@ -25,6 +25,11 @@ export {
 export { AvatarGroup, type AvatarGroupProps } from "./components/AvatarGroup.js";
 export { AvatarLabel, type AvatarLabelProps } from "./components/AvatarLabel.js";
 export {
+	AvatarProfilePhoto,
+	type AvatarProfilePhotoProps,
+	type AvatarProfilePhotoSize,
+} from "./components/AvatarProfilePhoto.js";
+export {
 	BackgroundPattern,
 	type BackgroundPatternMask,
 	type BackgroundPatternName,
@@ -87,6 +92,14 @@ export { ChartLegend, type ChartLegendProps } from "./components/ChartLegend.js"
 export { ChatBadge, type ChatBadgeKind, type ChatBadgeProps } from "./components/ChatBadge.js";
 export { ChatBox, type ChatBoxProps, type ChatMessage, type ChatTone } from "./components/ChatBox.js";
 export { Checkbox, type CheckboxProps } from "./components/Checkbox.js";
+export {
+	CheckIcon,
+	type CheckIconColor,
+	type CheckIconProps,
+	type CheckIconSize,
+	type CheckIconType,
+} from "./components/CheckIcon.js";
+export { CheckItem, type CheckItemProps, type CheckItemSize } from "./components/CheckItem.js";
 export { CloseButton, type CloseButtonProps } from "./components/CloseButton.js";
 export { CodeSnippet, type CodeSnippetProps, type CodeSnippetTab } from "./components/CodeSnippet.js";
 export {

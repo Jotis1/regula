@@ -10,6 +10,7 @@ import {
 	Avatar,
 	AvatarGroup,
 	AvatarLabel,
+	AvatarProfilePhoto,
 	BackgroundPattern,
 	Badge,
 	BadgeGroup,
@@ -31,6 +32,8 @@ import {
 	ChatBox,
 	type ChatMessage,
 	Checkbox,
+	CheckIcon,
+	CheckItem,
 	CloseButton,
 	CodeSnippet,
 	ColorPicker,
@@ -819,6 +822,31 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 				size="md"
 				items={[{ initials: "AB" }, { initials: "CD" }, { initials: "EF" }, { initials: "+3" }]}
 			/>
+		),
+	},
+	CheckIcon: {
+		render: () => (
+			<div style={row}>
+				<CheckIcon />
+				<CheckIcon type="line" color="success" />
+				<CheckIcon type="filled" color="success" />
+			</div>
+		),
+	},
+	CheckItem: {
+		render: () => (
+			<ul style={{ margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+				<CheckItem size="sm">Hasta 10 usuarios</CheckItem>
+				<CheckItem size="sm">20 GB por persona</CheckItem>
+			</ul>
+		),
+	},
+	AvatarProfilePhoto: {
+		render: () => (
+			<div style={row}>
+				<AvatarProfilePhoto size="md" initials="OR" verified />
+				<AvatarProfilePhoto size="sm" />
+			</div>
 		),
 	},
 	AvatarLabel: {

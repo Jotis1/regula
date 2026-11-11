@@ -414,3 +414,16 @@ Nodos: `Background pattern` `4932:397713`, `Credit card mockup` `1291:157837`, `
 - **`BrowserFrame`:** `minimal-color` (minimal con el semáforo en color) y `theme`. `theme="dark"` añade `dark-mode` al marco: barra, borde y contenido toman los tokens del tema oscuro. **Limitación:** no hay clase de tokens que fuerce el tema claro dentro de una página oscura, así que `theme="light"` sigue al tema de la página.
 - **`FeaturedIcon`:** `gradient` (círculo con los anillos `utility-*-50` y `-100` y el sólido en el centro), `dark` (cuadrado del color sólido, icono blanco, borde claro y brillo inferior esqueumórfico) y `modern-neue` (marco blanco con filo y cuadrado interior con sombra). Con `light`, `modern` y `outline`, los seis estilos de la spec.
 - **Ejemplos y capturas:** `tech-grid` con dos máscaras (alto 520 → 740), las trece tarjetas (460 → 1.560), `minimal-color` y los oscuros (600 → 1.150) y las filas de `gradient`, `dark` y `modern-neue` (140 → 340). Revisadas en claro y oscuro.
+
+## Cierre del grupo 8
+
+E2E completo de docs: 935 pasan; fallaron el de `CopyTooltip` y «el archivo se elige también con el teclado» (`input-variants`), y los dos pasan solos: son de carga.
+
+## AvatarProfilePhoto, CheckIcon y CheckItem (9.1 y 9.2)
+
+Nodos: `Avatar profile photo` `1217:108477`, `Check icon` `1254:137887` y `Check item text` `1345:1610`. Los tres, en «Etiquetas e identidad», con página, ficha, ejemplo (`display.tsx`), muestra, fragmento, límite y capturas. Catálogo: 94 → 97.
+
+- **`AvatarProfilePhoto`:** `sm` 72 · `md` 96 · `lg` 160; aro `bg-primary` con filo y, dentro, foto, iniciales en Bricolage (`display-xs/md/xl`) o el icono de usuario (32/40/64) con `shadow-2xl`. Sello de verificado: el de `Avatar`, que pasa a `internal/verified-seal.tsx` para compartirlo (`Avatar` no cambia su HTML). Accesibilidad como `Avatar`: con iniciales y `alt`, imagen con nombre (y «Verificado»). Peso 25,5 kB, límite 28.160.
+- **`CheckIcon`:** `type` `default` (tinte), `line` (`check-circle`) y `filled` (sólido con check blanco); `color` `brand`, `gray`, `success`; cuatro tamaños (20 a 32). Decorativo. El tinte usa la escala `utility` (100 de fondo, 600 el check) y no `bg-brand-secondary`: en oscuro aquel fondo y `fg-brand-primary` casi no se distinguían (se vio en la captura).
+- **`CheckItem`:** `<li>` (o `div` con `as`) con `CheckIcon` y el texto en `text-tertiary`; `sm`/`md`/`lg` = check 20/24/28 y `text-sm`/`md`/`lg`, un paso menos en estrecho (container queries), como el Figma en móvil.
+- **Diferencias:** el Figma de `CheckItem` solo tiene los colores marca y éxito; aquí también `gray`, el de `CheckIcon`.

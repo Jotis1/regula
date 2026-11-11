@@ -2,7 +2,18 @@
 
 import { FlagMexicoCircle, FlagPortugalCircle, FlagSpainCircle } from "@jotis-me/icons/flags";
 import { SocialStripeLogo } from "@jotis-me/icons/logos";
-import { Avatar, AvatarGroup, AvatarLabel, Badge, BadgeGroup, Kbd, Tag } from "@jotis-me/react";
+import {
+	Avatar,
+	AvatarGroup,
+	AvatarLabel,
+	AvatarProfilePhoto,
+	Badge,
+	BadgeGroup,
+	CheckIcon,
+	CheckItem,
+	Kbd,
+	Tag,
+} from "@jotis-me/react";
 import { row, stack } from "./actions";
 
 const noop = () => {};
@@ -223,6 +234,67 @@ export function AvatarGroupExample() {
 }
 
 /** Los tres tamaños del Figma: `sm`, `md` (el de siempre) y `lg`. */
+/** Los tres tipos de check en los tres colores, en los cuatro tamaños. */
+export function CheckIconExample() {
+	return (
+		<div className={stack}>
+			{(["default", "line", "filled"] as const).flatMap((type) =>
+				(["brand", "gray", "success"] as const).map((color) => (
+					<div key={type + color} className={`${row} items-center gap-4`}>
+						{(["sm", "md", "lg", "xl"] as const).map((size) => (
+							<CheckIcon key={size} type={type} color={color} size={size} />
+						))}
+					</div>
+				)),
+			)}
+		</div>
+	);
+}
+
+/** Una lista por tipo, con los tres tamaños. */
+export function CheckItemExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-8">
+			{(["default", "line", "filled"] as const).map((type, i) => (
+				<ul key={type} className="m-0 flex flex-col gap-3 p-0">
+					{(["sm", "md", "lg"] as const).map((size) => (
+						<CheckItem key={size} type={type} color={i === 1 ? "success" : "brand"} size={size}>
+							Todas las funciones y soporte prioritario
+						</CheckItem>
+					))}
+				</ul>
+			))}
+		</div>
+	);
+}
+
+/** Foto de perfil: con iniciales y sello, el icono de usuario y las iniciales sin sello, en los tres tamaños. */
+export function AvatarProfilePhotoExample() {
+	return (
+		<div className={stack}>
+			{(
+				[
+					[true, "OR"],
+					[false, undefined],
+					[false, "AD"],
+				] as const
+			).map(([verified, initials]) => (
+				<div key={String(initials) + verified} className={`${row} items-end gap-8`}>
+					{(["sm", "md", "lg"] as const).map((size) => (
+						<AvatarProfilePhoto
+							key={size}
+							size={size}
+							initials={initials}
+							alt={initials ? (initials === "OR" ? "Olivia Rhye" : "Administrador") : undefined}
+							verified={verified}
+						/>
+					))}
+				</div>
+			))}
+		</div>
+	);
+}
+
 export function AvatarLabelExample() {
 	return (
 		<div className={stack}>

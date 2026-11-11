@@ -26,6 +26,12 @@ const usage: Record<string, string> = {
 	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
 	AvatarGroup: `<AvatarGroup items={[{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }]} />`,
+	CheckIcon: `<CheckIcon type="filled" color="success" size="md" />`,
+	CheckItem: `<ul>
+	<CheckItem>Hasta 10 usuarios</CheckItem>
+	<CheckItem>20 GB por persona</CheckItem>
+</ul>`,
+	AvatarProfilePhoto: `<AvatarProfilePhoto size="lg" src="/fotos/olivia.jpg" alt="Olivia Rhye" verified />`,
 	AvatarLabel: `<AvatarLabel initials="AD" name="Responsable de seguridad" supporting="admin@jotis.me" />`,
 	FeaturedIcon: `<FeaturedIcon icon="alert-circle" color="error" />`,
 	Spinner: `<Spinner label="Importando extracto…" />`,
