@@ -10,7 +10,15 @@ import {
 } from "./examples/actions";
 import { AppIconExample } from "./examples/brand";
 import { CalendarViewExample } from "./examples/calendar";
-import { BarChartExample, ChartLegendExample, LineChartExample, PieChartExample } from "./examples/charts";
+import {
+	ActivityGaugeExample,
+	BarChartExample,
+	ChartLegendExample,
+	ChartMarkerExample,
+	LineChartExample,
+	PieChartExample,
+	RadarChartExample,
+} from "./examples/charts";
 import { ColorPickerExample } from "./examples/color";
 import { ActivityFeedExample, CodeSnippetExample, MetricCardExample } from "./examples/data";
 import {
@@ -205,6 +213,9 @@ export const visualExamples: Record<string, ComponentType> = {
 	BarChart: BarChartExample,
 	PieChart: PieChartExample,
 	ChartLegend: ChartLegendExample,
+	ActivityGauge: ActivityGaugeExample,
+	RadarChart: RadarChartExample,
+	ChartMarker: ChartMarkerExample,
 	StreamAlert: StreamAlertExample,
 	StreamEvents: StreamEventsExample,
 	StreamStatus: StreamStatusExample,

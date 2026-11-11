@@ -115,7 +115,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "graficas",
 		label: "Gráficas",
 		section: "components",
-		components: names("LineChart BarChart PieChart ChartLegend"),
+		components: names("LineChart BarChart PieChart ActivityGauge RadarChart ChartMarker ChartLegend"),
 	},
 	{
 		id: "estructura-de-pagina",

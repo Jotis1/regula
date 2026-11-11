@@ -5,6 +5,12 @@ export {
 	type ActivityItem,
 	type ActivitySupporting,
 } from "./components/ActivityFeed.js";
+export {
+	ActivityGauge,
+	type ActivityGaugeProps,
+	type ActivityGaugeRing,
+	type ActivityGaugeSize,
+} from "./components/ActivityGauge.js";
 export { Alert, type AlertProps } from "./components/Alert.js";
 export {
 	AppIcon,
@@ -95,6 +101,12 @@ export {
 	type ChannelPanelRow,
 } from "./components/ChannelPanel.js";
 export { ChartLegend, type ChartLegendProps } from "./components/ChartLegend.js";
+export {
+	ChartMarker,
+	type ChartMarkerAt,
+	type ChartMarkerProps,
+	type ChartMarkerType,
+} from "./components/ChartMarker.js";
 export { ChatBadge, type ChatBadgeKind, type ChatBadgeProps } from "./components/ChatBadge.js";
 export { ChatBox, type ChatBoxProps, type ChatMessage, type ChatTone } from "./components/ChatBox.js";
 export { Checkbox, type CheckboxProps } from "./components/Checkbox.js";
@@ -269,6 +281,7 @@ export {
 	type ProgressStepsSize,
 	type ProgressStepsType,
 } from "./components/ProgressSteps.js";
+export { RadarChart, type RadarChartProps } from "./components/RadarChart.js";
 export { Radio, type RadioProps } from "./components/Radio.js";
 export { RadioGroup, type RadioGroupOption, type RadioGroupProps } from "./components/RadioGroup.js";
 export {

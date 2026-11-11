@@ -13,6 +13,7 @@ import {
 } from "@jotis-me/icons/logos";
 import {
 	ActivityFeed,
+	ActivityGauge,
 	Alert,
 	AppIcon,
 	AppStoreBadge,
@@ -37,6 +38,7 @@ import {
 	ChannelBanner,
 	ChannelPanel,
 	ChartLegend,
+	ChartMarker,
 	ChatBadge,
 	ChatBox,
 	type ChatMessage,
@@ -81,6 +83,7 @@ import {
 	ProgressBar,
 	ProgressCircle,
 	ProgressSteps,
+	RadarChart,
 	Radio,
 	RadioGroup,
 	Rating,
@@ -1053,6 +1056,43 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					]}
 					format={(v) => `${v} €`}
 				/>
+			</div>
+		),
+	},
+	ActivityGauge: {
+		render: () => (
+			<ActivityGauge
+				size="xs"
+				data={[
+					{ name: "Móvil", value: 72 },
+					{ name: "Escritorio", value: 54 },
+					{ name: "Tableta", value: 38 },
+				]}
+				label="Activos"
+				value="1.000"
+			/>
+		),
+	},
+	RadarChart: {
+		scale: 0.42,
+		render: () => (
+			<div style={{ width: 392 }}>
+				<RadarChart
+					axes={["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]}
+					series={[
+						{ name: "A", data: [820, 560, 380, 520, 440, 900, 300] },
+						{ name: "B", data: [360, 700, 520, 760, 560, 480, 680] },
+					]}
+					legend={false}
+				/>
+			</div>
+		),
+	},
+	ChartMarker: {
+		render: () => (
+			<div style={{ display: "flex", gap: 56, paddingTop: 60 }}>
+				<ChartMarker value="1.218" label="10 ene" height={90} />
+				<ChartMarker value="1.218" type="minimal" height={90} />
 			</div>
 		),
 	},

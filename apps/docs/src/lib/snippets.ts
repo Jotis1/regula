@@ -430,6 +430,29 @@ const usage: Record<string, string> = {
 		{ name: "Otros", value: 374 },
 	]}
 />`,
+	ActivityGauge: `<ActivityGauge
+	data={[
+		{ name: "Móvil", value: 72 },
+		{ name: "Escritorio", value: 54 },
+		{ name: "Tableta", value: 38 },
+	]}
+	label="Usuarios activos"
+	value="1.000"
+	legend="right"
+/>`,
+	RadarChart: `<RadarChart
+	axes={["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]}
+	series={[
+		{ name: "Esta semana", data: [820, 560, 380, 520, 440, 900, 300] },
+		{ name: "La anterior", data: [360, 700, 520, 760, 560, 480, 680] },
+	]}
+	aria-label="Visitas por día"
+/>`,
+	ChartMarker: `<LineChart
+	labels={["Ago", "Sep", "Oct"]}
+	series={[{ name: "Gastos", data: [1240, 1060, 1284] }]}
+	marker={{ index: 2, label: "Octubre de 2026" }}
+/>`,
 	ChartLegend: `<ChartLegend series={[{ name: "Gastos" }, { name: "Presupuesto" }]} />`,
 	StreamAlert: `<StreamAlert key={alerta.id} type="raid" user="TioBigotes" amount={1284} state="enter" />`,
 	StreamEvents: `<StreamEvents

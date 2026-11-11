@@ -133,3 +133,47 @@ export function Axes({
 /** "Gastos · Oct: 1.284 €" para el `<title>` de cada punto o barra. */
 export const pointTitle = (name: string | undefined, label: string, value: string | number) =>
 	`${name ? `${name} · ` : ""}${label}: ${value}`;
+
+/**
+ * Los datos de una gráfica en una tabla solo para lectores de pantalla: la gráfica es una imagen con nombre y aquí van
+ * sus valores, fila a fila (`ActivityGauge`, `RadarChart`).
+ */
+export function ChartTable({
+	caption,
+	columns,
+	rows,
+}: {
+	caption: string;
+	/** Cabeceras: la primera es la de las filas. */
+	columns: string[];
+	/** Cada fila: su cabecera y sus valores ya formateados. */
+	rows: { label: string; values: (string | number)[] }[];
+}): ReactNode {
+	return (
+		<table className="sr-only">
+			<caption>{caption}</caption>
+			<thead>
+				<tr>
+					{columns.map((c, i) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: las cabeceras pueden repetirse; el orden es fijo
+						<th key={i} scope="col">
+							{c}
+						</th>
+					))}
+				</tr>
+			</thead>
+			<tbody>
+				{rows.map((r, i) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: las filas pueden repetir nombre; el orden es fijo
+					<tr key={i}>
+						<th scope="row">{r.label}</th>
+						{r.values.map((v, j) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: una celda por columna, en orden
+							<td key={j}>{v}</td>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
+	);
+}

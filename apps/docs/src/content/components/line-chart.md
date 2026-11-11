@@ -11,6 +11,8 @@ interactive: false
 
 **Colores.** Por orden: `utility-brand-600`, `utility-brand-400`, `utility-brand-200`, `utility-sky-500`, `utility-pink-500`, `utility-neutral-400`, igual que las series del archivo (la marca primero, en degradado). Rejilla `border-tertiary`; ejes `text-xs` en `text-tertiary`.
 
+**Marcador.** `marker` {`index`, `series`?, `type`?, `value`?, `label`?} pinta el `ChartMarker` del Figma sobre un punto: la línea hasta el eje y la burbuja con el valor y la etiqueta.
+
 **Reglas.** Máximo 4 series. Si hay que comparar valores exactos, una tabla. Escala desde cero.
 
 **Tercera serie en oscuro.** En oscuro la escala de marca se invierte, como en el archivo: `utility-brand-200` queda oscura sobre el fondo oscuro y la tercera línea casi no se ve. Con tres series o más, deja siempre la leyenda (sale sola desde dos series) y, si la tercera importa, dale un `color` propio de más contraste, como `var(--utility-sky-500)`.
