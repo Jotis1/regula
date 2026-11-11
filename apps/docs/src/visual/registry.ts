@@ -36,6 +36,7 @@ import {
 	SkeletonExample,
 	SpinnerExample,
 } from "./examples/feedback";
+import { FilterBarExample } from "./examples/filter-bar";
 import {
 	CheckboxExample,
 	DatePickerExample,
@@ -77,7 +78,6 @@ import {
 	CommandMenuExample,
 	ContextMenuExample,
 	DropdownExample,
-	FilterBarExample,
 	HeaderNavExample,
 	PagerExample,
 	PaginationDotsExample,

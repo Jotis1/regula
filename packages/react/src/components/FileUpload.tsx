@@ -17,6 +17,11 @@ export interface UploadFile {
 	status?: "complete" | "error";
 	/** Mensaje si `status` es `error`. */
 	error?: string;
+	/**
+	 * Icono del archivo en lugar del genérico: el de su tipo, como `<FileTypePdf />` de `@jotis-me/icons/files`. El
+	 * paquete no los importa. Con error se sigue pintando el aviso.
+	 */
+	icon?: ReactNode;
 }
 
 export interface FileUploadLabels {
@@ -41,6 +46,17 @@ export interface FileUploadProps {
 	files?: UploadFile[];
 	onRemove?: (index: number) => void;
 	disabled?: boolean;
+	/**
+	 * Cómo se ve el progreso: `bar` (una barra bajo el nombre, el de siempre) o `fill` (el fondo del elemento se va
+	 * llenando y el porcentaje va junto al tamaño), como en el Figma.
+	 * @default "bar"
+	 */
+	progressStyle?: "bar" | "fill";
+	/**
+	 * Icono de cada archivo cuando el archivo no trae el suyo (`UploadFile.icon`): recibe el archivo y devuelve un nodo,
+	 * por ejemplo según su extensión.
+	 */
+	fileIcon?: (file: UploadFile) => ReactNode;
 	/** Textos sustituibles. */
 	labels?: Partial<FileUploadLabels>;
 	id?: string;
@@ -66,6 +82,8 @@ export function FileUpload({
 	files = [],
 	onRemove,
 	disabled,
+	progressStyle = "bar",
+	fileIcon,
 	labels,
 	id: givenId,
 	className,
@@ -125,30 +143,73 @@ export function FileUpload({
 					{files.map((f, i) => {
 						const failed = f.status === "error";
 						const done = !failed && (f.status === "complete" || (f.progress ?? 0) >= 100);
+						const fill = progressStyle === "fill";
+						const percent = done ? 100 : Math.round(f.progress ?? 0);
+						const own = failed ? null : (f.icon ?? fileIcon?.(f) ?? null);
 						return (
 							<li
 								// biome-ignore lint/suspicious/noArrayIndexKey: la lista la gestiona el padre por índice (onRemove(index))
 								key={i}
 								className={cx(
 									"relative flex gap-3 rounded-xl bg-primary p-4",
+									fill && "overflow-hidden",
 									failed
 										? "shadow-[inset_0_0_0_2px_var(--border-error_subtle)]"
 										: "shadow-[inset_0_0_0_1px_var(--border-secondary)]",
 								)}
 							>
-								<FeaturedIcon
-									icon={failed ? "alert-circle" : "file-04"}
-									variant="modern"
-									size="md"
-									color={failed ? "error" : "gray"}
-								/>
-								<div className="flex min-w-0 flex-1 flex-col gap-1 pr-8">
+								{fill && !failed ? (
+									<div
+										role="progressbar"
+										aria-label={t.progress(f.name)}
+										aria-valuemin={0}
+										aria-valuemax={100}
+										aria-valuenow={percent}
+										className="absolute top-px bottom-px left-px rounded-l-[11px] bg-secondary transition-[width] duration-200"
+										// 1px de margen para no tapar el borde de la tarjeta, que es una sombra interior
+										style={{ width: `calc(${percent}% - 2px)` }}
+									/>
+								) : null}
+								{own ? (
+									<span className="relative flex size-10 flex-none items-center justify-center [&_svg]:size-10">
+										{own}
+									</span>
+								) : (
+									<FeaturedIcon
+										icon={failed ? "alert-circle" : "file-04"}
+										variant="modern"
+										size="md"
+										color={failed ? "error" : "gray"}
+									/>
+								)}
+								<div
+									className={cx(
+										"flex min-w-0 flex-1 flex-col gap-1 pr-8",
+										fill && "relative",
+									)}
+								>
 									<div className="truncate text-sm font-medium text-secondary">
 										{f.name}
 									</div>
 									<div className="flex items-center gap-1 text-sm text-tertiary [&>span]:inline-flex [&>span]:items-center [&>span]:gap-1">
 										{failed ? (
 											<span className="text-error-primary">{f.error || t.failed}</span>
+										) : fill ? (
+											<>
+												{formatBytes(f.size ?? 0)}
+												<span aria-hidden="true"> | </span>
+												{done ? (
+													<span className="font-medium text-success-primary">
+														<Icon name="check-circle" size={14} /> {percent}%
+														<span className="sr-only">, {t.complete}</span>
+													</span>
+												) : (
+													<span>
+														<Icon name="upload-cloud-02" size={14} /> {percent}%
+														<span className="sr-only">, {t.uploading}</span>
+													</span>
+												)}
+											</>
 										) : (
 											<>
 												{formatBytes(f.size ?? 0)}
@@ -166,7 +227,7 @@ export function FileUpload({
 											</>
 										)}
 									</div>
-									{!done && !failed ? (
+									{!done && !failed && !fill ? (
 										<ProgressBar
 											value={f.progress ?? 0}
 											aria-label={t.progress(f.name)}

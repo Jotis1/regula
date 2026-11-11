@@ -1,5 +1,6 @@
 // Puertos de las vistas previas de los componentes de formulario.
 
+import { FileDesignFig, FileDocumentPdf, FileMediaMp4 } from "@jotis-me/icons/files";
 import {
 	PaymentAmexMd,
 	PaymentDiscoverMd,
@@ -383,6 +384,24 @@ export function FileUploadExample() {
 						status: "error",
 						error: "Formato no admitido",
 					},
+				]}
+				onRemove={() => {}}
+			/>
+			<FileUpload
+				className="mt-8"
+				accept=".pdf,.mp4,.fig"
+				hint="PDF, MP4 o Figma (máx. 50 MB)"
+				progressStyle="fill"
+				files={[
+					{
+						name: "requisitos.pdf",
+						size: 204800,
+						progress: 100,
+						status: "complete",
+						icon: <FileDocumentPdf />,
+					},
+					{ name: "grabacion-panel.mp4", size: 16_000_000, progress: 40, icon: <FileMediaMp4 /> },
+					{ name: "prototipo-final.fig", size: 4_200_000, progress: 80, icon: <FileDesignFig /> },
 				]}
 				onRemove={() => {}}
 			/>

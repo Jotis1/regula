@@ -166,7 +166,15 @@ export {
 } from "./components/HeaderNav.js";
 export { HelpIcon, type HelpIconProps } from "./components/HelpIcon.js";
 export { Icon, type IconName, type IconProps } from "./components/Icon.js";
-export { InlineCTA, type InlineCTAProps } from "./components/InlineCTA.js";
+export {
+	InlineCTA,
+	type InlineCTAFeature,
+	type InlineCTAFile,
+	type InlineCTAPayment,
+	type InlineCTAPlan,
+	type InlineCTAProps,
+	type InlineCTAType,
+} from "./components/InlineCTA.js";
 export {
 	type CardNetwork,
 	Input,

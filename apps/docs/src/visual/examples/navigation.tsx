@@ -15,7 +15,6 @@ import {
 	CommandMenu,
 	ContextMenu,
 	Dropdown,
-	FilterBar,
 	HeaderNav,
 	type HeaderNavItem,
 	Input,
@@ -437,24 +436,6 @@ export function DropdownExample() {
 				/>
 			</div>
 		</div>
-	);
-}
-
-export function FilterBarExample() {
-	return (
-		<FilterBar
-			segments={[
-				{ value: "t", label: "Todo" },
-				{ value: "g", label: "Gastos" },
-				{ value: "i", label: "Ingresos" },
-			]}
-			defaultSegment="t"
-			search
-			searchPlaceholder="Buscar movimientos"
-			activeFilters={[{ label: "Categoría: Hogar" }, { label: "Importe > 50 €" }]}
-			onRemoveFilter={() => {}}
-			onClear={() => {}}
-		/>
 	);
 }
 

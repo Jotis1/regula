@@ -46,7 +46,7 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	Dropdown: "navigation",
 	ContextMenu: "navigation",
 	HeaderNav: "navigation",
-	FilterBar: "navigation",
+	FilterBar: "filter-bar",
 	CommandMenu: "navigation",
 	TreeView: "navigation",
 	Modal: "overlays",

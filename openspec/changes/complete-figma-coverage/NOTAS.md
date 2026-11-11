@@ -329,3 +329,21 @@ Nodos: `Color picker` `12423:52680` (12 `Type`) y `_Color inputs` `12304:616891`
 - **Icono:** `switch-horizontal-01` entra en el núcleo (invertir el degradado).
 - **Peso:** 123 → 140,3 kB (`Tabs`, `Select` y `Slider`); límite a 158.208. Ejemplo propio (`examples/color.tsx`) para que las páginas de `forms.tsx` no lo carguen; `check:js` sin cambios.
 - **Ejemplo y capturas:** el de siempre, el panel en sus tres pestañas, las cinco de muestras, las tres barras y la paleta (alto 420 → 2.800). Revisadas en claro y oscuro.
+
+## Cierre del grupo 6
+
+E2E completo de docs: 935 pasan. Fallaron dos: el de `CopyTooltip` de siempre (pasa solo) y «los ejemplos vivos no heredan los estilos», que buscaba la única tabla del ejemplo de `DatePicker` y ahora hay dos (rango y horas): mira la primera (`228a973`).
+
+## ContentDivider, FileUpload e InlineCTA (7.1)
+
+Nodos: `Content divider` `1252:126874`, `File upload` `1175:101149` e `Inline CTA` `1255:131915`. Sin las props nuevas, el HTML de los tres es el de antes (fixture `divider-upload-cta-before.json`).
+
+- **`ContentDivider`:** `actions` es lo del centro con nombre (`Button`, `Button` solo icono o `ButtonGroup`), igual que `children`; si llegan los dos, gana `actions`. Los tres estilos del Figma (línea, dos líneas, banda) ya estaban (`variant`).
+- **`FileUpload`:** `progressStyle="fill"` llena el fondo de la tarjeta (`bg-secondary`) hasta el porcentaje y pone «16 MB | ↑ 40%» sin barra; el relleno es un `role="progressbar"` con el nombre del archivo. Va 1 px por dentro para no tapar el borde (es una sombra interior). `UploadFile.icon` o `fileIcon(file)` ponen el icono del tipo (`@jotis-me/icons/files`); con error se sigue pintando el aviso.
+  - **Diferencia con el Figma:** en `bar` el Figma también pinta la barra al 100 % y «200 KB de 200 KB»; se deja como estaba (sin barra al completar) para no cambiar el HTML de quien ya lo usa.
+- **`InlineCTA`:** `type` con los siete del Figma como plantillas (`image`, `actions`, `email`, `change-plan`, `upgrade-plan`, `payment-method`, `receipt`) con sus datos (`plan`, `features`, `payment`, `file`, `onSubmit`…). Sin `type` es la tarjeta de siempre (`ClassicInlineCTA`).
+  - **Sigue siendo de servidor:** el campo de `email` va en `internal/inline-cta-email.tsx` con `"use client"` (el test de frontera servidor lo pide). Usa las piezas de `Input` (`FieldShell`, `controlClasses`, `nativeClasses`) y no `Input` entero: con `Input`, `InlineCTA` pasaba de 23 a 90,9 kB por sus desplegables. Queda en 25,3 kB (límite 25.600 → 28.160, por `Button`). La ficha pasa a `interactive: true` por el campo.
+  - **Móvil (D5):** con `type`, container queries (`@container`, umbral `md` = 448 px de la tarjeta): la imagen arriba y los botones a todo el ancho con la acción principal arriba (`flex-col-reverse`), como el Figma.
+  - Ejemplo sin fotos: la imagen es un bloque de marca con `AppIcon`. Logos de `@jotis-me/icons/payments` y `/files`.
+- **Ejemplos y capturas:** `ContentDivider` con el botón, el grupo de iconos en `dual`, el grupo de texto en `fill` y el botón de icono (alto 200 → 520); `FileUpload` con la lista de relleno e iconos de tipo (400 → 1.000); `InlineCTA` con los siete tipos y dos en 360 px (170 → 2.600). Revisadas en claro y oscuro.
+- **`check:js` (7.1).** Tabs y FilterBar volvieron a pasarse por 0,2 kB (337,2 de 337). `FilterBarExample` pasa a `examples/filter-bar.tsx` (FilterBar lleva `DatePicker`); Tabs se quedó en 337,1 por lo que suma el núcleo de iconos y `defaultStrings`, así que el patrón `/components/*/` sube de 337 a 340, con el motivo en `js-budget.json`.

@@ -1,8 +1,12 @@
 // Puertos de las vistas previas de maquetación de la guía (reference/components/*/preview.html).
 // `jm-stack` = columna con gap 16 (aquí con el gap que fija cada vista previa).
 
+import { FileDocumentPdf } from "@jotis-me/icons/files";
+import { PaymentVisaMd } from "@jotis-me/icons/payments";
 import {
+	AppIcon,
 	Button,
+	ButtonGroup,
 	CardHeader,
 	ContentDivider,
 	InlineCTA,
@@ -151,25 +155,193 @@ export function ContentDividerExample() {
 				</Button>
 			</ContentDivider>
 			<ContentDivider variant="fill" label="Pendientes" />
+			<ContentDivider
+				actions={
+					<Button hierarchy="secondary" size="sm">
+						Añadir
+					</Button>
+				}
+			/>
+			<ContentDivider
+				variant="dual"
+				actions={
+					<ButtonGroup
+						size="sm"
+						aria-label="Mover"
+						items={[
+							{ value: "anterior", iconOnly: "arrow-left", label: "Anterior" },
+							{ value: "nuevo", iconOnly: "plus", label: "Nuevo" },
+							{ value: "siguiente", iconOnly: "arrow-right", label: "Siguiente" },
+						]}
+					/>
+				}
+			/>
+			<ContentDivider
+				variant="fill"
+				actions={
+					<ButtonGroup
+						size="sm"
+						aria-label="Filtro"
+						defaultValue="todo"
+						items={[
+							{ value: "todo", label: "Ver todo" },
+							{ value: "activos", label: "Activos" },
+							{ value: "inactivos", label: "Inactivos" },
+						]}
+					/>
+				}
+			/>
+			<ContentDivider
+				actions={<Button hierarchy="secondary" size="sm" iconOnly="plus" label="Añadir elemento" />}
+			/>
 		</div>
+	);
+}
+
+const ahoraNo = (
+	<Button hierarchy="secondary" size="sm">
+		Ahora no
+	</Button>
+);
+const novedades = {
+	title: "Acabamos de publicar novedades",
+	description: "El panel nuevo carga más rápido y se lee mejor.",
+};
+const portada = (
+	<div className="flex size-full min-h-40 items-center justify-center bg-brand-solid">
+		<AppIcon app="regula" size={64} />
+	</div>
+);
+
+function InlineCTATipos() {
+	return (
+		<>
+			<InlineCTA
+				type="image"
+				{...novedades}
+				image={portada}
+				actions={
+					<>
+						{ahoraNo}
+						<Button size="sm">Novedades</Button>
+					</>
+				}
+			/>
+			<InlineCTA
+				type="actions"
+				{...novedades}
+				actions={
+					<>
+						{ahoraNo}
+						<Button size="sm">Novedades</Button>
+					</>
+				}
+			/>
+			<InlineCTA type="email" {...novedades} />
+			<InlineCTA
+				type="change-plan"
+				title="Cambia de plan"
+				description="Precios flexibles que crecen contigo."
+				plan={{
+					name: "Plan básico",
+					icon: "zap",
+					price: "10 €",
+					period: "al mes",
+					description: "Hasta 10 usuarios, 20 GB por persona y todas las funciones.",
+				}}
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Saber más
+						</Button>
+						<Button size="sm">Mejorar plan</Button>
+					</>
+				}
+			/>
+			<InlineCTA
+				type="upgrade-plan"
+				title="Mejora tu plan"
+				description="¿Necesitas más espacio? Mejora tu plan hoy."
+				features={[
+					{ title: "10 usuarios", description: "Hasta 10 personas en el equipo." },
+					{ title: "20 GB", description: "20 GB por persona." },
+					{ title: "Todas las funciones", description: "Funciones avanzadas y analítica." },
+				]}
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Todos los planes
+						</Button>
+						<Button size="sm">Mejorar plan</Button>
+					</>
+				}
+			/>
+			<InlineCTA
+				type="payment-method"
+				title="Método de pago"
+				description="Cambia cómo pagas tu plan."
+				payment={{
+					logo: <PaymentVisaMd />,
+					label: "Visa terminada en 1234",
+					expiry: "Caduca el 06/2028",
+					email: "pagos@jotis.me",
+				}}
+				actions={
+					<Button hierarchy="secondary" size="sm">
+						Editar
+					</Button>
+				}
+			/>
+			<InlineCTA
+				type="receipt"
+				title="Tu último recibo ya está disponible"
+				description="Descarga el recibo de enero de 2027."
+				file={{ name: "Recibo_enero_2027.pdf", size: "200 KB", icon: <FileDocumentPdf /> }}
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Descargar
+						</Button>
+						<Button size="sm">Ver</Button>
+					</>
+				}
+			/>
+		</>
 	);
 }
 
 export function InlineCTAExample() {
 	return (
-		<InlineCTA
-			icon="stars-02"
-			title="Conecta tu banco"
-			description="Importa los movimientos cada día sin subir extractos a mano."
-			actions={
-				<>
-					<Button hierarchy="secondary" size="sm">
-						Ahora no
-					</Button>
-					<Button size="sm">Conectar</Button>
-				</>
-			}
-		/>
+		<div className="flex flex-col gap-6">
+			<InlineCTA
+				icon="stars-02"
+				title="Conecta tu banco"
+				description="Importa los movimientos cada día sin subir extractos a mano."
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Ahora no
+						</Button>
+						<Button size="sm">Conectar</Button>
+					</>
+				}
+			/>
+			<InlineCTATipos />
+			<div className="flex flex-col gap-6" style={{ width: 360 }}>
+				<InlineCTA
+					type="image"
+					{...novedades}
+					image={portada}
+					actions={
+						<>
+							{ahoraNo}
+							<Button size="sm">Novedades</Button>
+						</>
+					}
+				/>
+				<InlineCTA type="email" {...novedades} />
+			</div>
+		</div>
 	);
 }
 
