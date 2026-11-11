@@ -120,7 +120,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 
 ## 8. Variantes: fondos y marcos
 
-- [ ] 8.1 `BackgroundPattern`: `tech-grid` (`4932:397713`). `CreditCard`: los trece temas (`1291:157837`). `BrowserFrame`: `minimal-color` y `theme` (`7333:23578`). `FeaturedIcon`: `gradient`, `dark` y `modern-neue` (`1102:5338`). Tests, ejemplos y capturas.
+- [x] 8.1 `BackgroundPattern`: `tech-grid` (`4932:397713`). `CreditCard`: los trece temas (`1291:157837`). `BrowserFrame`: `minimal-color` y `theme` (`7333:23578`). `FeaturedIcon`: `gradient`, `dark` y `modern-neue` (`1102:5338`). Tests, ejemplos y capturas.
 
 ## 9. Componentes base nuevos
 

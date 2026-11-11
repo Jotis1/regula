@@ -4,10 +4,17 @@ import { Icon } from "./Icon.js";
 
 export interface BrowserFrameProps {
 	/**
-	 * `safari` semáforo, navegación, dirección y acciones · `minimal` semáforo gris y dirección.
+	 * `safari` semáforo, navegación, dirección y acciones · `minimal` semáforo gris y dirección · `minimal-color` como
+	 * `minimal` con el semáforo en color (Figma `Browser toolbar`, `7333:23578`).
 	 * @default "safari"
 	 */
-	variant?: "safari" | "minimal";
+	variant?: "safari" | "minimal" | "minimal-color";
+	/**
+	 * Tema del navegador: `dark` pinta el marco, la barra y el contenido con los tokens del tema oscuro aunque la página
+	 * esté en claro (la clase `dark-mode`). `light` o sin él, sigue al tema de la página: los tokens no tienen una clase
+	 * que fuerce el claro dentro de una página oscura.
+	 */
+	theme?: "light" | "dark";
 	/** Dirección que se muestra en la barra. @default "jotis.me" */
 	url?: string;
 	/** Alto del área de contenido. */
@@ -21,16 +28,18 @@ export interface BrowserFrameProps {
 /** Marco de navegador para enseñar una pantalla de la app dentro de una página. Decorativo salvo su contenido. */
 export function BrowserFrame({
 	variant = "safari",
+	theme,
 	url = "jotis.me",
 	height,
 	children,
 	className,
 	style,
 }: BrowserFrameProps) {
-	const minimal = variant === "minimal";
+	const minimal = variant === "minimal" || variant === "minimal-color";
+	const colored = variant !== "minimal";
 	const dot = cx(
 		"size-3 rounded-full",
-		minimal ? "bg-[var(--border-primary)]" : "shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.12)]",
+		colored ? "shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.12)]" : "bg-[var(--border-primary)]",
 	);
 	const address = (
 		<div
@@ -50,6 +59,7 @@ export function BrowserFrame({
 		<div
 			className={cx(
 				"overflow-hidden rounded-xl border border-secondary bg-primary font-body shadow-xl",
+				theme === "dark" && "dark-mode text-primary",
 				className,
 			)}
 			style={style}
@@ -62,9 +72,9 @@ export function BrowserFrame({
 			>
 				{/* Semáforo: colores fijos de la ficha */}
 				<div aria-hidden="true" className="flex shrink-0 gap-2">
-					<span className={cx(dot, !minimal && "bg-[#ee6a5f]")} />
-					<span className={cx(dot, !minimal && "bg-[#f5bd4f]")} />
-					<span className={cx(dot, !minimal && "bg-[#61c454]")} />
+					<span className={cx(dot, colored && "bg-[#ee6a5f]")} />
+					<span className={cx(dot, colored && "bg-[#f5bd4f]")} />
+					<span className={cx(dot, colored && "bg-[#61c454]")} />
 				</div>
 				{minimal ? (
 					<>

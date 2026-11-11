@@ -1,7 +1,7 @@
 import { type CSSProperties, type ReactElement, useId } from "react";
 import { cx } from "../internal/cx.js";
 
-export type BackgroundPatternName = "grid" | "grid-dot" | "grid-check" | "circles" | "squares";
+export type BackgroundPatternName = "grid" | "grid-dot" | "grid-check" | "tech-grid" | "circles" | "squares";
 export type BackgroundPatternMask =
 	| "radial"
 	| "radial-down"
@@ -12,7 +12,8 @@ export type BackgroundPatternMask =
 
 export interface BackgroundPatternProps {
 	/**
-	 * `grid` rejilla · `grid-dot` puntos cada 32px · `grid-check` rejilla con casillas · `circles` y `squares`
+	 * `grid` rejilla · `grid-dot` puntos cada 32px · `grid-check` rejilla con casillas · `tech-grid` matriz de puntos
+	 * de 12px (8px en `sm`) que aparecen y se apagan al azar, como una pantalla de datos · `circles` y `squares`
 	 * concéntricos.
 	 * @default "grid"
 	 */
@@ -31,7 +32,7 @@ export interface BackgroundPatternProps {
 	width?: number;
 	/** Alto del área de la rejilla en px. @default 960 */
 	height?: number;
-	/** Reparto de las casillas en `grid-check`. @default 7 */
+	/** Reparto de las casillas en `grid-check` y de los puntos en `tech-grid`. @default 7 */
 	seed?: number;
 	className?: string;
 	style?: CSSProperties;
@@ -90,6 +91,46 @@ export function BackgroundPattern({
 				),
 			);
 		}
+	} else if (pattern === "tech-grid") {
+		// Matriz de puntos con huecos y opacidades al azar (reparto determinista), más densa hacia arriba como el Figma
+		const pitch = size === "sm" ? 8 : 12;
+		const r = size === "sm" ? 1.5 : 2;
+		const cols = Math.ceil(width / pitch);
+		const rows = Math.ceil(height / pitch);
+		w = cols * pitch;
+		h = rows * pitch;
+		let s = seed;
+		const rnd = () => {
+			s = (s * 16807) % 2147483647;
+			return s / 2147483647;
+		};
+		// Un solo trazo por nivel de opacidad: miles de puntos en tres <path> en vez de miles de nodos
+		const levels = ["", "", ""];
+		for (let y = 0; y < rows; y++) {
+			const density = 0.75 - (0.45 * y) / rows;
+			for (let x = 0; x < cols; x++) {
+				if (rnd() > density) continue;
+				const cx = x * pitch + pitch / 2;
+				const cy = y * pitch + pitch / 2;
+				const level = Math.floor(rnd() * 3);
+				levels[level] += `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0`;
+			}
+		}
+		const tones = [
+			{ name: "suave", opacity: 0.35, d: levels[0] },
+			{ name: "medio", opacity: 0.6, d: levels[1] },
+			{ name: "fuerte", opacity: 1, d: levels[2] },
+		];
+		for (const tone of tones)
+			if (tone.d)
+				kids.push(
+					<path
+						key={tone.name}
+						d={tone.d}
+						fill="var(--utility-neutral-200)"
+						opacity={tone.opacity}
+					/>,
+				);
 	} else {
 		const cell = pattern === "grid-dot" ? 32 : GRID_CELL[size];
 		const cols = Math.ceil(width / cell);

@@ -25,6 +25,8 @@ const PATTERNS: [BackgroundPatternName, BackgroundPatternMask, "sm" | "md"][] = 
 	["circles", "radial", "sm"],
 	["squares", "radial", "sm"],
 	["grid", "linear-down", "sm"],
+	["tech-grid", "radial-down", "md"],
+	["tech-grid", "linear-down", "sm"],
 ];
 
 export function BackgroundPatternExample() {
@@ -100,6 +102,27 @@ export function BrowserFrameExample() {
 					</div>
 				</div>
 			</BrowserFrame>
+			<BrowserFrame variant="minimal-color" url="regula.jotis.me" height={120}>
+				<div style={{ display: "grid", placeItems: "center", height: "100%" }}>
+					<Badge color="brand">Minimal en color</Badge>
+				</div>
+			</BrowserFrame>
+			<BrowserFrame theme="dark" url="pecunia.jotis.me/resumen" height={160}>
+				<div style={{ position: "relative", height: "100%", padding: 24 }}>
+					<MetricCard
+						label="Gasto de octubre"
+						value="1.284,50 €"
+						change="8 %"
+						trend="up"
+						period="vs. septiembre"
+					/>
+				</div>
+			</BrowserFrame>
+			<BrowserFrame variant="minimal" theme="dark" url="vinculum.jotis.me" height={80}>
+				<div style={{ display: "grid", placeItems: "center", height: "100%" }}>
+					<Badge>Minimal oscuro</Badge>
+				</div>
+			</BrowserFrame>
 			<BrowserFrame variant="minimal" url="vinculum.jotis.me" height={160}>
 				<div style={{ display: "grid", placeItems: "center", height: "100%" }}>
 					<EmptyState
@@ -159,6 +182,46 @@ export function CreditCardExample() {
 					last4="6608"
 				/>
 			</div>
+			{(
+				[
+					"transparent-gradient",
+					"transparent-strip",
+					"gray-strip",
+					"gradient-strip",
+					"salmon-strip",
+					"gray-strip-vertical",
+					"gradient-strip-vertical",
+					"salmon-strip-vertical",
+				] as const
+			).map((theme) =>
+				theme.startsWith("transparent") ? (
+					<div
+						key={theme}
+						style={{
+							padding: 20,
+							borderRadius: 16,
+							background: "linear-gradient(135deg,#432dd7,#a3b3ff)",
+						}}
+					>
+						<CreditCard
+							theme={theme}
+							company="Pecunia"
+							holder="Administrador"
+							expiry="06/28"
+							last4="1234"
+						/>
+					</div>
+				) : (
+					<CreditCard
+						key={theme}
+						theme={theme}
+						company="Pecunia"
+						holder="Administrador"
+						expiry="06/28"
+						last4="1234"
+					/>
+				),
+			)}
 		</div>
 	);
 }
