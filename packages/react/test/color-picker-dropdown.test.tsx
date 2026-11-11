@@ -41,7 +41,9 @@ describe("ColorPickerDropdown", () => {
 		const { container } = render(ui);
 		expect(screen.getByRole("button", { name: "Color: #7F56D9" }).className).toContain("size-7");
 		expect(screen.getByRole("button", { name: "Texto: #7F56D9" })).toBeTruthy();
-		expect(screen.getByRole("button", { name: "Borde: #7F56D9, 50%" }).textContent).toBe("7F56D950%");
+		expect(screen.getByRole("button", { name: /^Borde:\s*7F56D9\s*50%$/ }).textContent).toContain(
+			"7F56D950%",
+		);
 		expect(screen.getByRole("button", { name: "Marca #4F46E5" })).toBeTruthy();
 		expect(container.querySelector(".w-80")).toBeTruthy();
 		await expectAccessibleInThemes(ui);

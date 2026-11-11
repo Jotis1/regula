@@ -108,7 +108,6 @@ export function ColorPickerDropdown({
 	else if (trigger === "swatch-button")
 		button = (
 			<AriaButton
-				aria-label={named}
 				className={cx(
 					"inline-flex h-9 cursor-pointer items-center gap-1 rounded-lg px-3 py-2 font-body text-sm font-semibold text-secondary",
 					SECONDARY,
@@ -117,13 +116,13 @@ export function ColorPickerDropdown({
 			>
 				{swatch("size-4")}
 				<span className="px-0.5">{label}</span>
+				<span className="sr-only">{`: #${shown}`}</span>
 				{chevron(16)}
 			</AriaButton>
 		);
 	else if (trigger === "swatch-button-link")
 		button = (
 			<AriaButton
-				aria-label={named}
 				className={cx(
 					"inline-flex cursor-pointer items-center gap-1.5 rounded-sm font-body text-sm font-semibold text-tertiary hover:text-tertiary_hover",
 					RING,
@@ -132,6 +131,7 @@ export function ColorPickerDropdown({
 				{swatch("size-4")}
 				<span className="inline-flex items-center gap-1">
 					{label}
+					<span className="sr-only">{`: #${shown}`}</span>
 					{chevron(12)}
 				</span>
 			</AriaButton>
@@ -139,7 +139,6 @@ export function ColorPickerDropdown({
 	else if (trigger === "hex-input")
 		button = (
 			<AriaButton
-				aria-label={`${named}, ${percent}`}
 				className={cx(
 					"inline-flex h-9 cursor-pointer items-stretch font-body text-sm text-primary",
 					FIELD,
@@ -148,6 +147,7 @@ export function ColorPickerDropdown({
 			>
 				<span className="flex w-25 items-center gap-2 px-2.5">
 					{swatch("size-4")}
+					<span className="sr-only">{`${label}: `}</span>
 					<span className="truncate">{shown}</span>
 				</span>
 				<span className="flex w-14 items-center border-l border-primary px-2.5">{percent}</span>

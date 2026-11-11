@@ -504,3 +504,7 @@ Nodos: `Background overlay` `4896:411056`, `Screen mockup 3:2` `1293:158480`, `M
 - **Colores del dispositivo:** `internal/device-frames.ts` (generado) entra en las excepciones de `check-colors`, como `CreditCard` y `BrowserFrame`.
 - **Un fichero por componente:** la primera versión los tenía juntos en `Mockups.tsx` y la web (que lee las props de `components/<Nombre>.tsx`) y `check:size` fallaban; se separan, con `internal/mockup-screen.tsx` para lo común. Ojo: `turbo build` no borra `dist`, y el `Mockups.js` viejo hacía fallar `check:size`.
 - **Muestras:** dentro de un contenedor sin ancho, `w-full` deja la maqueta a 0; las muestras llevan un `div` con el ancho.
+
+## Cierre del grupo 10
+
+E2E completo de docs: 1.043 pasan; fallaron el de `CopyTooltip` (de carga, conocido) y el de accesibilidad de `/components/color-picker-dropdown/` en los dos temas: `label-content-name-mismatch`, porque los disparadores con texto visible llevaban `aria-label` («Color: #7F56D9») que no contenía el texto («Color», «7F56D9 100%»). Ahora el valor va en `sr-only` junto al texto visible; solo las muestras sin texto llevan `aria-label`. Repetido: pasa.
