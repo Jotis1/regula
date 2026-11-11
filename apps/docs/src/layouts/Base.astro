@@ -66,13 +66,16 @@ const current = Astro.url.pathname;
 					<slot />
 				</main>
 			) : (
-				<div class="mx-auto flex max-w-[1440px]">
+				<div class="flex">
 					<aside class="sticky top-0 hidden h-screen w-72 shrink-0 overflow-y-auto shadow-[inset_-1px_0_0_var(--border-secondary)] lg:block">
 						<SideNav current={current} />
 					</aside>
 					<div class="flex min-w-0 flex-1 flex-col">
 						<main id="contenido" {...indexed} class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
-							<slot />
+							{/* El contenedor de la guía (container-max-width-desktop, 1280): la barra lateral queda fuera */}
+							<div class="mx-auto w-full max-w-container" data-container>
+								<slot />
+							</div>
 						</main>
 					</div>
 				</div>

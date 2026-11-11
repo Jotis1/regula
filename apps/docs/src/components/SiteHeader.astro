@@ -14,8 +14,10 @@ import ThemeMenu from "./ThemeMenu";
 const current = sectionOf(Astro.url.pathname);
 ---
 
-<header
-	class="relative flex h-14 items-center gap-1 bg-primary pr-1.5 pl-4 shadow-[inset_0_-1px_0_var(--border-secondary)] lg:h-16 lg:gap-8 lg:px-8"
+<header class="relative bg-primary shadow-[inset_0_-1px_0_var(--border-secondary)]">
+<div
+	data-container
+	class="mx-auto flex h-14 max-w-container items-center gap-1 pr-1.5 pl-4 lg:h-16 lg:gap-8 lg:px-8"
 >
 	<a
 		href="#contenido"
@@ -57,4 +59,5 @@ const current = sectionOf(Astro.url.pathname);
 			</MobileMenu>
 		</div>
 	</div>
+</div>
 </header>

@@ -4,7 +4,7 @@ Comandos: `bun run --cwd apps/docs build`, `bun run --cwd apps/docs test`, `bun 
 
 ## 1. Ancho del contenedor
 
-- [ ] 1.1 Sacar la barra lateral del contenedor y poner `max-w-container` (1280) con el padding del contenedor a cabecera, contenido (con el índice derecho) y pie, en `Base.astro`, `SiteHeader.astro`, `SiteFooter.astro` y `ComponentPage.astro` (design D1). Verificar con un e2e nuevo en `e2e/layout.spec.ts`: a 1920 px, la barra lateral empieza en x=0 y el contenido, la cabecera y el pie miden como mucho 1280; a 1280 px, no hay desplazamiento horizontal. Rehacer y revisar las capturas de página afectadas.
+- [x] 1.1 Sacar la barra lateral del contenedor y poner `max-w-container` (1280) con el padding del contenedor a cabecera, contenido (con el índice derecho) y pie, en `Base.astro`, `SiteHeader.astro`, `SiteFooter.astro` y `ComponentPage.astro` (design D1). Verificar con un e2e nuevo en `e2e/layout.spec.ts`: a 1920 px, la barra lateral empieza en x=0 y el contenido, la cabecera y el pie miden como mucho 1280; a 1280 px, no hay desplazamiento horizontal. Rehacer y revisar las capturas de página afectadas.
 
 ## 2. Muestras del índice a tamaño real
 
