@@ -3,6 +3,13 @@
 // @ts-nocheck: el registro trae los ejemplos .tsx de la web, que se comprueban con los tipos de la web.
 import { iconNames } from "@jotis-me/icons";
 import * as lib from "@jotis-me/react";
+import { COMPOSITIONS } from "../../../apps/docs/src/visual/compositions";
 import { visualExamples } from "../../../apps/docs/src/visual/registry";
 
-window.Jotis = Object.assign({}, lib, { iconNames, previews: visualExamples });
+// Una vista previa por componente del catálogo: las composiciones de la web (design D7) no son componentes
+const compositions = new Set(COMPOSITIONS.map((c) => c.name));
+const previews = Object.fromEntries(
+	Object.entries(visualExamples).filter(([name]) => !compositions.has(name)),
+);
+
+window.Jotis = Object.assign({}, lib, { iconNames, previews });

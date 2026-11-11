@@ -16,4 +16,4 @@ Entradas nuevas, aparte de la principal, cada una con un componente suelto por r
 
 Sin `title` son decorativos; con `title`, una imagen con ese nombre. La entrada principal no exporta ninguno de estos recursos. Los emojis del Figma no se incluyen: son PNG con el arte de emoji de Apple.
 
-El paquete pasa de 2,98 a 8,99 MB sin comprimir (597 a 2.815 ficheros) y de 1,03 a 2,73 MB comprimido. Lo que cargas en tu app es solo lo que importas.
+El paquete pasa de 2,98 a 9,24 MB sin comprimir (597 a 2.827 ficheros) y de 1,03 a 2,78 MB comprimido. Lo que cargas en tu app es solo lo que importas.

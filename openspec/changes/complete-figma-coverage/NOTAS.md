@@ -649,3 +649,10 @@ Hecho el 11 de noviembre de 2026 leyendo con `use_figma` (solo lectura) cada con
 **Lo que faltaba.** Solo `Textarea` `Size` (`sm`): en 4.2 se dejó fuera porque la spec no lo pedía, pero el requisito «Cobertura del Figma» pide cada valor. Vuelve a su grupo (4.2) y se hace aquí: `size="sm"` con texto de 14 px, pista de 12, relleno de 12 y caja de 110 px; sin la prop, el HTML no cambia (test). Ejemplo, ficha y captura de `Textarea` actualizados.
 
 **Fuera, por decisión del alcance:** las secciones de página (de marketing y el `Section divider`), las pantallas (Log in, Sign up, 404, Email templates), los logos de empresa y de prensa, las páginas de ejemplos y Utility.
+
+## Changesets y comprobaciones (13.2)
+
+- **Changesets.** `figma-coverage-react.md` (`minor` de `@jotis-me/react`: los 27 componentes nuevos y las variantes, retrocompatible) y `figma-coverage-icons.md` repasado: con el set `store` el paquete queda en 9,24 MB sin comprimir, 2.827 ficheros y 2,78 MB comprimido (medido con `bun pm pack`). `tokens` sube con ellos por el grupo `fixed`.
+- **Catálogo:** 121 componentes en 12 grupos (`test/catalog.test.ts`). `check:size` y `check:js` dentro de sus límites.
+- **Artefacto:** `artifact:build` con 121 componentes, 262 ficheros y 539 assets: 802 ficheros (límite 1.008) y 4,51 MB (límite 6). Dos arreglos en `scripts/artifact`: el test del catálogo contaba como componentes las plantillas en objeto (`SidebarCards`, `NavMenu`), y ahora cuenta solo objetos de React, como el de la web; y el de `tsc` llamaba a `node`, que no hay en este equipo, y ahora usa el runtime que lo ejecuta. Además, `Jotis.previews` deja fuera las composiciones de la web (no son componentes del catálogo). `bun test` 21/21 y `test:e2e` 247/247.
+- **E2E de la web** con Chromium, Firefox y WebKit (los de `e2e/cross-browser/` en los tres): 1.257 pasan; fallaron por carga el de `CopyTooltip` (el conocido) y el de Cmd+K de `search.spec.ts`. Repetidos solos, pasan.

@@ -161,7 +161,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 ## 13. Cierre
 
 - [x] 13.1 Recorrer otra vez el inventario del Figma (cada propiedad de variante de cada pieza incluida) contra el catálogo y anotar en `NOTAS.md` dónde se cubre cada valor (requisito «Cobertura del Figma»). Lo que falte vuelve a su grupo.
-- [ ] 13.2 Changeset `minor` de `@jotis-me/react` con los 27 componentes y las variantes, y repaso del de `@jotis-me/icons`. Comprobaciones:
+- [x] 13.2 Changeset `minor` de `@jotis-me/react` con los 27 componentes y las variantes, y repaso del de `@jotis-me/icons`. Comprobaciones:
   - catálogo en 121 y 12 grupos (`test/catalog.test.ts`);
   - `check:size` y `check:js`;
   - el artefacto: `bun run artifact:build` y `bun test` y `test:e2e` en `scripts/artifact`, con los grupos de assets nuevos, el bundle por debajo de 6 MB y menos de 1.008 ficheros;
