@@ -27,3 +27,19 @@
 - `aria-current` de las secciones pasa de `"true"` a `"page"` (lo que pone `HeaderNav`); el test de la cabecera lo sigue. «Saltar al contenido» pasa a `fixed` porque ya no hay un `header` propio que lo contenga. El ejemplo nuevo de `HeaderNav` desplaza los índices de `e2e/header-nav.spec.ts` (+1).
 - El tipado de la plantilla de Astro no ve que los slots son props: `{/* @ts-expect-error */}` con el motivo.
 - `check:js`: sin cambios de límite; `/` y `/components/` siguen dentro.
+
+## 3.2 SidebarNav: pendiente de decisión (no se hace en esta pasada)
+
+`SideNav.astro` no se puede sustituir por `SidebarNav` con una prop opcional, por un requisito que ya existe: la navegación lateral debe funcionar **sin JavaScript** (`e2e/docnav.spec.ts:83`, `javaScriptEnabled: false`; los grupos son `<details>`). `SidebarNav` es una isla hidratada, sus grupos se abren con botones `aria-expanded` y sus filas son de `text-md` semibold (el DocNav del diseño es compacto, de `text-sm`, con filtro y contadores). Montarla con el paquete exige añadirle: un modo de grupos con `<details>` (sin JS), una densidad compacta, y un filtro con su atajo `/` (hoy `search` solo pinta un campo), más el coste de hidratar ~140 enlaces en todas las páginas. Es rediseñar el componente, más que «una prop opcional retrocompatible» (design D5), así que se deja a decisión de quien lo revisa:
+
+1. **Ampliar `SidebarNav`** con `groups="details"`, `density="compact"` y `onSearch`/filtro (trabajo de varias tareas, con capturas y changeset), o
+2. **Excepción documentada:** la navegación lateral sigue siendo HTML del servidor sin JS, y el requisito «Estructura con el paquete» la excluye (la cabecera, el menú móvil y el pie sí usan el paquete).
+
+Hasta que se decida, 3.2 queda sin marcar y el resto del grupo sigue.
+
+## 3.3 Pie con Footer
+
+- `SiteFooter.astro` pinta el `Footer` del paquete (`large-04`: marca y texto a un lado, dos columnas, y la fila inferior con las versiones de los paquetes y «Qué ha cambiado» como enlace legal), sin directiva `client:*`. Sin cambios en el componente.
+- Cambia el aspecto respecto a `Footer.dc.html`: enlaces de `text-md` semibold en color de marca, títulos en `text-primary` y filas más altas, que es el diseño del `Footer` del paquete. Se acepta como la consecuencia de usarlo, tal como promete el pie. Revisado en claro, oscuro y móvil (390 px).
+- Las versiones van como texto en la línea del copyright (`<p>`), con `data-versions` en el `span`; ya no es una `<dl>`.
+- El test de ancho (`layout.spec.ts`) mide el contenedor interno del `Footer`.

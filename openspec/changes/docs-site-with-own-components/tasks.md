@@ -15,7 +15,7 @@ Comandos: `bun run --cwd apps/docs build`, `bun run --cwd apps/docs test`, `bun 
 
 - [x] 3.1 Cabecera con `HeaderNav` (design D5): marca, cinco secciones con `current`, `SiteSearch` y `ThemeMenu`, con «Saltar al contenido» delante. Si falta algo en `HeaderNav`, ampliarlo con una prop opcional y su test de HTML idéntico sin ella. Verificar con los e2e de cabecera, búsqueda (Cmd+K) y tema, y con el test de que la cabecera es un `HeaderNav`.
 - [ ] 3.2 Barra lateral y menú móvil con `SidebarNav` (secciones, filtro con `/`, contadores por grupo y grupo actual abierto), ampliando `SidebarNav` si hace falta. Verificar con los e2e de «Filtrar la navegación», «Grupo del componente actual» y «Menú móvil» sin cambiar lo que comprueban, y con a11y (axe) en una página de componente.
-- [ ] 3.3 Pie con `Footer` (marca, descripción actual, columnas y legal), ampliándolo si hace falta. Verificar con el e2e del pie y las capturas en claro, oscuro y móvil.
+- [x] 3.3 Pie con `Footer` (marca, descripción actual, columnas y legal), ampliándolo si hace falta. Verificar con el e2e del pie y las capturas en claro, oscuro y móvil.
 - [ ] 3.4 Portada con los componentes del paquete (`SectionHeader`, `LinkCard`, `FeaturedIcon`, `Badge`, `Button`, `BackgroundPattern`), con el mismo contenido y orden. Verificar con el test «Cifras reales», el e2e de la portada, la captura revisada y `check:js` de `/` dentro de su límite.
 - [ ] 3.5 Comprobar que ninguna pieza de la estructura queda a mano: un test recorre `SiteHeader`, `SideNav`, `SiteFooter`, `MobileMenu` y la portada y falla si alguno pinta navegación o enlaces fuera de un componente del paquete. Anotar en `NOTAS.md` los huecos de componentes encontrados en el grupo 3 y la changeset de `@jotis-me/react` si hubo cambios.
 

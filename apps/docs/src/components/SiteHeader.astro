@@ -12,6 +12,7 @@ import SiteSearch from "../search/SiteSearch";
 import MobileMenu from "./MobileMenu";
 import SideNav from "./SideNav.astro";
 import ThemeMenu from "./ThemeMenu";
+
 const current = sectionOf(Astro.url.pathname);
 const items = SECTIONS.map((s) => ({ label: s.label, href: s.href, current: current === s.id }));
 ---
