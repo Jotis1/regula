@@ -215,6 +215,17 @@ const usage: Record<string, string> = {
 		{ icon: "trash-01", label: "Eliminar", danger: true, onSelect: eliminar },
 	]}
 />`,
+	FilterMenu: `<FilterMenu
+	fields={[
+		{ value: "estado", label: "Estado" },
+		{ value: "equipo", label: "Equipo", options: [{ value: "diseno", label: "Diseño", supporting: "10 usuarios" }] },
+	]}
+	operators={[{ value: "es", label: "Es" }, { value: "contiene", label: "Contiene" }]}
+	onApply={guardar}
+/>`,
+	FilterPanel: `<Slideout title="Filtros" description="Añade filtros para acotar los resultados." onClose={cerrar}>
+	<FilterPanel fields={campos} operators={operadores} defaultValue={filtros} onApply={aplicar} />
+</Slideout>`,
 	FilterBar: `<FilterBar
 	segments={[
 		{ value: "todo", label: "Todo" },

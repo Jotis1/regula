@@ -62,6 +62,8 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	FeaturedIcon: 340,
 	FileUpload: 1000,
 	FilterBar: 1180,
+	FilterMenu: 120,
+	FilterPanel: 700,
 	Icon: 160,
 	InlineCTA: 2600,
 	LinkCard: 250,

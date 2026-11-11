@@ -59,6 +59,8 @@ import {
 	FeaturedIcon,
 	FileUpload,
 	FilterBar,
+	FilterMenu,
+	FilterPanel,
 	HeaderNav,
 	HelpIcon,
 	Icon,
@@ -613,6 +615,47 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 							],
 						},
 					]}
+				/>
+			</div>
+		),
+	},
+	FilterMenu: {
+		render: () => (
+			<div style={row}>
+				<FilterMenu
+					fields={[{ value: "estado", label: "Estado" }]}
+					operators={[{ value: "es", label: "Es" }]}
+				/>
+				<FilterMenu
+					fields={[{ value: "estado", label: "Estado" }]}
+					operators={[{ value: "es", label: "Es" }]}
+					defaultValue={[
+						{ field: "estado", operator: "es", value: "Activo" },
+						{ field: "estado", operator: "es", value: "Pausado" },
+					]}
+				/>
+			</div>
+		),
+	},
+	FilterPanel: {
+		scale: 0.6,
+		render: () => (
+			<div
+				style={{
+					width: 360,
+					display: "flex",
+					flexDirection: "column",
+					padding: 24,
+					background: "var(--bg-primary_alt)",
+				}}
+			>
+				<FilterPanel
+					fields={[
+						{ value: "estado", label: "Estado" },
+						{ value: "correo", label: "Correo" },
+					]}
+					operators={[{ value: "es", label: "Es" }]}
+					defaultValue={[{ field: "estado", operator: "es", value: "Activo" }]}
 				/>
 			</div>
 		),

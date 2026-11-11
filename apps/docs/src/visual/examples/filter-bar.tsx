@@ -1,7 +1,18 @@
-// Vista previa de FilterBar: la de siempre y los ocho tipos del Figma. Va en su propio fichero: `FilterBar` lleva
+// Vista previa de FilterBar (la de siempre y los ocho tipos del Figma), FilterMenu y FilterPanel. Va en su propio fichero: `FilterBar` lleva
 // `DatePicker`, y en `navigation.tsx` pesaba en las páginas de Tabs y del resto de navegación.
 
-import { Button, DatePicker, FilterBar, type FilterCondition, Input, Select } from "@jotis-me/react";
+import {
+	Button,
+	DatePicker,
+	FilterBar,
+	type FilterCondition,
+	FilterMenu,
+	FilterPanel,
+	type FilterRule,
+	Input,
+	Select,
+	Slideout,
+} from "@jotis-me/react";
 import { useState } from "react";
 
 const hoy = new Date(2027, 0, 8);
@@ -193,6 +204,79 @@ export function FilterBarExample() {
 			<div className="flex flex-col gap-6" style={{ width: 375 }}>
 				<FilterBar type="tabs-search" segments={vistas} defaultSegment="todo" onOpenFilters={nada} />
 				<Avanzada inicial={[{ field: "estado", operator: "es", value: "Activo" }]} />
+			</div>
+		</div>
+	);
+}
+
+const CAMPOS = [
+	{ value: "estado", label: "Estado" },
+	{ value: "correo", label: "Correo" },
+	{
+		value: "equipo",
+		label: "Equipo",
+		options: [
+			{ value: "ingenieria", label: "Ingeniería", supporting: "12 usuarios" },
+			{ value: "diseno", label: "Diseño", supporting: "10 usuarios" },
+			{ value: "producto", label: "Producto", supporting: "6 usuarios" },
+			{ value: "marketing", label: "Marketing", supporting: "8 usuarios" },
+			{ value: "ventas", label: "Ventas", supporting: "12 usuarios" },
+		],
+	},
+];
+const OPERADORES = [
+	{ value: "es", label: "Es" },
+	{ value: "contiene", label: "Contiene" },
+	{ value: "no-contiene", label: "No contiene" },
+];
+const ACTIVOS: FilterRule[] = [
+	{ field: "estado", operator: "es", value: "Activo" },
+	{ field: "correo", operator: "contiene", value: "gmail" },
+	{ field: "equipo", operator: "no-contiene", value: ["diseno", "producto"] },
+];
+
+/** Sin filtros, con tres activos (alineado a la derecha) y desactivado. Cada uno abre su menú. */
+export function FilterMenuExample() {
+	return (
+		<div className="flex flex-wrap items-center gap-4">
+			<FilterMenu fields={CAMPOS} operators={OPERADORES} />
+			<FilterMenu fields={CAMPOS} operators={OPERADORES} defaultValue={ACTIVOS} align="end" />
+			<FilterMenu fields={CAMPOS} operators={OPERADORES} disabled />
+		</div>
+	);
+}
+
+const caja = {
+	position: "relative",
+	height: 640,
+	borderRadius: 12,
+	overflow: "hidden",
+	background: "var(--bg-secondary)",
+} as const;
+
+/** Dentro de un Slideout, vacío y con los filtros activos. */
+export function FilterPanelExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
+			<div style={caja}>
+				<Slideout
+					contained
+					title="Filtros"
+					description="Añade filtros para acotar los resultados."
+					onClose={() => {}}
+				>
+					<FilterPanel fields={CAMPOS} operators={OPERADORES} />
+				</Slideout>
+			</div>
+			<div style={caja}>
+				<Slideout
+					contained
+					title="Filtros"
+					description="Añade filtros para acotar los resultados."
+					onClose={() => {}}
+				>
+					<FilterPanel fields={CAMPOS} operators={OPERADORES} defaultValue={ACTIVOS} />
+				</Slideout>
 			</div>
 		</div>
 	);

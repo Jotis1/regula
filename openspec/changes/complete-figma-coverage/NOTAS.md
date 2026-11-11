@@ -480,3 +480,13 @@ Nodo: `Color picker dropdown` `12424:15898`. En «Formularios» (catálogo 105 �
 - **Estado:** `value`/`defaultValue`, `alpha`/`defaultAlpha` e `isOpen`/`onOpenChange`, controlados o no; el `ColorPicker` se monta al abrir con el color actual. `pickerProps` pasa el resto (muestras, «Añadir», modelo).
 - **Peso:** 141,3 kB (casi todo el `ColorPicker`), límite 147.456. La captura es estática: enseña los disparadores; el panel abierto lo cubre el e2e.
 - **Test de foco:** React Aria devuelve el foco al disparador después del cierre, en otro ciclo; en jsdom hay que esperarlo con `waitFor`.
+
+## FilterMenu y FilterPanel (10.3)
+
+Nodos: `Filters dropdown menu` `12232:366410` y `Filters slideout menu` `12232:375462`. Los dos, en «Datos» (catálogo 106 → 108), páginas interactivas, fichas, ejemplos (`filter-bar.tsx`; el de `FilterPanel` dentro de un `Slideout` `contained`), muestras, fragmentos, límites y capturas.
+
+- **Diseño corregido:** design.md decía «`Dropdown` con casillas»; el Figma es un constructor de filtros (campo, operador y valor por fila) en el que el valor de lista lleva casillas. Se sigue el Figma y se corrige design.md.
+- **Piezas compartidas:** `internal/filter-rules.tsx` (`FilterRows`, `FilterEmpty`, `AddButton`, `FilterActions`, textos `FILTER_LABELS`). Campo y operador son `<select>` nativos (el campo con «Elige un filtro» como marcador, en gris con `:invalid`); el valor, un `<input>` o, si el campo tiene `options`, el `MultiSelect` del paquete tal cual (búsqueda, «Restablecer», «Seleccionar todo» y el resumen «2 elegidos · 16 usuarios», que suma las cifras de los apoyos).
+- **`FilterMenu`:** `DialogTrigger` + `Popover` (`bottom start` o `bottom end` con `align`) de 624 px o el ancho de pantalla menos 32. Borrador que parte de lo aplicado cada vez que se abre; «Aplicar filtros» guarda solo las filas completas y cierra; «Limpiar todo» aplica `[]`; Escape cierra sin aplicar. El botón, con fondo `bg-secondary` y la pastilla con el número si hay filtros, se llama «Filtros 3 filtros activos»: el número visible y el resto en `sr-only` (con `aria-label` axe daba `label-content-name-mismatch`, porque el texto visible «Filtros 3» no estaba en el nombre). 86,2 kB, límite 90.112.
+- **`FilterPanel`:** el contenido del `Slideout` (el título, la descripción y la X son los del `Slideout`): filas en dos líneas, «Añadir filtro» y el pie pegado abajo (`sticky`, `mt-auto`). 86,0 kB, límite 90.112.
+- **Textos:** en `FILTER_LABELS`, reutilizando `filters` y `clearAll` de `defaultStrings` (no se añade nada a `defaultStrings`).

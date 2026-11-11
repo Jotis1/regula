@@ -212,7 +212,7 @@ Las que cambian de forma:
   - `RadarChart`: polígonos sobre ejes radiales;
   - `ChartMarker`: punto con línea y tooltip, que también aceptan `LineChart` y `BarChart` con la prop `marker`.
 - **`ColorPickerDropdown`:** el disparador del Figma (muestra, botón, enlace, campo hex o select) con un popover de React Aria que contiene `ColorPicker`.
-- **`FilterMenu`:** `Dropdown` con casillas y pie de limpiar y aplicar. `FilterPanel` es el contenido para `Slideout`, con las mismas secciones.
+- **`FilterMenu`:** botón «Filtros» con el número de filtros activos y un popover de React Aria con una fila por filtro (campo, operador y valor; el valor de lista es un `MultiSelect` con casillas), «Añadir filtro», «Limpiar todo» y «Aplicar filtros», como el Figma. `FilterPanel` es el contenido para `Slideout`, con las mismas filas en dos líneas y el pie.
 - **`BackgroundOverlay`:** capa `absolute inset-0` con los tres tipos y desenfoque. `Modal` y `Slideout` siguen con la suya; el componente sirve para imágenes y composiciones.
 - **Mockups:** SVG del marco tomados del Figma, con los colores pasados a tokens donde no sean del dispositivo, y un hueco con `children` o `src` + `alt`.
   - `ScreenMockup` tiene `variant` (`3-2`, `modern`) y `size`.

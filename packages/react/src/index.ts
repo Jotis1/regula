@@ -199,6 +199,14 @@ export {
 	type FilterCondition,
 } from "./components/FilterBar.js";
 export {
+	type FilterField,
+	type FilterLabels,
+	FilterMenu,
+	type FilterMenuProps,
+	type FilterRule,
+} from "./components/FilterMenu.js";
+export { FilterPanel, type FilterPanelProps } from "./components/FilterPanel.js";
+export {
 	HeaderNav,
 	type HeaderNavItem,
 	type HeaderNavLabels,

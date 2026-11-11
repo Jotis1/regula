@@ -43,7 +43,7 @@ import {
 	SkeletonExample,
 	SpinnerExample,
 } from "./examples/feedback";
-import { FilterBarExample } from "./examples/filter-bar";
+import { FilterBarExample, FilterMenuExample, FilterPanelExample } from "./examples/filter-bar";
 import {
 	CheckboxExample,
 	DatePickerExample,
@@ -178,6 +178,8 @@ export const visualExamples: Record<string, ComponentType> = {
 	ContextMenu: ContextMenuExample,
 	HeaderNav: HeaderNavExample,
 	FilterBar: FilterBarExample,
+	FilterMenu: FilterMenuExample,
+	FilterPanel: FilterPanelExample,
 	CommandMenu: CommandMenuExample,
 	TreeView: TreeViewExample,
 	Modal: ModalExample,

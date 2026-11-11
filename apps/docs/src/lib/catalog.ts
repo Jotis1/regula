@@ -109,7 +109,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "datos",
 		label: "Datos",
 		section: "components",
-		components: names("Table MetricCard ActivityFeed CalendarView"),
+		components: names("Table MetricCard ActivityFeed CalendarView FilterMenu FilterPanel"),
 	},
 	{
 		id: "graficas",
