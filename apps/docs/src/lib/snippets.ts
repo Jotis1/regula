@@ -235,6 +235,23 @@ const usage: Record<string, string> = {
 	author={{ name: "Ana Martín", date: "20 ene 2027" }}
 />`,
 	SubscribeCard: `<SubscribeCard description="Una vez a la semana, sin spam." onSubscribe={suscribir} />`,
+	PricingCard: `<PricingCard
+	type="icon"
+	name="Básico"
+	price="10 €"
+	period="al mes"
+	description="Lo justo para ordenar tus cuentas."
+	features={["Informes y gráficas", "Hasta 10 cuentas", "Ayuda por chat"]}
+	actions={<Button size="lg">Empezar</Button>}
+/>`,
+	JobPostCard: `<JobPostCard
+	href="/empleo/disenador"
+	title="Diseñador de producto"
+	department="Diseño"
+	description="Buscamos a alguien para el equipo de diseño."
+	location="En remoto"
+	employment="Jornada completa"
+/>`,
 	Footer: `<Footer
 	type="large-01"
 	brand={<a href="/">Regula</a>}

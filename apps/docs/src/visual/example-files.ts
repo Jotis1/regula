@@ -59,6 +59,8 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	Footer: "marketing",
 	BlogPostCard: "marketing",
 	SubscribeCard: "marketing",
+	PricingCard: "marketing",
+	JobPostCard: "marketing",
 	FilterBar: "filter-bar",
 	FilterMenu: "filter-bar",
 	FilterPanel: "filter-bar",

@@ -241,6 +241,7 @@ export {
 	type InputProps,
 	type InputTrailingButton,
 } from "./components/Input.js";
+export { JobPostCard, type JobPostCardProps } from "./components/JobPostCard.js";
 export { Kbd, type KbdProps, type KbdVariant } from "./components/Kbd.js";
 export { LaptopMockup, type LaptopMockupProps } from "./components/LaptopMockup.js";
 export { LineChart, type LineChartProps } from "./components/LineChart.js";
@@ -297,6 +298,7 @@ export {
 } from "./components/PaginationDots.js";
 export { PhoneMockup, type PhoneMockupProps } from "./components/PhoneMockup.js";
 export { PieChart, type PieChartProps, type PieChartSlice } from "./components/PieChart.js";
+export { PricingCard, type PricingCardProps, type PricingCardType } from "./components/PricingCard.js";
 export { ProgressBar, type ProgressBarProps } from "./components/ProgressBar.js";
 export {
 	ProgressCircle,

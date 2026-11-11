@@ -81,7 +81,9 @@ import {
 import {
 	BlogPostCardExample,
 	FooterExample,
+	JobPostCardExample,
 	MarketingNavExample,
+	PricingCardExample,
 	SubscribeCardExample,
 } from "./examples/marketing";
 import { MessageExample } from "./examples/message";
@@ -194,6 +196,8 @@ export const visualExamples: Record<string, ComponentType> = {
 	Footer: FooterExample,
 	BlogPostCard: BlogPostCardExample,
 	SubscribeCard: SubscribeCardExample,
+	PricingCard: PricingCardExample,
+	JobPostCard: JobPostCardExample,
 	FilterMenu: FilterMenuExample,
 	FilterPanel: FilterPanelExample,
 	CommandMenu: CommandMenuExample,

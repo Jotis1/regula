@@ -147,7 +147,8 @@ describe("catálogo de secciones y fundamentos", () => {
 		expect(neighborsOf("AppIcon").next).toBe("MarketingNav");
 		expect(neighborsOf("MarketingNav").next).toBe("Footer");
 		expect(neighborsOf("Footer").next).toBe("BlogPostCard");
-		expect(neighborsOf("SubscribeCard").next).toBeUndefined();
+		expect(neighborsOf("SubscribeCard").next).toBe("PricingCard");
+		expect(neighborsOf("JobPostCard").next).toBeUndefined();
 		expect(neighborsOf("StreamAlert")).toEqual({ prev: undefined, next: "StreamScene", related: [] });
 		expect(neighborsOf("ChannelBanner").next).toBeUndefined();
 		expect(neighborsOf("Ejemplo")).toEqual({ related: [] });

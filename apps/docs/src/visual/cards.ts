@@ -66,6 +66,8 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	Footer: 3200,
 	BlogPostCard: 2520,
 	SubscribeCard: 470,
+	PricingCard: 4000,
+	JobPostCard: 1160,
 	EmptyState: 1680,
 	FeaturedIcon: 340,
 	FileUpload: 1000,

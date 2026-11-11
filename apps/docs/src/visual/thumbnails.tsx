@@ -70,6 +70,7 @@ import {
 	type IconName,
 	InlineCTA,
 	Input,
+	JobPostCard,
 	Kbd,
 	LaptopMockup,
 	LineChart,
@@ -89,6 +90,7 @@ import {
 	PaginationDots,
 	PhoneMockup,
 	PieChart,
+	PricingCard,
 	ProgressBar,
 	ProgressCircle,
 	ProgressSteps,
@@ -651,6 +653,37 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		render: () => (
 			<div style={{ width: 340 }}>
 				<SubscribeCard description="Una vez a la semana, sin spam." />
+			</div>
+		),
+	},
+	PricingCard: {
+		scale: 0.4,
+		render: () => (
+			<div style={{ width: 360 }}>
+				<PricingCard
+					name="Básico"
+					price="10 €"
+					period="al mes"
+					features={["Informes", "Hasta 10 cuentas", "Ayuda por chat"]}
+					actions={<Button size="lg">Empezar</Button>}
+				/>
+			</div>
+		),
+	},
+	JobPostCard: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 480 }}>
+				<JobPostCard
+					href="#"
+					type="card-01"
+					category="Diseño"
+					title="Diseñador de producto"
+					department="Diseño"
+					description="Buscamos a alguien para el equipo de diseño."
+					location="En remoto"
+					employment="Jornada completa"
+				/>
 			</div>
 		),
 	},

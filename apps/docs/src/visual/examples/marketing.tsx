@@ -10,6 +10,7 @@ import {
 	IconPlayCircle,
 	IconWallet02,
 } from "@jotis-me/icons";
+import { FlagSpainCircle } from "@jotis-me/icons/flags";
 import {
 	SocialFacebookLogoGray,
 	SocialGithubLogoGray,
@@ -29,11 +30,14 @@ import {
 	type FooterColumn,
 	type FooterType,
 	Input,
+	JobPostCard,
 	MarketingNav,
 	type MarketingNavItem,
 	type MarketingNavMenu,
 	type MarketingNavType,
 	NavMenu,
+	PricingCard,
+	type PricingCardType,
 	RatingBadge,
 	ScaledPreview,
 	SubscribeCard,
@@ -595,6 +599,107 @@ export function SubscribeCardExample() {
 				description="Sin spam. Solo novedades, consejos y entrevistas, una vez a la semana."
 				privacy={privacidad}
 			/>
+		</div>
+	);
+}
+
+const PLAN = {
+	name: "Básico",
+	price: "10 €",
+	period: "al mes",
+	description: "Lo justo para ordenar tus cuentas.",
+	badge: "Popular",
+	features: [
+		"Todas las funciones básicas",
+		"Informes y gráficas",
+		"Hasta 10 cuentas",
+		"20 GB de documentos",
+		"Ayuda por chat y correo",
+	],
+	featuresTitle: "Funciones",
+	featuresDescription: "Todo lo del plan gratis, y además:",
+	banner: "El plan más elegido",
+	callout: "¡El más elegido!",
+};
+const TIPOS_PLAN: PricingCardType[] = [
+	"icon",
+	"call-out",
+	"icon-offset",
+	"badge",
+	"badge-group",
+	"dual-action",
+	"banner",
+	"primary-simple",
+	"primary-icon",
+];
+
+/** Los diez tipos; `dual-check-items` es el ancho, al final. */
+export function PricingCardExample() {
+	const botones = (dos: boolean) => (
+		<>
+			<Button size="lg">Empezar</Button>
+			{dos ? (
+				<Button size="lg" hierarchy="secondary">
+					Hablar con ventas
+				</Button>
+			) : null}
+		</>
+	);
+	return (
+		<div className="flex flex-col gap-10 pt-6">
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] items-start gap-x-8 gap-y-12">
+				{TIPOS_PLAN.map((type) => (
+					<figure key={type} className="m-0 flex flex-col gap-3">
+						<figcaption className="text-sm font-medium text-tertiary">{type}</figcaption>
+						<PricingCard
+							type={type}
+							{...PLAN}
+							actions={botones(type === "badge" || type === "dual-action")}
+						/>
+					</figure>
+				))}
+			</div>
+			<figure className="m-0 flex flex-col gap-3">
+				<figcaption className="text-sm font-medium text-tertiary">dual-check-items</figcaption>
+				<PricingCard
+					type="dual-check-items"
+					{...PLAN}
+					features={[
+						...PLAN.features,
+						"Exportar a Excel",
+						"Reglas automáticas",
+						"Copias de seguridad",
+					]}
+					actions={botones(false)}
+				/>
+			</figure>
+		</div>
+	);
+}
+
+const OFERTA = {
+	href: "#",
+	title: "Diseñador de producto",
+	description: "Buscamos a alguien con experiencia en producto para el equipo de diseño.",
+	department: "Diseño",
+	category: "Diseño",
+	location: "Madrid, España",
+	flag: <FlagSpainCircle size={16} />,
+	employment: "Jornada completa",
+	salary: "40.000-50.000 €",
+};
+
+/** Los tres tipos y, debajo, en un contenedor de móvil. */
+export function JobPostCardExample() {
+	return (
+		<div className="flex flex-col gap-8">
+			<JobPostCard {...OFERTA} location="En remoto" />
+			<JobPostCard {...OFERTA} type="card-01" location="En remoto" />
+			<JobPostCard {...OFERTA} type="card-02" />
+			<div className="flex w-[343px] max-w-full flex-col gap-6">
+				<JobPostCard {...OFERTA} type="card-01" location="En remoto" />
+				<JobPostCard {...OFERTA} type="card-02" location="Madrid" />
+			</div>
 		</div>
 	);
 }
