@@ -660,7 +660,7 @@ function TypedTable<R>({
 						{selection ? (
 							<th
 								scope="col"
-								className="h-11 w-12 border-y border-secondary bg-secondary py-3 pr-0 pl-6 text-left"
+								className="relative h-11 w-12 border-y border-secondary bg-secondary py-3 pr-0 pl-6 text-left"
 							>
 								{selection === "checkbox" ? (
 									<Checkbox
@@ -742,8 +742,14 @@ function TypedTable<R>({
 									on && "bg-primary_hover",
 								)}
 							>
+								{/* `relative` en la celda: las casillas nativas van ocultas en posición absoluta y, sin él, se salen de la región que se desplaza y ensanchan la página */}
 								{selection ? (
-									<td className={cx("w-12 border-b border-secondary py-0 pr-0 pl-6", pad)}>
+									<td
+										className={cx(
+											"relative w-12 border-b border-secondary py-0 pr-0 pl-6",
+											pad,
+										)}
+									>
 										{selection === "checkbox" ? (
 											<Checkbox
 												aria-label={t.selectRow(i)}
