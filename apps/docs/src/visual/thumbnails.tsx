@@ -4,6 +4,12 @@
 // abren van en línea (`defaultOpen`, `contained`, `inline`): un portal no se pinta en el servidor.
 
 import {
+	SocialAppleLogoGray,
+	SocialFacebookLogo,
+	SocialFacebookLogoGray,
+	SocialGoogleLogo,
+} from "@jotis-me/icons/logos";
+import {
 	ActivityFeed,
 	Alert,
 	AppIcon,
@@ -85,6 +91,8 @@ import {
 	Skeleton,
 	Slideout,
 	Slider,
+	SocialButton,
+	SocialButtonGroup,
 	Spinner,
 	StreamAlert,
 	StreamCountdown,
@@ -199,6 +207,25 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	CloseButton: { render: () => <CloseButton /> },
+	SocialButton: {
+		render: () => (
+			<div style={row}>
+				<SocialButton provider="google" theme="color" logo={<SocialGoogleLogo />} />
+				<SocialButton provider="facebook" iconOnly logo={<SocialFacebookLogoGray />} />
+			</div>
+		),
+	},
+	SocialButtonGroup: {
+		render: () => (
+			<div style={{ width: 240 }}>
+				<SocialButtonGroup layout="row">
+					<SocialButton provider="google" theme="color" iconOnly logo={<SocialGoogleLogo />} />
+					<SocialButton provider="facebook" theme="color" iconOnly logo={<SocialFacebookLogo />} />
+					<SocialButton provider="apple" theme="color" iconOnly logo={<SocialAppleLogoGray />} />
+				</SocialButtonGroup>
+			</div>
+		),
+	},
 	ButtonUtility: {
 		render: () => (
 			<div className="flex items-center gap-1" style={{ paddingTop: 48 }}>

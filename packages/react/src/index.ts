@@ -305,6 +305,14 @@ export {
 	Slider,
 	type SliderProps,
 } from "./components/Slider.js";
+export {
+	SocialButton,
+	type SocialButtonProps,
+	type SocialButtonSize,
+	type SocialButtonTheme,
+	type SocialProvider,
+} from "./components/SocialButton.js";
+export { SocialButtonGroup, type SocialButtonGroupProps } from "./components/SocialButtonGroup.js";
 export { Spinner, type SpinnerProps, type SpinnerSize, type SpinnerVariant } from "./components/Spinner.js";
 export { StreamAlert, type StreamAlertProps } from "./components/StreamAlert.js";
 export {

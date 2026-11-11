@@ -97,6 +97,7 @@ import {
 } from "./examples/overlays";
 import { BreadcrumbsExample, PaginationExample } from "./examples/paging";
 import { SidebarNavExample } from "./examples/sidebar";
+import { SocialButtonExample, SocialButtonGroupExample } from "./examples/social";
 import {
 	CamFrameExample,
 	ChannelBannerExample,
@@ -136,6 +137,8 @@ export const visualExamples: Record<string, ComponentType> = {
 	Button: ButtonExample,
 	ButtonGroup: ButtonGroupExample,
 	CloseButton: CloseButtonExample,
+	SocialButton: SocialButtonExample,
+	SocialButtonGroup: SocialButtonGroupExample,
 	ButtonUtility: ButtonUtilityExample,
 	Icon: IconExample,
 	Input: InputExample,

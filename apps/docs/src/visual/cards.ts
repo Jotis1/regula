@@ -42,6 +42,8 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	Checkbox: 170,
 	CloseButton: 160,
 	ButtonUtility: 170,
+	SocialButton: 420,
+	SocialButtonGroup: 480,
 	CodeSnippet: 690,
 	ColorPicker: 2800,
 	CommandMenu: 520,

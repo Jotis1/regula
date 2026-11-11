@@ -24,6 +24,8 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	ButtonGroup: "actions",
 	CloseButton: "actions",
 	ButtonUtility: "actions",
+	SocialButton: "social",
+	SocialButtonGroup: "social",
 	Icon: "actions",
 	Input: "forms",
 	Select: "forms",

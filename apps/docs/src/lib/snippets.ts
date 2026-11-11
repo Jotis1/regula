@@ -13,6 +13,11 @@ const usage: Record<string, string> = {
 		{ value: "24h", label: "24 horas", icon: "clock" },
 	]}
 />`,
+	SocialButton: `<SocialButton provider="google" theme="gray" logo={<SocialGoogleLogoGray />} />`,
+	SocialButtonGroup: `<SocialButtonGroup label="Entrar con">
+	<SocialButton provider="google" theme="color" logo={<SocialGoogleLogo />} />
+	<SocialButton provider="apple" theme="color" logo={<SocialAppleLogoGray />} />
+</SocialButtonGroup>`,
 	CloseButton: `<CloseButton label="Cerrar aviso" />`,
 	ButtonUtility: `<ButtonUtility icon="copy-01" label="Copiar enlace" onClick={copiar} />`,
 	Icon: `<Icon name="calendar" size={20} />
