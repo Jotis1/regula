@@ -1,6 +1,8 @@
 // Tarjeta de cada ejemplo del registro: alto y si va siempre en oscuro. Módulo sin React para que lo lean también
 // el generador del artefacto (scripts/artifact) y los scripts de captura.
 
+import { COMPOSITIONS } from "./compositions";
+
 /** Ancho de diseño de los ejemplos: el de las capturas aprobadas y el que escala la vista previa de las cards del índice. */
 export const VIEWPORT_WIDTH = 800;
 
@@ -130,6 +132,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	TreeView: 860,
 	VideoPlayer: 1370,
 	Carousel: 700,
+	...Object.fromEntries(COMPOSITIONS.map((c) => [c.name, c.height])),
 };
 
 /**

@@ -36,7 +36,7 @@ La web SHALL mostrar los 1.172 iconos del set completo, todos los logos de terce
 ## ADDED Requirements
 
 ### Requirement: Composiciones de ejemplo
-La web SHALL montar cada tipo del Figma de `Modal` (los 49), de `Slide out menu` (los 23) y el `Color picker modal` como composición de ejemplo hecha solo con componentes de Regula, en una página de composiciones de su componente, con su código copiable y su captura aprobada. Estas composiciones no se exportan del paquete.
+La web SHALL montar cada tipo del Figma de `Modal` (los 51), de `Slide out menu` (los 23) y el `Color picker modal` como composición de ejemplo hecha solo con componentes de Regula, en una página de composiciones de su componente, con su código copiable y su captura aprobada. Estas composiciones no se exportan del paquete.
 
 #### Scenario: Modal de invitar usuarios
 - **WHEN** el usuario abre la composición «Invitar usuarios» de la página de composiciones de Modal

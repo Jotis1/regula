@@ -1,6 +1,7 @@
 // Ejemplos para la paridad visual: cada uno reproduce la vista previa de la guía de su componente
 // (reference/components/<Nombre>/preview.html) con los componentes de @jotis-me/react.
 import type { ComponentType } from "react";
+import { COMPOSITION_FILES, COMPOSITIONS } from "./compositions";
 import {
 	ButtonExample,
 	ButtonGroupExample,
@@ -99,6 +100,7 @@ import {
 	TransparencyGridExample,
 	VideoPlayerExample,
 } from "./examples/mockups";
+import * as modalCompositions from "./examples/modal-compositions";
 import {
 	CommandMenuExample,
 	ContextMenuExample,
@@ -138,6 +140,11 @@ import {
 	StreamStatusExample,
 } from "./examples/stream";
 import { TableExample } from "./examples/table";
+
+// Las composiciones (design D7): un módulo por componente, en el registro con su nombre
+const compositionModules: Record<string, Record<string, unknown>> = {
+	"modal-compositions": modalCompositions,
+};
 
 export const visualExamples: Record<string, ComponentType> = {
 	AppIcon: AppIconExample,
@@ -261,6 +268,12 @@ export const visualExamples: Record<string, ComponentType> = {
 	StreamScene: StreamSceneExample,
 	ChannelPanel: ChannelPanelExample,
 	ChannelBanner: ChannelBannerExample,
+	...Object.fromEntries(
+		COMPOSITIONS.map((c) => [
+			c.name,
+			compositionModules[COMPOSITION_FILES[c.of] as string]?.[`${c.name}Example`] as ComponentType,
+		]),
+	),
 };
 
 export { CARD_HEIGHTS, DARK_PREVIEWS, slugOf } from "./cards";

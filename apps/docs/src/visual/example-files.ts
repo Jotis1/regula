@@ -1,3 +1,5 @@
+import { COMPOSITION_FILES, COMPOSITIONS } from "./compositions";
+
 // Fichero de src/visual/examples/ que exporta `<Nombre>Example` para cada ejemplo del registro (design D11). La isla
 // VisualExample carga solo ese fichero; un test lo compara con registry.ts.
 export const EXAMPLE_FILES: Record<string, string> = {
@@ -122,4 +124,6 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	StreamScene: "stream",
 	ChannelPanel: "stream",
 	ChannelBanner: "stream",
+	// Las composiciones, en el fichero de su componente
+	...Object.fromEntries(COMPOSITIONS.map((c) => [c.name, COMPOSITION_FILES[c.of] as string])),
 };
