@@ -375,3 +375,18 @@ Nodos: `Metric item` `1560:266217`, `Page header` `1239:122640` y `Section heade
   - **Spec corregida:** el escenario «Cabecera con pestañas» decía `Tabs` de tipo subrayado; el Figma pinta un segmentado (`button-border`). Se construye como el Figma.
   - **Diferencias:** en móvil el Figma cambia las pestañas por un desplegable; aquí se desplazan en horizontal (las `Tabs` horizontales no tienen desplegable). La barra de pestañas del Figma ocupa todo el ancho; `button-border` mide lo que sus pestañas.
 - **Ejemplos y capturas:** `MetricCard` con los tipos de icono y de gráfica, insignia y pies (alto 190 → 980); `PageHeader` con avatar, banda, banda con avatar, centrado y 375 px (200 → 1.900); `SectionHeader` con búsqueda, grupo, pestañas y 375 px (200 → 980). Revisadas en claro y oscuro.
+
+## Table (7.4)
+
+Nodos: `Table` `1227:110587` (las tablas de ejemplo), `Table cell` `1222:107305`, `Table header cell` `1221:107933` y la acción inicial `9400:570197`. Sin las props nuevas, el HTML es el de antes (`ClassicTable`, fixture `table-before.json`).
+
+- **Tipos de celda:** `column.type` con catorce plantillas; los «quince del Figma» cuentan la tendencia positiva y la negativa por separado, aquí es `trend` con `direction`. El valor de `row[key]` toma la forma del tipo (`TableCellAvatar`, `TableCellFile`…, todos exportados). `select` es un `<select>` nativo con el punto de la opción elegida (no `Select`: React Aria en cada tabla), y `menu` es el botón de tres puntos o el nodo que se le pase (un `Dropdown`). En la tabla tipada las celdas no parten líneas (`whitespace-nowrap`): la tabla se desplaza en horizontal.
+- **Orden:** botón en la cabecera, `aria-sort` (`none` en las ordenables sin orden, nada en el resto) y flecha. La tabla ordena las filas ella misma (`localeCompare` en castellano con números) con `sortValue` para valores compuestos; `sort`/`onSortChange` para guardarlo fuera (escenario «Ordenar»).
+- **Ayuda:** `help` pinta `HelpIcon` («Ayuda: …»).
+- **Selección:** `Checkbox` (cabecera con todas las visibles, a medias con algunas: escenario «Seleccionar filas»), `Radio` (un nombre de grupo por tabla) o `Toggle` (nombre en `sr-only`), sobre las claves `row.id` o el índice.
+- **`striped`:** filas pares en `bg-secondary`.
+- **`"use client"`:** la tabla tipada tiene estado (orden y selección). La de siempre se sigue pintando igual en servidor.
+- **Peso:** 27 → 55,5 kB (`HelpIcon` con su tooltip, `Checkbox`, `Toggle`, `Avatar`, `AvatarGroup`, `ProgressBar`, `Badge`). Límite a 62.976. Iconos de flecha del set completo (`IconArrowUp`, `IconArrowDown`), no del núcleo.
+- **`check:js`:** la página de Tabs (que carga todo en el playground) llega a 350,3: patrón `/components/*/` a 360. Sigue pendiente el playground por página.
+- **Diferencias con el Figma:** las barras de filtros y búsqueda de las tablas del Figma son `FilterBar` (7.5) y no parte de `Table`; el estado «hover/selected» de cada celda es el hover de la fila.
+- **Ejemplo y capturas:** `examples/table.tsx` con la de siempre y las cuatro del Figma: miembros del equipo (avatar, insignia, ayuda, insignias, iconos de acción y casillas), empresas (filas alternas, grupo de avatares, progreso ordenable, estrellas y menú), ventas (radio, tendencia y botones de texto) y archivos (interruptor e iconos de tipo). Alto 420 → 2.450. Revisadas en claro y oscuro.

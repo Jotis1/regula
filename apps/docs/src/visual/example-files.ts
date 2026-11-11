@@ -58,7 +58,7 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	Notification: "overlays",
 	Banner: "overlays",
 	EmptyState: "overlays",
-	Table: "data",
+	Table: "table",
 	MetricCard: "data",
 	ActivityFeed: "data",
 	Message: "message",

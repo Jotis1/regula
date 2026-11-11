@@ -90,7 +90,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	StreamGoal: 330,
 	StreamScene: 620,
 	StreamStatus: 200,
-	Table: 420,
+	Table: 2450,
 	Tabs: 400,
 	Tag: 152,
 	Kbd: 96,

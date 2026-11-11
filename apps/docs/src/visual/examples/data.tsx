@@ -1,49 +1,7 @@
 // Puertos de las vistas previas de datos de la guía (reference/components/*/preview.html).
 
 import { FileDocumentPdf } from "@jotis-me/icons/files";
-import { ActivityFeed, Badge, Button, CodeSnippet, MetricCard, Pagination, Table } from "@jotis-me/react";
-
-type Movimiento = { c: string; f: string; ok: boolean; i: string };
-
-export function TableExample() {
-	return (
-		<Table<Movimiento>
-			title="Movimientos"
-			count="240"
-			description="Octubre de 2026."
-			actions={
-				<Button hierarchy="secondary" iconLeading="download-01" size="sm">
-					Exportar
-				</Button>
-			}
-			columns={[
-				{ key: "c", label: "Concepto", primary: true },
-				{ key: "f", label: "Fecha" },
-				{
-					key: "e",
-					label: "Estado",
-					render: (r) => (
-						<Badge color={r.ok ? "success" : "warning"} dot size="sm">
-							{r.ok ? "Pagado" : "Pendiente"}
-						</Badge>
-					),
-				},
-				{ key: "i", label: "Importe", align: "right" },
-			]}
-			rows={[
-				{ c: "Alquiler", f: "01 oct", ok: true, i: "650,00 €" },
-				{ c: "Electricidad", f: "05 oct", ok: true, i: "48,20 €" },
-				{ c: "Seguro del coche", f: "15 oct", ok: false, i: "210,00 €" },
-				{ c: "Gimnasio", f: "20 oct", ok: false, i: "35,00 €" },
-			]}
-			footer={
-				<div style={{ padding: "0 24px 16px" }}>
-					<Pagination total={24} />
-				</div>
-			}
-		/>
-	);
-}
+import { ActivityFeed, Button, CodeSnippet, MetricCard } from "@jotis-me/react";
 
 export function MetricCardExample() {
 	return (

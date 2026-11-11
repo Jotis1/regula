@@ -12,7 +12,7 @@ import { AppIconExample } from "./examples/brand";
 import { CalendarViewExample } from "./examples/calendar";
 import { BarChartExample, ChartLegendExample, LineChartExample, PieChartExample } from "./examples/charts";
 import { ColorPickerExample } from "./examples/color";
-import { ActivityFeedExample, CodeSnippetExample, MetricCardExample, TableExample } from "./examples/data";
+import { ActivityFeedExample, CodeSnippetExample, MetricCardExample } from "./examples/data";
 import {
 	AvatarExample,
 	AvatarGroupExample,
@@ -106,6 +106,7 @@ import {
 	StreamSceneExample,
 	StreamStatusExample,
 } from "./examples/stream";
+import { TableExample } from "./examples/table";
 
 export const visualExamples: Record<string, ComponentType> = {
 	AppIcon: AppIconExample,

@@ -294,7 +294,27 @@ export {
 	type StreamStatusProps,
 	type StreamStatusValue,
 } from "./components/StreamStatus.js";
-export { Table, type TableColumn, type TableProps } from "./components/Table.js";
+export {
+	Table,
+	type TableCellActionIcons,
+	type TableCellActions,
+	type TableCellAvatar,
+	type TableCellAvatarGroup,
+	type TableCellBadge,
+	type TableCellBadges,
+	type TableCellFile,
+	type TableCellMenu,
+	type TableCellPayment,
+	type TableCellSelect,
+	type TableCellText,
+	type TableCellTrend,
+	type TableCellType,
+	type TableColumn,
+	type TableLabels,
+	type TableProps,
+	type TableSort,
+	type TableSortDirection,
+} from "./components/Table.js";
 export {
 	type TabItem,
 	Tabs,
