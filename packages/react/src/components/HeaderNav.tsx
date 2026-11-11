@@ -8,7 +8,7 @@ import { Button } from "./Button.js";
 import { Icon, type IconName, iconSlot } from "./Icon.js";
 import { Slideout } from "./Slideout.js";
 
-export type HeaderNavType = "simple" | "dual-tier" | "tabs" | "centered";
+export type HeaderNavType = "simple" | "dual-tier" | "tabs" | "centered" | "underline";
 
 export interface HeaderNavItem {
 	label: ReactNode;
@@ -45,7 +45,8 @@ export interface HeaderNavMobile {
 export interface HeaderNavProps {
 	/**
 	 * `simple` (una fila) · `dual-tier` (una segunda fila con las subsecciones y el buscador) · `tabs` (la segunda fila,
-	 * como pestañas) · `centered` (la navegación al centro y la segunda fila centrada).
+	 * como pestañas) · `centered` (la navegación al centro y la segunda fila centrada) · `underline` (una fila, con la
+	 * sección actual subrayada en vez de resaltada, como la cabecera de una web de documentación).
 	 * @default "simple"
 	 */
 	type?: HeaderNavType;
@@ -61,6 +62,11 @@ export interface HeaderNavProps {
 	account?: ReactNode;
 	/** El menú móvil (con la cabecera por debajo de 1024px de ancho): enlaces de pie y su última pieza. */
 	mobile?: HeaderNavMobile;
+	/**
+	 * Lo de la derecha de la fila móvil. Si se da, sustituye al botón de menú y al panel integrados: el menú móvil es
+	 * entonces el de quien usa el componente (por ejemplo, una web con su propia navegación a pantalla completa).
+	 */
+	mobileBar?: ReactNode;
 	labels?: Partial<HeaderNavLabels>;
 	className?: string;
 }
@@ -70,6 +76,8 @@ const BORDER = "shadow-[inset_0_-1px_0_var(--border-secondary)]";
 
 const PILL =
 	"inline-flex items-center gap-2 rounded-md px-3 py-2 font-semibold text-secondary no-underline transition-colors duration-100 hover:bg-primary_hover hover:text-secondary_hover focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current=page]:bg-primary_hover aria-[current=page]:text-secondary_hover";
+const LINE =
+	"inline-flex h-16 items-center gap-2 px-0.5 font-semibold text-tertiary no-underline transition-colors duration-100 hover:text-primary focus-visible:rounded-md focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current=page]:text-primary aria-[current=page]:shadow-[inset_0_-2px_0_var(--fg-brand-primary_alt)]";
 const TAB =
 	"inline-flex items-center gap-2 px-1 pt-3 pb-3 font-semibold text-quaternary no-underline transition-colors duration-100 hover:text-secondary focus-visible:rounded-sm focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current=page]:text-brand-secondary aria-[current=page]:shadow-[inset_0_-2px_0_var(--fg-brand-primary_alt)] aria-[current=page]:focus-visible:shadow-[inset_0_-2px_0_var(--fg-brand-primary_alt),var(--focus-ring-shadow)]";
 
@@ -188,6 +196,7 @@ export function HeaderNav({
 	actions,
 	account,
 	mobile,
+	mobileBar,
 	labels,
 	className,
 }: HeaderNavProps) {
@@ -199,7 +208,8 @@ export function HeaderNav({
 	const [menuOpen, setMenuOpen] = useState(false);
 	const centered = type === "centered";
 	const sub = items.find((item) => item.current && item.children?.length)?.children;
-	const second = type !== "simple" && sub ? sub : undefined;
+	const second = type !== "simple" && type !== "underline" && sub ? sub : undefined;
+	const underline = type === "underline";
 	const close = () => setMenuOpen(false);
 
 	const right = (
@@ -225,7 +235,8 @@ export function HeaderNav({
 						<NavLinks
 							items={items}
 							label={l.nav}
-							linkClass={cx(PILL, "text-md")}
+							linkClass={underline ? cx(LINE, "text-sm") : cx(PILL, "text-md")}
+							gap={underline ? "gap-6" : undefined}
 							className={centered ? "" : "flex-1"}
 						/>
 						{right}
@@ -261,55 +272,66 @@ export function HeaderNav({
 
 			{/* Móvil */}
 			<div className="@5xl:hidden">
-				<div className="flex h-16 items-center justify-between gap-4 px-4">
+				<div
+					className={cx(
+						"flex items-center justify-between gap-4",
+						underline ? "h-14 pr-1.5 pl-4" : "h-16 px-4",
+					)}
+				>
 					<div className="flex min-w-0 items-center">{brand}</div>
-					<Button
-						hierarchy="tertiary"
-						iconOnly="menu-01"
-						label={l.openMenu}
-						aria-expanded={menuOpen}
-						onClick={() => setMenuOpen(true)}
-					/>
+					{mobileBar ? (
+						<div className="flex items-center gap-1">{mobileBar}</div>
+					) : (
+						<Button
+							hierarchy="tertiary"
+							iconOnly="menu-01"
+							label={l.openMenu}
+							aria-expanded={menuOpen}
+							onClick={() => setMenuOpen(true)}
+						/>
+					)}
 				</div>
-				<Slideout open={menuOpen} side="left" width={296} title={brand} onClose={close}>
-					{search ? <div>{search}</div> : null}
-					<nav aria-label={l.nav}>
-						<ul className="m-0 flex list-none flex-col gap-0.5 p-0">
-							{items.map((item, i) => (
-								// biome-ignore lint/suspicious/noArrayIndexKey: lista fija; las etiquetas pueden ser nodos
-								<li key={i} className="flex flex-col gap-0.5">
-									<MobileSection item={item} onNavigate={close} />
-								</li>
-							))}
-						</ul>
-					</nav>
-					{mobile?.footerItems?.length || mobile?.footer ? (
-						<div className="mt-auto flex flex-col gap-4">
-							{mobile?.footerItems?.length ? (
-								<ul className="m-0 flex list-none flex-col gap-0.5 p-0">
-									{mobile.footerItems.map((item, i) => (
-										// biome-ignore lint/suspicious/noArrayIndexKey: lista fija; las etiquetas pueden ser nodos
-										<li key={i}>
-											<a
-												href={item.href}
-												aria-current={item.current ? "page" : undefined}
-												onClick={close}
-												className={cx(MOBILE_ITEM, MOBILE_LINK)}
-											>
-												{item.icon ? iconSlot(item.icon, 24) : null}
-												{item.label}
-												{item.badge != null ? (
-													<span className="ml-auto">{item.badge}</span>
-												) : null}
-											</a>
-										</li>
-									))}
-								</ul>
-							) : null}
-							{mobile?.footer}
-						</div>
-					) : null}
-				</Slideout>
+				{mobileBar ? null : (
+					<Slideout open={menuOpen} side="left" width={296} title={brand} onClose={close}>
+						{search ? <div>{search}</div> : null}
+						<nav aria-label={l.nav}>
+							<ul className="m-0 flex list-none flex-col gap-0.5 p-0">
+								{items.map((item, i) => (
+									// biome-ignore lint/suspicious/noArrayIndexKey: lista fija; las etiquetas pueden ser nodos
+									<li key={i} className="flex flex-col gap-0.5">
+										<MobileSection item={item} onNavigate={close} />
+									</li>
+								))}
+							</ul>
+						</nav>
+						{mobile?.footerItems?.length || mobile?.footer ? (
+							<div className="mt-auto flex flex-col gap-4">
+								{mobile?.footerItems?.length ? (
+									<ul className="m-0 flex list-none flex-col gap-0.5 p-0">
+										{mobile.footerItems.map((item, i) => (
+											// biome-ignore lint/suspicious/noArrayIndexKey: lista fija; las etiquetas pueden ser nodos
+											<li key={i}>
+												<a
+													href={item.href}
+													aria-current={item.current ? "page" : undefined}
+													onClick={close}
+													className={cx(MOBILE_ITEM, MOBILE_LINK)}
+												>
+													{item.icon ? iconSlot(item.icon, 24) : null}
+													{item.label}
+													{item.badge != null ? (
+														<span className="ml-auto">{item.badge}</span>
+													) : null}
+												</a>
+											</li>
+										))}
+									</ul>
+								) : null}
+								{mobile?.footer}
+							</div>
+						) : null}
+					</Slideout>
+				)}
 			</div>
 		</header>
 	);

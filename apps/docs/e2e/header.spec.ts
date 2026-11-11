@@ -55,7 +55,7 @@ for (const [path, current] of [
 		const marked = sections(page).locator("a[aria-current]");
 		await expect(marked).toHaveCount(1);
 		await expect(marked).toHaveText(current);
-		await expect(marked).toHaveAttribute("aria-current", "true");
+		await expect(marked).toHaveAttribute("aria-current", "page");
 	});
 }
 

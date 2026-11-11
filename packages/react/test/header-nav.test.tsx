@@ -129,7 +129,7 @@ describe("HeaderNav (escritorio)", () => {
 		expect(html).toContain("@max-5xl:hidden");
 		expect(html).toContain("@5xl:hidden");
 		expect(html).toContain("Abrir menú");
-		expect(html).not.toContain('role="dialog"');
+		expect(html).not.toContain("px-0.5");
 	});
 });
 
@@ -224,6 +224,42 @@ describe("HeaderNav (menú móvil)", () => {
 				actions={actions}
 				account={account}
 			/>,
+		);
+	});
+});
+
+describe("HeaderNav underline y mobileBar", () => {
+	it("underline: una fila con la sección actual subrayada, sin segunda navegación", () => {
+		render(<HeaderNav type="underline" brand={brand} items={ITEMS} />);
+		expect(screen.queryByRole("navigation", { name: "Subsecciones" })).toBeNull();
+		const nav = screen.getByRole("navigation", { name: "Principal" });
+		const links = within(nav).getAllByRole("link");
+		expect(links.map((a) => a.getAttribute("aria-current"))).toEqual([null, "page", null]);
+		expect(links[1]?.className).toContain(
+			"aria-[current=page]:shadow-[inset_0_-2px_0_var(--fg-brand-primary_alt)]",
+		);
+		expect(links[1]?.className).not.toContain("bg-primary_hover");
+	});
+
+	it("mobileBar sustituye al botón de menú y al panel integrados", async () => {
+		render(<HeaderNav brand={brand} items={ITEMS} mobileBar={<button type="button">Mi menú</button>} />);
+		expect(screen.getByRole("button", { name: "Mi menú" })).toBeTruthy();
+		expect(screen.queryByRole("button", { name: "Abrir menú" })).toBeNull();
+		await userEvent.click(screen.getByRole("button", { name: "Mi menú" }));
+		expect(screen.queryByRole("dialog")).toBeNull();
+	});
+
+	it("sin las props nuevas el HTML no cambia: los tipos de siempre no llevan el subrayado ni la barra móvil", () => {
+		for (const type of ["simple", "dual-tier", "tabs", "centered"] as const) {
+			const html = renderToString(<HeaderNav type={type} brand={brand} items={ITEMS} />);
+			expect(html).not.toContain('inset_0_-2px_0_var(--fg-brand-primary_alt)]"' + "h-16");
+			expect(html).toContain("Abrir menú");
+		}
+	});
+
+	it("axe en claro y oscuro con underline", async () => {
+		await expectAccessibleInThemes(
+			<HeaderNav type="underline" brand={brand} items={ITEMS} actions={actions} account={account} />,
 		);
 	});
 });

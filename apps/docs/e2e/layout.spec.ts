@@ -10,17 +10,23 @@ test.describe("ancho del contenedor", () => {
 		await page.goto("/components/button/");
 		const aside = await page.locator("aside").first().boundingBox();
 		expect(aside?.x).toBe(0);
+		// La cabecera es el HeaderNav del paquete: su contenido va en un contenedor de 1280, el primero de la página
+		const rect = (el: Element) => {
+			const r = el.getBoundingClientRect();
+			return { width: r.width, left: r.left, right: r.right };
+		};
+		const header = await page.locator("body > header div.mx-auto").first().evaluate(rect);
 		const boxes = await page.locator("[data-container]").evaluateAll((els) =>
 			els.map((el) => {
 				const r = el.getBoundingClientRect();
 				return { width: r.width, left: r.left, right: r.right };
 			}),
 		);
-		// cabecera, contenido y pie
-		expect(boxes).toHaveLength(3);
-		for (const b of boxes) expect(b.width).toBeLessThanOrEqual(CONTAINER);
+		// contenido y pie
+		expect(boxes).toHaveLength(2);
+		for (const b of [header, ...boxes]) expect(b.width).toBeLessThanOrEqual(CONTAINER);
 		// El contenido, centrado en lo que deja la barra lateral; cabecera y pie, en la ventana
-		const [header, content, footer] = boxes as [(typeof boxes)[0], (typeof boxes)[0], (typeof boxes)[0]];
+		const [content, footer] = boxes as [(typeof boxes)[0], (typeof boxes)[0]];
 		expect(header.width).toBe(CONTAINER);
 		expect(footer.width).toBe(CONTAINER);
 		expect(header.left).toBeCloseTo((1920 - CONTAINER) / 2, 0);

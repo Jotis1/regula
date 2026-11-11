@@ -24,17 +24,23 @@ export default function SiteSearch() {
 	const [mac, setMac] = useState(false);
 	const pagefind = useRef<Promise<Pagefind | null> | null>(null);
 	const loaded = useRef(false);
+	const trigger = useRef<HTMLButtonElement>(null);
 
 	useEffect(() => {
 		setMac(/Mac|iPhone|iPad/.test(navigator.platform));
+		// La cabecera pinta escritorio y móvil, cada uno con su isla: solo responde la que se ve
+		const shown = () => (trigger.current?.getClientRects().length ?? 0) > 0;
 		const onKey = (e: KeyboardEvent) => {
+			if (!shown()) return;
 			if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "k") {
 				e.preventDefault();
 				setOpen((o) => !o);
 			}
 		};
 		// El menú móvil abre la búsqueda con este evento (no comparte estado con esta isla)
-		const onOpen = () => setOpen(true);
+		const onOpen = () => {
+			if (shown()) setOpen(true);
+		};
 		window.addEventListener("keydown", onKey);
 		window.addEventListener("regula:search", onOpen);
 		return () => {
@@ -94,6 +100,7 @@ export default function SiteSearch() {
 			    text-placeholder, pero es la etiqueta de un botón, no un placeholder, y en oscuro se queda en 4,2:1:
 			    text-quaternary es el mismo #737373 en claro y en oscuro pasa a 7,7:1. */}
 			<button
+				ref={trigger}
 				type="button"
 				onClick={() => setOpen(true)}
 				aria-keyshortcuts="Control+K Meta+K"

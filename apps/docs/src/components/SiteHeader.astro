@@ -1,31 +1,30 @@
 ---
-// Cabecera de la web: en escritorio, reference/docs-design/Header.dc.html (icono de Regula y nombre, las cinco
-// secciones con la actual marcada, búsqueda con aspecto de campo y selector de tema); por debajo de lg,
-// HeaderM.dc.html (icono y nombre, botones de búsqueda y tema, y el menú a pantalla completa). El icono va en la
-// variante Claro en el tema claro, como pide la guía dentro de una interfaz clara, y en la principal en el oscuro
-// (design §9).
-import { AppIcon } from "@jotis-me/react";
+// Cabecera de la web, montada con el `HeaderNav` del paquete (tipo `underline`, design D5 de
+// docs-site-with-own-components): en escritorio, reference/docs-design/Header.dc.html (icono de Regula y nombre, las cinco
+// secciones con la actual subrayada, búsqueda con aspecto de campo y selector de tema); por debajo de lg,
+// HeaderM.dc.html (icono y nombre, botones de búsqueda y tema, y el menú a pantalla completa, que es de la web y
+// entra por `mobileBar`). HeaderNav pinta las dos versiones y la CSS elige por su ancho, así que las islas de la
+// derecha van una vez por versión; la búsqueda solo responde en la que se ve. El icono va en la variante Claro en
+// el tema claro, como pide la guía dentro de una interfaz clara, y en la principal en el oscuro (design §9).
+import { AppIcon, HeaderNav } from "@jotis-me/react";
 import { SECTIONS, sectionOf } from "../lib/catalog";
 import SiteSearch from "../search/SiteSearch";
 import MobileMenu from "./MobileMenu";
 import SideNav from "./SideNav.astro";
 import ThemeMenu from "./ThemeMenu";
-
 const current = sectionOf(Astro.url.pathname);
+const items = SECTIONS.map((s) => ({ label: s.label, href: s.href, current: current === s.id }));
 ---
-
-<header class="relative bg-primary shadow-[inset_0_-1px_0_var(--border-secondary)]">
-<div
-	data-container
-	class="mx-auto flex h-14 max-w-container items-center gap-1 pr-1.5 pl-4 lg:h-16 lg:gap-8 lg:px-8"
+<a
+	href="#contenido"
+	class="fixed -top-24 left-4 z-60 rounded-lg bg-primary_alt px-3 py-2 text-sm font-semibold text-primary shadow-lg focus:top-3 focus-visible:outline-none"
 >
+	Saltar al contenido
+</a>
+{/* @ts-expect-error: los slots de Astro llegan a HeaderNav como props (brand, actions y mobileBar), que el tipado de la plantilla no ve */}
+<HeaderNav type="underline" items={items} labels={{ nav: "Secciones" }} className="bg-primary">
 	<a
-		href="#contenido"
-		class="absolute -top-24 left-4 z-60 rounded-lg bg-primary_alt px-3 py-2 text-sm font-semibold text-primary shadow-lg focus:top-3 focus-visible:outline-none"
-	>
-		Saltar al contenido
-	</a>
-	<a
+		slot="brand"
 		href="/"
 		aria-label="Regula, portada"
 		class="flex min-h-11 shrink-0 items-center gap-2 rounded-md text-primary focus-visible:shadow-focus-ring focus-visible:outline-none lg:gap-2.5"
@@ -36,28 +35,16 @@ const current = sectionOf(Astro.url.pathname);
 		<span aria-hidden="true" class="hidden lg:dark:flex"><AppIcon app="regula" size={28} tilde /></span>
 		<span class="font-display text-lg font-bold tracking-[-0.02em] lg:text-xl">Regula</span>
 	</a>
-	<nav aria-label="Secciones" class="hidden h-16 items-center gap-6 lg:flex">
-		{
-			SECTIONS.map((s) => (
-				<a
-					href={s.href}
-					aria-current={current === s.id ? "true" : undefined}
-					class="inline-flex h-16 items-center px-0.5 text-sm font-semibold text-tertiary transition-colors duration-100 hover:text-primary focus-visible:rounded-md focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current]:text-primary aria-[current]:shadow-[inset_0_-2px_0_var(--fg-brand-primary_alt)]"
-				>
-					{s.label}
-				</a>
-			))
-		}
-	</nav>
-	<div class="ml-auto flex items-center gap-1 lg:gap-8">
+	<div slot="actions" class="flex items-center gap-8">
 		{/* El tema va antes que la búsqueda: su ancho cambia con lo elegido y así no mueve la búsqueda */}
 		<ThemeMenu client:idle />
 		<SiteSearch client:idle />
-		<div class="flex lg:hidden">
-			<MobileMenu client:media="(max-width: 1023.98px)">
-				<SideNav current={Astro.url.pathname} idPrefix="menu" />
-			</MobileMenu>
-		</div>
 	</div>
-</div>
-</header>
+	<Fragment slot="mobileBar">
+		<ThemeMenu client:idle />
+		<SiteSearch client:idle />
+		<MobileMenu client:media="(max-width: 1023.98px)">
+			<SideNav current={Astro.url.pathname} idPrefix="menu" />
+		</MobileMenu>
+	</Fragment>
+</HeaderNav>
