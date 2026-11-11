@@ -208,6 +208,13 @@ export {
 } from "./components/FilterMenu.js";
 export { FilterPanel, type FilterPanelProps } from "./components/FilterPanel.js";
 export {
+	Footer,
+	type FooterColumn,
+	type FooterLink,
+	type FooterProps,
+	type FooterType,
+} from "./components/Footer.js";
+export {
 	HeaderNav,
 	type HeaderNavItem,
 	type HeaderNavLabels,

@@ -146,7 +146,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
   - menú móvil con submenús.
 
   E2E de teclado (abre, el foco entra, Escape devuelve el foco) en escritorio y móvil. Mismos entregables.
-- [ ] 11.3 `Footer` (`1517:334473`): veinte tipos, dos temas, columnas apiladas en móvil. Mismos entregables.
+- [x] 11.3 `Footer` (`1517:334473`): veinte tipos, dos temas, columnas apiladas en móvil. Mismos entregables.
 - [ ] 11.4 `BlogPostCard` (`1390:58`) y `SubscribeCard` (`1391:213014`). Mismos entregables.
 - [ ] 11.5 `PricingCard` (`1346:182709`, diez tipos) y `JobPostCard` (`1506:244681`). Mismos entregables.
 - [ ] 11.6 `Accordion` (`1358:191490`): `aria-expanded`, región, icono a izquierda o derecha, divisor y `single`. Tests de teclado. `TeamMemberCard` (`1458:240598`, siete tipos). Mismos entregables.

@@ -518,3 +518,13 @@ Nodos: `Dropdown header navigation` `1288:26576` y `Full-width header navigation
 - **Menús:** `DialogTrigger` + `Popover` de React Aria; a todo el ancho, el popover toma la cabecera como `triggerRef` y su ancho (`--trigger-width`). Escape cierra y devuelve el foco al botón. El menú móvil es otro popover bajo la cabecera, con cada apartado desplegable en una caja (`aria-expanded`), los enlaces del pie en dos columnas y las acciones a todo el ancho. Escritorio o móvil por consulta de contenedor (`@5xl`), como `HeaderNav`.
 - **Vista previa:** `previewItem` pinta un menú en línea, sin popover ni foco (como `MultiSelect defaultOpen`), para las capturas, que son estáticas; el ejemplo pinta las cabeceras a 1280 en `ScaledPreview` para que se vea el escritorio en la captura de 800.
 - **Peso:** 58,1 kB, límite 61.440. `/components/*/` de `js-budget` pasa de 365 a 370 (Tabs 365,5 kB); el playground por página sigue pendiente (el paquete solo exporta `.`).
+
+## Footer (11.3)
+
+Nodo: `Footer` `1517:334473`. En «Web de marketing» (catálogo 113 → 114), con página, ficha, ejemplo (`marketing.tsx`: los veinte tipos a 1280 encogidos, el tema de marca y el móvil a 375), muestra, fragmento, límite, capturas y e2e (`footer.spec.ts`: a 375 px las columnas van de dos en dos).
+
+- **API:** piezas (`brand`, `description`, `extra`, `columns`, `links`, `cta`, `aside`, `copyright`, `legal`, `social`) y `type`; una tabla `LAYOUT` dice qué pone cada tipo grande y dónde (llamada centrada, a los lados, boletín o en banda; marca al lado o centrada; columnas o fila; bloque de la derecha; pie con marca, redes, legales, formulario o lema; pie en banda). Los cuatro pequeños son una línea. Lo que un tipo no usa no se pinta, así un mismo juego de props sirve para los veinte (el ejemplo lo hace).
+- **Temas:** `brand` con `bg-brand-section`, textos `*_on-brand`, `border-brand_alt` y bandas `bg-brand-section_subtle` (en oscuro, `bg-brand-section` es `#171717` por token).
+- **Móvil:** consulta de contenedor (`@3xl`, 768): columnas de dos en dos, bloques apilados, márgenes de 16.
+- **Sin `aria-label`:** Biome no lo admite en `footer`; el elemento ya es la región de información de contenido.
+- **Peso:** 10,7 kB, límite 12.288.

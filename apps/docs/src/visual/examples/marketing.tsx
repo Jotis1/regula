@@ -11,13 +11,28 @@ import {
 	IconWallet02,
 } from "@jotis-me/icons";
 import {
+	SocialFacebookLogoGray,
+	SocialGithubLogoGray,
+	SocialLinkedinLogoGray,
+	SocialXLogoGray,
+	StoreAppStoreLogo,
+	StoreGooglePlayLogo,
+} from "@jotis-me/icons/logos";
+import {
+	AppStoreBadge,
+	AvatarGroup,
 	Badge,
 	Button,
+	Footer,
+	type FooterColumn,
+	type FooterType,
+	Input,
 	MarketingNav,
 	type MarketingNavItem,
 	type MarketingNavMenu,
 	type MarketingNavType,
 	NavMenu,
+	RatingBadge,
 	ScaledPreview,
 } from "@jotis-me/react";
 import type { ReactNode } from "react";
@@ -284,6 +299,208 @@ export function MarketingNavExample() {
 						actions={acciones}
 						mobileLinks={enlacesMovil}
 					/>
+				</div>
+			</figure>
+		</div>
+	);
+}
+
+const COLUMNAS: FooterColumn[] = [
+	{
+		title: "Producto",
+		links: [
+			{ label: "Resumen", href: "#" },
+			{ label: "Funciones", href: "#" },
+			{
+				label: "Informes",
+				href: "#",
+				badge: (
+					<Badge size="sm" color="gray" type="modern">
+						Nuevo
+					</Badge>
+				),
+			},
+			{ label: "Precios", href: "#" },
+		],
+	},
+	{
+		title: "Empresa",
+		links: [
+			{ label: "Quiénes somos", href: "#" },
+			{ label: "Empleo", href: "#" },
+			{ label: "Prensa", href: "#" },
+		],
+	},
+	{
+		title: "Recursos",
+		links: [
+			{ label: "Blog", href: "#" },
+			{ label: "Ayuda", href: "#" },
+			{ label: "Guías", href: "#" },
+		],
+	},
+	{
+		title: "Legal",
+		links: [
+			{ label: "Términos", href: "#" },
+			{ label: "Privacidad", href: "#" },
+			{ label: "Cookies", href: "#" },
+		],
+	},
+];
+const FILA = ["Resumen", "Funciones", "Precios", "Empleo", "Ayuda", "Privacidad"].map((label) => ({
+	label,
+	href: "#",
+}));
+const LEGAL = ["Términos", "Privacidad", "Cookies"].map((label) => ({ label, href: "#" }));
+const redes = (
+	<>
+		{(
+			[
+				["X", SocialXLogoGray],
+				["LinkedIn", SocialLinkedinLogoGray],
+				["Facebook", SocialFacebookLogoGray],
+				["GitHub", SocialGithubLogoGray],
+			] as const
+		).map(([name, Logo]) => (
+			<a
+				key={name}
+				href={`/redes/${name.toLowerCase()}`}
+				aria-label={name}
+				className="flex text-fg-quaternary hover:text-fg-quaternary_hover"
+			>
+				<Logo size={24} />
+			</a>
+		))}
+	</>
+);
+const suscripcion = (
+	<div className="flex w-full max-w-[360px] flex-col gap-3">
+		<p className="m-0 text-sm font-semibold text-primary">Al día</p>
+		<div className="flex gap-3">
+			<Input aria-label="Tu correo" placeholder="Tu correo" className="flex-1" />
+			<Button>Suscribirme</Button>
+		</div>
+	</div>
+);
+const app = (
+	<div className="flex flex-col gap-4">
+		<p className="m-0 text-sm font-semibold text-brand-secondary">Descarga la app</p>
+		<AppStoreBadge store="app-store" href="#" logo={<StoreAppStoreLogo />} />
+		<AppStoreBadge store="google-play" href="#" logo={<StoreGooglePlayLogo />} />
+	</div>
+);
+const ASIDE: Partial<Record<FooterType, "app" | "form">> = {
+	"large-03": "app",
+	"large-04": "form",
+	"large-07": "app",
+	"large-08": "form",
+	"large-11": "app",
+	"large-16": "form",
+	"small-04": "form",
+};
+const CTA_FORM = new Set<FooterType>(["large-05", "large-06", "large-12"]);
+
+function Pie({ type, theme }: { type: FooterType; theme?: "default" | "brand" }) {
+	const aside = ASIDE[type] === "app" ? app : ASIDE[type] === "form" ? suscripcion : undefined;
+	return (
+		<Footer
+			type={type}
+			theme={theme}
+			brand={
+				<a
+					href="/"
+					className={`font-display text-xl font-semibold no-underline ${theme === "brand" ? "text-primary_on-brand" : "text-primary"}`}
+				>
+					Regula
+				</a>
+			}
+			description="Tus cuentas, claras y en un sitio."
+			extra={
+				type === "large-02" || type === "large-06" ? (
+					<RatingBadge title="La mejor app de finanzas" supportingText="2.000+ reseñas" />
+				) : type === "large-04" || type === "large-05" || type === "large-12" ? (
+					<AvatarGroup
+						size="sm"
+						items={[{ initials: "AM" }, { initials: "LR" }, { initials: "PG" }]}
+					/>
+				) : undefined
+			}
+			columns={type === "large-14" ? COLUMNAS.slice(0, 3) : COLUMNAS}
+			links={FILA}
+			cta={
+				CTA_FORM.has(type)
+					? {
+							title: type === "large-12" ? "Entérate cuando salga" : "Recibe nuestra carta",
+							description: "Una vez a la semana. Sin spam.",
+							actions: (
+								<div className="flex gap-3">
+									<Input aria-label="Tu correo" placeholder="Tu correo" />
+									<Button>Suscribirme</Button>
+								</div>
+							),
+						}
+					: type === "large-14"
+						? {
+								title: "Ordena tu dinero con Regula",
+								description: "Menos tiempo con las cuentas, más con lo que importa.",
+							}
+						: {
+								title:
+									type === "large-10" ? "Prueba 30 días gratis" : "Empieza hoy con Regula",
+								description: "Más de 4.000 personas ya ordenan sus cuentas.",
+								actions: (
+									<>
+										<Button hierarchy="secondary">Ver la demo</Button>
+										<Button>Empezar</Button>
+									</>
+								),
+							}
+			}
+			aside={aside}
+			copyright="© 2027 Regula. Todos los derechos reservados."
+			legal={LEGAL}
+			social={redes}
+		/>
+	);
+}
+
+const TIPOS: FooterType[] = [
+	...Array.from({ length: 16 }, (_, i) => `large-${String(i + 1).padStart(2, "0")}` as FooterType),
+	"small-01",
+	"small-02",
+	"small-03",
+	"small-04",
+];
+
+/** Los veinte tipos a 1280 de ancho, encogidos; el tema de marca; y la versión móvil, a 375. */
+export function FooterExample() {
+	return (
+		<div className="flex flex-col gap-8">
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(360px,1fr))] gap-6">
+				{TIPOS.map((type) => (
+					<figure key={type} className="m-0 flex flex-col gap-2">
+						<figcaption className="text-sm font-medium text-tertiary">{type}</figcaption>
+						<ScaledPreview
+							width={1280}
+							box={[368, type.startsWith("small") ? 70 : 175]}
+							className="rounded-lg shadow-[inset_0_0_0_1px_var(--border-secondary)]"
+						>
+							<Pie type={type} />
+						</ScaledPreview>
+					</figure>
+				))}
+			</div>
+			<figure className="m-0 flex flex-col gap-2">
+				<figcaption className="text-sm font-medium text-tertiary">large-01 · marca</figcaption>
+				<ScaledPreview width={1280} box={[768, 280]} className="rounded-lg">
+					<Pie type="large-01" theme="brand" />
+				</ScaledPreview>
+			</figure>
+			<figure className="m-0 flex flex-col gap-2" data-footer-mobile>
+				<figcaption className="text-sm font-medium text-tertiary">Móvil (375)</figcaption>
+				<div className="w-[375px] max-w-full rounded-lg shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+					<Pie type="large-01" />
 				</div>
 			</figure>
 		</div>

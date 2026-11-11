@@ -62,6 +62,7 @@ import {
 	FilterBar,
 	FilterMenu,
 	FilterPanel,
+	Footer,
 	HeaderNav,
 	HelpIcon,
 	Icon,
@@ -620,6 +621,21 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 							],
 						},
 					]}
+				/>
+			</div>
+		),
+	},
+	Footer: {
+		scale: 0.4,
+		render: () => (
+			<div style={{ width: 1100 }}>
+				<Footer
+					brand={<span style={{ fontWeight: 600, fontSize: 20 }}>Regula</span>}
+					columns={["Producto", "Empresa", "Recursos", "Legal"].map((title) => ({
+						title,
+						links: ["Uno", "Dos", "Tres"].map((label) => ({ label, href: "#" })),
+					}))}
+					copyright="© 2027 Regula"
 				/>
 			</div>
 		),

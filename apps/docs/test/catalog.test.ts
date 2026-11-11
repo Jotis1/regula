@@ -145,7 +145,8 @@ describe("catálogo de secciones y fundamentos", () => {
 		expect(neighborsOf("AppStoreBadge").next).toBe("Input");
 		// El último de Componentes no salta a Stream, ni el primero de Stream vuelve a Componentes
 		expect(neighborsOf("AppIcon").next).toBe("MarketingNav");
-		expect(neighborsOf("MarketingNav").next).toBeUndefined();
+		expect(neighborsOf("MarketingNav").next).toBe("Footer");
+		expect(neighborsOf("Footer").next).toBeUndefined();
 		expect(neighborsOf("StreamAlert")).toEqual({ prev: undefined, next: "StreamScene", related: [] });
 		expect(neighborsOf("ChannelBanner").next).toBeUndefined();
 		expect(neighborsOf("Ejemplo")).toEqual({ related: [] });

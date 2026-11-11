@@ -226,6 +226,15 @@ const usage: Record<string, string> = {
 	FilterPanel: `<Slideout title="Filtros" description="Añade filtros para acotar los resultados." onClose={cerrar}>
 	<FilterPanel fields={campos} operators={operadores} defaultValue={filtros} onApply={aplicar} />
 </Slideout>`,
+	Footer: `<Footer
+	type="large-01"
+	brand={<a href="/">Regula</a>}
+	columns={[
+		{ title: "Producto", links: [{ label: "Precios", href: "/precios" }] },
+		{ title: "Legal", links: [{ label: "Privacidad", href: "/privacidad" }] },
+	]}
+	copyright="© 2027 Regula. Todos los derechos reservados."
+/>`,
 	MarketingNav: `<MarketingNav
 	brand={<a href="/">Regula</a>}
 	menu="dropdown"

@@ -56,6 +56,7 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	ContextMenu: "navigation",
 	HeaderNav: "navigation",
 	MarketingNav: "marketing",
+	Footer: "marketing",
 	FilterBar: "filter-bar",
 	FilterMenu: "filter-bar",
 	FilterPanel: "filter-bar",
