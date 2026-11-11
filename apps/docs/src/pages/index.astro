@@ -13,6 +13,7 @@ import {
 	Icon,
 	type IconName,
 	Kbd,
+	LinkCard,
 	StreamStatus,
 } from "@jotis-me/react";
 import { colors } from "@jotis-me/tokens";
@@ -168,11 +169,12 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 
 	<section aria-labelledby="map-t" class={`flex flex-col gap-4 pt-10 pb-2 lg:gap-6 lg:pt-14 lg:pb-6 ${section}`}>
 		<h2 id="map-t" class={h2}>Dónde está cada cosa</h2>
-		<div class="hidden grid-cols-4 gap-4 lg:grid">
+		<ul class="m-0 hidden list-none grid-cols-4 gap-4 p-0 lg:grid">
 			{
 				map.map((m) => (
-					<a href={m.href} class={`${card} flex-col`}>
-						<div aria-hidden="true" inert class={`h-37 rounded-t-xl shadow-[inset_0_-1px_0_var(--border-secondary)] ${thumb}`}>
+					<LinkCard as="li" href={m.href} title={m.title} className="bg-primary">
+						{/* La muestra, inerte y fuera del enlace: LinkCard estira el enlace sobre toda la card */}
+						<div slot="preview" class={`h-37 shadow-[inset_0_-1px_0_var(--border-secondary)] ${thumb}`}>
 							{m.title === "Fundamentos" && (
 								<div class="flex items-center gap-4">
 									<span class="font-display text-display-lg font-semibold tracking-[-0.02em] text-primary">Aa</span>
@@ -202,15 +204,14 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 								</div>
 							)}
 						</div>
-						<div class="flex flex-col gap-1 px-5 pt-4 pb-5">
-							<h3 class="text-md font-semibold">{m.title}</h3>
-							<p class="text-sm text-tertiary">{m.text}</p>
-							<p class="mt-2 text-xs text-quaternary" data-map-meta>{m.meta}</p>
-						</div>
-					</a>
+						<Fragment slot="description">
+							{m.text}
+							<span class="mt-2 block text-xs text-quaternary" data-map-meta>{m.meta}</span>
+						</Fragment>
+					</LinkCard>
 				))
 			}
-		</div>
+		</ul>
 		<div class="flex flex-col gap-3 lg:hidden">
 			{
 				map.map((m) => (

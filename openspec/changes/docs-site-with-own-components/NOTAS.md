@@ -43,3 +43,9 @@ Hasta que se decida, 3.2 queda sin marcar y el resto del grupo sigue.
 - Cambia el aspecto respecto a `Footer.dc.html`: enlaces de `text-md` semibold en color de marca, títulos en `text-primary` y filas más altas, que es el diseño del `Footer` del paquete. Se acepta como la consecuencia de usarlo, tal como promete el pie. Revisado en claro, oscuro y móvil (390 px).
 - Las versiones van como texto en la línea del copyright (`<p>`), con `data-versions` en el `span`; ya no es una `<dl>`.
 - El test de ancho (`layout.spec.ts`) mide el contenedor interno del `Footer`.
+
+## 3.4 Portada con el paquete
+
+- La portada ya usaba `BackgroundPattern`, `Badge`, `Button`, `Icon`, `Kbd`, `StreamStatus`, `AppIcon` y `HeroForm` (corrige lo dicho en la propuesta: «no importa nada del paquete»). Lo que estaba a mano y ahora es componente: las cuatro cards de «Dónde está cada cosa» de escritorio pasan a `LinkCard` (muestra inerte arriba, título y texto como enlace que cubre la card; `data-map-meta` sigue en el texto). Sin cambios en el paquete.
+- Se quedan a mano, porque ningún componente del paquete tiene su forma: la fila horizontal de las cards de móvil (icono a la izquierda y chevron: `LinkCard` solo tiene la muestra encima), la lista numerada de las cinco reglas, la lista de apps con su `AppIcon`, y el campo-botón «Busca lo que te falte» (un disparador con aspecto de campo, no un `Input`). Las cabeceras de sección son `h2` con las clases de la guía: `SectionHeader` es una cabecera de página con acciones y pestañas, no un título de sección de una portada.
+- Revisada en claro y oscuro; `home.spec.ts` y `check:js` sin cambios.
