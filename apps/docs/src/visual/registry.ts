@@ -22,6 +22,12 @@ import {
 import { ColorPickerDropdownExample, ColorPickerExample } from "./examples/color";
 import { ActivityFeedExample, CodeSnippetExample, MetricCardExample } from "./examples/data";
 import {
+	BackgroundOverlayExample,
+	LaptopMockupExample,
+	PhoneMockupExample,
+	ScreenMockupExample,
+} from "./examples/devices";
+import {
 	AvatarExample,
 	AvatarGroupExample,
 	AvatarLabelExample,
@@ -209,6 +215,10 @@ export const visualExamples: Record<string, ComponentType> = {
 	TransparencyGrid: TransparencyGridExample,
 	ScaledPreview: ScaledPreviewExample,
 	BrowserFrame: BrowserFrameExample,
+	BackgroundOverlay: BackgroundOverlayExample,
+	ScreenMockup: ScreenMockupExample,
+	LaptopMockup: LaptopMockupExample,
+	PhoneMockup: PhoneMockupExample,
 	CreditCard: CreditCardExample,
 	VideoPlayer: VideoPlayerExample,
 	Carousel: CarouselExample,

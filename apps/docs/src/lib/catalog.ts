@@ -135,7 +135,9 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "fondos-y-maquetas",
 		label: "Fondos y maquetas",
 		section: "components",
-		components: names("BackgroundPattern TransparencyGrid ScaledPreview CreditCard BrowserFrame AppIcon"),
+		components: names(
+			"BackgroundPattern BackgroundOverlay TransparencyGrid ScaledPreview CreditCard BrowserFrame ScreenMockup LaptopMockup PhoneMockup AppIcon",
+		),
 	},
 	{ id: "stream-alertas", label: "Alertas", section: "stream", components: names("StreamAlert") },
 	{

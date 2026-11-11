@@ -135,7 +135,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 - [x] 10.1 `ActivityGauge` (`1078:155`), `RadarChart` (`1084:7362`) y `ChartMarker` (`8100:193259`) en «Gráficas», con `marker` en `LineChart`/`BarChart`. Tests de tabla accesible y valores. Mismos entregables.
 - [x] 10.2 `ColorPickerDropdown` (`12424:15898`) en «Formularios», con sus seis disparadores. Tests: el popover se abre y se cierra con el teclado y devuelve el foco. Mismos entregables.
 - [x] 10.3 `FilterMenu` (`12232:366410`) y `FilterPanel` (`12232:375462`) en «Datos», con sus estados vacío, inactivo y activo. Tests del recuento en el disparador y de limpiar y aplicar. El ejemplo de `FilterPanel` va dentro de `Slideout`. Mismos entregables.
-- [ ] 10.4 `BackgroundOverlay` (`4896:411056`), `ScreenMockup` (`1293:158480`, `8268:120483`), `LaptopMockup` (`1316:213`) y `PhoneMockup` (`1869:445841`) en «Fondos y maquetas». Contenido de ejemplo hecho con componentes (sin fotos) y test de que solo la imagen interior se anuncia. Mismos entregables.
+- [x] 10.4 `BackgroundOverlay` (`4896:411056`), `ScreenMockup` (`1293:158480`, `8268:120483`), `LaptopMockup` (`1316:213`) y `PhoneMockup` (`1869:445841`) en «Fondos y maquetas». Contenido de ejemplo hecho con componentes (sin fotos) y test de que solo la imagen interior se anuncia. Mismos entregables.
 
 ## 11. Piezas de marketing
 

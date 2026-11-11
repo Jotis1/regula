@@ -490,3 +490,17 @@ Nodos: `Filters dropdown menu` `12232:366410` y `Filters slideout menu` `12232:3
 - **`FilterMenu`:** `DialogTrigger` + `Popover` (`bottom start` o `bottom end` con `align`) de 624 px o el ancho de pantalla menos 32. Borrador que parte de lo aplicado cada vez que se abre; «Aplicar filtros» guarda solo las filas completas y cierra; «Limpiar todo» aplica `[]`; Escape cierra sin aplicar. El botón, con fondo `bg-secondary` y la pastilla con el número si hay filtros, se llama «Filtros 3 filtros activos»: el número visible y el resto en `sr-only` (con `aria-label` axe daba `label-content-name-mismatch`, porque el texto visible «Filtros 3» no estaba en el nombre). 86,2 kB, límite 90.112.
 - **`FilterPanel`:** el contenido del `Slideout` (el título, la descripción y la X son los del `Slideout`): filas en dos líneas, «Añadir filtro» y el pie pegado abajo (`sticky`, `mt-auto`). 86,0 kB, límite 90.112.
 - **Textos:** en `FILTER_LABELS`, reutilizando `filters` y `clearAll` de `defaultStrings` (no se añade nada a `defaultStrings`).
+
+## BackgroundOverlay, ScreenMockup, LaptopMockup y PhoneMockup (10.4)
+
+Nodos: `Background overlay` `4896:411056`, `Screen mockup 3:2` `1293:158480`, `Modern screen mockup` `8268:120483`, `Macbook Pro mockup` `1316:213` e `iPhone mockup` `1869:445841`. Los cuatro, en «Fondos y maquetas» (catálogo 108 → 112), con página, ficha, ejemplo (`examples/devices.tsx`, aparte porque lleva gráficas), muestra, fragmento, límite y capturas.
+
+- **Contenido de ejemplo:** un panel hecho con `MetricCard`, `LineChart` y `Button`, pintado a 1200 (o 375 en móvil) y encogido con `ScaledPreview`; sin fotos.
+- **Accesibilidad:** el marco es siempre decorativo (`aria-hidden`); con `src` y `alt`, la imagen es lo único que se anuncia (test con los cuatro).
+- **`BackgroundOverlay`:** `bg-overlay/70` y `backdrop-blur-[8px]`; el degradado del Figma (máscara del 50 % al 100 % sobre el 70 %) es `from-overlay/35 to-overlay/70`, sin colores crudos. 9,1 kB, límite 10.240.
+- **`ScreenMockup`:** un componente con `variant` `3-2` (seis anchos máximos, filo de 4 px `bg-primary-solid` encima de la pantalla y sombra `shadow-2xl` detrás) y `modern` (`desktop` 3:2 y `mobile` 355/773, tres capas). 9,5 kB, límite 11.264.
+- **`PhoneMockup`:** el marco son los vectores del Figma (13 kB: borde, banda, fondo con el hueco de la pantalla, botones, antenas, cámara, altavoz) en un SVG encima de la pantalla; la barra de estado y el indicador de inicio pasan a `currentColor` con `text-primary` para verse en oscuro. 14,3 kB, límite 16.384.
+- **`LaptopMockup`:** el MacBook del Figma es un mapa de bits (981 kB como SVG): se dibuja en SVG con sus medidas (tapa, filo, cámara, rótulo, base de aluminio en degradado y sombra) y la pantalla en la caja del Figma. Ids de los `defs` con `useId` para que dos portátiles no los repitan. 9,9 kB, límite 11.264.
+- **Colores del dispositivo:** `internal/device-frames.ts` (generado) entra en las excepciones de `check-colors`, como `CreditCard` y `BrowserFrame`.
+- **Un fichero por componente:** la primera versión los tenía juntos en `Mockups.tsx` y la web (que lee las props de `components/<Nombre>.tsx`) y `check:size` fallaban; se separan, con `internal/mockup-screen.tsx` para lo común. Ojo: `turbo build` no borra `dist`, y el `Mockups.js` viejo hacía fallar `check:size`.
+- **Muestras:** dentro de un contenedor sin ancho, `w-full` deja la maqueta a 0; las muestras llevan un `div` con el ancho.

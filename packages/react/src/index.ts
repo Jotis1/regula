@@ -41,6 +41,7 @@ export {
 	type AvatarProfilePhotoProps,
 	type AvatarProfilePhotoSize,
 } from "./components/AvatarProfilePhoto.js";
+export { BackgroundOverlay, type BackgroundOverlayProps } from "./components/BackgroundOverlay.js";
 export {
 	BackgroundPattern,
 	type BackgroundPatternMask,
@@ -233,6 +234,7 @@ export {
 	type InputTrailingButton,
 } from "./components/Input.js";
 export { Kbd, type KbdProps, type KbdVariant } from "./components/Kbd.js";
+export { LaptopMockup, type LaptopMockupProps } from "./components/LaptopMockup.js";
 export { LineChart, type LineChartProps } from "./components/LineChart.js";
 export { LinkCard, type LinkCardProps } from "./components/LinkCard.js";
 export {
@@ -276,6 +278,7 @@ export {
 	type PaginationDotsSize,
 	type PaginationDotsVariant,
 } from "./components/PaginationDots.js";
+export { PhoneMockup, type PhoneMockupProps } from "./components/PhoneMockup.js";
 export { PieChart, type PieChartProps, type PieChartSlice } from "./components/PieChart.js";
 export { ProgressBar, type ProgressBarProps } from "./components/ProgressBar.js";
 export {
@@ -306,6 +309,7 @@ export {
 } from "./components/Rating.js";
 export { RatingBadge, type RatingBadgeProps } from "./components/RatingBadge.js";
 export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPreview.js";
+export { ScreenMockup, type ScreenMockupProps, type ScreenMockupSize } from "./components/ScreenMockup.js";
 export { SectionFooter, type SectionFooterProps } from "./components/SectionFooter.js";
 export { SectionHeader, type SectionHeaderProps } from "./components/SectionHeader.js";
 export { SectionLabel, type SectionLabelProps, type SectionLabelSize } from "./components/SectionLabel.js";

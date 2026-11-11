@@ -402,6 +402,14 @@ const usage: Record<string, string> = {
 	<BackgroundPattern pattern="grid" size="sm" mask="radial" />
 	<div className="relative">Contenido</div>
 </div>`,
+	BackgroundOverlay: `<div className="relative overflow-hidden rounded-xl">
+	<img src="/portada.jpg" alt="" />
+	<BackgroundOverlay type="gradient" />
+	<h2 className="absolute bottom-6 left-6 text-white">Tu dinero, claro</h2>
+</div>`,
+	ScreenMockup: `<ScreenMockup size="lg" src="/capturas/panel.png" alt="Panel de cuentas con el gasto del mes" />`,
+	LaptopMockup: `<LaptopMockup src="/capturas/panel.png" alt="Panel de cuentas con el gasto del mes" />`,
+	PhoneMockup: `<PhoneMockup src="/capturas/movil.png" alt="Panel de cuentas en el móvil" />`,
 	BrowserFrame: `<BrowserFrame url="pecunia.jotis.me/resumen" height={260}>
 	<MetricCard label="Gasto de octubre" value="1.284,50 €" />
 </BrowserFrame>`,

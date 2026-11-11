@@ -21,6 +21,7 @@ import {
 	AvatarGroup,
 	AvatarLabel,
 	AvatarProfilePhoto,
+	BackgroundOverlay,
 	BackgroundPattern,
 	Badge,
 	BadgeGroup,
@@ -68,6 +69,7 @@ import {
 	InlineCTA,
 	Input,
 	Kbd,
+	LaptopMockup,
 	LineChart,
 	LinkCard,
 	Message,
@@ -82,6 +84,7 @@ import {
 	Pager,
 	Pagination,
 	PaginationDots,
+	PhoneMockup,
 	PieChart,
 	ProgressBar,
 	ProgressCircle,
@@ -92,6 +95,7 @@ import {
 	Rating,
 	RatingBadge,
 	ScaledPreview,
+	ScreenMockup,
 	SectionFooter,
 	SectionHeader,
 	SectionLabel,
@@ -1411,6 +1415,62 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 				expiry="06/29"
 				last4="4821"
 			/>
+		),
+	},
+	BackgroundOverlay: {
+		render: () => (
+			<div
+				style={{
+					position: "relative",
+					width: 240,
+					height: 140,
+					borderRadius: 12,
+					overflow: "hidden",
+					background: "var(--bg-brand-solid)",
+				}}
+			>
+				<p
+					style={{
+						position: "absolute",
+						top: 16,
+						left: 16,
+						margin: 0,
+						color: "white",
+						fontWeight: 600,
+						fontSize: 24,
+					}}
+				>
+					Regula
+				</p>
+				<BackgroundOverlay type="gradient" />
+			</div>
+		),
+	},
+	ScreenMockup: {
+		render: () => (
+			<div style={{ width: 240 }}>
+				<ScreenMockup size="xs">
+					<div style={{ position: "absolute", inset: 0, background: "var(--bg-secondary)" }} />
+				</ScreenMockup>
+			</div>
+		),
+	},
+	LaptopMockup: {
+		render: () => (
+			<div style={{ width: 260 }}>
+				<LaptopMockup>
+					<div style={{ position: "absolute", inset: 0, background: "var(--bg-secondary)" }} />
+				</LaptopMockup>
+			</div>
+		),
+	},
+	PhoneMockup: {
+		render: () => (
+			<div style={{ width: 80 }}>
+				<PhoneMockup>
+					<div style={{ position: "absolute", inset: 0, background: "var(--bg-secondary)" }} />
+				</PhoneMockup>
+			</div>
 		),
 	},
 	BrowserFrame: {
