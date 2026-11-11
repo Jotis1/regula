@@ -62,7 +62,7 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	MetricCard: "data",
 	ActivityFeed: "data",
 	Message: "data",
-	CalendarView: "data",
+	CalendarView: "calendar",
 	CodeSnippet: "data",
 	PageHeader: "layout",
 	CardHeader: "layout",

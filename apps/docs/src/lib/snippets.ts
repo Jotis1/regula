@@ -293,6 +293,13 @@ const usage: Record<string, string> = {
 	CalendarView: `<CalendarView
 	events={[{ date: new Date(2026, 9, 29), title: "Pago del alquiler", color: "brand" }]}
 	onSelectDate={(fecha) => abrirDia(fecha)}
+/>
+
+// Semana y día: la hora sale de date y la duración, de duration (minutos)
+<CalendarView
+	defaultView="week"
+	events={[{ date: new Date(2027, 0, 8, 10, 0), title: "Olivia x Riley", color: "indigo", duration: 90 }]}
+	onSelectEvent={(evento) => abrirEvento(evento)}
 />`,
 	CodeSnippet: `<CodeSnippet language="bash" code="bun add @jotis-me/react" />`,
 	PageHeader: `<PageHeader
@@ -447,7 +454,7 @@ export function snippetsOf(name: string, interactive: boolean): { next: string; 
 	if (!code) throw new Error(`Falta el fragmento de uso de ${name} en src/lib/snippets.ts`);
 	const imp = `import { ${name} } from "@jotis-me/react";`;
 	return {
-		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n${indent(code, 3)}\n\t\t</>\n\t);\n}`,
+		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n$indent(code, 3)\n\t\t</>\n\t);\n}`,
 		astro: `---\n${imp}\n---\n\n${interactive ? code.replace(`<${name}`, `<${name} client:load`) : code}`,
 	};
 }

@@ -226,15 +226,14 @@ describe("Pagination: tamaño de página y cuadro de página", () => {
 	it("la lista de filas avisa del tamaño elegido", async () => {
 		const onPageSizeChange = vi.fn();
 		render(<Pagination total={10} type="card-advanced" onPageSizeChange={onPageSizeChange} />);
-		await userEvent.click(screen.getByRole("button", { name: /Filas por página/ }));
-		await userEvent.click(await screen.findByRole("option", { name: "25" }));
+		await userEvent.selectOptions(screen.getByRole("combobox", { name: "Filas por página" }), "25");
 		expect(onPageSizeChange).toHaveBeenCalledWith(25);
 	});
 
 	it("card-minimal solo lleva la lista con pageSizes", () => {
 		render(<Pagination total={10} type="card-minimal" />);
-		expect(screen.queryByRole("button", { name: /Filas por página/ })).toBeNull();
+		expect(screen.queryByRole("combobox", { name: "Filas por página" })).toBeNull();
 		render(<Pagination total={10} type="card-minimal" pageSizes={[10, 20]} />);
-		expect(screen.getByRole("button", { name: /Filas por página/ })).toBeTruthy();
+		expect(screen.getByRole("combobox", { name: "Filas por página" })).toBeTruthy();
 	});
 });

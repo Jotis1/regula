@@ -5,7 +5,6 @@ import {
 	ActivityFeed,
 	Badge,
 	Button,
-	CalendarView,
 	CodeSnippet,
 	Message,
 	MetricCard,
@@ -191,24 +190,6 @@ export function MessageExample() {
 			</Message>
 			<Message author="Emptor" avatar={{ initials: "Em" }} typing />
 		</div>
-	);
-}
-
-export function CalendarViewExample() {
-	return (
-		<CalendarView
-			today={new Date(2026, 9, 29)}
-			subtitle="Pagos y recordatorios"
-			events={[
-				{ date: new Date(2026, 9, 1), title: "Alquiler", time: "650 €", color: "brand" },
-				{ date: new Date(2026, 9, 5), title: "Electricidad", color: "gray" },
-				{ date: new Date(2026, 9, 15), title: "Seguro coche", color: "indigo" },
-				{ date: new Date(2026, 9, 15), title: "Gimnasio", color: "success" },
-				{ date: new Date(2026, 9, 15), title: "Netflix", color: "purple" },
-				{ date: new Date(2026, 9, 15), title: "Spotify", color: "success" },
-				{ date: new Date(2026, 9, 29), title: "Revisión semanal", time: "18:00", color: "blue" },
-			]}
-		/>
 	);
 }
 

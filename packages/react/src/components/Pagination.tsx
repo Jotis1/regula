@@ -6,7 +6,7 @@ import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
 import type { IconName } from "./Icon.js";
-import { Select } from "./Select.js";
+import { Icon } from "./Icon.js";
 
 export interface PaginationLabels {
 	/** @default "Anterior" */
@@ -224,15 +224,25 @@ function PageSizeSelect({
 	text: PaginationLabels;
 	plain?: boolean;
 }) {
+	// `<select>` nativo y no `Select`: este con su lista de React Aria sumaba ~80 kB a todo el que pagina una tabla
 	return (
-		<Select
-			size="sm"
-			aria-label={text.rowsPerPage}
-			value={String(value)}
-			onChange={(v) => onChange(Number(v))}
-			options={sizes.map((n) => ({ value: String(n), label: plain ? String(n) : text.perPage(n) }))}
-			className="w-auto min-w-24"
-		/>
+		<span className="relative inline-flex items-center">
+			<select
+				aria-label={text.rowsPerPage}
+				value={value}
+				onChange={(e) => onChange(Number(e.target.value))}
+				className="h-9 min-w-24 cursor-pointer appearance-none rounded-lg border-0 bg-primary py-0 pr-8 pl-3 font-body text-sm font-medium text-primary shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)] focus-visible:shadow-[var(--shadow-xs),inset_0_0_0_2px_var(--border-brand)] focus-visible:outline-none"
+			>
+				{sizes.map((n) => (
+					<option key={n} value={n}>
+						{plain ? n : text.perPage(n)}
+					</option>
+				))}
+			</select>
+			<span className="pointer-events-none absolute right-2.5 flex text-fg-quaternary">
+				<Icon name="chevron-down" size={16} />
+			</span>
+		</span>
 	);
 }
 

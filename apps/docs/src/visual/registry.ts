@@ -9,10 +9,10 @@ import {
 	IconExample,
 } from "./examples/actions";
 import { AppIconExample } from "./examples/brand";
+import { CalendarViewExample } from "./examples/calendar";
 import { BarChartExample, ChartLegendExample, LineChartExample, PieChartExample } from "./examples/charts";
 import {
 	ActivityFeedExample,
-	CalendarViewExample,
 	CodeSnippetExample,
 	MessageExample,
 	MetricCardExample,

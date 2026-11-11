@@ -26,7 +26,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	BrowserFrame: 600,
 	Button: 220,
 	ButtonGroup: 232,
-	CalendarView: 760,
+	CalendarView: 4500,
 	CamFrame: 330,
 	CardHeader: 120,
 	ChannelBanner: 430,
