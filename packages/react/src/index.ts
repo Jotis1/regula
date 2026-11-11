@@ -155,7 +155,13 @@ export {
 	type FileUploadProps,
 	type UploadFile,
 } from "./components/FileUpload.js";
-export { FilterBar, type FilterBarLabels, type FilterBarProps } from "./components/FilterBar.js";
+export {
+	FilterBar,
+	type FilterBarLabels,
+	type FilterBarProps,
+	type FilterBarType,
+	type FilterCondition,
+} from "./components/FilterBar.js";
 export {
 	HeaderNav,
 	type HeaderNavItem,

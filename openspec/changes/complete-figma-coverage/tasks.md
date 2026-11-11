@@ -116,7 +116,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
   - `striped`.
 
   Tests de teclado y de selección. Ejemplos («Miembros del equipo», «Empresas», «Ventas», «Archivos» del Figma) y capturas.
-- [ ] 7.5 `FilterBar`: los ocho `type` (`12232:376165`). `TreeView`: `size` y `type="advanced"` (`12451:566966`). Tests, ejemplos y capturas.
+- [x] 7.5 `FilterBar`: los ocho `type` (`12232:376165`). `TreeView`: `size` y `type="advanced"` (`12451:566966`). Tests, ejemplos y capturas.
 
 ## 8. Variantes: fondos y marcos
 

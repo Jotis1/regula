@@ -10,6 +10,7 @@ import {
 } from "@jotis-me/icons/logos";
 import {
 	AppIcon,
+	Avatar,
 	AvatarLabel,
 	Button,
 	CommandMenu,
@@ -474,33 +475,72 @@ export function CommandMenuExample() {
 	);
 }
 
+const equipo = [
+	{
+		id: "org",
+		label: "Organización",
+		children: [
+			{ id: "ing", label: "Ingeniería", children: [{ id: "ing1", label: "Backend" }] },
+			{
+				id: "dis",
+				label: "Diseño",
+				children: [
+					{ id: "sienna", label: "Sienna Hewitt", icon: <Avatar size="xs" initials="SH" /> },
+					{ id: "ammar", label: "Ammar Foley", icon: <Avatar size="xs" initials="AF" /> },
+					{ id: "caitlyn", label: "Caitlyn King", icon: <Avatar size="xs" initials="CK" /> },
+				],
+			},
+			{ id: "prod", label: "Producto", children: [{ id: "prod1", label: "Hoja de ruta" }] },
+		],
+	},
+	{
+		id: "proy",
+		label: "Proyectos",
+		children: [
+			{ id: "brief", label: "Brief.pdf" },
+			{ id: "zip", label: "recursos.zip", icon: "paperclip" as const },
+		],
+	},
+	{ id: "ajustes", label: "Ajustes", children: [{ id: "aj1", label: "Cuenta" }] },
+];
+
 export function TreeViewExample() {
 	return (
-		<TreeView
-			aria-label="Documentos"
-			defaultOpen={["notas", "trabajo"]}
-			defaultSelected="roadmap"
-			items={[
-				{
-					id: "notas",
-					label: "Notas",
-					children: [
-						{
-							id: "trabajo",
-							label: "Trabajo",
-							children: [
-								{ id: "roadmap", label: "roadmap.md" },
-								{ id: "pentest", label: "pentest.md" },
-							],
-						},
-						{ id: "casa", label: "Casa", children: [{ id: "mudanza", label: "mudanza.md" }] },
-						{ id: "leeme", label: "LEEME.md", meta: "2 KB" },
-					],
-				},
-				{ id: "recetas", label: "Recetas", children: [{ id: "r1", label: "paella.md" }] },
-				{ id: "arch", label: "Archivo", icon: "inbox-01" },
-			]}
-		/>
+		<div className="flex flex-wrap items-start gap-10">
+			<TreeView
+				aria-label="Documentos"
+				defaultOpen={["notas", "trabajo"]}
+				defaultSelected="roadmap"
+				items={[
+					{
+						id: "notas",
+						label: "Notas",
+						children: [
+							{
+								id: "trabajo",
+								label: "Trabajo",
+								children: [
+									{ id: "roadmap", label: "roadmap.md" },
+									{ id: "pentest", label: "pentest.md" },
+								],
+							},
+							{ id: "casa", label: "Casa", children: [{ id: "mudanza", label: "mudanza.md" }] },
+							{ id: "leeme", label: "LEEME.md", meta: "2 KB" },
+						],
+					},
+					{ id: "recetas", label: "Recetas", children: [{ id: "r1", label: "paella.md" }] },
+					{ id: "arch", label: "Archivo", icon: "inbox-01" },
+				]}
+			/>
+			<TreeView aria-label="Equipo en md" size="md" defaultOpen={["org", "dis"]} items={equipo} />
+			<TreeView
+				aria-label="Equipo con casillas"
+				type="advanced"
+				defaultOpen={["org", "dis", "proy"]}
+				defaultChecked={["sienna", "ammar", "caitlyn", "zip"]}
+				items={equipo}
+			/>
+		</div>
 	);
 }
 

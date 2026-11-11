@@ -49,7 +49,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	EmptyState: 1680,
 	FeaturedIcon: 140,
 	FileUpload: 1000,
-	FilterBar: 120,
+	FilterBar: 1180,
 	Icon: 160,
 	InlineCTA: 2600,
 	LinkCard: 250,
@@ -100,7 +100,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	Tooltip: 170,
 	CopyTooltip: 72,
 	HelpIcon: 460,
-	TreeView: 330,
+	TreeView: 860,
 	VideoPlayer: 1370,
 	Carousel: 700,
 };
