@@ -124,6 +124,7 @@ import {
 } from "./examples/overlays";
 import { BreadcrumbsExample, PaginationExample } from "./examples/paging";
 import { SidebarNavExample } from "./examples/sidebar";
+import * as slideoutCompositions from "./examples/slideout-compositions";
 import { AppStoreBadgeExample, SocialButtonExample, SocialButtonGroupExample } from "./examples/social";
 import {
 	CamFrameExample,
@@ -144,6 +145,7 @@ import { TableExample } from "./examples/table";
 // Las composiciones (design D7): un módulo por componente, en el registro con su nombre
 const compositionModules: Record<string, Record<string, unknown>> = {
 	"modal-compositions": modalCompositions,
+	"slideout-compositions": slideoutCompositions,
 };
 
 export const visualExamples: Record<string, ComponentType> = {

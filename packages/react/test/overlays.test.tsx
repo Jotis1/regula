@@ -273,6 +273,33 @@ describe("Slideout", () => {
 		expect(screen.getByRole("button", { name: "Cerrar" })).toBeTruthy();
 	});
 
+	it("icon y footerStart: icono destacado junto al título y el pie repartido; sin ellos, el HTML de siempre", async () => {
+		const { renderToStaticMarkup } = await import("react-dom/server");
+		const html = (extra: object) =>
+			renderToStaticMarkup(
+				<Slideout contained title="Filtros" actions={<Button>Aplicar</Button>} {...extra} />,
+			);
+		expect(html({ icon: undefined, footerStart: undefined })).toBe(html({}));
+		expect(html({})).toContain('class="flex gap-2 p-6"');
+		render(
+			<Slideout
+				contained
+				title="Filtros"
+				icon="filter-lines"
+				footerStart={<Button hierarchy="link-color">Guardar filtro</Button>}
+				actions={<Button>Aplicar</Button>}
+			/>,
+		);
+		const panel = screen.getByRole("dialog", { name: "Filtros" });
+		const header = screen.getByRole("heading", { name: "Filtros" }).parentElement
+			?.parentElement as HTMLElement;
+		expect(header.className).toContain("gap-4");
+		expect(header.firstElementChild?.getAttribute("aria-hidden")).toBe("true");
+		const start = screen.getByRole("button", { name: "Guardar filtro" }).parentElement as HTMLElement;
+		expect(start.className).toContain("mr-auto");
+		expect(panel.contains(screen.getByRole("button", { name: "Aplicar" }))).toBe(true);
+	});
+
 	it("axe en claro y oscuro (contained) y sobre la página", async () => {
 		await expectAccessibleInThemes(
 			<div style={{ position: "relative" }}>

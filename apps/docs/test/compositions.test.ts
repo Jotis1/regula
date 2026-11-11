@@ -6,7 +6,8 @@ import { COMPOSITION_FILES, COMPOSITIONS, compositionsOf } from "../src/visual/c
 
 // Composiciones de ejemplo (design D7, requisito «Composiciones de ejemplo»): cada tipo del Figma tiene la suya.
 // La lista sale de la propiedad `Type` del conjunto `Modal` (`4057:415205`) del Figma «Yoruverse UI v8.0», en
-// escritorio: 51 tipos (la spec decía 49; vale el Figma).
+// escritorio: 51 tipos (la spec decía 49; vale el Figma). La de `Slideout` sale del conjunto `Slide out menu`
+// (`1240:137582`): 23 tipos.
 const FIGMA = {
 	Modal: [
 		"Horizontal",
@@ -61,6 +62,31 @@ const FIGMA = {
 		"New message (empty state)",
 		"New message (filled)",
 	],
+	Slideout: [
+		"Placeholder",
+		"User profile",
+		"Messages",
+		"Message chat",
+		"Payment method",
+		"Payment details",
+		"Plan",
+		"Team members",
+		"Filters",
+		"File upload",
+		"Labels",
+		"Project details",
+		"Notification settings checkboxes",
+		"Notification settings button groups",
+		"Notifications",
+		"Order summary",
+		"Calendar event",
+		"User settings",
+		"A.I. assistant intro",
+		"A.I. assistant message",
+		"Share project",
+		"Create event",
+		"Integration",
+	],
 };
 
 const sourceOf = (component: string) =>
@@ -70,8 +96,14 @@ const sourceOf = (component: string) =>
 	);
 
 describe("composiciones", () => {
-	it("cada tipo del Figma de Modal tiene su composición, sin que falte ni sobre ninguno", () => {
+	it("cada tipo del Figma de Modal y de Slideout tiene su composición, sin que falte ni sobre ninguno", () => {
 		expect(FIGMA.Modal).toHaveLength(51);
+		expect(FIGMA.Slideout).toHaveLength(23);
+		expect(
+			compositionsOf("Slideout")
+				.map((c) => c.figma)
+				.sort(),
+		).toEqual([...FIGMA.Slideout].sort());
 		expect(
 			compositionsOf("Modal")
 				.map((c) => c.figma)
@@ -87,7 +119,11 @@ describe("composiciones", () => {
 			expect(c.composition).toBe(true);
 		}
 		expect(new Set(COMPOSITIONS.map((c) => c.name)).size).toBe(COMPOSITIONS.length);
-		expect(new Set(COMPOSITIONS.map((c) => c.title)).size).toBe(COMPOSITIONS.length);
+		// El título es único en la página de su componente
+		for (const of of new Set(COMPOSITIONS.map((c) => c.of))) {
+			const list = compositionsOf(of);
+			expect(new Set(list.map((c) => c.title)).size, of).toBe(list.length);
+		}
 	});
 
 	it("el código copiable solo importa de Regula, sin el lienzo de la web ni `contained`", () => {
@@ -102,8 +138,8 @@ describe("composiciones", () => {
 	});
 
 	it("el alto de cada composición es el de su lienzo más el margen de /visual/ (32 px)", () => {
-		const src = sourceOf("Modal");
-		for (const c of compositionsOf("Modal")) {
+		for (const c of COMPOSITIONS) {
+			const src = sourceOf(c.of);
 			const body = src.slice(src.indexOf(`export function ${c.name}Example()`));
 			const own = body.match(/^[\s\S]*?(?:<Lienzo alto=\{(\d+)\}|<(\w+) )/)?.[1];
 			const alto = own ?? src.match(/function MensajeNuevo[\s\S]*?<Lienzo alto=\{(\d+)\}/)?.[1];

@@ -58,7 +58,9 @@ function unwrap(text: string) {
 			continue;
 		}
 		if (/^\s*contained$/.test(line)) continue;
-		out.push(inside ? line.replace(/^\t/, "") : line);
+		// En la misma línea que la etiqueta: `<Slideout contained title="…">`
+		const own = line.replace(/^(\s*<[A-Z]\w*\b.*?) contained\b/, "$1");
+		out.push(inside ? own.replace(/^\t/, "") : own);
 	}
 	return out.join("\n");
 }
