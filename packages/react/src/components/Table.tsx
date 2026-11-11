@@ -654,7 +654,8 @@ function TypedTable<R>({
 			className={className}
 			footer={footer}
 		>
-			<table aria-labelledby={titleId} className="w-full border-collapse">
+			{/* `relative`: los textos ocultos (`sr-only`, en posición absoluta) se miden contra la tabla, dentro de la región que se desplaza; sin él se miden fuera y ensanchan la página en móvil */}
+			<table aria-labelledby={titleId} className="relative w-full border-collapse">
 				<thead>
 					<tr>
 						{selection ? (
