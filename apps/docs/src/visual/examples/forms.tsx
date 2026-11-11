@@ -91,6 +91,12 @@ export function TextareaExample() {
 	return (
 		<div className="grid max-w-[720px] grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
 			<Textarea label="Descripción" placeholder="Escribe una nota…" hint="Máximo 280 caracteres." />
+			<Textarea
+				label="Descripción (sm)"
+				size="sm"
+				placeholder="Escribe una nota…"
+				hint="Máximo 280 caracteres."
+			/>
 			<Textarea label="Etiquetas" defaultTags={["Diseño", "Marketing"]} hint="Dentro del campo." />
 			<Textarea
 				label="Etiquetas fuera"

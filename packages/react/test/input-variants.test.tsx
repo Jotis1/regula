@@ -367,3 +367,21 @@ describe("accesibilidad de los campos nuevos", () => {
 		await expectAccessibleInThemes(<Input label="Archivo" type="file" hint="SVG o PNG" />);
 	});
 });
+
+describe("Textarea size", () => {
+	it("sin size, el HTML de siempre; sm baja el texto, la pista y la caja como el Figma", () => {
+		const base = <Textarea label="Notas" hint="Máximo 200" />;
+		expect(renderToStaticMarkup(<Textarea label="Notas" hint="Máximo 200" size={undefined} />)).toBe(
+			renderToStaticMarkup(base),
+		);
+		expect(renderToStaticMarkup(<Textarea label="Notas" hint="Máximo 200" size="md" />)).toBe(
+			renderToStaticMarkup(base),
+		);
+		render(<Textarea label="Notas" hint="Máximo 200" size="sm" />);
+		const box = screen.getByRole("textbox", { name: "Notas" });
+		expect(box.className).toContain("text-sm");
+		expect(box.className).toContain("min-h-[86px]");
+		expect(box.parentElement?.className).toContain("px-3 py-3");
+		expect(screen.getByText("Máximo 200").className).toContain("text-xs");
+	});
+});

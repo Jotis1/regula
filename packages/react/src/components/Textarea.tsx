@@ -27,6 +27,12 @@ export interface TextareaProps extends FieldProps, TextareaHTMLAttributes<HTMLTe
 	tagPlacement?: "inside" | "outside";
 	/** Nombre accesible de la X de cada etiqueta. Por defecto, "Quitar" seguido de la etiqueta. */
 	removeTagLabel?: (tag: string) => string;
+	/**
+	 * Tamaño del Figma (`Textarea input field`, `1238:278`): `md` (texto de 16 px, caja de 128) o `sm` (texto de 14 px,
+	 * pista de 12 y caja de 110).
+	 * @default "md"
+	 */
+	size?: "sm" | "md";
 }
 
 /** Campo de texto multilínea con la misma etiqueta, pista y estados que `Input`. */
@@ -44,8 +50,10 @@ export function Textarea({
 	onTagsChange,
 	tagPlacement,
 	removeTagLabel,
+	size,
 	...rest
 }: TextareaProps) {
+	const sm = size === "sm";
 	const autoId = useId();
 	const id = givenId ?? autoId;
 	if (tags !== undefined || defaultTags !== undefined) {
@@ -70,8 +78,16 @@ export function Textarea({
 		);
 	}
 	return (
-		<FieldShell id={id} label={label} required={required} hint={hint} error={error} className={className}>
-			<div className={cx(controlClasses(undefined, error, disabled), "px-3.5 py-3")}>
+		<FieldShell
+			id={id}
+			label={label}
+			required={required}
+			hint={hint}
+			error={error}
+			className={className}
+			size={sm ? "sm" : undefined}
+		>
+			<div className={cx(controlClasses(undefined, error, disabled), sm ? "px-3 py-3" : "px-3.5 py-3")}>
 				<textarea
 					id={id}
 					rows={rows}
@@ -79,7 +95,10 @@ export function Textarea({
 					disabled={disabled}
 					{...describedBy(id, { hint, error })}
 					{...rest}
-					className={cx(nativeClasses(), "min-h-[104px] resize-y")}
+					className={cx(
+						nativeClasses(sm ? "sm" : undefined),
+						sm ? "min-h-[86px] resize-y" : "min-h-[104px] resize-y",
+					)}
 				/>
 			</div>
 		</FieldShell>

@@ -588,3 +588,64 @@ Nodo: `Color picker modal` `12427:142023`, con `Breakpoint` `Desktop` y `Mobile`
 
 - **Montaje.** `BackgroundOverlay` con desenfoque y, encima, un `role="dialog"` con el `ColorPicker` `palette` (opacidad, campo hex y guardados), como el Figma; el de móvil es el mismo en un marco de 375 px. Sin `Modal` porque el del Figma no tiene título ni pie: en una app, el diálogo necesita además atrapar el foco (`Modal`, o el popover de `ColorPickerDropdown`).
 - **JS.** Va en el límite de `/components/*/` (la página de `ColorPicker` ya cargaba el selector).
+
+## Recorrido de cobertura (13.1)
+
+Hecho el 11 de noviembre de 2026 leyendo con `use_figma` (solo lectura) cada conjunto de componentes de las páginas de Base components, Application components y Shared assets, con todas sus propiedades de variante (sin los estados `State`/`Hover`/`Focus`, que son interacción). Las piezas de marketing, iconos, logos y recursos se leyeron nodo a nodo en sus grupos (1 y 11). Las piezas internas («_») se cubren dentro de su padre. `Breakpoint=Mobile` se cubre siempre con diseño adaptable (container queries o ancho disponible), no con props.
+
+| Figma (propiedades) | Dónde se cubre |
+| --- | --- |
+| Avatar (Size xs–2xl, Border, Placeholder icon/text) · Status icon (Offline, Online, Avatar, Verified tick, Count) · Avatar add button · Avatar image | `Avatar` `size`, `border`, iniciales/icono, `status`, `badge` (`verified`, `count`, `company`); `AvatarGroup` `onAdd` (2.1) |
+| Avatar label group (sm–lg) · Avatar group (xs–md) · Avatar profile photo (Placeholder, Text, sm–lg) | `AvatarLabel`, `AvatarGroup`, `AvatarProfilePhoto` (2.1, 9.1) |
+| Badge (Size, Type pill/badge/modern, Icon: punto, país, X, avatar, icono delante/detrás/solo, 12 colores) · Badge group · Badge close X | `Badge` `size`, `type`, `dot`, `flag`, `onRemove`, `avatar`, iconos, `color`; `BadgeGroup` (2.2) |
+| Button (xs–xl, 5 jerarquías, solo icono) · destructivo · utility · loading · close X (fondo oscuro) | `Button` (`size`, `hierarchy`, `iconOnly`, `destructive`, `loading`), `ButtonUtility`, `CloseButton` (3.1) |
+| Social button (6 redes, texto, 3 temas) · Social button group · Mobile app store badge (5 tiendas, 2 estilos) | `SocialButton`, `SocialButtonGroup`, `AppStoreBadge` (9.4, 9.5) |
+| Button group (sm/md, icono delante/solo/punto) | `ButtonGroup` items `icon`, `iconOnly`, `dot`, `size` (3.1) |
+| Checkbox (Checked, Indeterminate, sm/md, Checkbox/Radio, Text) | `Checkbox` (`indeterminate`, `size`, `label`/`hint`), `Radio` |
+| Dropdown menu (14 tipos, Open) y sus piezas · Context menu (Simple/Advanced) | `Dropdown` (disparadores y `variant` `integrations`, `account-*`), `ContextMenu` (4.1) |
+| Input field (sm–lg, 14 tipos, destructivo) · Verification code (sm–lg, 4/6) · Textarea (sm/md, Default/Tags inner/outer) | `Input` (`prefix`, desplegables, `type="card"`, `trailingButton`, `revealable`, `datetime-local`, `file`), `TagInput`, `NumberInput` (`orientation`), `VerificationCodeInput` (`digits`, `size`), `Textarea` (`tags`, `tagPlacement`, **`size` añadido en 13.1**) (4.2) |
+| Progress bar (11 valores, 5 etiquetas) · Progress circle (xxs–lg, Circle/Half) | `ProgressBar` `label`, `ProgressCircle` `size`/`shape` (4.3) |
+| Radio group (sm/md, 6 tipos) e item | `RadioGroup` `appearance`/`indicator`, opciones con `icon`, `avatar`, `paymentIcon`, `media` (4.4) |
+| Select (sm–lg, 6 tipos) · Multi-select · items | `Select` (icono, avatar, punto, búsqueda, etiquetas), `MultiSelect` (4.4) |
+| Slider (etiqueta, controles) · Control handle (texto, tooltip) | `Slider` (rango, `label` `bottom`/`top-floating`) (4.3) |
+| Tag (sm–lg, país/avatar/punto, X/texto/contador, casilla) | `Tag` `size`, `flag`, `avatar`, `dot`, `onRemove`, `count`, `checkable` (2.3) |
+| Text editor (Default/Floating toolbar, sm/md), barra, tooltip, 16 iconos | `TextEditor` `toolbar`, `size` (4.5) |
+| Toggle (Default/Slim, sm/md, Text) | `Toggle` `variant`, `size`, `label`/`hint` |
+| Tooltip (texto de apoyo, 7 flechas) · Help icon (7 posiciones) | `Tooltip` y `HelpIcon` `placement` + `arrow` |
+| Video player 16:9 (sm–lg, Playing) y sus piezas | `VideoPlayer` `size` (5.1) |
+| Activity feed (4 divisores, 2 tipos) · Feed item (sm/md, Labels/File/Text, conector) | `ActivityFeed` `divider`, `type`, `size`, `supporting` (5.1) |
+| Alert (6 colores, Floating/Full-width) · Notification (9 tipos) | `Alert` `color`/`variant`; `Notification` (5.1) |
+| Sidebar navigation (5 tipos, Open) · featured card (13) · account card · Header navigation (4 tipos, Mobile open) | `SidebarNav` (`type`, `featured` con `SidebarCards`, `account`), `HeaderNav` `type` (5.2) |
+| Breadcrumbs (Chevron/Slash, 4 tipos) | `Breadcrumbs` `divider`, `type` (5.3) |
+| Calendar (Month/Week/Day), celdas, eventos (9 colores), marcador de hora | `CalendarView` (6.1) |
+| Card header (Avatar) · Section header (Tabs, 3 tipos) · Section label (sm/md, Actions) · Section footer (Section/Card, botones) · Page header (6 estilos) | `CardHeader` `avatar`, `SectionHeader`, `SectionLabel`, `SectionFooter` `card`, `PageHeader` (7.3) |
+| Line and bar chart (leyenda, ejes, Line/Bar) · Activity gauge (xs–lg, leyenda) · Pie chart (xxs–lg, hueco 0–75 %, leyenda) · Radar chart · Chart marker | `LineChart`/`BarChart` `legend` y `marker`, `ActivityGauge`, `PieChart` (`size` en px, `hole` de 0 a 1, `legend`), `RadarChart`, `ChartMarker` (6.2, 10.1) |
+| Code snippet (Horizontal/Vertical/con pestañas) | `CodeSnippet` `variant`, `tabs` (3.2) |
+| Color picker (12 tipos) · Color inputs (6 modelos) · Color picker dropdown (6) · Color picker modal | `ColorPicker` `type`/`model`, `ColorPickerDropdown`, composición (6.3, 10.2, 12.3) |
+| Command bar (6 tipos, texto apilado) e items | `CommandMenu` (grupos, `icon` con avatar o punto, `description`, `shortcut`, `emptyText`) |
+| Content divider (6 tipos, 3 estilos) | `ContentDivider` (7.1) |
+| Date picker dropdown/modal (Dual, Single, Available times) | `DatePicker` (6.2) |
+| Empty state (8 iconos, sm–lg) · Illustration (4 estilos) | `EmptyState` `media`, `illustration`, `size` |
+| File upload (cola, barra/relleno) e item (icono de tipo/simple) | `FileUpload` `progressStyle`, `fileIcon` (7.1) |
+| Filters bar (8 tipos) · Filters dropdown menu · slideout | `FilterBar`, `FilterMenu`, `FilterPanel` (7.5, 10.3) |
+| Inline CTA (7 tipos) | `InlineCTA` `type` (7.1) |
+| Loading indicator (3 estilos, sm–xl) | `Spinner` `variant`, `size` |
+| Message (9 tipos, enviado, panel de acciones), reacción, estado · Message action (3) | `Message`, `MessageInput` `variant` (7.2) |
+| Metric item (9 tipos, acciones) · Chart mini · Change | `MetricCard` (7.3) |
+| Modal (51 tipos) · Slide out menu (23 tipos) | composiciones (12.1, 12.2); `Modal` `align`/`media`/`footerStart`/`dividers`, `Slideout` `icon`/`footerStart` |
+| Pagination (10 tipos, 2 formas) · dot group (md/lg, Dot/Line, Framed) · Carousel image/arrow | `Pagination` `type` + `align`, `shape`; `PaginationDots`; `Carousel` `arrowStyle` (5.3, 11.7) |
+| Progress steps (5 conjuntos, Check/Number/Featured, sm/md) | `ProgressSteps` `type`, `marker`, `size`, `orientation` |
+| Table (4 ejemplos, divisores o franjas) · cell (15 tipos) · header cell · lead action | `Table` (7.4) |
+| Tabs horizontales (5 tipos, ancho completo) y verticales (5 tipos) | `Tabs` `type`, `fullWidth`, `orientation` (3.2) |
+| Tree view (Simple/Advanced, sm/md) | `TreeView` (7.5) |
+| Background pattern (5 tipos, sm/md) · decorative (círculos, cuadrados, sm–lg) · mask (5) · Background overlay (3, desenfoque) | `BackgroundPattern` `pattern`/`size`/`mask`, `BackgroundOverlay` (8.1, 10.4) |
+| Banner (5 tipos, 2 temas, Floating/Full-width) | `Banner` (`email`, `actions`, `slim`, `countdown`, `theme`, `layout`) |
+| Credit card (13 temas) · Browser toolbar (3, 2 temas) · Screen mockup 3:2 (xs–2xl) · Modern screen mockup · MacBook · iPhone | `CreditCard`, `BrowserFrame`, `ScreenMockup` `variant`/`size`, `LaptopMockup`, `PhoneMockup` (8.1, 10.4) |
+| Line pattern (4) · trazos a mano (flechas, subrayados, acentos, garabatos) | `@jotis-me/icons/patterns` y los trazos de `@jotis-me/icons` (ya existían) |
+| Featured icon · Check icon · Check item · Star icon · Ratings badge | `FeaturedIcon`, `CheckIcon`, `CheckItem`, `Rating`, `RatingBadge` (8.1, 9.2, 9.3) |
+| Navegación, pie y tarjetas de marketing (Header navigation, Footer, Blog, Pricing, FAQ, Team member, Testimonial, Job post) | grupo 11 |
+| Iconos (19 categorías), banderas, pagos, archivos, carpetas, cursores, logos sociales, de integración y de apps | grupo 1 y `@jotis-me/icons` |
+
+**Lo que faltaba.** Solo `Textarea` `Size` (`sm`): en 4.2 se dejó fuera porque la spec no lo pedía, pero el requisito «Cobertura del Figma» pide cada valor. Vuelve a su grupo (4.2) y se hace aquí: `size="sm"` con texto de 14 px, pista de 12, relleno de 12 y caja de 110 px; sin la prop, el HTML no cambia (test). Ejemplo, ficha y captura de `Textarea` actualizados.
+
+**Fuera, por decisión del alcance:** las secciones de página (de marketing y el `Section divider`), las pantallas (Log in, Sign up, 404, Email templates), los logos de empresa y de prensa, las páginas de ejemplos y Utility.
