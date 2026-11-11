@@ -144,11 +144,6 @@ export interface Thumbnail {
 	render: () => ReactNode;
 	/** Dónde se ancla una muestra más grande que el escenario: en el centro (por defecto), arriba o arriba a la izquierda. */
 	crop?: Crop;
-	/**
-	 * @deprecated Las muestras no se encogen: se rehacen a tamaño real (tarea 2.2 de docs-site-with-own-components).
-	 * Solo queda en las pendientes de esa tarea, que lista test/thumbs.test.ts.
-	 */
-	scale?: number;
 }
 
 const noop = () => {};
@@ -332,9 +327,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	MultiSelect: {
-		scale: 0.55,
+		crop: "top-left",
 		render: () => (
-			<div style={box(300, 330)}>
+			<div style={box(288, 330)}>
 				<MultiSelect
 					label="Equipos"
 					options={TEAMS}
@@ -392,7 +387,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	DatePicker: {
-		scale: 0.42,
+		crop: "top-left",
 		render: () => (
 			<DatePicker
 				inline
@@ -402,9 +397,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	FileUpload: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
-			<div style={box(440)}>
+			<div style={box(288)}>
 				<FileUpload
 					accept=".csv"
 					hint="CSV (máx. 10 MB)"
@@ -423,15 +418,15 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	ColorPicker: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
 			<ColorPicker defaultValue="#4f39f6" swatches={["#4f39f6", "#00a63e", "#d08700", "#e7000b"]} />
 		),
 	},
 	TextEditor: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
-			<div style={box(440)}>
+			<div style={box(288)}>
 				<TextEditor
 					label="Notas"
 					maxLength={500}
@@ -489,15 +484,15 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	Pagination: {
-		scale: 0.52,
+		crop: "top-left",
 		render: () => (
-			<div style={box(540)}>
+			<div style={box(288)}>
 				<Pagination total={10} defaultPage={3} />
 			</div>
 		),
 	},
 	SidebarNav: {
-		scale: 0.45,
+		crop: "top-left",
 		render: () => (
 			<div style={{ height: 400, display: "flex" }}>
 				<SidebarNav
@@ -519,9 +514,10 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	HeaderNav: {
+		crop: "top-left",
 		render: () => (
-			<div style={box(248)}>
-				<ScaledPreview width={1280} scale={0.19} box={[248, 62]}>
+			<div style={box(1100)}>
+				<>
 					<HeaderNav
 						type="dual-tier"
 						brand={<AppIcon app="regula" size={32} />}
@@ -539,12 +535,12 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 							{ label: "Tareas", href: "#" },
 						]}
 					/>
-				</ScaledPreview>
+				</>
 			</div>
 		),
 	},
 	ContextMenu: {
-		scale: 0.7,
+		crop: "top-left",
 		render: () => (
 			<div style={box(280)}>
 				<ContextMenu
@@ -563,7 +559,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	Dropdown: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
 			<div style={box(250, 280)}>
 				<Dropdown
@@ -580,9 +576,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	CommandMenu: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={stage(576, 360)}>
+			<div style={stage(440, 300)}>
 				<CommandMenu
 					contained
 					autoFocus={false}
@@ -610,7 +606,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	TreeView: {
-		scale: 0.75,
+		crop: "top-left",
 		render: () => (
 			<div style={box(260)}>
 				<TreeView
@@ -639,9 +635,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	BlogPostCard: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={{ width: 340 }}>
+			<div style={{ width: 288 }}>
 				<BlogPostCard
 					href="#"
 					image={
@@ -658,17 +654,17 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	SubscribeCard: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={{ width: 340 }}>
+			<div style={{ width: 288 }}>
 				<SubscribeCard description="Una vez a la semana, sin spam." />
 			</div>
 		),
 	},
 	PricingCard: {
-		scale: 0.4,
+		crop: "top-left",
 		render: () => (
-			<div style={{ width: 360 }}>
+			<div style={{ width: 288 }}>
 				<PricingCard
 					name="Básico"
 					price="10 €"
@@ -680,9 +676,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	JobPostCard: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={{ width: 480 }}>
+			<div style={{ width: 288 }}>
 				<JobPostCard
 					href="#"
 					type="card-01"
@@ -697,8 +693,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	Accordion: {
+		crop: "top-left",
 		render: () => (
-			<div style={{ width: 300 }}>
+			<div style={{ width: 288 }}>
 				<Accordion
 					defaultExpanded={["a"]}
 					items={[
@@ -710,8 +707,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	TeamMemberCard: {
+		crop: "top-left",
 		render: () => (
-			<div style={{ width: 300 }}>
+			<div style={{ width: 288 }}>
 				<TeamMemberCard
 					type="simple-left"
 					name="Ana Martín"
@@ -722,14 +720,14 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	Testimonial: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={{ width: 420 }}>
+			<div style={{ width: 288 }}>
 				<Testimonial
+					className="h-[180px] min-h-0!"
 					quote="Nos ahorra horas cada mes."
 					name="Lucía Ramos"
 					role="Diseñadora, Capas"
-					rating={5}
 					image={
 						<div
 							style={{ width: "100%", height: "100%", background: "var(--utility-brand-300)" }}
@@ -740,7 +738,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	Footer: {
-		scale: 0.4,
+		crop: "top-left",
 		render: () => (
 			<div style={{ width: 1100 }}>
 				<Footer
@@ -755,7 +753,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	MarketingNav: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
 			<div style={{ width: 1100 }}>
 				<MarketingNav
@@ -789,11 +787,11 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	FilterPanel: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
 			<div
 				style={{
-					width: 360,
+					width: 288,
 					display: "flex",
 					flexDirection: "column",
 					padding: 24,
@@ -812,9 +810,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	FilterBar: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={box(560)}>
+			<div style={box(288)}>
 				<FilterBar
 					segments={[
 						{ value: "t", label: "Todo" },
@@ -831,9 +829,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 
 	// Superposiciones
 	Modal: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
-			<div style={stage(480, 300)}>
+			<div style={stage(400, 260)}>
 				<Modal
 					contained
 					icon="trash-01"
@@ -852,9 +850,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	Slideout: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
-			<div style={stage(480, 300)}>
+			<div style={stage(300, 260)}>
 				<Slideout
 					contained
 					title="Alquiler"
@@ -902,9 +900,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 
 	// Avisos
 	Alert: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
-			<div style={box(460)}>
+			<div style={box(288)}>
 				<Alert
 					color="brand"
 					title="Hay una actualización disponible"
@@ -921,7 +919,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	Notification: {
-		scale: 0.72,
+		crop: "top-left",
 		render: () => (
 			<Notification
 				color="success"
@@ -938,9 +936,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	Banner: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={box(560)}>
+			<div style={box(288)}>
 				<Banner
 					icon="zap"
 					title="Nueva versión de Pecunia."
@@ -952,9 +950,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	EmptyState: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
-			<div style={box(420)}>
+			<div style={box(288)}>
 				<EmptyState
 					icon="search-lg"
 					title="Sin resultados"
@@ -965,9 +963,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	ProgressSteps: {
-		scale: 0.8,
+		crop: "top-left",
 		render: () => (
-			<div style={box(300)}>
+			<div style={box(288)}>
 				<ProgressSteps
 					aria-label="Alta"
 					current={1}
@@ -1022,6 +1020,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	BadgeGroup: {
+		crop: "top-left",
 		render: () => (
 			<div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 12 }}>
 				<BadgeGroup badge="Nuevo" size="lg" href="#">
@@ -1141,9 +1140,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 
 	// Datos
 	Table: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={box(560)}>
+			<div style={box(288)}>
 				<Table<Movimiento>
 					title="Movimientos"
 					count="240"
@@ -1183,9 +1182,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	ActivityFeed: {
-		scale: 0.68,
+		crop: "top-left",
 		render: () => (
-			<div style={box(380)}>
+			<div style={box(288)}>
 				<ActivityFeed
 					items={[
 						{
@@ -1213,7 +1212,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	CalendarView: {
-		scale: 0.3,
+		crop: "top-left",
 		render: () => (
 			<div style={box(760)}>
 				<CalendarView
@@ -1233,10 +1232,12 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	LineChart: {
-		scale: 0.55,
+		crop: "top-left",
 		render: () => (
-			<div style={box(500)}>
+			<div style={box(288)}>
 				<LineChart
+					width={288}
+					height={120}
 					labels={MESES}
 					series={[
 						{ name: "Gastos", data: [820, 910, 1100, 880, 1240, 1284] },
@@ -1248,10 +1249,12 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	BarChart: {
-		scale: 0.55,
+		crop: "top-left",
 		render: () => (
-			<div style={box(500)}>
+			<div style={box(288)}>
 				<BarChart
+					width={288}
+					height={120}
 					labels={MESES}
 					series={[
 						{ name: "Hogar", data: [650, 650, 650, 700, 700, 700] },
@@ -1277,9 +1280,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	RadarChart: {
-		scale: 0.42,
+		crop: "top-left",
 		render: () => (
-			<div style={{ width: 392 }}>
+			<div style={{ width: 288 }}>
 				<RadarChart
 					axes={["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]}
 					series={[
@@ -1300,7 +1303,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	PieChart: {
-		scale: 0.8,
+		crop: "top-left",
 		render: () => (
 			<PieChart
 				size={160}
@@ -1322,9 +1325,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 
 	// Maquetación
 	PageHeader: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={box(560)}>
+			<div style={box(288)}>
 				<PageHeader
 					breadcrumbs={[{ label: "Inicio", icon: "home-line" }, { label: "Pecunia" }]}
 					title="Gastos"
@@ -1335,11 +1338,11 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	CardHeader: {
-		scale: 0.55,
+		crop: "top-left",
 		render: () => (
 			<div
 				style={{
-					width: 500,
+					width: 288,
 					borderRadius: 12,
 					overflow: "hidden",
 					boxShadow: "inset 0 0 0 1px var(--border-secondary)",
@@ -1360,9 +1363,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	SectionHeader: {
-		scale: 0.55,
+		crop: "top-left",
 		render: () => (
-			<div style={box(500)}>
+			<div style={box(288)}>
 				<SectionHeader
 					title="Contactos"
 					description="Personas y empresas con las que tratas."
@@ -1393,9 +1396,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	SectionFooter: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
-			<div style={box(460)}>
+			<div style={box(288)}>
 				<SectionFooter
 					start={<Button hierarchy="link-gray">Ver ayuda</Button>}
 					actions={
@@ -1434,9 +1437,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	InlineCTA: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={box(560)}>
+			<div style={box(288)}>
 				<InlineCTA
 					icon="stars-02"
 					title="Conecta tu banco"
@@ -1449,9 +1452,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 
 	// Contenido
 	Message: {
-		scale: 0.72,
+		crop: "top-left",
 		render: () => (
-			<div style={{ display: "flex", flexDirection: "column", gap: 12, width: 380 }}>
+			<div style={{ display: "flex", flexDirection: "column", gap: 12, width: 288 }}>
 				<Message author="Emptor" avatar={{ initials: "Em" }} time="Jueves 18:02">
 					He encontrado tres aspiradoras por debajo de 300 €.
 				</Message>
@@ -1462,25 +1465,25 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	MessageInput: {
-		scale: 0.7,
+		crop: "top-left",
 		render: () => (
-			<div style={box(400)}>
+			<div style={box(288)}>
 				<MessageInput placeholder="Pregunta a Emptor…" onAttach={noop} onSend={noop} />
 			</div>
 		),
 	},
 	CodeSnippet: {
-		scale: 0.8,
+		crop: "top-left",
 		render: () => (
-			<div style={box(330)}>
+			<div style={box(288)}>
 				<CodeSnippet code={CODE} />
 			</div>
 		),
 	},
 	Carousel: {
-		scale: 0.5,
+		crop: "top-left",
 		render: () => (
-			<div style={box(480)}>
+			<div style={box(288)}>
 				<Carousel
 					aria-label="Novedades"
 					slides={[
@@ -1497,9 +1500,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	VideoPlayer: {
-		scale: 0.58,
+		crop: "top-left",
 		render: () => (
-			<div style={box(480)}>
+			<div style={box(288)}>
 				<VideoPlayer duration={252} />
 			</div>
 		),
@@ -1553,7 +1556,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	CreditCard: {
-		scale: 0.8,
+		crop: "top-left",
 		render: () => (
 			<CreditCard
 				theme="brand-dark"
@@ -1621,9 +1624,9 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	BrowserFrame: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
-			<div style={box(480)}>
+			<div style={box(288)}>
 				<BrowserFrame url="pecunia.jotis.me/resumen" height={240}>
 					<div
 						style={{
@@ -1657,7 +1660,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 	},
 
 	// Stream
-	StreamAlert: { scale: 0.55, render: () => <StreamAlert type="sub" user="nachoXL" tier={1} /> },
+	StreamAlert: { crop: "top-left", render: () => <StreamAlert type="sub" user="nachoXL" tier={1} /> },
 	StreamScene: {
 		// StreamStage no mide sin JavaScript: con `scale` fija se pinta a 288 de ancho sin medir nada (D7)
 		render: () => (
@@ -1665,26 +1668,29 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	StreamCountdown: {
-		scale: 0.7,
+		crop: "top-left",
 		render: () => <StreamCountdown size="lg" seconds={600} paused label="Empezamos en" />,
 	},
-	StreamEvents: { scale: 0.6, render: () => <StreamEvents items={EVENTS} max={4} /> },
+	StreamEvents: { crop: "top-left", render: () => <StreamEvents items={EVENTS} max={4} /> },
 	StreamStatus: {
-		scale: 0.72,
+		crop: "top-left",
 		render: () => <StreamStatus status="live" viewers={1284} uptime="2:14:05" category="Just Chatting" />,
 	},
 	StreamGoal: {
-		scale: 0.65,
+		crop: "top-left",
 		render: () => <StreamGoal label="Meta de seguidores" current={1284} goal={2000} />,
 	},
 	NowPlaying: {
-		scale: 0.75,
+		crop: "top-left",
 		render: () => (
 			<NowPlaying title="Cuatro paredes y un techo" artist="Los Vecinos del Quinto" progress={0.42} />
 		),
 	},
 	CamFrame: { render: () => <CamFrame ratio="16:9" width={256} live name="Tu canal" /> },
-	ChatBox: { scale: 0.58, render: () => <ChatBox messages={CHAT.slice(1)} height={250} width={300} /> },
+	ChatBox: {
+		crop: "top-left",
+		render: () => <ChatBox messages={CHAT.slice(1)} height={250} width={300} />,
+	},
 	ChatBadge: {
 		render: () => (
 			<div style={row}>
@@ -1695,7 +1701,7 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	ChannelPanel: {
-		scale: 0.6,
+		crop: "top-left",
 		render: () => (
 			<ChannelPanel
 				title="Horario"

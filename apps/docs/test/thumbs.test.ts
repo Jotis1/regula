@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { catalogComponents } from "../src/lib/catalog";
 import { THUMBNAILS } from "../src/visual/thumbnails";
-import { CROP_ALIGN, FADE, fadeMask, PREVIEW_BOX, SHRUNK_PENDING } from "../src/visual/thumbs";
+import { CROP_ALIGN, FADE, fadeMask, PREVIEW_BOX } from "../src/visual/thumbs";
 
 /** El trozo del fuente de cada muestra, para ver si pinta un `ScaledPreview`. */
 function sourceOf(): Record<string, string> {
@@ -19,26 +19,14 @@ function sourceOf(): Record<string, string> {
 }
 
 describe("muestras de las cards a tamaño real", () => {
-	it("ninguna muestra se encoge, salvo las pendientes de 2.2", () => {
+	it("ninguna muestra se encoge: ni declara escala ni pinta un ScaledPreview (salvo la del propio ScaledPreview)", () => {
 		const source = sourceOf();
-		const shrunk = Object.entries(THUMBNAILS)
-			.filter(
-				([name, t]) =>
-					(t.scale ?? 1) < 1 ||
-					(name !== "ScaledPreview" && /<ScaledPreview\b/.test(source[name] ?? "")),
-			)
-			.map(([name]) => name)
-			.sort();
-		expect(shrunk, "muestras encogidas: rehacerlas a tamaño real").toEqual([...SHRUNK_PENDING].sort());
-	});
-
-	it("una muestra que declara escala la declara menor que 1 y mayor que 0 (solo las pendientes)", () => {
-		for (const [name, t] of Object.entries(THUMBNAILS)) {
-			if (t.scale === undefined) continue;
-			expect(SHRUNK_PENDING, name).toContain(name);
-			expect(t.scale, name).toBeGreaterThan(0);
-			expect(t.scale, name).toBeLessThan(1);
-		}
+		const shrunk = Object.keys(THUMBNAILS).filter(
+			(name) =>
+				(name !== "ScaledPreview" && /<ScaledPreview[\s>]/.test(source[name] ?? "")) ||
+				/[\s{,]scale: [0-9.]+/.test(source[name] ?? ""),
+		);
+		expect(shrunk, "muestras encogidas: rehacerlas a tamaño real").toEqual([]);
 	});
 
 	it("cada componente del catálogo tiene su muestra", () => {

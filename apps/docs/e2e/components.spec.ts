@@ -4,7 +4,6 @@ import { join } from "node:path";
 import { expect, type Locator, type Page, test } from "@playwright/test";
 import { PNG } from "pngjs";
 import { labelOf } from "../src/lib/catalog";
-import { SHRUNK_PENDING } from "../src/visual/thumbs";
 
 /** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
 async function hydrated(page: Page, selector: string) {
@@ -419,8 +418,7 @@ test("/components/: ninguna de las vistas previas sale vacía (también StreamSc
 	expect(blank).toEqual([]);
 });
 
-// Las muestras del índice se pintan a su tamaño real: ninguna se encoge con `transform: scale()` (design D2). Las que
-// aún se rehacen (SHRUNK_PENDING) quedan fuera hasta la tarea 2.2.
+// Las muestras del índice se pintan a su tamaño real: ninguna se encoge con `transform: scale()` (design D2).
 test("ninguna muestra del índice se encoge", async ({ page }) => {
 	await page.goto("/components/");
 	const scales = await page.locator("[data-live-preview]").evaluateAll((els) =>
@@ -432,6 +430,6 @@ test("ninguna muestra del índice se encoge", async ({ page }) => {
 		}),
 	);
 	expect(scales.length).toBeGreaterThan(100);
-	const shrunk = scales.filter((s) => s.scale < 1 && !SHRUNK_PENDING.includes(s.name)).map((s) => s.name);
-	expect(shrunk, "muestras encogidas fuera de la lista de pendientes").toEqual([]);
+	const shrunk = scales.filter((s) => s.scale < 1).map((s) => s.name);
+	expect(shrunk, "muestras encogidas").toEqual([]);
 });
