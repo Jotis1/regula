@@ -88,6 +88,7 @@ export const coreNames = [
 	"slash-divider",
 	"chevron-left-double",
 	"chevron-right-double",
+	"switch-horizontal-01",
 ] as const;
 
 export type IconName = (typeof coreNames)[number];

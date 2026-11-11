@@ -85,7 +85,16 @@ const usage: Record<string, string> = {
 	times={["09:00", "09:30", "10:00", "10:30"]}
 	onApply={({ start, time }) => reservar(start, time)}
 />`,
-	ColorPicker: `<ColorPicker defaultValue="#4f39f6" swatches={["#4f39f6", "#00a63e"]} onChange={guardar} />`,
+	ColorPicker: `<ColorPicker defaultValue="#4f39f6" swatches={["#4f39f6", "#00a63e"]} onChange={guardar} />
+
+// Tipos del Figma: el panel de pestañas, con modelo de color, opacidad y degradado
+<ColorPicker
+	type="solid"
+	defaultModel="hsl"
+	onChange={(hex, opacidad) => guardar(hex, opacidad)}
+	onGradientChange={(paradas) => guardarDegradado(paradas)}
+	onImageChange={(archivo) => subir(archivo)}
+/>`,
 	TextEditor: `<TextEditor label="Notas" maxLength={500} onChange={guardar} />`,
 	MessageInput: `<MessageInput placeholder="Pregunta a Emptor…" onSend={enviar} />`,
 	Tabs: `<Tabs

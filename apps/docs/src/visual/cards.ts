@@ -38,7 +38,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	CloseButton: 160,
 	ButtonUtility: 170,
 	CodeSnippet: 690,
-	ColorPicker: 420,
+	ColorPicker: 2800,
 	CommandMenu: 520,
 	ContentDivider: 200,
 	CreditCard: 460,

@@ -89,7 +89,16 @@ export { ChatBox, type ChatBoxProps, type ChatMessage, type ChatTone } from "./c
 export { Checkbox, type CheckboxProps } from "./components/Checkbox.js";
 export { CloseButton, type CloseButtonProps } from "./components/CloseButton.js";
 export { CodeSnippet, type CodeSnippetProps, type CodeSnippetTab } from "./components/CodeSnippet.js";
-export { ColorPicker, type ColorPickerProps } from "./components/ColorPicker.js";
+export {
+	type ColorImageAdjustments,
+	type ColorImageFill,
+	type ColorModel,
+	ColorPicker,
+	type ColorPickerLabels,
+	type ColorPickerProps,
+	type ColorPickerType,
+	type GradientStop,
+} from "./components/ColorPicker.js";
 export {
 	type CommandGroup,
 	type CommandItem,

@@ -30,7 +30,7 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	Slider: "forms",
 	FileUpload: "forms",
 	DatePicker: "forms",
-	ColorPicker: "forms",
+	ColorPicker: "color",
 	TextEditor: "forms",
 	MessageInput: "forms",
 	MultiSelect: "forms",

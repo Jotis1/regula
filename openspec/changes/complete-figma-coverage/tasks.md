@@ -96,7 +96,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 
 - [x] 6.1 `CalendarView`: vistas `week` y `day` (`8022:24550` y sus piezas), con columna de horas, eventos de 30 a 120 min en nueve colores, línea de hora actual y selector de vista. Tests de posición de eventos y de la línea con `today` fijo. Ejemplos y capturas en escritorio y móvil.
 - [x] 6.2 `LineChart`/`BarChart`: `legend` `top`/`right` y `axisLabels` (`1062:46989`). `DatePicker`: `times` y `presentation="modal"` (`1150:16803`, `1547:269867`), con tests de elegir día y hora. Ejemplos y capturas.
-- [ ] 6.3 `ColorPicker` (`12423:52680`, `12304:616891`): los doce `type` y los cinco `model`, con `onGradientChange`. Tests:
+- [x] 6.3 `ColorPicker` (`12423:52680`, `12304:616891`): los doce `type` y los cinco `model`, con `onGradientChange`. Tests:
   - mismo color al cambiar de modelo;
   - paradas de degradado con el teclado;
   - subida de imagen por `input type=file`.

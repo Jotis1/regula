@@ -15,7 +15,8 @@ const original: Record<string, string[]> = JSON.parse(
 describe("núcleo y set completo", () => {
 	it("el núcleo son los 82 de antes más los que han pedido los componentes", () => {
 		// Cada icono nuevo del núcleo lo pide un componente de @jotis-me/react: type-01, el selector de letra de TextEditor, y
-		// slash-divider y los dos chevrones dobles, de Breadcrumbs y Pagination
+		// slash-divider y los dos chevrones dobles, de Breadcrumbs y Pagination, y switch-horizontal-01, el de invertir el
+		// degradado de ColorPicker
 		expect([...iconNames].sort()).toEqual(
 			[
 				...Object.keys(original),
@@ -23,6 +24,7 @@ describe("núcleo y set completo", () => {
 				"slash-divider",
 				"chevron-left-double",
 				"chevron-right-double",
+				"switch-horizontal-01",
 			].sort(),
 		);
 	});

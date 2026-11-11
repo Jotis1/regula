@@ -11,6 +11,7 @@ import {
 import { AppIconExample } from "./examples/brand";
 import { CalendarViewExample } from "./examples/calendar";
 import { BarChartExample, ChartLegendExample, LineChartExample, PieChartExample } from "./examples/charts";
+import { ColorPickerExample } from "./examples/color";
 import {
 	ActivityFeedExample,
 	CodeSnippetExample,
@@ -37,7 +38,6 @@ import {
 } from "./examples/feedback";
 import {
 	CheckboxExample,
-	ColorPickerExample,
 	DatePickerExample,
 	FileUploadExample,
 	InputExample,

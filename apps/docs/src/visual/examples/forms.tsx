@@ -10,7 +10,6 @@ import {
 import {
 	Avatar,
 	Checkbox,
-	ColorPicker,
 	DatePicker,
 	FeaturedIcon,
 	FileUpload,
@@ -427,24 +426,6 @@ function DatePickerRango() {
 				{ label: "Este mes", start: new Date(2026, 9, 1), end: new Date(2026, 9, 31) },
 				{ label: "Mes pasado", start: new Date(2026, 8, 1), end: new Date(2026, 8, 30) },
 				{ label: "Este año", start: new Date(2026, 0, 1), end: new Date(2026, 11, 31) },
-			]}
-		/>
-	);
-}
-
-export function ColorPickerExample() {
-	return (
-		<ColorPicker
-			defaultValue="#4f39f6"
-			swatches={[
-				"#4f39f6",
-				"#615fff",
-				"#00a63e",
-				"#d08700",
-				"#e7000b",
-				"#00a6f4",
-				"#e12afb",
-				"#171717",
 			]}
 		/>
 	);
