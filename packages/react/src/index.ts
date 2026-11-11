@@ -1,4 +1,10 @@
-export { ActivityFeed, type ActivityFeedProps, type ActivityItem } from "./components/ActivityFeed.js";
+export {
+	type ActivityDivider,
+	ActivityFeed,
+	type ActivityFeedProps,
+	type ActivityItem,
+	type ActivitySupporting,
+} from "./components/ActivityFeed.js";
 export { Alert, type AlertProps } from "./components/Alert.js";
 export {
 	AppIcon,
@@ -269,7 +275,12 @@ export {
 	VerificationCodeInput,
 	type VerificationCodeInputProps,
 } from "./components/VerificationCodeInput.js";
-export { VideoPlayer, type VideoPlayerLabels, type VideoPlayerProps } from "./components/VideoPlayer.js";
+export {
+	VideoPlayer,
+	type VideoPlayerLabels,
+	type VideoPlayerProps,
+	type VideoPlayerSize,
+} from "./components/VideoPlayer.js";
 export { useCopy } from "./hooks/use-copy.js";
 export type { ChartSeries } from "./internal/chart.js";
 export type { ChoiceSize } from "./internal/choice.js";

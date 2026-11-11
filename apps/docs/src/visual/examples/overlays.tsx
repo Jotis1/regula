@@ -21,6 +21,7 @@ import {
 	Button,
 	CopyTooltip,
 	EmptyState,
+	FeaturedIcon,
 	HelpIcon,
 	Input,
 	Modal,
@@ -182,18 +183,61 @@ export function AlertExample() {
 
 export function NotificationExample() {
 	return (
-		<Notification
-			color="success"
-			title="Pago registrado"
-			description="Has añadido 42,50 € a Suscripciones."
-			onClose={() => {}}
-			actions={
-				<>
-					<Button hierarchy="link-gray">Deshacer</Button>
-					<Button hierarchy="link-color">Ver gasto</Button>
-				</>
-			}
-		/>
+		<div className="flex flex-col items-start gap-6">
+			<Notification
+				color="success"
+				title="Pago registrado"
+				description="Has añadido 42,50 € a Suscripciones."
+				onClose={() => {}}
+				actions={
+					<>
+						<Button hierarchy="link-gray">Deshacer</Button>
+						<Button hierarchy="link-color">Ver gasto</Button>
+					</>
+				}
+			/>
+			<Notification
+				title="Katherine Moss"
+				time="Hace 2 min"
+				description="He terminado mis notas. Lo revisamos cuando quieras."
+				avatar={{ initials: "KM", status: "online" }}
+				onClose={() => {}}
+				actions={
+					<>
+						<Button hierarchy="link-gray">Descartar</Button>
+						<Button hierarchy="link-color">Responder</Button>
+					</>
+				}
+			/>
+			<Notification
+				title="Subiendo «web-final-06.fig»"
+				description="Espera mientras subimos el archivo."
+				progress={60}
+				onClose={() => {}}
+				actions={
+					<>
+						<Button hierarchy="link-gray">Cancelar</Button>
+						<Button hierarchy="link-color">Subir otro</Button>
+					</>
+				}
+			/>
+			<Notification
+				title="Nueva versión de Pecunia"
+				description="Los presupuestos y las exportaciones cargan más rápido."
+				image={
+					<div className="flex size-full items-center justify-center bg-brand-secondary">
+						<FeaturedIcon icon="zap" color="brand" size="lg" />
+					</div>
+				}
+				onClose={() => {}}
+				actions={
+					<>
+						<Button hierarchy="link-gray">Descartar</Button>
+						<Button hierarchy="link-color">Novedades</Button>
+					</>
+				}
+			/>
+		</div>
 	);
 }
 

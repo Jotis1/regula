@@ -1,5 +1,6 @@
 // Puertos de las vistas previas de datos de la guía (reference/components/*/preview.html).
 
+import { FileDocumentPdf } from "@jotis-me/icons/files";
 import {
 	ActivityFeed,
 	Badge,
@@ -121,6 +122,57 @@ export function ActivityFeedExample() {
 						avatar: { initials: "Pe" },
 						time: "09:16",
 						text: "Recalculó el presupuesto de octubre.",
+					},
+				]}
+			/>
+			<ActivityFeed
+				divider="none"
+				items={[
+					{
+						author: "Ana Ruiz",
+						avatar: { initials: "AR" },
+						time: "Hace 5 min",
+						text: (
+							<>
+								Etiquetó <strong>Viaje a Lisboa</strong>.
+							</>
+						),
+						supporting: { type: "tags", tags: ["Vacaciones", "Compartido"] },
+					},
+					{
+						author: "Luis Gil",
+						avatar: { initials: "LG" },
+						time: "Hace 1 h",
+						text: "Comentó en Presupuesto de octubre.",
+						supporting: { type: "text", text: "¿Subimos el límite de ocio a 150 €?" },
+					},
+				]}
+			/>
+			<ActivityFeed
+				type="messages"
+				divider="divider"
+				items={[
+					{
+						author: "Lana Steiner",
+						avatar: { initials: "LS" },
+						handle: "@lana",
+						time: "Ahora",
+						text: "Me parece bien, ¡gracias!",
+						online: true,
+						unread: true,
+					},
+					{
+						author: "Orlando Díaz",
+						avatar: { initials: "OD" },
+						handle: "@orlando",
+						time: "15:42",
+						text: "Ficha técnica",
+						supporting: {
+							type: "file",
+							name: "ficha-tecnica-02.pdf",
+							size: "720 KB",
+							icon: <FileDocumentPdf size={40} />,
+						},
 					},
 				]}
 			/>

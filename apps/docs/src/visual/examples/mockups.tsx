@@ -165,8 +165,15 @@ export function CreditCardExample() {
 
 export function VideoPlayerExample() {
 	return (
-		<div style={{ maxWidth: 640 }}>
-			<VideoPlayer duration={252} />
+		<div className="flex flex-col gap-6">
+			<div style={{ maxWidth: 640 }}>
+				<VideoPlayer duration={252} />
+			</div>
+			<div className="flex flex-wrap items-start gap-6">
+				<VideoPlayer size="sm" duration={504} style={{ width: 320, maxWidth: "100%" }} />
+				<VideoPlayer size="md" duration={504} style={{ width: 560, maxWidth: "100%" }} />
+				<VideoPlayer size="lg" duration={504} style={{ width: 720, maxWidth: "100%" }} />
+			</div>
 		</div>
 	);
 }

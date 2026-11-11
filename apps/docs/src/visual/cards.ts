@@ -9,7 +9,7 @@ export const VIEWPORT_WIDTH = 800;
  * artefacto generado (`@dsCard height`). Los 74 originales son los de la guía `9fe2`; un componente nuevo trae el suyo.
  */
 export const CARD_HEIGHTS: Record<string, number> = {
-	ActivityFeed: 330,
+	ActivityFeed: 540,
 	Alert: 300,
 	AppIcon: 670,
 	Avatar: 392,
@@ -63,7 +63,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	VerificationCodeInput: 302,
 	MetricCard: 190,
 	Modal: 380,
-	Notification: 170,
+	Notification: 650,
 	NowPlaying: 262,
 	PageHeader: 200,
 	Pagination: 80,
@@ -101,7 +101,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	CopyTooltip: 72,
 	HelpIcon: 460,
 	TreeView: 330,
-	VideoPlayer: 400,
+	VideoPlayer: 1370,
 	Carousel: 700,
 };
 

@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { cx } from "../internal/cx.js";
 import { ALERT_BASE, type AlertProps, alertBody } from "./Alert.js";
+import { Avatar, type AvatarProps } from "./Avatar.js";
+import { FeaturedIcon } from "./FeaturedIcon.js";
+import { ProgressBar } from "./ProgressBar.js";
 
 export interface NotificationProps extends Omit<AlertProps, "variant"> {
 	/**
@@ -12,13 +15,38 @@ export interface NotificationProps extends Omit<AlertProps, "variant"> {
 	 * @default 6000
 	 */
 	autoClose?: number | false;
+	/**
+	 * Imagen del aviso (Figma «Image»): la URL de una foto o un nodo. En un contenedor de 448px o más va a la
+	 * izquierda, de 160px de ancho; en uno más estrecho, arriba. Es decorativa (el título ya dice de qué va).
+	 */
+	image?: string | ReactNode;
+	/** Avatar de quien lo envía, en el sitio del icono (Figma «Avatar»). Con `time`, el aviso es un mensaje. */
+	avatar?: AvatarProps;
+	/** Hora o tiempo junto al título, como «Hace 2 min». Pensado para `avatar`. */
+	time?: ReactNode;
+	/**
+	 * Progreso de 0 a 100 (Figma «Progress indicator»): una barra con el porcentaje bajo el texto, anunciada como
+	 * `progressbar`. Sin `icon` lleva `upload-cloud-02` en un cuadro.
+	 */
+	progress?: number;
+	/** Nombre accesible de la barra de `progress`. Por defecto, el título. */
+	progressLabel?: string;
 }
 
 /**
- * Aviso flotante y temporal (toast) tras una acción del usuario, de 320px de ancho. La app lo coloca abajo a la
- * derecha, apilado; se cierra solo a los 6 s salvo que tenga acciones.
+ * Aviso flotante y temporal (toast) tras una acción del usuario, de 320px de ancho (560px con imagen o avatar).
+ * La app lo coloca abajo a la derecha, apilado; se cierra solo a los 6 s salvo que tenga acciones.
  */
-export function Notification({ autoClose = 6000, className, ...props }: NotificationProps) {
+export function Notification({
+	autoClose = 6000,
+	className,
+	image,
+	avatar,
+	time,
+	progress,
+	progressLabel,
+	...props
+}: NotificationProps) {
 	const { color = "gray", onClose, actions } = props;
 	const enabled = autoClose !== false && !!onClose && !actions;
 	const [hovered, setHovered] = useState(false);
@@ -38,6 +66,23 @@ export function Notification({ autoClose = 6000, className, ...props }: Notifica
 		};
 	}, [enabled, paused]);
 
+	const hasImage = image !== undefined && image !== null && image !== false;
+	const wide = hasImage || !!avatar;
+	const lead = avatar ? (
+		<Avatar size="md" {...avatar} />
+	) : progress !== undefined && props.icon === undefined ? (
+		<FeaturedIcon icon="upload-cloud-02" color="gray" size="md" variant="modern" />
+	) : undefined;
+	const extra =
+		progress !== undefined ? (
+			<ProgressBar
+				value={progress}
+				label="bottom"
+				aria-label={progressLabel ?? (typeof props.title === "string" ? props.title : undefined)}
+			/>
+		) : undefined;
+	const body = alertBody({ ...props, lead, time, extra });
+
 	return (
 		// biome-ignore lint/a11y/noStaticElementInteractions: ratón y foco solo paran el cierre automático; no es un control
 		<div
@@ -50,11 +95,26 @@ export function Notification({ autoClose = 6000, className, ...props }: Notifica
 			}}
 			className={cx(
 				ALERT_BASE,
-				"w-full max-w-[var(--width-xxs)] rounded-xl shadow-[var(--shadow-lg),inset_0_0_0_1px_var(--border-secondary_alt)]",
+				"w-full",
+				wide ? "max-w-[var(--width-md)]" : "max-w-[var(--width-xxs)]",
+				"rounded-xl shadow-[var(--shadow-lg),inset_0_0_0_1px_var(--border-secondary_alt)]",
+				hasImage && "@container flex-col gap-0 overflow-hidden p-0",
 				className,
 			)}
 		>
-			{alertBody(props)}
+			{hasImage ? (
+				<div className="flex flex-col @md:flex-row">
+					<div
+						aria-hidden="true"
+						className="h-40 shrink-0 overflow-hidden bg-secondary @md:h-auto @md:w-40 [&>img]:size-full [&>img]:object-cover"
+					>
+						{typeof image === "string" ? <img src={image} alt="" /> : image}
+					</div>
+					<div className="flex min-w-0 flex-1 gap-4 p-4 @md:pl-5">{body}</div>
+				</div>
+			) : (
+				body
+			)}
 		</div>
 	);
 }

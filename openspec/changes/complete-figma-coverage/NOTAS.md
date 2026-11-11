@@ -223,3 +223,26 @@ Nodos: `Text editor` `9292:559325` (`Default` y `Floating toolbar`, `sm` y `md`)
 - **Núcleo de iconos:** `type-01` (selector de letra) pasa al núcleo de `@jotis-me/icons`, que queda en 83; el test del núcleo lista los añadidos por componente y el texto de `/icons/` y de «Iconografía» dice 83.
 - **Peso:** `TextEditor` pasa de 27 a 96 kB gzip (arrastra `Popover`, `Dialog`, `Tooltip` y `OptionSelect`); límite a 105.984. Es el mayor salto del cambio. Si molestara, la barra avanzada y el selector de color podrían cargarse con `React.lazy` a costa de pintar la barra tras hidratar. `AvatarGroup` sube a 47.616 (+0,1 kB por el icono del núcleo, estaba al límite). `check:js` sin tocar: ninguna página pasó de su límite.
 - **Ejemplo y capturas:** cuatro editores (el de siempre, simple `sm`, avanzada a ancho completo y flotante `sm`, con la pista «Selecciona texto para ver la barra», porque la barra solo sale al seleccionar). Alto de la tarjeta, de 300 a 900.
+
+## VideoPlayer, ActivityFeed y Notification (5.1)
+
+Nodos: `Video player 16:9` `9264:576771`, `Activity feed` `1254:128631` y `Notification` `1135:618`.
+
+- **`VideoPlayer size`:** `sm`, `md` y `lg` del Figma. Sin `size`, el reproductor de siempre con el mismo HTML (test contra fixture). Botones con 8 px de relleno e iconos de 16, degradado de transparente a negro al 30 %, esquinas `radius-lg` (`sm`, `md`) y `radius-xl` (`lg`).
+  - `sm`: reproducir, volumen y pantalla completa, sin progreso.
+  - `md`: reproducir, «00:00», progreso de 8 px, «-08:24», volumen y pantalla completa.
+  - `lg`: reproducir, volumen con deslizador de 44 px, progreso, velocidad y pantalla completa. La velocidad rota 1x → 1.25x → 1.5x → 2x → 0.5x con `playbackRate`.
+  - **Diferencias con el Figma:** sin **AirPlay** (es una API solo de Safari, `webkitShowPlaybackTargetPicker`; en el resto de navegadores sería un botón que no hace nada). Sin la **marca de buffer** (el Figma pinta lo cargado al 30 %; el `<input type=range>` no la tiene) ni la **vista previa al pasar por la barra** (necesita miniaturas del vídeo). Sin los **tooltips con atajo** («Play · Space»): el componente no programa atajos de teclado. El icono de pausa es `pause-circle` (el núcleo no tiene `pause`), como antes.
+  - El ancho lo pone quien lo usa (el alto sigue 16:9); el Figma fija 320, 560 y 720.
+- **`ActivityFeed`:** `divider` (`line`, `divider`, `connector`, `none`) con `connector` como alias; sin las props nuevas, el HTML es el de antes (fixture) y `divider="connector"` pinta lo mismo que `connector`.
+  - **`line` y `divider` se pintan igual** (línea `border-secondary` entre elementos, 16 px de hueco). En el Figma, `Line` está en el feed de notificaciones y `Divider` en el de mensajes, con la misma línea de 1 px; no hay diferencia visible que justifique dos estilos.
+  - `type="messages"`: autor `text-sm-medium`, hora `text-xs`, usuario (`handle`) debajo y el texto en una burbuja `border-secondary` con la esquina superior izquierda recta, como el `Message bubble` del Figma.
+  - `supporting`: etiquetas (`Tag md`), archivo (icono como nodo por D3, por defecto `file-04`; nombre y tamaño) y texto en recuadro. En `messages`, el elemento de apoyo va en lugar de la burbuja (el Figma no pinta las dos a la vez).
+- **`Notification`:** `image`, `avatar` (+ `time`) y `progress` (+ `progressLabel`). `alertBody` acepta lo que va en el sitio del icono, la hora y lo de bajo el texto; sin ellos el HTML de `Alert` y `Notification` es el de antes (fixture).
+  - **Imagen:** decorativa. Con 448 px o más de contenedor va a la izquierda (160 px de ancho, a sangre); más estrecho, arriba (160 px de alto). **Diferencia con el Figma móvil:** allí la imagen va dentro del relleno, debajo del texto y encima de las acciones; aquí va arriba y a sangre, porque las acciones son parte del cuerpo y reordenar obligaría a pintar la imagen dos veces. La X queda arriba a la derecha de la tarjeta.
+  - **Avatar:** `Avatar md` en el sitio del icono y la hora en `text-quaternary` junto al título.
+  - **Progreso:** `ProgressBar label="bottom"` con el título como nombre, e icono `upload-cloud-02` en `FeaturedIcon modern` gris. El texto es «60%», no «60% uploaded...» del Figma: el porcentaje es el de `ProgressBar` y lo que sube ya lo dice el título.
+  - Con imagen o avatar el ancho máximo pasa de 320 a 560 px (`--width-md`), como los 504 y 544 de las instancias del Figma.
+- **Peso:** `ActivityFeed` de 26,5 a 27,5 kB (importa `Tag`) y `Notification` de 27 a 27,8 kB (`Avatar` y `ProgressBar`); los dos límites a 28.672. `VideoPlayer` 23,7 kB, dentro.
+- **Ejemplos:** `VideoPlayer` con el de siempre y los tres tamaños; `ActivityFeed` con dos feeds nuevos (sin divisor con etiquetas y texto, y mensajes con un PDF de `@jotis-me/icons/files`); `Notification` con los cuatro tipos (éxito, avatar, progreso e imagen hecha con `FeaturedIcon`, sin fotos).
+- **Capturas:** alto de las tarjetas en `cards.ts`: `VideoPlayer` 400 → 1370, `ActivityFeed` 330 → 540, `Notification` 170 → 650, para que entren los ejemplos nuevos (con el alto de antes la captura solo enseñaba el primero). Revisadas en claro y oscuro.

@@ -1,5 +1,5 @@
 {
-	"ActivityFeed": 27136,
+	"ActivityFeed": 28672,
 	"Alert": 27136,
 	"AppIcon": 12288,
 	"Avatar": 26624,
@@ -52,7 +52,7 @@
 	"MetricCard": 27648,
 	"Modal": 50688,
 	"MultiSelect": 93184,
-	"Notification": 27648,
+	"Notification": 28672,
 	"NowPlaying": 26624,
 	"NumberInput": 57344,
 	"PageHeader": 26624,
