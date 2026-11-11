@@ -226,6 +226,15 @@ const usage: Record<string, string> = {
 	FilterPanel: `<Slideout title="Filtros" description="Añade filtros para acotar los resultados." onClose={cerrar}>
 	<FilterPanel fields={campos} operators={operadores} defaultValue={filtros} onApply={aplicar} />
 </Slideout>`,
+	BlogPostCard: `<BlogPostCard
+	href="/blog/50-30-20"
+	image={<img src="/portadas/50-30-20.jpg" alt="" />}
+	category="Ahorro"
+	title="La regla del 50/30/20"
+	description="Reparte tu sueldo en tres partes sin hojas de cálculo."
+	author={{ name: "Ana Martín", date: "20 ene 2027" }}
+/>`,
+	SubscribeCard: `<SubscribeCard description="Una vez a la semana, sin spam." onSubscribe={suscribir} />`,
 	Footer: `<Footer
 	type="large-01"
 	brand={<a href="/">Regula</a>}

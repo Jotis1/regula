@@ -22,6 +22,8 @@ import {
 	AppStoreBadge,
 	AvatarGroup,
 	Badge,
+	BlogPostCard,
+	type BlogPostCardType,
 	Button,
 	Footer,
 	type FooterColumn,
@@ -34,6 +36,7 @@ import {
 	NavMenu,
 	RatingBadge,
 	ScaledPreview,
+	SubscribeCard,
 } from "@jotis-me/react";
 import type { ReactNode } from "react";
 
@@ -503,6 +506,95 @@ export function FooterExample() {
 					<Pie type="large-01" />
 				</div>
 			</figure>
+		</div>
+	);
+}
+
+/** Una portada sin fotos: un degradado de la marca con un dibujo. */
+const Portada = ({ tono }: { tono: string }) => (
+	<div className={`flex size-full items-center justify-center ${tono}`}>
+		<div className="size-1/3 rounded-full bg-primary/40 shadow-[var(--shadow-xl)]" />
+	</div>
+);
+const ENTRADA = {
+	href: "#",
+	title: "La regla del 50/30/20",
+	description:
+		"Reparte tu sueldo en tres partes sin hojas de cálculo y sin perder de vista lo que importa.",
+	category: "Ahorro",
+	readTime: "8 min de lectura",
+	author: { name: "Ana Martín", date: "20 ene 2027" },
+	tags: [
+		{ label: "Ahorro" },
+		{ label: "Sueldo", color: "blue" as const },
+		{ label: "Hábitos", color: "pink" as const },
+	],
+};
+const TONOS = ["bg-utility-brand-200", "bg-utility-sky-200", "bg-utility-pink-200", "bg-utility-green-200"];
+
+/** Los ocho tipos en vertical y dos en horizontal. */
+export function BlogPostCardExample() {
+	const tipos: BlogPostCardType[] = [
+		"simple-01",
+		"simple-02",
+		"simple-03",
+		"simple-04",
+		"card-01",
+		"card-02",
+		"card-03",
+		"card-04",
+	];
+	return (
+		<div className="flex flex-col gap-10">
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-8">
+				{tipos.map((type, i) => (
+					<BlogPostCard
+						key={type}
+						type={type}
+						{...ENTRADA}
+						image={<Portada tono={TONOS[i % 4] as string} />}
+					/>
+				))}
+			</div>
+			<div className="grid gap-8">
+				<BlogPostCard
+					{...ENTRADA}
+					orientation="horizontal"
+					image={<Portada tono="bg-utility-brand-200" />}
+				/>
+				<BlogPostCard
+					{...ENTRADA}
+					type="card-01"
+					orientation="horizontal"
+					image={<Portada tono="bg-utility-sky-200" />}
+				/>
+			</div>
+		</div>
+	);
+}
+
+/** Por defecto y con la raya de marca. */
+export function SubscribeCardExample() {
+	const privacidad = (
+		<>
+			Lee nuestra{" "}
+			<a href="/foundations/content/" className="text-tertiary underline">
+				política de privacidad
+			</a>
+			.
+		</>
+	);
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-8">
+			<SubscribeCard
+				description="Sin spam. Solo novedades, consejos y entrevistas, una vez a la semana."
+				privacy={privacidad}
+			/>
+			<SubscribeCard
+				type="line"
+				description="Sin spam. Solo novedades, consejos y entrevistas, una vez a la semana."
+				privacy={privacidad}
+			/>
 		</div>
 	);
 }

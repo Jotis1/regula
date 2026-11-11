@@ -27,6 +27,7 @@ import {
 	BadgeGroup,
 	Banner,
 	BarChart,
+	BlogPostCard,
 	Breadcrumbs,
 	BrowserFrame,
 	Button,
@@ -116,6 +117,7 @@ import {
 	StreamGoal,
 	StreamScene,
 	StreamStatus,
+	SubscribeCard,
 	Table,
 	Tabs,
 	Tag,
@@ -622,6 +624,33 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 						},
 					]}
 				/>
+			</div>
+		),
+	},
+	BlogPostCard: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 340 }}>
+				<BlogPostCard
+					href="#"
+					image={
+						<div
+							style={{ width: "100%", height: "100%", background: "var(--utility-brand-200)" }}
+						/>
+					}
+					category="Ahorro"
+					title="La regla del 50/30/20"
+					description="Reparte tu sueldo en tres partes."
+					author={{ name: "Ana Martín", date: "20 ene 2027" }}
+				/>
+			</div>
+		),
+	},
+	SubscribeCard: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 340 }}>
+				<SubscribeCard description="Una vez a la semana, sin spam." />
 			</div>
 		),
 	},

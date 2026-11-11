@@ -528,3 +528,10 @@ Nodo: `Footer` `1517:334473`. En «Web de marketing» (catálogo 113 → 114), c
 - **Móvil:** consulta de contenedor (`@3xl`, 768): columnas de dos en dos, bloques apilados, márgenes de 16.
 - **Sin `aria-label`:** Biome no lo admite en `footer`; el elemento ya es la región de información de contenido.
 - **Peso:** 10,7 kB, límite 12.288.
+
+## BlogPostCard y SubscribeCard (11.4)
+
+Nodos: `Blog post card` `1390:58` y `Blog subscribe card` `1391:213014`. En «Web de marketing» (catálogo 114 → 116), con página, ficha, ejemplo (`marketing.tsx`, portadas de color sin fotos), muestra, fragmento, límite y capturas.
+
+- **`BlogPostCard`:** `type` `simple-01…04` (portada suelta con radio 16) y `card-01…04` (tarjeta con borde y portada a sangre); las cuatro cabeceras: categoría, `BadgeGroup` con tiempo de lectura, autor y fecha con etiquetas, y autor y categoría sobre la portada con «Leer la entrada». `orientation` `horizontal` se pone en fila desde 576 px de contenedor (`@xl`) y en vertical por debajo, como el Figma en móvil. Un solo enlace por tarjeta: el del título, con su área extendida a toda la tarjeta. La banda sobre la portada de `04` es `bg-overlay/60` con desenfoque (con el 30 % el texto blanco no daba contraste sobre una portada clara: lo vio axe en la web). 28,7 kB, límite 31.744.
+- **`SubscribeCard`:** formulario con `type="email"` obligatorio, etiqueta para lectores y la nota de privacidad como descripción; `onSubscribe(email)`. `line` lleva el sobre y la raya de 4 px de marca arriba. Campo nativo con las clases de los campos (el `Input` completo pesa 65 kB). 24,4 kB, límite 26.624.

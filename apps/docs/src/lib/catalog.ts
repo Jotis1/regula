@@ -143,7 +143,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "web-de-marketing",
 		label: "Web de marketing",
 		section: "components",
-		components: names("MarketingNav Footer"),
+		components: names("MarketingNav Footer BlogPostCard SubscribeCard"),
 	},
 	{ id: "stream-alertas", label: "Alertas", section: "stream", components: names("StreamAlert") },
 	{
