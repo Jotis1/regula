@@ -95,6 +95,7 @@ export const defaultStrings = {
 	viewDay: "Vista diaria",
 	weekNumber: (n: number) => `Semana ${n}`,
 	currentTime: (time: string) => `Hora actual: ${time}`,
+	schedule: "Horario",
 	noResults: "Sin resultados",
 	sliderMin: "Mínimo",
 	sliderMax: "Máximo",

@@ -217,7 +217,7 @@ function TimeGrid({
 	selected: Date;
 	hideOthersOnMobile: boolean;
 }) {
-	const scroller = useRef<HTMLDivElement>(null);
+	const scroller = useRef<HTMLElement>(null);
 	useEffect(() => {
 		if (scroller.current) scroller.current.scrollTop = Math.max(0, (startHour - hours[0] - 0.5) * HOUR);
 	}, [startHour, hours]);
@@ -226,7 +226,13 @@ function TimeGrid({
 	const nowMin = minutesOf(now);
 	const todayShown = days.some((d) => same(d, today));
 	return (
-		<div ref={scroller} className="max-h-[640px] overflow-y-auto">
+		<section
+			ref={scroller}
+			// biome-ignore lint/a11y/noNoninteractiveTabindex: zona que se desplaza; con el teclado tiene que poder enfocarse para moverla
+			tabIndex={0}
+			aria-label={defaultStrings.schedule}
+			className="max-h-[640px] overflow-y-auto focus-visible:shadow-focus-ring focus-visible:outline-none"
+		>
 			<div className="relative flex overflow-hidden" style={{ height: (to - from) * HOUR }}>
 				<div className="relative w-12 flex-none bg-secondary @xl:w-16" aria-hidden="true">
 					{Array.from({ length: Math.max(0, to - from - 1) }, (_, i) => (
@@ -279,7 +285,7 @@ function TimeGrid({
 					</div>
 				) : null}
 			</div>
-		</div>
+		</section>
 	);
 }
 
