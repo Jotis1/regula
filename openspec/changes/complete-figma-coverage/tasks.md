@@ -90,7 +90,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
   - `account`.
 
   Tests: el estrecho tiene tooltips con nombre y los submenús se abren con el teclado. Ejemplos y capturas en escritorio y móvil.
-- [ ] 5.3 `Breadcrumbs`: `divider` y `type` (`1122:153`). `Pagination`: los diez `type` y `shape` (`1115:68622`), con textos en `defaultStrings`. Tests, ejemplos y capturas.
+- [x] 5.3 `Breadcrumbs`: `divider` y `type` (`1122:153`). `Pagination`: los diez `type` y `shape` (`1115:68622`), con textos en `defaultStrings`. Tests, ejemplos y capturas.
 
 ## 6. Variantes: fechas, gráficas y color
 

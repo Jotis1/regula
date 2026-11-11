@@ -173,8 +173,8 @@ Las que cambian de forma:
   - `featured` con las tarjetas del Figma como `ReactNode`, más plantillas en `SidebarCards` (`Progress`, `Notice`, `Upgrade`; un objeto, para no contar como componentes del catálogo);
   - `account` con la tarjeta de cuenta (el `Dropdown` `account-card-md`);
   - `responsive` (barra de menú por debajo de `lg`) y `defaultMenuOpen`.
-- **`Breadcrumbs`:** `divider` (`chevron`, `slash`) y `type` (`text`, `text-line`, `button`, `account`).
-- **`Pagination`:** `type` (los diez del Figma en kebab-case) y `shape`.
+- **`Breadcrumbs`:** `divider` (`chevron`, `slash`) y `type` (`text`, `text-line`, `button`, `account`); los elementos ganan `avatar` y `accounts` (el `Dropdown` `account-breadcrumb`).
+- **`Pagination`:** `type` (`page-default`, `page-minimal`, `card-default`, `card-minimal`, `card-advanced`, `card-button-group`), `align` (`left`, `center`, `right`; los diez del Figma son estos seis tipos con su alineación), `shape` (`square`, `circle`) y `pageSizes`/`pageSize`/`onPageSizeChange`. Sin `type` ni `shape` es el de siempre.
 - **`CalendarView`:** `view` (`month`, `week`, `day`) y `defaultView`; selector de vista con `Dropdown`.
 - **`LineChart`/`BarChart`:** `legend` gana `top` y `right` (`true` = `top`), y `axisLabels`.
 - **`ColorPicker`:** `type` (los doce) y `model` (`hex`, `rgb`, `css`, `hsl`, `hsb`). `onChange` sigue recibiendo hex. En degradado, `onGradientChange(stops)`.

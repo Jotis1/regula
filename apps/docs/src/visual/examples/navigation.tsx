@@ -11,7 +11,6 @@ import {
 import {
 	AppIcon,
 	AvatarLabel,
-	Breadcrumbs,
 	Button,
 	CommandMenu,
 	ContextMenu,
@@ -21,7 +20,6 @@ import {
 	type HeaderNavItem,
 	Input,
 	Pager,
-	Pagination,
 	PaginationDots,
 	ScaledPreview,
 	SidebarNav,
@@ -72,22 +70,6 @@ export function TabsExample() {
 			</div>
 		</div>
 	);
-}
-
-export function BreadcrumbsExample() {
-	return (
-		<Breadcrumbs
-			items={[
-				{ label: "Inicio", icon: "home-line", href: "/" },
-				{ label: "Pecunia", href: "/" },
-				{ label: "Gastos de octubre" },
-			]}
-		/>
-	);
-}
-
-export function PaginationExample() {
-	return <Pagination total={10} defaultPage={1} />;
 }
 
 export function PagerExample() {

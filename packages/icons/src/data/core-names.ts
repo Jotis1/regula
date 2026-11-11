@@ -85,6 +85,9 @@ export const coreNames = [
 	"calendar-plus-01",
 	"dropper",
 	"palette",
+	"slash-divider",
+	"chevron-left-double",
+	"chevron-right-double",
 ] as const;
 
 export type IconName = (typeof coreNames)[number];

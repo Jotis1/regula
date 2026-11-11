@@ -47,7 +47,13 @@ export {
 } from "./components/BadgeGroup.js";
 export { Banner, type BannerEmail, type BannerProps } from "./components/Banner.js";
 export { BarChart, type BarChartProps } from "./components/BarChart.js";
-export { type BreadcrumbItem, Breadcrumbs, type BreadcrumbsProps } from "./components/Breadcrumbs.js";
+export {
+	type BreadcrumbItem,
+	Breadcrumbs,
+	type BreadcrumbsDivider,
+	type BreadcrumbsProps,
+	type BreadcrumbsType,
+} from "./components/Breadcrumbs.js";
 export { BrowserFrame, type BrowserFrameProps } from "./components/BrowserFrame.js";
 export { Button, type ButtonHierarchy, type ButtonProps, type ButtonSize } from "./components/Button.js";
 export { ButtonGroup, type ButtonGroupItem, type ButtonGroupProps } from "./components/ButtonGroup.js";
@@ -176,6 +182,8 @@ export {
 	Pagination,
 	type PaginationLabels,
 	type PaginationProps,
+	type PaginationShape,
+	type PaginationType,
 } from "./components/Pagination.js";
 export {
 	PaginationDots,

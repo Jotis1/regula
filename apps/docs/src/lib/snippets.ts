@@ -95,9 +95,25 @@ const usage: Record<string, string> = {
 		{ label: "Pecunia", href: "/pecunia/" },
 		{ label: "Gastos de octubre" },
 	]}
+/>
+
+// Variantes del Figma: divider "slash", type "text-line" | "button" | "account"
+<Breadcrumbs
+	type="account"
+	divider="slash"
+	items={[
+		{ label: "Regula", avatar: <AppIcon app="regula" size={24} /> },
+		{ label: "Cuenta", accounts: cuentas, onAccountChange: cambiarCuenta },
+		{ label: "Ajustes", href: "/ajustes/" },
+	]}
 />`,
 	PaginationDots: `<PaginationDots total={5} current={pagina} onChange={setPagina} variant="line" aria-label="Diapositivas" />`,
-	Pagination: `<Pagination total={10} page={pagina} onChange={setPagina} />`,
+	Pagination: `<Pagination total={10} page={pagina} onChange={setPagina} />
+
+// Variantes del Figma: type, shape, align y tamaño de página
+<Pagination type="card-minimal" align="right" total={10} pageSizes={[10, 20, 50]} onPageSizeChange={cambiarTamano} />
+<Pagination type="card-advanced" total={24} />
+<Pagination type="card-button-group" shape="circle" total={10} />`,
 	Pager: `<Pager
 	prev={{ href: "/components/badge/", label: "Badge" }}
 	next={{ href: "/components/button/", label: "Button" }}

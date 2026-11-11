@@ -74,7 +74,6 @@ import {
 	VideoPlayerExample,
 } from "./examples/mockups";
 import {
-	BreadcrumbsExample,
 	CommandMenuExample,
 	ContextMenuExample,
 	DropdownExample,
@@ -82,7 +81,6 @@ import {
 	HeaderNavExample,
 	PagerExample,
 	PaginationDotsExample,
-	PaginationExample,
 	TabsExample,
 	TreeViewExample,
 } from "./examples/navigation";
@@ -97,6 +95,7 @@ import {
 	SlideoutExample,
 	TooltipExample,
 } from "./examples/overlays";
+import { BreadcrumbsExample, PaginationExample } from "./examples/paging";
 import { SidebarNavExample } from "./examples/sidebar";
 import {
 	CamFrameExample,
