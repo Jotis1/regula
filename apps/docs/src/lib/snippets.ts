@@ -99,6 +99,7 @@ const usage: Record<string, string> = {
 	times={["09:00", "09:30", "10:00", "10:30"]}
 	onApply={({ start, time }) => reservar(start, time)}
 />`,
+	ColorPickerDropdown: `<ColorPickerDropdown trigger="swatch-button" defaultValue="#7f56d9" onChange={guardar} />`,
 	ColorPicker: `<ColorPicker defaultValue="#4f39f6" swatches={["#4f39f6", "#00a63e"]} onChange={guardar} />
 
 // Tipos del Figma: el panel de pestañas, con modelo de color, opacidad y degradado

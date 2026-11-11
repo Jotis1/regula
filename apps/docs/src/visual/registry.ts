@@ -19,7 +19,7 @@ import {
 	PieChartExample,
 	RadarChartExample,
 } from "./examples/charts";
-import { ColorPickerExample } from "./examples/color";
+import { ColorPickerDropdownExample, ColorPickerExample } from "./examples/color";
 import { ActivityFeedExample, CodeSnippetExample, MetricCardExample } from "./examples/data";
 import {
 	AvatarExample,
@@ -161,6 +161,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	FileUpload: FileUploadExample,
 	DatePicker: DatePickerExample,
 	ColorPicker: ColorPickerExample,
+	ColorPickerDropdown: ColorPickerDropdownExample,
 	TextEditor: TextEditorExample,
 	MessageInput: MessageInputExample,
 	MultiSelect: MultiSelectExample,

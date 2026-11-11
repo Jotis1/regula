@@ -470,3 +470,13 @@ Nodos: `Activity gauge` `1078:155`, `Radar chart` `1084:7362` y `Chart marker` `
 - **`RadarChart`:** el lienzo del Figma (392 × 372, centro 7 px bajo la mitad, radio 152) en `viewBox`, que se escala; rejilla y rayos `border-tertiary`, escala en pastillas `utility-neutral-50` sobre el eje de arriba (ancho estimado por número de caracteres), series con relleno al 16 % y borde de 2. Colores por defecto marca, cielo y rosa, como el Figma (no la paleta de series en orden, que daría dos morados). 10,5 kB, límite 13.312.
 - **`ChartMarker`:** `internal/chart-marker.tsx` con `MarkerLine` (SVG: línea que se desvanece con un degradado de `useId`, de puntos en `dash` con `stroke-dasharray="0 6"`, lisa en `minimal`; punto hueco de 12 o lleno de 6) y `MarkerBubble` (la burbuja de `Tooltip`). En LineChart y BarChart, `marker` envuelve el svg en una caja relativa y coloca la burbuja en porcentajes del `viewBox`; sin `marker`, el HTML es idéntico (los fixtures de `charts-before.json` pasan). En BarChart marca el total apilado. 9,7 kB, límite 12.288. LineChart y BarChart pasan a 11,2 y 11,1 kB (límite 11,5).
 - **Diferencias:** el cursor de mano del Figma sobre el marcador no se dibuja (es el puntero del sistema).
+
+## ColorPickerDropdown (10.2)
+
+Nodo: `Color picker dropdown` `12424:15898`. En «Formularios» (catálogo 105 → 106), página interactiva, ficha, ejemplo (`color.tsx`), muestra, fragmento, límite, capturas y un e2e (`color-picker-dropdown.spec.ts`: Enter abre, Escape cierra y el foco vuelve).
+
+- **Estructura:** `DialogTrigger` + `Popover` (`bottom end`, 8 px) + `Dialog` de React Aria con el `ColorPicker` `solid` dentro (con sus pestañas y su X, que cierra el popover). Los seis disparadores del Figma son `Button` de React Aria con las clases de los nuestros (secundario, campo con `shadow-xs` y borde `border-primary`); no se usa `Button` del paquete porque `DialogTrigger` necesita un botón de React Aria para abrir y devolver el foco.
+- **Nombres:** las muestras y botones se llaman «Color: #7F56D9» (`label` y valor); `hex-input` añade la opacidad; `select` usa `aria-labelledby` con su etiqueta visible y el valor.
+- **Estado:** `value`/`defaultValue`, `alpha`/`defaultAlpha` e `isOpen`/`onOpenChange`, controlados o no; el `ColorPicker` se monta al abrir con el color actual. `pickerProps` pasa el resto (muestras, «Añadir», modelo).
+- **Peso:** 141,3 kB (casi todo el `ColorPicker`), límite 147.456. La captura es estática: enseña los disparadores; el panel abierto lo cubre el e2e.
+- **Test de foco:** React Aria devuelve el foco al disparador después del cierre, en otro ciclo; en jsdom hay que esperarlo con `waitFor`.

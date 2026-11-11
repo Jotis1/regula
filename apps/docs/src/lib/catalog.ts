@@ -72,7 +72,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		label: "Formularios",
 		section: "components",
 		components: names(
-			"Input NumberInput TagInput VerificationCodeInput Textarea Select MultiSelect Checkbox Radio RadioGroup Toggle Slider DatePicker FileUpload ColorPicker TextEditor",
+			"Input NumberInput TagInput VerificationCodeInput Textarea Select MultiSelect Checkbox Radio RadioGroup Toggle Slider DatePicker FileUpload ColorPicker ColorPickerDropdown TextEditor",
 		),
 	},
 	{

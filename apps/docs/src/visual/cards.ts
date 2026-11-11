@@ -50,6 +50,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	AppStoreBadge: 220,
 	CodeSnippet: 690,
 	ColorPicker: 2800,
+	ColorPickerDropdown: 200,
 	CommandMenu: 520,
 	ContentDivider: 520,
 	CreditCard: 1560,

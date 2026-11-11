@@ -48,6 +48,7 @@ import {
 	CloseButton,
 	CodeSnippet,
 	ColorPicker,
+	ColorPickerDropdown,
 	CommandMenu,
 	ContentDivider,
 	ContextMenu,
@@ -389,6 +390,14 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					files={[{ name: "extracto-octubre.csv", size: 204800, progress: 64 }]}
 					onRemove={noop}
 				/>
+			</div>
+		),
+	},
+	ColorPickerDropdown: {
+		render: () => (
+			<div style={row}>
+				<ColorPickerDropdown trigger="swatch-button" />
+				<ColorPickerDropdown trigger="hex-input" />
 			</div>
 		),
 	},

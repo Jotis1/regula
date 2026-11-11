@@ -131,6 +131,11 @@ export {
 	type GradientStop,
 } from "./components/ColorPicker.js";
 export {
+	ColorPickerDropdown,
+	type ColorPickerDropdownProps,
+	type ColorPickerDropdownTrigger,
+} from "./components/ColorPickerDropdown.js";
+export {
 	type CommandGroup,
 	type CommandItem,
 	CommandMenu,
