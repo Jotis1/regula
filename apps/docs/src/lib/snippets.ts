@@ -26,6 +26,8 @@ const usage: Record<string, string> = {
 	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
 	AvatarGroup: `<AvatarGroup items={[{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }]} />`,
+	Rating: `<Rating value={4.5} />`,
+	RatingBadge: `<RatingBadge title="Mejor herramienta de diseño" supportingText="2.000+ reseñas" />`,
 	CheckIcon: `<CheckIcon type="filled" color="success" size="md" />`,
 	CheckItem: `<ul>
 	<CheckItem>Hasta 10 usuarios</CheckItem>

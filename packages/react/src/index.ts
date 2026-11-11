@@ -265,6 +265,14 @@ export {
 } from "./components/ProgressSteps.js";
 export { Radio, type RadioProps } from "./components/Radio.js";
 export { RadioGroup, type RadioGroupOption, type RadioGroupProps } from "./components/RadioGroup.js";
+export {
+	Rating,
+	type RatingColor,
+	type RatingProps,
+	type RatingSize,
+	ratingLabel,
+} from "./components/Rating.js";
+export { RatingBadge, type RatingBadgeProps } from "./components/RatingBadge.js";
 export { ScaledPreview, type ScaledPreviewProps } from "./components/ScaledPreview.js";
 export { SectionFooter, type SectionFooterProps } from "./components/SectionFooter.js";
 export { SectionHeader, type SectionHeaderProps } from "./components/SectionHeader.js";

@@ -14,6 +14,8 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	AvatarProfilePhoto: "display",
 	CheckIcon: "display",
 	CheckItem: "display",
+	Rating: "display",
+	RatingBadge: "display",
 	Badge: "display",
 	BadgeGroup: "display",
 	Tag: "display",

@@ -23,6 +23,8 @@ import {
 	CheckIconExample,
 	CheckItemExample,
 	KbdExample,
+	RatingBadgeExample,
+	RatingExample,
 	TagExample,
 } from "./examples/display";
 import {
@@ -125,6 +127,8 @@ export const visualExamples: Record<string, ComponentType> = {
 	AvatarProfilePhoto: AvatarProfilePhotoExample,
 	CheckIcon: CheckIconExample,
 	CheckItem: CheckItemExample,
+	Rating: RatingExample,
+	RatingBadge: RatingBadgeExample,
 	Badge: BadgeExample,
 	BadgeGroup: BadgeGroupExample,
 	Tag: TagExample,

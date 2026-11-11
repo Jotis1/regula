@@ -18,6 +18,8 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	AvatarProfilePhoto: 560,
 	CheckIcon: 450,
 	CheckItem: 300,
+	Rating: 280,
+	RatingBadge: 130,
 	BackgroundPattern: 740,
 	TransparencyGrid: 180,
 	ScaledPreview: 250,

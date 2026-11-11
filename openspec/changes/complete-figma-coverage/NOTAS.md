@@ -427,3 +427,11 @@ Nodos: `Avatar profile photo` `1217:108477`, `Check icon` `1254:137887` y `Check
 - **`CheckIcon`:** `type` `default` (tinte), `line` (`check-circle`) y `filled` (sólido con check blanco); `color` `brand`, `gray`, `success`; cuatro tamaños (20 a 32). Decorativo. El tinte usa la escala `utility` (100 de fondo, 600 el check) y no `bg-brand-secondary`: en oscuro aquel fondo y `fg-brand-primary` casi no se distinguían (se vio en la captura).
 - **`CheckItem`:** `<li>` (o `div` con `as`) con `CheckIcon` y el texto en `text-tertiary`; `sm`/`md`/`lg` = check 20/24/28 y `text-sm`/`md`/`lg`, un paso menos en estrecho (container queries), como el Figma en móvil.
 - **Diferencias:** el Figma de `CheckItem` solo tiene los colores marca y éxito; aquí también `gray`, el de `CheckIcon`.
+
+## Rating y RatingBadge (9.3)
+
+Nodos: `Star icon` `1232:9` y `Ratings badge` `7460:158976`. Los dos, en «Etiquetas e identidad» (catálogo 97 → 99), con página, ficha, ejemplo (`display.tsx`), muestra, fragmento, límite y capturas.
+
+- **`Rating`:** la estrella del Figma (caja de 20) dos veces: fondo `bg-tertiary` (el `#F5F5F5` del Figma) y encima el relleno recortado con `clip-path: inset()`, en pasos de 10 % como las once variantes; `yellow` = `fg-warning-secondary` (el `#FACC15` del Figma no tiene token estable en los dos temas) y `gray` = `fg-primary` (el `#171717` del Figma, blanco en oscuro). `max` de 1 a 5, `size` `sm` 16 · `md` 20 · `lg` 24. `role="img"` con «4,5 de 5»; `ratingLabel()` exportada para quien la necesite. Peso 9,9 kB, límite 12.800.
+- **`RatingBadge`:** las dos coronas del Figma (36 × 80) en `currentColor` con `text-fg-primary`; la derecha del Figma es exactamente la izquierda en espejo (`x' = 36 − x`, mismos 18 trazos), así que se dibuja una y se voltea con `-scale-x-100` (10 kB menos). Estrellas `Rating` `sm` con 2 px de separación, título `text-sm` seminegrita y apoyo `text-xs` `text-secondary`, solapados −4 px como el Figma. Peso 14,9 kB, límite 17.920.
+- **Diferencias:** la estrella vacía es tan clara como en el Figma (`bg-tertiary`), poco visible sobre blanco; la celda `rating` de `Table` sigue con su `bg-quaternary` (no se toca su HTML).

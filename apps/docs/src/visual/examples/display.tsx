@@ -12,6 +12,8 @@ import {
 	CheckIcon,
 	CheckItem,
 	Kbd,
+	Rating,
+	RatingBadge,
 	Tag,
 } from "@jotis-me/react";
 import { row, stack } from "./actions";
@@ -264,6 +266,35 @@ export function CheckItemExample() {
 					))}
 				</ul>
 			))}
+		</div>
+	);
+}
+
+/** Los once rellenos del Figma (de 0 a 5 en medios puntos), en amarillo y en gris, y los tres tamaños. */
+export function RatingExample() {
+	return (
+		<div className={stack}>
+			{[5, 4.5, 3.7, 2.2, 0].map((v) => (
+				<div key={v} className={`${row} items-center gap-6`}>
+					<Rating value={v} />
+					<Rating value={v} color="gray" />
+				</div>
+			))}
+			<div className={`${row} items-center gap-6`}>
+				<Rating value={4} size="sm" />
+				<Rating value={4} size="md" />
+				<Rating value={4} size="lg" />
+			</div>
+		</div>
+	);
+}
+
+/** Con estrellas y sin ellas. */
+export function RatingBadgeExample() {
+	return (
+		<div className={`${row} items-center gap-8`}>
+			<RatingBadge title="Mejor herramienta de diseño" supportingText="2.000+ reseñas" />
+			<RatingBadge title="Producto del día" supportingText="Votado por la comunidad" stars={false} />
 		</div>
 	);
 }

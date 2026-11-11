@@ -67,6 +67,8 @@
 	"ProgressCircle": 11264,
 	"ProgressSteps": 28672,
 	"Radio": 10752,
+	"Rating": 12800,
+	"RatingBadge": 17920,
 	"RadioGroup": 50688,
 	"ScaledPreview": 10752,
 	"SectionFooter": 10752,

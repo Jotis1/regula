@@ -74,6 +74,8 @@ import {
 	ProgressSteps,
 	Radio,
 	RadioGroup,
+	Rating,
+	RatingBadge,
 	ScaledPreview,
 	SectionFooter,
 	SectionHeader,
@@ -823,6 +825,17 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 				items={[{ initials: "AB" }, { initials: "CD" }, { initials: "EF" }, { initials: "+3" }]}
 			/>
 		),
+	},
+	Rating: {
+		render: () => (
+			<div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+				<Rating value={4.5} />
+				<Rating value={3.7} color="gray" />
+			</div>
+		),
+	},
+	RatingBadge: {
+		render: () => <RatingBadge title="Mejor del año" supportingText="2.000+ reseñas" />,
 	},
 	CheckIcon: {
 		render: () => (
