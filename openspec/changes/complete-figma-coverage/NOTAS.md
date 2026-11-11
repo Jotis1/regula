@@ -557,3 +557,7 @@ Nodos: `_Quote image bottom panel` `1376:1163` y `_Testimonial carousel arrow` `
 
 - **`Testimonial`:** `figure` con la cita en `blockquote` y la persona en `figcaption`; panel de cristal `floating` o `full-width`, `md`/`sm`, estrellas con `Rating color="white"` (color nuevo de `Rating`, `fg-white`), flechas solo con `onPrevious`/`onNext`. Como en `TeamMemberCard`, el cristal es `bg-overlay/60` (el blanco translúcido del Figma no da contraste). 23,4 kB, límite 25.600.
 - **`Carousel`:** `arrowStyle` `button-chevron` (la de siempre), `button-arrow` (flecha en el círculo) y `arrow` (flecha larga del set completo, sin círculo); sin la prop, el HTML es el mismo (test con `renderToStaticMarkup`). Su ejemplo no cambia, así que su captura no se vuelve a aprobar; la ficha nombra la prop.
+
+## Cierre del grupo 11
+
+E2E completo de docs: 1.099 pasan; fallaron el de `CopyTooltip` (de carga, conocido) y el de `color-picker-dropdown.spec.ts`: desde el arreglo del cierre del grupo 10, el nombre del botón es el texto visible más el valor en `sr-only`, y Chromium lo junta con otro espacio («Color : #7F56D9»); el localizador exacto ya no lo encontraba. Pasa a una expresión regular. Repetido: pasa.

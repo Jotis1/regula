@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("ColorPickerDropdown se abre con el teclado, Escape lo cierra y el foco vuelve", async ({ page }) => {
 	await page.goto("/visual/color-picker-dropdown/");
-	const trigger = page.getByRole("button", { name: "Color: #7F56D9" }).first();
+	const trigger = page.getByRole("button", { name: /^Color\s*:\s*#7F56D9$/ }).first();
 	// Espera a que la isla esté hidratada
 	await page.waitForFunction(() =>
 		[...document.querySelectorAll("button")].some((b) =>
