@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { cx } from "../internal/cx.js";
 
-export type RatingColor = "yellow" | "gray";
+export type RatingColor = "yellow" | "gray" | "white";
 export type RatingSize = "sm" | "md" | "lg";
 
 export interface RatingProps {
@@ -13,7 +13,7 @@ export interface RatingProps {
 	 */
 	max?: number;
 	/**
-	 * Color del relleno: `yellow` (el amarillo de aviso) o `gray` (el del texto).
+	 * Color del relleno: `yellow` (el amarillo de aviso), `gray` (el del texto) o `white` (sobre una foto, como en `Testimonial`).
 	 * @default "yellow"
 	 */
 	color?: RatingColor;
@@ -34,6 +34,7 @@ const SIDE: Record<RatingSize, number> = { sm: 16, md: 20, lg: 24 };
 const FILL: Record<RatingColor, string> = {
 	yellow: "var(--fg-warning-secondary)",
 	gray: "var(--fg-primary)",
+	white: "var(--fg-white)",
 };
 
 /** «4,5 de 5»: el número con coma decimal, como se lee en castellano. */

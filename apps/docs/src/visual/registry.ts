@@ -87,6 +87,7 @@ import {
 	PricingCardExample,
 	SubscribeCardExample,
 	TeamMemberCardExample,
+	TestimonialExample,
 } from "./examples/marketing";
 import { MessageExample } from "./examples/message";
 import {
@@ -202,6 +203,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	JobPostCard: JobPostCardExample,
 	Accordion: AccordionExample,
 	TeamMemberCard: TeamMemberCardExample,
+	Testimonial: TestimonialExample,
 	FilterMenu: FilterMenuExample,
 	FilterPanel: FilterPanelExample,
 	CommandMenu: CommandMenuExample,

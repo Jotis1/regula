@@ -149,7 +149,8 @@ describe("catálogo de secciones y fundamentos", () => {
 		expect(neighborsOf("Footer").next).toBe("BlogPostCard");
 		expect(neighborsOf("SubscribeCard").next).toBe("PricingCard");
 		expect(neighborsOf("JobPostCard").next).toBe("Accordion");
-		expect(neighborsOf("TeamMemberCard").next).toBeUndefined();
+		expect(neighborsOf("TeamMemberCard").next).toBe("Testimonial");
+		expect(neighborsOf("Testimonial").next).toBeUndefined();
 		expect(neighborsOf("StreamAlert")).toEqual({ prev: undefined, next: "StreamScene", related: [] });
 		expect(neighborsOf("ChannelBanner").next).toBeUndefined();
 		expect(neighborsOf("Ejemplo")).toEqual({ related: [] });

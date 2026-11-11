@@ -126,6 +126,7 @@ import {
 	Tag,
 	TagInput,
 	TeamMemberCard,
+	Testimonial,
 	Textarea,
 	TextEditor,
 	Toggle,
@@ -710,6 +711,24 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					name="Ana Martín"
 					role="Fundadora y directora"
 					bio="Diez años ordenando cuentas."
+				/>
+			</div>
+		),
+	},
+	Testimonial: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 420 }}>
+				<Testimonial
+					quote="Nos ahorra horas cada mes."
+					name="Lucía Ramos"
+					role="Diseñadora, Capas"
+					rating={5}
+					image={
+						<div
+							style={{ width: "100%", height: "100%", background: "var(--utility-brand-300)" }}
+						/>
+					}
 				/>
 			</div>
 		),

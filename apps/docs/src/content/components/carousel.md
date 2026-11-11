@@ -8,7 +8,7 @@ astroNote: "Pasar de diapositiva necesita JavaScript: úsalo en una isla con `cl
 
 **Cuándo usarlo.** Una serie corta de contenido del mismo tipo que se ve de una en una: novedades, fotos de un producto, pasos de una presentación. Si el contenido es imprescindible, no lo escondas tras un carrusel: ponlo en una lista.
 
-**Props.** `slides` (un nodo por diapositiva), `aria-label` (obligatorio: nombre de la región), `size` (`md` · `lg`), `index` / `defaultIndex` / `onChange` (desde 0) y `labels` (`carousel`, `slide`, `previous`, `next`, `slideOf`, `goTo`).
+**Props.** `slides` (un nodo por diapositiva), `aria-label` (obligatorio: nombre de la región), `size` (`md` · `lg`), `index` / `defaultIndex` / `onChange` (desde 0) y `labels` (`carousel`, `slide`, `previous`, `next`, `slideOf`, `goTo`). `arrowStyle` (`button-chevron`, la de siempre · `button-arrow` · `arrow`, larga y sin círculo), las flechas del Figma (`_Testimonial carousel arrow`, `1374:440`).
 
 **Visual.** Una caja de `radius-xl` que recorta las diapositivas, a todo el ancho. Encima, una flecha redonda `bg-primary` a cada lado, a 16px del borde y centrada en vertical (36px en `md`, 44 en `lg`), y abajo, centrados y a 16px, los puntos de `PaginationDots` sobre su píldora (`md` o `lg`). Cada diapositiva llena la caja; su alto lo da su contenido.
 

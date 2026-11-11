@@ -27,6 +27,7 @@ import {
 	BlogPostCard,
 	type BlogPostCardType,
 	Button,
+	Carousel,
 	Footer,
 	type FooterColumn,
 	type FooterType,
@@ -44,6 +45,7 @@ import {
 	SubscribeCard,
 	TeamMemberCard,
 	type TeamMemberCardType,
+	Testimonial,
 } from "@jotis-me/react";
 import type { ReactNode } from "react";
 
@@ -808,6 +810,66 @@ export function TeamMemberCardExample() {
 				bio="Diez años ordenando las cuentas de otros; ahora, las tuyas."
 				image={<Retrato tono="bg-utility-green-200" />}
 				socials={redesEquipo}
+			/>
+		</div>
+	);
+}
+
+/** Un fondo sin foto: un degradado de la marca con formas. */
+const Fondo = ({ tono }: { tono: string }) => (
+	<div className={`relative size-full ${tono}`}>
+		<div className="absolute top-[12%] left-[30%] size-[40%] rounded-full bg-primary/50" />
+	</div>
+);
+const CITA = {
+	quote: "Regula nos ha ahorrado horas cada mes: ya no cuadramos las cuentas a mano.",
+	name: "Lucía Ramos",
+	role: "Diseñadora, Capas",
+	company: "Agencia de diseño web",
+	rating: 5,
+};
+
+/** Flotante y a todo el ancho, en `md` y `sm`; abajo, en un carrusel con las flechas en círculo. */
+export function TestimonialExample() {
+	return (
+		<div className="flex flex-col gap-8">
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
+				<Testimonial
+					{...CITA}
+					image={<Fondo tono="bg-utility-brand-300" />}
+					onPrevious={() => {}}
+					onNext={() => {}}
+				/>
+				<Testimonial {...CITA} type="full-width" image={<Fondo tono="bg-utility-sky-300" />} />
+				<Testimonial {...CITA} size="sm" image={<Fondo tono="bg-utility-pink-300" />} />
+				<Testimonial
+					{...CITA}
+					size="sm"
+					type="full-width"
+					quote={undefined}
+					image={<Fondo tono="bg-utility-green-300" />}
+				/>
+			</div>
+			<Carousel
+				aria-label="Testimonios"
+				arrowStyle="button-arrow"
+				slides={[
+					<Testimonial
+						key="a"
+						{...CITA}
+						type="full-width"
+						image={<Fondo tono="bg-utility-brand-300" />}
+						className="min-h-[360px]"
+					/>,
+					<Testimonial
+						key="b"
+						{...CITA}
+						name="Pablo Gil"
+						type="full-width"
+						image={<Fondo tono="bg-utility-sky-300" />}
+						className="min-h-[360px]"
+					/>,
+				]}
 			/>
 		</div>
 	);

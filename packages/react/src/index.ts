@@ -88,6 +88,7 @@ export { CamFrame, type CamFrameProps, type CamFrameRatio } from "./components/C
 export { CardHeader, type CardHeaderProps } from "./components/CardHeader.js";
 export {
 	Carousel,
+	type CarouselArrowStyle,
 	type CarouselLabels,
 	type CarouselProps,
 	type CarouselSize,
@@ -422,6 +423,7 @@ export {
 	type TeamMemberCardProps,
 	type TeamMemberCardType,
 } from "./components/TeamMemberCard.js";
+export { Testimonial, type TestimonialProps } from "./components/Testimonial.js";
 export { Textarea, type TextareaProps } from "./components/Textarea.js";
 export {
 	TextEditor,

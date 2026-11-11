@@ -550,3 +550,10 @@ Nodos: `_FAQ item` `1358:191490` y `_Team member` `1458:240598`. En «Web de mar
 - **`Accordion`:** cada pregunta es un encabezado (`headingLevel`, 3) con un botón `aria-expanded`/`aria-controls` y la respuesta en una región con el nombre de la pregunta (`hidden` si está cerrada). `single`, `iconPosition` (`left`/`right`, más/menos en círculo del set completo), `divider`, controlado o no. Teclado: Enter y Espacio (botón nativo), flechas arriba y abajo con vuelta, Inicio y Fin. 10,4 kB, límite 12.288.
 - **`TeamMemberCard`:** siete tipos; `image-left` en fila desde 512 px de contenedor. El panel de cristal del Figma es blanco translúcido con texto blanco: sin contraste sobre una foto clara (axe lo marcó con el ejemplo); aquí es `bg-overlay/60` con desenfoque, con borde `fg-white` al 30 % (sin colores crudos). 26,7 kB, límite 29.696.
 - **`Avatar`:** llegó justo a su límite (26,0 kB de 26.624) sin cambios propios, por lo que comparte; sube a 27.136.
+
+## Testimonial y arrowStyle de Carousel (11.7)
+
+Nodos: `_Quote image bottom panel` `1376:1163` y `_Testimonial carousel arrow` `1374:440`. `Testimonial` en «Web de marketing» (catálogo 120 → 121), con página, ficha, ejemplo (con un `Carousel` de testimonios con `arrowStyle="button-arrow"`), muestra, fragmento, límite y captura.
+
+- **`Testimonial`:** `figure` con la cita en `blockquote` y la persona en `figcaption`; panel de cristal `floating` o `full-width`, `md`/`sm`, estrellas con `Rating color="white"` (color nuevo de `Rating`, `fg-white`), flechas solo con `onPrevious`/`onNext`. Como en `TeamMemberCard`, el cristal es `bg-overlay/60` (el blanco translúcido del Figma no da contraste). 23,4 kB, límite 25.600.
+- **`Carousel`:** `arrowStyle` `button-chevron` (la de siempre), `button-arrow` (flecha en el círculo) y `arrow` (flecha larga del set completo, sin círculo); sin la prop, el HTML es el mismo (test con `renderToStaticMarkup`). Su ejemplo no cambia, así que su captura no se vuelve a aprobar; la ficha nombra la prop.

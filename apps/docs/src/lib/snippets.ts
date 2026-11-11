@@ -248,6 +248,13 @@ const usage: Record<string, string> = {
 	role="Fundadora y directora"
 	image={<img src="/equipo/ana.jpg" alt="Ana Martín" />}
 />`,
+	Testimonial: `<Testimonial
+	quote="Regula nos ha ahorrado horas cada mes."
+	name="Lucía Ramos"
+	role="Diseñadora, Capas"
+	rating={5}
+	image={<img src="/testimonios/lucia.jpg" alt="" />}
+/>`,
 	PricingCard: `<PricingCard
 	type="icon"
 	name="Básico"
