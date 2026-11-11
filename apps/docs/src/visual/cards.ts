@@ -44,6 +44,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	ButtonUtility: 170,
 	SocialButton: 420,
 	SocialButtonGroup: 480,
+	AppStoreBadge: 220,
 	CodeSnippet: 690,
 	ColorPicker: 2800,
 	CommandMenu: 520,

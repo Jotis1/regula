@@ -1,9 +1,10 @@
 import type { SVGProps } from "react";
 
-export type LogoSet = "app" | "integration" | "social";
+/** `store`: insignias de las tiendas de apps (Google Play, App Store…), en relleno y contorno. */
+export type LogoSet = "app" | "integration" | "social" | "store";
 
 export interface LogoProps extends Omit<SVGProps<SVGSVGElement>, "children" | "dangerouslySetInnerHTML"> {
-	/** Alto en px; el ancho sigue la proporción del logo. Por defecto, su tamaño en el Figma (32, 20 o 24). */
+	/** Alto en px; el ancho sigue la proporción del logo. Por defecto, su tamaño en el Figma (32, 20 o 24; 40 las insignias de tienda). */
 	size?: number;
 	/** Nombre accesible («GitHub»). Sin él, el logo es decorativo y queda oculto a lectores de pantalla. */
 	title?: string;

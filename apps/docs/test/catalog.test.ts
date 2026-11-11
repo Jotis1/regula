@@ -133,9 +133,16 @@ describe("catálogo de secciones y fundamentos", () => {
 		expect(neighborsOf("Button")).toEqual({
 			prev: undefined,
 			next: "ButtonGroup",
-			related: ["ButtonGroup", "ButtonUtility", "CloseButton", "SocialButton", "SocialButtonGroup"],
+			related: [
+				"ButtonGroup",
+				"ButtonUtility",
+				"CloseButton",
+				"SocialButton",
+				"SocialButtonGroup",
+				"AppStoreBadge",
+			],
 		});
-		expect(neighborsOf("SocialButtonGroup").next).toBe("Input");
+		expect(neighborsOf("AppStoreBadge").next).toBe("Input");
 		// El último de Componentes no salta a Stream, ni el primero de Stream vuelve a Componentes
 		expect(neighborsOf("AppIcon").next).toBeUndefined();
 		expect(neighborsOf("StreamAlert")).toEqual({ prev: undefined, next: "StreamScene", related: [] });

@@ -86,8 +86,11 @@ export const logoComponentName = (set: string, slug: string) => {
 };
 const logosDir = join(import.meta.dirname, "../assets/logos");
 const logoLines: string[] = [];
+// Las insignias de tienda, en su propio módulo: pesan diez veces un logo y así un bundler las deja en el trozo de
+// quien las usa, no en el de todos los logos.
+const storeLines: string[] = [];
 const logoNames: Record<string, string[]> = {};
-for (const set of ["app", "integration", "social"]) {
+for (const set of ["app", "integration", "social", "store"]) {
 	logoNames[set] = [];
 	for (const file of readdirSync(join(logosDir, set))
 		.filter((f) => f.endsWith(".svg"))
@@ -100,7 +103,7 @@ for (const set of ["app", "integration", "social"]) {
 		if (!m) throw new Error(`SVG inesperado: ${set}/${file}`);
 		const [, w, h, viewBox, inner] = m;
 		(logoNames[set] as string[]).push(slug);
-		logoLines.push(
+		(set === "store" ? storeLines : logoLines).push(
 			`export const ${logoComponentName(set, slug)} = /* @__PURE__ */ makeLogo(${w}, ${h}, ${JSON.stringify(viewBox)}, ${JSON.stringify(inner)});`,
 		);
 	}
@@ -117,6 +120,15 @@ ${logoLines.join("\n")}
 `,
 );
 console.log(`${logoLines.length} componentes de logo → src/logos.generated.tsx`);
+writeFileSync(
+	join(import.meta.dirname, "../src/logos-store.generated.tsx"),
+	`// Generado por scripts/generate.ts desde assets/logos/store/. No editar a mano.
+import { makeLogo } from "./logo.js";
+
+${storeLines.join("\n")}
+`,
+);
+console.log(`${storeLines.length} insignias de tienda → src/logos-store.generated.tsx`);
 
 // Familias planas de recursos en color (assets/<carpeta>/<nombre>.svg): un componente suelto por fichero, con su SVG en
 // línea y marcado como puro, y la lista de nombres, en src/<entrada>.generated.tsx. Se reutiliza `makeLogo`.

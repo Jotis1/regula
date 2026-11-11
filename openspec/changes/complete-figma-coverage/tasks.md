@@ -128,7 +128,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 - [x] 9.2 `CheckIcon` (`1254:137887`) y `CheckItem` (`1345:1610`), en «Etiquetas e identidad», con los mismos entregables.
 - [x] 9.3 `Rating` (`1232:9`) y `RatingBadge` (`7460:158976`), en «Etiquetas e identidad». Tests del relleno parcial y del texto accesible «4,5 de 5». Mismos entregables.
 - [x] 9.4 `SocialButton` y `SocialButtonGroup` (`1256:130788`, `1256:132638`), en «Acciones». Los textos por proveedor van en `defaultStrings` y el logo por prop (design D3). Mismos entregables.
-- [ ] 9.5 `AppStoreBadge` (`1303:2162`), en «Acciones»: cinco tiendas, `md`/`lg`, relleno y contorno, como enlace con nombre de la tienda. Mismos entregables. Al cerrar el grupo: test de `dist` sin imports de `@jotis-me/icons/<set>`.
+- [x] 9.5 `AppStoreBadge` (`1303:2162`), en «Acciones»: cinco tiendas, `md`/`lg`, relleno y contorno, como enlace con nombre de la tienda. Mismos entregables. Al cerrar el grupo: test de `dist` sin imports de `@jotis-me/icons/<set>`.
 
 ## 10. Componentes complejos nuevos
 

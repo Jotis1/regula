@@ -2,6 +2,7 @@
 	"ActivityFeed": 28672,
 	"Alert": 27136,
 	"AppIcon": 12288,
+	"AppStoreBadge": 10240,
 	"Avatar": 26624,
 	"AvatarGroup": 47616,
 	"AvatarLabel": 29696,

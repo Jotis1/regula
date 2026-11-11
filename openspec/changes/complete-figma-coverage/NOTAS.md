@@ -445,3 +445,18 @@ Nodos: `Social button` `1256:130788` y `Social button group` `1256:132638`. Los 
 - **`SocialButtonGroup`:** `role="group"` con `label`; `layout` `column` (a todo el ancho, 10 px en `md` y 12 en `lg`, de los altos del Figma) o `row` (iguales, 12 px). Peso 9,1 kB, límite 10.752.
 - **Presupuesto de JS:** `/components/*/` 360 → 365 (Tabs a 361,7 kB con Rating, RatingBadge y los textos nuevos de `defaultStrings`); motivo en `js-budget.json`. Sigue pendiente el playground por página.
 - **Test de catálogo:** los vecinos de `Button` incluyen los dos nuevos y el último de «Acciones» pasa a ser `SocialButtonGroup`.
+
+## AppStoreBadge (9.5)
+
+Nodo: `Mobile app store badge` `1303:2162`. En «Acciones» (catálogo 101 → 102), con página, ficha, ejemplo (`examples/social.tsx`), muestra, fragmento, límite y capturas.
+
+- **Dibujos:** el Figma da cada insignia como un SVG entero (texto en curvas, en inglés, como las oficiales), así que D3 se cumple con un set nuevo en `@jotis-me/icons/logos`: `store`, diez dibujos (cinco tiendas × relleno y contorno; `md` y `lg` son el mismo dibujo escalado). Componentes `StoreGooglePlayLogo`, `StoreAppStoreLogo`, `StoreMacAppStoreLogo`, `StoreGalaxyStoreLogo`, `StoreAppGalleryLogo` y sus `…OutlineLogo`; ficheros en `assets/logos/store/` y `dist/logos/store/`.
+- **Limpieza:** ids solo los referenciados y con prefijo `store-<insignia>-`; el contorno (un solo `#171717`) pasa a `currentColor` y el componente le da `text-primary`, así en oscuro sale en blanco. Galaxy Store en relleno se exportó con el fondo del marco y un degradado cónico en `foreignObject`, que los logos no admiten: se quitó el fondo y el cónico se sustituyó por un lineal en diagonal con los mismos tonos (coral → rojo → rosa → magenta). Es la única diferencia con el Figma.
+- **Módulo propio:** las insignias van en `src/logos-store.generated.tsx` (re-exportado por `logos.ts`). En un solo módulo con el resto de logos, el trozo compartido de la web con los logos (que cargan las páginas con algún logo) subía 20–26 kB en 20 páginas; separadas, solo las carga quien las usa.
+- **Galería de logos:** no se añaden a `/icons/logos/` (su rejilla es de cuadros de 48); se ven en la página de `AppStoreBadge`.
+- **Componente:** `<a>` con `aria-label` = nombre de la tienda (contenido en el texto visible, 2.5.3) o `label`; el dibujo es decorativo; `md` 40 y `lg` 44 de alto con el ancho proporcional; foco con `shadow-focus-ring`. Peso 9,2 kB, límite 10.240.
+- **Cierre del grupo 9:** test en `build.test.ts` que falla si `dist` (o `src`) importa `@jotis-me/icons/logos|flags|payments|files|cursors`; `app-icon` sí se importa (es la utilidad de AppIcon, no un set de recursos).
+
+## Cierre del grupo 9
+
+E2E completo de docs: 982 pasan y fallaron tres. El de `CopyTooltip` es de carga (pasa solo). Los otros dos eran de este grupo: `docnav` contaba 4 componentes en «Acciones» (ahora 7; el test los saca del catálogo) y en `/components/` se repetía el id `social-google-0`, porque las muestras de `SocialButton` y `SocialButtonGroup` usaban las dos el logo de Google en color, que lleva su `clipPath`. La de `SocialButton` pasa a Apple y Facebook en marca. Repetidos `docnav`, `components` y `copy`: 133 pasan.

@@ -49,4 +49,19 @@ describe("build de @jotis-me/react", () => {
 		expect(css).toContain('font-family: "Bricolage Grotesque"');
 		expect(compiler.sources.map((s) => join(s.base, s.pattern))).toContain(join(root, "dist"));
 	});
+
+	it("no importa ningún set de recursos en color de @jotis-me/icons (design D3 de complete-figma-coverage)", () => {
+		const out = (dir: string): string[] =>
+			readdirSync(dir).flatMap((f) => {
+				const p = join(dir, f);
+				return statSync(p).isDirectory() ? out(p) : f.endsWith(".js") ? [p] : [];
+			});
+		const js = out(join(root, "dist"));
+		expect(js.length).toBeGreaterThan(100);
+		const sets =
+			/(?:from\s*|import\(\s*)["']@jotis-me\/icons\/(logos|flags|payments|files|cursors)(?:\/[^"']*)?["']/;
+		for (const p of js) expect(readFileSync(p, "utf8"), relative(root, p)).not.toMatch(sets);
+		// Las fuentes tampoco: las banderas, los pagos, los archivos y los logos llegan por props
+		for (const src of files) expect(readFileSync(src, "utf8"), relative(root, src)).not.toMatch(sets);
+	});
 });

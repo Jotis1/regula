@@ -11,6 +11,7 @@ Entradas nuevas, aparte de la principal, cada una con un componente suelto por r
 - `@jotis-me/icons/flags`: 261 países y regiones en círculo, cuadrado y rectángulo (`FlagSpainCircle`, `FlagCanaryIslandsRectangle`). El nombre es el del país o la región, no el código ISO: Portugal y las Azores comparten PT, Italia y Cerdeña IT, y 11 regiones no tienen.
 - `@jotis-me/icons/payments`: 56 métodos de pago en `sm` y `md` (`PaymentVisaMd`, `PaymentApplePaySm`).
 - `@jotis-me/icons/files`: 153 tipos de archivo, por extensión y genéricos, en default, gray y solid (`FileDocumentPdf`, `FileDesignFigGray`), y 8 carpetas (`FolderBrandOpen`).
+- `@jotis-me/icons/logos` suma el set `store`: las insignias de Google Play, App Store, Mac App Store, Galaxy Store y AppGallery, en relleno y en contorno (`StoreAppStoreLogo`, `StoreGooglePlayOutlineLogo`); el contorno toma el color del texto. Son las de `AppStoreBadge`.
 - `@jotis-me/icons/cursors`: 50 cursores, los clásicos y los de macOS 26 (`CursorHandGrab`, `CursorMacosResizeNorthSouth`), que sirven de `cursor` en CSS con el punto activo que pongas tú.
 
 Sin `title` son decorativos; con `title`, una imagen con ese nombre. La entrada principal no exporta ninguno de estos recursos. Los emojis del Figma no se incluyen: son PNG con el arte de emoji de Apple.

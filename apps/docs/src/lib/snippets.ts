@@ -13,6 +13,7 @@ const usage: Record<string, string> = {
 		{ value: "24h", label: "24 horas", icon: "clock" },
 	]}
 />`,
+	AppStoreBadge: `<AppStoreBadge store="app-store" href="https://apps.apple.com/app/id1" logo={<StoreAppStoreLogo />} />`,
 	SocialButton: `<SocialButton provider="google" theme="gray" logo={<SocialGoogleLogoGray />} />`,
 	SocialButtonGroup: `<SocialButtonGroup label="Entrar con">
 	<SocialButton provider="google" theme="color" logo={<SocialGoogleLogo />} />

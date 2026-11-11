@@ -8,11 +8,14 @@ import {
 	SocialFacebookLogo,
 	SocialFacebookLogoGray,
 	SocialGoogleLogo,
+	StoreAppStoreLogo,
+	StoreGooglePlayOutlineLogo,
 } from "@jotis-me/icons/logos";
 import {
 	ActivityFeed,
 	Alert,
 	AppIcon,
+	AppStoreBadge,
 	Avatar,
 	AvatarGroup,
 	AvatarLabel,
@@ -210,8 +213,17 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 	SocialButton: {
 		render: () => (
 			<div style={row}>
-				<SocialButton provider="google" theme="color" logo={<SocialGoogleLogo />} />
+				{/* Logos distintos de los de SocialButtonGroup: los de color llevan ids y en /components/ no se repiten */}
+				<SocialButton provider="apple" logo={<SocialAppleLogoGray />} />
 				<SocialButton provider="facebook" iconOnly logo={<SocialFacebookLogoGray />} />
+			</div>
+		),
+	},
+	AppStoreBadge: {
+		render: () => (
+			<div style={row}>
+				<AppStoreBadge store="app-store" href="#" logo={<StoreAppStoreLogo />} />
+				<AppStoreBadge store="google-play" href="#" logo={<StoreGooglePlayOutlineLogo />} />
 			</div>
 		),
 	},

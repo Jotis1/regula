@@ -26,6 +26,7 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	ButtonUtility: "actions",
 	SocialButton: "social",
 	SocialButtonGroup: "social",
+	AppStoreBadge: "social",
 	Icon: "actions",
 	Input: "forms",
 	Select: "forms",

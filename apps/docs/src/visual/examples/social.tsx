@@ -1,5 +1,5 @@
-// Vista previa de SocialButton y SocialButtonGroup. Va en su propio fichero: los logos (`@jotis-me/icons/logos`)
-// solo los cargan estas páginas.
+// Vista previa de SocialButton, SocialButtonGroup y AppStoreBadge. Va en su propio fichero: los logos
+// (`@jotis-me/icons/logos`) solo los cargan estas páginas.
 
 import {
 	SocialAppleLogo,
@@ -13,8 +13,20 @@ import {
 	SocialGoogleLogo,
 	SocialGoogleLogoGray,
 	SocialXLogoGray,
+	StoreAppGalleryLogo,
+	StoreAppGalleryOutlineLogo,
+	StoreAppStoreLogo,
+	StoreAppStoreOutlineLogo,
+	StoreGalaxyStoreLogo,
+	StoreGalaxyStoreOutlineLogo,
+	StoreGooglePlayLogo,
+	StoreGooglePlayOutlineLogo,
+	StoreMacAppStoreLogo,
+	StoreMacAppStoreOutlineLogo,
 } from "@jotis-me/icons/logos";
 import {
+	type AppStore,
+	AppStoreBadge,
 	SocialButton,
 	SocialButtonGroup,
 	type SocialButtonTheme,
@@ -103,6 +115,34 @@ export function SocialButtonGroupExample() {
 					</SocialButtonGroup>
 				</div>
 			))}
+		</div>
+	);
+}
+
+const STORE_BADGES: Record<AppStore, [ReactNode, ReactNode]> = {
+	"google-play": [<StoreGooglePlayLogo key="f" />, <StoreGooglePlayOutlineLogo key="o" />],
+	"app-store": [<StoreAppStoreLogo key="f" />, <StoreAppStoreOutlineLogo key="o" />],
+	"mac-app-store": [<StoreMacAppStoreLogo key="f" />, <StoreMacAppStoreOutlineLogo key="o" />],
+	"galaxy-store": [<StoreGalaxyStoreLogo key="f" />, <StoreGalaxyStoreOutlineLogo key="o" />],
+	"app-gallery": [<StoreAppGalleryLogo key="f" />, <StoreAppGalleryOutlineLogo key="o" />],
+};
+
+/** Las cinco tiendas, en relleno y en contorno; abajo, `lg`. */
+export function AppStoreBadgeExample() {
+	const stores = Object.keys(STORE_BADGES) as AppStore[];
+	return (
+		<div className={stack}>
+			{[0, 1].map((style) => (
+				<div key={style} className={row}>
+					{stores.map((s) => (
+						<AppStoreBadge key={s} store={s} href="#" logo={STORE_BADGES[s][style]} />
+					))}
+				</div>
+			))}
+			<div className={row}>
+				<AppStoreBadge store="app-store" href="#" size="lg" logo={STORE_BADGES["app-store"][0]} />
+				<AppStoreBadge store="google-play" href="#" size="lg" logo={STORE_BADGES["google-play"][0]} />
+			</div>
 		</div>
 	);
 }

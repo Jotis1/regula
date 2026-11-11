@@ -16,6 +16,12 @@ export {
 	appIcons,
 } from "./components/AppIcon.js";
 export {
+	type AppStore,
+	AppStoreBadge,
+	type AppStoreBadgeProps,
+	type AppStoreBadgeSize,
+} from "./components/AppStoreBadge.js";
+export {
 	Avatar,
 	type AvatarBadge,
 	type AvatarProps,
