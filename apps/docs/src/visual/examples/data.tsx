@@ -57,9 +57,100 @@ export function MetricCardExample() {
 				menu
 			/>
 			<MetricCard label="Ahorro" value="420 €" change="8%" period="vs. septiembre" />
+			<MetricCard label="Visitas en 24 h" value="2.000" change="100%" changeBadge menu />
+			<MetricCard
+				label="Visitas en 24 h"
+				value="2.000"
+				change="100%"
+				changeBadge
+				icon="trend-up-01"
+				iconStyle="featured"
+				menu
+			/>
+			<MetricCard
+				label="Visitas en 24 h"
+				value="2.000"
+				change="100%"
+				period="vs. el mes pasado"
+				icon="zap"
+				iconStyle="featured-inline"
+				menu
+				footer={
+					<a
+						className="ml-auto text-sm font-semibold text-brand-secondary no-underline"
+						href="/informes/visitas/"
+					>
+						Ver informe
+					</a>
+				}
+			/>
+			<MetricCard
+				label="Visitas en 24 h"
+				value="2.000"
+				change="100%"
+				period="vs. el mes pasado"
+				icon="trend-up-01"
+				iconStyle="modern"
+				menu
+			/>
+			<MetricCard
+				label="Visitas en 24 h"
+				value="2.000"
+				change="100%"
+				changeBadge
+				icon="trend-up-01"
+				iconStyle="modern-inline"
+				menu
+			/>
+			<MetricCard
+				label="Visitas en 24 h"
+				value="2.000"
+				change="100%"
+				period="vs. el mes pasado"
+				chart={SERIE}
+				menu
+			/>
+			<MetricCard
+				label="Visitas en 24 h"
+				value="2.000"
+				change="100%"
+				icon="eye"
+				chart={SERIE}
+				chartStyle="area"
+				menu
+			/>
+			<MetricCard
+				label="Visitas en 24 h"
+				value="2.000"
+				change="100%"
+				period="vs. el mes pasado"
+				chart={SERIE}
+				chartStyle="line"
+				menu
+				footer={
+					<>
+						<Button hierarchy="tertiary" size="sm" iconOnly="settings-02" label="Ajustes" />
+						<Button hierarchy="secondary" size="sm">
+							Ver informe
+						</Button>
+					</>
+				}
+			/>
+			<MetricCard
+				label="Bajas"
+				value="38"
+				change="12%"
+				trend="down"
+				period="vs. el mes pasado"
+				chart={[9, 8, 8, 6, 7, 5, 4, 3]}
+				chartStyle="header"
+				menu
+			/>
 		</div>
 	);
 }
+
+const SERIE = [3, 4, 3.5, 5, 4.5, 6, 5.5, 7, 6.5, 8];
 
 export function ActivityFeedExample() {
 	return (

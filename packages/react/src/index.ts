@@ -199,7 +199,12 @@ export {
 	type MessageType,
 } from "./components/Message.js";
 export { MessageInput, type MessageInputProps, type MessageInputVariant } from "./components/MessageInput.js";
-export { MetricCard, type MetricCardProps } from "./components/MetricCard.js";
+export {
+	MetricCard,
+	type MetricCardChartStyle,
+	type MetricCardIconStyle,
+	type MetricCardProps,
+} from "./components/MetricCard.js";
 export { Modal, type ModalProps } from "./components/Modal.js";
 export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from "./components/MultiSelect.js";
 export { Notification, type NotificationProps } from "./components/Notification.js";

@@ -184,9 +184,9 @@ Las que cambian de forma:
 - **`InlineCTA`:** `type` con los siete del Figma, donde cada tipo es una plantilla sobre las props actuales. Ejemplo: `email` pinta `Input` + `Button` y avisa con `onSubmit`.
 - **`Message`:** `type`, `attachment`, `reactions`, `status` (`unread`, `read`, `failed`), `onRetry` y `actions`.
 - **`MessageInput`:** `variant` (`minimal`, `textarea`, `advanced`).
-- **`MetricCard`:** `icon`, `iconStyle` y `chart` (lista de números, mini gráfica sin ejes) con `chartStyle`.
-- **`PageHeader`:** `avatar`, `banner` y `centered`.
-- **`SectionHeader`:** `tabs`, `search` y `buttonGroup`.
+- **`MetricCard`:** `icon`, `iconStyle` y `chart` (lista de números, mini gráfica sin ejes) con `chartStyle`, más `changeBadge` y `footer`.
+- **`PageHeader`:** `avatar`, `banner`, `centered` y `back` (el «Volver» del Figma en móvil).
+- **`SectionHeader`:** `tabs`, `search`, `buttonGroup` y `menu`, como huecos (`ReactNode`) para `Tabs`, `Input` y `ButtonGroup` del paquete: así la cabecera sigue siendo de servidor y ligera.
 - **`Table`:**
   - celdas por `column.type` (los quince del Figma);
   - `sortable` por columna, con `sort` y `onSortChange`, y `help` en la cabecera;

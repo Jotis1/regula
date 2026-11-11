@@ -49,7 +49,7 @@
 	"LinkCard": 10752,
 	"Message": 32768,
 	"MessageInput": 27648,
-	"MetricCard": 27648,
+	"MetricCard": 30720,
 	"Modal": 50688,
 	"MultiSelect": 93184,
 	"Notification": 29696,

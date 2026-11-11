@@ -107,7 +107,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 
 - [x] 7.1 `ContentDivider`: `actions` (`1252:126874`). `FileUpload`: `progressStyle="fill"` y `fileIcon` (`1175:101149`), con ejemplos usando `@jotis-me/icons/files`. `InlineCTA`: los siete `type` (`1255:131915`). Tests, ejemplos y capturas.
 - [x] 7.2 `Message` (`1242:996`): los nueve `type`, reacciones, estado con `onRetry` y panel de acciones. `MessageInput` (`9206:602532`): `variant`. Tests de accesibilidad del estado y de las reacciones. Ejemplos y capturas.
-- [ ] 7.3 `MetricCard` (`1560:266217`): `icon`, `iconStyle`, `chart` y `chartStyle`. `PageHeader` (`1239:122640`): `avatar`, `banner` y `centered`. `SectionHeader` (`1214:38`): `tabs`, `search` y `buttonGroup`. Tests, ejemplos y capturas.
+- [x] 7.3 `MetricCard` (`1560:266217`): `icon`, `iconStyle`, `chart` y `chartStyle`. `PageHeader` (`1239:122640`): `avatar`, `banner` y `centered`. `SectionHeader` (`1214:38`): `tabs`, `search` y `buttonGroup`. Tests, ejemplos y capturas.
 - [ ] 7.4 `Table` (`1227:110587`, `1222:107305`, `1221:107933`, `9400:570197`):
   - los quince tipos de celda;
   - `sortable` con `aria-sort`;

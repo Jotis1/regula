@@ -206,7 +206,7 @@ Las props de icono de los componentes (`icon`, `iconLeading`, `iconTrailing` y s
 
 #### Scenario: Cabecera con pestañas
 - **WHEN** se pinta `SectionHeader` con `tabs` de tres pestañas
-- **THEN** las pestañas van debajo del título como `Tabs` de tipo subrayado y se manejan con las flechas
+- **THEN** las pestañas van debajo del título como `Tabs` de tipo `button-border` (las del Figma) y se manejan con las flechas
 
 ### Requirement: Variantes de tabla
 `Table` SHALL ofrecer los tipos de celda del Figma: texto, avatar, icono de archivo, método de pago, badge, varios badges, tendencia, grupo de avatares, select, progreso, estrellas, botones de acción, iconos de acción y menú. También SHALL ofrecer cabeceras con orden y ayuda, la acción inicial de casilla, radio o interruptor, y filas alternas.

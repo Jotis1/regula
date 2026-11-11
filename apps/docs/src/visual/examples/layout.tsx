@@ -5,6 +5,7 @@ import { FileDocumentPdf } from "@jotis-me/icons/files";
 import { PaymentVisaMd } from "@jotis-me/icons/payments";
 import {
 	AppIcon,
+	Avatar,
 	Button,
 	ButtonGroup,
 	CardHeader,
@@ -16,9 +17,75 @@ import {
 	SectionFooter,
 	SectionHeader,
 	SectionLabel,
+	Tabs,
 } from "@jotis-me/react";
 
+const migas = [
+	{ label: "Inicio", icon: "home-line" as const, href: "/" },
+	{ label: "Ajustes", href: "/" },
+	{ label: "Equipo" },
+];
+const accionesPerfil = (
+	<>
+		<Button hierarchy="secondary" size="sm">
+			Compartir
+		</Button>
+		<Button size="sm">Editar perfil</Button>
+	</>
+);
+const fotoGrande = <Avatar size="2xl" initials="OR" badge="verified" />;
+
 export function PageHeaderExample() {
+	return (
+		<div className="flex flex-col gap-12">
+			<PageHeaderClasica />
+			<PageHeader
+				breadcrumbs={migas}
+				back={{ href: "/" }}
+				avatar={<Avatar size="md" initials="OR" />}
+				title="Olivia Rhye"
+				description="olivia@jotis.me"
+				actions={accionesPerfil}
+			/>
+			<PageHeader
+				banner
+				breadcrumbs={migas}
+				title="Equipo"
+				description="Gestiona tu equipo y sus permisos."
+				actions={accionesPerfil}
+			/>
+			<PageHeader
+				banner
+				avatar={fotoGrande}
+				breadcrumbs={migas}
+				title="Olivia Rhye"
+				description="olivia@jotis.me"
+				actions={accionesPerfil}
+			/>
+			<PageHeader
+				banner
+				centered
+				avatar={fotoGrande}
+				title="Olivia Rhye"
+				description="olivia@jotis.me"
+				actions={accionesPerfil}
+			/>
+			<div style={{ width: 375 }}>
+				<PageHeader
+					banner
+					avatar={fotoGrande}
+					breadcrumbs={migas}
+					back={{ href: "/" }}
+					title="Olivia Rhye"
+					description="olivia@jotis.me"
+					actions={accionesPerfil}
+				/>
+			</div>
+		</div>
+	);
+}
+
+function PageHeaderClasica() {
 	return (
 		<PageHeader
 			breadcrumbs={[{ label: "Inicio", icon: "home-line" }, { label: "Pecunia" }]}
@@ -123,9 +190,65 @@ export function SectionHeaderExample() {
 				description="Se aplican a todas las apps de la suite."
 				divider={false}
 			/>
+			<SectionHeader
+				title="Miembros del equipo"
+				description="Gestiona tu equipo y sus permisos."
+				search={<Input size="sm" icon="search-lg" aria-label="Buscar" placeholder="Buscar" />}
+			/>
+			<SectionHeader
+				title="Miembros del equipo"
+				description="Gestiona tu equipo y sus permisos."
+				buttonGroup={
+					<ButtonGroup size="sm" aria-label="Periodo" defaultValue="12m" items={periodos} />
+				}
+				menu={menuSeccion}
+			/>
+			<SectionHeader
+				title="Miembros del equipo"
+				description="Gestiona tu equipo y sus permisos."
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Secundaria
+						</Button>
+						<Button size="sm">Principal</Button>
+					</>
+				}
+				menu={menuSeccion}
+				tabs={<Tabs type="button-border" aria-label="Secciones de ajustes" items={pestañas} />}
+			/>
+			<div style={{ width: 375 }}>
+				<SectionHeader
+					title="Miembros del equipo"
+					description="Gestiona tu equipo y sus permisos."
+					buttonGroup={
+						<ButtonGroup
+							size="sm"
+							aria-label="Periodo en móvil"
+							defaultValue="12m"
+							items={periodos}
+						/>
+					}
+					menu={menuSeccion}
+				/>
+			</div>
 		</div>
 	);
 }
+
+const periodos = [
+	{ value: "12m", label: "12 meses" },
+	{ value: "30d", label: "30 días" },
+	{ value: "7d", label: "7 días" },
+];
+const pestañas = [
+	{ id: "datos", label: "Mis datos" },
+	{ id: "perfil", label: "Perfil" },
+	{ id: "contrasena", label: "Contraseña" },
+	{ id: "equipo", label: "Equipo" },
+	{ id: "plan", label: "Plan" },
+];
+const menuSeccion = <Button hierarchy="tertiary" size="sm" iconOnly="dots-vertical" label="Más opciones" />;
 
 export function SectionFooterExample() {
 	return (
