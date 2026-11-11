@@ -21,6 +21,7 @@ export interface Composition {
 export const COMPOSITION_FILES: Record<string, string> = {
 	Modal: "modal-compositions",
 	Slideout: "slideout-compositions",
+	ColorPicker: "color-picker-compositions",
 };
 
 export const COMPOSITIONS: Composition[] = [
@@ -581,6 +582,25 @@ export const COMPOSITIONS: Composition[] = [
 		height: 752,
 		composition: true,
 	},
+	{
+		name: "ColorPickerModal",
+		of: "ColorPicker",
+		figma: "Desktop",
+		title: "Modal del selector, en escritorio",
+		height: 592,
+		composition: true,
+	},
+	{
+		name: "ColorPickerModalMobile",
+		of: "ColorPicker",
+		figma: "Mobile",
+		title: "Modal del selector, en móvil",
+		height: 672,
+		composition: true,
+	},
 ];
+
+/** Hasta cuántas composiciones van en la página del componente; con más, tienen su propia página. */
+export const INLINE_COMPOSITIONS = 2;
 
 export const compositionsOf = (component: string) => COMPOSITIONS.filter((c) => c.of === component);

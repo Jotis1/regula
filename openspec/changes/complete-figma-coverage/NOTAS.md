@@ -581,3 +581,10 @@ Nodo: `Slide out menu` `1240:137582`, 23 tipos (en escritorio y móvil). Página
 - **Diferencias con el Figma.** Sin fotos (iniciales y degradados); `Calendar event` lleva la fecha como icono del título; los menús de permisos de `Share project` son `Select` pequeños (el Figma enseña uno abierto); la conversación del asistente usa `Message` y la barra «Cancelar · Sí, cámbialo» es texto; `Integration` dibuja los dos logos como avatares con iniciales. El panel mide 440 px como el del Figma; en las capturas sale a la derecha de un lienzo de 800.
 - **Móvil.** Los tipos móviles del Figma son los mismos paneles a 375 px: el panel ocupa el ancho disponible (`w-full`, `max-w` 440), así que en una app a 375 px es el tipo móvil. En la página, cada composición va en una caja de 640 px como mínimo que se desplaza en móvil; las capturas aprobadas son las de 800 px, como las de los demás ejemplos.
 - **JS.** Página 262,9 kB, límite propio 290; Tabs 375,7 kB, límite de `/components/*/` a 380.
+
+## Composición del Color picker modal (12.3)
+
+Nodo: `Color picker modal` `12427:142023`, con `Breakpoint` `Desktop` y `Mobile`. Dos composiciones (`ColorPickerModal` y `ColorPickerModalMobile`, en `color-picker-compositions.tsx`) en una sección «Composiciones» de la página de `ColorPicker`, como pide el diseño (D7): con dos o menos, `ComponentPage` las pinta en la página con su código (`INLINE_COMPOSITIONS`); con más, enlaza a su página propia. Mismo registro, test con los dos `Breakpoint`, capturas y paridad.
+
+- **Montaje.** `BackgroundOverlay` con desenfoque y, encima, un `role="dialog"` con el `ColorPicker` `palette` (opacidad, campo hex y guardados), como el Figma; el de móvil es el mismo en un marco de 375 px. Sin `Modal` porque el del Figma no tiene título ni pie: en una app, el diálogo necesita además atrapar el foco (`Modal`, o el popover de `ColorPickerDropdown`).
+- **JS.** Va en el límite de `/components/*/` (la página de `ColorPicker` ya cargaba el selector).

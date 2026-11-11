@@ -7,7 +7,8 @@ import { COMPOSITION_FILES, COMPOSITIONS, compositionsOf } from "../src/visual/c
 // Composiciones de ejemplo (design D7, requisito «Composiciones de ejemplo»): cada tipo del Figma tiene la suya.
 // La lista sale de la propiedad `Type` del conjunto `Modal` (`4057:415205`) del Figma «Yoruverse UI v8.0», en
 // escritorio: 51 tipos (la spec decía 49; vale el Figma). La de `Slideout` sale del conjunto `Slide out menu`
-// (`1240:137582`): 23 tipos.
+// (`1240:137582`): 23 tipos. La de `ColorPicker` es el `Color picker modal` (`12427:142023`), con sus dos
+// `Breakpoint`.
 const FIGMA = {
 	Modal: [
 		"Horizontal",
@@ -87,6 +88,7 @@ const FIGMA = {
 		"Create event",
 		"Integration",
 	],
+	ColorPicker: ["Desktop", "Mobile"],
 };
 
 const sourceOf = (component: string) =>
@@ -99,6 +101,11 @@ describe("composiciones", () => {
 	it("cada tipo del Figma de Modal y de Slideout tiene su composición, sin que falte ni sobre ninguno", () => {
 		expect(FIGMA.Modal).toHaveLength(51);
 		expect(FIGMA.Slideout).toHaveLength(23);
+		expect(
+			compositionsOf("ColorPicker")
+				.map((c) => c.figma)
+				.sort(),
+		).toEqual(FIGMA.ColorPicker);
 		expect(
 			compositionsOf("Slideout")
 				.map((c) => c.figma)

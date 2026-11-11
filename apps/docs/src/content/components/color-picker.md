@@ -22,3 +22,5 @@ astroNote: "`onChange` es una función y no cruza de Astro a una isla: envuélve
 
 
 **Teclado.** El área es un control de dos ejes: izquierda y derecha cambian la saturación, arriba y abajo el brillo. En las barras de tono y opacidad, izquierda y derecha. La paleta es un grupo de opciones con una sola parada de tabulación: las flechas la recorren en las dos direcciones. El campo hex solo avisa cuando el color está completo.
+
+**Composiciones.** El `Color picker modal` del Figma (`12427:142023`): el selector de paleta en un diálogo sobre la página, en escritorio y en móvil, con su código.

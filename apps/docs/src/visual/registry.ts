@@ -21,6 +21,7 @@ import {
 	RadarChartExample,
 } from "./examples/charts";
 import { ColorPickerDropdownExample, ColorPickerExample } from "./examples/color";
+import * as colorPickerCompositions from "./examples/color-picker-compositions";
 import { ActivityFeedExample, CodeSnippetExample, MetricCardExample } from "./examples/data";
 import {
 	BackgroundOverlayExample,
@@ -146,6 +147,7 @@ import { TableExample } from "./examples/table";
 const compositionModules: Record<string, Record<string, unknown>> = {
 	"modal-compositions": modalCompositions,
 	"slideout-compositions": slideoutCompositions,
+	"color-picker-compositions": colorPickerCompositions,
 };
 
 export const visualExamples: Record<string, ComponentType> = {

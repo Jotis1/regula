@@ -156,7 +156,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 
 - [x] 12.1 Página `/components/modal/composiciones/` con los 51 tipos de `4057:415205` (la tarea decía 49; el Figma tiene 51) como entradas del registro (`composition: true`), solo con componentes de Regula, código copiable y capturas. Test que compara la lista con los tipos del nodo. Límite propio en `check:js`.
 - [x] 12.2 Página `/components/slideout/composiciones/` con los 23 tipos de `1240:137582`, con los mismos entregables.
-- [ ] 12.3 Composición del `Color picker modal` (`12427:142023`) en la página de `ColorPicker`, en escritorio y móvil.
+- [x] 12.3 Composición del `Color picker modal` (`12427:142023`) en la página de `ColorPicker`, en escritorio y móvil.
 
 ## 13. Cierre
 

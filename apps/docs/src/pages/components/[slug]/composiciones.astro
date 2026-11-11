@@ -8,14 +8,22 @@ import CodeSnippet from "../../../components/CodeSnippetIsland";
 import Base from "../../../layouts/Base.astro";
 import { groupOf, labelOf, SECTIONS, slugOf } from "../../../lib/catalog";
 import { compositionCode } from "../../../lib/composition-code";
-import { COMPOSITION_FILES, COMPOSITIONS, compositionsOf } from "../../../visual/compositions";
+import {
+	COMPOSITION_FILES,
+	COMPOSITIONS,
+	compositionsOf,
+	INLINE_COMPOSITIONS,
+} from "../../../visual/compositions";
 import VisualExample from "../../../visual/VisualExample";
 
 export function getStaticPaths() {
-	return [...new Set(COMPOSITIONS.map((c) => c.of))].map((name) => ({
-		params: { slug: slugOf(name) },
-		props: { name },
-	}));
+	// Las que tienen pocas van en la página del componente (ComponentPage)
+	return [...new Set(COMPOSITIONS.map((c) => c.of))]
+		.filter((name) => compositionsOf(name).length > INLINE_COMPOSITIONS)
+		.map((name) => ({
+			params: { slug: slugOf(name) },
+			props: { name },
+		}));
 }
 
 const { name } = Astro.props;
