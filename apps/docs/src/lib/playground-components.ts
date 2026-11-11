@@ -65,7 +65,18 @@ import {
 	Toggle,
 	VerificationCodeInput,
 } from "@jotis-me/react";
-import type { ComponentType } from "react";
+import { type ComponentProps, type ComponentType, createElement, Fragment } from "react";
+
+const regula = () => createElement(AppIcon, { app: "regula", size: 32 });
+
+/** SidebarNav con la marca de Regula: `brand` y `mark` son nodos y el punto de partida solo lleva JSON. */
+function SidebarNavWithBrand(props: ComponentProps<typeof SidebarNav>) {
+	return createElement(SidebarNav, {
+		brand: createElement(Fragment, null, regula(), "Regula"),
+		mark: regula(),
+		...props,
+	});
+}
 
 /** Cada uno con sus props; el playground les pasa las de su punto de partida y sus controles, sin tipos. */
 const components = {
@@ -115,7 +126,7 @@ const components = {
 	SectionHeader: SectionHeader,
 	SectionLabel: SectionLabel,
 	Select: Select,
-	SidebarNav: SidebarNav,
+	SidebarNav: SidebarNavWithBrand,
 	Skeleton: Skeleton,
 	Spinner: Spinner,
 	StreamAlert: StreamAlert,

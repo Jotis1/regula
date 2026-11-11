@@ -57,7 +57,7 @@ export interface SidebarNavLabels {
 /** Tipos del Figma (`Sidebar navigation`, 1158:90768). */
 export type SidebarNavType = "simple" | "dual-tier" | "slim" | "sections-dividers" | "sections-subheadings";
 
-/** La tarjeta de cuenta: el `Dropdown` `account-card-md` con su lista de cuentas y su menú. */
+/** La tarjeta de cuenta: el `Dropdown` `account-card-md` (en `slim`, `account-avatar`) con sus cuentas y su menú. */
 export type SidebarNavAccount = Omit<DropdownProps, "variant" | "trigger" | "triggerVariant">;
 
 export interface SidebarNavProps {
@@ -339,7 +339,11 @@ export function SidebarNav({
 		);
 
 	const accountBlock = account ? (
-		<Dropdown {...account} variant="account-card-md" label={account.label ?? t.nav} />
+		<Dropdown
+			{...account}
+			variant={slim ? "account-avatar" : "account-card-md"}
+			label={account.label ?? t.nav}
+		/>
 	) : user ? (
 		slim ? (
 			<div className="flex flex-col items-center gap-2">
@@ -379,7 +383,11 @@ export function SidebarNav({
 					responsive && "max-lg:hidden",
 				)}
 			>
-				{brand}
+				{type === "sections-subheadings" && search ? (
+					<span className="flex min-w-0 items-center gap-2">{brand}</span>
+				) : (
+					brand
+				)}
 				{type === "sections-subheadings" && search ? (
 					<Button hierarchy="tertiary" size="sm" iconOnly="search-lg" label={t.search} />
 				) : null}
@@ -456,7 +464,9 @@ export function SidebarNav({
 		>
 			{responsive ? (
 				<div className="flex h-14 shrink-0 items-center justify-between bg-primary px-4 shadow-[inset_0_-1px_0_var(--border-secondary)] lg:hidden">
-					<div className="font-display text-lg font-bold text-primary">{brand}</div>
+					<div className="flex items-center gap-2 font-display text-lg font-bold text-primary">
+						{brand}
+					</div>
 					<Button
 						hierarchy="tertiary"
 						iconOnly={menuOpen ? "x-close" : "menu-01"}

@@ -11,7 +11,7 @@ astroNote: "Los ítems son enlaces y se pintan sin directiva, pero los submenús
 **Tipos.** Los del Figma (`Sidebar navigation`, `1158:90768`):
 - `simple`: una columna de 296 px. Un elemento con `children` se despliega bajo él.
 - `dual-tier`: la columna de siempre más un segundo panel de 256 px con el submenú del elemento elegido. Empieza con el de la página actual o el que lleva `defaultOpen`; volver a pulsarlo cierra el panel.
-- `slim`: 68 px, solo iconos, cada uno con su nombre en un tooltip; el submenú sale en el segundo panel, con el nombre del elemento como título. La marca es `mark`, y la ficha del usuario queda en el avatar. No lleva buscador ni tarjeta destacada.
+- `slim`: 68 px, solo iconos, cada uno con su nombre en un tooltip; el submenú sale en el segundo panel, con el nombre del elemento como título. La marca es `mark`; la ficha del usuario queda en el avatar y `account` es el `Dropdown` `account-avatar`. No lleva buscador ni tarjeta destacada.
 - `sections-dividers`: tarjeta redondeada con los grupos de `sections` separados por rayas.
 - `sections-subheadings`: igual, con el título de cada grupo en mayúsculas; con `search` el buscador es una lupa junto a la marca.
 

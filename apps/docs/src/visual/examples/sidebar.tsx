@@ -11,6 +11,7 @@ import {
 	IconZapFast,
 } from "@jotis-me/icons";
 import {
+	AppIcon,
 	Avatar,
 	AvatarGroup,
 	Badge,
@@ -70,7 +71,13 @@ const account = {
 	onAddAccount: () => {},
 };
 
-const brand = "jotis.me";
+const brand = (
+	<>
+		<AppIcon app="regula" size={32} />
+		Regula
+	</>
+);
+const mark = <AppIcon app="regula" size={32} />;
 
 const dismiss = (
 	<Button hierarchy="link-gray" size="sm">
@@ -333,7 +340,7 @@ export function SidebarNavExample() {
 					<SidebarNav
 						type="slim"
 						brand={brand}
-						mark="j"
+						mark={mark}
 						items={mainItems.map((item) =>
 							item.children ? { ...item, defaultOpen: true } : item,
 						)}

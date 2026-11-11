@@ -104,7 +104,12 @@ const usage: Record<string, string> = {
 />`,
 	SidebarNav: `<SidebarNav
 	type="dual-tier"
-	brand="jotis.me"
+	brand={
+		<>
+			<AppIcon app="regula" size={32} />
+			Regula
+		</>
+	}
 	search
 	items={[
 		{ icon: "home-line", label: "Inicio", href: "/", active: true },

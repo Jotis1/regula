@@ -338,3 +338,39 @@ describe("SidebarNav: accesibilidad", () => {
 		);
 	});
 });
+
+describe("SidebarNav: marca y cuenta según el tipo", () => {
+	const account = {
+		items: [{ label: "Ver perfil" }],
+		accounts: [{ value: "o", name: "Olivia Rhye", email: "olivia@jotis.me", initials: "OR" }],
+	};
+
+	it("estrecho: la cuenta es solo el avatar, sin la tarjeta que no cabe en la columna", async () => {
+		render(<SidebarNav type="slim" items={items} account={account} />);
+		expect(screen.queryByText("olivia@jotis.me")).toBeNull();
+		const trigger = screen.getByRole("button", { name: /Principal/ });
+		expect(trigger.className).toContain("rounded-full");
+		await userEvent.click(trigger);
+		expect(screen.getByRole("menuitemradio", { name: /Olivia Rhye/ })).toBeTruthy();
+	});
+
+	it("con subtítulos y lupa, la marca (logo y nombre) va junta y la lupa a la derecha", () => {
+		render(
+			<SidebarNav
+				type="sections-subheadings"
+				search
+				brand={
+					<>
+						<svg aria-hidden data-testid="logo" />
+						Regula
+					</>
+				}
+				sections={[{ title: "General", items: [{ label: "Panel", href: "/" }] }]}
+			/>,
+		);
+		const group = screen.getByTestId("logo").parentElement as HTMLElement;
+		expect(group.tagName).toBe("SPAN");
+		expect(group.textContent).toBe("Regula");
+		expect(group.nextElementSibling?.textContent).toContain("Buscar");
+	});
+});

@@ -424,7 +424,12 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		render: () => (
 			<div style={{ height: 400, display: "flex" }}>
 				<SidebarNav
-					brand="jotis.me"
+					brand={
+						<>
+							<AppIcon app="regula" size={32} />
+							Regula
+						</>
+					}
 					items={[
 						{ icon: "home-line", label: "Inicio", href: "/", active: true },
 						{ icon: "bar-chart-01", label: "Panel", href: "/", badge: 3 },
