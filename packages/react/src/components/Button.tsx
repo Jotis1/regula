@@ -40,8 +40,8 @@ interface WithText extends ButtonBase {
 }
 
 interface IconOnly extends ButtonBase {
-	/** Botón solo con icono. Exige `label` para lectores de pantalla. */
-	iconOnly: IconName;
+	/** Botón solo con icono: un nombre del set núcleo o un nodo (`<IconRocket02 />`). Exige `label` para lectores de pantalla. */
+	iconOnly: IconName | ReactNode;
 	/** Nombre accesible del botón solo con icono. */
 	label: string;
 	iconLeading?: undefined;
@@ -137,7 +137,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 	const spinner = <Icon name="loading-02" size={iconSize} spin />;
 	const content = iconOnly ? (
 		<>
-			{loading ? spinner : <Icon name={iconOnly} size={iconSize} />}
+			{loading ? spinner : iconSlot(iconOnly, iconSize)}
 			<span className="sr-only">{label}</span>
 		</>
 	) : (

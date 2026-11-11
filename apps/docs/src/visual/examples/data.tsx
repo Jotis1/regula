@@ -1,16 +1,7 @@
 // Puertos de las vistas previas de datos de la guía (reference/components/*/preview.html).
 
 import { FileDocumentPdf } from "@jotis-me/icons/files";
-import {
-	ActivityFeed,
-	Badge,
-	Button,
-	CodeSnippet,
-	Message,
-	MetricCard,
-	Pagination,
-	Table,
-} from "@jotis-me/react";
+import { ActivityFeed, Badge, Button, CodeSnippet, MetricCard, Pagination, Table } from "@jotis-me/react";
 
 type Movimiento = { c: string; f: string; ok: boolean; i: string };
 
@@ -175,20 +166,6 @@ export function ActivityFeedExample() {
 					},
 				]}
 			/>
-		</div>
-	);
-}
-
-export function MessageExample() {
-	return (
-		<div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 560 }}>
-			<Message author="Emptor" avatar={{ initials: "Em" }} time="Jueves 18:02">
-				He encontrado tres aspiradoras escoba por debajo de 300 €. ¿Te las comparo por autonomía?
-			</Message>
-			<Message sent time="Jueves 18:03">
-				Sí, y quita las que no tengan batería extraíble.
-			</Message>
-			<Message author="Emptor" avatar={{ initials: "Em" }} typing />
 		</div>
 	);
 }

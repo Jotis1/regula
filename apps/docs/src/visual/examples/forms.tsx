@@ -484,6 +484,30 @@ export function MessageInputExample() {
 	return (
 		<div className="max-w-[560px]">
 			<MessageInput placeholder="Pregunta a Emptor…" onAttach={() => {}} onSend={() => {}} />
+			<div className="mt-8 flex flex-col gap-6">
+				<MessageInput variant="minimal" placeholder="Mensaje" onSend={() => {}} />
+				<MessageInput
+					variant="textarea"
+					placeholder="Mensaje"
+					onVoice={() => {}}
+					onAttach={() => {}}
+					onEmoji={() => {}}
+					onSend={() => {}}
+				/>
+				<MessageInput
+					variant="advanced"
+					placeholder="Pregúntame lo que quieras…"
+					onVoice={() => {}}
+					onShortcuts={() => {}}
+					onAttach={() => {}}
+					onSend={() => {}}
+					toolbar={
+						<span className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary">
+							Emptor
+						</span>
+					}
+				/>
+			</div>
 		</div>
 	);
 }

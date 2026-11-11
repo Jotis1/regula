@@ -1,5 +1,6 @@
 "use client";
 
+import { IconSwitchHorizontal01 } from "@jotis-me/icons";
 import {
 	type CSSProperties,
 	type KeyboardEvent,
@@ -868,7 +869,7 @@ function GradientEditor({
 					onClick={() => setStops(stops.map((s) => ({ ...s, offset: 100 - s.offset })))}
 					className={cx(TEXT_BUTTON, "p-1")}
 				>
-					<Icon name="switch-horizontal-01" size={20} />
+					<IconSwitchHorizontal01 size={20} />
 				</button>
 			</div>
 			<div ref={track} className="relative mx-2.5 h-3 rounded-full" style={CHECKER}>

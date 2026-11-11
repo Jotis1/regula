@@ -88,5 +88,4 @@ export const coreIcons: Record<IconName, readonly string[]> = {
 	"slash-divider": ["M7 22L17 2"],
 	"chevron-left-double": ["M18 17L13 12L18 7M11 17L6 12L11 7"],
 	"chevron-right-double": ["M6 17L11 12L6 7M13 17L18 12L13 7"],
-	"switch-horizontal-01": ["M20 17H4M8 21L4 17L8 13M4 7H20M16 11L20 7L16 3"],
 };

@@ -185,8 +185,20 @@ export {
 export { Kbd, type KbdProps, type KbdVariant } from "./components/Kbd.js";
 export { LineChart, type LineChartProps } from "./components/LineChart.js";
 export { LinkCard, type LinkCardProps } from "./components/LinkCard.js";
-export { Message, type MessageProps } from "./components/Message.js";
-export { MessageInput, type MessageInputProps } from "./components/MessageInput.js";
+export {
+	Message,
+	type MessageAction,
+	type MessageAudio,
+	type MessageFile,
+	type MessageLabels,
+	type MessageLink,
+	type MessageMedia,
+	type MessageProps,
+	type MessageReaction,
+	type MessageStatus,
+	type MessageType,
+} from "./components/Message.js";
+export { MessageInput, type MessageInputProps, type MessageInputVariant } from "./components/MessageInput.js";
 export { MetricCard, type MetricCardProps } from "./components/MetricCard.js";
 export { Modal, type ModalProps } from "./components/Modal.js";
 export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from "./components/MultiSelect.js";

@@ -12,13 +12,7 @@ import { AppIconExample } from "./examples/brand";
 import { CalendarViewExample } from "./examples/calendar";
 import { BarChartExample, ChartLegendExample, LineChartExample, PieChartExample } from "./examples/charts";
 import { ColorPickerExample } from "./examples/color";
-import {
-	ActivityFeedExample,
-	CodeSnippetExample,
-	MessageExample,
-	MetricCardExample,
-	TableExample,
-} from "./examples/data";
+import { ActivityFeedExample, CodeSnippetExample, MetricCardExample, TableExample } from "./examples/data";
 import {
 	AvatarExample,
 	AvatarGroupExample,
@@ -65,6 +59,7 @@ import {
 	SectionHeaderExample,
 	SectionLabelExample,
 } from "./examples/layout";
+import { MessageExample } from "./examples/message";
 import {
 	BackgroundPatternExample,
 	BrowserFrameExample,

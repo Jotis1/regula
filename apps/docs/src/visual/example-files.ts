@@ -61,7 +61,7 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	Table: "data",
 	MetricCard: "data",
 	ActivityFeed: "data",
-	Message: "data",
+	Message: "message",
 	CalendarView: "calendar",
 	CodeSnippet: "data",
 	PageHeader: "layout",
