@@ -42,7 +42,7 @@ export const EXAMPLE_FILES: Record<string, string> = {
 	Pagination: "navigation",
 	PaginationDots: "navigation",
 	Pager: "navigation",
-	SidebarNav: "navigation",
+	SidebarNav: "sidebar",
 	Dropdown: "navigation",
 	ContextMenu: "navigation",
 	HeaderNav: "navigation",

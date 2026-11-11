@@ -83,7 +83,6 @@ import {
 	PagerExample,
 	PaginationDotsExample,
 	PaginationExample,
-	SidebarNavExample,
 	TabsExample,
 	TreeViewExample,
 } from "./examples/navigation";
@@ -98,6 +97,7 @@ import {
 	SlideoutExample,
 	TooltipExample,
 } from "./examples/overlays";
+import { SidebarNavExample } from "./examples/sidebar";
 import {
 	CamFrameExample,
 	ChannelBannerExample,

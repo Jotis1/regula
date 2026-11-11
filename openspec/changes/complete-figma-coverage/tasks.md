@@ -83,7 +83,7 @@ Nunca se ejecuta `turbo run typecheck` mientras corre el e2e de docs.
 ## 5. Variantes: medios, feeds y navegación
 
 - [x] 5.1 `VideoPlayer`: `size` (`9264:576771`). `ActivityFeed` (`1254:128631`): `divider` (con `connector` como alias), `type="messages"` y `supporting` (etiquetas, archivo, texto). `Notification` (`1135:618`): `image`, `avatar` y `progress`. Tests, ejemplos y capturas.
-- [ ] 5.2 `SidebarNav` (`1158:90768`, `1157:90307`, `7891:87996`):
+- [x] 5.2 `SidebarNav` (`1158:90768`, `1157:90307`, `7891:87996`):
   - los cinco `type`;
   - submenús con `children`;
   - `featured` con las plantillas de tarjeta;

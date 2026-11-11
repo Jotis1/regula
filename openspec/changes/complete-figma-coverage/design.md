@@ -169,9 +169,10 @@ Las que cambian de forma:
 - **`Notification`:** `image`, `avatar` y `progress`.
 - **`SidebarNav`:**
   - `type`: `simple`, `dual-tier`, `slim`, `sections-dividers` y `sections-subheadings`;
-  - elementos con `children` para los submenús;
-  - `featured` con las tarjetas del Figma como `ReactNode`, más plantillas exportadas para progreso, aviso y mejora de plan;
-  - `account` con la tarjeta de cuenta.
+  - elementos con `children` para los submenús (`defaultOpen`), `shortcut` y `trailing`; `sections` para los de secciones y `mark` para `slim`;
+  - `featured` con las tarjetas del Figma como `ReactNode`, más plantillas en `SidebarCards` (`Progress`, `Notice`, `Upgrade`; un objeto, para no contar como componentes del catálogo);
+  - `account` con la tarjeta de cuenta (el `Dropdown` `account-card-md`);
+  - `responsive` (barra de menú por debajo de `lg`) y `defaultMenuOpen`.
 - **`Breadcrumbs`:** `divider` (`chevron`, `slash`) y `type` (`text`, `text-line`, `button`, `account`).
 - **`Pagination`:** `type` (los diez del Figma en kebab-case) y `shape`.
 - **`CalendarView`:** `view` (`month`, `week`, `day`) y `defaultView`; selector de vista con `Dropdown`.

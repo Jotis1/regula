@@ -79,7 +79,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	SectionHeader: 200,
 	SectionLabel: 330,
 	Select: 560,
-	SidebarNav: 560,
+	SidebarNav: 5120,
 	Skeleton: 120,
 	Slideout: 520,
 	Slider: 460,

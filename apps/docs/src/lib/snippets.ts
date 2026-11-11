@@ -103,14 +103,26 @@ const usage: Record<string, string> = {
 	next={{ href: "/components/button/", label: "Button" }}
 />`,
 	SidebarNav: `<SidebarNav
+	type="dual-tier"
 	brand="jotis.me"
 	search
 	items={[
 		{ icon: "home-line", label: "Inicio", href: "/", active: true },
+		{
+			icon: "bar-chart-01",
+			label: "Panel",
+			children: [
+				{ icon: "eye", label: "Resumen", href: "/panel/" },
+				{ icon: "bell-01", label: "Avisos", href: "/panel/avisos/", badge: 10 },
+			],
+		},
 		{ icon: "currency-euro", label: "Pecunia", href: "/pecunia/", badge: 3 },
 	]}
-	footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/ajustes/" }]}
-	user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
+	featured={<SidebarCards.Progress title="Espacio usado" value={80} onClose={() => {}} />}
+	account={{
+		items: [{ label: "Ver perfil", shortcut: "⌘P" }],
+		accounts: [{ value: "ana", name: "Ana", email: "ana@jotis.me", initials: "AN" }],
+	}}
 />`,
 	HeaderNav: `<HeaderNav
 	type="dual-tier"

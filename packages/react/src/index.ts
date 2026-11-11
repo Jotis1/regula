@@ -216,10 +216,17 @@ export {
 	type TagsSelectProps,
 } from "./components/Select.js";
 export {
+	SidebarCards,
 	SidebarNav,
+	type SidebarNavAccount,
 	type SidebarNavItem,
 	type SidebarNavLabels,
 	type SidebarNavProps,
+	type SidebarNavSection,
+	type SidebarNavType,
+	type SidebarNoticeCardProps,
+	type SidebarProgressCardProps,
+	type SidebarUpgradeCardProps,
 } from "./components/SidebarNav.js";
 export { Skeleton, type SkeletonProps } from "./components/Skeleton.js";
 export { Slideout, type SlideoutProps } from "./components/Slideout.js";
