@@ -6,7 +6,7 @@ interactive: true
 astroNote: "`onApply` es una función y no cruza de Astro a una isla: envuélvelo en un `.tsx` y úsalo con `client:load`."
 ---
 
-**Props.** `range` (rango en lugar de una fecha), `defaultValue` ({`start`, `end`}), `onApply({start, end})`, `presets` [{`label`, `start`, `end`?}], `placeholder`, `open` / `defaultOpen`, `inline` (pinta el panel sin botón), `today`.
+**Props.** `range` (rango en lugar de una fecha), `defaultValue` ({`start`, `end`}), `onApply({start, end})`, `presets` [{`label`, `start`, `end`?}], `placeholder`, `open` / `defaultOpen`, `inline` (pinta el panel sin botón), `today`, `times` (horas disponibles), `presentation` (`dropdown` o `modal`).
 
 **Visual.** Disparador: botón secundario `sm` con icono de calendario. Panel `bg-primary`, `radius-2xl`, `shadow-xl`; presets a la izquierda (152px); celdas redondas de 40px, seleccionada `bg-brand-solid` con texto blanco, días intermedios `bg-secondary_hover`, hoy con punto `fg-brand-primary`. La semana empieza en lunes y los meses van en castellano.
 
@@ -17,3 +17,7 @@ astroNote: "`onApply` es una función y no cruza de Astro a una isla: envuélvel
 **Presets sin fin.** En un selector de rango, un preset sin `end` ("Hoy") es un rango de un solo día y se puede aplicar.
 
 **Detalles.** `today` decide qué día lleva el punto (por defecto, la fecha del sistema). Mientras eliges un rango, tras el primer clic el pie sigue mostrando el rango anterior hasta el segundo; el calendario ya marca el día. Los textos se pueden cambiar con `labels`.
+
+**Horas disponibles.** Con `times` (["09:00", "09:30"…]) hay una lista de horas a la derecha del calendario (`Date picker`, `1150:16803`). Hay que elegir día y hora para poder aplicar; cambiar de día conserva la hora. `onApply` recibe `start` con la hora puesta y `time`, y el disparador enseña «15 oct 2026, 10:30». La hora elegida lleva `aria-pressed`. No es para rangos.
+
+**Modal.** `presentation="modal"` (`1547:269867`) abre el mismo panel centrado sobre la página, con el fondo y el desenfoque de `Modal`, el foco atrapado y Escape o un clic fuera para cerrar; el foco vuelve al botón.

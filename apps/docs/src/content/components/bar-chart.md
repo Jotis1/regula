@@ -5,7 +5,7 @@ description: "Gráfica de barras, apiladas por defecto, para comparar cantidades
 interactive: false
 ---
 
-**Props.** `labels`, `series`, `stacked` (`true` por defecto; `false` para agrupadas), `format(v)`, `legend`, `width`/`height`. Barras de 32px máx. con esquinas de 4px arriba.
+**Props.** `labels`, `series`, `stacked` (`true` por defecto; `false` para agrupadas), `format(v)`, `legend` (`true`/`"top"` encima, `"right"` en columna a la derecha, `false` ninguna), `width`/`height`. Barras de 32px máx. con esquinas de 4px arriba.
 
 **Uso.** Gasto por categoría y mes. Mismos colores de serie que `LineChart`.
 

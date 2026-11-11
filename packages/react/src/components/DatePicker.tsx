@@ -14,10 +14,13 @@ import {
 	CalendarHeaderCell,
 	Dialog,
 	I18nProvider,
+	Modal,
+	ModalOverlay,
 	Popover,
 } from "react-aria-components";
 import { cx } from "../internal/cx.js";
 import { formatDate, formatMonth } from "../internal/format.js";
+import { OVERLAY, OVERLAY_POSITION } from "../internal/overlay.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
@@ -26,6 +29,8 @@ import { Icon } from "./Icon.js";
 export interface DateRange {
 	start: Date | null;
 	end?: Date | null;
+	/** Hora elegida («10:30») con `times`. En `onApply`, `start` ya lleva esa hora. */
+	time?: string;
 }
 
 export interface DatePickerPreset {
@@ -48,6 +53,8 @@ export interface DatePickerLabels {
 	nextMonth: string;
 	cancel: string;
 	apply: string;
+	/** Nombre de la lista de horas (`times`). */
+	times: string;
 }
 
 export interface DatePickerProps {
@@ -64,6 +71,17 @@ export interface DatePickerProps {
 	/** Abre o cierra el panel desde fuera. */
 	open?: boolean;
 	defaultOpen?: boolean;
+	/**
+	 * Horas disponibles («09:00», «09:30»…): una lista junto al calendario para elegir la hora del día elegido. Con ella,
+	 * Aplicar espera día y hora, y `onApply` recibe `start` con la hora puesta y `time`. No es para rangos.
+	 */
+	times?: string[];
+	/**
+	 * Cómo se abre: `dropdown` (ventana flotante junto al botón) o `modal` (centrada sobre la página, con fondo y foco
+	 * atrapado).
+	 * @default "dropdown"
+	 */
+	presentation?: "dropdown" | "modal";
 	/** Pinta el panel sin botón ni ventana flotante. */
 	inline?: boolean;
 	/** Día marcado como hoy. Por defecto, la fecha del sistema. */
@@ -82,9 +100,10 @@ const DEFAULT_LABELS: DatePickerLabels = {
 	nextMonth: defaultStrings.nextMonth,
 	cancel: defaultStrings.cancel,
 	apply: defaultStrings.apply,
+	times: "Horas disponibles",
 };
 
-type Draft = { start: Date | null; end: Date | null };
+type Draft = { start: Date | null; end: Date | null; time: string | null };
 
 const day = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const toCalendar = (d: Date) => new CalendarDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
@@ -136,6 +155,8 @@ export function DatePicker({
 	defaultValue,
 	onApply,
 	presets,
+	times,
+	presentation = "dropdown",
 	placeholder,
 	open: openProp,
 	defaultOpen = false,
@@ -148,6 +169,7 @@ export function DatePicker({
 	const initial: Draft = {
 		start: defaultValue?.start ? day(defaultValue.start) : null,
 		end: range && defaultValue?.end ? day(defaultValue.end) : null,
+		time: times ? (defaultValue?.time ?? null) : null,
 	};
 	const [draft, setDraft] = useState<Draft>(initial);
 	const [applied, setApplied] = useState<Draft>(initial);
@@ -156,7 +178,7 @@ export function DatePicker({
 	const [focused, setFocused] = useState(() => (initial.start ? toCalendar(initial.start) : today));
 	const triggerRef = useRef<HTMLDivElement>(null);
 
-	const complete = !!draft.start && (!range || !!draft.end);
+	const complete = !!draft.start && (!range || !!draft.end) && (!times || !!draft.time);
 	const close = () => setOpen(false);
 	// Al cerrar, el foco vuelve al disparador; antes no se puede, el resto de la página está inerte mientras el panel está abierto
 	const wasOpen = useRef(open);
@@ -172,11 +194,23 @@ export function DatePicker({
 	const apply = () => {
 		setApplied(draft);
 		close();
-		onApply?.(range ? draft : { start: draft.start });
+		if (times && draft.start && draft.time) {
+			const [h = 0, m = 0] = draft.time.split(":").map(Number);
+			const start = new Date(
+				draft.start.getFullYear(),
+				draft.start.getMonth(),
+				draft.start.getDate(),
+				h,
+				m,
+			);
+			onApply?.({ start, time: draft.time });
+			return;
+		}
+		onApply?.(range ? { start: draft.start, end: draft.end } : { start: draft.start });
 	};
 	const choosePreset = (p: DatePickerPreset) => {
 		const start = day(p.start);
-		setDraft({ start, end: range ? day(p.end ?? p.start) : null });
+		setDraft({ start, end: range ? day(p.end ?? p.start) : null, time: draft.time });
 		setFocused(toCalendar(start));
 	};
 
@@ -219,9 +253,9 @@ export function DatePicker({
 		className: "px-6 py-5",
 	};
 
-	const dateBox = (d: Date | null) => (
+	const dateBox = (d: Date | null, time?: string | null) => (
 		<span className="min-w-26 rounded-lg px-3 py-2 text-sm text-primary shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)]">
-			{d ? formatDate(d) : "—"}
+			{d ? (time ? `${formatDate(d)}, ${time}` : formatDate(d)) : "—"}
 		</span>
 	);
 
@@ -256,32 +290,63 @@ export function DatePicker({
 				</div>
 			) : null}
 			<div className="flex flex-col">
-				<I18nProvider locale="es-ES">
-					{range ? (
-						<AriaRangeCalendar
-							{...calendarProps}
-							value={
-								draft.start && draft.end
-									? { start: toCalendar(draft.start), end: toCalendar(draft.end) }
-									: null
-							}
-							onChange={(v) => v && setDraft({ start: toDate(v.start), end: toDate(v.end) })}
-						>
-							{calendarBody}
-						</AriaRangeCalendar>
-					) : (
-						<AriaCalendar
-							{...calendarProps}
-							value={draft.start ? toCalendar(draft.start) : null}
-							onChange={(v) => setDraft({ start: toDate(v), end: null })}
-						>
-							{calendarBody}
-						</AriaCalendar>
-					)}
-				</I18nProvider>
+				<div className="flex">
+					<I18nProvider locale="es-ES">
+						{range ? (
+							<AriaRangeCalendar
+								{...calendarProps}
+								value={
+									draft.start && draft.end
+										? { start: toCalendar(draft.start), end: toCalendar(draft.end) }
+										: null
+								}
+								onChange={(v) =>
+									v && setDraft({ start: toDate(v.start), end: toDate(v.end), time: null })
+								}
+							>
+								{calendarBody}
+							</AriaRangeCalendar>
+						) : (
+							<AriaCalendar
+								{...calendarProps}
+								value={draft.start ? toCalendar(draft.start) : null}
+								onChange={(v) => setDraft({ start: toDate(v), end: null, time: draft.time })}
+							>
+								{calendarBody}
+							</AriaCalendar>
+						)}
+					</I18nProvider>
+					{times?.length && !range ? (
+						<div className="relative w-32 flex-none shadow-[inset_1px_0_0_var(--border-secondary)]">
+							<fieldset
+								aria-label={t.times}
+								className="absolute inset-0 m-0 flex min-w-0 flex-col gap-0.5 overflow-y-auto border-0 p-3"
+							>
+								{times.map((time) => {
+									const on = draft.time === time;
+									return (
+										<button
+											key={time}
+											type="button"
+											aria-pressed={on}
+											onClick={() => setDraft({ ...draft, time })}
+											className={cx(
+												"cursor-pointer rounded-md border-0 bg-transparent px-3 py-2 text-center text-sm font-medium text-secondary transition-colors duration-100 hover:bg-primary_hover hover:text-secondary_hover focus-visible:shadow-focus-ring focus-visible:outline-none",
+												on &&
+													"bg-brand-solid text-white hover:bg-brand-solid_hover hover:text-white",
+											)}
+										>
+											{time}
+										</button>
+									);
+								})}
+							</fieldset>
+						</div>
+					) : null}
+				</div>
 				<div className="flex items-center justify-between gap-3 p-4 shadow-[inset_0_1px_0_var(--border-secondary)]">
 					<div className="flex items-center gap-2">
-						{dateBox(draft.start)}
+						{dateBox(draft.start, draft.time)}
 						{range ? (
 							<>
 								<span className="text-quaternary">–</span>
@@ -312,7 +377,9 @@ export function DatePicker({
 	const label = applied.start
 		? range && applied.end
 			? `${formatDate(applied.start)} – ${formatDate(applied.end)}`
-			: formatDate(applied.start)
+			: applied.time
+				? `${formatDate(applied.start)}, ${applied.time}`
+				: formatDate(applied.start)
 		: placeholder || (range ? t.pickDates : t.pickDate);
 
 	return (
@@ -324,21 +391,37 @@ export function DatePicker({
 				aria-haspopup="dialog"
 				aria-expanded={open}
 				onClick={() => setOpen(!open)}
-				className={applied.start ? undefined : "text-placeholder"}
+				// `text-tertiary` y no `text-placeholder`: en un botón el texto tiene que llegar a 4,5:1 (en oscuro el de placeholder no llega)
+				className={applied.start ? undefined : "text-tertiary"}
 			>
 				{label}
 			</Button>
-			<Popover
-				triggerRef={triggerRef}
-				isOpen={open}
-				onOpenChange={(next) => (next ? setOpen(true) : cancel())}
-				placement="bottom start"
-				offset={8}
-			>
-				<Dialog aria-label={t.dialog} className="outline-none">
-					{panel}
-				</Dialog>
-			</Popover>
+			{presentation === "modal" ? (
+				<ModalOverlay
+					isOpen={open}
+					isDismissable
+					onOpenChange={(next) => (next ? setOpen(true) : cancel())}
+					className={cx(OVERLAY, OVERLAY_POSITION(false), "items-center justify-center")}
+				>
+					<Modal className="max-w-full outline-none">
+						<Dialog aria-label={t.dialog} className="outline-none">
+							{panel}
+						</Dialog>
+					</Modal>
+				</ModalOverlay>
+			) : (
+				<Popover
+					triggerRef={triggerRef}
+					isOpen={open}
+					onOpenChange={(next) => (next ? setOpen(true) : cancel())}
+					placement="bottom start"
+					offset={8}
+				>
+					<Dialog aria-label={t.dialog} className="outline-none">
+						{panel}
+					</Dialog>
+				</Popover>
+			)}
 		</div>
 	);
 }

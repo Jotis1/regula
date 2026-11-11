@@ -1,4 +1,14 @@
-import { Axes, type ChartSeries, nice, PAD, pointTitle, seriesColor } from "../internal/chart.js";
+import {
+	Axes,
+	type AxisTitles,
+	type ChartLegendPosition,
+	type ChartSeries,
+	legendSide,
+	nice,
+	padFor,
+	pointTitle,
+	seriesColor,
+} from "../internal/chart.js";
 import { cx } from "../internal/cx.js";
 import { ChartLegend } from "./ChartLegend.js";
 
@@ -14,8 +24,13 @@ export interface LineChartProps {
 	 * @default true
 	 */
 	area?: boolean;
-	/** Leyenda encima. Por defecto, sí con dos series o más. */
-	legend?: boolean;
+	/**
+	 * Leyenda: `true` o `"top"` encima, `"right"` en columna a la derecha, `false` ninguna. Por defecto, encima con dos
+	 * series o más.
+	 */
+	legend?: ChartLegendPosition;
+	/** Títulos de los ejes: `y` va girado a la izquierda y `x` bajo las etiquetas, como `Axis labels` del Figma. */
+	axisLabels?: AxisTitles;
 	/** Proporción del dibujo (se escala al ancho del contenedor). @default 640 */
 	width?: number;
 	/** @default 240 */
@@ -32,28 +47,42 @@ export function LineChart({
 	format,
 	area = true,
 	legend,
+	axisLabels,
 	width = 640,
 	height = 240,
 	className,
 	...rest
 }: LineChartProps) {
-	const plot = { w: width, h: height, pad: PAD };
+	const pad = padFor(axisLabels);
+	const plot = { w: width, h: height, pad };
+	const side = legendSide(legend, series.length);
 	const top = nice(Math.max(0, ...series.flatMap((s) => s.data)));
-	const iw = width - PAD.l - PAD.r;
-	const ih = height - PAD.t - PAD.b;
+	const iw = width - pad.l - pad.r;
+	const ih = height - pad.t - pad.b;
 	const n = labels.length;
 	const point = (v: number, i: number) =>
-		[PAD.l + iw * ((i + 0.5) / n), PAD.t + ih * (1 - v / top)] as const;
+		[pad.l + iw * ((i + 0.5) / n), pad.t + ih * (1 - v / top)] as const;
 	return (
-		<figure className={cx("m-0 flex flex-col gap-4 font-body", className)}>
-			{(legend ?? series.length > 1) ? <ChartLegend series={series} /> : null}
+		<figure
+			className={cx(
+				side === "right"
+					? "m-0 flex flex-row items-start gap-6 font-body"
+					: "m-0 flex flex-col gap-4 font-body",
+				className,
+			)}
+		>
+			{side === "top" ? <ChartLegend series={series} /> : null}
 			<svg
 				viewBox={`0 0 ${width} ${height}`}
 				role="img"
 				aria-label={rest["aria-label"] ?? "Gráfica de líneas"}
-				className="h-auto w-full overflow-visible"
+				className={
+					side === "right"
+						? "h-auto min-w-0 flex-1 overflow-visible"
+						: "h-auto w-full overflow-visible"
+				}
 			>
-				<Axes plot={plot} top={top} labels={labels} format={format} />
+				<Axes plot={plot} top={top} labels={labels} format={format} titles={axisLabels} />
 				{series.map((s, si) => {
 					const pts = s.data.map(point);
 					const c = seriesColor(si, s.color);
@@ -67,7 +96,7 @@ export function LineChart({
 						<g key={si}>
 							{si === 0 && area && first && last ? (
 								<path
-									d={`${d} L${last[0]} ${PAD.t + ih} L${first[0]} ${PAD.t + ih} Z`}
+									d={`${d} L${last[0]} ${pad.t + ih} L${first[0]} ${pad.t + ih} Z`}
 									fill={c}
 									opacity={0.08}
 								/>
@@ -104,6 +133,7 @@ export function LineChart({
 					);
 				})}
 			</svg>
+			{side === "right" ? <ChartLegend vertical series={series} className="flex-none" /> : null}
 		</figure>
 	);
 }

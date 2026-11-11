@@ -391,7 +391,30 @@ export function FileUploadExample() {
 	);
 }
 
+const HORAS = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30"];
+
 export function DatePickerExample() {
+	return (
+		<div className="flex flex-col items-start gap-6">
+			<DatePickerRango />
+			<DatePicker
+				inline
+				today={new Date(2026, 9, 29)}
+				times={HORAS}
+				defaultValue={{ start: new Date(2026, 9, 15), time: "10:30" }}
+				labels={{ dialog: "Selector de fecha y hora" }}
+			/>
+			<DatePicker
+				presentation="modal"
+				today={new Date(2026, 9, 29)}
+				times={HORAS}
+				placeholder="Elegir fecha y hora (modal)"
+			/>
+		</div>
+	);
+}
+
+function DatePickerRango() {
 	return (
 		<DatePicker
 			range

@@ -37,6 +37,33 @@ export interface Plot {
 
 export const PAD = { t: 12, r: 12, b: 28, l: 44 };
 
+/** Títulos de los ejes (`axisLabels`): el del eje vertical va girado a la izquierda y el del horizontal bajo las etiquetas. */
+export interface AxisTitles {
+	x?: string;
+	y?: string;
+}
+
+/** El margen del dibujo, con sitio para los títulos de los ejes si los hay. */
+export const padFor = (titles?: AxisTitles) => ({
+	...PAD,
+	l: PAD.l + (titles?.y ? 20 : 0),
+	b: PAD.b + (titles?.x ? 20 : 0),
+});
+
+/** `legend`: `true` y `"top"` la ponen encima; `"right"`, en columna a la derecha; `false`, ninguna. */
+export type ChartLegendPosition = boolean | "top" | "right";
+
+export const legendSide = (
+	legend: ChartLegendPosition | undefined,
+	series: number,
+): "top" | "right" | null =>
+	legend === "right"
+		? "right"
+		: legend === "top" || legend === true || (legend === undefined && series > 1)
+			? "top"
+			: null;
+
+const TITLE = { fontSize: 12, fontWeight: 500, fill: "var(--text-tertiary)" } as const;
 const TICK = { fontSize: 12, fill: "var(--text-tertiary)" } as const;
 
 /** Rejilla en `border-tertiary` (cinco líneas desde cero) y etiquetas de los ejes en `text-xs` `text-tertiary`. */
@@ -45,11 +72,13 @@ export function Axes({
 	top,
 	labels,
 	format,
+	titles,
 }: {
 	plot: Plot;
 	top: number;
 	labels: string[];
 	format?: (v: number) => string;
+	titles?: AxisTitles;
 }): ReactNode {
 	return (
 		<g>
@@ -76,13 +105,27 @@ export function Axes({
 					// biome-ignore lint/suspicious/noArrayIndexKey: las etiquetas del eje pueden repetirse
 					key={i}
 					x={pad.l + (w - pad.l - pad.r) * (labels.length === 1 ? 0.5 : (i + 0.5) / labels.length)}
-					y={h - 6}
+					y={h - pad.b + 22}
 					textAnchor="middle"
 					{...TICK}
 				>
 					{l}
 				</text>
 			))}
+			{titles?.y ? (
+				<text
+					transform={`translate(12 ${pad.t + (h - pad.t - pad.b) / 2}) rotate(-90)`}
+					textAnchor="middle"
+					{...TITLE}
+				>
+					{titles.y}
+				</text>
+			) : null}
+			{titles?.x ? (
+				<text x={pad.l + (w - pad.l - pad.r) / 2} y={h - 4} textAnchor="middle" {...TITLE}>
+					{titles.x}
+				</text>
+			) : null}
 		</g>
 	);
 }

@@ -77,6 +77,13 @@ const usage: Record<string, string> = {
 	range
 	presets={[{ label: "Este mes", start: new Date(2026, 9, 1), end: new Date(2026, 9, 31) }]}
 	onApply={({ start, end }) => filtrar(start, end)}
+/>
+
+// Horas disponibles y modal: onApply recibe start con la hora puesta y time ("10:30")
+<DatePicker
+	presentation="modal"
+	times={["09:00", "09:30", "10:00", "10:30"]}
+	onApply={({ start, time }) => reservar(start, time)}
 />`,
 	ColorPicker: `<ColorPicker defaultValue="#4f39f6" swatches={["#4f39f6", "#00a63e"]} onChange={guardar} />`,
 	TextEditor: `<TextEditor label="Notas" maxLength={500} onChange={guardar} />`,
@@ -377,6 +384,8 @@ const usage: Record<string, string> = {
 		{ name: "Presupuesto", data: [1100, 1200, 1200] },
 	]}
 	format={(v) => formatCurrency(v)}
+	legend="right"
+	axisLabels={{ x: "Mes", y: "Gasto" }}
 />`,
 	BarChart: `<BarChart
 	aria-label="Gasto por categoría y mes"
@@ -386,6 +395,8 @@ const usage: Record<string, string> = {
 		{ name: "Ocio", data: [190, 170, 210] },
 	]}
 	format={(v) => formatCurrency(v)}
+	legend="right"
+	axisLabels={{ x: "Mes", y: "Gasto" }}
 />`,
 	PieChart: `<PieChart
 	aria-label="Gasto de octubre por categoría"
