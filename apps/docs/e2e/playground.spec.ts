@@ -133,3 +133,25 @@ test("BackgroundPattern: el patrón llena su marco y cambia con los controles", 
 	await expect.poll(() => preview.locator("svg").innerHTML()).not.toBe(before);
 	await expect(pg.locator("pre")).toContainText('pattern="circles"');
 });
+
+test("Button: elegir un icono lo pinta y lo escribe en el código; «Ninguno» lo quita", async ({ page }) => {
+	await page.goto("/components/button/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await choose(pg, "iconLeading", "plus");
+	await expect(pg.getByRole("tabpanel")).toContainText('<Button iconLeading="plus">Nuevo gasto</Button>');
+	await expect(pg.locator("[data-playground-preview] button svg")).toHaveCount(1);
+	await choose(pg, "iconLeading", "Ninguno");
+	await expect(pg.getByRole("tabpanel")).toContainText("<Button>Nuevo gasto</Button>");
+	await expect(pg.locator("[data-playground-preview] button svg")).toHaveCount(0);
+});
+
+test("Skeleton: escribir un número en width cambia el ancho y el código", async ({ page }) => {
+	await page.goto("/components/skeleton/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	const width = pg.locator('[data-pg-control="number"]').filter({ hasText: "width" }).locator("input");
+	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await width.fill("220");
+	await width.blur();
+	await expect(pg.getByRole("tabpanel")).toContainText("width={220}");
+});

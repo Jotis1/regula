@@ -3,19 +3,20 @@
 //
 // Arriba van los controles: un desplegable por cada prop con valores cerrados (tamaños, variantes…) y un
 // interruptor por cada booleano. Debajo, la vista previa, y aparte, separado, el código.
-import { BackgroundPattern, CodeSnippet, Select, Toggle } from "@jotis-me/react";
+import { iconNames } from "@jotis-me/icons";
+import { BackgroundPattern, CodeSnippet, NumberInput, Select, Toggle } from "@jotis-me/react";
 import { useState } from "react";
-import { codeOf, type Playground as Data, initialState, propsFor } from "../lib/playground";
+import { codeOf, type Playground as Data, initialState, propsFor, type State } from "../lib/playground";
 import { playgroundComponents } from "../lib/playground-components";
 
 export default function Playground({ playground }: { playground: Data }) {
 	const [state, setState] = useState(() => initialState(playground));
-	const set = (prop: string) => (value: string | boolean) => setState((s) => ({ ...s, [prop]: value }));
+	const set = (prop: string) => (value: State[string]) => setState((s) => ({ ...s, [prop]: value }));
 	const Component = playgroundComponents[playground.name];
 	if (!Component) return null;
 	const { next, astro } = codeOf(playground, state);
-	const choices = playground.controls.filter((c) => c.kind === "choice");
 	const toggles = playground.controls.filter((c) => c.kind === "toggle");
+	const fields = playground.controls.filter((c) => c.kind !== "toggle");
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -24,15 +25,54 @@ export default function Playground({ playground }: { playground: Data }) {
 					data-playground-controls
 					className="flex flex-wrap items-end gap-x-4 gap-y-3 border-b border-secondary bg-primary px-5 py-4"
 				>
-					{choices.map((c) => (
-						<div key={c.prop} className="w-full sm:w-44" data-pg-control="choice">
-							<Select
-								label={c.prop}
-								size="sm"
-								value={String(state[c.prop])}
-								onChange={set(c.prop)}
-								options={c.values}
-							/>
+					{fields.map((c) => (
+						<div key={c.prop} className="w-full sm:w-44" data-pg-control={c.kind}>
+							{c.kind === "choice" ? (
+								<Select
+									label={c.prop}
+									size="sm"
+									value={String(state[c.prop])}
+									onChange={set(c.prop)}
+									options={c.values}
+								/>
+							) : c.kind === "number" ? (
+								<NumberInput
+									label={c.prop}
+									size="sm"
+									value={
+										typeof state[c.prop] === "number"
+											? (state[c.prop] as number)
+											: undefined
+									}
+									onChange={set(c.prop)}
+									min={c.min}
+									max={c.max}
+									step={c.step}
+								/>
+							) : c.kind === "icon" ? (
+								<Select
+									label={c.prop}
+									size="sm"
+									searchable
+									value={String(state[c.prop] ?? "")}
+									onChange={(v) => set(c.prop)(v === "" ? undefined : v)}
+									options={[
+										{ value: "", label: "Ninguno" },
+										...iconNames.map((n) => ({ value: n, label: n, icon: n })),
+									]}
+								/>
+							) : (
+								<Select
+									label={c.prop}
+									size="sm"
+									value={String(state[c.prop] ?? "")}
+									onChange={(v) => set(c.prop)(v === "" ? undefined : v)}
+									options={[
+										{ value: "", label: "Ninguno" },
+										...c.options.map((o) => ({ value: o.label, label: o.label })),
+									]}
+								/>
+							)}
 						</div>
 					))}
 					{toggles.length > 0 && (

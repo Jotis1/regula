@@ -1,19 +1,43 @@
-// Playground genérico de la página de componente (design §4). De la tabla de props (`propsOf`) salen los controles:
-// un selector por prop con valores cerrados y un interruptor por booleano. Las props mínimas de cada componente,
-// su punto de partida, se escriben aquí. Sin punto de partida o sin controles, la página enseña solo sus ejemplos.
-// Todo lo que va a la isla es JSON: ni funciones ni nodos.
+// Motor del ejemplo interactivo de la página de componente (design D3 de docs-site-with-own-components). De la tabla de
+// props (`propsOf`) salen los controles: un selector por prop con valores cerrados, un interruptor por booleano, un
+// campo numérico por número y un selector de icono por prop de icono. Los ajustes de cada componente (rango de un
+// número, contenido preparado, props ocultas) y su punto de partida se escriben en su `Start`.
 import type { PropRow } from "./props";
 
 /** Un valor de prop que cruza de Astro a la isla. */
 export type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
 
+/** Un valor preparado para una prop que recibe contenido (un nodo, una lista, un objeto) y el JSX que lo escribe. */
+export interface ContentOption {
+	label: string;
+	/** Lo que se le pasa al componente. */
+	value: unknown;
+	/** Cómo se escribe en el código copiable: `<Avatar initials="AD" />`, `[{ ... }]`. */
+	code: string;
+	/** Componentes de @jotis-me/react que el código necesita importar. */
+	imports?: string[];
+}
+
 export type Control =
 	| { kind: "choice"; prop: string; values: string[]; default?: string }
-	| { kind: "toggle"; prop: string; default: boolean };
+	| { kind: "toggle"; prop: string; default: boolean }
+	| { kind: "number"; prop: string; min?: number; max?: number; step?: number; default?: number }
+	| { kind: "icon"; prop: string }
+	| { kind: "content"; prop: string; options: ContentOption[] };
+
+/** Ajuste de una prop de un componente sobre el control que saldría de su tipo. */
+export type Tweak =
+	| { kind: "hidden" }
+	| { kind: "number"; min?: number; max?: number; step?: number }
+	| { kind: "icon" }
+	| { kind: "content"; options: ContentOption[] };
+
+/** Lo que vale cada control: texto (selectores, iconos y contenido por su etiqueta), booleano o número. `undefined`: sin valor. */
+export type State = Record<string, string | number | boolean | undefined>;
 
 export interface Start {
 	/** Props mínimas para que el componente se pinte con sentido. */
-	props?: Record<string, Json>;
+	props?: Record<string, unknown>;
 	/** Texto entre las etiquetas. */
 	children?: string;
 	/** A todo el ancho del lienzo (lo que mide su contenedor, como StreamScene). */
@@ -23,6 +47,8 @@ export interface Start {
 	 * sin él, su padre no mide nada y no se ven. Con marco, el playground no pone su rejilla de fondo.
 	 */
 	fill?: number;
+	/** Ajustes por prop: rango de un número, contenido preparado, props que no se mueven. */
+	tweaks?: Record<string, Tweak>;
 }
 
 export interface Playground {
@@ -43,7 +69,6 @@ export const EXCLUDED = new Set([
 	"defaultOpen",
 	"checked",
 	"defaultChecked",
-	"value",
 	"defaultValue",
 	"autoFocus",
 	"contained",
@@ -51,19 +76,49 @@ export const EXCLUDED = new Set([
 	"indeterminate",
 ]);
 
+/** Las props de icono: aceptan el nombre de un icono del núcleo (o un nodo, que el playground no pinta). */
+const ICON_PROP = /^icon(Leading|Trailing|Only)?$/;
+
 const unquote = (v: string) => v.replace(/^"|"$/g, "");
 
 /**
- * Los controles de un componente desde su tabla de props. Los tipos `IconName`, las funciones, los nodos y los
- * números no dan control; una unión solo lo da si todos sus valores son cadenas.
+ * Los controles de un componente desde su tabla de props y sus ajustes. Una unión solo da selector si todos sus
+ * valores son cadenas; un `number`, un campo numérico; una prop de icono, un selector de icono; el resto de tipos
+ * (funciones, nodos, listas) solo tiene control si el ajuste le da contenido preparado.
  */
-export function controlsOf(rows: PropRow[]): Control[] {
+export function controlsOf(rows: PropRow[], tweaks: Record<string, Tweak> = {}): Control[] {
 	const controls: Control[] = [];
+	// `value` es estado cuando el componente avisa de sus cambios; en uno que solo muestra (ProgressBar), es un dato
+	const controlled = rows.some((r) => r.name === "onChange");
 	for (const row of rows) {
-		if (EXCLUDED.has(row.name)) continue;
+		if (EXCLUDED.has(row.name) || (controlled && row.name === "value")) continue;
+		const tweak = tweaks[row.name];
+		if (tweak?.kind === "hidden") continue;
+		if (tweak?.kind === "content") {
+			controls.push({ kind: "content", prop: row.name, options: tweak.options });
+			continue;
+		}
+		if (
+			tweak?.kind === "icon" ||
+			(!tweak && ICON_PROP.test(row.name) && /IconName|ReactNode/.test(row.type))
+		) {
+			controls.push({ kind: "icon", prop: row.name });
+			continue;
+		}
 		const def = row.defaultValue === undefined ? undefined : unquote(row.defaultValue);
 		if (row.type === "boolean") {
 			controls.push({ kind: "toggle", prop: row.name, default: def === "true" });
+			continue;
+		}
+		if (row.type === "number" || row.type === "string | number") {
+			const range = tweak?.kind === "number" ? tweak : {};
+			const num = def === undefined || Number.isNaN(Number(def)) ? undefined : Number(def);
+			controls.push({
+				kind: "number",
+				prop: row.name,
+				...range,
+				...(num === undefined ? {} : { default: num }),
+			});
 			continue;
 		}
 		const parts = row.type.split(" · ");
@@ -74,43 +129,84 @@ export function controlsOf(rows: PropRow[]): Control[] {
 }
 
 /** El valor con el que empieza cada control: el del punto de partida, su valor por defecto o el primero. */
-export function initialState(pg: Pick<Playground, "start" | "controls">): Record<string, string | boolean> {
-	const state: Record<string, string | boolean> = {};
+export function initialState(pg: Pick<Playground, "start" | "controls">): State {
+	const state: State = {};
 	for (const c of pg.controls) {
 		const given = pg.start.props?.[c.prop];
-		if (c.kind === "toggle") state[c.prop] = typeof given === "boolean" ? given : c.default;
-		else state[c.prop] = typeof given === "string" ? given : (c.default ?? (c.values[0] as string));
+		switch (c.kind) {
+			case "toggle":
+				state[c.prop] = typeof given === "boolean" ? given : c.default;
+				break;
+			case "choice":
+				state[c.prop] = typeof given === "string" ? given : (c.default ?? (c.values[0] as string));
+				break;
+			case "number":
+				state[c.prop] = typeof given === "number" ? given : c.default;
+				break;
+			case "icon":
+				state[c.prop] = typeof given === "string" ? given : undefined;
+				break;
+			case "content":
+				// Empieza en la opción cuyo valor es el del punto de partida, si la hay
+				state[c.prop] = c.options.find((o) => o.value === given)?.label;
+				break;
+		}
 	}
 	return state;
 }
 
-/** Las props con las que se pinta: el punto de partida con los controles encima. */
-export function propsFor(pg: Pick<Playground, "start">, state: Record<string, string | boolean>) {
-	return { ...pg.start.props, ...state };
+/** El valor de una prop según su control: el de la opción de contenido, el número o el texto; `undefined` si no tiene. */
+function resolveValue(c: Control | undefined, value: State[string]): unknown {
+	if (value === undefined || value === "") return undefined;
+	if (c?.kind === "content") return c.options.find((o) => o.label === value)?.value;
+	return value;
 }
 
-const attr = (prop: string, value: Json) => {
+/** Las props con las que se pinta: el punto de partida con los controles encima (los sin valor no se pasan). */
+export function propsFor(pg: Pick<Playground, "start" | "controls">, state: State): Record<string, unknown> {
+	const byProp = new Map(pg.controls.map((c) => [c.prop, c]));
+	const props: Record<string, unknown> = { ...pg.start.props };
+	for (const [prop, value] of Object.entries(state)) {
+		const control = byProp.get(prop);
+		const v = resolveValue(control, value);
+		if (v !== undefined) props[prop] = v;
+		// Un control de icono, número o contenido sin valor quita la prop del punto de partida
+		else if (control && control.kind !== "toggle" && control.kind !== "choice") delete props[prop];
+	}
+	return props;
+}
+
+/** Cómo se escribe una prop: `prop`, `prop="texto"` o `prop={expresión}`. Si hay código preparado, es el suyo. */
+const attr = (prop: string, value: unknown, code?: string) => {
+	if (code !== undefined) return `${prop}={${code}}`;
 	if (value === true) return prop;
 	if (typeof value === "string" && !/["\n{}]/.test(value)) return `${prop}="${value}"`;
 	return `${prop}={${JSON.stringify(value)}}`;
 };
 
+/** Imports de @jotis-me/react que piden las opciones de contenido elegidas. */
+export function importsOf(pg: Pick<Playground, "name" | "controls">, state: State): string[] {
+	const names = new Set([pg.name]);
+	for (const c of pg.controls)
+		if (c.kind === "content")
+			for (const i of c.options.find((o) => o.label === state[c.prop])?.imports ?? []) names.add(i);
+	return [...names].sort((a, b) => (a === pg.name ? -1 : b === pg.name ? 1 : a.localeCompare(b)));
+}
+
 /**
  * El JSX de lo que se ve: las props del punto de partida y las de los controles que no están en su valor por
  * defecto. Un booleano en `false` sin valor por defecto `true` no se escribe.
  */
-export function jsxOf(
-	pg: Pick<Playground, "name" | "start" | "controls">,
-	state: Record<string, string | boolean>,
-	extra = "",
-): string {
+export function jsxOf(pg: Pick<Playground, "name" | "start" | "controls">, state: State, extra = ""): string {
 	const byProp = new Map(pg.controls.map((c) => [c.prop, c]));
 	const attrs: string[] = extra ? [extra] : [];
 	for (const [prop, value] of Object.entries(propsFor(pg, state))) {
 		const c = byProp.get(prop);
-		if (c && (c.kind === "toggle" ? value === c.default : value === (c.default ?? undefined))) continue;
+		if (c?.kind === "toggle" && value === c.default) continue;
+		if (c?.kind === "choice" && value === (c.default ?? undefined)) continue;
 		if (value === false || value === undefined) continue;
-		attrs.push(attr(prop, value));
+		const code = c?.kind === "content" ? c.options.find((o) => o.label === state[prop])?.code : undefined;
+		attrs.push(attr(prop, value, code));
 	}
 	const { name } = pg;
 	const children = pg.start.children;
@@ -124,12 +220,9 @@ export function jsxOf(
 	return multi ? `${open}>\n\t${children}\n</${name}>` : `${open}>${children}</${name}>`;
 }
 
-/** Código copiable para Next.js y Astro: la importación de `@jotis-me/react` y el JSX de lo que se ve. */
-export function codeOf(
-	pg: Playground,
-	state: Record<string, string | boolean>,
-): { next: string; astro: string } {
-	const imp = `import { ${pg.name} } from "@jotis-me/react";`;
+/** Código copiable para Next.js y Astro: la importación de @jotis-me/react y el JSX de lo que se ve. */
+export function codeOf(pg: Playground, state: State): { next: string; astro: string } {
+	const imp = `import { ${importsOf(pg, state).join(", ")} } from "@jotis-me/react";`;
 	return {
 		next: `${imp}\n\n${jsxOf(pg, state)}`,
 		astro: `---\n${imp}\n---\n\n${jsxOf(pg, state, pg.interactive ? "client:load" : "")}`,
@@ -144,7 +237,7 @@ export function playgroundOf(
 ): Playground | undefined {
 	const start = STARTS[name];
 	if (!start) return undefined;
-	const controls = controlsOf(rows);
+	const controls = controlsOf(rows, start.tweaks);
 	if (!controls.length) return undefined;
 	return { name, start, controls, ...opts };
 }
