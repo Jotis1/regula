@@ -29,8 +29,7 @@ import { type PropRow, propsOf } from "../src/lib/props";
  * y esta lista debe quedar vacía al final (tarea 5.7). Quitar un nombre al darle su `Start`.
  */
 const PENDING: string[] = [
-	"SectionFooter",
-	"InlineCTA", "LinkCard", "VideoPlayer", "Carousel", "BackgroundOverlay", "TransparencyGrid", "ScaledPreview",
+	"BackgroundOverlay", "TransparencyGrid", "ScaledPreview",
 	"ScreenMockup", "LaptopMockup", "PhoneMockup", "MarketingNav", "Footer", "BlogPostCard", "SubscribeCard",
 	"PricingCard", "JobPostCard", "Accordion", "TeamMemberCard", "Testimonial", "StreamGoal", "ChannelPanel",
 	"ChannelBanner",
@@ -90,6 +89,9 @@ function syntaxErrors(code: string): string[] {
 /** Por qué un valor no vale para el control de una prop, o `undefined` si vale. */
 function invalidValue(c: Control | undefined, value: unknown): string | undefined {
 	if (!c) return undefined;
+	// «Sin valor» (undefined o null) quita un icono, un número o un contenido; un selector o un interruptor siempre valen algo
+	if ((value === undefined || value === null) && c.kind !== "toggle" && c.kind !== "choice")
+		return undefined;
 	if (c.kind === "choice")
 		return typeof value === "string" && c.values.includes(value)
 			? undefined
