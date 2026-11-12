@@ -24,14 +24,6 @@ import {
 } from "../src/lib/playground";
 import { type PropRow, propsOf } from "../src/lib/props";
 
-/**
- * Componentes del catálogo que aún no tienen configuración: se les da en el grupo 5 de docs-site-with-own-components
- * y esta lista debe quedar vacía al final (tarea 5.7). Quitar un nombre al darle su `Start`.
- */
-const PENDING: string[] = [
-	"StreamGoal", "ChannelPanel", "ChannelBanner",
-]; // biome-ignore format: lista corta por línea
-
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const dir = join(root, "apps/docs/src/content/components");
 const pages = new Map(
@@ -125,8 +117,8 @@ async function playgroundFor(name: string) {
 }
 
 describe("configuración del ejemplo interactivo", () => {
-	it("la lista de pendientes es exactamente la de los componentes del catálogo sin punto de partida", () => {
-		expect(catalog.filter((n) => !(n in STARTS)).sort()).toEqual([...PENDING].sort());
+	it("todos los componentes del catálogo tienen ejemplo interactivo (punto de partida)", () => {
+		expect(catalog.filter((n) => !(n in STARTS))).toEqual([]);
 	});
 
 	it("solo hay configuración de componentes del catálogo", () => {
