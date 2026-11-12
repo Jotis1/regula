@@ -35,7 +35,7 @@ Cada tarea: config con punto de partida, controles ajustados, atajos con los tip
 - [x] 5.3 Avisos y carga, y Etiquetas e identidad.
 - [x] 5.4 Datos y Gráficas.
 - [x] 5.5 Estructura de página, y Contenido y medios.
-- [ ] 5.6 Fondos y maquetas, y Web de marketing.
+- [x] 5.6 Fondos y maquetas, y Web de marketing.
 - [ ] 5.7 Los cuatro grupos de Stream, en oscuro. Verificar además que la lista de pendientes de 4.4 queda vacía.
 
 ## 6. Página sin galería y límite de JS

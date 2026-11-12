@@ -29,10 +29,7 @@ import { type PropRow, propsOf } from "../src/lib/props";
  * y esta lista debe quedar vacía al final (tarea 5.7). Quitar un nombre al darle su `Start`.
  */
 const PENDING: string[] = [
-	"BackgroundOverlay", "TransparencyGrid", "ScaledPreview",
-	"ScreenMockup", "LaptopMockup", "PhoneMockup", "MarketingNav", "Footer", "BlogPostCard", "SubscribeCard",
-	"PricingCard", "JobPostCard", "Accordion", "TeamMemberCard", "Testimonial", "StreamGoal", "ChannelPanel",
-	"ChannelBanner",
+	"StreamGoal", "ChannelPanel", "ChannelBanner",
 ]; // biome-ignore format: lista corta por línea
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -67,6 +64,7 @@ const HTML_ATTRS = new Set([
 	"src",
 	"style",
 	"tabIndex",
+	"className",
 ]);
 
 /** Las props que no salen en la tabla de un componente pero que acepta (atributos de HTML, `children`). */

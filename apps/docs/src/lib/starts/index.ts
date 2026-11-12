@@ -12,12 +12,14 @@ import { formularios } from "./formularios";
 import { graficas } from "./graficas";
 import { navegacion } from "./navegacion";
 import { stream } from "./stream";
+import { webDeMarketing } from "./web-de-marketing";
 
 export const STARTS: Record<string, Start> = {
 	...acciones,
 	...etiquetasEIdentidad,
 	...avisosYCarga,
 	...fondosYMaquetas,
+	...webDeMarketing,
 	...capas,
 	...formularios,
 	...contenidoYMedios,
