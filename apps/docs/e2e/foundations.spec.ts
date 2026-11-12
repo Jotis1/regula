@@ -124,7 +124,7 @@ for (const [href, text] of [
 	["/foundations/backgrounds/", "Uno o dos por vista, nunca en pantallas de trabajo."],
 	["/foundations/brand/", "el icono identifica la app, no la tiñe."],
 	["/foundations/stream/", "la cuenta atrás y las barras solo cambian cuando cambia el dato."],
-	["/start/install/", "llegan los otros dos."],
+	["/start/install/", "y con él los iconos de línea de @untitledui/icons."],
 ] as const) {
 	test(`${href} lleva el texto de la guía`, async ({ page }) => {
 		await page.goto(href);

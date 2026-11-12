@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { AlertCircle, ArrowRight, Check, Plus } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Avatar, AvatarGroup, AvatarLabel, Badge, type BadgeColor, Tag } from "../src/index.js";
@@ -87,7 +88,7 @@ describe("Badge", () => {
 	});
 
 	it("con icono pinta un svg de 12", () => {
-		render(<Badge icon="check">Hecho</Badge>);
+		render(<Badge icon={Check}>Hecho</Badge>);
 		expect(screen.getByText("Hecho").querySelector("svg")?.getAttribute("width")).toBe("12");
 	});
 
@@ -117,21 +118,21 @@ describe("Badge", () => {
 					Activo
 				</Badge>,
 			),
-		).toBe(BADGE_BEFORE[0]);
+		).toMatchBefore(BADGE_BEFORE[0]);
 		expect(
 			renderToStaticMarkup(
-				<Badge color="error" type="badge" size="lg" icon="alert-circle" onRemove={() => {}}>
+				<Badge color="error" type="badge" size="lg" icon={AlertCircle} onRemove={() => {}}>
 					Error
 				</Badge>,
 			),
-		).toBe(BADGE_BEFORE[1]);
+		).toMatchBefore(BADGE_BEFORE[1]);
 		expect(
 			renderToStaticMarkup(
 				<Badge type="modern" size="md">
 					Nuevo
 				</Badge>,
 			),
-		).toBe(BADGE_BEFORE[2]);
+		).toMatchBefore(BADGE_BEFORE[2]);
 	});
 
 	it.each([
@@ -182,7 +183,7 @@ describe("Badge", () => {
 		"iconTrailing en %s %s: icono de 12px detrás con los rellenos del Figma",
 		(type, size, classes) => {
 			render(
-				<Badge type={type} size={size} iconTrailing="arrow-right">
+				<Badge type={type} size={size} iconTrailing={ArrowRight}>
 					Ver
 				</Badge>,
 			);
@@ -199,7 +200,7 @@ describe("Badge", () => {
 		["md", "p-1.5"],
 		["lg", "p-2"],
 	] as const)("iconOnly en %s: solo el icono, con %s, y el label para lectores", (size, padding) => {
-		const { container } = render(<Badge size={size} iconOnly="plus" label="Añadir" />);
+		const { container } = render(<Badge size={size} iconOnly={Plus} label="Añadir" />);
 		const badge = container.firstElementChild as HTMLElement;
 		expect(badge.className.split(" ")).toContain(padding);
 		expect(badge.querySelector("svg")?.getAttribute("width")).toBe("12");
@@ -208,10 +209,10 @@ describe("Badge", () => {
 
 	it("iconOnly exige label y no admite texto (tipos)", () => {
 		// @ts-expect-error: sin label
-		const sinLabel = <Badge iconOnly="plus" />;
+		const sinLabel = <Badge iconOnly={Plus} />;
 		const conTexto = (
 			// @ts-expect-error: iconOnly con texto visible
-			<Badge iconOnly="plus" label="Añadir">
+			<Badge iconOnly={Plus} label="Añadir">
 				Añadir
 			</Badge>
 		);
@@ -228,8 +229,8 @@ describe("Badge", () => {
 				<Badge onRemove={() => {}}>Filtro</Badge>
 				<Badge flag={<svg aria-hidden="true" />}>España</Badge>
 				<Badge avatar="/foto.jpg">Lucía</Badge>
-				<Badge iconTrailing="arrow-right">Ver</Badge>
-				<Badge iconOnly="plus" label="Añadir" color="brand" type="badge" />
+				<Badge iconTrailing={ArrowRight}>Ver</Badge>
+				<Badge iconOnly={Plus} label="Añadir" color="brand" type="badge" />
 			</div>,
 		);
 	});
@@ -289,14 +290,14 @@ describe("Tag", () => {
 					Facturas
 				</Tag>,
 			),
-		).toBe(TAG_BEFORE[0]);
+		).toMatchBefore(TAG_BEFORE[0]);
 		expect(
 			renderToStaticMarkup(
 				<Tag size="lg" onRemove={() => {}}>
 					León
 				</Tag>,
 			),
-		).toBe(TAG_BEFORE[1]);
+		).toMatchBefore(TAG_BEFORE[1]);
 	});
 
 	it.each([
@@ -476,8 +477,8 @@ describe("Avatar", () => {
 	it("sin badge, el HTML es el de antes", () => {
 		expect(
 			renderToStaticMarkup(<Avatar initials="AD" alt="Administrador" status="online" size="lg" />),
-		).toBe(BEFORE.avatar);
-		expect(renderToStaticMarkup(<Avatar status="offline" />)).toBe(BEFORE.avatarIcon);
+		).toMatchBefore(BEFORE.avatar);
+		expect(renderToStaticMarkup(<Avatar status="offline" />)).toMatchBefore(BEFORE.avatarIcon);
 	});
 
 	it.each([
@@ -533,7 +534,7 @@ describe("Avatar", () => {
 		expect(screen.getByText("Empresa: Pecunia").className).toContain("sr-only");
 	});
 
-	it("company acepta un nodo, como un logo de @jotis-me/icons, y lo estira al círculo", () => {
+	it("company acepta un nodo, como un logo de @jotis-me/assets, y lo estira al círculo", () => {
 		const { container } = render(
 			<Avatar initials="AD" badge="company" company={<svg data-testid="logo" viewBox="0 0 24 24" />} />,
 		);
@@ -595,7 +596,7 @@ describe("AvatarGroup", () => {
 			renderToStaticMarkup(
 				<AvatarGroup items={[{ initials: "AB" }, { initials: "+3" }]} className="x" />,
 			),
-		).toBe(BEFORE.group);
+		).toMatchBefore(BEFORE.group);
 	});
 
 	it("onAdd añade al final un botón con su nombre que avisa al pulsarlo", async () => {
@@ -670,7 +671,7 @@ describe("AvatarLabel", () => {
 			renderToStaticMarkup(
 				<AvatarLabel initials="AD" name="Ana" supporting="ana@jotis.me" status="online" />,
 			),
-		).toBe(BEFORE.label);
+		).toMatchBefore(BEFORE.label);
 	});
 
 	it.each([

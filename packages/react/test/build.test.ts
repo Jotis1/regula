@@ -50,7 +50,7 @@ describe("build de @jotis-me/react", () => {
 		expect(compiler.sources.map((s) => join(s.base, s.pattern))).toContain(join(root, "dist"));
 	});
 
-	it("no importa ningún set de recursos en color de @jotis-me/icons (design D3 de complete-figma-coverage)", () => {
+	it("no importa ningún set de recursos en color de @jotis-me/assets (design D3 de complete-figma-coverage)", () => {
 		const out = (dir: string): string[] =>
 			readdirSync(dir).flatMap((f) => {
 				const p = join(dir, f);

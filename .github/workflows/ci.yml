@@ -50,7 +50,7 @@ jobs:
               working-directory: packages/react
             - name: publint y arethetypeswrong
               run: |
-                  for p in tokens icons react; do
+                  for p in tokens assets react; do
                     (cd packages/$p && bun run check:package)
                   done
             - name: Tamaño por componente
@@ -81,11 +81,11 @@ jobs:
             - name: Navegadores de Playwright
               run: bunx playwright install chromium firefox webkit
               working-directory: apps/docs
-            - name: Tokens e iconos (fuentes sin red, capturas)
+            - name: Tokens y assets (fuentes sin red, capturas)
               shell: bash
               run: |
                   (cd packages/tokens && bun run test:e2e)
-                  (cd packages/icons && bun run test:e2e)
+                  (cd packages/assets && bun run test:e2e)
             - name: Web (funcional, axe y paridad visual)
               run: bunx playwright test
               working-directory: apps/docs

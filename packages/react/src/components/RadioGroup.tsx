@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import { Radio as AriaRadio, RadioGroup as AriaRadioGroup } from "react-aria-components";
 import { type ChoiceSize, ChoiceText, choiceBox, choiceLabel, radioDot } from "../internal/choice.js";
 import { cx } from "../internal/cx.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import { Avatar, type AvatarProps } from "./Avatar.js";
-import { type IconName, iconSlot } from "./Icon.js";
 
 export interface RadioGroupOption {
 	value: string;
@@ -18,11 +18,11 @@ export interface RadioGroupOption {
 	/** Solo en tarjetas: opción deshabilitada. */
 	disabled?: boolean;
 	/** Solo en tarjetas: icono en una caja de 32px (40 en `md`) con borde y sombra (`Icon simple` del Figma). */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Solo en tarjetas: avatar redondo de 32px (40 en `md`) delante del texto. */
 	avatar?: Pick<AvatarProps, "src" | "alt" | "initials">;
 	/**
-	 * Solo en tarjetas: logo de pago en una caja de 46×32px (58×40 en `md`), como un nodo de `@jotis-me/icons/payments`. El
+	 * Solo en tarjetas: logo de pago en una caja de 46×32px (58×40 en `md`), como un nodo de `@jotis-me/assets/payments`. El
 	 * paquete no los importa.
 	 */
 	paymentIcon?: ReactNode;

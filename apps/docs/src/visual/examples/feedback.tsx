@@ -1,38 +1,51 @@
 // Puertos de las vistas previas de FeaturedIcon, Spinner, Skeleton, ProgressBar y ProgressCircle.
 
 import { FeaturedIcon, ProgressBar, ProgressCircle, ProgressSteps, Skeleton, Spinner } from "@jotis-me/react";
+import {
+	AlertCircle,
+	AlertTriangle,
+	CheckCircle,
+	HomeLine,
+	InfoCircle,
+	SearchLg,
+	Settings02,
+	Stars02,
+	User01,
+	Users01,
+	Zap,
+} from "@untitledui/icons";
 import { row, stack } from "./actions";
 
 export function FeaturedIconExample() {
 	return (
 		<div className={stack}>
 			<div className={row}>
-				<FeaturedIcon icon="zap" color="brand" size="lg" />
-				<FeaturedIcon icon="settings-02" color="gray" size="lg" />
-				<FeaturedIcon icon="check-circle" color="success" size="lg" />
-				<FeaturedIcon icon="alert-triangle" color="warning" size="lg" />
-				<FeaturedIcon icon="alert-circle" color="error" size="lg" />
+				<FeaturedIcon icon={Zap} color="brand" size="lg" />
+				<FeaturedIcon icon={Settings02} color="gray" size="lg" />
+				<FeaturedIcon icon={CheckCircle} color="success" size="lg" />
+				<FeaturedIcon icon={AlertTriangle} color="warning" size="lg" />
+				<FeaturedIcon icon={AlertCircle} color="error" size="lg" />
 			</div>
 			<div className={row}>
-				<FeaturedIcon icon="search-lg" variant="modern" size="lg" />
-				<FeaturedIcon icon="info-circle" variant="outline" size="md" />
-				<FeaturedIcon icon="zap" size="sm" />
-				<FeaturedIcon icon="zap" size="xl" />
+				<FeaturedIcon icon={SearchLg} variant="modern" size="lg" />
+				<FeaturedIcon icon={InfoCircle} variant="outline" size="md" />
+				<FeaturedIcon icon={Zap} size="sm" />
+				<FeaturedIcon icon={Zap} size="xl" />
 			</div>
 			{(["gradient", "dark"] as const).map((variant) => (
 				<div key={variant} className={row}>
-					<FeaturedIcon icon="zap" variant={variant} color="brand" size="lg" />
-					<FeaturedIcon icon="settings-02" variant={variant} color="gray" size="lg" />
-					<FeaturedIcon icon="check-circle" variant={variant} color="success" size="lg" />
-					<FeaturedIcon icon="alert-triangle" variant={variant} color="warning" size="lg" />
-					<FeaturedIcon icon="alert-circle" variant={variant} color="error" size="lg" />
+					<FeaturedIcon icon={Zap} variant={variant} color="brand" size="lg" />
+					<FeaturedIcon icon={Settings02} variant={variant} color="gray" size="lg" />
+					<FeaturedIcon icon={CheckCircle} variant={variant} color="success" size="lg" />
+					<FeaturedIcon icon={AlertTriangle} variant={variant} color="warning" size="lg" />
+					<FeaturedIcon icon={AlertCircle} variant={variant} color="error" size="lg" />
 				</div>
 			))}
 			<div className={row}>
-				<FeaturedIcon icon="check-circle" variant="modern-neue" size="sm" />
-				<FeaturedIcon icon="check-circle" variant="modern-neue" size="md" />
-				<FeaturedIcon icon="check-circle" variant="modern-neue" size="lg" />
-				<FeaturedIcon icon="check-circle" variant="modern-neue" size="xl" />
+				<FeaturedIcon icon={CheckCircle} variant="modern-neue" size="sm" />
+				<FeaturedIcon icon={CheckCircle} variant="modern-neue" size="md" />
+				<FeaturedIcon icon={CheckCircle} variant="modern-neue" size="lg" />
+				<FeaturedIcon icon={CheckCircle} variant="modern-neue" size="xl" />
 			</div>
 		</div>
 	);
@@ -112,10 +125,10 @@ export function ProgressCircleExample() {
 }
 
 const STEPS = [
-	{ title: "Tus datos", description: "Nombre y correo", icon: "user-01" as const },
-	{ title: "Tu empresa", description: "Web y ubicación", icon: "home-line" as const },
-	{ title: "Tu equipo", description: "Empieza a colaborar", icon: "users-01" as const },
-	{ title: "Tus redes", description: "Publicación automática", icon: "stars-02" as const },
+	{ title: "Tus datos", description: "Nombre y correo", icon: User01 },
+	{ title: "Tu empresa", description: "Web y ubicación", icon: HomeLine },
+	{ title: "Tu equipo", description: "Empieza a colaborar", icon: Users01 },
+	{ title: "Tus redes", description: "Publicación automática", icon: Stars02 },
 ];
 
 export function ProgressStepsExample() {

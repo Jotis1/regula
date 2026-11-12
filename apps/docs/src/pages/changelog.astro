@@ -2,6 +2,7 @@
 // Historial de cambios (design §10): las versiones salen de los CHANGELOG.md de los paquetes en el build. Con los tres
 // paquetes en `fixed` comparten versión, así que cada una aparece una vez. Sin versiones publicadas, un estado vacío.
 import { Breadcrumbs, EmptyState } from "@jotis-me/react";
+import { Clock } from "@untitledui/icons";
 import InlineCode from "../components/InlineCode.astro";
 import Base from "../layouts/Base.astro";
 import { type ChangeKind, changeBlocks, mergeChangelogs } from "../lib/changelog";
@@ -26,7 +27,7 @@ const short = (pkgs: string[]) =>
 
 <Base
 	title="Historial de cambios"
-	description="Qué ha cambiado en cada versión de @jotis-me/react, @jotis-me/tokens y @jotis-me/icons."
+	description="Qué ha cambiado en cada versión de @jotis-me/react, @jotis-me/tokens y @jotis-me/assets."
 >
 	<article class="max-w-[760px]">
 		<header class="mb-10 flex flex-col gap-3 lg:gap-4">
@@ -40,7 +41,7 @@ const short = (pkgs: string[]) =>
 		{
 			versions.length === 0 ? (
 				<EmptyState
-					icon="clock"
+					icon={Clock}
 					title="Aún no hay versiones publicadas"
 					description="Cuando se publique la primera, sus cambios aparecerán aquí."
 				/>

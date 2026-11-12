@@ -1,5 +1,6 @@
 // Cabeceras de EmptyState (component-library, «Cabeceras del estado vacío» y «Avatares y logos del estado vacío»).
 import { render, screen } from "@testing-library/react";
+import { Folder, UserPlus01 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { Avatar, EmptyState } from "../src/index.js";
@@ -17,13 +18,13 @@ describe("EmptyState con cabeceras", () => {
 	it("sin las props nuevas, el HTML es el de antes", () => {
 		const html = renderToStaticMarkup(
 			<EmptyState
-				icon="folder"
+				icon={Folder}
 				title="Sin resultados"
 				description="Prueba con otra palabra."
 				actions={<span>acción</span>}
 			/>,
 		);
-		expect(html).toBe(BEFORE);
+		expect(html).toMatchBefore(BEFORE);
 	});
 
 	it("las cuatro ilustraciones, el archivo y las carpetas son dibujos decorativos con colores del tema", () => {
@@ -80,7 +81,7 @@ describe("EmptyState con cabeceras", () => {
 	it("usuarios en fila e integraciones: los items se desvanecen hacia los lados", () => {
 		for (const media of ["users-row", "integrations"] as const) {
 			const { container, unmount } = render(
-				<EmptyState title="Vacío" media={media} icon="user-plus-01" items={avatars} />,
+				<EmptyState title="Vacío" media={media} icon={UserPlus01} items={avatars} />,
 			);
 			const header = container.firstElementChild?.firstElementChild as HTMLElement;
 			expect(header.style.maskImage, media).toContain("linear-gradient");
@@ -106,7 +107,7 @@ describe("EmptyState con cabeceras", () => {
 					media="illustration"
 					size="md"
 				/>
-				<EmptyState title="Sin usuarios" media="users-row" icon="user-plus-01" items={avatars} />
+				<EmptyState title="Sin usuarios" media="users-row" icon={UserPlus01} items={avatars} />
 			</>,
 		);
 	});

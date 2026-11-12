@@ -1,91 +1,112 @@
-import { readdirSync, readFileSync } from "node:fs";
+// Datos de las galerías de /icons/ (change adopt-untitled-ui-icons): iconos de línea, banderas y tipos de archivo de Untitled UI,
+// y pagos y cursores de @jotis-me/assets. Las entradas salen de los paquetes: un recurso que el paquete quite, rompe aquí.
+import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import * as icons from "@jotis-me/icons";
-import * as cursors from "@jotis-me/icons/cursors";
-import * as files from "@jotis-me/icons/files";
-import * as flags from "@jotis-me/icons/flags";
-import * as payments from "@jotis-me/icons/payments";
+import * as cursors from "@jotis-me/assets/cursors";
+import * as payments from "@jotis-me/assets/payments";
+import * as flags from "@untitledui/country-flags";
+import { FileIcon } from "@untitledui/file-icons";
+import * as lineIcons from "@untitledui/icons";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import categoriesByName from "../src/data/icon-categories.json";
 import {
 	buildEntries,
 	CURSOR_CATEGORIES,
 	componentName,
 	decodeCategories,
+	decodeTitles,
 	decodeUrls,
 	encodeCategories,
+	encodeTitles,
 	encodeUrls,
 	FILE_CATEGORIES,
-	type GalleryKind,
+	FILE_GROUP,
+	fileIconTag,
 	groupOptions,
+	hasSvgModule,
 	ICON_CATEGORIES,
 	importPath,
+	kebab,
+	pascal,
+	searchQuery,
+	searchText,
 	svgModule,
 } from "../src/lib/gallery";
+import { FLAGS, ICON_NAMES } from "../src/lib/untitled";
 
-const pkg = join(import.meta.dirname, "../../../packages/icons");
-const dir: Record<GalleryKind, string> = {
-	icons: "svg",
-	flags: "flags",
-	payments: "payments",
-	files: "files",
-	cursors: "cursors",
-};
-const urls = (kind: GalleryKind) =>
+const assetsPkg = join(import.meta.dirname, "../../../packages/assets");
+const url = (kind: string, slug: string) => `/icons/svg/${kind}/${slug}.svg`;
+const asUrls = (kind: string, slugs: string[]) =>
+	Object.fromEntries(slugs.map((s) => [url(kind, s), url(kind, s)]));
+const assetUrls = (dir: string) =>
 	Object.fromEntries(
-		readdirSync(join(pkg, "dist", dir[kind]))
+		readdirSync(join(assetsPkg, "dist", dir))
 			.filter((f) => f.endsWith(".svg"))
-			.map((f) => [`/dist/${dir[kind]}/${f}`, `/_astro/${f}`]),
+			.map((f) => [`/dist/${dir}/${f}`, `/_astro/${f}`]),
 	);
-const categories: Record<string, string[]> = JSON.parse(
-	readFileSync(join(pkg, "assets/icon-categories.json"), "utf8"),
+
+// Las categorías del Figma van por nombre con guiones; los iconos de Untitled UI, por nombre de componente
+const categories: Record<string, string[]> = Object.fromEntries(
+	Object.entries(categoriesByName as Record<string, string[]>).map(([k, names]) => [k, names.map(pascal)]),
 );
-const modules: Record<GalleryKind, Record<string, unknown>> = { icons, flags, payments, files, cursors };
-const all = (kind: GalleryKind) => buildEntries(kind, urls(kind), kind === "icons" ? categories : undefined);
+const icons = () => buildEntries("icons", asUrls("icons", ICON_NAMES), categories);
+const flagEntries = () =>
+	buildEntries(
+		"flags",
+		asUrls(
+			"flags",
+			FLAGS.map((f) => f.code),
+		),
+		undefined,
+		Object.fromEntries(FLAGS.map((f) => [f.code, f.title])),
+	);
+const files = () =>
+	buildEntries(
+		"files",
+		asUrls(
+			"files",
+			Object.keys(FILE_GROUP).flatMap((t) => [t, `${t}-gray`, `${t}-solid`]),
+		),
+	);
 
 describe("entradas de las galerías", () => {
-	it("iconos: 1.172, uno por nombre, con su categoría", () => {
-		const entries = all("icons");
-		expect(entries).toHaveLength(1172);
+	it("iconos: los del paquete, uno por nombre de componente, casi todos con categoría", () => {
+		const entries = icons();
+		expect(entries).toHaveLength(Object.keys(lineIcons).length);
+		expect(entries.length).toBeGreaterThan(1100);
 		expect(entries.every((e) => e.variants.length === 1)).toBe(true);
-		expect(entries.find((e) => e.name === "calendar")?.groups).toEqual(["time"]);
-		// «colors» está en dos categorías del Figma con el mismo dibujo
-		expect(entries.find((e) => e.name === "colors")?.groups.sort()).toEqual(["editor", "images"]);
-		expect(entries.every((e) => e.groups.length > 0)).toBe(true);
+		expect(entries.find((e) => e.name === "Calendar")?.groups).toEqual(["time"]);
+		// Los iconos que Untitled UI añadió después del Figma no tienen categoría, pero se ven y se buscan
+		expect(entries.filter((e) => e.groups.length === 0).length).toBeLessThan(40);
 	});
 
-	it("banderas: 261 países con círculo, cuadrado y rectángulo en ese orden", () => {
-		const entries = all("flags");
-		expect(entries).toHaveLength(261);
-		for (const e of entries)
-			expect(e.variants.map((v) => v.key)).toEqual(["circle", "square", "rectangle"]);
-		expect(entries.find((e) => e.name === "spain")?.variants[0]?.slug).toBe("spain-circle");
+	it("banderas: las 234 en círculo, con el país en castellano", () => {
+		const entries = flagEntries();
+		expect(entries).toHaveLength(Object.keys(flags).filter((k) => /^Flag[A-Z]/.test(k)).length);
+		for (const e of entries) expect(e.variants.map((v) => v.key)).toEqual(["circle"]);
+		expect(entries.find((e) => e.name === "es")?.title).toBe("España");
+		expect(entries.find((e) => e.name === "jp")?.title).toBe("Japón");
+	});
+
+	it("archivos: cada tipo con default, gray y solid, en su categoría", () => {
+		const entries = files();
+		expect(entries).toHaveLength(Object.keys(FILE_GROUP).length);
+		for (const t of entries) expect(t.variants.map((v) => v.key)).toEqual(["default", "gray", "solid"]);
+		expect(entries.find((e) => e.name === "fig")?.groups).toEqual(["design"]);
+		expect(entries.find((e) => e.name === "pdf")?.groups).toEqual(["document"]);
+		expect(entries.find((e) => e.name === "video-01")?.groups).toEqual(["media"]);
 	});
 
 	it("pagos: 56 métodos en sm y md", () => {
-		const entries = all("payments");
+		const entries = buildEntries("payments", assetUrls("payments"));
 		expect(entries).toHaveLength(56);
 		for (const e of entries) expect(e.variants.map((v) => v.key)).toEqual(["sm", "md"]);
 	});
 
-	it("archivos: 51 tipos con default, gray y solid, y 4 carpetas cerradas y abiertas", () => {
-		const entries = all("files");
-		const folders = entries.filter((e) => e.groups.includes("folder"));
-		expect(folders.map((f) => f.name).sort()).toEqual([
-			"folder-brand",
-			"folder-gray",
-			"folder-noise",
-			"folder-transparent",
-		]);
-		for (const f of folders) expect(f.variants.map((v) => v.key)).toEqual(["closed", "open"]);
-		const types = entries.filter((e) => !e.groups.includes("folder"));
-		expect(types).toHaveLength(51);
-		for (const t of types) expect(t.variants.map((v) => v.key)).toEqual(["default", "gray", "solid"]);
-		expect(entries.find((e) => e.name === "design-fig")?.groups).toEqual(["design"]);
-		expect(entries.find((e) => e.name === "generic-video-01")?.groups).toEqual(["generic"]);
-	});
-
 	it("cursores: 50, clásicos y de macOS 26", () => {
-		const entries = all("cursors");
+		const entries = buildEntries("cursors", assetUrls("cursors"));
 		expect(entries).toHaveLength(50);
 		expect(entries.filter((e) => e.groups.includes("macos"))).toHaveLength(21);
 		expect(entries.filter((e) => e.groups.includes("classic"))).toHaveLength(29);
@@ -93,35 +114,96 @@ describe("entradas de las galerías", () => {
 });
 
 describe("nombres que coinciden con el paquete", () => {
-	for (const kind of ["icons", "flags", "payments", "files", "cursors"] as const) {
-		it(`cada variante de ${kind} es un componente que exporta ${importPath(kind)}`, () => {
-			const missing: string[] = [];
-			for (const e of all(kind))
+	it("cada icono de línea y cada bandera es un componente que exporta su paquete", () => {
+		const missing: string[] = [];
+		for (const e of icons())
+			if (typeof (lineIcons as Record<string, unknown>)[e.name] !== "function") missing.push(e.name);
+		for (const e of flagEntries()) {
+			const name = componentName("flags", e.name);
+			const c = (flags as Record<string, unknown>)[name];
+			if (!c) missing.push(name);
+		}
+		expect(missing).toEqual([]);
+		expect(importPath("icons")).toBe("@untitledui/icons");
+		expect(importPath("flags")).toBe("@untitledui/country-flags");
+		expect(importPath("files")).toBe("@untitledui/file-icons");
+	});
+
+	it("cada tipo de archivo se pinta en sus tres variantes con FileIcon", () => {
+		for (const type of Object.keys(FILE_GROUP))
+			for (const variant of ["default", "gray", "solid"] as const) {
+				const svg = renderToStaticMarkup(createElement(FileIcon, { type, variant }));
+				expect(svg, `${type} ${variant}`).toMatch(/^<svg /);
+			}
+	});
+
+	it("cada pago y cada cursor es un componente que exporta @jotis-me/assets", () => {
+		const missing: string[] = [];
+		for (const [kind, mod] of [
+			["payments", payments],
+			["cursors", cursors],
+		] as const)
+			for (const e of buildEntries(kind, assetUrls(kind)))
 				for (const v of e.variants) {
 					const name = componentName(kind, v.slug);
-					if (typeof modules[kind][name] !== "function") missing.push(name);
+					if (typeof (mod as Record<string, unknown>)[name] !== "function") missing.push(name);
 				}
-			expect(missing).toEqual([]);
-		});
-	}
+		expect(missing).toEqual([]);
+	});
 
-	it("la ruta del SVG existe en dist", () => {
-		for (const kind of ["icons", "flags", "payments", "files", "cursors"] as const) {
-			const first = all(kind)[0]?.variants[0]?.slug as string;
-			const file = svgModule(kind, first).replace("@jotis-me/icons/", "");
-			expect(readdirSync(join(pkg, "dist", file.split("/")[0] as string))).toContain(
+	it("solo pagos y cursores tienen SVG importable, y su ruta existe en dist", () => {
+		expect(hasSvgModule("icons")).toBe(false);
+		expect(hasSvgModule("flags")).toBe(false);
+		expect(hasSvgModule("files")).toBe(false);
+		for (const kind of ["payments", "cursors"] as const) {
+			expect(hasSvgModule(kind)).toBe(true);
+			const first = buildEntries(kind, assetUrls(kind))[0]?.variants[0]?.slug as string;
+			const file = svgModule(kind, first).replace("@jotis-me/assets/", "");
+			expect(readdirSync(join(assetsPkg, "dist", file.split("/")[0] as string))).toContain(
 				file.split("/")[1],
 			);
 		}
+	});
+
+	it("los iconos de archivo se escriben con un solo componente", () => {
+		expect(fileIconTag("pdf", "default")).toBe('<FileIcon type="pdf" />');
+		expect(fileIconTag("pdf", "gray", " size={40}")).toBe(
+			'<FileIcon type="pdf" variant="gray" size={40} />',
+		);
+	});
+});
+
+describe("búsqueda", () => {
+	it("acepta el nombre del componente y con guiones, sin mayúsculas", () => {
+		const search = (q: string) =>
+			icons()
+				.filter((e) => searchText(e).includes(searchQuery(q)))
+				.map((e) => e.name);
+		expect(search("cal")).toContain("Calendar");
+		expect(search("search-lg")).toContain("SearchLg");
+		expect(search("SEARCHLG")).toContain("SearchLg");
+		expect(search("rocket-02")).toContain("Rocket02");
+		expect(kebab("AlignTopArrow01")).toBe("align-top-arrow-01");
+	});
+
+	it("las banderas se buscan por su nombre en castellano, con o sin tildes, y por su código", () => {
+		const search = (q: string) =>
+			flagEntries()
+				.filter((e) => searchText(e).includes(searchQuery(q)))
+				.map((e) => e.name);
+		expect(search("españa")).toContain("es");
+		expect(search("espana")).toContain("es");
+		expect(search("japón")).toContain("jp");
+		expect(search("jp")).toContain("jp");
 	});
 });
 
 describe("filtro por categoría", () => {
 	it("solo ofrece las categorías con elementos y cuenta cada una", () => {
-		const opts = groupOptions(all("icons"), ICON_CATEGORIES);
+		const opts = groupOptions(icons(), ICON_CATEGORIES);
 		expect(opts).toHaveLength(19);
-		expect(opts.find((o) => o.value === "general")?.label).toBe("General (193)");
-		expect(groupOptions(all("files"), FILE_CATEGORIES).map((o) => o.value)).toEqual([
+		expect(opts.find((o) => o.value === "general")?.label).toMatch(/^General \(\d+\)$/);
+		expect(groupOptions(files(), FILE_CATEGORIES).map((o) => o.value)).toEqual([
 			"generic",
 			"document",
 			"image",
@@ -129,70 +211,69 @@ describe("filtro por categoría", () => {
 			"design",
 			"development",
 			"archive",
-			"folder",
 		]);
-		expect(groupOptions(all("cursors"), CURSOR_CATEGORIES).map((o) => o.label)).toEqual([
-			"Clásicos (29)",
-			"macOS 26 (21)",
-		]);
+		expect(
+			groupOptions(buildEntries("cursors", assetUrls("cursors")), CURSOR_CATEGORIES).map(
+				(o) => o.label,
+			),
+		).toEqual(["Clásicos (29)", "macOS 26 (21)"]);
 	});
 });
 
 describe("props compactas de la isla", () => {
-	it("las URL y las categorías ida y vuelta dan las mismas entradas", () => {
-		const byUrl = all("icons");
+	it("las URL, las categorías y los títulos ida y vuelta dan las mismas entradas", () => {
+		const byUrl = icons();
 		const rebuilt = buildEntries(
 			"icons",
-			decodeUrls(encodeUrls(urls("icons"))),
+			decodeUrls(encodeUrls(asUrls("icons", ICON_NAMES))),
 			decodeCategories(encodeCategories(categories)),
 		);
 		expect(rebuilt).toEqual(byUrl);
+		const titles = Object.fromEntries(FLAGS.map((f) => [f.code, f.title]));
+		expect(decodeTitles(encodeTitles(titles))).toEqual(titles);
 	});
 
 	it("el nombre sale del fichero aunque Vite le añada un hash o un `?no-inline`", () => {
-		const hashed = buildEntries("flags", {
-			"/_astro/spain-circle.D8x2k.svg": "/_astro/spain-circle.D8x2k.svg",
-			"/@fs/C:/x/dist/flags/spain-square.svg?no-inline":
-				"/@fs/C:/x/dist/flags/spain-square.svg?no-inline",
+		const hashed = buildEntries("payments", {
+			"/_astro/visa-md.D8x2k.svg": "/_astro/visa-md.D8x2k.svg",
+			"/@fs/C:/x/dist/payments/visa-sm.svg?no-inline": "/@fs/C:/x/dist/payments/visa-sm.svg?no-inline",
 		});
 		expect(hashed).toHaveLength(1);
-		expect(hashed[0]?.name).toBe("spain");
-		expect(hashed[0]?.variants.map((v) => v.slug)).toEqual(["spain-circle", "spain-square"]);
+		expect(hashed[0]?.name).toBe("visa");
+		expect(hashed[0]?.variants.map((v) => v.slug)).toEqual(["visa-sm", "visa-md"]);
 	});
 
-	it("dos iconos con el mismo dibujo comparten URL (Vite junta los SVG idénticos) y siguen siendo dos entradas", () => {
-		const shared = {
-			"/dist/svg/alert-circle.svg": "/_astro/alert-circle.D8x2k.svg",
-			"/dist/svg/alert-circle-copy.svg": "/_astro/alert-circle.D8x2k.svg",
-			"/dist/svg/zap.svg": "/_astro/zap.QQ11aa.svg",
-		};
-		const entries = buildEntries("icons", decodeUrls(encodeUrls(shared)));
-		expect(entries.map((e) => e.name)).toEqual(["alert-circle", "alert-circle-copy", "zap"]);
-		expect(entries[1]?.variants[0]?.url).toBe("/_astro/alert-circle.D8x2k.svg");
-	});
-
-	it("el prefijo común de las URL se quita del texto y se recupera entero, también con ?no-inline", () => {
+	it("el prefijo común de las URL se quita del texto y se recupera entero", () => {
 		const dev = {
-			"/x/a.svg": "/@fs/C:/p/dist/svg/a.svg?no-inline",
-			"/x/b.svg": "/@fs/C:/p/dist/svg/b.svg?no-inline",
+			"/x/SearchLg.svg": "/icons/svg/icons/SearchLg.svg",
+			"/x/Plus.svg": "/icons/svg/icons/Plus.svg",
 		};
 		const text = encodeUrls(dev);
-		expect(text.split("\n")[0]).toBe("/@fs/C:/p/dist/svg/");
+		expect(text.split("\n")[0]).toBe("/icons/svg/icons/");
 		expect(decodeUrls(text)).toEqual({
-			a: "/@fs/C:/p/dist/svg/a.svg?no-inline",
-			b: "/@fs/C:/p/dist/svg/b.svg?no-inline",
+			SearchLg: "/icons/svg/icons/SearchLg.svg",
+			Plus: "/icons/svg/icons/Plus.svg",
 		});
 	});
 
-	it("viajan en pocos bytes: unos 60 por recurso", () => {
+	it("viajan en pocos bytes: unos 40 por recurso", () => {
 		const bytes = (s: string) => new TextEncoder().encode(s).length;
-		const withHash = Object.fromEntries(
-			Object.keys(urls("icons")).map((p) => [
-				p,
-				`/_astro/${p.split("/").pop()?.replace(".svg", ".D8x2kQ.svg")}`,
-			]),
-		);
-		expect(bytes(encodeUrls(withHash))).toBeLessThan(1172 * 65);
-		expect(bytes(encodeCategories(categories))).toBeLessThan(1172 * 20);
+		expect(bytes(encodeUrls(asUrls("icons", ICON_NAMES)))).toBeLessThan(ICON_NAMES.length * 40);
+		expect(bytes(encodeCategories(categories))).toBeLessThan(ICON_NAMES.length * 20);
+	});
+});
+
+describe("el endpoint de SVG", () => {
+	it("escribe un SVG con xmlns para cada icono, bandera y tipo de archivo (sin él no vale como imagen)", async () => {
+		const { GET, getStaticPaths } = await import("../src/pages/icons/svg/[kind]/[slug].svg");
+		const paths = (getStaticPaths as () => { params: { kind: string; slug: string } }[])();
+		expect(paths).toHaveLength(ICON_NAMES.length + FLAGS.length + Object.keys(FILE_GROUP).length * 3);
+		for (const { params } of [paths[0], paths[ICON_NAMES.length], paths.at(-1)] as typeof paths) {
+			const res = await (GET as (a: unknown) => Promise<Response>)({ params });
+			expect(res.headers.get("Content-Type")).toBe("image/svg+xml");
+			const svg = await res.text();
+			expect(svg).toMatch(/^<svg /);
+			expect(svg).toContain('xmlns="http://www.w3.org/2000/svg"');
+		}
 	});
 });

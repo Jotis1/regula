@@ -133,8 +133,9 @@ test("Button: elegir un icono lo pinta y lo escribe en el código; «Ninguno» l
 	await page.goto("/components/button/");
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
-	await choose(pg, "iconLeading", "plus");
-	await expect(pg.getByRole("tabpanel")).toContainText('<Button iconLeading="plus">Nuevo gasto</Button>');
+	await choose(pg, "iconLeading", "Plus");
+	await expect(pg.getByRole("tabpanel")).toContainText('import { Plus } from "@untitledui/icons";');
+	await expect(pg.getByRole("tabpanel")).toContainText("<Button iconLeading={Plus}>Nuevo gasto</Button>");
 	await expect(pg.locator("[data-playground-preview] button svg")).toHaveCount(1);
 	await choose(pg, "iconLeading", "Ninguno");
 	await expect(pg.getByRole("tabpanel")).toContainText("<Button>Nuevo gasto</Button>");
@@ -151,34 +152,63 @@ test("Skeleton: escribir un número en width cambia el ancho y el código", asyn
 	await expect(pg.getByRole("tabpanel")).toContainText("width={220}");
 });
 
-test("Button: el atajo «Solo icono» desactiva los controles que no aplican, con su motivo, y se alcanza con teclado", async ({
+test("Button: sin fila de atajos; «iconOnly» desactiva los controles que no aplican, con su motivo", async ({
 	page,
 }) => {
 	await page.goto("/components/button/");
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
-	const presets = pg.getByRole("group", { name: "Atajos" });
-	await expect(presets.getByRole("button", { name: "Por defecto" })).toHaveAttribute(
-		"aria-pressed",
-		"true",
-	);
-	await presets.getByRole("button", { name: "Solo icono" }).click();
-	await expect(presets.getByRole("button", { name: "Solo icono" })).toHaveAttribute("aria-pressed", "true");
-	await expect(presets.getByRole("button", { name: "Por defecto" })).toHaveAttribute(
-		"aria-pressed",
-		"false",
-	);
+	// Los controles de propiedades son la única forma de cambiar el ejemplo
+	await expect(pg.getByRole("group", { name: "Atajos" })).toHaveCount(0);
+	await expect(pg.locator("[data-playground-presets]")).toHaveCount(0);
+	await choose(pg, "iconOnly", "Plus");
 	// Los controles que no aplican, desactivados y con el motivo a la vista
 	const control = pg.locator('[data-pg-control="icon"]').filter({ hasText: "iconLeading" });
 	await expect(control.getByRole("button")).toBeDisabled();
 	await expect(control).toContainText("Un botón de solo icono no lleva texto ni iconos a los lados.");
-	await expect(pg.getByRole("tabpanel")).toContainText('<Button iconOnly="plus" label="Nuevo gasto" />');
-	// Volver al por defecto reactiva todo
-	await presets.getByRole("button", { name: "Por defecto" }).click();
+	// Volver a quitarlo reactiva todo
+	await choose(pg, "iconOnly", "Ninguno");
 	await expect(control.getByRole("button")).toBeEnabled();
 	await expect(pg.getByRole("tabpanel")).toContainText("<Button>Nuevo gasto</Button>");
-	// Con teclado: Tab llega al atajo y Enter lo elige
-	await presets.getByRole("button", { name: "Destructivo" }).focus();
-	await page.keyboard.press("Enter");
-	await expect(pg.getByRole("tabpanel")).toContainText("destructive");
+});
+
+test("los controles se alinean por arriba: el motivo de uno desactivado no mueve a los demás", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/components/button/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	// La etiqueta y el campo de cada control, antes de que ninguno muestre un motivo
+	const tops = () =>
+		pg.locator("[data-pg-control]").evaluateAll((els) =>
+			els.map((el) => {
+				const label = el.querySelector("label, [data-label]") ?? el.firstElementChild;
+				const field = el.querySelector("button, input");
+				return {
+					control: el.getAttribute("data-pg-control"),
+					label: Math.round((label?.getBoundingClientRect().top ?? 0) * 10) / 10,
+					field: Math.round((field?.getBoundingClientRect().top ?? 0) * 10) / 10,
+				};
+			}),
+		);
+	const before = await tops();
+	expect(before.length).toBeGreaterThan(3);
+	// Activar iconOnly desactiva dos selectores de icono y a cada uno le sale su motivo debajo
+	await choose(pg, "iconOnly", "Plus");
+	await expect(
+		pg.locator('[data-pg-control="icon"]').filter({ hasText: "solo icono" }).first(),
+	).toBeVisible();
+	const after = await tops();
+	// Cada selector sigue a la altura de la que tenía: ni la etiqueta ni el campo se desplazan
+	const firstRow = (rows: typeof before) =>
+		rows.filter((r) => Math.abs(r.label - (rows[0]?.label ?? 0)) < 4);
+	for (let i = 0; i < Math.min(before.length, after.length); i++) {
+		const b = before[i];
+		const a = after[i];
+		if (!b || !a || b.control === "icon" || Math.abs(b.label - (before[0]?.label ?? 0)) > 4) continue;
+		expect(a.label, `etiqueta del control ${i}`).toBeCloseTo(b.label, 0);
+		expect(a.field, `campo del control ${i}`).toBeCloseTo(b.field, 0);
+	}
+	expect(firstRow(after).length).toBe(firstRow(before).length);
 });

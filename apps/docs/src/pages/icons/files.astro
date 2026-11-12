@@ -1,30 +1,33 @@
 ---
-// Galería de iconos de archivo (`@jotis-me/icons/files`). La isla (`AssetGallery`) recibe los nombres y las URL de los SVG
-// del paquete, que el build copia como ficheros: se cargan como imágenes perezosas, no como código de la isla.
+// Galería de iconos de archivo de `@untitledui/file-icons`. La isla (`AssetGallery`) recibe los tipos y las URL de los SVG que
+// escribe el endpoint `/icons/svg/`: se cargan como imágenes perezosas, no como código de la isla.
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
-import { buildEntries, encodeUrls, FILE_CATEGORIES, groupOptions } from "../../lib/gallery";
+import { buildEntries, encodeUrls, FILE_CATEGORIES, FILE_GROUP, groupOptions } from "../../lib/gallery";
 
-const urls = import.meta.glob<string>("../../../../../packages/icons/dist/files/*.svg", {
-	query: "?no-inline",
-	import: "default",
-	eager: true,
-});
+const urls = Object.fromEntries(
+	Object.keys(FILE_GROUP).flatMap((type) =>
+		["", "-gray", "-solid"].map((s) => [
+			`/icons/svg/files/${type}${s}.svg`,
+			`/icons/svg/files/${type}${s}.svg`,
+		]),
+	),
+);
 const entries = buildEntries("files", urls);
 const groups = groupOptions(entries, FILE_CATEGORIES);
 ---
 
 <Base
 	title="Iconos de archivo"
-	description={`Los iconos de tipo de archivo y las carpetas de @jotis-me/icons/files.`}
+	description={`Los ${entries.length} tipos de archivo de @untitledui/file-icons, en default, gray y solid.`}
 >
 	<div class="flex flex-col gap-7">
 		<header class="flex max-w-[720px] flex-col gap-3.5">
 			<IconsNav current="files" />
 			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Iconos de archivo</h1>
 			<p class="text-md text-tertiary lg:text-lg">
-				Los iconos de tipo de archivo, por extensión y genéricos, en default, gray y solid, y las carpetas. Cada uno es un componente suelto de <code class="font-mono text-md">@jotis-me/icons/files</code>.
+				Los {entries.length} tipos de archivo, por extensión y genéricos, en default, gray y solid. Se pintan con un solo componente, <code class="font-mono text-md">FileIcon</code> de <code class="font-mono text-md">@untitledui/file-icons</code>.
 			</p>
 		</header>
 		<AssetGallery client:load kind="files" urls={encodeUrls(urls)} groups={groups} />

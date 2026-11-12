@@ -1,6 +1,6 @@
+import { ArrowLeft, ArrowRight } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
-import { Icon } from "./Icon.js";
 import { Rating } from "./Rating.js";
 
 export interface TestimonialProps {
@@ -73,7 +73,7 @@ export function Testimonial({
 					onClick={onPrevious}
 					className={cx(ARROW, md ? "size-12" : "size-10")}
 				>
-					<Icon name="arrow-left" size={md ? 24 : 20} />
+					<ArrowLeft size={md ? 24 : 20} />
 				</button>
 				<button
 					type="button"
@@ -81,7 +81,7 @@ export function Testimonial({
 					onClick={onNext}
 					className={cx(ARROW, md ? "size-12" : "size-10")}
 				>
-					<Icon name="arrow-right" size={md ? 24 : 20} />
+					<ArrowRight size={md ? 24 : 20} />
 				</button>
 			</div>
 		) : null;

@@ -1,9 +1,10 @@
 "use client";
 
+import { Check, Copy01, Maximize01 } from "@untitledui/icons";
 import { type KeyboardEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { cx } from "../internal/cx.js";
+import { DynIcon } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export interface CodeSnippetTab {
 	label: string;
@@ -144,7 +145,7 @@ export function CodeSnippet({
 			aria-label={copied ? defaultStrings.copied : defaultStrings.copyCode}
 			className={cx(position, buttonBase)}
 		>
-			<Icon name={copied ? "check" : "copy-01"} size={16} />
+			<DynIcon icon={copied ? Check : Copy01} size={16} />
 		</button>
 	);
 
@@ -242,7 +243,7 @@ export function CodeSnippet({
 						buttonBase,
 					)}
 				>
-					<Icon name="maximize-01" size={16} />
+					<Maximize01 size={16} />
 				</button>
 			) : null}
 			<span className="sr-only" aria-live="polite">

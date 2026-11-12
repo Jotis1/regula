@@ -1,6 +1,7 @@
 // Búsqueda de la web: CommandMenu de @jotis-me/react con Ctrl+K / Cmd+K sobre páginas, componentes, tokens e
 // iconos (índice propio, /search-index.json) y el texto completo de las páginas (Pagefind, solo tras el build).
-import { CommandMenu, Icon, type IconName, Kbd } from "@jotis-me/react";
+import { CommandMenu, Kbd } from "@jotis-me/react";
+import { SearchLg, Star01 } from "@untitledui/icons";
 import { useEffect, useRef, useState } from "react";
 import { plain, type SearchEntry, searchGroups } from "./entries";
 
@@ -89,7 +90,7 @@ export default function SiteSearch() {
 		items: g.entries.map((e) => ({
 			label: e.label,
 			description: e.description,
-			icon: e.group === "icons" ? (e.label as IconName) : undefined,
+			icon: e.group === "icons" ? Star01 : undefined,
 			onSelect: () => location.assign(e.href),
 		})),
 	}));
@@ -107,7 +108,7 @@ export default function SiteSearch() {
 				// En móvil, botón de icono de 44px (HeaderM.dc.html); desde lg, el campo de 300px
 				className="flex size-11 items-center justify-center gap-2 rounded-lg text-left text-sm text-quaternary transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none lg:h-10 lg:w-[300px] lg:justify-start lg:border lg:border-primary lg:bg-primary lg:pr-2 lg:pl-3 lg:shadow-xs"
 			>
-				<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
+				<SearchLg size={20} className="shrink-0 text-fg-quaternary" />
 				<span className="sr-only min-w-0 grow truncate lg:not-sr-only">Buscar en Regula</span>
 				<Kbd variant="field" className="hidden shrink-0 whitespace-nowrap lg:inline-flex">
 					{mac ? "⌘ K" : "Ctrl K"}

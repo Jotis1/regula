@@ -1,9 +1,9 @@
 "use client";
 
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactElement, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactElement } from "react";
 import type { BubbleSide } from "../internal/bubble.js";
 import { cx } from "../internal/cx.js";
-import { type IconName, iconSlot } from "./Icon.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import { Tooltip } from "./Tooltip.js";
 
 export type ButtonUtilityHierarchy = "secondary" | "tertiary";
@@ -11,7 +11,7 @@ export type ButtonUtilitySize = "xs" | "sm";
 
 interface Base {
 	/** Icono del botón: 16px en `xs`, 20px en `sm`. */
-	icon: IconName | NonNullable<ReactNode>;
+	icon: NonNullable<IconProp>;
 	/** Nombre accesible y texto del tooltip. Obligatorio: el botón no lleva texto visible. */
 	label: string;
 	/**

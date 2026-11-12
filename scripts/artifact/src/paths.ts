@@ -4,7 +4,7 @@ import { join } from "node:path";
 export const ROOT = join(import.meta.dirname, "../../..");
 export const DOCS = join(ROOT, "apps/docs");
 export const REACT = join(ROOT, "packages/react");
-export const ICONS = join(ROOT, "packages/icons");
+export const ASSETS = join(ROOT, "packages/assets");
 export const TOKENS = join(ROOT, "packages/tokens");
 /** Carpeta de salida por defecto: `dist-artifact/` en la raíz (en .gitignore). */
 export const OUT = join(ROOT, "dist-artifact");

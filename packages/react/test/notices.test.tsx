@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Clock, HelpCircle, Mail01, Zap } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Alert, Banner, Button, Notification, Tooltip } from "../src/index.js";
@@ -13,7 +14,7 @@ describe("Tooltip", () => {
 	it("aparece al enfocar con teclado, describe el control y Escape lo cierra", async () => {
 		render(
 			<Tooltip title="Ayuda" text="Abre la guía de uso.">
-				<Button hierarchy="secondary" iconOnly="help-circle" label="Ayuda" />
+				<Button hierarchy="secondary" iconOnly={HelpCircle} label="Ayuda" />
 			</Tooltip>,
 		);
 		expect(screen.queryByRole("tooltip")).toBeNull();
@@ -102,7 +103,7 @@ describe("Tooltip", () => {
 	it("con placement a un lado, al enfocar sale ahí con la flecha en el borde contrario; arrow=false la quita", async () => {
 		const { unmount } = render(
 			<Tooltip title="Ayuda" placement="right" arrow="start">
-				<Button hierarchy="secondary" iconOnly="help-circle" label="Ayuda" />
+				<Button hierarchy="secondary" iconOnly={HelpCircle} label="Ayuda" />
 			</Tooltip>,
 		);
 		await userEvent.tab();
@@ -114,7 +115,7 @@ describe("Tooltip", () => {
 		unmount();
 		render(
 			<Tooltip title="Ayuda" placement="bottom" arrow={false}>
-				<Button hierarchy="secondary" iconOnly="help-circle" label="Ayuda" />
+				<Button hierarchy="secondary" iconOnly={HelpCircle} label="Ayuda" />
 			</Tooltip>,
 		);
 		await userEvent.tab();
@@ -126,7 +127,7 @@ describe("Tooltip", () => {
 	it("axe en claro y oscuro", async () => {
 		await expectAccessibleInThemes(
 			<Tooltip title="Esto es un tooltip" open>
-				<Button hierarchy="secondary" iconOnly="help-circle" label="Ayuda" />
+				<Button hierarchy="secondary" iconOnly={HelpCircle} label="Ayuda" />
 			</Tooltip>,
 		);
 	});
@@ -246,7 +247,7 @@ describe("Banner", () => {
 		const onClose = vi.fn();
 		render(
 			<Banner
-				icon="zap"
+				icon={Zap}
 				title="Nueva versión de Pecunia."
 				description="Ahora con presupuestos compartidos."
 				actions={<Button size="sm">Ver novedades</Button>}
@@ -307,7 +308,7 @@ describe("Banner", () => {
 				slim
 				layout="full"
 				theme="brand"
-				icon="zap"
+				icon={Zap}
 				title="Datos de ejemplo."
 				onClose={() => {}}
 			/>,
@@ -322,14 +323,14 @@ describe("Banner", () => {
 		await expectAccessibleInThemes(
 			<div>
 				<Banner
-					icon="mail-01"
+					icon={Mail01}
 					title="Resumen semanal."
 					email={{ hint: "Un correo los lunes." }}
 					onClose={() => {}}
 				/>
 				<Banner
 					theme="brand"
-					icon="clock"
+					icon={Clock}
 					title="Fin de la beta."
 					countdown={new Date(2026, 10, 1)}
 					now={new Date(2026, 9, 29)}

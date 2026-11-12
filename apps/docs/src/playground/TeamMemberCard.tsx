@@ -1,6 +1,7 @@
 // TeamMemberCard en el ejemplo interactivo (un fichero por componente: design D4): la foto y las redes son nodos, que
 // se eligen entre opciones preparadas.
 import { ButtonUtility } from "@jotis-me/react";
+import { Link01, Mail01 } from "@untitledui/icons";
 import type { Tweak } from "../lib/playground";
 
 export { TeamMemberCard as default } from "@jotis-me/react";
@@ -23,14 +24,14 @@ export const tweaks: Record<string, Tweak> = {
 				label: "Redes",
 				value: (
 					<>
-						<ButtonUtility icon="link-01" label="Sitio web" hierarchy="tertiary" />
-						<ButtonUtility icon="mail-01" label="Correo" hierarchy="tertiary" />
+						<ButtonUtility icon={Link01} label="Sitio web" hierarchy="tertiary" />
+						<ButtonUtility icon={Mail01} label="Correo" hierarchy="tertiary" />
 					</>
 				),
 				code: [
 					"<>",
-					'\t<ButtonUtility icon="link-01" label="Sitio web" hierarchy="tertiary" />',
-					'\t<ButtonUtility icon="mail-01" label="Correo" hierarchy="tertiary" />',
+					'\t<ButtonUtility icon={Link01} label="Sitio web" hierarchy="tertiary" />',
+					'\t<ButtonUtility icon={Mail01} label="Correo" hierarchy="tertiary" />',
 					"</>",
 				].join("\n"),
 				imports: ["ButtonUtility"],

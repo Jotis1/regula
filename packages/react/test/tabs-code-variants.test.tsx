@@ -22,10 +22,12 @@ const long = Array.from({ length: 30 }, (_, i) => `const linea${i} = ${i}`).join
 
 describe("Tabs: fullWidth", () => {
 	it("sin la prop nueva, el HTML es el de antes", () => {
-		expect(renderToStaticMarkup(<Tabs aria-label="Secciones" items={items} />)).toBe(TABS_BEFORE[0]);
+		expect(renderToStaticMarkup(<Tabs aria-label="Secciones" items={items} />)).toMatchBefore(
+			TABS_BEFORE[0],
+		);
 		expect(
 			renderToStaticMarkup(<Tabs aria-label="Modo" type="button-border" size="md" items={items} />),
-		).toBe(TABS_BEFORE[1]);
+		).toMatchBefore(TABS_BEFORE[1]);
 	});
 
 	it("reparte el ancho: cada pestaña crece y se centra", () => {
@@ -63,9 +65,9 @@ describe("Tabs: fullWidth", () => {
 
 describe("CodeSnippet: variantes del Figma", () => {
 	it("sin las props nuevas, el HTML es el de antes", () => {
-		expect(renderToStaticMarkup(<CodeSnippet code={"const a = 1\n// nota"} language="js" />)).toBe(
-			CODE_BEFORE[0],
-		);
+		expect(
+			renderToStaticMarkup(<CodeSnippet code={"const a = 1\n// nota"} language="js" />),
+		).toMatchBefore(CODE_BEFORE[0]);
 		expect(
 			renderToStaticMarkup(
 				<CodeSnippet
@@ -76,7 +78,7 @@ describe("CodeSnippet: variantes del Figma", () => {
 					]}
 				/>,
 			),
-		).toBe(CODE_BEFORE[1]);
+		).toMatchBefore(CODE_BEFORE[1]);
 	});
 
 	it("vertical: tarjeta gris, sin números de línea y con un solo botón de copiar", () => {

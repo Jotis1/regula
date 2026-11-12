@@ -10,7 +10,7 @@ export interface AppStoreBadgeProps extends Omit<AnchorHTMLAttributes<HTMLAnchor
 	/** La página de la app en la tienda. */
 	href: string;
 	/**
-	 * El dibujo de la insignia, de `@jotis-me/icons/logos` (el paquete no lo importa): `StoreAppStoreLogo` en relleno o
+	 * El dibujo de la insignia, de `@jotis-me/assets/logos` (el paquete no lo importa): `StoreAppStoreLogo` en relleno o
 	 * `StoreAppStoreOutlineLogo` en contorno, que toma el color del texto.
 	 */
 	logo: ReactNode;

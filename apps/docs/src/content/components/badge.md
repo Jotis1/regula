@@ -6,7 +6,7 @@ interactive: false
 astroNote: "Con `onRemove` necesita una función: envuélvelo en un `.tsx` y úsalo como isla `client:load`."
 ---
 
-**Props.** `color` (`gray` · `brand` · `success` · `warning` · `error` · `slate` · `sky` · `blue` · `indigo` · `purple` · `pink` · `orange`), `type` (`pill` redonda · `badge` `radius-md` · `modern` blanca con sombra), `size` (`sm` 22px · `md` 24 · `lg` 28), `dot`, `icon` (12px delante), `flag` (bandera de 16px delante, como `FlagSpainCircle` de `@jotis-me/icons/flags`), `avatar` (16px delante: URL de una foto o un nodo), `iconTrailing` (12px detrás), `iconOnly` + `label` (solo el icono; `label` es obligatorio y lo leen los lectores de pantalla), `onRemove`.
+**Props.** `color` (`gray` · `brand` · `success` · `warning` · `error` · `slate` · `sky` · `blue` · `indigo` · `purple` · `pink` · `orange`), `type` (`pill` redonda · `badge` `radius-md` · `modern` blanca con sombra), `size` (`sm` 22px · `md` 24 · `lg` 28), `dot`, `icon` (12px delante), `flag` (bandera de 16px delante, como `<FlagEs />` de `@untitledui/country-flags`), `avatar` (16px delante: URL de una foto o un nodo), `iconTrailing` (12px detrás), `iconOnly` + `label` (solo el icono; `label` es obligatorio y lo leen los lectores de pantalla), `onRemove`.
 
 **Rellenos.** Con bandera o avatar delante, con solo un icono detrás y con solo icono, el badge usa los rellenos de su variante del Figma (`Badge`, `1046:3819`): el hueco del lado del dibujo es más estrecho que el del texto.
 

@@ -1,6 +1,6 @@
 // Escribe `asset-shas.json` (paso 4 de la publicación, README.md) sin copiar a mano los listados de assets.
 //
-// Todos los assets salen de `packages/icons`. Si no ha cambiado desde el commit de la última sincronización
+// Todos los assets salen de `packages/assets`. Si no ha cambiado desde el commit de la última sincronización
 // (`lastChange.via` del índice publicado), cada blob del índice sigue siendo el de su asset, así que se le
 // asigna el sha256 del asset generado. Si ha cambiado, falla: entonces toca listar los assets publicados.
 //
@@ -37,9 +37,9 @@ const changed = execFileSync(
 		commit,
 		"HEAD",
 		"--",
-		"packages/icons/assets",
-		"packages/icons/src",
-		"packages/icons/scripts",
+		"packages/assets/assets",
+		"packages/assets/src",
+		"packages/assets/scripts",
 	],
 	{
 		encoding: "utf8",
@@ -47,7 +47,7 @@ const changed = execFileSync(
 ).trim();
 if (changed) {
 	console.error(
-		`packages/icons ha cambiado desde ${commit}: lista los assets publicados para saber qué blobs siguen valiendo.\n${changed}`,
+		`packages/assets ha cambiado desde ${commit}: lista los assets publicados para saber qué blobs siguen valiendo.\n${changed}`,
 	);
 	process.exit(1);
 }

@@ -1,0 +1,70 @@
+{
+	"name": "@jotis-me/assets",
+	"version": "0.7.0",
+	"description": "Assets de la suite jotis.me: logos de terceros, iconos de pago, cursores, trazos a mano, patrones e iconos de app (favicon y PWA).",
+	"license": "MIT",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Jotis1/regula.git",
+		"directory": "packages/assets"
+	},
+	"homepage": "https://regula.jotis.me",
+	"files": [
+		"dist"
+	],
+	"sideEffects": false,
+	"exports": {
+		"./logos": {
+			"types": "./dist/logos.d.ts",
+			"default": "./dist/logos.js"
+		},
+		"./payments": {
+			"types": "./dist/payments.d.ts",
+			"default": "./dist/payments.js"
+		},
+		"./cursors": {
+			"types": "./dist/cursors.d.ts",
+			"default": "./dist/cursors.js"
+		},
+		"./app-icons/*": "./dist/app-icons/*",
+		"./hand-drawn/*": "./dist/hand-drawn/*",
+		"./patterns/*": "./dist/patterns/*",
+		"./logos/*": "./dist/logos/*",
+		"./payments/*": "./dist/payments/*",
+		"./cursors/*": "./dist/cursors/*",
+		"./package.json": "./package.json"
+	},
+	"scripts": {
+		"build": "bun run scripts/generate.ts && tsc -p tsconfig.build.json && bun run scripts/assets.ts",
+		"test": "vitest run",
+		"test:e2e": "playwright test",
+		"typecheck": "tsc --noEmit",
+		"check:package": "publint && attw --pack . --profile esm-only"
+	},
+	"peerDependencies": {
+		"react": "^19.3.1"
+	},
+	"peerDependenciesMeta": {
+		"react": {
+			"optional": true
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"devDependencies": {
+		"@arethetypeswrong/cli": "^0.18.5",
+		"@playwright/test": "^1.64.1",
+		"@resvg/resvg-js": "^2.6.2",
+		"@testing-library/react": "^16.3.3",
+		"@types/node": "^26.6.6",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
+		"jsdom": "^30.1.3",
+		"publint": "^0.3.25",
+		"react-dom": "^19.3.1",
+		"vitest": "^5",
+		"@jotis-me/react": "workspace:*"
+	}
+}

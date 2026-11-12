@@ -28,7 +28,7 @@ const entries: SearchEntry[] = [
 		description: "Color · Fondo de modal",
 		href: "/foundations/color/",
 	},
-	{ group: "icons", label: "calendar", href: "/icons/?icono=calendar" },
+	{ group: "icons", label: "Calendar", href: "/icons/?icono=Calendar" },
 ];
 
 describe("búsqueda de la web", () => {
@@ -45,7 +45,7 @@ describe("búsqueda de la web", () => {
 	it("sin tildes ni mayúsculas", () => {
 		expect(fold("Tipografía")).toBe("tipografia");
 		expect(searchGroups(entries, "TIPOGRAFIA")[0]?.entries[0]?.label).toBe("Tipografía");
-		expect(searchGroups(entries, "cal")[0]?.entries[0]?.href).toBe("/icons/?icono=calendar");
+		expect(searchGroups(entries, "cal")[0]?.entries[0]?.href).toBe("/icons/?icono=Calendar");
 	});
 
 	it("el texto completo va al final y sin repetir lo ya visible", () => {

@@ -25,23 +25,25 @@ const items: ActivityItem[] = [
 
 describe("VideoPlayer, ActivityFeed y Notification: sin las props nuevas", () => {
 	it("el HTML es el de antes", () => {
-		expect(renderToStaticMarkup(<ActivityFeed items={items} />)).toBe(BEFORE.feed);
-		expect(renderToStaticMarkup(<ActivityFeed connector items={items} size="sm" className="x" />)).toBe(
-			BEFORE.feedConn,
-		);
+		expect(renderToStaticMarkup(<ActivityFeed items={items} />)).toMatchBefore(BEFORE.feed);
+		expect(
+			renderToStaticMarkup(<ActivityFeed connector items={items} size="sm" className="x" />),
+		).toMatchBefore(BEFORE.feedConn);
 		expect(
 			renderToStaticMarkup(
 				<Notification title="Hecho" description="Guardado" color="success" actions={<b>a</b>} />,
 			),
-		).toBe(BEFORE.note);
-		expect(renderToStaticMarkup(<Notification title="Hecho" onClose={() => {}} className="y" />)).toBe(
-			BEFORE.noteClose,
+		).toMatchBefore(BEFORE.note);
+		expect(
+			renderToStaticMarkup(<Notification title="Hecho" onClose={() => {}} className="y" />),
+		).toMatchBefore(BEFORE.noteClose);
+		expect(renderToStaticMarkup(<VideoPlayer duration={252} poster="/p.jpg" />)).toMatchBefore(
+			BEFORE.video,
 		);
-		expect(renderToStaticMarkup(<VideoPlayer duration={252} poster="/p.jpg" />)).toBe(BEFORE.video);
 	});
 
 	it('divider="connector" pinta lo mismo que el alias connector', () => {
-		expect(renderToStaticMarkup(<ActivityFeed divider="connector" items={items} />)).toBe(
+		expect(renderToStaticMarkup(<ActivityFeed divider="connector" items={items} />)).toMatchBefore(
 			renderToStaticMarkup(<ActivityFeed connector items={items} />),
 		);
 	});
@@ -62,7 +64,7 @@ describe("VideoPlayer: tamaños", () => {
 		render(<VideoPlayer size="md" duration={504} />);
 		expect(screen.getByText("00:00")).toBeTruthy();
 		expect(screen.getByText("-08:24")).toBeTruthy();
-		expect(screen.getByRole("slider", { name: "Posición" }).getAttribute("aria-valuetext")).toBe(
+		expect(screen.getByRole("slider", { name: "Posición" }).getAttribute("aria-valuetext")).toMatchBefore(
 			"0:00 de 8:24",
 		);
 		expect(screen.queryByRole("slider", { name: "Volumen" })).toBeNull();

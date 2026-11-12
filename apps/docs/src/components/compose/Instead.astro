@@ -1,7 +1,7 @@
 ---
+import { Check, XClose } from "@untitledui/icons";
 // «En lugar de / Escribe» (Tone.dc.html y ToneM.dc.html): tabla en escritorio y tarjetas en móvil, con los ejemplos
 // de la guía.
-import { Icon } from "@jotis-me/react";
 import { inline } from "../../lib/inline";
 
 interface Props {
@@ -30,13 +30,13 @@ const cell = "px-5 py-4 align-top";
 							<th scope="row" class={`${cell} text-left font-medium text-primary`}>{r.when}</th>
 							<td class={`${cell} text-tertiary`}>
 								<span class="flex gap-2">
-									<Icon name="x-close" size={16} title="Evitar" className="mt-0.5 shrink-0 text-fg-error-secondary" />
+									<XClose size={16} role="img" aria-label="Evitar" aria-hidden="false" className="mt-0.5 shrink-0 text-fg-error-secondary" />
 									<span set:html={inline(r.bad)} />
 								</span>
 							</td>
 							<td class={`${cell} text-primary`}>
 								<span class="flex gap-2">
-									<Icon name="check" size={16} title="Mejor" className="mt-0.5 shrink-0 text-fg-success-primary" />
+									<Check size={16} role="img" aria-label="Mejor" aria-hidden="false" className="mt-0.5 shrink-0 text-fg-success-primary" />
 									<span set:html={inline(r.good)} />
 								</span>
 							</td>
@@ -52,11 +52,11 @@ const cell = "px-5 py-4 align-top";
 				<li class="flex flex-col gap-2.5 rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
 					<p class="text-xs font-semibold text-quaternary">{r.when}</p>
 					<p class="flex gap-2 text-sm text-tertiary">
-						<Icon name="x-close" size={16} title="Evitar" className="mt-0.5 shrink-0 text-fg-error-secondary" />
+						<XClose size={16} role="img" aria-label="Evitar" aria-hidden="false" className="mt-0.5 shrink-0 text-fg-error-secondary" />
 						<span set:html={inline(r.bad)} />
 					</p>
 					<p class="flex gap-2 text-sm font-medium text-primary">
-						<Icon name="check" size={16} title="Mejor" className="mt-0.5 shrink-0 text-fg-success-primary" />
+						<Check size={16} role="img" aria-label="Mejor" aria-hidden="false" className="mt-0.5 shrink-0 text-fg-success-primary" />
 						<span set:html={inline(r.good)} />
 					</p>
 				</li>

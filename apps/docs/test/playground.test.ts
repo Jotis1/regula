@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import {
-	applyPreset,
 	type ContentOption,
 	childrenOf,
 	codeOf,
@@ -14,11 +13,11 @@ import {
 	jsxOf,
 	type Playground,
 	playgroundOf,
-	presetActive,
 	propsFor,
 	STARTS,
 	type State,
 } from "../src/lib/playground";
+import { resolveIcons } from "../src/lib/playground-icons";
 import type { PropRow } from "../src/lib/props";
 import { propsOf } from "../src/lib/props";
 
@@ -168,11 +167,11 @@ describe("playground", () => {
 				{ kind: "content", prop: "avatar", options },
 			],
 		};
-		const state: State = { count: 75, icon: "plus", avatar: "Avatar" };
-		expect(propsFor(pg, state)).toEqual({ count: 75, icon: "plus", avatar: "AVATAR" });
+		const state: State = { count: 75, icon: "Plus", avatar: "Avatar" };
+		expect(propsFor(pg, state)).toEqual({ count: 75, icon: "Plus", avatar: "AVATAR" });
 		const { next } = codeOf(pg, state);
 		expect(next).toBe(
-			'import { Badge, Avatar } from "@jotis-me/react";\n\n<Badge count={75} icon="plus" avatar={<Avatar initials="AD" />}>Pagado</Badge>',
+			'import { Badge, Avatar } from "@jotis-me/react";\nimport { Plus } from "@untitledui/icons";\n\n<Badge count={75} icon={Plus} avatar={<Avatar initials="AD" />}>Pagado</Badge>',
 		);
 		expect(syntaxErrors(next)).toEqual([]);
 		// Sin icono ni avatar, no se pasan ni se escriben
@@ -201,35 +200,84 @@ describe("playground", () => {
 	it("Button: solo icono desactiva los iconos de los lados y el texto, pide el label y vuelve con su valor al quitarlo", () => {
 		const pg = button();
 		if (!pg) throw new Error("Button debería tener playground");
-		const state: State = { ...initialState(pg), iconLeading: "plus", iconOnly: "plus" };
+		const state: State = { ...initialState(pg), iconLeading: "Plus", iconOnly: "Plus" };
 		expect(Object.keys(disabledProps(pg, state))).toEqual(["iconLeading", "iconTrailing", "children"]);
 		expect(disabledProps(pg, state).iconLeading).toMatch(/solo icono/i);
-		expect(propsFor(pg, state)).toMatchObject({ iconOnly: "plus", label: "Nuevo gasto" });
+		expect(propsFor(pg, state)).toMatchObject({ iconOnly: "Plus", label: "Nuevo gasto" });
 		expect(propsFor(pg, state)).not.toHaveProperty("iconLeading");
 		expect(childrenOf(pg, state)).toBeUndefined();
 		const { next } = codeOf(pg, state);
-		expect(next).toContain('<Button iconOnly="plus" label="Nuevo gasto" />');
+		expect(next).toContain('<Button iconOnly={Plus} label="Nuevo gasto" />');
+		expect(next).toContain('import { Plus } from "@untitledui/icons";');
 		expect(next).not.toContain("iconLeading");
 		// Sin iconOnly, el icono de la izquierda que había vuelve
 		const back: State = { ...state, iconOnly: undefined };
 		expect(disabledProps(pg, back)).toEqual({});
-		expect(propsFor(pg, back).iconLeading).toBe("plus");
+		expect(propsFor(pg, back).iconLeading).toBe("Plus");
 		expect(childrenOf(pg, back)).toBe("Nuevo gasto");
 	});
 
-	it("un atajo parte del estado inicial, queda marcado mientras sus props valgan lo que dice y se suelta al cambiar una", () => {
+	it("no hay atajos: los controles de propiedades son la única forma de cambiar el ejemplo", () => {
 		const pg = button();
 		if (!pg) throw new Error("Button debería tener playground");
-		const [primary, , , destructive] = pg.start.presets ?? [];
-		if (!primary || !destructive) throw new Error("Button debería tener atajos");
-		const state = applyPreset(pg, destructive);
-		expect(state.destructive).toBe(true);
-		expect(presetActive(pg, destructive, state)).toBe(true);
-		expect(presetActive(pg, primary, state)).toBe(true); // primary sigue siendo la jerarquía
-		expect(presetActive(pg, destructive, { ...state, destructive: false })).toBe(false);
-		// Elegir otro atajo no arrastra lo del anterior
-		const loading = applyPreset(pg, { label: "x", props: { loading: true } });
-		expect(loading.destructive).toBe(false);
+		expect(pg.start).not.toHaveProperty("presets");
+		for (const [name, start] of Object.entries(STARTS)) expect(start, name).not.toHaveProperty("presets");
+	});
+
+	it("los iconos dentro de objetos y listas se escriben como identificador y se importan", () => {
+		const pg: Playground = {
+			name: "ButtonGroup",
+			interactive: false,
+			dark: false,
+			start: { props: { items: [{ value: "a", label: "A", icon: "Clock" }] } },
+			controls: [],
+		};
+		const { next } = codeOf(pg, {});
+		expect(next).toContain('import { Clock } from "@untitledui/icons";');
+		expect(next).toContain('"icon":Clock');
+		expect(syntaxErrors(next)).toEqual([]);
+	});
+
+	it("las props con nombres de icono pasan a componentes, también dentro de objetos y listas, sin tocar fechas", () => {
+		const date = new Date(2026, 10, 12);
+		const out = resolveIcons({
+			iconLeading: "Plus",
+			items: [{ icon: "Clock", label: "Clock" }],
+			day: date,
+		});
+		expect(typeof out.iconLeading).toBe("function");
+		expect(typeof out.items[0]?.icon).toBe("function");
+		expect(out.items[0]?.label).toBe("Clock");
+		expect(out.day).toBe(date);
+	});
+
+	it("un selector con false o números convierte el texto al valor y no escribe el valor por defecto", () => {
+		const rows: PropRow[] = [
+			{ name: "digits", type: "4 · 6", required: false, defaultValue: "6", description: "" },
+			{
+				name: "legend",
+				type: 'false | "bottom" | "right"',
+				required: false,
+				defaultValue: "false",
+				description: "",
+			},
+		];
+		const controls = controlsOf(rows);
+		expect(controls).toMatchObject([
+			{ kind: "choice", prop: "digits", values: ["4", "6"], coerce: true, default: "6" },
+			{
+				kind: "choice",
+				prop: "legend",
+				values: ["false", "bottom", "right"],
+				coerce: true,
+				default: "false",
+			},
+		]);
+		const pg: Playground = { name: "X", interactive: false, dark: false, start: {}, controls };
+		expect(propsFor(pg, { digits: "4", legend: "false" })).toEqual({ digits: 4, legend: false });
+		expect(codeOf(pg, { digits: "4", legend: "right" }).next).toContain(
+			'<X digits={4} legend="right" />',
+		);
 	});
 
 	it("cada punto de partida es de un componente que existe", () => {

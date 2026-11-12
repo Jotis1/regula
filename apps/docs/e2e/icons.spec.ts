@@ -1,14 +1,28 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { allIconNames, iconNames } from "@jotis-me/icons";
 import { expect, type Page, test } from "@playwright/test";
+import * as lineIcons from "@untitledui/icons";
 
-const total = allIconNames.length;
+// Los iconos de línea son los de @untitledui/icons: el recuento sale del propio paquete
+const names = Object.keys(lineIcons)
+	.filter((k) => /^[A-Z]/.test(k))
+	.sort((a, b) => a.localeCompare(b));
+const total = names.length;
+const pascal = (k: string) =>
+	k
+		.split("-")
+		.map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+		.join("");
 const categories: Record<string, string[]> = JSON.parse(
-	readFileSync(join(import.meta.dirname, "../../../packages/icons/assets/icon-categories.json"), "utf8"),
+	readFileSync(join(import.meta.dirname, "../src/data/icon-categories.json"), "utf8"),
 );
+const kebab = (s: string) =>
+	s
+		.replace(/([a-z])([A-Z])/g, "$1-$2")
+		.replace(/([a-zA-Z])(\d)/g, "$1-$2")
+		.toLowerCase();
 // La galería ordena los iconos por nombre, como `localeCompare`
-const sorted = (names: readonly string[]) => [...names].sort((a, b) => a.localeCompare(b));
+const sorted = (list: readonly string[]) => [...list].sort((a, b) => a.localeCompare(b));
 
 /** La galería es una isla: espera a que se hidrate antes de usarla. */
 async function ready(page: Page) {
@@ -37,7 +51,7 @@ test("la galería enseña los primeros iconos con el recuento total y pide «Mos
 	await expect(page.locator("#icon-more")).toBeHidden();
 });
 
-test("el HTML de /icons/ y los SVG que se piden no crecen con los 1.172 iconos", async ({
+test("el HTML de /icons/ y los SVG que se piden no crecen con los iconos del set", async ({
 	page,
 	request,
 }) => {
@@ -57,14 +71,20 @@ test("el HTML de /icons/ y los SVG que se piden no crecen con los 1.172 iconos",
 test("buscar «cal» deja solo los iconos cuyo nombre lo contiene", async ({ page }) => {
 	await ready(page);
 	await page.getByLabel("Buscar icono").fill("cal");
-	const expected = sorted(allIconNames.filter((n) => n.includes("cal")));
+	const expected = sorted(names.filter((n) => `${n} ${kebab(n)}`.toLowerCase().includes("cal")));
 	await expect(page.locator("#icon-count")).toHaveText(`${expected.length} de ${total}`);
 	await showAll(page);
 	const visible = await page
 		.locator("[data-item]")
 		.evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.item as string));
 	expect(visible).toEqual(expected);
-	expect(visible).toContain("calendar");
+	expect(visible).toContain("Calendar");
+});
+
+test("el buscador acepta el nombre con guiones", async ({ page }) => {
+	await ready(page);
+	await page.getByLabel("Buscar icono").fill("search-lg");
+	await expect(page.locator('[data-select="SearchLg"]')).toBeVisible();
 });
 
 test("sin resultados lo dice", async ({ page }) => {
@@ -78,7 +98,8 @@ test("filtrar por categoría deja solo los iconos de esa categoría", async ({ p
 	await ready(page);
 	await page.getByRole("button", { name: /Categoría/ }).click();
 	await page.getByRole("option", { name: /^Tiempo/ }).click();
-	const expected = categories.time as string[];
+	// De la categoría del Figma, los que siguen existiendo en @untitledui/icons
+	const expected = (categories.time as string[]).map(pascal).filter((n) => names.includes(n));
 	await expect(page.locator("#icon-count")).toHaveText(`${expected.length} de ${total}`);
 	const visible = await page
 		.locator("[data-item]")
@@ -90,7 +111,7 @@ test("el tamaño de vista previa cambia los iconos de la rejilla", async ({ page
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await ready(page);
 	await page.getByLabel("Buscar icono").fill("calendar");
-	const img = page.locator('[data-select="calendar"] img');
+	const img = page.locator('[data-select="Calendar"] img');
 	await expect(img).toHaveAttribute("height", "24");
 	await page
 		.getByRole("group", { name: "Tamaño de vista previa" })
@@ -99,7 +120,7 @@ test("el tamaño de vista previa cambia los iconos de la rejilla", async ({ page
 	await expect(img).toHaveAttribute("height", "16");
 });
 
-test("elegir calendar: el panel lo muestra y su código usa @jotis-me/icons; se copia el nombre", async ({
+test("elegir Calendar: el panel lo muestra y su código lo importa de @untitledui/icons; se copia el nombre", async ({
 	page,
 	context,
 }) => {
@@ -107,46 +128,41 @@ test("elegir calendar: el panel lo muestra y su código usa @jotis-me/icons; se 
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await ready(page);
 	await page.getByLabel("Buscar icono").fill("calendar");
-	await page.locator('[data-select="calendar"]').click();
-	await expect(page.locator('[data-select="calendar"]')).toHaveAttribute("aria-pressed", "true");
+	await page.locator('[data-select="Calendar"]').click();
+	await expect(page.locator('[data-select="Calendar"]')).toHaveAttribute("aria-pressed", "true");
 	const panel = page.getByRole("complementary", { name: "Icono elegido" });
-	await expect(panel.locator("#icon-detail-name")).toHaveText("calendar");
-	await expect(panel).toContainText("IconCalendar");
+	await expect(panel.locator("#icon-detail-name")).toHaveText("Calendar");
 	const code = panel.getByRole("tabpanel");
-	// Está en el núcleo: se puede pintar por nombre y con su componente
-	await expect(code).toContainText('import { Icon, IconCalendar } from "@jotis-me/icons";');
-	await expect(code).toContainText('<Icon name="calendar" size={20} />');
-	await panel.getByRole("tab", { name: "Importar SVG" }).click();
-	await expect(code).toContainText('from "@jotis-me/icons/svg/calendar.svg?raw"');
+	await expect(code).toContainText('import { Calendar } from "@untitledui/icons";');
+	await expect(code).toContainText("<Calendar size={20} />");
+	await expect(panel.getByRole("tab", { name: "Importar SVG" })).toHaveCount(0);
 	await panel.getByRole("tab", { name: "SVG", exact: true }).click();
 	await expect(code).toContainText('stroke="currentColor"');
 	await panel.getByRole("button", { name: "Copiar nombre" }).click();
-	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("calendar");
+	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("Calendar");
 	// Uso por contexto de la guía
 	for (const t of ["Botón e input", "xs y menús", "Navegación"])
 		await expect(panel.getByText(t)).toBeVisible();
 });
 
-test("un icono fuera del núcleo se usa con su componente suelto, no con `Icon name`", async ({ page }) => {
+test("un icono que no usa ningún componente se importa igual, de @untitledui/icons", async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await ready(page);
-	expect(iconNames).not.toContain("rocket-02");
 	await page.getByLabel("Buscar icono").fill("rocket-02");
-	await page.locator('[data-select="rocket-02"]').click();
+	await page.locator('[data-select="Rocket02"]').click();
 	const panel = page.getByRole("complementary", { name: "Icono elegido" });
-	await expect(panel.locator("#icon-detail-name")).toHaveText("rocket-02");
+	await expect(panel.locator("#icon-detail-name")).toHaveText("Rocket02");
 	const code = panel.getByRole("tabpanel");
-	await expect(code).toContainText('import { IconRocket02 } from "@jotis-me/icons";');
-	await expect(code).not.toContainText("<Icon name=");
+	await expect(code).toContainText('import { Rocket02 } from "@untitledui/icons";');
 	await panel.getByRole("tab", { name: "SVG", exact: true }).click();
 	await expect(code).toContainText('stroke="currentColor"');
 });
 
-test("la página avisa del cambio de `Icon name` a quien viene de una versión anterior", async ({ page }) => {
+test("la página explica que las props de icono aceptan el componente y no un nombre", async ({ page }) => {
 	await ready(page);
 	const note = page.locator("#icon-core-note");
-	await expect(note).toContainText(`${iconNames.length} iconos del núcleo`);
-	await expect(note).toContainText("IconRocket02");
+	await expect(note).toContainText("iconLeading={Plus}");
+	await expect(note).toContainText("@untitledui/icons");
 });
 
 test("en móvil, tocar un icono abre la hoja con su código y Escape la cierra devolviendo el foco", async ({
@@ -156,11 +172,11 @@ test("en móvil, tocar un icono abre la hoja con su código y Escape la cierra d
 	await ready(page);
 	await expect(page.getByRole("complementary", { name: "Icono elegido" })).toBeHidden();
 	await page.getByLabel("Buscar icono").fill("trash-01");
-	const tile = page.locator('[data-select="trash-01"]');
+	const tile = page.locator('[data-select="Trash01"]');
 	await tile.click();
-	const sheet = page.getByRole("dialog", { name: "trash-01" });
+	const sheet = page.getByRole("dialog", { name: "Trash01" });
 	await expect(sheet).toBeVisible();
-	await expect(sheet.getByRole("tabpanel")).toContainText("IconTrash01");
+	await expect(sheet.getByRole("tabpanel")).toContainText("Trash01");
 	await page.keyboard.press("Escape");
 	await expect(sheet).toBeHidden();
 	await expect(tile).toBeFocused();

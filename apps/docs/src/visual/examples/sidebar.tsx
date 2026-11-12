@@ -2,15 +2,6 @@
 // propio fichero para que Tabs y FilterBar (que comparten `navigation.tsx`) no carguen Dropdown ni las tarjetas.
 
 import {
-	IconLayoutAlt01,
-	IconLifeBuoy01,
-	IconLink03,
-	IconMessageChatCircle,
-	IconPieChart03,
-	IconSettings01,
-	IconZapFast,
-} from "@jotis-me/icons";
-import {
 	AppIcon,
 	Avatar,
 	AvatarGroup,
@@ -18,45 +9,71 @@ import {
 	Button,
 	ButtonUtility,
 	FeaturedIcon,
-	Icon,
 	Input,
 	ProgressBar,
 	SidebarCards,
 	SidebarNav,
 	type SidebarNavItem,
 } from "@jotis-me/react";
+import {
+	AlertCircle,
+	ArrowRight,
+	ArrowUpRight,
+	BarChart01,
+	Bell01,
+	Calendar,
+	CheckCircle,
+	ChevronRight,
+	Clock,
+	Copy01,
+	Eye,
+	File04,
+	Folder,
+	HomeLine,
+	LayoutAlt01,
+	LifeBuoy01,
+	Link03,
+	LogOut01,
+	MessageChatCircle,
+	PieChart03,
+	Settings01,
+	Star01,
+	User01,
+	Users01,
+	ZapFast,
+} from "@untitledui/icons";
 import type { ReactNode } from "react";
 
 const panelChildren: SidebarNavItem[] = [
-	{ icon: "eye", label: "Resumen", href: "#", active: true },
-	{ icon: "bell-01", label: "Avisos", href: "#", badge: 10 },
-	{ icon: "bar-chart-01", label: "Analítica", href: "#" },
-	{ icon: "star-01", label: "Guardados", href: "#" },
-	{ icon: "clock", label: "Programados", href: "#" },
-	{ icon: "user-01", label: "De usuarios", href: "#" },
+	{ icon: Eye, label: "Resumen", href: "#", active: true },
+	{ icon: Bell01, label: "Avisos", href: "#", badge: 10 },
+	{ icon: BarChart01, label: "Analítica", href: "#" },
+	{ icon: Star01, label: "Guardados", href: "#" },
+	{ icon: Clock, label: "Programados", href: "#" },
+	{ icon: User01, label: "De usuarios", href: "#" },
 ];
 
 const mainItems: SidebarNavItem[] = [
-	{ icon: "home-line", label: "Inicio", href: "#" },
-	{ icon: "bar-chart-01", label: "Panel", children: panelChildren },
-	{ icon: "file-04", label: "Documentos", href: "#" },
-	{ icon: "calendar", label: "Calendario", href: "#" },
-	{ icon: "users-01", label: "Equipo", href: "#", badge: 8 },
+	{ icon: HomeLine, label: "Inicio", href: "#" },
+	{ icon: BarChart01, label: "Panel", children: panelChildren },
+	{ icon: File04, label: "Documentos", href: "#" },
+	{ icon: Calendar, label: "Calendario", href: "#" },
+	{ icon: Users01, label: "Equipo", href: "#", badge: 8 },
 ];
 
 const footer = [
-	{ icon: <IconLifeBuoy01 />, label: "Soporte", href: "#" },
-	{ icon: <IconSettings01 />, label: "Ajustes", href: "#" },
+	{ icon: <LifeBuoy01 />, label: "Soporte", href: "#" },
+	{ icon: <Settings01 />, label: "Ajustes", href: "#" },
 ];
 
 const person = { initials: "OR", name: "Olivia Rhye", supporting: "olivia@jotis.me" } as const;
 
 const account = {
 	items: [
-		{ icon: "user-01" as const, label: "Ver perfil", shortcut: "⌘P" },
-		{ icon: "file-04" as const, label: "Documentación" },
+		{ icon: User01, label: "Ver perfil", shortcut: "⌘P" },
+		{ icon: File04, label: "Documentación" },
 		{ divider: true as const },
-		{ icon: "log-out-01" as const, label: "Cerrar sesión", shortcut: "⌥⇧Q" },
+		{ icon: LogOut01, label: "Cerrar sesión", shortcut: "⌥⇧Q" },
 	],
 	accounts: [
 		{
@@ -135,7 +152,7 @@ function FeaturedCards() {
 			/>
 			<SidebarCards.Notice
 				onClose={() => {}}
-				icon={<FeaturedIcon variant="outline" size="sm" icon="alert-circle" />}
+				icon={<FeaturedIcon variant="outline" size="sm" icon={AlertCircle} />}
 				title="Preferencias de cookies"
 				description="Usamos cookies para analizar el tráfico, recordar tus preferencias y mejorar tu experiencia."
 				actions={
@@ -152,13 +169,13 @@ function FeaturedCards() {
 			<SidebarCards.Notice
 				outline
 				onClose={() => {}}
-				icon={<FeaturedIcon variant="modern" color="gray" icon={<IconLink03 />} />}
+				icon={<FeaturedIcon variant="modern" color="gray" icon={<Link03 />} />}
 				title="Invita a un amigo"
 				description="Gana el 50 % durante 12 meses cuando alguien use tu enlace."
 			>
 				<div className="flex items-center gap-1">
 					<Input size="sm" readOnly value="jotis.me/4060020" aria-label="Tu enlace" />
-					<ButtonUtility icon="copy-01" label="Copiar enlace" />
+					<ButtonUtility icon={Copy01} label="Copiar enlace" />
 				</div>
 			</SidebarCards.Notice>
 			<SidebarCards.Notice outline>
@@ -170,8 +187,7 @@ function FeaturedCards() {
 				<ul className="m-0 flex list-none flex-col gap-2 p-0 text-sm font-medium text-tertiary">
 					{checks.map((text, i) => (
 						<li key={text} className="flex items-center gap-1.5">
-							<Icon
-								name="check-circle"
+							<CheckCircle
 								size={20}
 								className={i < 3 ? "text-fg-brand-primary" : "text-fg-quaternary"}
 							/>
@@ -185,7 +201,7 @@ function FeaturedCards() {
 			</SidebarCards.Notice>
 			<SidebarCards.Upgrade
 				onClose={() => {}}
-				icon={<IconZapFast />}
+				icon={<ZapFast />}
 				title="Pasa a PRO"
 				badge="20% DTO."
 				description="Desbloquea más de 20 integraciones, 40 GB y informes avanzados."
@@ -205,7 +221,7 @@ function FeaturedCards() {
 				<Button
 					hierarchy="secondary"
 					size="md"
-					iconLeading={<IconMessageChatCircle />}
+					iconLeading={<MessageChatCircle />}
 					className="w-full"
 				>
 					Hablar con soporte
@@ -274,11 +290,11 @@ function FeaturedCards() {
 						<li key={name} className="flex items-center gap-2">
 							<span aria-hidden className={`size-2.5 rounded-full ${dot}`} />
 							<span className="flex-1">{name}</span>
-							<Icon name="chevron-right" size={16} className="text-fg-quaternary" />
+							<ChevronRight size={16} className="text-fg-quaternary" />
 						</li>
 					))}
 				</ul>
-				<Button hierarchy="link-color" size="sm" iconTrailing="arrow-right" className="self-start">
+				<Button hierarchy="link-color" size="sm" iconTrailing={ArrowRight} className="self-start">
 					Todos los proyectos
 				</Button>
 			</SidebarCards.Notice>
@@ -371,14 +387,14 @@ export function SidebarNavExample() {
 						sections={[
 							{
 								items: [
-									{ icon: "home-line", label: "Inicio", href: "#" },
-									{ icon: "bar-chart-01", label: "Panel", href: "#", active: true },
+									{ icon: HomeLine, label: "Inicio", href: "#" },
+									{ icon: BarChart01, label: "Panel", href: "#", active: true },
 								],
 							},
 							{
 								items: [
 									{
-										icon: "folder",
+										icon: Folder,
 										label: "Carpetas",
 										defaultOpen: true,
 										children: [
@@ -392,10 +408,10 @@ export function SidebarNavExample() {
 							},
 							{
 								items: [
-									{ icon: <IconPieChart03 />, label: "Informes", href: "#" },
-									{ icon: <IconSettings01 />, label: "Ajustes", href: "#" },
+									{ icon: <PieChart03 />, label: "Informes", href: "#" },
+									{ icon: <Settings01 />, label: "Ajustes", href: "#" },
 									{
-										icon: <IconLifeBuoy01 />,
+										icon: <LifeBuoy01 />,
 										label: "Soporte",
 										href: "#",
 										trailing: (
@@ -405,10 +421,10 @@ export function SidebarNavExample() {
 										),
 									},
 									{
-										icon: <IconLayoutAlt01 />,
+										icon: <LayoutAlt01 />,
 										label: "Abrir en el navegador",
 										href: "#",
-										trailing: <Icon name="arrow-up-right" size={20} />,
+										trailing: <ArrowUpRight size={20} />,
 									},
 								],
 							},
@@ -426,16 +442,16 @@ export function SidebarNavExample() {
 							{
 								title: "General",
 								items: [
-									{ icon: "bar-chart-01", label: "Panel", href: "#", active: true },
-									{ icon: "file-04", label: "Documentos", href: "#" },
-									{ icon: "calendar", label: "Calendario", href: "#" },
+									{ icon: BarChart01, label: "Panel", href: "#", active: true },
+									{ icon: File04, label: "Documentos", href: "#" },
+									{ icon: Calendar, label: "Calendario", href: "#" },
 								],
 							},
 							{
 								title: "Tu suite",
 								items: [
-									{ icon: <IconPieChart03 />, label: "Informes", href: "#" },
-									{ icon: "users-01", label: "Equipo", href: "#", badge: 8 },
+									{ icon: <PieChart03 />, label: "Informes", href: "#" },
+									{ icon: Users01, label: "Equipo", href: "#", badge: 8 },
 								],
 							},
 							{
@@ -445,7 +461,7 @@ export function SidebarNavExample() {
 									label,
 									href: "#",
 									shortcut: `⌘${i + 1}`,
-									trailing: <Icon name="chevron-right" size={20} />,
+									trailing: <ChevronRight size={20} />,
 								})),
 							},
 						]}

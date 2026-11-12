@@ -1,0 +1,1 @@
+Los 50 cursores de `@jotis-me/assets/cursors` (29 clásicos y 21 de macOS 26). Cada SVG se puede usar como valor de `cursor` en CSS: `cursor: url(…) 6 4, grab`, con el punto activo que elijas tú. Los de macOS 26 son más grandes que 20×20 cuando su dibujo sobresale.

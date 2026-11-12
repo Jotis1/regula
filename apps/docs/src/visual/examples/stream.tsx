@@ -19,6 +19,7 @@ import {
 	StreamStatus,
 	TransparencyGrid,
 } from "@jotis-me/react";
+import { ArrowRight, Calendar, ShieldTick, User01 } from "@untitledui/icons";
 import { useState } from "react";
 
 export function StreamAlertExample() {
@@ -211,22 +212,22 @@ export function ChannelPanelExample() {
 		<div className="flex items-start gap-6 p-2">
 			<ChannelPanel
 				title="Sobre el canal"
-				icon="user-01"
-				action={{ label: "Ver todos los enlaces", icon: "arrow-right", href: "#" }}
+				icon={User01}
+				action={{ label: "Ver todos los enlaces", icon: ArrowRight, href: "#" }}
 			>
 				<p>Directos tranquilos, juegos a medias y conversación sin guion.</p>
 				<p>Si es tu primera vez, siéntate. Hay sitio.</p>
 			</ChannelPanel>
 			<ChannelPanel
 				title="Horario"
-				icon="calendar"
+				icon={Calendar}
 				rows={[
 					{ label: "Lunes", value: "20:00" },
 					{ label: "Miércoles", value: "20:00" },
 					{ label: "Viernes", value: "22:00" },
 				]}
 			/>
-			<ChannelPanel title="Normas" icon="shield-tick">
+			<ChannelPanel title="Normas" icon={ShieldTick}>
 				<p>Respeto, sin spoilers y sin pedir que haga lo mismo que el streamer de ayer.</p>
 				<p>Los moderadores tienen la última palabra y mucha paciencia.</p>
 			</ChannelPanel>

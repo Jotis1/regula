@@ -4,7 +4,7 @@ description: "Iconos de línea de 24×24 y trazo de 2px."
 order: 7
 ---
 
-import { Icon } from "@jotis-me/react";
+import { Calendar } from "@untitledui/icons";
 import Essentials from "../../components/compose/Essentials.astro";
 import Example from "../../components/compose/Example.astro";
 
@@ -16,7 +16,7 @@ import Example from "../../components/compose/Example.astro";
 	items={[
 		{
 			title: "El set",
-			text: "Set de iconos de línea del archivo: 24×24, trazo de 2px con extremos redondeados, sin relleno. El componente `Icon` incluye 83 de uso común (`Jotis.iconNames`); los mismos están como SVG en el grupo Icons, con trazo `#525252` (`fg-tertiary`) porque `<img>` no hereda color.",
+			text: "Los iconos de línea son los de Untitled UI (`@untitledui/icons`, MIT): 24×24, trazo de 2px con extremos redondeados, sin relleno. Se importan como componentes (`import { Calendar } from \"@untitledui/icons\"`) y las props de icono de los componentes aceptan el componente o un nodo. Los de tipo de archivo son `@untitledui/file-icons` y las banderas `@untitledui/country-flags`.",
 		},
 		{
 			title: "Tamaños",
@@ -24,20 +24,20 @@ import Example from "../../components/compose/Example.astro";
 		},
 		{
 			title: "Iconos sin texto",
-			text: "Un icono solo, sin texto, necesita `label`/`title`. Nunca emojis como iconos.",
+			text: "Un icono solo, sin texto, necesita `label` (o `aria-label` si va suelto). Nunca emojis como iconos.",
 		},
 		{
 			title: "Iconos que faltan",
-			text: "Si hace falta un icono que no está en el set, sácalo del mismo archivo de Figma (página Icons, 1.173 iconos) para mantener el trazo.",
+			text: "Si hace falta un icono que no está en Untitled UI, dibújalo con el mismo trazo (24×24, 2px, extremos redondeados) y pásalo como nodo.",
 		},
 	]}
 />
 
 <Example caption="El mismo icono a 16, 20 y 24 px. Todos, con su código, en la galería de iconos.">
 	<div class="flex items-end gap-8 text-fg-secondary">
-		<span class="flex flex-col items-center gap-2"><Icon name="calendar" size={16} /><span class="text-xs text-tertiary">16 px</span></span>
-		<span class="flex flex-col items-center gap-2"><Icon name="calendar" size={20} /><span class="text-xs text-tertiary">20 px</span></span>
-		<span class="flex flex-col items-center gap-2"><Icon name="calendar" size={24} /><span class="text-xs text-tertiary">24 px</span></span>
+		<span class="flex flex-col items-center gap-2"><Calendar size={16} /><span class="text-xs text-tertiary">16 px</span></span>
+		<span class="flex flex-col items-center gap-2"><Calendar size={20} /><span class="text-xs text-tertiary">20 px</span></span>
+		<span class="flex flex-col items-center gap-2"><Calendar size={24} /><span class="text-xs text-tertiary">24 px</span></span>
 	</div>
 	<a href="/icons/" class="self-start rounded-sm text-sm font-semibold text-brand-secondary underline underline-offset-3 hover:text-brand-secondary_hover focus-visible:shadow-focus-ring focus-visible:outline-none">Ir a la galería de iconos</a>
 </Example>

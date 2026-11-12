@@ -13,7 +13,7 @@ import {
 	SocialSlackLogo,
 	SocialSpotifyLogo,
 	SocialStripeLogo,
-} from "@jotis-me/icons/logos";
+} from "@jotis-me/assets/logos";
 import {
 	Alert,
 	Avatar,
@@ -31,6 +31,19 @@ import {
 	Tooltip,
 	useCopy,
 } from "@jotis-me/react";
+import {
+	Clock,
+	Copy01,
+	CurrencyEuro,
+	HelpCircle,
+	Mail01,
+	Plus,
+	SearchLg,
+	ShieldTick,
+	Trash01,
+	UserPlus01,
+	Zap,
+} from "@untitledui/icons";
 import { stack } from "./actions";
 
 export function ModalExample() {
@@ -38,7 +51,7 @@ export function ModalExample() {
 		<div style={{ position: "relative", height: 360, borderRadius: 12, overflow: "hidden" }}>
 			<Modal
 				contained
-				icon="trash-01"
+				icon={Trash01}
 				destructive
 				title="¿Eliminar este gasto?"
 				description="Se borrará también de los informes. No se puede deshacer."
@@ -78,7 +91,7 @@ export function SlideoutExample() {
 				}
 			>
 				<Input label="Concepto" defaultValue="Alquiler" />
-				<Input label="Importe" defaultValue="650,00" trailing="currency-euro" />
+				<Input label="Importe" defaultValue="650,00" trailing={CurrencyEuro} />
 				<Select label="Categoría" options={["Hogar", "Transporte", "Ocio"]} />
 			</Slideout>
 		</div>
@@ -89,7 +102,7 @@ export function TooltipExample() {
 	return (
 		<div style={{ display: "flex", gap: 160, padding: "96px 0 0 120px" }}>
 			<Tooltip title="Esto es un tooltip" open>
-				<Button hierarchy="secondary" iconOnly="help-circle" label="Ayuda" />
+				<Button hierarchy="secondary" iconOnly={HelpCircle} label="Ayuda" />
 			</Tooltip>
 			<Tooltip title="Con texto de apoyo" text="Una frase más para explicar el control." open>
 				<Button hierarchy="secondary">Pasa el ratón</Button>
@@ -138,7 +151,7 @@ function CopyButton({ value, children }: { value: string; children: string }) {
 		<Button
 			hierarchy="secondary"
 			size="sm"
-			iconLeading="copy-01"
+			iconLeading={Copy01}
 			onClick={(e) => void copy(value, e.currentTarget)}
 		>
 			{children}
@@ -226,7 +239,7 @@ export function NotificationExample() {
 				description="Los presupuestos y las exportaciones cargan más rápido."
 				image={
 					<div className="flex size-full items-center justify-center bg-brand-secondary">
-						<FeaturedIcon icon="zap" color="brand" size="lg" />
+						<FeaturedIcon icon={Zap} color="brand" size="lg" />
 					</div>
 				}
 				onClose={() => {}}
@@ -245,7 +258,7 @@ export function BannerExample() {
 	return (
 		<div className={stack}>
 			<Banner
-				icon="zap"
+				icon={Zap}
 				title="Nueva versión de Pecunia."
 				description="Ahora con presupuestos compartidos."
 				actions={
@@ -260,7 +273,7 @@ export function BannerExample() {
 			/>
 			<Banner
 				theme="brand"
-				icon="shield-tick"
+				icon={ShieldTick}
 				title="Activa la verificación en dos pasos."
 				description="Tarda un minuto."
 				actions={
@@ -271,7 +284,7 @@ export function BannerExample() {
 				onClose={() => {}}
 			/>
 			<Banner
-				icon="mail-01"
+				icon={Mail01}
 				title="Resumen semanal por correo."
 				description="Un correo los lunes, nada más."
 				email={{ buttonLabel: "Suscribirme", hint: "Puedes darte de baja cuando quieras." }}
@@ -279,7 +292,7 @@ export function BannerExample() {
 			/>
 			<Banner
 				theme="brand"
-				icon="clock"
+				icon={Clock}
 				title="Fin de la beta."
 				description="Exporta tus datos antes del cierre."
 				countdown={new Date(2026, 10, 1, 12, 0, 0)}
@@ -334,13 +347,13 @@ export function EmptyStateExample() {
 	return (
 		<div className="flex flex-col gap-6">
 			<EmptyState
-				icon="search-lg"
+				icon={SearchLg}
 				title="Sin resultados"
 				description="Ningún movimiento coincide con «León». Prueba con otro término o quita filtros."
 				actions={
 					<>
 						<Button hierarchy="secondary">Limpiar búsqueda</Button>
-						<Button iconLeading="plus">Nuevo movimiento</Button>
+						<Button iconLeading={Plus}>Nuevo movimiento</Button>
 					</>
 				}
 			/>
@@ -401,7 +414,7 @@ export function EmptyStateExample() {
 				<EmptyState
 					className={card}
 					media="users-row"
-					icon="user-plus-01"
+					icon={UserPlus01}
 					items={PEOPLE}
 					title="Invita a tu equipo"
 					description="Añade a las personas con las que compartes gastos."

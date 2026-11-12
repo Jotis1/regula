@@ -8,7 +8,7 @@ astroNote: "`onFiles` es una función y no cruza de Astro a una isla: envuélvel
 
 **Props.** `accept`, `multiple`, `hint` (formatos y tamaño máximo), `onFiles(files)`, `files` [{`name`, `size` (bytes), `progress` 0–100, `status` (`complete` · `error`), `error`, `icon`}], `onRemove(index)`, `disabled`, `progressStyle` (`bar` · `fill`), `fileIcon(file)`.
 
-**Progreso e iconos.** Los del Figma (`File upload`, `1175:101149`). `progressStyle="fill"` llena el fondo del archivo hasta su porcentaje (`bg-secondary`) y pone el porcentaje junto al tamaño, sin barra; el relleno es la barra de progreso para lectores de pantalla. El icono de cada archivo puede ser el de su tipo: `icon` en el archivo o `fileIcon(file)` para todos, con los de `@jotis-me/icons/files` (`FileDocumentPdf`, `FileMediaMp4`…). El paquete no los importa. Con error se sigue pintando el aviso.
+**Progreso e iconos.** Los del Figma (`File upload`, `1175:101149`). `progressStyle="fill"` llena el fondo del archivo hasta su porcentaje (`bg-secondary`) y pone el porcentaje junto al tamaño, sin barra; el relleno es la barra de progreso para lectores de pantalla. El icono de cada archivo puede ser el de su tipo: `icon` en el archivo o `fileIcon(file)` para todos, con `FileIcon` de `@untitledui/file-icons` (`<FileIcon type="pdf" />`, `<FileIcon type="mp4" />`…). El paquete no los importa. Con error se sigue pintando el aviso.
 
 **Visual.** Zona `bg-primary` con borde `border-secondary` y `radius-xl`; al arrastrar o en hover, borde de 2px `border-brand`. Cada archivo en tarjeta con icono, nombre, tamaño y `ProgressBar`; completado en `text-success-primary` con icono; error con borde `border-error_subtle` y mensaje.
 

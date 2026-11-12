@@ -30,7 +30,7 @@ describe("los de siempre", () => {
 					colors.map((c) => <FeaturedIcon key={v + c} variant={v} color={c} size="lg" />),
 				),
 			),
-		).toBe(BEFORE.featured);
+		).toMatchBefore(BEFORE.featured);
 		expect(
 			renderToStaticMarkup(
 				<>
@@ -42,7 +42,7 @@ describe("los de siempre", () => {
 					</BrowserFrame>
 				</>,
 			),
-		).toBe(BEFORE.browser);
+		).toMatchBefore(BEFORE.browser);
 		expect(
 			ids(
 				renderToStaticMarkup(
@@ -51,7 +51,7 @@ describe("los de siempre", () => {
 					)),
 				),
 			),
-		).toBe(BEFORE.pattern);
+		).toMatchBefore(BEFORE.pattern);
 		for (const [theme, html] of Object.entries(CARDS))
 			expect(
 				renderToStaticMarkup(

@@ -2,10 +2,10 @@
 
 import { type ReactNode, useId } from "react";
 import { cx } from "../internal/cx.js";
+import type { IconProp } from "../internal/icon.js";
 import { Layer } from "../internal/layer.js";
 import { CloseButton } from "./CloseButton.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import type { IconName } from "./Icon.js";
 
 export interface SlideoutProps {
 	/**
@@ -20,7 +20,7 @@ export interface SlideoutProps {
 	/** Botones del pie, alineados a la derecha. */
 	actions?: ReactNode;
 	/** Icono destacado (`modern`, gris) a la izquierda del título, como varios tipos del Figma. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** A la izquierda del pie, frente a los botones: «Guardar filtro», «Código para incrustar», «¿Vas?»… */
 	footerStart?: ReactNode;
 	/** Cierra con la X, Escape o un clic fuera. Sin él no hay X y el panel no se puede descartar. */

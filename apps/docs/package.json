@@ -12,18 +12,23 @@
 		"test:e2e": "playwright test",
 		"test": "vitest run",
 		"test:lighthouse": "lhci autorun",
-		"check:js": "bun run scripts/js-weight.ts"
+		"check:js": "bun run scripts/js-weight.ts",
+		"capture:showcases": "bun run scripts/capture-showcases.ts"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^8.1.2",
 		"@astrojs/react": "^7.1.2",
-		"@jotis-me/icons": "workspace:*",
+		"@jotis-me/assets": "workspace:*",
 		"@jotis-me/react": "workspace:*",
 		"@jotis-me/tokens": "workspace:*",
 		"@tailwindcss/vite": "^4.3.3",
+		"@untitledui/country-flags": "0.0.17",
+		"@untitledui/file-icons": "0.0.9",
+		"@untitledui/icons": "0.0.23",
 		"astro": "^7",
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1",
+		"sharp": "0.35.5",
 		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {

@@ -1,15 +1,16 @@
 // Portada del rediseño (reference/docs-design/Main.dc.html y HomeM.dc.html): las cifras son las de los paquetes.
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { allIconNames } from "@jotis-me/icons";
 import { colors } from "@jotis-me/tokens";
 import { expect, test } from "@playwright/test";
+import * as lineIcons from "@untitledui/icons";
 import { COMPONENT_GROUPS, FOUNDATIONS } from "../src/lib/catalog";
 
 const components = readdirSync(join(import.meta.dirname, "../src/content/components")).filter((f) =>
 	f.endsWith(".md"),
 ).length;
 // Cifras del catálogo, sin números escritos: crecen con cada componente
+const iconCount = Object.keys(lineIcons).length;
 const appGroups = COMPONENT_GROUPS.filter((g) => g.section === "components");
 const appComponents = appGroups.reduce((n, g) => n + g.components.length, 0);
 
@@ -18,7 +19,7 @@ test.use({ viewport: { width: 1440, height: 900 } });
 test("las cifras de componentes, iconos y tokens son las de los paquetes", async ({ page }) => {
 	await page.goto("/");
 	await expect(page.locator("[data-counts]")).toContainText(
-		`${allIconNames.length} iconos y ${components} componentes para Vinculum`,
+		`${iconCount} iconos y ${components} componentes para Vinculum`,
 	);
 	const meta = page.locator("[data-map-meta]");
 	await expect(meta.nth(0)).toHaveText(
@@ -26,7 +27,7 @@ test("las cifras de componentes, iconos y tokens son las de los paquetes", async
 	);
 	await expect(meta.nth(1)).toHaveText(`${appComponents} de aplicación · ${appGroups.length} grupos`);
 	await expect(meta.nth(2)).toHaveText(`${components - appComponents} componentes · guía propia`);
-	await expect(meta.nth(3)).toHaveText(`${allIconNames.length} iconos · React, SVG y en bruto`);
+	await expect(meta.nth(3)).toHaveText(`${iconCount} iconos · de Untitled UI, en React`);
 });
 
 test("el mensaje principal lleva a la instalación y abre la búsqueda", async ({ page }) => {

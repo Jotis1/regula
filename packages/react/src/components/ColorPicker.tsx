@@ -1,6 +1,6 @@
 "use client";
 
-import { IconSwitchHorizontal01 } from "@jotis-me/icons";
+import { Dropper, Minus, Plus, RefreshCw01, SwitchHorizontal01, UploadCloud02 } from "@untitledui/icons";
 import {
 	type CSSProperties,
 	type KeyboardEvent,
@@ -23,7 +23,6 @@ import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { CloseButton } from "./CloseButton.js";
-import { Icon } from "./Icon.js";
 import { Input } from "./Input.js";
 import { Select } from "./Select.js";
 import { Slider } from "./Slider.js";
@@ -749,7 +748,7 @@ function EyeDropperButton({ onPick, label }: { onPick: (hex: string) => void; la
 			}}
 			className="inline-flex size-9 flex-none cursor-pointer items-center justify-center rounded-lg border-0 bg-primary text-fg-quaternary shadow-[var(--shadow-xs-skeuomorphic),inset_0_0_0_1px_var(--border-primary)] hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 		>
-			<Icon name="dropper" size={16} />
+			<Dropper size={16} />
 		</button>
 	);
 }
@@ -869,7 +868,7 @@ function GradientEditor({
 					onClick={() => setStops(stops.map((s) => ({ ...s, offset: 100 - s.offset })))}
 					className={cx(TEXT_BUTTON, "p-1")}
 				>
-					<IconSwitchHorizontal01 size={20} />
+					<SwitchHorizontal01 size={20} />
 				</button>
 			</div>
 			<div ref={track} className="relative mx-2.5 h-3 rounded-full" style={CHECKER}>
@@ -915,7 +914,7 @@ function GradientEditor({
 				title={t.stops}
 				aside={
 					<button type="button" onClick={add} className={TEXT_BUTTON}>
-						<Icon name="plus" size={16} />
+						<Plus size={16} />
 						{t.add}
 					</button>
 				}
@@ -961,7 +960,7 @@ function GradientEditor({
 							onClick={() => remove(i)}
 							className={cx(TEXT_BUTTON, "p-1 disabled:cursor-not-allowed disabled:opacity-40")}
 						>
-							<Icon name="minus" size={16} />
+							<Minus size={16} />
 						</button>
 					</li>
 				))}
@@ -1051,7 +1050,7 @@ function ImageEditor({
 						file && url && "opacity-90",
 					)}
 				>
-					<Icon name="upload-cloud-02" size={20} />
+					<UploadCloud02 size={20} />
 					{file ? file.name : t.upload}
 					<input
 						id={id}
@@ -1089,7 +1088,7 @@ function ImageEditor({
 					}}
 					className={cx(TEXT_BUTTON, "p-1")}
 				>
-					<Icon name="refresh-cw-01" size={20} />
+					<RefreshCw01 size={20} />
 				</button>
 			</div>
 			<div className="flex flex-col gap-3">
@@ -1175,7 +1174,7 @@ function FullColorPicker({
 	const savedLabel = swatchesLabel ?? t.saved;
 	const addButton = onAddSwatch ? (
 		<button type="button" onClick={() => onAddSwatch(hex)} className={TEXT_BUTTON}>
-			<Icon name="plus" size={16} />
+			<Plus size={16} />
 			{t.add}
 		</button>
 	) : null;
@@ -1293,7 +1292,7 @@ function FullColorPicker({
 									onClick={() => onAddSwatch(hex)}
 									className="inline-flex size-6 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-fg-quaternary hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
 								>
-									<Icon name="plus" size={16} />
+									<Plus size={16} />
 								</button>
 							) : null
 						}

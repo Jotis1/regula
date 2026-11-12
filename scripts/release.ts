@@ -5,8 +5,8 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { type Packed, packAll } from "./pack.ts";
 
-/** Orden de dependencias: react depende de tokens e icons, que tienen que existir antes en npm. */
-export const ORDER = ["@jotis-me/tokens", "@jotis-me/icons", "@jotis-me/react"];
+/** Orden de dependencias: react depende de tokens, y assets (que la usa para generar los iconos de app) de react: los tres en este orden. */
+export const ORDER = ["@jotis-me/tokens", "@jotis-me/react", "@jotis-me/assets"];
 
 /** Ordena para publicar y se niega a seguir si algún paquete está sin versión (0.0.0) o es desconocido. */
 export function releasePlan(packed: Packed[]): Packed[] {

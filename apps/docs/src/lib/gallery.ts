@@ -1,6 +1,7 @@
-// Datos de las galerías de recursos de `@jotis-me/icons` (iconos, banderas, pagos, archivos y cursores). Es código puro,
-// sin `fs`: la página de Astro le pasa las URL de los SVG (`import.meta.glob`) y la isla `AssetGallery` recibe las
-// entradas ya agrupadas. Los logos tienen su propia galería (`LogoGallery`).
+// Datos de las galerías de recursos: iconos de línea, banderas y tipos de archivo de Untitled UI, y pagos y cursores de
+// `@jotis-me/assets`. Es código puro, sin `fs`: la página de Astro le pasa las URL de los SVG (los de Untitled UI los
+// escribe el endpoint `/icons/svg/`; los de assets los copia Vite con `import.meta.glob`) y la isla `AssetGallery`
+// recibe las entradas ya agrupadas. Los logos tienen su propia galería (`LogoGallery`).
 
 export type GalleryKind = "icons" | "flags" | "payments" | "files" | "cursors";
 
@@ -13,8 +14,10 @@ export interface GalleryVariant {
 }
 
 export interface GalleryEntry {
-	/** Nombre que se busca y se copia: el del país, el método, el tipo de archivo… */
+	/** Nombre que se busca y se copia: el del icono (`SearchLg`), el código de la bandera (`es`), el método, el tipo de archivo… */
 	name: string;
+	/** Nombre legible que también se busca (el país en castellano). */
+	title?: string;
 	/** Categorías a las que pertenece (casi siempre una). */
 	groups: string[];
 	variants: GalleryVariant[];
@@ -26,11 +29,28 @@ export const pascal = (s: string) =>
 		.map((p) => p.charAt(0).toUpperCase() + p.slice(1))
 		.join("");
 
-/** El componente suelto de un SVG, igual que lo genera `packages/icons/scripts/generate.ts`. */
+/** `SearchLg` → `search-lg`: cómo se escribiría con guiones, para que el buscador acepte las dos formas. */
+export const kebab = (s: string) =>
+	s
+		.replace(/([a-z])([A-Z])/g, "$1-$2")
+		.replace(/([a-zA-Z])(\d)/g, "$1-$2")
+		.toLowerCase();
+
+/** Lo que se busca en una entrada: su nombre en las dos formas y su título, sin tildes ni mayúsculas. */
+export function searchText(e: GalleryEntry): string {
+	return [e.name, kebab(e.name), e.title ?? ""]
+		.join(" ")
+		.normalize("NFD")
+		.replace(/\p{M}/gu, "")
+		.toLowerCase();
+}
+export const searchQuery = (q: string) => q.trim().normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+
+/** El componente suelto de un recurso. En los iconos de línea el nombre del archivo ya es el del componente. */
 export function componentName(kind: GalleryKind, slug: string): string {
 	switch (kind) {
 		case "icons":
-			return `Icon${pascal(slug)}`;
+			return slug;
 		case "flags":
 			return `Flag${pascal(slug)}`;
 		case "payments":
@@ -38,17 +58,30 @@ export function componentName(kind: GalleryKind, slug: string): string {
 		case "cursors":
 			return `Cursor${pascal(slug)}`;
 		case "files":
-			return slug.startsWith("folder-") ? `Folder${pascal(slug.slice(7))}` : `File${pascal(slug)}`;
+			return "FileIcon";
 	}
+}
+
+/** Los iconos de archivo se pintan con un solo componente: `<FileIcon type="pdf" variant="gray" />`. */
+export function fileIconTag(type: string, key: string, extra = ""): string {
+	return `<FileIcon type="${type}"${key === "default" ? "" : ` variant="${key}"`}${extra} />`;
 }
 
 /** De dónde se importan los componentes de cada set. */
 export const importPath = (kind: GalleryKind) =>
-	kind === "icons" ? "@jotis-me/icons" : `@jotis-me/icons/${kind}`;
+	kind === "icons"
+		? "@untitledui/icons"
+		: kind === "flags"
+			? "@untitledui/country-flags"
+			: kind === "files"
+				? "@untitledui/file-icons"
+				: `@jotis-me/assets/${kind}`;
 
-/** Ruta del SVG dentro del paquete, para importarlo con `?raw` en Astro. */
-export const svgModule = (kind: GalleryKind, slug: string) =>
-	kind === "icons" ? `@jotis-me/icons/svg/${slug}.svg` : `@jotis-me/icons/${kind}/${slug}.svg`;
+/** Ruta del SVG dentro de `@jotis-me/assets`, para importarlo con `?raw` en Astro (solo pagos y cursores). */
+export const svgModule = (kind: GalleryKind, slug: string) => `@jotis-me/assets/${kind}/${slug}.svg`;
+
+/** Los recursos que son un fichero SVG del paquete `@jotis-me/assets` (los demás son componentes de Untitled UI). */
+export const hasSvgModule = (kind: GalleryKind) => kind === "payments" || kind === "cursors";
 
 const VARIANT_LABELS: Record<string, string> = {
 	icon: "Icono",
@@ -97,7 +130,62 @@ export const FILE_CATEGORIES: Record<string, string> = {
 	design: "Diseño",
 	development: "Desarrollo",
 	archive: "Comprimidos",
-	folder: "Carpetas",
+};
+
+/** Tipos que acepta `FileIcon` (la lista del paquete, que no la exporta en ejecución), con su categoría. */
+export const FILE_GROUP: Record<string, string> = {
+	audio: "media",
+	mp3: "media",
+	wav: "media",
+	video: "media",
+	"video-01": "media",
+	"video-02": "media",
+	avi: "media",
+	mkv: "media",
+	mp4: "media",
+	mpeg: "media",
+	image: "image",
+	img: "image",
+	gif: "image",
+	jpeg: "image",
+	jpg: "image",
+	png: "image",
+	svg: "image",
+	tiff: "image",
+	webp: "image",
+	document: "document",
+	doc: "document",
+	docx: "document",
+	pdf: "document",
+	"pdf-simple": "document",
+	ppt: "document",
+	pptx: "document",
+	txt: "document",
+	spreadsheets: "document",
+	csv: "document",
+	xls: "document",
+	xlsx: "document",
+	aep: "design",
+	ai: "design",
+	eps: "design",
+	fig: "design",
+	indd: "design",
+	psd: "design",
+	code: "development",
+	css: "development",
+	html: "development",
+	java: "development",
+	js: "development",
+	json: "development",
+	rss: "development",
+	sql: "development",
+	xml: "development",
+	dmg: "development",
+	exe: "development",
+	rar: "archive",
+	zip: "archive",
+	empty: "generic",
+	folder: "generic",
 };
 
 export const CURSOR_CATEGORIES: Record<string, string> = {
@@ -146,18 +234,30 @@ export const decodeCategories = (s: string): Record<string, string[]> =>
 			return [line.slice(0, i), line.slice(i + 1).split(",")];
 		}),
 	);
+/** Los nombres de las banderas (código → país) como texto: `es:España` por línea. */
+export const encodeTitles = (t: Record<string, string>) =>
+	Object.entries(t)
+		.map(([k, v]) => `${k}:${v}`)
+		.join("\n");
+export const decodeTitles = (s: string): Record<string, string> =>
+	Object.fromEntries(
+		s.split("\n").map((line) => {
+			const i = line.indexOf(":");
+			return [line.slice(0, i), line.slice(i + 1)];
+		}),
+	);
 const byName = (a: GalleryEntry, b: GalleryEntry) => a.name.localeCompare(b.name);
 
 /** Agrupa `[slug, url]` en entradas con `split(slug) → { name, key }`; las variantes siguen el orden de `order`. */
 function group(
 	files: [string, string][],
-	split: (slug: string) => { name: string; key: string; groups: string[] },
+	split: (slug: string) => { name: string; key: string; groups: string[]; title?: string },
 	order: string[],
 ): GalleryEntry[] {
 	const entries = new Map<string, GalleryEntry>();
 	for (const [slug, url] of files) {
-		const { name, key, groups } = split(slug);
-		const entry = entries.get(name) ?? { name, groups, variants: [] };
+		const { name, key, groups, title } = split(slug);
+		const entry = entries.get(name) ?? { name, groups, variants: [], ...(title ? { title } : {}) };
 		entry.variants.push({ key, slug, url });
 		entries.set(name, entry);
 	}
@@ -173,6 +273,7 @@ export function buildEntries(
 	kind: GalleryKind,
 	urls: Record<string, string>,
 	categories?: Record<string, string[]>,
+	titles?: Record<string, string>,
 ): GalleryEntry[] {
 	const files = Object.entries(urls).map(([path, url]) => [slugOf(path), url] as [string, string]);
 	switch (kind) {
@@ -187,11 +288,8 @@ export function buildEntries(
 		case "flags":
 			return group(
 				files,
-				(slug) => {
-					const m = slug.match(/^(.*)-(circle|square|rectangle)$/) as RegExpMatchArray;
-					return { name: m[1] as string, key: m[2] as string, groups: [] };
-				},
-				["circle", "square", "rectangle"],
+				(slug) => ({ name: slug, key: "circle", groups: [], title: titles?.[slug] }),
+				["circle"],
 			);
 		case "payments":
 			return group(
@@ -206,22 +304,14 @@ export function buildEntries(
 			return group(
 				files,
 				(slug) => {
-					if (slug.startsWith("folder-")) {
-						const open = slug.endsWith("-open");
-						return {
-							name: open ? slug.slice(0, -5) : slug,
-							key: open ? "open" : "closed",
-							groups: ["folder"],
-						};
-					}
 					const m = slug.match(/^(.*?)(?:-(gray|solid))?$/) as RegExpMatchArray;
 					return {
 						name: m[1] as string,
 						key: (m[2] as string | undefined) ?? "default",
-						groups: [(m[1] as string).split("-")[0] as string],
+						groups: [FILE_GROUP[m[1] as string] ?? "generic"],
 					};
 				},
-				["default", "gray", "solid", "closed", "open"],
+				["default", "gray", "solid"],
 			);
 		case "cursors":
 			return group(

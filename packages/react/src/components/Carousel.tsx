@@ -1,11 +1,18 @@
 "use client";
 
-import { IconArrowNarrowLeft, IconArrowNarrowRight } from "@jotis-me/icons";
+import {
+	ArrowLeft,
+	ArrowNarrowLeft,
+	ArrowNarrowRight,
+	ArrowRight,
+	ChevronLeft,
+	ChevronRight,
+} from "@untitledui/icons";
 import { type KeyboardEvent, type PointerEvent, type ReactNode, useRef } from "react";
 import { cx } from "../internal/cx.js";
+import { DynIcon } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
-import { Icon } from "./Icon.js";
 import { PaginationDots } from "./PaginationDots.js";
 
 export type CarouselSize = "md" | "lg";
@@ -129,20 +136,20 @@ export function Carousel({
 			>
 				{arrowStyle === "arrow" ? (
 					prev ? (
-						<IconArrowNarrowLeft size={size === "lg" ? 48 : 40} />
+						<ArrowNarrowLeft size={size === "lg" ? 48 : 40} />
 					) : (
-						<IconArrowNarrowRight size={size === "lg" ? 48 : 40} />
+						<ArrowNarrowRight size={size === "lg" ? 48 : 40} />
 					)
 				) : (
-					<Icon
-						name={
+					<DynIcon
+						icon={
 							arrowStyle === "button-arrow"
 								? prev
-									? "arrow-left"
-									: "arrow-right"
+									? ArrowLeft
+									: ArrowRight
 								: prev
-									? "chevron-left"
-									: "chevron-right"
+									? ChevronLeft
+									: ChevronRight
 						}
 						size={size === "lg" ? 24 : 20}
 					/>

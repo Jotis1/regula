@@ -2,6 +2,7 @@
 // páginas que comparten `data.tsx` no carguen el desplegable de vistas.
 
 import { Avatar, Button, type CalendarEvent, CalendarView } from "@jotis-me/react";
+import { Plus } from "@untitledui/icons";
 import { stack } from "./actions";
 
 const at = (day: number, h: number, m = 0) => new Date(2027, 0, day, h, m);
@@ -26,7 +27,7 @@ const events: CalendarEvent[] = [
 ];
 
 const add = (
-	<Button iconLeading="plus" size="md">
+	<Button iconLeading={Plus} size="md">
 		Nuevo evento
 	</Button>
 );

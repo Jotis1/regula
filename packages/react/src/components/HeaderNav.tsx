@@ -1,11 +1,12 @@
 "use client";
 
+import { ChevronDown, ChevronUp, Menu01 } from "@untitledui/icons";
 import { type ReactNode, useId, useState } from "react";
 import { cx } from "../internal/cx.js";
+import { DynIcon, type IconProp, iconSlot } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Badge } from "./Badge.js";
 import { Button } from "./Button.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
 import { Slideout } from "./Slideout.js";
 
 export type HeaderNavType = "simple" | "dual-tier" | "tabs" | "centered" | "underline";
@@ -18,7 +19,7 @@ export interface HeaderNavItem {
 	/** Contador a la derecha, en un `Badge` gris. */
 	badge?: ReactNode;
 	/** Icono del menú móvil (24px). En el escritorio no se pinta. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/**
 	 * Subsecciones. En `dual-tier`, `tabs` y `centered`, las de la sección actual van en una segunda fila; en el menú móvil,
 	 * la sección se despliega.
@@ -161,7 +162,7 @@ function MobileSection({ item, onNavigate }: { item: HeaderNavItem; onNavigate: 
 			>
 				{content}
 				<span className={cx("inline-flex flex-none", item.badge == null && "ml-auto")}>
-					<Icon name={open ? "chevron-up" : "chevron-down"} size={20} />
+					<DynIcon icon={open ? ChevronUp : ChevronDown} size={20} />
 				</span>
 			</button>
 			<ul id={id} hidden={!open} className="m-0 flex list-none flex-col gap-0.5 p-0">
@@ -284,7 +285,7 @@ export function HeaderNav({
 					) : (
 						<Button
 							hierarchy="tertiary"
-							iconOnly="menu-01"
+							iconOnly={Menu01}
 							label={l.openMenu}
 							aria-expanded={menuOpen}
 							onClick={() => setMenuOpen(true)}

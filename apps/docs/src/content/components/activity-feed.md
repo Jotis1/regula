@@ -17,7 +17,7 @@ interactive: false
 
 **Elementos de apoyo (`supporting`).** Bajo el texto, uno de tres:
 - `{ type: "tags", tags }`: etiquetas `Tag`;
-- `{ type: "file", name, size, icon }`: archivo con su nombre y tamaño. El icono llega como nodo, como `FileDocumentPdf` de `@jotis-me/icons/files`; sin él, `file-04`;
+- `{ type: "file", name, size, icon }`: archivo con su nombre y tamaño. El icono llega como nodo, como `<FileIcon type="pdf" />` de `@untitledui/file-icons`; sin él, `File04`;
 - `{ type: "text", text }`: un texto en un recuadro, como una respuesta.
 
 **Apoyo en mensajes.** En `messages`, un elemento con `supporting` lo enseña en lugar de la burbuja.

@@ -1,5 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Download01 } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -38,7 +39,7 @@ const table = (
 		count="240"
 		description="Octubre de 2026."
 		actions={
-			<Button hierarchy="secondary" iconLeading="download-01" size="sm">
+			<Button hierarchy="secondary" iconLeading={Download01} size="sm">
 				Exportar
 			</Button>
 		}

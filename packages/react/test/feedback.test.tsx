@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { Zap } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { FeaturedIcon, ProgressBar, Skeleton, Spinner } from "../src/index.js";
@@ -56,7 +57,7 @@ describe("FeaturedIcon", () => {
 	});
 
 	it("sin infracciones de axe", async () => {
-		await expectAccessibleInThemes(<FeaturedIcon icon="zap" variant="outline" />);
+		await expectAccessibleInThemes(<FeaturedIcon icon={Zap} variant="outline" />);
 	});
 });
 

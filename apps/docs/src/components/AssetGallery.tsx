@@ -1,23 +1,30 @@
-// Galería de recursos de `@jotis-me/icons`: iconos de línea, banderas, métodos de pago, iconos de archivo y cursores. Una
-// sola isla para los cinco: buscador por nombre, filtro por categoría, vista previa por variante, recuento y el panel
-// del elegido con sus variantes y su código (componente React, SVG importado y SVG en bruto). En escritorio el panel va a
-// la derecha; en móvil se abre como hoja inferior (`<dialog>` modal: foco atrapado, Escape y foco de vuelta).
+// Galería de recursos: iconos de línea, banderas y tipos de archivo de Untitled UI, y métodos de pago y cursores de
+// `@jotis-me/assets`. Una sola isla para los cinco: buscador por nombre, filtro por categoría, vista previa por variante,
+// recuento y el panel del elegido con sus variantes y su código (componente React, SVG importado cuando el recurso es de
+// assets, y SVG en bruto). En escritorio el panel va a la derecha; en móvil se abre como hoja inferior (`<dialog>` modal:
+// foco atrapado, Escape y foco de vuelta).
 //
 // No lleva ningún dibujo dentro: recibe las URL de los SVG que el build copia como ficheros y los pinta como `<img>`
-// perezosas, así que la isla pesa lo mismo con 50 recursos que con 1.172. La rejilla enseña los primeros y «Mostrar más»
+// perezosas, así que la isla pesa lo mismo con 50 recursos que con 1.181. La rejilla enseña los primeros y «Mostrar más»
 // añade más: ni el HTML ni las peticiones crecen con el set. Los iconos de línea son negros (`currentColor` no llega a una
 // `<img>`): en oscuro se invierten.
 import { Button, ButtonGroup, CodeSnippet, EmptyState, Input, Select } from "@jotis-me/react";
+import { Copy01, SearchLg, SearchMd, XClose } from "@untitledui/icons";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
 	buildEntries,
 	componentName,
 	decodeCategories,
+	decodeTitles,
 	decodeUrls,
+	fileIconTag,
 	type GalleryEntry,
 	type GalleryKind,
 	type GalleryVariant,
+	hasSvgModule,
 	importPath,
+	searchQuery,
+	searchText,
 	svgModule,
 	variantLabel,
 } from "../lib/gallery";
@@ -61,7 +68,7 @@ const CONFIG: Record<GalleryKind, Config> = {
 		placeholder: "calendar, arrow, trash…",
 		emptyTitle: "Ese icono no está en el set",
 		emptyText:
-			"Ningún icono se llama así. Prueba con otra palabra, en inglés: los nombres son los del Figma.",
+			"Ningún icono se llama así. Prueba con otra palabra, en inglés: los nombres son los de Untitled UI.",
 		asideLabel: "Icono elegido",
 		filterLabel: "Categoría",
 		tileHeight: (_v, size) => size,
@@ -73,16 +80,15 @@ const CONFIG: Record<GalleryKind, Config> = {
 		noun: "banderas",
 		one: "bandera",
 		searchLabel: "Buscar bandera",
-		placeholder: "spain, japan, scotland…",
+		placeholder: "españa, japón, es…",
 		emptyTitle: "Esa bandera no está",
 		emptyText:
-			"Ningún país ni región se llama así. Prueba con su nombre en inglés, en minúsculas: spain, united-kingdom…",
+			"Ningún país se llama así. Prueba con su nombre en castellano o con su código: españa, japón, es, jp…",
 		asideLabel: "Bandera elegida",
 		filterLabel: "",
-		previews: { label: "Forma", keys: ["circle", "square", "rectangle"] },
 		tileHeight: () => 28,
 		panelHeight: () => 48,
-		note: "El nombre es el del país o la región, no el código ISO: Portugal y las Azores comparten PT, y 11 regiones no tienen código. Sin title la bandera es decorativa; si va sola, dale nombre.",
+		note: "Cada bandera es un componente con el código ISO de su país. Sin aria-label es decorativa; si va sola, dale nombre.",
 	},
 	payments: {
 		idPrefix: "payment",
@@ -111,9 +117,9 @@ const CONFIG: Record<GalleryKind, Config> = {
 		asideLabel: "Icono de archivo elegido",
 		filterLabel: "Tipo",
 		previews: { label: "Estilo", keys: ["default", "gray", "solid"] },
-		tileHeight: (v) => (v.slug.startsWith("folder-") ? 48 : 40),
-		panelHeight: (v) => (v.slug.startsWith("folder-") ? 72 : 64),
-		note: "Los tipos de archivo vienen en default, gray y solid; las carpetas, cerradas y abiertas. Las carpetas noise y transparent llevan una textura PNG dentro del SVG.",
+		tileHeight: () => 40,
+		panelHeight: () => 64,
+		note: "Un solo componente, FileIcon, con type, variant (default, gray o solid) y theme (light o dark). Acepta también un tipo MIME (video/mp4).",
 	},
 	cursors: {
 		idPrefix: "cursor",
@@ -155,33 +161,35 @@ function Img({
 	);
 }
 
-/** El código del recurso: el componente de `@jotis-me/icons`, el SVG importado (Astro sin React) y el SVG en bruto. */
+/** El código del recurso: el componente (de Untitled UI o de assets), el SVG importado (solo assets) y el SVG en bruto. */
 export function assetCode(
 	kind: GalleryKind,
 	entry: GalleryEntry,
 	svg: string | null,
-	core: boolean,
 	preview: GalleryVariant,
 ) {
 	const components = entry.variants.map((v) => componentName(kind, v.slug));
 	const first = components[0] as string;
-	const imports = components.join(", ");
-	const tag = (c: string) => `<${c} size={24} title="${entry.name}" />`;
-	let react = `import { ${imports} } from "${importPath(kind)}";\n\n${components.map(tag).join("\n")}`;
+	const label = entry.title ?? entry.name;
+	let react: string;
 	if (kind === "icons") {
-		react = core
-			? `import { Icon, ${first} } from "@jotis-me/icons";\n\n<${first} size={20} />\n\n// o por nombre, entre los 83 del núcleo\n<Icon name="${entry.name}" size={20} />`
-			: `import { ${first} } from "@jotis-me/icons";\n\n<${first} size={20} />`;
+		react = `import { ${first} } from "${importPath(kind)}";\n\n<${first} size={20} />\n\n// con nombre accesible, si va sola\n<${first} size={20} role="img" aria-label="${entry.name}" aria-hidden={undefined} />`;
+	} else if (kind === "files") {
+		react = `import { FileIcon } from "${importPath(kind)}";\n\n${entry.variants.map((v) => fileIconTag(entry.name, v.key, " size={40}")).join("\n")}`;
+	} else if (kind === "flags") {
+		react = `import { ${first} } from "${importPath(kind)}";\n\n<${first} size={24} />\n\n// con nombre accesible, si va sola\n<${first} size={24} role="img" aria-label="${label}" aria-hidden={undefined} />`;
+	} else {
+		const tag = (c: string) => `<${c} size={24} title="${entry.name}" />`;
+		react = `import { ${[...new Set(components)].join(", ")} } from "${importPath(kind)}";\n\n${components.map(tag).join("\n")}`;
 	}
-	const mod = svgModule(kind, preview.slug);
-	const tabs = [
-		{ label: "React", code: react },
-		{
+	const mod = hasSvgModule(kind) ? svgModule(kind, preview.slug) : "";
+	const tabs = [{ label: "React", code: react }];
+	if (hasSvgModule(kind))
+		tabs.push({
 			label: "Importar SVG",
 			code: `---\nimport svg from "${mod}?raw";\n---\n\n<Fragment set:html={svg} />`,
-		},
-		{ label: "SVG", code: svg ?? "Cargando…" },
-	];
+		});
+	tabs.push({ label: "SVG", code: svg ?? "Cargando…" });
 	if (kind === "cursors")
 		tabs.push({
 			label: "CSS",
@@ -194,13 +202,11 @@ function Panel({
 	kind,
 	entry,
 	preview,
-	core,
 	onClose,
 }: {
 	kind: GalleryKind;
 	entry: GalleryEntry;
 	preview: GalleryVariant;
-	core: boolean;
 	onClose?: () => void;
 }) {
 	const c = CONFIG[kind];
@@ -251,6 +257,11 @@ function Panel({
 							className="break-words font-mono text-md font-semibold text-primary"
 						>
 							{entry.name}
+							{entry.title ? (
+								<span className="ml-2 font-body font-normal text-tertiary">
+									{entry.title}
+								</span>
+							) : null}
 						</h2>
 						<p className="mt-0.5 text-[13px] leading-5 text-tertiary">
 							React:{" "}
@@ -264,14 +275,14 @@ function Panel({
 							))}
 						</p>
 					</div>
-					<Button hierarchy="secondary" size="sm" iconLeading="copy-01" data-copy={entry.name}>
+					<Button hierarchy="secondary" size="sm" iconLeading={Copy01} data-copy={entry.name}>
 						Copiar nombre
 					</Button>
 					{onClose && (
 						<Button
 							hierarchy="tertiary"
 							size="sm"
-							iconOnly="x-close"
+							iconOnly={XClose}
 							label="Cerrar"
 							onClick={onClose}
 						/>
@@ -291,12 +302,12 @@ function Panel({
 			<CodeSnippet
 				className="rounded-none shadow-none"
 				lineNumbers={false}
-				tabs={assetCode(kind, entry, svg, core, preview)}
+				tabs={assetCode(kind, entry, svg, preview)}
 			/>
 			<p className="px-5 py-3.5 text-xs text-tertiary shadow-[inset_0_1px_0_var(--border-secondary)]">
 				{line ? (
 					<>
-						Un icono sin texto necesita <code className="font-mono">title</code>. Como{" "}
+						Un icono sin texto necesita <code className="font-mono">aria-label</code>. Como{" "}
 						<code className="font-mono">&lt;img&gt;</code> no hereda el color: el SVG del paquete
 						usa <code className="font-mono">currentColor</code>, así que va en línea o con{" "}
 						<code className="font-mono">mask-image</code>.
@@ -317,24 +328,23 @@ export interface AssetGalleryProps {
 	categories?: string;
 	/** Opciones del filtro por categoría (sin «todas»); sin ellas no hay filtro. */
 	groups?: { value: string; label: string }[];
-	/** Solo para `icons`: los nombres que acepta `<Icon name>` (el núcleo). */
-	core?: string[];
+	/** Solo para `flags`: el nombre de cada país en castellano, codificado (`encodeTitles`). */
+	titles?: string;
 	/** Nombre elegido de entrada. */
 	initial?: string;
 }
 
-export default function AssetGallery({
-	kind,
-	urls,
-	categories,
-	groups,
-	core = [],
-	initial,
-}: AssetGalleryProps) {
+export default function AssetGallery({ kind, urls, categories, groups, titles, initial }: AssetGalleryProps) {
 	const c = CONFIG[kind];
 	const entries = useMemo(
-		() => buildEntries(kind, decodeUrls(urls), categories ? decodeCategories(categories) : undefined),
-		[kind, urls, categories],
+		() =>
+			buildEntries(
+				kind,
+				decodeUrls(urls),
+				categories ? decodeCategories(categories) : undefined,
+				titles ? decodeTitles(titles) : undefined,
+			),
+		[kind, urls, categories, titles],
 	);
 	const [query, setQuery] = useState("");
 	const [group, setGroup] = useState("all");
@@ -345,9 +355,9 @@ export default function AssetGallery({
 		() => entries.find((e) => e.name === initial) ?? (entries[0] as GalleryEntry),
 	);
 	const sheet = useRef<HTMLDialogElement>(null);
-	const q = query.trim().toLowerCase();
+	const q = searchQuery(query);
 	const matches = entries.filter(
-		(e) => (group === "all" || e.groups.includes(group)) && e.name.includes(q),
+		(e) => (group === "all" || e.groups.includes(group)) && searchText(e).includes(q),
 	);
 	const shown = matches.slice(0, limit);
 	const total = entries.length;
@@ -385,7 +395,7 @@ export default function AssetGallery({
 					<Input
 						id={`${c.idPrefix}-search`}
 						label={c.searchLabel}
-						icon="search-md"
+						icon={SearchMd}
 						type="search"
 						autoComplete="off"
 						placeholder={c.placeholder}
@@ -473,7 +483,7 @@ export default function AssetGallery({
 					</ul>
 					{matches.length === 0 && (
 						<div className="py-12">
-							<EmptyState icon="search-lg" title={c.emptyTitle} description={c.emptyText} />
+							<EmptyState icon={SearchLg} title={c.emptyTitle} description={c.emptyText} />
 						</div>
 					)}
 					{hasMore && (
@@ -495,12 +505,7 @@ export default function AssetGallery({
 					aria-label={c.asideLabel}
 					className="sticky top-6 hidden w-95 flex-none overflow-hidden rounded-xl bg-primary_alt shadow-[var(--shadow-lg),inset_0_0_0_1px_var(--border-secondary_alt)] lg:block"
 				>
-					<Panel
-						kind={kind}
-						entry={selected}
-						preview={preview}
-						core={core.includes(selected.name)}
-					/>
+					<Panel kind={kind} entry={selected} preview={preview} />
 				</aside>
 			</div>
 
@@ -518,7 +523,6 @@ export default function AssetGallery({
 					kind={kind}
 					entry={selected}
 					preview={preview}
-					core={core.includes(selected.name)}
 					onClose={() => sheet.current?.close()}
 				/>
 			</dialog>

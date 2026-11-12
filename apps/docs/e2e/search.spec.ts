@@ -96,12 +96,12 @@ test("encuentra tokens e iconos; un icono abre la galería con él elegido", asy
 	await page.getByRole("combobox").fill("calendar");
 	await page
 		.getByRole("group", { name: "Iconos" })
-		.getByRole("option", { name: /^calendar\b/ })
+		.getByRole("option", { name: /^Calendar\b/ })
 		.first()
 		.click();
-	await expect(page).toHaveURL(/\/icons\/\?icono=calendar$/);
-	await expect(page.locator("#icon-search")).toHaveValue("calendar");
-	await expect(page.locator('[data-select="calendar"]')).toHaveAttribute("aria-pressed", "true");
+	await expect(page).toHaveURL(/\/icons\/\?icono=Calendar$/);
+	await expect(page.locator("#icon-search")).toHaveValue("Calendar");
+	await expect(page.locator('[data-select="Calendar"]')).toHaveAttribute("aria-pressed", "true");
 });
 
 test("busca también en el texto de las páginas (Pagefind)", async ({ page }) => {

@@ -2,9 +2,8 @@
 // Navegación lateral (reference/docs-design/DocNav.dc.html), desde el catálogo. Los grupos de componentes son
 // <details>, abiertos en el grupo de la página actual: sin JavaScript se navega igual (design §7). El filtro, con el
 // atajo "/", solo aparece cuando hay JavaScript, que es quien lo hace funcionar.
-import chevron from "@jotis-me/icons/svg/chevron-right.svg?raw";
-import filter from "@jotis-me/icons/svg/filter-lines.svg?raw";
 import { Kbd } from "@jotis-me/react";
+import { ChevronRight, FilterLines } from "@untitledui/icons";
 import { docNav } from "../nav";
 import { fold } from "../search/entries";
 
@@ -25,7 +24,7 @@ const link =
 	<div class="flex flex-col gap-1.5 px-0.5" data-docnav-filter hidden>
 		<label for={filterId} class="text-xs font-medium text-secondary">Filtrar navegación</label>
 		<div class="flex h-9 items-center gap-2 rounded-lg border border-primary bg-primary px-2.5 text-fg-quaternary shadow-xs focus-within:shadow-focus-ring">
-			<span class="flex size-4 shrink-0 [&>svg]:size-4" aria-hidden="true" set:html={filter} />
+			<span class="flex size-4 shrink-0 [&>svg]:size-4" aria-hidden="true"><FilterLines size={16} /></span>
 			<input
 				id={filterId}
 				type="search"
@@ -64,8 +63,9 @@ const link =
 							<span
 								class="flex size-4 shrink-0 text-fg-quaternary transition-transform duration-100 group-open:rotate-90 [&>svg]:size-4"
 								aria-hidden="true"
-								set:html={chevron}
-							/>
+							>
+								<ChevronRight size={16} />
+							</span>
 							<span class="grow text-[13px] leading-5 font-semibold text-secondary">{group.label}</span>
 							<span class="text-xs font-medium text-quaternary tabular-nums">{group.items.length}</span>
 						</summary>

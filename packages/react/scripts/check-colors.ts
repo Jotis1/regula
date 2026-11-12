@@ -6,6 +6,8 @@ import { join, relative, sep } from "node:path";
 /** Ficheros con paleta propia documentada en la guía. Cada excepción lleva su motivo. */
 export const ALLOWED: Record<string, string> = {
 	"components/AppIcon.tsx": "El tono de cada app vive solo en su icono (guía, «Iconos de app»).",
+	"app-icon/data.ts": "La paleta y las letras de cada app (guía, «Iconos de app»).",
+	"app-icon/index.ts": "Los blancos y neutros fijos del icono de app (guía, «Iconos de app»).",
 	"components/CreditCard.tsx":
 		"La tarjeta es un objeto: sus colores no cambian con el tema (ficha de CreditCard).",
 	"internal/device-frames.ts":

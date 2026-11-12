@@ -1,6 +1,7 @@
 // MarketingNav en el ejemplo interactivo (un fichero por componente: design D4): la marca, las acciones y los
 // elementos con menú son nodos, que se eligen entre opciones preparadas.
 import { Button, NavMenu } from "@jotis-me/react";
+import { BarChart01, CurrencyEuro } from "@untitledui/icons";
 import type { Tweak } from "../lib/playground";
 
 export { MarketingNav as default } from "@jotis-me/react";
@@ -9,14 +10,14 @@ const MENU = (
 	<NavMenu.Section title="Producto">
 		<NavMenu.Item
 			href="#"
-			icon="bar-chart-01"
+			icon={BarChart01}
 			iconStyle="boxed"
 			title="Informes"
 			description="Lo que pasa con tu dinero."
 		/>
 		<NavMenu.Item
 			href="#"
-			icon="currency-euro"
+			icon={CurrencyEuro}
 			iconStyle="boxed"
 			title="Presupuestos"
 			description="Gasta con un plan."
@@ -26,8 +27,8 @@ const MENU = (
 
 const MENU_CODE = [
 	'<NavMenu.Section title="Producto">',
-	'\t<NavMenu.Item href="#" icon="bar-chart-01" iconStyle="boxed" title="Informes" description="Lo que pasa con tu dinero." />',
-	'\t<NavMenu.Item href="#" icon="currency-euro" iconStyle="boxed" title="Presupuestos" description="Gasta con un plan." />',
+	'\t<NavMenu.Item href="#" icon={BarChart01} iconStyle="boxed" title="Informes" description="Lo que pasa con tu dinero." />',
+	'\t<NavMenu.Item href="#" icon={CurrencyEuro} iconStyle="boxed" title="Presupuestos" description="Gasta con un plan." />',
 	"</NavMenu.Section>",
 ].join("\n");
 

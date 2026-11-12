@@ -2,11 +2,11 @@
 
 import { type ReactNode, useId } from "react";
 import { cx } from "../internal/cx.js";
+import type { IconProp } from "../internal/icon.js";
 import { Layer } from "../internal/layer.js";
 import type { StatusColor } from "./Badge.js";
 import { CloseButton } from "./CloseButton.js";
 import { FeaturedIcon, type FeaturedIconVariant } from "./FeaturedIcon.js";
-import type { IconName } from "./Icon.js";
 
 export interface ModalProps {
 	/**
@@ -18,7 +18,7 @@ export interface ModalProps {
 	title: ReactNode;
 	description?: ReactNode;
 	/** Icono destacado sobre el título (`FeaturedIcon` de 48px). */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Color del icono. Por defecto, `brand` (`error` si es `destructive`). */
 	color?: StatusColor;
 	/**

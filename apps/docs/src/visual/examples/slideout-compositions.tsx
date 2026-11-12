@@ -3,21 +3,6 @@
 // (`contained`).
 
 import {
-	IconBookOpen01,
-	IconCircle,
-	IconCode02,
-	IconCreditCard02,
-	IconLayersThree01,
-	IconLayersTwo01,
-	IconLink01,
-	IconMarkerPin01,
-	IconStars02,
-	IconSwitchHorizontal01,
-	IconTag03,
-	IconUserPlus01,
-	IconZap,
-} from "@jotis-me/icons";
-import {
 	ActivityFeed,
 	Avatar,
 	AvatarGroup,
@@ -31,7 +16,6 @@ import {
 	ContentDivider,
 	CreditCard,
 	FileUpload,
-	Icon,
 	Input,
 	Message,
 	MessageInput,
@@ -42,6 +26,28 @@ import {
 	Tag,
 	Textarea,
 } from "@jotis-me/react";
+import {
+	Bell01,
+	BookOpen01,
+	Calendar,
+	Circle,
+	Clock,
+	Code02,
+	Copy01,
+	CreditCard02,
+	LayersThree01,
+	LayersTwo01,
+	Link01,
+	Mail01,
+	MarkerPin01,
+	Plus,
+	SearchLg,
+	Stars02,
+	SwitchHorizontal01,
+	Tag03,
+	UserPlus01,
+	Zap,
+} from "@untitledui/icons";
 import type { ReactNode } from "react";
 
 /** El lienzo de cada composición: el panel abierto con su velo, del alto que pide. */
@@ -84,7 +90,7 @@ export function SlideoutPlaceholderExample() {
 		<Lienzo alto={720}>
 			<Slideout
 				contained
-				icon={<IconCircle size={24} />}
+				icon={<Circle size={24} />}
 				title="Encabezado"
 				description="Un texto corto que explica el panel."
 				onClose={cerrar}
@@ -143,10 +149,10 @@ export function SlideoutUserProfileExample() {
 				/>
 				<ul className="m-0 flex list-none flex-col gap-2 p-0 text-sm text-tertiary">
 					<li className="flex items-center gap-2">
-						<IconMarkerPin01 size={16} /> Madrid, España
+						<MarkerPin01 size={16} /> Madrid, España
 					</li>
 					<li className="flex items-center gap-2">
-						<IconLink01 size={16} /> anamartin.es
+						<Link01 size={16} /> anamartin.es
 					</li>
 				</ul>
 				<Seccion titulo="Experiencia">
@@ -286,7 +292,7 @@ const contactoFacturas = (
 	<>
 		<ContentDivider />
 		<Seccion titulo="Contacto de facturación" texto="Añade un segundo correo para las facturas.">
-			<Input label="Correo" required type="email" icon="mail-01" defaultValue="cuentas@regula.app" />
+			<Input label="Correo" required type="email" icon={Mail01} defaultValue="cuentas@regula.app" />
 		</Seccion>
 	</>
 );
@@ -302,7 +308,7 @@ export function SlideoutPaymentMethodExample() {
 		<Lienzo alto={800}>
 			<Slideout
 				contained
-				icon={<IconCreditCard02 size={24} />}
+				icon={<CreditCard02 size={24} />}
 				title="Método de pago"
 				description="Cambia cómo pagas tu plan."
 				onClose={cerrar}
@@ -324,7 +330,7 @@ export function SlideoutPaymentMethodExample() {
 						{ value: "apple", label: "Apple Pay", hint: "Caduca 10/2028" },
 					]}
 				/>
-				<Button hierarchy="link-color" iconLeading="plus" className="self-end">
+				<Button hierarchy="link-color" iconLeading={Plus} className="self-end">
 					Añadir método de pago
 				</Button>
 				{contactoFacturas}
@@ -338,7 +344,7 @@ export function SlideoutPaymentDetailsExample() {
 		<Lienzo alto={860}>
 			<Slideout
 				contained
-				icon={<IconCreditCard02 size={24} />}
+				icon={<CreditCard02 size={24} />}
 				title="Datos de pago"
 				description="Cambia los datos de tu tarjeta."
 				onClose={cerrar}
@@ -369,7 +375,7 @@ export function SlideoutPlanExample() {
 		<Lienzo alto={760}>
 			<Slideout
 				contained
-				icon={<IconLayersThree01 size={24} />}
+				icon={<LayersThree01 size={24} />}
 				title="Cambia de plan"
 				description="Precios que crecen contigo."
 				onClose={cerrar}
@@ -386,19 +392,19 @@ export function SlideoutPlanExample() {
 							value: "basico",
 							label: "Básico · 10 €/mes",
 							hint: "Hasta 10 cuentas, 20 GB de documentos y todas las funciones.",
-							icon: <IconLayersTwo01 size={16} />,
+							icon: <LayersTwo01 size={16} />,
 						},
 						{
 							value: "negocio",
 							label: "Negocio · 20 €/mes",
 							hint: "Hasta 20 cuentas, 40 GB de documentos y todas las funciones.",
-							icon: <IconLayersTwo01 size={16} />,
+							icon: <LayersTwo01 size={16} />,
 						},
 						{
 							value: "empresa",
 							label: "Empresa · 40 €/mes",
 							hint: "Cuentas y documentos sin límite, y todas las funciones.",
-							icon: <IconZap size={16} />,
+							icon: <Zap size={16} />,
 						},
 					]}
 				/>
@@ -427,7 +433,7 @@ export function SlideoutTeamMembersExample() {
 				footerStart={guardarFiltro}
 				actions={confirmar}
 			>
-				<Input aria-label="Buscar" icon="search-lg" placeholder="Buscar" />
+				<Input aria-label="Buscar" icon={SearchLg} placeholder="Buscar" />
 				{Object.entries(grupos).map(([grupo, lista]) => (
 					<Seccion key={grupo} titulo={grupo}>
 						<ul className="m-0 flex list-none flex-col gap-3 p-0">
@@ -441,7 +447,7 @@ export function SlideoutTeamMembersExample() {
 									/>
 									<ButtonUtility
 										hierarchy="tertiary"
-										icon="mail-01"
+										icon={Mail01}
 										label={`Escribir a ${nombre}`}
 									/>
 								</li>
@@ -506,7 +512,7 @@ export function SlideoutFiltersExample() {
 					</div>
 				</Seccion>
 				<Seccion titulo="Rol">
-					<Input aria-label="Buscar rol" icon="search-lg" placeholder="Buscar" />
+					<Input aria-label="Buscar rol" icon={SearchLg} placeholder="Buscar" />
 					<div className="flex flex-col gap-3">
 						{["Administración", "Edición", "Lectura", "Gestoría"].map((r) => (
 							<Checkbox key={r} label={r} />
@@ -526,7 +532,7 @@ export function SlideoutLabelsExample() {
 		<Lienzo alto={800}>
 			<Slideout
 				contained
-				icon={<IconTag03 size={24} />}
+				icon={<Tag03 size={24} />}
 				title="Etiquetas del presupuesto"
 				description="Las etiquetas ordenan los presupuestos."
 				onClose={cerrar}
@@ -539,7 +545,7 @@ export function SlideoutLabelsExample() {
 					</>
 				}
 			>
-				<Input aria-label="Buscar etiqueta" icon="search-lg" placeholder="Busca una etiqueta" />
+				<Input aria-label="Buscar etiqueta" icon={SearchLg} placeholder="Busca una etiqueta" />
 				<Seccion titulo="Etiquetas propias">
 					<div className="flex flex-col gap-3">
 						{ETIQUETAS.map(([t, c], i) => (
@@ -551,7 +557,7 @@ export function SlideoutLabelsExample() {
 							</div>
 						))}
 					</div>
-					<Button hierarchy="link-color" iconLeading="plus" className="self-start">
+					<Button hierarchy="link-color" iconLeading={Plus} className="self-start">
 						Añadir etiqueta
 					</Button>
 				</Seccion>
@@ -578,7 +584,7 @@ export function SlideoutProjectDetailsExample() {
 				}
 			>
 				<Seccion titulo="Compartir presupuesto" texto="regula.app/presupuestos/reforma">
-					<Button hierarchy="secondary" size="sm" iconLeading="copy-01" className="self-start">
+					<Button hierarchy="secondary" size="sm" iconLeading={Copy01} className="self-start">
 						Copiar enlace
 					</Button>
 				</Seccion>
@@ -611,7 +617,7 @@ export function SlideoutProjectDetailsExample() {
 							</li>
 						))}
 					</ul>
-					<Button hierarchy="link-color" iconLeading="plus" className="self-start">
+					<Button hierarchy="link-color" iconLeading={Plus} className="self-start">
 						Añadir persona
 					</Button>
 				</Seccion>
@@ -757,7 +763,7 @@ export function SlideoutNotificationSettingsButtonGroupsExample() {
 					</div>
 					{canal("app")}
 				</Seccion>
-				<Button hierarchy="link-color" iconLeading="plus" className="self-start">
+				<Button hierarchy="link-color" iconLeading={Plus} className="self-start">
 					Añadir un aviso
 				</Button>
 			</Slideout>
@@ -847,7 +853,7 @@ export function SlideoutOrderSummaryExample() {
 				/>
 				<div className="flex items-end gap-3">
 					<Input label="Código de descuento" defaultValue="AMIGOS" className="flex-1" />
-					<ButtonUtility icon="copy-01" label="Copiar el código" />
+					<ButtonUtility icon={Copy01} label="Copiar el código" />
 				</div>
 				<ContentDivider />
 				<dl className="m-0 grid grid-cols-[1fr_auto] gap-3 text-sm">
@@ -899,13 +905,13 @@ export function SlideoutCalendarEventExample() {
 				<Seccion titulo="Detalles">
 					<ul className="m-0 flex list-none flex-col gap-2 p-0 text-sm text-tertiary">
 						<li className="flex items-center gap-2">
-							<Icon name="calendar" size={16} /> Viernes, 10 de enero de 2027
+							<Calendar size={16} /> Viernes, 10 de enero de 2027
 						</li>
 						<li className="flex items-center gap-2">
-							<Icon name="clock" size={16} /> 13:30 – 15:30
+							<Clock size={16} /> 13:30 – 15:30
 						</li>
 						<li className="flex items-center gap-2">
-							<Icon name="bell-01" size={16} /> 10 minutos antes
+							<Bell01 size={16} /> 10 minutos antes
 						</li>
 					</ul>
 				</Seccion>
@@ -969,7 +975,7 @@ export function SlideoutUserSettingsExample() {
 				<Input
 					label="Correo"
 					required
-					icon="mail-01"
+					icon={Mail01}
 					defaultValue="sara@regula.app"
 					hint="Verificado el 2 de enero de 2027"
 				/>
@@ -1006,7 +1012,7 @@ export function SlideoutAIAssistantIntroExample() {
 			<Slideout contained title="Asistente" onClose={cerrar} width={440} actions={preguntar}>
 				<div className="flex flex-col items-center gap-4 pt-10 text-center">
 					<span className="flex size-14 items-center justify-center rounded-full bg-brand-solid text-primary_on-brand">
-						<IconStars02 size={28} />
+						<Stars02 size={28} />
 					</span>
 					<div>
 						<p className="m-0 text-lg text-tertiary">Hola, Ana:</p>
@@ -1068,13 +1074,13 @@ export function SlideoutShareProjectExample() {
 		<Lienzo alto={800}>
 			<Slideout
 				contained
-				icon={<IconUserPlus01 size={24} />}
+				icon={<UserPlus01 size={24} />}
 				title="Comparte este presupuesto"
 				description="Invita a tu equipo a revisarlo."
 				onClose={cerrar}
 				width={440}
 				footerStart={
-					<Button hierarchy="link-gray" iconLeading={<IconCode02 size={20} />}>
+					<Button hierarchy="link-gray" iconLeading={<Code02 size={20} />}>
 						Código para incrustar
 					</Button>
 				}
@@ -1094,7 +1100,7 @@ export function SlideoutShareProjectExample() {
 				<Seccion titulo="Quién tiene acceso" texto="Invita a otras personas a verlo y editarlo.">
 					<Input
 						aria-label="Buscar personas"
-						icon="search-lg"
+						icon={SearchLg}
 						placeholder="Busca por nombre o correo"
 					/>
 					<ul className="m-0 flex list-none flex-col gap-3 p-0">
@@ -1131,7 +1137,7 @@ export function SlideoutCreateEventExample() {
 		<Lienzo alto={860}>
 			<Slideout
 				contained
-				icon="calendar"
+				icon={Calendar}
 				title="Nuevo recordatorio"
 				description="Pon la fecha y los detalles."
 				onClose={cerrar}
@@ -1146,7 +1152,7 @@ export function SlideoutCreateEventExample() {
 				<Input label="Título" required defaultValue="Pagar el seguro del coche" />
 				<Input label="Empieza" required type="datetime-local" defaultValue="2027-01-08T09:00" />
 				<Input label="Termina" required type="datetime-local" defaultValue="2027-01-14T12:00" />
-				<Input label="Lugar" icon={<IconMarkerPin01 size={20} />} placeholder="Añade un lugar" />
+				<Input label="Lugar" icon={<MarkerPin01 size={20} />} placeholder="Añade un lugar" />
 				<Textarea label="Descripción" placeholder="Escribe una descripción" />
 				<ContentDivider />
 				<Seccion titulo="Permisos de los invitados">
@@ -1170,7 +1176,7 @@ export function SlideoutIntegrationExample() {
 				onClose={cerrar}
 				width={440}
 				footerStart={
-					<Button hierarchy="secondary" iconLeading={<IconBookOpen01 size={20} />}>
+					<Button hierarchy="secondary" iconLeading={<BookOpen01 size={20} />}>
 						Documentación
 					</Button>
 				}
@@ -1179,7 +1185,7 @@ export function SlideoutIntegrationExample() {
 				<div className="flex flex-col items-center gap-3 text-center">
 					<div className="flex items-center gap-3 text-fg-quaternary">
 						<Avatar size="lg" initials="R" />
-						<IconSwitchHorizontal01 size={20} />
+						<SwitchHorizontal01 size={20} />
 						<Avatar size="lg" initials="B" />
 					</div>
 					<p className="m-0 text-sm text-tertiary">

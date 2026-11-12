@@ -3,7 +3,8 @@
 // (Button.dc.html, «Cuándo usarlo»), «Accesibilidad», «Amplía o difiere de la guía» en una tarjeta de marca y
 // «Detalles» como pares de título y texto. Cada párrafo se pinta con su texto de la ficha, sin cambios.
 // La página las pone en dos sitios, como el diseño: `part="uso"` arriba y `part="detalles"` tras el código.
-import { Icon, type IconName } from "@jotis-me/react";
+import type { IconComponent } from "@jotis-me/react";
+import { CheckCircle, Stars02, XClose } from "@untitledui/icons";
 import type { CardSection, SplitCard } from "../lib/card";
 import { inline } from "../lib/inline";
 
@@ -15,9 +16,9 @@ const { card, part } = Astro.props;
 const { sections } = card;
 const find = (id: CardSection["id"]) => sections.find((s) => s.id === id);
 const cards = [
-	{ section: find("uso"), icon: "check-circle", color: "text-fg-success-primary" },
-	{ section: find("evita"), icon: "x-close", color: "text-fg-error-primary" },
-].filter((c) => c.section) as { section: CardSection; icon: IconName; color: string }[];
+	{ section: find("uso"), icon: CheckCircle, color: "text-fg-success-primary" },
+	{ section: find("evita"), icon: XClose, color: "text-fg-error-primary" },
+].filter((c) => c.section) as { section: CardSection; icon: IconComponent; color: string }[];
 const accessibility = find("accesibilidad");
 const extends_ = find("amplia");
 const details = find("detalles");
@@ -29,10 +30,10 @@ const box = "rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)] md:
 		<section aria-labelledby="uso">
 			<h2 id="uso">Cuándo usarlo</h2>
 			<div class:list={["not-prose my-4 grid grid-cols-1 gap-3 md:gap-4", cards.length > 1 && "md:grid-cols-2"]}>
-				{cards.map(({ section, icon, color }) => (
+				{cards.map(({ section, icon: Icon, color }) => (
 					<div class={`flex flex-col gap-3 ${box}`} data-card-section={section.id}>
 						<h3 class="flex items-center gap-2 text-sm font-semibold text-primary">
-							<Icon name={icon} size={20} className={color} />
+							<Icon size={20} className={color} />
 							{section.title}
 						</h3>
 						{section.paragraphs.map((p) => (
@@ -72,7 +73,7 @@ const box = "rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)] md:
 					data-card-section="amplia"
 				>
 					<h3 class="flex items-center gap-2 text-sm font-semibold text-primary">
-						<Icon name="stars-02" size={20} className="text-fg-brand-primary" />
+						<Stars02 size={20} className="text-fg-brand-primary" />
 						{extends_.title}
 					</h3>
 					{extends_.paragraphs.map((p) => (

@@ -1,0 +1,3008 @@
+{
+	"Button": [
+		{
+			"label": "Primario",
+			"props": {
+				"hierarchy": "primary"
+			}
+		},
+		{
+			"label": "Secundario",
+			"props": {
+				"hierarchy": "secondary"
+			}
+		},
+		{
+			"label": "Terciario",
+			"props": {
+				"hierarchy": "tertiary"
+			}
+		},
+		{
+			"label": "Destructivo",
+			"props": {
+				"hierarchy": "primary",
+				"destructive": true
+			}
+		},
+		{
+			"label": "Con icono",
+			"props": {
+				"iconLeading": "Plus"
+			}
+		},
+		{
+			"label": "Solo icono",
+			"props": {
+				"iconOnly": "Plus"
+			}
+		},
+		{
+			"label": "Cargando",
+			"props": {
+				"loading": true
+			}
+		}
+	],
+	"ButtonGroup": [
+		{
+			"label": "Con icono",
+			"props": {
+				"items": [
+					{
+						"value": "dia",
+						"label": "Día",
+						"icon": "Calendar"
+					},
+					{
+						"value": "semana",
+						"label": "Semana",
+						"icon": "Grid01"
+					},
+					{
+						"value": "mes",
+						"label": "Mes",
+						"icon": "BarChart01"
+					}
+				]
+			}
+		},
+		{
+			"label": "Solo icono",
+			"props": {
+				"items": [
+					{
+						"value": "dia",
+						"iconOnly": "Calendar",
+						"label": "Día"
+					},
+					{
+						"value": "semana",
+						"iconOnly": "Grid01",
+						"label": "Semana"
+					},
+					{
+						"value": "mes",
+						"iconOnly": "BarChart01",
+						"label": "Mes"
+					}
+				]
+			}
+		},
+		{
+			"label": "Con punto",
+			"props": {
+				"items": [
+					{
+						"value": "dia",
+						"label": "Día",
+						"dot": true
+					},
+					{
+						"value": "semana",
+						"label": "Semana",
+						"dot": true
+					},
+					{
+						"value": "mes",
+						"label": "Mes",
+						"dot": true
+					}
+				]
+			}
+		}
+	],
+	"ButtonUtility": [
+		{
+			"label": "Secundario",
+			"props": {
+				"hierarchy": "secondary"
+			}
+		},
+		{
+			"label": "Terciario",
+			"props": {
+				"hierarchy": "tertiary"
+			}
+		},
+		{
+			"label": "Con tooltip abierto",
+			"props": {
+				"tooltipOpen": true
+			}
+		}
+	],
+	"CloseButton": [
+		{
+			"label": "Pequeño",
+			"props": {
+				"size": "sm"
+			}
+		},
+		{
+			"label": "Mediano",
+			"props": {
+				"size": "md"
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "lg"
+			}
+		}
+	],
+	"SocialButton": [
+		{
+			"label": "Google",
+			"props": {
+				"provider": "google",
+				"theme": "color",
+				"logo": "Google"
+			}
+		},
+		{
+			"label": "Facebook",
+			"props": {
+				"provider": "facebook",
+				"theme": "color",
+				"logo": "Facebook"
+			}
+		},
+		{
+			"label": "Apple",
+			"props": {
+				"provider": "apple",
+				"theme": "color",
+				"logo": "Apple"
+			}
+		},
+		{
+			"label": "X",
+			"props": {
+				"provider": "x",
+				"theme": "color",
+				"logo": "X"
+			}
+		},
+		{
+			"label": "Figma",
+			"props": {
+				"provider": "figma",
+				"theme": "color",
+				"logo": "Figma"
+			}
+		},
+		{
+			"label": "Dribbble",
+			"props": {
+				"provider": "dribbble",
+				"theme": "color",
+				"logo": "Dribbble"
+			}
+		},
+		{
+			"label": "De marca",
+			"props": {
+				"theme": "brand",
+				"logo": "Google (gris)"
+			}
+		},
+		{
+			"label": "Gris",
+			"props": {
+				"theme": "gray",
+				"logo": "Google (gris)"
+			}
+		},
+		{
+			"label": "Solo logo",
+			"props": {
+				"iconOnly": true
+			}
+		}
+	],
+	"SocialButtonGroup": [
+		{
+			"label": "En columna",
+			"props": {
+				"layout": "column"
+			}
+		},
+		{
+			"label": "En fila",
+			"props": {
+				"layout": "row"
+			}
+		}
+	],
+	"AppStoreBadge": [
+		{
+			"label": "App Store",
+			"props": {
+				"store": "app-store",
+				"logo": "App Store"
+			}
+		},
+		{
+			"label": "Google Play",
+			"props": {
+				"store": "google-play",
+				"logo": "Google Play"
+			}
+		},
+		{
+			"label": "Mac App Store",
+			"props": {
+				"store": "mac-app-store",
+				"logo": "Mac App Store"
+			}
+		},
+		{
+			"label": "Galaxy Store",
+			"props": {
+				"store": "galaxy-store",
+				"logo": "Galaxy Store"
+			}
+		},
+		{
+			"label": "AppGallery",
+			"props": {
+				"store": "app-gallery",
+				"logo": "AppGallery"
+			}
+		}
+	],
+	"Badge": [
+		{
+			"label": "Píldora",
+			"props": {
+				"type": "pill"
+			}
+		},
+		{
+			"label": "Cuadrada",
+			"props": {
+				"type": "badge"
+			}
+		},
+		{
+			"label": "Moderna",
+			"props": {
+				"type": "modern"
+			}
+		},
+		{
+			"label": "Con punto",
+			"props": {
+				"dot": true,
+				"color": "success"
+			}
+		},
+		{
+			"label": "Con bandera",
+			"props": {
+				"flag": "Bandera"
+			}
+		},
+		{
+			"label": "Con avatar",
+			"props": {
+				"avatar": "Avatar"
+			}
+		},
+		{
+			"label": "Con icono delante",
+			"props": {
+				"icon": "CheckCircle"
+			}
+		},
+		{
+			"label": "Con icono detrás",
+			"props": {
+				"iconTrailing": "ArrowRight"
+			}
+		},
+		{
+			"label": "Solo icono",
+			"props": {
+				"iconOnly": "Plus",
+				"label": "Nuevo"
+			}
+		}
+	],
+	"BadgeGroup": [
+		{
+			"label": "Píldora",
+			"props": {
+				"type": "pill"
+			}
+		},
+		{
+			"label": "Moderna",
+			"props": {
+				"type": "modern"
+			}
+		},
+		{
+			"label": "Insignia detrás",
+			"props": {
+				"badgePosition": "trailing"
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "lg"
+			}
+		}
+	],
+	"Tag": [
+		{
+			"label": "Con cierre",
+			"props": {
+				"onRemove": "Con cierre"
+			}
+		},
+		{
+			"label": "Con punto",
+			"props": {
+				"dot": true
+			}
+		},
+		{
+			"label": "Con contador",
+			"props": {
+				"count": 12
+			}
+		},
+		{
+			"label": "Con casilla",
+			"props": {
+				"checkable": true
+			}
+		},
+		{
+			"label": "Con bandera",
+			"props": {
+				"flag": "Bandera"
+			}
+		},
+		{
+			"label": "Con avatar",
+			"props": {
+				"avatar": "Avatar"
+			}
+		}
+	],
+	"Avatar": [
+		{
+			"label": "Con estado",
+			"props": {
+				"status": "online"
+			}
+		},
+		{
+			"label": "Verificado",
+			"props": {
+				"badge": "verified"
+			}
+		},
+		{
+			"label": "Con contador",
+			"props": {
+				"badge": "count",
+				"count": 3
+			}
+		},
+		{
+			"label": "Con anillo",
+			"props": {
+				"ring": true
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "2xl"
+			}
+		}
+	],
+	"AvatarGroup": [
+		{
+			"label": "Con botón de añadir",
+			"props": {
+				"onAdd": "Con botón de añadir"
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "lg"
+			}
+		}
+	],
+	"AvatarLabel": [
+		{
+			"label": "Pequeño",
+			"props": {
+				"size": "sm"
+			}
+		},
+		{
+			"label": "Mediano",
+			"props": {
+				"size": "md"
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "lg"
+			}
+		}
+	],
+	"AvatarProfilePhoto": [
+		{
+			"label": "Con iniciales",
+			"props": {
+				"initials": "OR"
+			}
+		},
+		{
+			"label": "Verificada",
+			"props": {
+				"verified": true
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "lg"
+			}
+		}
+	],
+	"CheckIcon": [
+		{
+			"label": "Con círculo",
+			"props": {
+				"type": "default"
+			}
+		},
+		{
+			"label": "De contorno",
+			"props": {
+				"type": "line"
+			}
+		},
+		{
+			"label": "Sólido",
+			"props": {
+				"type": "filled",
+				"color": "success"
+			}
+		}
+	],
+	"CheckItem": [
+		{
+			"label": "Con círculo",
+			"props": {
+				"type": "default"
+			}
+		},
+		{
+			"label": "De contorno",
+			"props": {
+				"type": "line"
+			}
+		},
+		{
+			"label": "Sólido",
+			"props": {
+				"type": "filled",
+				"color": "success"
+			}
+		},
+		{
+			"label": "Gris",
+			"props": {
+				"color": "gray"
+			}
+		}
+	],
+	"Rating": [
+		{
+			"label": "Amarilla",
+			"props": {
+				"color": "yellow"
+			}
+		},
+		{
+			"label": "Gris",
+			"props": {
+				"color": "gray"
+			}
+		},
+		{
+			"label": "Pequeña",
+			"props": {
+				"size": "sm"
+			}
+		}
+	],
+	"RatingBadge": [
+		{
+			"label": "Con estrellas",
+			"props": {
+				"stars": true
+			}
+		},
+		{
+			"label": "Sin estrellas",
+			"props": {
+				"stars": false
+			}
+		},
+		{
+			"label": "Cuatro estrellas",
+			"props": {
+				"rating": 4
+			}
+		}
+	],
+	"FeaturedIcon": [
+		{
+			"label": "Clara",
+			"props": {
+				"variant": "light"
+			}
+		},
+		{
+			"label": "Con degradado",
+			"props": {
+				"variant": "gradient"
+			}
+		},
+		{
+			"label": "Oscura",
+			"props": {
+				"variant": "dark"
+			}
+		},
+		{
+			"label": "Moderna",
+			"props": {
+				"variant": "modern"
+			}
+		},
+		{
+			"label": "De contorno",
+			"props": {
+				"variant": "outline"
+			}
+		}
+	],
+	"Kbd": [
+		{
+			"label": "De menú",
+			"props": {
+				"variant": "menu"
+			}
+		},
+		{
+			"label": "De campo",
+			"props": {
+				"variant": "field"
+			}
+		}
+	],
+	"Spinner": [
+		{
+			"label": "Línea simple",
+			"props": {
+				"variant": "line-simple"
+			}
+		},
+		{
+			"label": "Línea con giro",
+			"props": {
+				"variant": "line-spinner"
+			}
+		},
+		{
+			"label": "Círculo de puntos",
+			"props": {
+				"variant": "dot-circle"
+			}
+		}
+	],
+	"Skeleton": [
+		{
+			"label": "Círculo",
+			"props": {
+				"circle": true,
+				"width": 48,
+				"height": 48
+			}
+		},
+		{
+			"label": "Texto",
+			"props": {
+				"lines": 3,
+				"width": 240,
+				"height": 12
+			}
+		}
+	],
+	"Alert": [
+		{
+			"label": "Error",
+			"props": {
+				"color": "error",
+				"icon": "AlertCircle"
+			}
+		},
+		{
+			"label": "Aviso",
+			"props": {
+				"color": "warning",
+				"icon": "AlertTriangle"
+			}
+		},
+		{
+			"label": "Éxito",
+			"props": {
+				"color": "success",
+				"icon": "CheckCircle"
+			}
+		},
+		{
+			"label": "De marca",
+			"props": {
+				"color": "brand",
+				"icon": "InfoCircle"
+			}
+		},
+		{
+			"label": "A todo el ancho",
+			"props": {
+				"variant": "full"
+			}
+		}
+	],
+	"Notification": [
+		{
+			"label": "Con icono",
+			"props": {
+				"icon": "CheckCircle",
+				"color": "success"
+			}
+		},
+		{
+			"label": "Con avatar",
+			"props": {
+				"avatar": {
+					"initials": "AD"
+				},
+				"time": "Hace 2 min"
+			}
+		},
+		{
+			"label": "Con progreso",
+			"props": {
+				"progress": 60,
+				"progressLabel": "Importando…"
+			}
+		},
+		{
+			"label": "Sin cierre automático",
+			"props": {
+				"autoClose": false
+			}
+		}
+	],
+	"Banner": [
+		{
+			"label": "Flotante",
+			"props": {
+				"layout": "floating"
+			}
+		},
+		{
+			"label": "A todo el ancho",
+			"props": {
+				"layout": "full"
+			}
+		},
+		{
+			"label": "De marca",
+			"props": {
+				"theme": "brand"
+			}
+		},
+		{
+			"label": "Estrecho",
+			"props": {
+				"slim": true
+			}
+		}
+	],
+	"EmptyState": [
+		{
+			"label": "Con icono",
+			"props": {
+				"media": "icon",
+				"icon": "SearchLg"
+			}
+		},
+		{
+			"label": "Con carpeta",
+			"props": {
+				"media": "folder"
+			}
+		},
+		{
+			"label": "Con archivo",
+			"props": {
+				"media": "file"
+			}
+		},
+		{
+			"label": "Con personas",
+			"props": {
+				"media": "users-row"
+			}
+		},
+		{
+			"label": "Con integraciones",
+			"props": {
+				"media": "integrations"
+			}
+		},
+		{
+			"label": "Con ilustración",
+			"props": {
+				"media": "illustration",
+				"illustration": "box"
+			}
+		}
+	],
+	"ProgressBar": [
+		{
+			"label": "Etiqueta a la derecha",
+			"props": {
+				"label": "right"
+			}
+		},
+		{
+			"label": "Etiqueta abajo",
+			"props": {
+				"label": "bottom"
+			}
+		},
+		{
+			"label": "Etiqueta flotante arriba",
+			"props": {
+				"label": "top-floating"
+			}
+		},
+		{
+			"label": "Etiqueta flotante abajo",
+			"props": {
+				"label": "bottom-floating"
+			}
+		}
+	],
+	"ProgressCircle": [
+		{
+			"label": "Círculo",
+			"props": {
+				"shape": "circle"
+			}
+		},
+		{
+			"label": "Medio círculo",
+			"props": {
+				"shape": "half"
+			}
+		}
+	],
+	"ProgressSteps": [
+		{
+			"label": "Iconos centrados",
+			"props": {
+				"type": "icons-centered"
+			}
+		},
+		{
+			"label": "Iconos y texto",
+			"props": {
+				"type": "icons-text"
+			}
+		},
+		{
+			"label": "Texto con línea",
+			"props": {
+				"type": "text-line"
+			}
+		},
+		{
+			"label": "Mínima",
+			"props": {
+				"type": "minimal"
+			}
+		},
+		{
+			"label": "Mínima conectada",
+			"props": {
+				"type": "minimal-connected"
+			}
+		},
+		{
+			"label": "Vertical",
+			"props": {
+				"orientation": "vertical"
+			}
+		}
+	],
+	"AppIcon": [
+		{
+			"label": "Con virgulilla",
+			"props": {
+				"tilde": true
+			}
+		},
+		{
+			"label": "Cuadrado",
+			"props": {
+				"shape": "square"
+			}
+		},
+		{
+			"label": "Monocromo",
+			"props": {
+				"variant": "mono"
+			}
+		}
+	],
+	"BackgroundOverlay": [
+		{
+			"label": "Con desenfoque",
+			"props": {
+				"type": "default",
+				"blur": true
+			}
+		},
+		{
+			"label": "Con degradado",
+			"props": {
+				"type": "gradient"
+			}
+		},
+		{
+			"label": "Transparente",
+			"props": {
+				"type": "transparent"
+			}
+		},
+		{
+			"label": "Sin desenfoque",
+			"props": {
+				"blur": false
+			}
+		}
+	],
+	"ScreenMockup": [
+		{
+			"label": "3:2",
+			"props": {
+				"variant": "3-2"
+			}
+		},
+		{
+			"label": "Moderna",
+			"props": {
+				"variant": "modern"
+			}
+		},
+		{
+			"label": "Móvil",
+			"props": {
+				"breakpoint": "mobile"
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "2xl"
+			}
+		}
+	],
+	"MarketingNav": [
+		{
+			"label": "Sencillo",
+			"props": {
+				"type": "simple"
+			}
+		},
+		{
+			"label": "Con tarjeta destacada",
+			"props": {
+				"type": "featured-card"
+			}
+		},
+		{
+			"label": "Con pie",
+			"props": {
+				"type": "simple-with-footer"
+			}
+		},
+		{
+			"label": "Dos columnas",
+			"props": {
+				"type": "simple-2-col"
+			}
+		},
+		{
+			"label": "Ancho completo",
+			"props": {
+				"menu": "full-width"
+			}
+		},
+		{
+			"label": "Flotante",
+			"props": {
+				"floating": true
+			}
+		},
+		{
+			"label": "Solo enlaces",
+			"props": {
+				"items": "Solo enlaces"
+			}
+		}
+	],
+	"Footer": [
+		{
+			"label": "Grande 01",
+			"props": {
+				"type": "large-01"
+			}
+		},
+		{
+			"label": "Con redes",
+			"props": {
+				"type": "large-02"
+			}
+		},
+		{
+			"label": "Con aside",
+			"props": {
+				"type": "large-03"
+			}
+		},
+		{
+			"label": "Con llamada",
+			"props": {
+				"type": "large-09",
+				"cta": {
+					"title": "Empieza hoy",
+					"description": "30 días gratis."
+				}
+			}
+		},
+		{
+			"label": "Pequeño",
+			"props": {
+				"type": "small-01"
+			}
+		},
+		{
+			"label": "De marca",
+			"props": {
+				"theme": "brand"
+			}
+		}
+	],
+	"BlogPostCard": [
+		{
+			"label": "Sencilla 01",
+			"props": {
+				"type": "simple-01"
+			}
+		},
+		{
+			"label": "Sencilla 02",
+			"props": {
+				"type": "simple-02"
+			}
+		},
+		{
+			"label": "Tarjeta 01",
+			"props": {
+				"type": "card-01"
+			}
+		},
+		{
+			"label": "Tarjeta 04",
+			"props": {
+				"type": "card-04"
+			}
+		},
+		{
+			"label": "Horizontal",
+			"props": {
+				"orientation": "horizontal"
+			}
+		}
+	],
+	"SubscribeCard": [
+		{
+			"label": "Por defecto",
+			"props": {
+				"type": "default"
+			}
+		},
+		{
+			"label": "Con línea",
+			"props": {
+				"type": "line"
+			}
+		},
+		{
+			"label": "Con aviso de privacidad",
+			"props": {
+				"privacy": "Puedes darte de baja cuando quieras."
+			}
+		}
+	],
+	"PricingCard": [
+		{
+			"label": "Con icono",
+			"props": {
+				"type": "icon"
+			}
+		},
+		{
+			"label": "Destacado",
+			"props": {
+				"type": "call-out",
+				"callout": "¡El más elegido!"
+			}
+		},
+		{
+			"label": "Icono desplazado",
+			"props": {
+				"type": "icon-offset"
+			}
+		},
+		{
+			"label": "Dos listas",
+			"props": {
+				"type": "dual-check-items",
+				"featuresTitle": "Funciones",
+				"featuresDescription": "Todo lo del plan gratis, y además:"
+			}
+		},
+		{
+			"label": "Con insignia",
+			"props": {
+				"type": "badge",
+				"badge": "Popular"
+			}
+		},
+		{
+			"label": "Con aviso",
+			"props": {
+				"type": "banner",
+				"banner": "Dos meses gratis"
+			}
+		}
+	],
+	"JobPostCard": [
+		{
+			"label": "Sencilla",
+			"props": {
+				"type": "simple"
+			}
+		},
+		{
+			"label": "Tarjeta 01",
+			"props": {
+				"type": "card-01"
+			}
+		},
+		{
+			"label": "Tarjeta 02",
+			"props": {
+				"type": "card-02"
+			}
+		},
+		{
+			"label": "Con bandera",
+			"props": {
+				"flag": "Bandera"
+			}
+		}
+	],
+	"Accordion": [
+		{
+			"label": "Icono a la derecha",
+			"props": {
+				"iconPosition": "right"
+			}
+		},
+		{
+			"label": "Icono a la izquierda",
+			"props": {
+				"iconPosition": "left"
+			}
+		},
+		{
+			"label": "Con divisor",
+			"props": {
+				"divider": true
+			}
+		},
+		{
+			"label": "Solo uno abierto",
+			"props": {
+				"single": true
+			}
+		}
+	],
+	"TeamMemberCard": [
+		{
+			"label": "Sencilla a la izquierda",
+			"props": {
+				"type": "simple-left"
+			}
+		},
+		{
+			"label": "Sencilla centrada",
+			"props": {
+				"type": "simple-center"
+			}
+		},
+		{
+			"label": "Imagen arriba",
+			"props": {
+				"type": "image-top"
+			}
+		},
+		{
+			"label": "Imagen a la izquierda",
+			"props": {
+				"type": "image-left"
+			}
+		},
+		{
+			"label": "Con redes",
+			"props": {
+				"socials": "Redes"
+			}
+		}
+	],
+	"Testimonial": [
+		{
+			"label": "Flotante",
+			"props": {
+				"type": "floating"
+			}
+		},
+		{
+			"label": "A todo el ancho",
+			"props": {
+				"type": "full-width"
+			}
+		},
+		{
+			"label": "Con valoración",
+			"props": {
+				"rating": 5
+			}
+		},
+		{
+			"label": "Con flechas",
+			"props": {
+				"onPrevious": "Con flechas",
+				"onNext": "Con flechas"
+			}
+		},
+		{
+			"label": "Pequeño",
+			"props": {
+				"size": "sm"
+			}
+		}
+	],
+	"Tooltip": [
+		{
+			"label": "Arriba",
+			"props": {
+				"placement": "top"
+			}
+		},
+		{
+			"label": "Abajo",
+			"props": {
+				"placement": "bottom"
+			}
+		},
+		{
+			"label": "A la izquierda",
+			"props": {
+				"placement": "left"
+			}
+		},
+		{
+			"label": "A la derecha",
+			"props": {
+				"placement": "right"
+			}
+		},
+		{
+			"label": "Sin flecha",
+			"props": {
+				"arrow": false
+			}
+		}
+	],
+	"Slideout": [
+		{
+			"label": "Con icono",
+			"props": {
+				"icon": "Edit02"
+			}
+		},
+		{
+			"label": "A la izquierda",
+			"props": {
+				"side": "left"
+			}
+		},
+		{
+			"label": "Ancho",
+			"props": {
+				"width": 560
+			}
+		},
+		{
+			"label": "Con ayuda al pie",
+			"props": {
+				"footerStart": "Ayuda"
+			}
+		}
+	],
+	"Modal": [
+		{
+			"label": "Alerta",
+			"props": {
+				"icon": "AlertTriangle",
+				"color": "warning"
+			}
+		},
+		{
+			"label": "Destructivo",
+			"props": {
+				"icon": "Trash01",
+				"destructive": true
+			}
+		},
+		{
+			"label": "Éxito",
+			"props": {
+				"icon": "CheckCircle",
+				"color": "success"
+			}
+		},
+		{
+			"label": "Horizontal",
+			"props": {
+				"layout": "horizontal"
+			}
+		},
+		{
+			"label": "A la izquierda",
+			"props": {
+				"align": "left"
+			}
+		},
+		{
+			"label": "Con divisores",
+			"props": {
+				"dividers": true,
+				"footerStart": "Ayuda"
+			}
+		}
+	],
+	"Input": [
+		{
+			"label": "Con icono",
+			"props": {
+				"icon": "Mail01"
+			}
+		},
+		{
+			"label": "Con prefijo",
+			"props": {
+				"type": "text",
+				"label": "Web",
+				"prefix": "https://",
+				"placeholder": "jotis.me"
+			}
+		},
+		{
+			"label": "Contraseña",
+			"props": {
+				"type": "password",
+				"label": "Contraseña",
+				"placeholder": "",
+				"defaultValue": "contraseña"
+			}
+		},
+		{
+			"label": "Tarjeta de pago",
+			"props": {
+				"type": "card",
+				"label": "Tarjeta",
+				"placeholder": "1234 1234 1234 1234"
+			}
+		},
+		{
+			"label": "Fecha y hora",
+			"props": {
+				"type": "datetime-local",
+				"label": "Cita",
+				"placeholder": ""
+			}
+		},
+		{
+			"label": "Archivo",
+			"props": {
+				"type": "file",
+				"label": "Adjunto",
+				"placeholder": ""
+			}
+		},
+		{
+			"label": "Con pista",
+			"props": {
+				"hint": "Solo lo usamos para avisos."
+			}
+		}
+	],
+	"NumberInput": [
+		{
+			"label": "Vertical",
+			"props": {
+				"orientation": "vertical"
+			}
+		},
+		{
+			"label": "Con pista",
+			"props": {
+				"hint": "Hasta 12 personas."
+			}
+		}
+	],
+	"TagInput": [
+		{
+			"label": "Etiquetas dentro",
+			"props": {
+				"placement": "inside"
+			}
+		},
+		{
+			"label": "Etiquetas fuera",
+			"props": {
+				"placement": "outside"
+			}
+		},
+		{
+			"label": "En varias líneas",
+			"props": {
+				"multiline": true
+			}
+		}
+	],
+	"VerificationCodeInput": [
+		{
+			"label": "4 dígitos",
+			"props": {
+				"digits": 4
+			}
+		},
+		{
+			"label": "6 dígitos",
+			"props": {
+				"digits": 6
+			}
+		}
+	],
+	"Textarea": [
+		{
+			"label": "Con etiquetas dentro",
+			"props": {
+				"defaultTags": ["diseño", "código"],
+				"tagPlacement": "inside"
+			}
+		},
+		{
+			"label": "Con etiquetas fuera",
+			"props": {
+				"defaultTags": ["diseño", "código"],
+				"tagPlacement": "outside"
+			}
+		},
+		{
+			"label": "Pequeño",
+			"props": {
+				"size": "sm"
+			}
+		}
+	],
+	"Select": [
+		{
+			"label": "Con iconos",
+			"props": {
+				"options": [
+					{
+						"value": "casa",
+						"label": "Casa",
+						"icon": "HomeLine"
+					},
+					{
+						"value": "coche",
+						"label": "Coche",
+						"icon": "CurrencyEuro"
+					},
+					{
+						"value": "ocio",
+						"label": "Ocio",
+						"icon": "Star01"
+					}
+				]
+			}
+		},
+		{
+			"label": "Con búsqueda",
+			"props": {
+				"searchable": true
+			}
+		},
+		{
+			"label": "Con etiquetas",
+			"props": {
+				"type": "tags"
+			}
+		}
+	],
+	"MultiSelect": [
+		{
+			"label": "Resumen",
+			"props": {
+				"display": "summary"
+			}
+		},
+		{
+			"label": "Etiquetas",
+			"props": {
+				"display": "tags"
+			}
+		}
+	],
+	"Checkbox": [
+		{
+			"label": "Pequeña",
+			"props": {
+				"size": "sm"
+			}
+		},
+		{
+			"label": "Mediana",
+			"props": {
+				"size": "md"
+			}
+		},
+		{
+			"label": "Indeterminada",
+			"props": {
+				"indeterminate": true
+			}
+		}
+	],
+	"Radio": [
+		{
+			"label": "Pequeño",
+			"props": {
+				"size": "sm"
+			}
+		},
+		{
+			"label": "Mediano",
+			"props": {
+				"size": "md"
+			}
+		}
+	],
+	"RadioGroup": [
+		{
+			"label": "Tarjetas",
+			"props": {
+				"appearance": "card"
+			}
+		},
+		{
+			"label": "Tarjetas con casilla",
+			"props": {
+				"appearance": "card",
+				"indicator": "checkbox"
+			}
+		},
+		{
+			"label": "Con icono",
+			"props": {
+				"appearance": "icon-simple",
+				"options": [
+					{
+						"value": "mensual",
+						"label": "Mensual",
+						"icon": "Calendar"
+					},
+					{
+						"value": "anual",
+						"label": "Anual",
+						"hint": "Dos meses gratis",
+						"icon": "Star01"
+					}
+				]
+			}
+		}
+	],
+	"Toggle": [
+		{
+			"label": "Estrecho",
+			"props": {
+				"variant": "slim"
+			}
+		},
+		{
+			"label": "Mediano",
+			"props": {
+				"size": "md"
+			}
+		},
+		{
+			"label": "Con pista",
+			"props": {
+				"hint": "Un resumen cada lunes."
+			}
+		}
+	],
+	"Slider": [
+		{
+			"label": "Con valor abajo",
+			"props": {
+				"label": "bottom"
+			}
+		},
+		{
+			"label": "Con valor flotante",
+			"props": {
+				"label": "top-floating"
+			}
+		},
+		{
+			"label": "Rango",
+			"props": {
+				"range": true,
+				"defaultValue": [25, 75]
+			}
+		}
+	],
+	"DatePicker": [
+		{
+			"label": "Una fecha",
+			"props": {
+				"range": false
+			}
+		},
+		{
+			"label": "Rango",
+			"props": {
+				"range": true
+			}
+		},
+		{
+			"label": "Con horas",
+			"props": {
+				"times": ["09:00", "10:30", "12:00", "16:30"]
+			}
+		},
+		{
+			"label": "Modal",
+			"props": {
+				"inline": false,
+				"presentation": "modal"
+			}
+		}
+	],
+	"FileUpload": [
+		{
+			"label": "Varios archivos",
+			"props": {
+				"multiple": true
+			}
+		},
+		{
+			"label": "Progreso de relleno",
+			"props": {
+				"progressStyle": "fill"
+			}
+		}
+	],
+	"ColorPicker": [
+		{
+			"label": "Hex",
+			"props": {
+				"defaultModel": "hex"
+			}
+		},
+		{
+			"label": "RGB",
+			"props": {
+				"defaultModel": "rgb"
+			}
+		},
+		{
+			"label": "HSL",
+			"props": {
+				"defaultModel": "hsl"
+			}
+		},
+		{
+			"label": "HSB",
+			"props": {
+				"defaultModel": "hsb"
+			}
+		}
+	],
+	"ColorPickerDropdown": [
+		{
+			"label": "Muestra pequeña",
+			"props": {
+				"trigger": "swatch-sm"
+			}
+		},
+		{
+			"label": "Muestra grande",
+			"props": {
+				"trigger": "swatch-md"
+			}
+		},
+		{
+			"label": "Botón con muestra",
+			"props": {
+				"trigger": "swatch-button"
+			}
+		},
+		{
+			"label": "Campo hexadecimal",
+			"props": {
+				"trigger": "hex-input"
+			}
+		},
+		{
+			"label": "Selector",
+			"props": {
+				"trigger": "select"
+			}
+		}
+	],
+	"TextEditor": [
+		{
+			"label": "Barra simple",
+			"props": {
+				"toolbar": "simple"
+			}
+		},
+		{
+			"label": "Barra avanzada",
+			"props": {
+				"toolbar": "advanced"
+			}
+		},
+		{
+			"label": "Barra flotante",
+			"props": {
+				"toolbar": "floating"
+			}
+		},
+		{
+			"label": "Pequeño",
+			"props": {
+				"size": "sm"
+			}
+		}
+	],
+	"MessageInput": [
+		{
+			"label": "Mínimo",
+			"props": {
+				"variant": "minimal"
+			}
+		},
+		{
+			"label": "Con área de texto",
+			"props": {
+				"variant": "textarea"
+			}
+		},
+		{
+			"label": "Avanzado",
+			"props": {
+				"variant": "advanced"
+			}
+		}
+	],
+	"Message": [
+		{
+			"label": "Mensaje",
+			"props": {
+				"type": "message"
+			}
+		},
+		{
+			"label": "Enviado",
+			"props": {
+				"sent": true,
+				"status": "read"
+			}
+		},
+		{
+			"label": "Con respuesta",
+			"props": {
+				"type": "reply",
+				"reply": "Respuesta"
+			}
+		},
+		{
+			"label": "Con reacciones",
+			"props": {
+				"reactions": [
+					{
+						"emoji": "👍",
+						"count": 2
+					},
+					{
+						"emoji": "🎉",
+						"count": 1
+					}
+				]
+			}
+		},
+		{
+			"label": "Con archivo",
+			"props": {
+				"type": "file",
+				"file": {
+					"name": "Presupuesto.pdf",
+					"size": "240 KB"
+				}
+			}
+		},
+		{
+			"label": "Escribiendo",
+			"props": {
+				"type": "typing",
+				"typing": true
+			}
+		},
+		{
+			"label": "En línea",
+			"props": {
+				"online": true
+			}
+		}
+	],
+	"CodeSnippet": [
+		{
+			"label": "Horizontal",
+			"props": {
+				"variant": "horizontal"
+			}
+		},
+		{
+			"label": "Vertical",
+			"props": {
+				"variant": "vertical"
+			}
+		},
+		{
+			"label": "Con pestañas",
+			"props": {
+				"tabs": [
+					{
+						"label": "bun",
+						"code": "bun add @jotis-me/react",
+						"language": "bash"
+					},
+					{
+						"label": "npm",
+						"code": "npm install @jotis-me/react",
+						"language": "bash"
+					}
+				]
+			}
+		},
+		{
+			"label": "Sin números de línea",
+			"props": {
+				"lineNumbers": false
+			}
+		}
+	],
+	"VideoPlayer": [
+		{
+			"label": "Pequeño",
+			"props": {
+				"size": "sm"
+			}
+		},
+		{
+			"label": "Mediano",
+			"props": {
+				"size": "md"
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "lg"
+			}
+		}
+	],
+	"Carousel": [
+		{
+			"label": "Botones con flecha",
+			"props": {
+				"arrowStyle": "button-chevron"
+			}
+		},
+		{
+			"label": "Botones con flecha larga",
+			"props": {
+				"arrowStyle": "button-arrow"
+			}
+		},
+		{
+			"label": "Solo flechas",
+			"props": {
+				"arrowStyle": "arrow"
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "lg"
+			}
+		}
+	],
+	"Tabs": [
+		{
+			"label": "Ancho completo",
+			"props": {
+				"fullWidth": true
+			}
+		},
+		{
+			"label": "Vertical",
+			"props": {
+				"orientation": "vertical"
+			}
+		},
+		{
+			"label": "Botones",
+			"props": {
+				"type": "button-gray"
+			}
+		}
+	],
+	"Breadcrumbs": [
+		{
+			"label": "Con barra",
+			"props": {
+				"divider": "slash"
+			}
+		},
+		{
+			"label": "Con línea",
+			"props": {
+				"type": "text-line"
+			}
+		},
+		{
+			"label": "Con botón",
+			"props": {
+				"type": "button"
+			}
+		}
+	],
+	"Pagination": [
+		{
+			"label": "De página",
+			"props": {
+				"type": "page-default"
+			}
+		},
+		{
+			"label": "Mínima",
+			"props": {
+				"type": "page-minimal"
+			}
+		},
+		{
+			"label": "Tarjeta",
+			"props": {
+				"type": "card-default"
+			}
+		},
+		{
+			"label": "Tarjeta avanzada",
+			"props": {
+				"type": "card-advanced",
+				"pageSizes": [10, 20, 50],
+				"defaultPageSize": 10
+			}
+		},
+		{
+			"label": "Grupo de botones",
+			"props": {
+				"type": "card-button-group"
+			}
+		},
+		{
+			"label": "Redonda",
+			"props": {
+				"type": "page-default",
+				"shape": "circle"
+			}
+		}
+	],
+	"PaginationDots": [
+		{
+			"label": "Puntos",
+			"props": {
+				"variant": "dot"
+			}
+		},
+		{
+			"label": "Líneas",
+			"props": {
+				"variant": "line"
+			}
+		},
+		{
+			"label": "Con marco",
+			"props": {
+				"framed": true
+			}
+		}
+	],
+	"Dropdown": [
+		{
+			"label": "Con buscador",
+			"props": {
+				"searchable": true
+			}
+		},
+		{
+			"label": "Enlace",
+			"props": {
+				"triggerVariant": "link"
+			}
+		},
+		{
+			"label": "Integraciones",
+			"props": {
+				"variant": "integrations"
+			}
+		},
+		{
+			"label": "Cuenta con botón",
+			"props": {
+				"variant": "account-button"
+			}
+		},
+		{
+			"label": "Cuenta con avatar",
+			"props": {
+				"variant": "account-avatar"
+			}
+		},
+		{
+			"label": "Tarjeta de cuenta",
+			"props": {
+				"variant": "account-card-md"
+			}
+		}
+	],
+	"HeaderNav": [
+		{
+			"label": "Sencilla",
+			"props": {
+				"type": "simple"
+			}
+		},
+		{
+			"label": "Dos filas",
+			"props": {
+				"type": "dual-tier"
+			}
+		},
+		{
+			"label": "Pestañas",
+			"props": {
+				"type": "tabs"
+			}
+		},
+		{
+			"label": "Centrada",
+			"props": {
+				"type": "centered"
+			}
+		},
+		{
+			"label": "Subrayada",
+			"props": {
+				"type": "underline"
+			}
+		}
+	],
+	"CommandMenu": [
+		{
+			"label": "Sin resultados",
+			"props": {
+				"groups": [],
+				"emptyText": "Nada coincide con tu búsqueda."
+			}
+		}
+	],
+	"TreeView": [
+		{
+			"label": "Sencillo",
+			"props": {
+				"type": "default"
+			}
+		},
+		{
+			"label": "Avanzado",
+			"props": {
+				"type": "advanced"
+			}
+		},
+		{
+			"label": "Mediano",
+			"props": {
+				"size": "md"
+			}
+		}
+	],
+	"Table": [
+		{
+			"label": "Con orden",
+			"props": {
+				"columns": [
+					{
+						"key": "concepto",
+						"label": "Concepto",
+						"primary": true,
+						"sortable": true
+					},
+					{
+						"key": "fecha",
+						"label": "Fecha",
+						"sortable": true
+					},
+					{
+						"key": "importe",
+						"label": "Importe",
+						"align": "right",
+						"sortable": true
+					}
+				],
+				"defaultSort": {
+					"key": "importe",
+					"direction": "descending"
+				}
+			}
+		},
+		{
+			"label": "Con casillas",
+			"props": {
+				"selection": "checkbox"
+			}
+		},
+		{
+			"label": "Con radios",
+			"props": {
+				"selection": "radio"
+			}
+		},
+		{
+			"label": "Con interruptores",
+			"props": {
+				"selection": "toggle"
+			}
+		},
+		{
+			"label": "Con franjas",
+			"props": {
+				"striped": true
+			}
+		},
+		{
+			"label": "Compacta",
+			"props": {
+				"size": "sm"
+			}
+		}
+	],
+	"MetricCard": [
+		{
+			"label": "A la baja",
+			"props": {
+				"trend": "down"
+			}
+		},
+		{
+			"label": "Con insignia",
+			"props": {
+				"changeBadge": true
+			}
+		},
+		{
+			"label": "Con gráfica",
+			"props": {
+				"chart": [820, 910, 880, 1100, 960, 1284],
+				"chartStyle": "sparkline"
+			}
+		},
+		{
+			"label": "Con área",
+			"props": {
+				"chart": [820, 910, 880, 1100, 960, 1284],
+				"chartStyle": "area"
+			}
+		},
+		{
+			"label": "Con icono",
+			"props": {
+				"icon": "CurrencyEuro",
+				"iconStyle": "featured"
+			}
+		},
+		{
+			"label": "Con icono moderno",
+			"props": {
+				"icon": "CurrencyEuro",
+				"iconStyle": "modern"
+			}
+		}
+	],
+	"ActivityFeed": [
+		{
+			"label": "Con línea",
+			"props": {
+				"divider": "line"
+			}
+		},
+		{
+			"label": "Con divisor",
+			"props": {
+				"divider": "divider"
+			}
+		},
+		{
+			"label": "Con conector",
+			"props": {
+				"divider": "connector"
+			}
+		},
+		{
+			"label": "Sin separador",
+			"props": {
+				"divider": "none"
+			}
+		},
+		{
+			"label": "Mensajes",
+			"props": {
+				"type": "messages"
+			}
+		}
+	],
+	"CalendarView": [
+		{
+			"label": "Mes",
+			"props": {
+				"view": "month"
+			}
+		},
+		{
+			"label": "Semana",
+			"props": {
+				"view": "week"
+			}
+		},
+		{
+			"label": "Día",
+			"props": {
+				"view": "day"
+			}
+		},
+		{
+			"label": "Con eventos",
+			"props": {
+				"events": "Octubre"
+			}
+		}
+	],
+	"FilterMenu": [
+		{
+			"label": "Alineado al principio",
+			"props": {
+				"align": "start"
+			}
+		},
+		{
+			"label": "Alineado al final",
+			"props": {
+				"align": "end"
+			}
+		},
+		{
+			"label": "Con filtros",
+			"props": {
+				"defaultValue": [
+					{
+						"field": "estado",
+						"operator": "es",
+						"value": ["pendiente"]
+					},
+					{
+						"field": "concepto",
+						"operator": "contiene",
+						"value": "alq"
+					}
+				]
+			}
+		}
+	],
+	"FilterPanel": [
+		{
+			"label": "Con dos filtros",
+			"props": {
+				"defaultValue": "Dos filtros"
+			}
+		}
+	],
+	"PageHeader": [
+		{
+			"label": "Con migas",
+			"props": {
+				"breadcrumbs": [
+					{
+						"label": "Inicio",
+						"href": "#"
+					},
+					{
+						"label": "Gastos",
+						"href": "#"
+					},
+					{
+						"label": "Octubre"
+					}
+				]
+			}
+		},
+		{
+			"label": "Con botón de volver",
+			"props": {
+				"back": {
+					"href": "#",
+					"label": "Volver a gastos"
+				}
+			}
+		},
+		{
+			"label": "Centrado",
+			"props": {
+				"centered": true
+			}
+		},
+		{
+			"label": "Sin divisor",
+			"props": {
+				"divider": false
+			}
+		},
+		{
+			"label": "Con avatar",
+			"props": {
+				"avatar": "Avatar"
+			}
+		}
+	],
+	"CardHeader": [
+		{
+			"label": "Con insignia de color",
+			"props": {
+				"badgeColor": "success"
+			}
+		},
+		{
+			"label": "Con botón",
+			"props": {
+				"actions": "Ver todas"
+			}
+		},
+		{
+			"label": "Con menú",
+			"props": {
+				"onMenu": "Con menú"
+			}
+		}
+	],
+	"SectionHeader": [
+		{
+			"label": "Pequeña",
+			"props": {
+				"size": "sm"
+			}
+		},
+		{
+			"label": "Con acciones",
+			"props": {
+				"actions": "Importar y añadir"
+			}
+		},
+		{
+			"label": "Con buscador",
+			"props": {
+				"search": "Buscador"
+			}
+		},
+		{
+			"label": "Con pestañas",
+			"props": {
+				"tabs": "Pestañas"
+			}
+		},
+		{
+			"label": "Sin divisor",
+			"props": {
+				"divider": false
+			}
+		}
+	],
+	"SectionLabel": [
+		{
+			"label": "Obligatorio",
+			"props": {
+				"required": true
+			}
+		},
+		{
+			"label": "Con acciones",
+			"props": {
+				"actions": "Invitar"
+			}
+		},
+		{
+			"label": "Mediano",
+			"props": {
+				"size": "md"
+			}
+		}
+	],
+	"ContentDivider": [
+		{
+			"label": "Sencillo",
+			"props": {
+				"variant": "single"
+			}
+		},
+		{
+			"label": "Doble",
+			"props": {
+				"variant": "dual"
+			}
+		},
+		{
+			"label": "Con relleno",
+			"props": {
+				"variant": "fill"
+			}
+		},
+		{
+			"label": "Como título",
+			"props": {
+				"heading": true,
+				"label": "Detalles"
+			}
+		}
+	],
+	"SectionFooter": [
+		{
+			"label": "De sección",
+			"props": {
+				"card": false
+			}
+		},
+		{
+			"label": "De tarjeta",
+			"props": {
+				"card": true
+			}
+		},
+		{
+			"label": "Con texto a la izquierda",
+			"props": {
+				"start": "Ayuda"
+			}
+		}
+	],
+	"InlineCTA": [
+		{
+			"label": "Con imagen",
+			"props": {
+				"type": "image",
+				"image": "Portada"
+			}
+		},
+		{
+			"label": "Con acciones",
+			"props": {
+				"type": "actions"
+			}
+		},
+		{
+			"label": "Con correo",
+			"props": {
+				"type": "email"
+			}
+		},
+		{
+			"label": "Cambio de plan",
+			"props": {
+				"type": "change-plan",
+				"title": "Cambia de plan",
+				"description": "Precios flexibles que crecen contigo.",
+				"plan": {
+					"name": "Plan básico",
+					"icon": "Zap",
+					"price": "10 €",
+					"period": "al mes",
+					"description": "Hasta 10 usuarios, 20 GB por persona y todas las funciones."
+				}
+			}
+		},
+		{
+			"label": "Mejora de plan",
+			"props": {
+				"type": "upgrade-plan",
+				"title": "Mejora tu plan",
+				"description": "¿Necesitas más espacio? Mejora tu plan hoy.",
+				"features": [
+					{
+						"title": "10 usuarios",
+						"description": "Hasta 10 personas en el equipo."
+					},
+					{
+						"title": "20 GB",
+						"description": "20 GB por persona."
+					}
+				]
+			}
+		},
+		{
+			"label": "Método de pago",
+			"props": {
+				"type": "payment-method",
+				"title": "Método de pago",
+				"description": "Cambia cómo pagas tu plan.",
+				"payment": {
+					"label": "Visa terminada en 1234",
+					"expiry": "Caduca el 06/2028",
+					"email": "pagos@jotis.me"
+				}
+			}
+		},
+		{
+			"label": "Recibo",
+			"props": {
+				"type": "receipt",
+				"title": "Tu último recibo ya está disponible",
+				"description": "Descarga el recibo de enero de 2027.",
+				"file": {
+					"name": "Recibo_enero_2027.pdf",
+					"size": "200 KB"
+				}
+			}
+		}
+	],
+	"LinkCard": [
+		{
+			"label": "Sin muestra",
+			"props": {}
+		},
+		{
+			"label": "Con muestra",
+			"props": {
+				"preview": "Muestra"
+			}
+		}
+	],
+	"LineChart": [
+		{
+			"label": "Sin área",
+			"props": {
+				"area": false
+			}
+		},
+		{
+			"label": "Leyenda arriba",
+			"props": {
+				"legend": "top"
+			}
+		},
+		{
+			"label": "Leyenda a la derecha",
+			"props": {
+				"legend": "right"
+			}
+		},
+		{
+			"label": "Con títulos de ejes",
+			"props": {
+				"axisLabels": {
+					"x": "Mes",
+					"y": "Importe"
+				}
+			}
+		},
+		{
+			"label": "Con marcador",
+			"props": {
+				"marker": {
+					"index": 2,
+					"series": 0,
+					"value": "1.284 €"
+				}
+			}
+		}
+	],
+	"BarChart": [
+		{
+			"label": "Apiladas",
+			"props": {
+				"stacked": true
+			}
+		},
+		{
+			"label": "Agrupadas",
+			"props": {
+				"stacked": false
+			}
+		},
+		{
+			"label": "Leyenda a la derecha",
+			"props": {
+				"legend": "right"
+			}
+		},
+		{
+			"label": "Con marcador",
+			"props": {
+				"marker": {
+					"index": 2,
+					"series": 1,
+					"value": "210 €"
+				}
+			}
+		}
+	],
+	"PieChart": [
+		{
+			"label": "Dónut",
+			"props": {
+				"hole": 0.6
+			}
+		},
+		{
+			"label": "Tarta",
+			"props": {
+				"hole": 0
+			}
+		},
+		{
+			"label": "Sin leyenda",
+			"props": {
+				"legend": false
+			}
+		}
+	],
+	"ActivityGauge": [
+		{
+			"label": "Sin leyenda",
+			"props": {
+				"legend": false
+			}
+		},
+		{
+			"label": "Leyenda abajo",
+			"props": {
+				"legend": "bottom"
+			}
+		},
+		{
+			"label": "Leyenda a la derecha",
+			"props": {
+				"legend": "right"
+			}
+		}
+	],
+	"RadarChart": [
+		{
+			"label": "Leyenda abajo",
+			"props": {
+				"legend": "bottom"
+			}
+		},
+		{
+			"label": "Leyenda a la derecha",
+			"props": {
+				"legend": "right"
+			}
+		},
+		{
+			"label": "Tres niveles",
+			"props": {
+				"levels": 3
+			}
+		}
+	],
+	"ChartMarker": [
+		{
+			"label": "Con línea",
+			"props": {
+				"type": "line"
+			}
+		},
+		{
+			"label": "Discontinuo",
+			"props": {
+				"type": "dash"
+			}
+		},
+		{
+			"label": "Mínimo",
+			"props": {
+				"type": "minimal"
+			}
+		}
+	],
+	"ChartLegend": [
+		{
+			"label": "En fila",
+			"props": {
+				"vertical": false
+			}
+		},
+		{
+			"label": "En columna",
+			"props": {
+				"vertical": true
+			}
+		}
+	],
+	"StreamAlert": [
+		{
+			"label": "Seguidor",
+			"props": {
+				"type": "follow"
+			}
+		},
+		{
+			"label": "Suscripción",
+			"props": {
+				"type": "sub",
+				"tier": 1
+			}
+		},
+		{
+			"label": "Resuscripción",
+			"props": {
+				"type": "resub",
+				"months": 6,
+				"tier": 1
+			}
+		},
+		{
+			"label": "Regalo",
+			"props": {
+				"type": "gift",
+				"amount": 5
+			}
+		},
+		{
+			"label": "Incursión",
+			"props": {
+				"type": "raid",
+				"amount": 1284
+			}
+		},
+		{
+			"label": "Bits",
+			"props": {
+				"type": "bits",
+				"amount": 500
+			}
+		},
+		{
+			"label": "Donación",
+			"props": {
+				"type": "donation",
+				"amount": 10,
+				"message": "¡Gracias por el directo!"
+			}
+		}
+	],
+	"StreamEvents": [
+		{
+			"label": "Con animación",
+			"props": {
+				"animate": true
+			}
+		},
+		{
+			"label": "Solo el último",
+			"props": {
+				"max": 1
+			}
+		}
+	],
+	"StreamStatus": [
+		{
+			"label": "En directo",
+			"props": {
+				"status": "live"
+			}
+		},
+		{
+			"label": "Desconectado",
+			"props": {
+				"status": "offline"
+			}
+		},
+		{
+			"label": "Repetición",
+			"props": {
+				"status": "rerun"
+			}
+		}
+	],
+	"StreamGoal": [
+		{
+			"label": "Casi",
+			"props": {
+				"current": 960
+			}
+		},
+		{
+			"label": "Cumplida",
+			"props": {
+				"current": 1000
+			}
+		},
+		{
+			"label": "Al empezar",
+			"props": {
+				"current": 40
+			}
+		}
+	],
+	"ChatBadge": [
+		{
+			"label": "Streamer",
+			"props": {
+				"kind": "broadcaster"
+			}
+		},
+		{
+			"label": "Moderador",
+			"props": {
+				"kind": "mod"
+			}
+		},
+		{
+			"label": "VIP",
+			"props": {
+				"kind": "vip"
+			}
+		},
+		{
+			"label": "Suscriptor",
+			"props": {
+				"kind": "sub"
+			}
+		},
+		{
+			"label": "Bits",
+			"props": {
+				"kind": "bits"
+			}
+		}
+	],
+	"ChatBox": [
+		{
+			"label": "Translúcido",
+			"props": {
+				"translucent": true
+			}
+		},
+		{
+			"label": "Sin desvanecer",
+			"props": {
+				"fade": false
+			}
+		},
+		{
+			"label": "Con animación",
+			"props": {
+				"animate": true
+			}
+		}
+	],
+	"CamFrame": [
+		{
+			"label": "16:9",
+			"props": {
+				"ratio": "16:9"
+			}
+		},
+		{
+			"label": "4:3",
+			"props": {
+				"ratio": "4:3"
+			}
+		},
+		{
+			"label": "Cuadrado",
+			"props": {
+				"ratio": "1:1"
+			}
+		},
+		{
+			"label": "En directo",
+			"props": {
+				"live": true
+			}
+		}
+	],
+	"NowPlaying": [
+		{
+			"label": "Sonando",
+			"props": {
+				"paused": false
+			}
+		},
+		{
+			"label": "En pausa",
+			"props": {
+				"paused": true
+			}
+		}
+	],
+	"StreamCountdown": [
+		{
+			"label": "Pequeño",
+			"props": {
+				"size": "md"
+			}
+		},
+		{
+			"label": "Mediano",
+			"props": {
+				"size": "lg"
+			}
+		},
+		{
+			"label": "Grande",
+			"props": {
+				"size": "xl"
+			}
+		},
+		{
+			"label": "En pausa",
+			"props": {
+				"paused": true
+			}
+		}
+	],
+	"StreamScene": [
+		{
+			"label": "Empezando",
+			"props": {
+				"variant": "starting",
+				"seconds": 300,
+				"countdownLabel": "Para empezar"
+			}
+		},
+		{
+			"label": "Vuelvo enseguida",
+			"props": {
+				"variant": "brb",
+				"seconds": 480,
+				"countdownLabel": "Vuelvo en"
+			}
+		},
+		{
+			"label": "Terminando",
+			"props": {
+				"variant": "ending"
+			}
+		},
+		{
+			"label": "Desconectado",
+			"props": {
+				"variant": "offline"
+			}
+		}
+	],
+	"ChannelPanel": [
+		{
+			"label": "Con botón",
+			"props": {
+				"action": {
+					"label": "Suscribirme",
+					"href": "#"
+				}
+			}
+		},
+		{
+			"label": "Con icono",
+			"props": {
+				"icon": "Calendar"
+			}
+		},
+		{
+			"label": "Ancho",
+			"props": {
+				"width": 420
+			}
+		}
+	]
+}

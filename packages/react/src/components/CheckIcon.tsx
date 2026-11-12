@@ -1,5 +1,5 @@
+import { Check, CheckCircle } from "@untitledui/icons";
 import { cx } from "../internal/cx.js";
-import { Icon } from "./Icon.js";
 
 export type CheckIconType = "default" | "line" | "filled";
 export type CheckIconColor = "brand" | "gray" | "success";
@@ -46,7 +46,7 @@ export function CheckIcon({ type = "default", color = "brand", size = "md", clas
 	if (type === "line")
 		return (
 			<span aria-hidden="true" className={cx("inline-flex shrink-0", LINE[color], className)}>
-				<Icon name="check-circle" size={{ sm: 20, md: 24, lg: 28, xl: 32 }[size]} />
+				<CheckCircle size={{ sm: 20, md: 24, lg: 28, xl: 32 }[size]} />
 			</span>
 		);
 	return (
@@ -59,7 +59,7 @@ export function CheckIcon({ type = "default", color = "brand", size = "md", clas
 				className,
 			)}
 		>
-			<Icon name="check" size={CHECK[size]} />
+			<Check size={CHECK[size]} />
 		</span>
 	);
 }

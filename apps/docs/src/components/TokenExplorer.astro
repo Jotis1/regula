@@ -1,10 +1,10 @@
 ---
-import { Icon } from "@jotis-me/react";
 // Tabla de tokens de Color (reference/docs-design/Color.dc.html), generada desde @jotis-me/tokens: un token nuevo
 // aparece sin tocar la web. Muestra claro/oscuro, uso, valores, contraste WCAG contra bg-primary de cada tema
 // (texto e iconos, calculado en el build) y la utilidad para copiar. Sin JavaScript se lee entera; el filtro de texto
 // y de familia es lo único que necesita JavaScript (design §6).
 import { colors } from "@jotis-me/tokens";
+import { Copy01, SearchMd, Star01 } from "@untitledui/icons";
 import { contrast, MIN, ratio } from "../lib/contrast";
 import { COLOR_FAMILIES, colorFamily, utilityFor } from "../lib/tokens";
 import { fold } from "../search/entries";
@@ -63,7 +63,7 @@ const estimatedHeight = `auto ${rows.length * 130 + 48}px`;
 		<div class="flex flex-col gap-1.5 md:w-[280px]">
 			<label for="tokens-filter" class="text-sm font-medium text-secondary">Filtrar tokens</label>
 			<div class="flex h-10 items-center gap-2 rounded-lg border border-primary bg-primary px-3 text-fg-quaternary shadow-xs focus-within:shadow-focus-ring">
-				<Icon name="search-md" size={20} className="shrink-0" />
+				<SearchMd size={20} className="shrink-0" />
 				<input
 					id="tokens-filter"
 					type="search"
@@ -130,7 +130,7 @@ const estimatedHeight = `auto ${rows.length * 130 + 48}px`;
 												r.kind === "text" && "before:content-['Aa']",
 											]}
 										>
-											{r.kind === "icon" && <Icon name="star-01" size={16} />}
+											{r.kind === "icon" && <Star01 size={16} />}
 										</span>
 									))}
 								</span>
@@ -161,7 +161,7 @@ const estimatedHeight = `auto ${rows.length * 130 + 48}px`;
 									class="inline-flex h-7 items-center gap-1.5 rounded-md bg-secondary px-2 font-mono text-xs font-medium whitespace-nowrap text-secondary shadow-[inset_0_0_0_1px_var(--border-secondary)] hover:bg-secondary_hover hover:text-primary focus-visible:shadow-focus-ring focus-visible:outline-none"
 								>
 									{r.utility}
-									<Icon name="copy-01" size={14} className="text-fg-quaternary" />
+									<Copy01 size={14} className="text-fg-quaternary" />
 								</button>
 							</td>
 						</tr>

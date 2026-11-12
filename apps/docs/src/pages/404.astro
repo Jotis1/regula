@@ -3,6 +3,7 @@
 // vacío (FeaturedIcon, título, qué ha pasado y qué hacer), con BackgroundPattern detrás, como permite la guía en los
 // estados vacíos. Una acción principal, volver a la portada; la búsqueda, como secundaria.
 import { BackgroundPattern, Button, FeaturedIcon } from "@jotis-me/react";
+import { SearchLg } from "@untitledui/icons";
 import Base from "../layouts/Base.astro";
 ---
 
@@ -12,7 +13,7 @@ import Base from "../layouts/Base.astro";
 			<BackgroundPattern pattern="grid-dot" size="md" mask="radial" width={640} height={360} />
 		</div>
 		<div class="relative flex flex-col items-center gap-6">
-			<FeaturedIcon icon="search-lg" color="gray" size="xl" variant="modern" />
+			<FeaturedIcon icon={SearchLg} color="gray" size="xl" variant="modern" />
 			<div class="flex flex-col gap-3">
 				<p class="text-sm font-semibold text-brand-secondary">Error 404</p>
 				<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">
@@ -23,7 +24,7 @@ import Base from "../layouts/Base.astro";
 				</p>
 			</div>
 			<div class="mt-2 flex flex-col-reverse gap-3 sm:flex-row">
-				<Button hierarchy="secondary" size="lg" iconLeading="search-lg" data-open-search>Buscar en Regula</Button>
+				<Button hierarchy="secondary" size="lg" iconLeading={SearchLg} data-open-search>Buscar en Regula</Button>
 				<Button size="lg" href="/">Ir a la portada</Button>
 			</div>
 		</div>

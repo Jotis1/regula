@@ -2,23 +2,13 @@
 // con ScaledPreview; cada una con un menú abierto en línea (`previewItem`). Las imágenes son dibujos de color, sin fotos.
 
 import {
-	IconBookOpen01,
-	IconBriefcase01,
-	IconFileCode01,
-	IconMessageChatCircle,
-	IconPieChart01,
-	IconPlayCircle,
-	IconWallet02,
-} from "@jotis-me/icons";
-import { FlagSpainCircle } from "@jotis-me/icons/flags";
-import {
 	SocialFacebookLogoGray,
 	SocialGithubLogoGray,
 	SocialLinkedinLogoGray,
 	SocialXLogoGray,
 	StoreAppStoreLogo,
 	StoreGooglePlayLogo,
-} from "@jotis-me/icons/logos";
+} from "@jotis-me/assets/logos";
 import {
 	Accordion,
 	AppStoreBadge,
@@ -47,6 +37,20 @@ import {
 	type TeamMemberCardType,
 	Testimonial,
 } from "@jotis-me/react";
+import { FlagEs } from "@untitledui/country-flags";
+import {
+	BarChart01,
+	BookOpen01,
+	Briefcase01,
+	CheckCircle,
+	FileCode01,
+	MessageChatCircle,
+	PieChart01,
+	PlayCircle,
+	Stars02,
+	Users01,
+	Wallet02,
+} from "@untitledui/icons";
 import type { ReactNode } from "react";
 
 const marca = (
@@ -76,44 +80,34 @@ const recursos = (
 	<NavMenu.Section title="Recursos">
 		<NavMenu.Item
 			href="#"
-			icon={<IconBookOpen01 />}
+			icon={<BookOpen01 />}
 			title="Blog"
 			description="Ideas y guías para ordenar tu dinero."
 		/>
-		<NavMenu.Item href="#" icon="stars-02" title="Historias" description="Cómo lo usan otras personas." />
-		<NavMenu.Item
-			href="#"
-			icon={<IconPlayCircle />}
-			title="Vídeos"
-			description="Empieza en cinco minutos."
-		/>
-		<NavMenu.Item
-			href="#"
-			icon={<IconFileCode01 />}
-			title="Documentación"
-			description="Todo, paso a paso."
-		/>
+		<NavMenu.Item href="#" icon={Stars02} title="Historias" description="Cómo lo usan otras personas." />
+		<NavMenu.Item href="#" icon={<PlayCircle />} title="Vídeos" description="Empieza en cinco minutos." />
+		<NavMenu.Item href="#" icon={<FileCode01 />} title="Documentación" description="Todo, paso a paso." />
 	</NavMenu.Section>
 );
 const producto = (
 	<NavMenu.Section title="Producto">
 		<NavMenu.Item
 			href="#"
-			icon="bar-chart-01"
+			icon={BarChart01}
 			iconStyle="boxed"
 			title="Informes"
 			description="Lo que pasa con tu dinero."
 		/>
 		<NavMenu.Item
 			href="#"
-			icon={<IconWallet02 />}
+			icon={<Wallet02 />}
 			iconStyle="boxed"
 			title="Presupuestos"
 			description="Gasta con un plan."
 		/>
 		<NavMenu.Item
 			href="#"
-			icon={<IconPieChart01 />}
+			icon={<PieChart01 />}
 			iconStyle="boxed"
 			title="Categorías"
 			description="Cada gasto en su sitio."
@@ -124,14 +118,14 @@ const usos = (
 	<NavMenu.Section title="Para qué">
 		<NavMenu.Item
 			href="#"
-			icon="check-circle"
+			icon={CheckCircle}
 			iconStyle="boxed"
 			title="Ahorrar"
 			description="Metas con fecha."
 		/>
 		<NavMenu.Item
 			href="#"
-			icon="users-01"
+			icon={Users01}
 			iconStyle="boxed"
 			title="En pareja"
 			description="Cuentas compartidas."
@@ -143,7 +137,7 @@ const usos = (
 		/>
 		<NavMenu.Item
 			href="#"
-			icon={<IconBriefcase01 />}
+			icon={<Briefcase01 />}
 			iconStyle="boxed"
 			title="Autónomos"
 			description="Gastos e impuestos."
@@ -206,10 +200,10 @@ const pie = (
 			</a>
 		</span>
 		<span className="flex gap-4">
-			<Button hierarchy="link-color" size="sm" iconLeading={<IconPlayCircle />}>
+			<Button hierarchy="link-color" size="sm" iconLeading={<PlayCircle />}>
 				Ver la demo
 			</Button>
-			<Button hierarchy="link-color" size="sm" iconLeading={<IconMessageChatCircle />}>
+			<Button hierarchy="link-color" size="sm" iconLeading={<MessageChatCircle />}>
 				Hablar con ventas
 			</Button>
 		</span>
@@ -689,7 +683,7 @@ const OFERTA = {
 	department: "Diseño",
 	category: "Diseño",
 	location: "Madrid, España",
-	flag: <FlagSpainCircle size={16} />,
+	flag: <FlagEs size={16} />,
 	employment: "Jornada completa",
 	salary: "40.000-50.000 €",
 };

@@ -14,13 +14,6 @@ export const graficas: Record<string, Start> = {
 			],
 		},
 		wide: true,
-		presets: [
-			{ label: "Sin área", props: { area: false } },
-			{ label: "Leyenda arriba", props: { legend: "top" } },
-			{ label: "Leyenda a la derecha", props: { legend: "right" } },
-			{ label: "Con títulos de ejes", props: { axisLabels: { x: "Mes", y: "Importe" } } },
-			{ label: "Con marcador", props: { marker: { index: 2, series: 0, value: "1.284 €" } } },
-		],
 	},
 	BarChart: {
 		props: {
@@ -32,12 +25,6 @@ export const graficas: Record<string, Start> = {
 			],
 		},
 		wide: true,
-		presets: [
-			{ label: "Apiladas", props: { stacked: true } },
-			{ label: "Agrupadas", props: { stacked: false } },
-			{ label: "Leyenda a la derecha", props: { legend: "right" } },
-			{ label: "Con marcador", props: { marker: { index: 2, series: 1, value: "210 €" } } },
-		],
 	},
 	PieChart: {
 		props: {
@@ -50,11 +37,6 @@ export const graficas: Record<string, Start> = {
 			],
 		},
 		tweaks: { hole: { kind: "number", min: 0, max: 0.75, step: 0.05 } },
-		presets: [
-			{ label: "Dónut", props: { hole: 0.6 } },
-			{ label: "Tarta", props: { hole: 0, center: undefined } },
-			{ label: "Sin leyenda", props: { legend: false } },
-		],
 	},
 	ActivityGauge: {
 		props: {
@@ -67,11 +49,6 @@ export const graficas: Record<string, Start> = {
 				{ name: "Pie", value: 9, max: 12 },
 			],
 		},
-		presets: [
-			{ label: "Sin leyenda", props: { legend: false } },
-			{ label: "Leyenda abajo", props: { legend: "bottom" } },
-			{ label: "Leyenda a la derecha", props: { legend: "right" } },
-		],
 	},
 	RadarChart: {
 		props: {
@@ -82,25 +59,11 @@ export const graficas: Record<string, Start> = {
 				{ name: "La anterior", data: [360, 700, 520, 760, 560, 480, 680] },
 			],
 		},
-		presets: [
-			{ label: "Leyenda abajo", props: { legend: "bottom" } },
-			{ label: "Leyenda a la derecha", props: { legend: "right" } },
-			{ label: "Tres niveles", props: { levels: 3 } },
-		],
 	},
 	ChartMarker: {
 		props: { value: "1.218", label: "10 ene" },
-		presets: [
-			{ label: "Con línea", props: { type: "line" } },
-			{ label: "Discontinuo", props: { type: "dash" } },
-			{ label: "Mínimo", props: { type: "minimal" } },
-		],
 	},
 	ChartLegend: {
 		props: { series: [{ name: "Gastos" }, { name: "Presupuesto" }] },
-		presets: [
-			{ label: "En fila", props: { vertical: false } },
-			{ label: "En columna", props: { vertical: true } },
-		],
 	},
 };

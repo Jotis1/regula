@@ -1,6 +1,6 @@
 # @jotis-me/react
 
-Los componentes de la suite jotis.me para Next.js y Astro, con Tailwind CSS v4. Trae consigo `@jotis-me/tokens` (colores, tipografía, fuentes) y `@jotis-me/icons`.
+Los componentes de la suite jotis.me para Next.js y Astro, con Tailwind CSS v4. Trae consigo `@jotis-me/tokens` (colores, tipografía, fuentes) y `@untitledui/icons` (los iconos).
 
 Documentación con ejemplos de cada componente: [regula.jotis.me](https://regula.jotis.me).
 
@@ -68,6 +68,28 @@ import { Button, ButtonGroup } from "@jotis-me/react";
 ```
 
 Las props que son funciones (`onChange`…) no pueden pasar de un `.astro` a una isla: envuelve el componente en un `.tsx` y pásale ahí la función.
+
+## Iconos
+
+Los iconos son los de [Untitled UI](https://www.untitledui.com/icons) (`@untitledui/icons`, MIT). Las props de icono (`icon`, `iconLeading`, `iconTrailing`, `iconOnly`…) aceptan el componente o un nodo ya pintado, no un nombre:
+
+```tsx
+import { Button } from "@jotis-me/react";
+import { Plus, Rocket02 } from "@untitledui/icons";
+
+<Button iconLeading={Plus}>Nuevo</Button>                         {/* el componente: el botón le pone tamaño y color */}
+<Button iconLeading={<Rocket02 size={16} />}>Lanzar</Button>      {/* un nodo: se pinta tal cual, con su propio tamaño */}
+```
+
+Un componente es una función y **no cruza** de un Server Component (Next.js) ni de un `.astro` a un componente de cliente ni a una isla: ahí pasa el nodo (`<Plus size={16} />`) o envuelve el componente en un `.tsx` de cliente. Importa solo los iconos que uses: con `sideEffects: false` el resto no entra en tu bundle.
+
+Iconos de archivo (`@untitledui/file-icons`) y banderas (`@untitledui/country-flags`) se usan igual, como nodo (`<FileIcon type="pdf" />`, `<FlagEs />`). Los logos de terceros, los iconos de pago y los cursores están en `@jotis-me/assets`.
+
+El icono de app (`AppIcon`) y su geometría, también sin React, están aquí: `import { appIconSvg } from "@jotis-me/react/app-icon"`.
+
+## Migrar desde 0.7
+
+`@jotis-me/icons` desaparece. Cambia `icon="search-lg"` por `icon={SearchLg}` (kebab-case a PascalCase) y `<Icon name="x" />` por el componente: `bun run scripts/migrate-icons.ts <rutas>` del repo de Regula lo hace por ti. `IconRocket02` pasa a `Rocket02`; los logos, pagos y cursores, de `@jotis-me/icons/…` a `@jotis-me/assets/…`; los iconos de archivo y las banderas, a los paquetes de Untitled UI.
 
 ## Modo oscuro
 

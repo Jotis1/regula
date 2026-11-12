@@ -5,7 +5,7 @@ description: "Botón de entrar con Google, Facebook, Apple, X, Figma o Dribbble,
 interactive: false
 ---
 
-**Props.** `provider` (`google` · `facebook` · `apple` · `x` · `figma` · `dribbble`), `logo` (obligatorio, de `@jotis-me/icons/logos`), `theme` (`brand`, por defecto · `color` · `gray`), `size` (`md` 40 · `lg` 44), `iconOnly` y `children` (otro texto en lugar de «Entrar con Google»). Con `href` es un enlace; el resto de props pasan al `<button>` o al `<a>`.
+**Props.** `provider` (`google` · `facebook` · `apple` · `x` · `figma` · `dribbble`), `logo` (obligatorio, de `@jotis-me/assets/logos`), `theme` (`brand`, por defecto · `color` · `gray`), `size` (`md` 40 · `lg` 44), `iconOnly` y `children` (otro texto en lugar de «Entrar con Google»). Con `href` es un enlace; el resto de props pasan al `<button>` o al `<a>`.
 
 **Visual.** El del Figma (`Social button`, `1256:130788`), sobre `Button`. `brand`: el fondo de la marca (azul de Facebook, negro de Apple, X y Figma, rosa de Dribbble) con el brillo del primario y el logo en blanco; Google, en `brand`, es blanco con su logo en color, como el Figma. `color` y `gray`: el secundario con el logo en color o en `fg-quaternary`. Logo de 16 en `md` y de 20 en `lg`.
 

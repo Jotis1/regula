@@ -1,8 +1,9 @@
 "use client";
 
+import { PauseCircle, Play } from "@untitledui/icons";
 import { useRef, useState } from "react";
-import { Icon } from "../components/Icon.js";
 import { cx } from "./cx.js";
+import { DynIcon } from "./icon.js";
 
 // Alturas fijas de la onda (no se analiza el audio): el dibujo del Figma, de 0 a 1
 const WAVE = [
@@ -59,7 +60,7 @@ export function MessageAudioPlayer({
 				}}
 				className="inline-flex size-8 flex-none cursor-pointer items-center justify-center rounded-full border-0 bg-brand-solid text-fg-white hover:bg-brand-solid_hover focus-visible:shadow-focus-ring focus-visible:outline-none disabled:cursor-default"
 			>
-				<Icon name={playing ? "pause-circle" : "play"} size={16} />
+				<DynIcon icon={playing ? PauseCircle : Play} size={16} />
 			</button>
 			<span aria-hidden="true" className="flex h-8 min-w-0 flex-1 items-center gap-0.5">
 				{WAVE.map((h, i) => (

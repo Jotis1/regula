@@ -1,8 +1,8 @@
+import { ArrowLeft } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { Line } from "../internal/line.js";
 import { type BreadcrumbItem, Breadcrumbs } from "./Breadcrumbs.js";
-import { Icon } from "./Icon.js";
 
 export interface PageHeaderProps {
 	/** Título de la página (`<h1>`), en Bricolage Grotesque 30/38 semibold. */
@@ -97,7 +97,7 @@ function TypedPageHeader({
 				centered && "self-center",
 			)}
 		>
-			<Icon name="arrow-left" size={16} />
+			<ArrowLeft size={16} />
 			{back.label ?? "Volver"}
 		</a>
 	) : null;

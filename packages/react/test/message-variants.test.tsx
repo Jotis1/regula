@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Copy01, Edit02 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Message, MessageInput, type MessageType } from "../src/index.js";
@@ -25,8 +26,8 @@ describe("Message y MessageInput: los de siempre", () => {
 					<Message author="Emptor" typing />
 				</>,
 			),
-		).toBe(BEFORE.message);
-		expect(renderToStaticMarkup(<MessageInput onAttach={() => {}} />)).toBe(BEFORE.input);
+		).toMatchBefore(BEFORE.message);
+		expect(renderToStaticMarkup(<MessageInput onAttach={() => {}} />)).toMatchBefore(BEFORE.input);
 	});
 });
 
@@ -106,8 +107,8 @@ describe("Message: reacciones y acciones", () => {
 			<Message
 				sent
 				actions={[
-					{ icon: "edit-02", label: "Editar" },
-					{ icon: "copy-01", label: "Copiar", onClick: onCopy },
+					{ icon: Edit02, label: "Editar" },
+					{ icon: Copy01, label: "Copiar", onClick: onCopy },
 				]}
 			>
 				Vale

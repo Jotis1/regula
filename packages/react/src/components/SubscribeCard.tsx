@@ -1,5 +1,6 @@
 "use client";
 
+import { Mail01, Send01 } from "@untitledui/icons";
 import { type FormEvent, type ReactNode, useId } from "react";
 import { cx } from "../internal/cx.js";
 import { Button } from "./Button.js";
@@ -56,12 +57,7 @@ export function SubscribeCard({
 				className,
 			)}
 		>
-			<FeaturedIcon
-				icon={type === "line" ? "mail-01" : "send-01"}
-				variant="modern"
-				color="gray"
-				size="xl"
-			/>
+			<FeaturedIcon icon={type === "line" ? Mail01 : Send01} variant="modern" color="gray" size="xl" />
 			<div className="flex flex-col gap-2">
 				<h3 id={`${id}-title`} className="m-0 text-xl font-semibold text-primary">
 					{title}

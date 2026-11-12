@@ -1,10 +1,11 @@
+import { AlertCircle, AlertTriangle, CheckCircle, InfoCircle } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import type { IconComponent, IconProp } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import type { StatusColor } from "./Badge.js";
 import { CloseButton } from "./CloseButton.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import type { IconName } from "./Icon.js";
 
 export interface AlertProps {
 	/**
@@ -21,7 +22,7 @@ export interface AlertProps {
 	/** Nombre de la X. @default "Descartar" */
 	closeLabel?: string;
 	/** Icono propio. Por defecto, uno según el color (`alert-circle` en error, `check-circle` en éxito…). */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/**
 	 * `floating`: tarjeta con borde y radio. `full`: a todo el ancho, sin radio y con línea inferior.
 	 * @default "floating"
@@ -30,12 +31,12 @@ export interface AlertProps {
 	className?: string;
 }
 
-const ICON: Record<StatusColor, IconName> = {
-	gray: "info-circle",
-	brand: "info-circle",
-	error: "alert-circle",
-	warning: "alert-triangle",
-	success: "check-circle",
+const ICON: Record<StatusColor, IconComponent> = {
+	gray: InfoCircle,
+	brand: InfoCircle,
+	error: AlertCircle,
+	warning: AlertTriangle,
+	success: CheckCircle,
 };
 
 /** Piezas que solo usa `Notification`: lo que va en el sitio del icono, la hora junto al título y lo que va bajo el texto. */

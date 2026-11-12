@@ -2,6 +2,16 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import {
+	BarChart01,
+	Bell01,
+	CurrencyEuro,
+	Eye,
+	HomeLine,
+	Settings02,
+	Star01,
+	Users01,
+} from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { SidebarCards, SidebarNav, type SidebarNavItem } from "../src/index.js";
@@ -12,25 +22,25 @@ const BEFORE: { full: string; bare: string } = JSON.parse(
 );
 
 const dashboardChildren = [
-	{ icon: "eye" as const, label: "Resumen", href: "/panel/" },
-	{ icon: "bell-01" as const, label: "Avisos", href: "/panel/avisos/", badge: 10 },
-	{ icon: "star-01" as const, label: "Guardados", href: "/panel/guardados/" },
+	{ icon: Eye, label: "Resumen", href: "/panel/" },
+	{ icon: Bell01, label: "Avisos", href: "/panel/avisos/", badge: 10 },
+	{ icon: Star01, label: "Guardados", href: "/panel/guardados/" },
 ];
 
 // React reparte ids por orden de render y este componente pide dos más que antes: no es parte del HTML que se compara
 const normalizeIds = (html: string) => html.replace(/_R_[a-z0-9]+_/g, "_R_");
 
 const items: SidebarNavItem[] = [
-	{ icon: "home-line", label: "Inicio", href: "/" },
-	{ icon: "bar-chart-01", label: "Panel", children: dashboardChildren },
-	{ icon: "users-01", label: "Equipo", href: "/equipo/", badge: 8 },
+	{ icon: HomeLine, label: "Inicio", href: "/" },
+	{ icon: BarChart01, label: "Panel", children: dashboardChildren },
+	{ icon: Users01, label: "Equipo", href: "/equipo/", badge: 8 },
 ];
 
 describe("SidebarNav: el de siempre", () => {
 	const base = [
-		{ icon: "home-line" as const, label: "Inicio", href: "/", active: true },
-		{ icon: "bar-chart-01" as const, label: "Panel", href: "/panel/", badge: 3 },
-		{ icon: "currency-euro" as const, label: "Pecunia" },
+		{ icon: HomeLine, label: "Inicio", href: "/", active: true },
+		{ icon: BarChart01, label: "Panel", href: "/panel/", badge: 3 },
+		{ icon: CurrencyEuro, label: "Pecunia" },
 	];
 
 	it("sin las props nuevas el HTML es el de antes", () => {
@@ -39,12 +49,12 @@ describe("SidebarNav: el de siempre", () => {
 				brand="jotis.me"
 				search
 				items={base}
-				footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/ajustes/" }]}
+				footerItems={[{ icon: Settings02, label: "Ajustes", href: "/ajustes/" }]}
 				user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 			/>,
 		);
-		expect(normalizeIds(full)).toBe(normalizeIds(BEFORE.full));
-		expect(normalizeIds(renderToStaticMarkup(<SidebarNav items={base} />))).toBe(
+		expect(normalizeIds(full)).toMatchBefore(normalizeIds(BEFORE.full));
+		expect(normalizeIds(renderToStaticMarkup(<SidebarNav items={base} />))).toMatchBefore(
 			normalizeIds(BEFORE.bare),
 		);
 	});
@@ -175,7 +185,7 @@ describe("SidebarNav: secciones", () => {
 	const sections = [
 		{
 			title: "General",
-			items: [{ icon: "home-line" as const, label: "Panel", href: "/", active: true }],
+			items: [{ icon: HomeLine, label: "Panel", href: "/", active: true }],
 		},
 		{
 			title: "Equipos",

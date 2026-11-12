@@ -1,5 +1,6 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { BarChart01, Wallet02 } from "@untitledui/icons";
 import { describe, expect, it } from "vitest";
 import { Button, MarketingNav, type MarketingNavItem, NavMenu } from "../src/index.js";
 import { expectAccessibleInThemes } from "./helpers.js";
@@ -12,13 +13,13 @@ const items: MarketingNavItem[] = [
 				<NavMenu.Section key="a" title="Producto">
 					<NavMenu.Item
 						href="/informes"
-						icon="bar-chart-01"
+						icon={BarChart01}
 						title="Informes"
 						description="Lo que pasa con tu dinero."
 					/>
 					<NavMenu.Item
 						href="/presupuestos"
-						icon="wallet-02"
+						icon={Wallet02}
 						title="Presupuestos"
 						description="Gasta con un plan."
 					/>

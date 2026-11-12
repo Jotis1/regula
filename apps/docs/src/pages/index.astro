@@ -2,46 +2,51 @@
 // Portada (reference/docs-design/Main.dc.html y HomeM.dc.html). Las cifras se cuentan en el build desde los
 // paquetes y el catálogo; la instalación sale del README de @jotis-me/react; las cinco reglas, de la guía.
 import { getCollection } from "astro:content";
-import { allIconNames } from "@jotis-me/icons";
-import chevronRight from "@jotis-me/icons/svg/chevron-right.svg?raw";
 import {
 	AppIcon,
 	appIcons,
 	BackgroundPattern,
 	Badge,
 	Button,
-	Icon,
-	type IconName,
+	type IconComponent,
 	Kbd,
 	LinkCard,
 	StreamStatus,
 } from "@jotis-me/react";
 import { colors } from "@jotis-me/tokens";
+import {
+	ArrowRight,
+	BarChart01,
+	Bell01,
+	Calendar,
+	ChevronRight,
+	Download01,
+	Grid01,
+	Lock01,
+	Palette,
+	Play,
+	SearchLg,
+	Send01,
+	Star01,
+	Zap,
+} from "@untitledui/icons";
 import readme from "../../../../packages/react/README.md?raw";
 import CodeSnippet from "../components/CodeSnippetIsland";
 import HeroForm from "../components/HeroForm";
 import Base from "../layouts/Base.astro";
 import { COMPONENT_GROUPS, FOUNDATIONS } from "../lib/catalog";
 import { installTabs } from "../lib/readme";
+import { ICON_NAMES } from "../lib/untitled";
 
 const components = (await getCollection("components")).length;
 const appGroups = COMPONENT_GROUPS.filter((g) => g.section === "components");
 const appComponents = appGroups.reduce((n, g) => n + g.components.length, 0);
 const streamComponents = components - appComponents;
-const icons = allIconNames.length;
+const icons = ICON_NAMES.length;
 const colorTokens = Object.keys(colors).length;
 const install = installTabs(readme);
 
-const previewIcons: IconName[] = [
-	"search-lg",
-	"calendar",
-	"bell-01",
-	"lock-01",
-	"bar-chart-01",
-	"send-01",
-	"palette",
-	"zap",
-];
+const previewIcons: IconComponent[] = [SearchLg, Calendar, Bell01, Lock01, BarChart01, Send01, Palette, Zap];
 const apps = [
 	{ app: "ornatus", what: "Lector de Markdown" },
 	{ app: "vinculum", what: "Acortador de enlaces" },
@@ -80,6 +85,7 @@ const thumb = "flex items-center justify-center bg-secondary";
 const map = [
 	{
 		title: "Fundamentos",
+		icon: Palette, // no se pinta: en móvil lleva «Aa»; está para que todos los elementos tengan la misma forma
 		href: "/foundations/principles/",
 		text: "Principios, tono, color, tipografía y el resto de la guía, con sus tokens.",
 		meta: `${FOUNDATIONS.length} apartados · ${colorTokens} tokens de color`,
@@ -87,6 +93,7 @@ const map = [
 	},
 	{
 		title: "Componentes",
+		icon: Grid01,
 		href: "/components/",
 		text: "Botones, formularios, navegación, capas, avisos, datos, gráficas y maquetas.",
 		meta: `${appComponents} de aplicación · ${appGroups.length} grupos`,
@@ -94,6 +101,7 @@ const map = [
 	},
 	{
 		title: "Stream",
+		icon: Play,
 		href: "/foundations/stream/",
 		text: "Alertas, escenas, chat y paneles para Twitch. Siempre en oscuro.",
 		meta: `${streamComponents} componentes · guía propia`,
@@ -101,13 +109,13 @@ const map = [
 	},
 	{
 		title: "Iconos",
+		icon: Star01,
 		href: "/icons/",
 		text: "El set de línea de 24 px, con buscador y el código listo para copiar.",
-		meta: `${icons} iconos · React, SVG y en bruto`,
+		meta: `${icons} iconos · de Untitled UI, en React`,
 		short: `${icons}, con buscador`,
 	},
 ];
-const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "play", Iconos: "star-01" };
 ---
 
 <Base title="Regula" wide>
@@ -132,14 +140,14 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 					programa.
 				</p>
 				<div class="flex flex-col gap-3 pt-1 lg:flex-row lg:flex-wrap lg:items-center lg:pt-2">
-					<Button size="xl" href="/start/install/" iconTrailing="arrow-right">Instalar en tu proyecto</Button>
+					<Button size="xl" href="/start/install/" iconTrailing={ArrowRight}>Instalar en tu proyecto</Button>
 					<button
 						type="button"
 						data-open-search
 						aria-keyshortcuts="Control+K Meta+K"
 						class="flex h-12 items-center gap-2 rounded-lg border border-primary bg-primary pr-2.5 pl-3.5 text-left text-md text-quaternary shadow-xs transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none lg:w-80"
 					>
-						<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
+						<SearchLg size={20} className="shrink-0 text-fg-quaternary" />
 						<span class="grow">Busca lo que te falte</span>
 						<Kbd variant="field" className="hidden lg:inline-flex">Ctrl K</Kbd>
 					</button>
@@ -160,7 +168,7 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 				Instala el paquete, importa la hoja en tu CSS de Tailwind v4 y usa los componentes. El resto es usar las
 				utilidades de siempre con los nombres del sistema.
 			</p>
-			<div><Button hierarchy="link-color" href="/start/install/" iconTrailing="arrow-right">Guía de instalación completa</Button></div>
+			<div><Button hierarchy="link-color" href="/start/install/" iconTrailing={ArrowRight}>Guía de instalación completa</Button></div>
 		</div>
 		<div class="min-w-0 flex-[1_1_520px]">
 			<CodeSnippet client:visible tabs={install} />
@@ -188,7 +196,7 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 							{m.title === "Componentes" && (
 								<div class="flex flex-col items-center gap-3">
 									<div class="flex gap-2">
-										<Button hierarchy="secondary" size="sm" iconLeading="download-01" tabIndex={-1}>Exportar</Button>
+										<Button hierarchy="secondary" size="sm" iconLeading={Download01} tabIndex={-1}>Exportar</Button>
 										<Button size="sm" tabIndex={-1}>Guardar</Button>
 									</div>
 									<div class="flex items-center gap-2">
@@ -200,7 +208,7 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 							{m.title === "Stream" && <StreamStatus status="live" viewers={128} />}
 							{m.title === "Iconos" && (
 								<div class="grid grid-cols-4 gap-x-6 gap-y-4 text-fg-secondary">
-									{previewIcons.map((name) => <Icon name={name} size={24} />)}
+									{previewIcons.map((Icon) => <Icon size={24} />)}
 								</div>
 							)}
 						</div>
@@ -220,14 +228,14 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 							{m.title === "Fundamentos" ? (
 								<span class="font-display text-display-xs font-semibold text-primary">Aa</span>
 							) : (
-								<Icon name={mobileIcon[m.title] as IconName} size={28} />
+								<m.icon size={28} />
 							)}
 						</span>
 						<span class="min-w-0 grow">
 							<span class="block text-md font-semibold">{m.title}</span>
 							<span class="block text-sm text-tertiary">{m.short}</span>
 						</span>
-						<span aria-hidden="true" class="flex size-5 text-fg-quaternary [&>svg]:size-5" set:html={chevronRight} />
+						<span aria-hidden="true" class="flex size-5 text-fg-quaternary [&>svg]:size-5"><ChevronRight size={20} /></span>
 					</a>
 				))
 			}
@@ -238,7 +246,7 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 		<div class="flex max-w-[360px] flex-[1_1_280px] flex-col gap-3">
 			<h2 id="rules-t" class={h2}>Cinco reglas que se olvidan</h2>
 			<p class="hidden text-md text-tertiary lg:block">El resto está en los fundamentos. Estas son las que más se saltan con prisa.</p>
-			<div class="hidden lg:block"><Button hierarchy="link-color" href="/foundations/principles/" iconTrailing="arrow-right">Leer los principios</Button></div>
+			<div class="hidden lg:block"><Button hierarchy="link-color" href="/foundations/principles/" iconTrailing={ArrowRight}>Leer los principios</Button></div>
 		</div>
 		<ol class="grid flex-[1_1_560px] grid-cols-1 gap-x-8 lg:grid-cols-2">
 			{

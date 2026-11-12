@@ -1,8 +1,8 @@
 import { type ReactNode, useId } from "react";
 import { cx } from "../internal/cx.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import { keyText, STREAM_ROOT, stableKeys, TABULAR } from "../internal/stream.js";
 import { Button, type ButtonHierarchy } from "./Button.js";
-import { type IconName, iconSlot } from "./Icon.js";
 
 export interface ChannelPanelRow {
 	label: ReactNode;
@@ -13,7 +13,7 @@ export interface ChannelPanelAction {
 	label: ReactNode;
 	href?: string;
 	/** Icono tras el texto. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** @default "secondary" */
 	hierarchy?: ButtonHierarchy;
 	/** Sin `href`, lo que hace el botón (ampliación sobre la guía). */
@@ -23,7 +23,7 @@ export interface ChannelPanelAction {
 export interface ChannelPanelProps {
 	/** En Bricolage Grotesque 24/32 semibold. */
 	title: ReactNode;
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Párrafos; no más de cuatro líneas cada uno. */
 	children?: ReactNode;
 	/** Filas de datos: horario, normas cortas o enlaces. */

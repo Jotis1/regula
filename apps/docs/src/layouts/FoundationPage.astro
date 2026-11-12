@@ -3,6 +3,7 @@
 // «En esta página» (columna en escritorio, desplegable en móvil), el contenido y anterior/siguiente en el orden de la
 // guía (catálogo). Sin JavaScript el índice es una lista de enlaces; con él, marca la sección que se lee (design §7).
 import { Breadcrumbs, Button, Pager } from "@jotis-me/react";
+import { Edit02 } from "@untitledui/icons";
 import { FOUNDATIONS } from "../lib/catalog";
 import { TOC_LINK } from "../lib/toc";
 import Base from "./Base.astro";
@@ -81,7 +82,7 @@ const tocLink = TOC_LINK;
 				<Button
 					hierarchy="link-gray"
 					size="sm"
-					iconLeading="edit-02"
+					iconLeading={Edit02}
 					href={edit}
 				>
 					Proponer un cambio

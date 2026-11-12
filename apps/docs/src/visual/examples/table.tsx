@@ -1,14 +1,9 @@
 // Vista previa de Table: la de siempre y las cuatro tablas del Figma (miembros del equipo, empresas, ventas y archivos),
 // con los tipos de celda, el orden, la ayuda, la selección y las filas alternas.
 
-import {
-	FileDesignFig,
-	FileDocumentDocx,
-	FileDocumentPdf,
-	FileImageJpg,
-	FileMediaMp3,
-} from "@jotis-me/icons/files";
 import { Badge, Button, Pagination, Table } from "@jotis-me/react";
+import { FileIcon } from "@untitledui/file-icons";
+import { Download01, Edit02, Trash01, UploadCloud02 } from "@untitledui/icons";
 
 type Movimiento = { c: string; f: string; ok: boolean; i: string };
 
@@ -19,7 +14,7 @@ function Movimientos() {
 			count="240"
 			description="Octubre de 2026."
 			actions={
-				<Button hierarchy="secondary" iconLeading="download-01" size="sm">
+				<Button hierarchy="secondary" iconLeading={Download01} size="sm">
 					Exportar
 				</Button>
 			}
@@ -75,8 +70,8 @@ const miembros = [
 	correo: `${usuario}@jotis.me`,
 	equipos: { labels: equipos.slice(0, Number(n)) },
 	acciones: [
-		{ icon: "trash-01", label: `Borrar a ${nombre}` },
-		{ icon: "edit-02", label: `Editar a ${nombre}` },
+		{ icon: Trash01, label: `Borrar a ${nombre}` },
+		{ icon: Edit02, label: `Editar a ${nombre}` },
 	],
 }));
 
@@ -131,11 +126,11 @@ const ventas = [
 }));
 
 const archivos = [
-	["Requisitos técnicos.pdf", "200 KB", <FileDocumentPdf key="i" />, "4 ene 2027"],
-	["Captura del panel.jpg", "720 KB", <FileImageJpg key="i" />, "4 ene 2027"],
-	["Prototipo final.fig", "4,2 MB", <FileDesignFig key="i" />, "6 ene 2027"],
-	["Guía de diseño.docx", "400 KB", <FileDocumentDocx key="i" />, "8 ene 2027"],
-	["Llamada de arranque.mp3", "18,6 MB", <FileMediaMp3 key="i" />, "4 ene 2027"],
+	["Requisitos técnicos.pdf", "200 KB", <FileIcon type="pdf" key="i" />, "4 ene 2027"],
+	["Captura del panel.jpg", "720 KB", <FileIcon type="jpg" key="i" />, "4 ene 2027"],
+	["Prototipo final.fig", "4,2 MB", <FileIcon type="fig" key="i" />, "6 ene 2027"],
+	["Guía de diseño.docx", "400 KB", <FileIcon type="docx" key="i" />, "8 ene 2027"],
+	["Llamada de arranque.mp3", "18,6 MB", <FileIcon type="mp3" key="i" />, "4 ene 2027"],
 ].map(([nombre, peso, icono, fecha]) => ({
 	id: String(nombre),
 	archivo: { name: nombre, size: peso, icon: icono },
@@ -205,7 +200,7 @@ export function TableExample() {
 						<Button hierarchy="secondary" size="sm">
 							Descargar todo
 						</Button>
-						<Button size="sm" iconLeading="upload-cloud-02">
+						<Button size="sm" iconLeading={UploadCloud02}>
 							Subir
 						</Button>
 					</>

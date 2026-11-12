@@ -7,7 +7,6 @@ import net from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import tls from "node:tls";
-import { iconNames } from "@jotis-me/icons";
 import * as react from "@jotis-me/react";
 import { catalogComponents, slugOf } from "../../../apps/docs/src/lib/catalog";
 import { componentReadme } from "../src/content";
@@ -168,15 +167,16 @@ describe("tokens, fuentes y assets", () => {
 			expect(existsSync(join(out, "project", font.file)), font.file).toBe(true);
 	});
 
-	it("los grupos de assets salen del repo, con los iconos en el orden de @jotis-me/icons", () => {
+	it("los grupos de assets salen del repo; los iconos de línea, los de archivo y las banderas no son assets", () => {
 		const names = (group: string) => manifest.assets.filter((a) => a.group === group).map((a) => a.name);
-		expect(names("Icons")).toEqual(iconNames.map((n) => `${n}.svg`));
+		expect(manifest.assets.map((a) => a.group)).not.toContain("Icons");
 		expect(names("App icons")).toContain("scaena-default.svg");
 		expect(names("Hand-drawn").length).toBe(87);
 		expect(names("Patterns").length).toBe(4);
-		const icon = text("assets/Icons/plus.svg");
-		expect(icon).toContain("#525252");
-		expect(icon).not.toContain("currentColor");
+		expect(names("Pagos").length).toBe(112);
+		expect(names("Cursores").length).toBe(50);
+		const icon = text("assets/Pagos/visa-md.svg");
+		expect(icon).toContain('xmlns="http://www.w3.org/2000/svg"');
 		expect(text("assets/Hand-drawn/arrow-01.svg")).toContain("#171717");
 	});
 
@@ -218,8 +218,8 @@ describe("índice", () => {
 	});
 
 	it("con el publicado: conserva sus claves y Logos, reutiliza un blob igual y exige subir uno distinto", async () => {
-		const plus = manifest.assets.find((a) => a.group === "Icons" && a.name === "plus.svg");
-		if (!plus) throw new Error("falta plus.svg");
+		const plus = manifest.assets.find((a) => a.group === "Pagos" && a.name === "visa-md.svg");
+		if (!plus) throw new Error("falta visa-md.svg");
 		const published = {
 			...index(),
 			createdOnFiles: { v: 1, at: "2026-10-29T17:40:00Z" },
@@ -231,11 +231,11 @@ describe("índice", () => {
 					order: ["logo.svg"],
 					files: { "logo.svg": { name: "logo.svg", blob: "L1" } },
 				},
-				Icons: {
-					name: "Icons",
+				Pagos: {
+					name: "Pagos",
 					tile: "xs",
-					order: ["plus.svg"],
-					files: { "plus.svg": { name: "plus.svg", blob: "B1" } },
+					order: ["visa-md.svg"],
+					files: { "visa-md.svg": { name: "visa-md.svg", blob: "B1" } },
 				},
 			},
 		};
@@ -257,7 +257,7 @@ describe("índice", () => {
 			expect(i.extra).toBe("se conserva");
 			expect(i.createdOnFiles.at).toBe("2026-10-29T17:40:00Z");
 			expect(i.assetGroups.Logos.files["logo.svg"].blob).toBe("L1");
-			expect(i.assetGroups.Icons.files["plus.svg"].blob).toBe("B1");
+			expect(i.assetGroups.Pagos.files["visa-md.svg"].blob).toBe("B1");
 			expect(m.uploads).toEqual([]);
 			// El mismo nombre con otro contenido: el blob publicado no vale y hay que subir
 			await expect(
@@ -270,7 +270,7 @@ describe("índice", () => {
 					blobs,
 					assetShas: { B1: "otro" },
 				}),
-			).rejects.toThrow("Icons/plus.svg");
+			).rejects.toThrow("Pagos/visa-md.svg");
 		} finally {
 			rmSync(again, { recursive: true, force: true });
 		}

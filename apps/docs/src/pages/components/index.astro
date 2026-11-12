@@ -2,12 +2,12 @@
 // Índice de componentes (design §10): los grupos del catálogo en su orden, cada componente en una card con su vista
 // previa, su descripción de la ficha y el enlace a su página. Los cuatro grupos de Stream van al final, bajo su sección.
 //
-// La vista previa es la muestra del componente pintada en vivo en el servidor (LivePreview.astro, change
-// live-component-previews); ya no son fotos de las capturas aprobadas.
+// La vista previa es una captura WebP de lo más característico del componente (ShowcaseImage.astro, change
+// adopt-untitled-ui-icons), en claro y en oscuro; la hace scripts/capture-showcases.ts.
 import { getCollection } from "astro:content";
 import { Breadcrumbs, LinkCard } from "@jotis-me/react";
 import InlineCode from "../../components/InlineCode.astro";
-import LivePreview from "../../components/LivePreview.astro";
+import ShowcaseImage from "../../components/ShowcaseImage.astro";
 import Base from "../../layouts/Base.astro";
 import { COMPONENT_GROUPS, labelOf, slugOf } from "../../lib/catalog";
 
@@ -22,6 +22,8 @@ const sections = [
 	{ id: "stream", title: "Stream", groups: COMPONENT_GROUPS.filter((g) => g.section === "stream") },
 ] as const;
 const total = pages.length;
+// Las tres primeras cards, a la vista al cargar, no son perezosas: una de ellas suele ser el LCP
+const eagerSet = new Set((COMPONENT_GROUPS[0]?.components ?? []).slice(0, 3));
 const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length, 0);
 ---
 
@@ -54,7 +56,7 @@ const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length,
 								{group.components.map((name) => (
 									<LinkCard as="li" href={`/components/${slugOf(name)}/`} title={labelOf(name)}>
 										{/* La vista previa va fuera del enlace (HTML válido y sin nada interactivo dentro de él): LinkCard estira el enlace sobre toda la card */}
-										<LivePreview slot="preview" name={name} />
+										<ShowcaseImage slot="preview" name={name} slug={slugOf(name)} eager={eagerSet.has(name)} />
 										<InlineCode slot="description" text={descriptions.get(name) ?? ""} />
 									</LinkCard>
 								))}

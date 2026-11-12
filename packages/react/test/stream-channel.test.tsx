@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { ArrowRight, Calendar, User01 } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { ChannelBanner, ChannelPanel } from "../src/index.js";
@@ -38,7 +39,7 @@ describe("frontera servidor/cliente", () => {
 describe("ChannelPanel", () => {
 	it("320px por defecto, en oscuro, con nombre por su título en Bricolage 24/32", () => {
 		render(
-			<ChannelPanel title="Sobre el canal" icon="user-01">
+			<ChannelPanel title="Sobre el canal" icon={User01}>
 				<p>Directos tranquilos.</p>
 				<p>Si es tu primera vez, siéntate.</p>
 			</ChannelPanel>,
@@ -67,7 +68,7 @@ describe("ChannelPanel", () => {
 		const { rerender } = render(
 			<ChannelPanel
 				title="Sobre el canal"
-				action={{ label: "Ver todos los enlaces", href: "/enlaces", icon: "arrow-right" }}
+				action={{ label: "Ver todos los enlaces", href: "/enlaces", icon: ArrowRight }}
 			/>,
 		);
 		const link = screen.getByRole("link", { name: "Ver todos los enlaces" });
@@ -82,7 +83,7 @@ describe("ChannelPanel", () => {
 
 	it("pasa axe en claro y oscuro", async () => {
 		await expectAccessibleInThemes(
-			<ChannelPanel title="Horario" icon="calendar" rows={rows} action={{ label: "Más", href: "#" }}>
+			<ChannelPanel title="Horario" icon={Calendar} rows={rows} action={{ label: "Más", href: "#" }}>
 				<p>Directos tranquilos.</p>
 			</ChannelPanel>,
 		);

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import {
 	type AppIconHue,
 	type AppIconShape,
@@ -5,8 +6,7 @@ import {
 	type AppName,
 	appIcon,
 	apps,
-} from "@jotis-me/icons/app-icon";
-import type { CSSProperties } from "react";
+} from "../app-icon/index.js";
 
 export type { AppIconHue, AppIconShape, AppIconVariant, AppName };
 

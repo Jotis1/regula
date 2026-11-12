@@ -1,8 +1,9 @@
-// Galería de logos de terceros (`@jotis-me/icons/logos`): buscador por nombre, filtro por set, recuento y el panel del
+// Galería de logos de terceros (`@jotis-me/assets/logos`): buscador por nombre, filtro por set, recuento y el panel del
 // logo elegido con su versión en color y en gris y su código. Recibe solo nombres y URL de los SVG, no los 332
 // componentes: la isla pesa lo mismo que la de iconos. Los grises de un color (currentColor) se pintan con
 // `mask-image`, porque un <img> no hereda el color del texto.
 import { Button, ButtonGroup, CodeSnippet, EmptyState, Input } from "@jotis-me/react";
+import { Copy01, SearchLg, SearchMd, XClose } from "@untitledui/icons";
 import { useEffect, useRef, useState } from "react";
 
 export type LogoSetName = "app" | "integration" | "social";
@@ -63,18 +64,18 @@ function ColorChip({ url, size }: { url: string; size: number }) {
 	);
 }
 
-/** El código del logo: el componente de `@jotis-me/icons/logos`, el SVG importado (Astro sin React) y el SVG en bruto. */
+/** El código del logo: el componente de `@jotis-me/assets/logos`, el SVG importado (Astro sin React) y el SVG en bruto. */
 export function logoCode(logo: LogoEntry, svg: string | null) {
 	const component = logoComponent(logo.set, logo.name);
 	const file = `${logo.set}/${logo.name}`;
 	return [
 		{
 			label: "React",
-			code: `import { ${component} } from "@jotis-me/icons/logos";\n\n<${component} size={24} title="${logo.name}" />`,
+			code: `import { ${component} } from "@jotis-me/assets/logos";\n\n<${component} size={24} title="${logo.name}" />`,
 		},
 		{
 			label: "Importar SVG",
-			code: `---\nimport logo from "@jotis-me/icons/logos/${file}.svg?raw";\n---\n\n<Fragment set:html={logo} />`,
+			code: `---\nimport logo from "@jotis-me/assets/logos/${file}.svg?raw";\n---\n\n<Fragment set:html={logo} />`,
 		},
 		{ label: "SVG", code: svg ?? "Cargando…" },
 	];
@@ -132,14 +133,14 @@ function Panel({ logo, onClose }: { logo: LogoEntry; onClose?: () => void }) {
 							) : null}
 						</p>
 					</div>
-					<Button hierarchy="secondary" size="sm" iconLeading="copy-01" data-copy={logo.name}>
+					<Button hierarchy="secondary" size="sm" iconLeading={Copy01} data-copy={logo.name}>
 						Copiar nombre
 					</Button>
 					{onClose && (
 						<Button
 							hierarchy="tertiary"
 							size="sm"
-							iconOnly="x-close"
+							iconOnly={XClose}
 							label="Cerrar"
 							onClick={onClose}
 						/>
@@ -186,7 +187,7 @@ export default function LogoGallery({ logos }: { logos: LogoEntry[] }) {
 					<Input
 						id="logo-search"
 						label="Buscar logo"
-						icon="search-md"
+						icon={SearchMd}
 						type="search"
 						autoComplete="off"
 						placeholder="github, figma, slack…"
@@ -239,7 +240,7 @@ export default function LogoGallery({ logos }: { logos: LogoEntry[] }) {
 					{shown === 0 && (
 						<div className="py-12">
 							<EmptyState
-								icon="search-lg"
+								icon={SearchLg}
 								title="Ese logo no está"
 								description="Ningún logo se llama así en este set. Prueba con el nombre de la marca en minúsculas, o con todos los sets."
 							/>

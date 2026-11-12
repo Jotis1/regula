@@ -1,8 +1,9 @@
+import { Check } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { Keyboard, Text } from "react-aria-components";
-import { Icon, type IconName, iconSlot } from "../components/Icon.js";
 import { Kbd } from "../components/Kbd.js";
 import { cx } from "./cx.js";
+import { type IconProp, iconSlot } from "./icon.js";
 
 /** Panel de un menú de opciones (`Dropdown`, `ContextMenu`): `bg-primary_alt`, `radius-lg`, `shadow-lg` y filo `border-secondary_alt`. */
 export const MENU_PANEL =
@@ -18,7 +19,7 @@ export const menuItemClasses = (danger?: boolean) =>
 	);
 
 interface MenuItemContentProps {
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	label: ReactNode;
 	shortcut?: string;
 	/** Check de la opción elegida a la derecha (menú de elección única de `Dropdown`). */
@@ -48,7 +49,7 @@ export function MenuItemContent({ icon, label, shortcut, checked, trailing, lead
 			<Keyboard className="hidden" />
 			{/* El check de la opción elegida: decorativo, el estado ya lo dice aria-checked. El `!` es para que no
 			    lo pise el color de iconos de la opción (`[&_svg]:text-fg-quaternary`) */}
-			{checked ? <Icon name="check" size={16} className="flex-none text-fg-brand-primary!" /> : null}
+			{checked ? <Check size={16} className="flex-none text-fg-brand-primary!" /> : null}
 			{trailing}
 		</>
 	);

@@ -1,14 +1,15 @@
 import { render, screen, within } from "@testing-library/react";
+import { HomeLine, Stars02, User01, Users01 } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { ProgressSteps } from "../src/index.js";
 import { expectAccessibleInThemes } from "./helpers.js";
 
 const STEPS = [
-	{ title: "Tus datos", description: "Nombre y correo", icon: "user-01" as const },
-	{ title: "Tu empresa", description: "Web y ubicación", icon: "home-line" as const },
-	{ title: "Tu equipo", description: "Empieza a colaborar", icon: "users-01" as const },
-	{ title: "Tus redes", description: "Publicación automática", icon: "stars-02" as const },
+	{ title: "Tus datos", description: "Nombre y correo", icon: User01 },
+	{ title: "Tu empresa", description: "Web y ubicación", icon: HomeLine },
+	{ title: "Tu equipo", description: "Empieza a colaborar", icon: Users01 },
+	{ title: "Tus redes", description: "Publicación automática", icon: Stars02 },
 ];
 
 describe("ProgressSteps", () => {

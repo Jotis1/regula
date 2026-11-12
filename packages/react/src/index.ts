@@ -1,3 +1,13 @@
+// Geometría del icono de app, también como entrada sin React: `@jotis-me/react/app-icon`
+export {
+	type AppIconGeometry,
+	type AppIconOptions,
+	type AppIconPart,
+	type AppInfo,
+	appIconSvg,
+	hues,
+	validateApps,
+} from "./app-icon/index.js";
 export { Accordion, type AccordionItem, type AccordionProps } from "./components/Accordion.js";
 export {
 	type ActivityDivider,
@@ -226,7 +236,6 @@ export {
 	type HeaderNavType,
 } from "./components/HeaderNav.js";
 export { HelpIcon, type HelpIconProps } from "./components/HelpIcon.js";
-export { Icon, type IconName, type IconProps } from "./components/Icon.js";
 export {
 	InlineCTA,
 	type InlineCTAFeature,
@@ -461,6 +470,8 @@ export {
 	formatNumber,
 	formatPercent,
 } from "./internal/format.js";
+// Las props de icono aceptan un componente (`Plus` de `@untitledui/icons`) o un nodo
+export type { IconComponent, IconComponentProps, IconProp } from "./internal/icon.js";
 export {
 	NavMenu,
 	type NavMenuCardProps,

@@ -11,7 +11,7 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@jotis-me/icons": "workspace:*",
+		"@jotis-me/assets": "workspace:*",
 		"@jotis-me/react": "workspace:*",
 		"@jotis-me/tokens": "workspace:*",
 		"@playwright/test": "^1.64.1",

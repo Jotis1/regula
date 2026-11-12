@@ -7,8 +7,10 @@ El sistema de diseño de la suite jotis.me (Vinculum, Pecunia, Emptor, Ornatus�
 | Paquete            | Qué trae                                                           |
 | ------------------ | ------------------------------------------------------------------ |
 | `@jotis-me/tokens` | Tokens semánticos en claro y oscuro, tema de Tailwind v4 y fuentes |
-| `@jotis-me/icons`  | Iconos de línea en React y SVG, iconos de app y adornos            |
-| `@jotis-me/react`  | Los componentes de la guía para Next.js y Astro                    |
+| `@jotis-me/react`  | Los componentes de la guía para Next.js y Astro, y el icono de app |
+| `@jotis-me/assets` | Logos, iconos de pago, cursores, trazos a mano y favicons de app   |
+
+Los iconos de línea, los de archivo y las banderas son los de [Untitled UI](https://www.untitledui.com/icons) (`@untitledui/icons`, `@untitledui/file-icons` y `@untitledui/country-flags`).
 
 ## Desarrollo
 

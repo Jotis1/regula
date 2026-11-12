@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { HomeLine } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Breadcrumbs, Pagination, type PaginationType } from "../src/index.js";
@@ -12,7 +13,7 @@ const BEFORE: { breadcrumbs: string; pagination: string } = JSON.parse(
 );
 
 const trail = [
-	{ label: "Inicio", href: "/", icon: "home-line" as const },
+	{ label: "Inicio", href: "/", icon: HomeLine },
 	{ label: "Ajustes", href: "/ajustes/" },
 	{ label: "Sin enlace" },
 	{ label: "Equipo" },
@@ -20,7 +21,7 @@ const trail = [
 
 describe("Breadcrumbs: el de siempre", () => {
 	it("sin las props nuevas el HTML es el de antes", () => {
-		expect(renderToStaticMarkup(<Breadcrumbs items={trail} />)).toBe(BEFORE.breadcrumbs);
+		expect(renderToStaticMarkup(<Breadcrumbs items={trail} />)).toMatchBefore(BEFORE.breadcrumbs);
 	});
 });
 
@@ -29,7 +30,7 @@ describe("Breadcrumbs: divisor y tipos", () => {
 		const { container } = render(<Breadcrumbs items={trail} divider="slash" />);
 		const separators = container.querySelectorAll('li[aria-hidden="true"]');
 		expect(separators).toHaveLength(3);
-		for (const s of separators) expect(s.querySelector("svg path")?.getAttribute("d")).toBe("M7 22L17 2");
+		for (const s of separators) expect(s.querySelector("svg path")?.getAttribute("d")).toBe("M7 22 17 2");
 		expect(screen.getByText("Equipo").getAttribute("aria-current")).toBe("page");
 	});
 
@@ -93,7 +94,9 @@ describe("Breadcrumbs: divisor y tipos", () => {
 
 describe("Pagination: la de siempre", () => {
 	it("sin las props nuevas el HTML es el de antes", () => {
-		expect(renderToStaticMarkup(<Pagination total={10} defaultPage={5} />)).toBe(BEFORE.pagination);
+		expect(renderToStaticMarkup(<Pagination total={10} defaultPage={5} />)).toMatchBefore(
+			BEFORE.pagination,
+		);
 	});
 });
 

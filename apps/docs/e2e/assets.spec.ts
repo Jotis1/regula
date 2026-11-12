@@ -1,10 +1,14 @@
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Page, test } from "@playwright/test";
+import * as flags from "@untitledui/country-flags";
 
 // Las galerías de banderas, pagos, archivos y cursores son la misma isla (`AssetGallery`) que la de iconos.
-const dist = (dir: string) => join(import.meta.dirname, "../../../packages/icons/dist", dir);
+const dist = (dir: string) => join(import.meta.dirname, "../../../packages/assets/dist", dir);
 const count = (dir: string) => readdirSync(dist(dir)).filter((f) => f.endsWith(".svg")).length;
+// Banderas y tipos de archivo son los de Untitled UI: su recuento sale de los propios paquetes
+const flagCount = Object.keys(flags).filter((k) => /^Flag[A-Z]/.test(k)).length;
+const fileTypes = 52;
 
 const GALLERIES = [
 	{
@@ -12,7 +16,7 @@ const GALLERIES = [
 		path: "/icons/flags/",
 		prefix: "flag",
 		noun: "banderas",
-		entries: count("flags") / 3,
+		entries: flagCount,
 		label: "Buscar bandera",
 	},
 	{
@@ -28,7 +32,7 @@ const GALLERIES = [
 		path: "/icons/files/",
 		prefix: "file",
 		noun: "iconos de archivo",
-		entries: 55,
+		entries: fileTypes,
 		label: "Buscar tipo de archivo",
 	},
 	{
@@ -77,45 +81,53 @@ for (const g of GALLERIES) {
 	});
 }
 
-test("banderas: buscar «spain», elegirla y ver sus tres formas con su código; se copia el nombre", async ({
-	page,
-	context,
-}) => {
+test("banderas: buscar «españa», elegirla y ver su código; se copia el nombre", async ({ page, context }) => {
 	await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 	await page.setViewportSize({ width: 1440, height: 900 });
 	const g = GALLERIES[0];
 	await ready(page, g);
-	await page.getByLabel(g.label).fill("spain");
+	await page.getByLabel(g.label).fill("españa");
 	await expect(page.locator("[data-item]")).toHaveCount(1);
-	await page.locator('[data-select="spain"]').click();
+	await page.locator('[data-select="es"]').click();
 	const panel = page.getByRole("complementary", { name: "Bandera elegida" });
-	await expect(panel.locator("#flag-detail-name")).toHaveText("spain");
-	for (const f of ["Círculo", "Cuadrado", "Rectángulo"])
-		await expect(panel.getByText(f, { exact: true })).toBeVisible();
+	await expect(panel.locator("#flag-detail-name")).toContainText("es");
+	await expect(panel.locator("#flag-detail-name")).toContainText("España");
 	const code = panel.getByRole("tabpanel");
-	await expect(code).toContainText(
-		'import { FlagSpainCircle, FlagSpainSquare, FlagSpainRectangle } from "@jotis-me/icons/flags";',
-	);
-	await panel.getByRole("tab", { name: "Importar SVG" }).click();
-	await expect(code).toContainText('from "@jotis-me/icons/flags/spain-circle.svg?raw"');
+	await expect(code).toContainText('import { FlagEs } from "@untitledui/country-flags";');
+	await expect(code).toContainText("<FlagEs size={24} />");
+	await expect(panel.getByRole("tab", { name: "Importar SVG" })).toHaveCount(0);
 	await panel.getByRole("button", { name: "Copiar nombre" }).click();
-	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("spain");
+	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("es");
 });
 
-test("banderas: la forma de la vista previa cambia las imágenes de la rejilla", async ({ page }) => {
+test("banderas: se buscan también por su código y sin tildes", async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await ready(page, GALLERIES[0]);
-	await page.getByLabel("Buscar bandera").fill("spain");
-	const img = page.locator('[data-select="spain"] img');
-	await expect(img).toHaveAttribute("src", /spain-circle/);
-	await page
-		.getByRole("group", { name: "Forma de la vista previa" })
-		.getByRole("button", { name: "Cuadrado" })
-		.click();
-	await expect(img).toHaveAttribute("src", /spain-square/);
+	await page.getByLabel("Buscar bandera").fill("japon");
+	await expect(page.locator('[data-select="jp"]')).toBeVisible();
+	await page.getByLabel("Buscar bandera").fill("jp");
+	await expect(page.locator('[data-select="jp"] img')).toHaveAttribute("src", /\/flags\/jp\.svg/);
 });
 
-test("pagos: «visa» tiene sm y md, y su código importa los dos de @jotis-me/icons/payments", async ({
+test("banderas: la misma bandera dos veces en una página se ve entera (los id del recorte se repiten)", async ({
+	page,
+	request,
+}) => {
+	// El SVG de la bandera lleva un `clipPath` con id fijo (`ES_svg__a`): dos copias en línea comparten id
+	const svg = await (await request.get("/icons/svg/flags/es.svg")).text();
+	expect((svg.match(/id="ES_svg__a"/g) ?? []).length).toBe(1);
+	const big = svg.replace('width="24" height="24"', 'width="48" height="48"');
+	await page.setContent(
+		`<body style="margin:0"><div id="a" style="width:48px;height:48px">${big}</div><div id="b" style="width:48px;height:48px">${big}</div></body>`,
+	);
+	const first = await page.locator("#a").screenshot();
+	const second = await page.locator("#b").screenshot();
+	expect(second.equals(first)).toBe(true);
+	// Y no es un cuadro vacío: tiene los colores de la bandera, no solo transparencia
+	expect(first.length).toBeGreaterThan(300);
+});
+
+test("pagos: «visa» tiene sm y md, y su código importa los dos de @jotis-me/assets/payments", async ({
 	page,
 }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
@@ -126,12 +138,12 @@ test("pagos: «visa» tiene sm y md, y su código importa los dos de @jotis-me/i
 	const panel = page.getByRole("complementary", { name: "Método de pago elegido" });
 	await expect(panel.locator("#payment-detail-name")).toHaveText("visa");
 	await expect(panel.getByRole("tabpanel")).toContainText(
-		'import { PaymentVisaSm, PaymentVisaMd } from "@jotis-me/icons/payments";',
+		'import { PaymentVisaSm, PaymentVisaMd } from "@jotis-me/assets/payments";',
 	);
 	await expect(panel).toContainText("Cada marca es de su dueño");
 });
 
-test("archivos: «pdf» da el genérico y el de documento, y filtrar por Carpetas deja las 4 carpetas", async ({
+test("archivos: «pdf» da el de documento y «pdf-simple», y su código usa FileIcon con las tres variantes", async ({
 	page,
 }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
@@ -141,20 +153,21 @@ test("archivos: «pdf» da el genérico y el de documento, y filtrar por Carpeta
 	const names = await page
 		.locator("[data-item]")
 		.evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.item as string).sort());
-	expect(names).toEqual(["document-pdf", "generic-pdf"]);
-	await page.locator('[data-select="document-pdf"]').click();
+	expect(names).toEqual(["pdf", "pdf-simple"]);
+	await page.locator('[data-select="pdf"]').click();
 	const panel = page.getByRole("complementary", { name: "Icono de archivo elegido" });
-	await expect(panel.getByRole("tabpanel")).toContainText(
-		'import { FileDocumentPdf, FileDocumentPdfGray, FileDocumentPdfSolid } from "@jotis-me/icons/files";',
-	);
+	const code = panel.getByRole("tabpanel");
+	await expect(code).toContainText('import { FileIcon } from "@untitledui/file-icons";');
+	for (const tag of [
+		'<FileIcon type="pdf" size={40} />',
+		'<FileIcon type="pdf" variant="gray" size={40} />',
+		'<FileIcon type="pdf" variant="solid" size={40} />',
+	])
+		await expect(code).toContainText(tag);
 	await page.getByLabel(g.label).fill("");
 	await page.getByRole("button", { name: /Tipo/ }).click();
-	await page.getByRole("option", { name: /^Carpetas/ }).click();
-	await expect(page.locator("[data-item]")).toHaveCount(4);
-	await page.locator('[data-select="folder-brand"]').click();
-	await expect(panel.getByRole("tabpanel")).toContainText(
-		'import { FolderBrand, FolderBrandOpen } from "@jotis-me/icons/files";',
-	);
+	await page.getByRole("option", { name: /^Archivos comprimidos|^Comprimidos/ }).click();
+	await expect(page.locator("[data-item]")).toHaveCount(2);
 });
 
 test("cursores: «hand-grab» ofrece su código de React y la regla de CSS con la URL del SVG", async ({
@@ -167,11 +180,11 @@ test("cursores: «hand-grab» ofrece su código de React y la regla de CSS con l
 	await page.locator('[data-select="hand-grab"]').click();
 	const panel = page.getByRole("complementary", { name: "Cursor elegido" });
 	await expect(panel.getByRole("tabpanel")).toContainText(
-		'import { CursorHandGrab } from "@jotis-me/icons/cursors";',
+		'import { CursorHandGrab } from "@jotis-me/assets/cursors";',
 	);
 	await panel.getByRole("tab", { name: "CSS" }).click();
 	await expect(panel.getByRole("tabpanel")).toContainText(
-		'cursor: url("@jotis-me/icons/cursors/hand-grab.svg") 6 4, grab;',
+		'cursor: url("@jotis-me/assets/cursors/hand-grab.svg") 6 4, grab;',
 	);
 	await expect(panel).toContainText("El SVG no lleva el punto activo");
 });
@@ -180,11 +193,11 @@ test("en móvil, una galería nueva abre la hoja y no desborda", async ({ page }
 	await page.setViewportSize({ width: 390, height: 844 });
 	const g = GALLERIES[0];
 	await ready(page, g);
-	await page.getByLabel(g.label).fill("japan");
-	await page.locator('[data-select="japan"]').click();
-	const sheet = page.getByRole("dialog", { name: "japan" });
+	await page.getByLabel(g.label).fill("japón");
+	await page.locator('[data-select="jp"]').click();
+	const sheet = page.getByRole("dialog", { name: /jp/ });
 	await expect(sheet).toBeVisible();
-	await expect(sheet.getByRole("tabpanel")).toContainText("FlagJapanCircle");
+	await expect(sheet.getByRole("tabpanel")).toContainText("FlagJp");
 	await page.keyboard.press("Escape");
 	await expect(sheet).toBeHidden();
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);

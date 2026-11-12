@@ -1,5 +1,6 @@
 "use client";
 
+import { UploadCloud02 } from "@untitledui/icons";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { cx } from "../internal/cx.js";
 import { ALERT_BASE, type AlertProps, alertBody } from "./Alert.js";
@@ -71,7 +72,7 @@ export function Notification({
 	const lead = avatar ? (
 		<Avatar size="md" {...avatar} />
 	) : progress !== undefined && props.icon === undefined ? (
-		<FeaturedIcon icon="upload-cloud-02" color="gray" size="md" variant="modern" />
+		<FeaturedIcon icon={UploadCloud02} color="gray" size="md" variant="modern" />
 	) : undefined;
 	const extra =
 		progress !== undefined ? (

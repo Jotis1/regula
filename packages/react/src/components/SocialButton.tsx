@@ -11,7 +11,7 @@ interface SocialButtonBase {
 	/** La red: decide el texto por defecto y, con `theme="brand"`, el fondo. */
 	provider: SocialProvider;
 	/**
-	 * El logo, de `@jotis-me/icons/logos` (el paquete no los importa). Con `brand`, los `…LogoGray` salen en blanco
+	 * El logo, de `@jotis-me/assets/logos` (el paquete no los importa). Con `brand`, los `…LogoGray` salen en blanco
 	 * (salvo Google y Figma, que van en color); con `color`, los de color (Apple y X, los `…LogoGray`, que toman el
 	 * color del texto); con `gray`, los `…LogoGray`.
 	 */

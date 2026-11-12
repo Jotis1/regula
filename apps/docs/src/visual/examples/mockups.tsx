@@ -17,6 +17,7 @@ import {
 	TransparencyGrid,
 	VideoPlayer,
 } from "@jotis-me/react";
+import { BarChart01, Download01, Mail01, Stars02, Users01 } from "@untitledui/icons";
 
 const PATTERNS: [BackgroundPatternName, BackgroundPatternMask, "sm" | "md"][] = [
 	["grid", "radial", "md"],
@@ -52,7 +53,7 @@ export function BackgroundPatternExample() {
 								placeItems: "center",
 							}}
 						>
-							<FeaturedIcon icon="stars-02" variant="modern" color="gray" size="lg" />
+							<FeaturedIcon icon={Stars02} variant="modern" color="gray" size="lg" />
 						</div>
 					</div>
 					<p className="m-0 font-body text-sm text-tertiary" style={{ marginTop: 8 }}>
@@ -126,7 +127,7 @@ export function BrowserFrameExample() {
 			<BrowserFrame variant="minimal" url="vinculum.jotis.me" height={160}>
 				<div style={{ display: "grid", placeItems: "center", height: "100%" }}>
 					<EmptyState
-						icon="users-01"
+						icon={Users01}
 						title="Sin contactos todavía"
 						description="Importa un CSV o añade el primero."
 					/>
@@ -272,7 +273,7 @@ export function ScaledPreviewExample() {
 				className="rounded-lg border border-secondary"
 			>
 				<InlineCTA
-					icon="stars-02"
+					icon={Stars02}
 					title="Conecta tu banco"
 					description="Importa los movimientos cada día sin subir extractos."
 				/>
@@ -283,19 +284,19 @@ export function ScaledPreviewExample() {
 
 const NEWS = [
 	{
-		icon: "download-01",
+		icon: Download01,
 		title: "Importa tus extractos",
 		text: "Sube el archivo del banco y Regula lee los movimientos.",
 		tone: "bg-tertiary",
 	},
 	{
-		icon: "bar-chart-01",
+		icon: BarChart01,
 		title: "Categoriza solo",
 		text: "Aprende de tus cambios y ordena el gasto por ti.",
 		tone: "bg-secondary_alt",
 	},
 	{
-		icon: "mail-01",
+		icon: Mail01,
 		title: "Comparte informes",
 		text: "Envía un resumen mensual a quien lo necesite.",
 		tone: "bg-secondary",

@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { CurrencyEuro, File04, Inbox01, Moon01, Plus, Users01 } from "@untitledui/icons";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { CommandMenu, type TreeItem, TreeView } from "../src/index.js";
@@ -10,20 +11,20 @@ const groups = (onSelect = vi.fn()) => [
 		label: "Apps",
 		items: [
 			{
-				icon: "currency-euro" as const,
+				icon: CurrencyEuro,
 				label: "Pecunia",
 				description: "Gastos e ingresos",
 				shortcut: "G P",
 			},
-			{ icon: "users-01" as const, label: "Vinculum", description: "Contactos" },
-			{ icon: "file-04" as const, label: "Ornatus", description: "Lector Markdown", onSelect },
+			{ icon: Users01, label: "Vinculum", description: "Contactos" },
+			{ icon: File04, label: "Ornatus", description: "Lector Markdown", onSelect },
 		],
 	},
 	{
 		label: "Acciones",
 		items: [
-			{ icon: "plus" as const, label: "Nuevo gasto", shortcut: "⌘N" },
-			{ icon: "moon-01" as const, label: "Cambiar a modo oscuro", keywords: "tema noche" },
+			{ icon: Plus, label: "Nuevo gasto", shortcut: "⌘N" },
+			{ icon: Moon01, label: "Cambiar a modo oscuro", keywords: "tema noche" },
 		],
 	},
 ];
@@ -191,7 +192,7 @@ const tree: TreeItem[] = [
 			{ id: "leeme", label: "LEEME.md", meta: "2 KB" },
 		],
 	},
-	{ id: "arch", label: "Archivo", icon: "inbox-01" },
+	{ id: "arch", label: "Archivo", icon: Inbox01 },
 ];
 
 const row = (name: string) => screen.getByRole("row", { name: new RegExp(name) });

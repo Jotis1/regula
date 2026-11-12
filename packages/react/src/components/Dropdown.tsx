@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown, ChevronSelectorVertical, Plus, SearchLg } from "@untitledui/icons";
 import { isValidElement, type ReactElement, type ReactNode, useState } from "react";
 import {
 	Input as AriaInput,
@@ -16,15 +17,15 @@ import {
 	useFilter,
 } from "react-aria-components";
 import { cx } from "../internal/cx.js";
+import { DynIcon, type IconProp } from "../internal/icon.js";
 import { MENU_PANEL, MenuItemContent, menuItemClasses } from "../internal/menu-item.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Avatar, type AvatarStatus } from "./Avatar.js";
 import { Button } from "./Button.js";
-import { Icon, type IconName } from "./Icon.js";
 
 export interface DropdownAction {
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	label: ReactNode;
 	/** Atajo de teclado que se muestra a la derecha (solo texto; no lo registra). */
 	shortcut?: string;
@@ -238,7 +239,7 @@ export function Dropdown({
 				<MenuItemContent
 					// Los logos de integraciones son nodos de 20px dentro de la caja de 16px del icono
 					icon={
-						integrations && item.icon && typeof item.icon !== "string" ? (
+						integrations && isValidElement(item.icon) ? (
 							<span className="flex size-4 flex-none items-center justify-center [&>*]:size-5 [&>*]:shrink-0">
 								{item.icon}
 							</span>
@@ -309,7 +310,7 @@ export function Dropdown({
 				onAction={onAddAccount}
 				className={menuItemClasses()}
 			>
-				<MenuItemContent icon="plus" label={addAccountLabel} />
+				<MenuItemContent icon={Plus} label={addAccountLabel} />
 			</MenuItem>
 		) : null;
 
@@ -408,7 +409,7 @@ export function Dropdown({
 						className="mb-1 flex items-center gap-2 px-3 pt-2 pb-3 shadow-[inset_0_-1px_0_var(--border-secondary)]"
 					>
 						<span className="flex h-9 w-full items-center gap-2 rounded-lg bg-primary pr-2 pl-3 text-fg-quaternary shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)] focus-within:shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-brand),var(--focus-ring-shadow)]">
-							<Icon name="search-lg" size={16} />
+							<SearchLg size={16} />
 							<AriaInput
 								placeholder={searchPlaceholder}
 								className="min-w-0 flex-1 border-0 bg-transparent p-0 font-body text-sm text-primary outline-none placeholder:text-placeholder [&::-webkit-search-cancel-button]:hidden"
@@ -463,12 +464,8 @@ export function Dropdown({
 				)
 			) : null}
 			{accountStyle.name ? (
-				<Icon
-					name={
-						variant === "account-card-md" || breadcrumb
-							? "chevron-selector-vertical"
-							: "chevron-down"
-					}
+				<DynIcon
+					icon={variant === "account-card-md" || breadcrumb ? ChevronSelectorVertical : ChevronDown}
 					size={16}
 					className="flex-none text-fg-quaternary"
 				/>
@@ -480,10 +477,10 @@ export function Dropdown({
 			className="inline-flex cursor-pointer items-center gap-1 rounded-sm border-0 bg-transparent p-0 font-body text-sm font-semibold text-secondary outline-none hover:text-secondary_hover focus-visible:shadow-focus-ring"
 		>
 			{label ?? defaultStrings.options}
-			<Icon name="chevron-down" size={16} className="text-fg-quaternary" />
+			<ChevronDown size={16} className="text-fg-quaternary" />
 		</button>
 	) : (
-		<Button hierarchy="secondary" iconTrailing="chevron-down">
+		<Button hierarchy="secondary" iconTrailing={ChevronDown}>
 			{label ?? defaultStrings.options}
 		</Button>
 	);

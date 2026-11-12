@@ -1,7 +1,9 @@
 "use client";
 
+import { ChevronDown, ChevronUp, LogOut01, Menu01, SearchLg, Star01, XClose } from "@untitledui/icons";
 import { type ReactNode, useId, useState } from "react";
 import { cx } from "../internal/cx.js";
+import { DynIcon, type IconProp, iconSlot } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Avatar } from "./Avatar.js";
 import { AvatarLabel, type AvatarLabelProps } from "./AvatarLabel.js";
@@ -9,7 +11,6 @@ import { Badge } from "./Badge.js";
 import { Button } from "./Button.js";
 import { CloseButton } from "./CloseButton.js";
 import { Dropdown, type DropdownProps } from "./Dropdown.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
 import { Input } from "./Input.js";
 import { Kbd } from "./Kbd.js";
 import { ProgressBar } from "./ProgressBar.js";
@@ -17,7 +18,7 @@ import { ProgressCircle } from "./ProgressCircle.js";
 import { Tooltip } from "./Tooltip.js";
 
 export interface SidebarNavItem {
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	label: ReactNode;
 	href?: string;
 	/** Página actual: fondo `bg-secondary_hover` y `aria-current="page"`. */
@@ -143,7 +144,7 @@ function RowContent({ item, slim, chevron }: { item: Leaf; slim?: boolean; chevr
 			{item.shortcut ? <Kbd className={push()}>{item.shortcut}</Kbd> : null}
 			{item.trailing ? <span className={cx("flex shrink-0", push())}>{item.trailing}</span> : null}
 			{chevron ? (
-				<Icon name={chevron === "up" ? "chevron-up" : "chevron-down"} size={20} className={push()} />
+				<DynIcon icon={chevron === "up" ? ChevronUp : ChevronDown} size={20} className={push()} />
 			) : null}
 		</>
 	);
@@ -351,7 +352,7 @@ export function SidebarNav({
 				<Button
 					hierarchy="tertiary"
 					size="sm"
-					iconOnly="log-out-01"
+					iconOnly={LogOut01}
 					label={t.logout}
 					onClick={onLogout}
 				/>
@@ -362,7 +363,7 @@ export function SidebarNav({
 				<Button
 					hierarchy="tertiary"
 					size="sm"
-					iconOnly="log-out-01"
+					iconOnly={LogOut01}
 					label={t.logout}
 					onClick={onLogout}
 				/>
@@ -389,7 +390,7 @@ export function SidebarNav({
 					brand
 				)}
 				{type === "sections-subheadings" && search ? (
-					<Button hierarchy="tertiary" size="sm" iconOnly="search-lg" label={t.search} />
+					<Button hierarchy="tertiary" size="sm" iconOnly={SearchLg} label={t.search} />
 				) : null}
 			</div>
 		)
@@ -399,7 +400,7 @@ export function SidebarNav({
 		<>
 			{brandBlock}
 			{search && !slim && type !== "sections-subheadings" ? (
-				<Input size="md" icon="search-lg" placeholder={t.search} aria-label={t.search} />
+				<Input size="md" icon={SearchLg} placeholder={t.search} aria-label={t.search} />
 			) : null}
 			{list}
 			<div className={cx("mt-auto flex flex-col gap-6", slim && "items-center gap-4")}>
@@ -469,7 +470,7 @@ export function SidebarNav({
 					</div>
 					<Button
 						hierarchy="tertiary"
-						iconOnly={menuOpen ? "x-close" : "menu-01"}
+						iconOnly={menuOpen ? XClose : Menu01}
 						label={t.menu}
 						aria-expanded={menuOpen}
 						aria-controls={bodyId}
@@ -596,7 +597,7 @@ function NoticeCard({ icon, media, title, description, children, actions, ...car
 
 export interface SidebarUpgradeCardProps extends Omit<CardBase, "outline"> {
 	/** Icono del cuadro de arriba. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	title: ReactNode;
 	/** Etiqueta junto al título («20% OFF»). */
 	badge?: ReactNode;
@@ -609,7 +610,7 @@ export interface SidebarUpgradeCardProps extends Omit<CardBase, "outline"> {
 
 /** Invitación a mejorar de plan (`Upgrade CTA` del Figma): tarjeta blanca con icono, etiqueta y botón principal. */
 function UpgradeCard({
-	icon = "star-01",
+	icon = Star01,
 	title,
 	badge,
 	description,

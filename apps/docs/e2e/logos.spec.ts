@@ -16,7 +16,7 @@ test("están los 332 SVG: 232 de apps, 16 integraciones y 34 redes, con su recue
 	await expect(page.locator("#logo-count")).toHaveText("34 de 282");
 });
 
-test("buscar «github» y elegir el social: el panel enseña color y gris y su import de @jotis-me/icons/logos", async ({
+test("buscar «github» y elegir el social: el panel enseña color y gris y su import de @jotis-me/assets/logos", async ({
 	page,
 }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
@@ -33,9 +33,9 @@ test("buscar «github» y elegir el social: el panel enseña color y gris y su i
 	await expect(panel.getByText("Gris", { exact: true })).toBeVisible();
 	await expect(panel).toContainText("SocialGithubLogoGray");
 	const code = panel.getByRole("tabpanel");
-	await expect(code).toContainText('import { SocialGithubLogo } from "@jotis-me/icons/logos";');
+	await expect(code).toContainText('import { SocialGithubLogo } from "@jotis-me/assets/logos";');
 	await panel.getByRole("tab", { name: "Importar SVG" }).click();
-	await expect(code).toContainText('from "@jotis-me/icons/logos/social/github.svg?raw"');
+	await expect(code).toContainText('from "@jotis-me/assets/logos/social/github.svg?raw"');
 	await panel.getByRole("tab", { name: "SVG", exact: true }).click();
 	await expect(code).toContainText('viewBox="416 16 24 24"');
 });

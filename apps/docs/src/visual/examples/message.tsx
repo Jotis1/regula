@@ -1,7 +1,8 @@
 // Vista previa de Message: el de siempre y los nueve tipos del Figma, con reacciones, estado y panel de acciones.
 
-import { FileImageJpg } from "@jotis-me/icons/files";
 import { Message, type MessageReaction } from "@jotis-me/react";
+import { FileIcon } from "@untitledui/file-icons";
+import { Copy01, Edit02, RefreshCw01, Stars02 } from "@untitledui/icons";
 
 const phoenix = { author: "Phoenix Baker", avatar: { initials: "PB" }, online: true, time: "Viernes 14:20" };
 const reacciones: MessageReaction[] = [
@@ -33,10 +34,10 @@ export function MessageExample() {
 					time="Viernes 14:20"
 					status="read"
 					actions={[
-						{ icon: "stars-02", label: "Mejorar con IA" },
-						{ icon: "edit-02", label: "Editar" },
-						{ icon: "refresh-cw-01", label: "Volver a generar" },
-						{ icon: "copy-01", label: "Copiar" },
+						{ icon: Stars02, label: "Mejorar con IA" },
+						{ icon: Edit02, label: "Editar" },
+						{ icon: RefreshCw01, label: "Volver a generar" },
+						{ icon: Copy01, label: "Copiar" },
 					]}
 				>
 					Claro, hoy lo miro.
@@ -54,7 +55,7 @@ export function MessageExample() {
 				<Message
 					type="file"
 					{...phoenix}
-					file={{ name: "Captura del diseño.jpg", size: "1,2 MB", icon: <FileImageJpg /> }}
+					file={{ name: "Captura del diseño.jpg", size: "1,2 MB", icon: <FileIcon type="jpg" /> }}
 					reactions={reacciones}
 				/>
 				<Message type="audio" {...phoenix} audio={{ duration: "00:28" }} reactions={reacciones} />

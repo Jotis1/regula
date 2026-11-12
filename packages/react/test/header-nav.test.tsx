@@ -1,16 +1,17 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { BarChart01, HomeLine, Inbox01, Settings02, User01 } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { Button, HeaderNav, type HeaderNavItem } from "../src/index.js";
 import { expectAccessibleInThemes } from "./helpers.js";
 
 const ITEMS: HeaderNavItem[] = [
-	{ label: "Inicio", href: "/", icon: "home-line" },
+	{ label: "Inicio", href: "/", icon: HomeLine },
 	{
 		label: "Panel",
 		href: "/panel/",
-		icon: "bar-chart-01",
+		icon: BarChart01,
 		current: true,
 		children: [
 			{ label: "Resumen", href: "/panel/", current: true },
@@ -21,7 +22,7 @@ const ITEMS: HeaderNavItem[] = [
 	{
 		label: "Proyectos",
 		href: "/proyectos/",
-		icon: "inbox-01",
+		icon: Inbox01,
 		badge: 8,
 		children: [{ label: "Todos", href: "/p/" }],
 	},
@@ -29,7 +30,7 @@ const ITEMS: HeaderNavItem[] = [
 
 const brand = <span>Yoruverse</span>;
 const account = <Button hierarchy="secondary">Cuenta</Button>;
-const actions = <Button hierarchy="tertiary" iconOnly="settings-02" label="Ajustes" />;
+const actions = <Button hierarchy="tertiary" iconOnly={Settings02} label="Ajustes" />;
 
 describe("HeaderNav (escritorio)", () => {
 	it("es la cabecera de la página (banner) con la marca, la navegación y la cuenta", () => {
@@ -136,8 +137,8 @@ describe("HeaderNav (escritorio)", () => {
 describe("HeaderNav (menú móvil)", () => {
 	const mobile = {
 		footerItems: [
-			{ label: "Ajustes", href: "/ajustes/", icon: "settings-02" as const },
-			{ label: "Soporte", href: "/soporte/", icon: "user-01" as const },
+			{ label: "Ajustes", href: "/ajustes/", icon: Settings02 },
+			{ label: "Soporte", href: "/soporte/", icon: User01 },
 		],
 		footer: <p>Olivia Rhye</p>,
 	};

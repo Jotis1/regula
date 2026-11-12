@@ -12,15 +12,7 @@ type Props = Record<string, unknown>;
 type Item = Record<string, string>;
 
 /** Componentes sin texto de la guía: piezas visuales y ejemplos. */
-const VISUAL = new Set([
-	"Example",
-	"TokenExplorer",
-	"BackgroundPattern",
-	"Button",
-	"Icon",
-	"EmptyState",
-	"Alert",
-]);
+const VISUAL = new Set(["Example", "TokenExplorer", "BackgroundPattern", "Button", "EmptyState", "Alert"]);
 
 const sentence = (s: string) => (/[.:!?]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`);
 

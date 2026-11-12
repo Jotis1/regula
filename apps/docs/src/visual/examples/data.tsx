@@ -1,7 +1,8 @@
 // Puertos de las vistas previas de datos de la guía (reference/components/*/preview.html).
 
-import { FileDocumentPdf } from "@jotis-me/icons/files";
 import { ActivityFeed, Button, CodeSnippet, MetricCard } from "@jotis-me/react";
+import { FileIcon } from "@untitledui/file-icons";
+import { Eye, Settings02, TrendUp01, Zap } from "@untitledui/icons";
 
 export function MetricCardExample() {
 	return (
@@ -21,7 +22,7 @@ export function MetricCardExample() {
 				value="2.000"
 				change="100%"
 				changeBadge
-				icon="trend-up-01"
+				icon={TrendUp01}
 				iconStyle="featured"
 				menu
 			/>
@@ -30,7 +31,7 @@ export function MetricCardExample() {
 				value="2.000"
 				change="100%"
 				period="vs. el mes pasado"
-				icon="zap"
+				icon={Zap}
 				iconStyle="featured-inline"
 				menu
 				footer={
@@ -47,7 +48,7 @@ export function MetricCardExample() {
 				value="2.000"
 				change="100%"
 				period="vs. el mes pasado"
-				icon="trend-up-01"
+				icon={TrendUp01}
 				iconStyle="modern"
 				menu
 			/>
@@ -56,7 +57,7 @@ export function MetricCardExample() {
 				value="2.000"
 				change="100%"
 				changeBadge
-				icon="trend-up-01"
+				icon={TrendUp01}
 				iconStyle="modern-inline"
 				menu
 			/>
@@ -72,7 +73,7 @@ export function MetricCardExample() {
 				label="Visitas en 24 h"
 				value="2.000"
 				change="100%"
-				icon="eye"
+				icon={Eye}
 				chart={SERIE}
 				chartStyle="area"
 				menu
@@ -87,7 +88,7 @@ export function MetricCardExample() {
 				menu
 				footer={
 					<>
-						<Button hierarchy="tertiary" size="sm" iconOnly="settings-02" label="Ajustes" />
+						<Button hierarchy="tertiary" size="sm" iconOnly={Settings02} label="Ajustes" />
 						<Button hierarchy="secondary" size="sm">
 							Ver informe
 						</Button>
@@ -210,7 +211,7 @@ export function ActivityFeedExample() {
 							type: "file",
 							name: "ficha-tecnica-02.pdf",
 							size: "720 KB",
-							icon: <FileDocumentPdf size={40} />,
+							icon: <FileIcon type="pdf" size={40} />,
 						},
 					},
 				]}

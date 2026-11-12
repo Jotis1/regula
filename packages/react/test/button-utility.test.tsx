@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Copy01, LinkExternal01, Trash01 } from "@untitledui/icons";
 import { describe, expect, it, vi } from "vitest";
 import { ButtonUtility } from "../src/index.js";
 import { expectAccessibleInThemes } from "./helpers.js";
@@ -8,8 +9,8 @@ describe("ButtonUtility", () => {
 	it("es un botón con el nombre de `label`, icono de 20 en sm y 16 en xs", () => {
 		render(
 			<>
-				<ButtonUtility icon="copy-01" label="Copiar" />
-				<ButtonUtility icon="trash-01" label="Borrar" size="xs" hierarchy="tertiary" />
+				<ButtonUtility icon={Copy01} label="Copiar" />
+				<ButtonUtility icon={Trash01} label="Borrar" size="xs" hierarchy="tertiary" />
 			</>,
 		);
 		const copy = screen.getByRole("button", { name: "Copiar" });
@@ -24,7 +25,7 @@ describe("ButtonUtility", () => {
 	});
 
 	it("con Tab muestra el anillo de foco y abre el tooltip con su nombre", async () => {
-		render(<ButtonUtility icon="copy-01" label="Copiar" />);
+		render(<ButtonUtility icon={Copy01} label="Copiar" />);
 		expect(screen.queryByRole("tooltip")).toBeNull();
 		await userEvent.tab();
 		const button = screen.getByRole("button", { name: "Copiar" });
@@ -39,7 +40,7 @@ describe("ButtonUtility", () => {
 	// El hover se prueba en el e2e de la página (apps/docs/e2e/button-utility.spec.ts): jsdom no lo dispara en React Aria
 
 	it("tooltip={false} no abre tooltip pero mantiene el nombre", async () => {
-		render(<ButtonUtility icon="copy-01" label="Copiar" tooltip={false} />);
+		render(<ButtonUtility icon={Copy01} label="Copiar" tooltip={false} />);
 		await userEvent.tab();
 		expect(screen.getByRole("button", { name: "Copiar" })).toBe(document.activeElement);
 		await new Promise((r) => setTimeout(r, 400));
@@ -48,7 +49,7 @@ describe("ButtonUtility", () => {
 
 	it("disabled no responde ni abre tooltip", async () => {
 		const onClick = vi.fn();
-		render(<ButtonUtility icon="copy-01" label="Copiar" disabled onClick={onClick} />);
+		render(<ButtonUtility icon={Copy01} label="Copiar" disabled onClick={onClick} />);
 		const button = screen.getByRole("button", { name: "Copiar" }) as HTMLButtonElement;
 		expect(button.disabled).toBe(true);
 		expect(button.className).toContain("disabled:opacity-50");
@@ -60,7 +61,7 @@ describe("ButtonUtility", () => {
 	});
 
 	it("con href es un enlace con el mismo aspecto", () => {
-		render(<ButtonUtility icon="link-external-01" label="Abrir" href="/docs" />);
+		render(<ButtonUtility icon={LinkExternal01} label="Abrir" href="/docs" />);
 		const link = screen.getByRole("link", { name: "Abrir" });
 		expect(link.getAttribute("href")).toBe("/docs");
 		expect(link.className).toContain("rounded-sm");
@@ -69,8 +70,8 @@ describe("ButtonUtility", () => {
 	it("axe en claro y oscuro, con el tooltip abierto", async () => {
 		await expectAccessibleInThemes(
 			<div className="flex gap-2 p-12">
-				<ButtonUtility icon="copy-01" label="Copiar" tooltipOpen />
-				<ButtonUtility icon="trash-01" label="Borrar" hierarchy="tertiary" size="xs" />
+				<ButtonUtility icon={Copy01} label="Copiar" tooltipOpen />
+				<ButtonUtility icon={Trash01} label="Borrar" hierarchy="tertiary" size="xs" />
 			</div>,
 		);
 	});

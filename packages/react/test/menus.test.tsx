@@ -1,5 +1,18 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import {
+	BarChart01,
+	Copy01,
+	CurrencyEuro,
+	DotsVertical,
+	HomeLine,
+	Monitor01,
+	Moon01,
+	Settings02,
+	Sun,
+	Trash01,
+	User01,
+} from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Button, Dropdown, FilterBar, SidebarNav } from "../src/index.js";
@@ -10,11 +23,11 @@ describe("SidebarNav", () => {
 		brand: "jotis.me",
 		search: true,
 		items: [
-			{ icon: "home-line" as const, label: "Inicio", href: "/", active: true },
-			{ icon: "bar-chart-01" as const, label: "Panel", href: "/panel/", badge: 3 },
-			{ icon: "currency-euro" as const, label: "Pecunia" },
+			{ icon: HomeLine, label: "Inicio", href: "/", active: true },
+			{ icon: BarChart01, label: "Panel", href: "/panel/", badge: 3 },
+			{ icon: CurrencyEuro, label: "Pecunia" },
 		],
-		footerItems: [{ icon: "settings-02" as const, label: "Ajustes", href: "/ajustes/" }],
+		footerItems: [{ icon: Settings02, label: "Ajustes", href: "/ajustes/" }],
 		user: { initials: "AD", name: "Administrador", supporting: "admin@jotis.me" },
 	};
 
@@ -53,11 +66,11 @@ describe("SidebarNav", () => {
 
 describe("Dropdown", () => {
 	const make = (onSelect = vi.fn()) => [
-		{ icon: "user-01" as const, label: "Ver perfil", shortcut: "⌘P", onSelect },
-		{ icon: "settings-02" as const, label: "Ajustes", shortcut: "⌘S" },
-		{ icon: "copy-01" as const, label: "Duplicar" },
+		{ icon: User01, label: "Ver perfil", shortcut: "⌘P", onSelect },
+		{ icon: Settings02, label: "Ajustes", shortcut: "⌘S" },
+		{ icon: Copy01, label: "Duplicar" },
 		{ divider: true as const },
-		{ icon: "trash-01" as const, label: "Eliminar", danger: true },
+		{ icon: Trash01, label: "Eliminar", danger: true },
 	];
 
 	it("con clic el foco entra en el menú; con Enter, al primer ítem; las flechas recorren y Enter elige y cierra", async () => {
@@ -136,7 +149,7 @@ describe("Dropdown", () => {
 			<Dropdown
 				open={false}
 				onOpenChange={onOpenChange}
-				trigger={<Button hierarchy="tertiary" iconOnly="dots-vertical" label="Más" />}
+				trigger={<Button hierarchy="tertiary" iconOnly={DotsVertical} label="Más" />}
 				items={make()}
 			/>,
 		);
@@ -164,9 +177,9 @@ describe("Dropdown", () => {
 
 	// Elección única (requisito «Menú con una opción elegida»): el selector de tema de la web
 	const themes = [
-		{ icon: "monitor-01" as const, label: "Sistema", value: "sistema" },
-		{ icon: "sun" as const, label: "Claro", value: "claro" },
-		{ icon: "moon-01" as const, label: "Oscuro", value: "oscuro" },
+		{ icon: Monitor01, label: "Sistema", value: "sistema" },
+		{ icon: Sun, label: "Claro", value: "claro" },
+		{ icon: Moon01, label: "Oscuro", value: "oscuro" },
 	];
 
 	it("con elección, la opción elegida lleva check y se anuncia como menuitemradio marcada", async () => {

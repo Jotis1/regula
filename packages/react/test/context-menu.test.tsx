@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Settings02 } from "@untitledui/icons";
 import { useState } from "react";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
@@ -12,7 +13,7 @@ const simple = (onCut = vi.fn()): ContextMenuItem[] => [
 	{ divider: true },
 	{
 		label: "Más herramientas",
-		icon: "settings-02",
+		icon: Settings02,
 		items: [{ label: "Guardar como" }, { label: "Desarrollador" }],
 	},
 ];

@@ -1,12 +1,12 @@
 ---
-// Galería de cursores (`@jotis-me/icons/cursors`). La isla (`AssetGallery`) recibe los nombres y las URL de los SVG
+// Galería de cursores (`@jotis-me/assets/cursors`). La isla (`AssetGallery`) recibe los nombres y las URL de los SVG
 // del paquete, que el build copia como ficheros: se cargan como imágenes perezosas, no como código de la isla.
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
 import { buildEntries, CURSOR_CATEGORIES, encodeUrls, groupOptions } from "../../lib/gallery";
 
-const urls = import.meta.glob<string>("../../../../../packages/icons/dist/cursors/*.svg", {
+const urls = import.meta.glob<string>("../../../../../packages/assets/dist/cursors/*.svg", {
 	query: "?no-inline",
 	import: "default",
 	eager: true,
@@ -17,14 +17,14 @@ const groups = groupOptions(entries, CURSOR_CATEGORIES);
 
 <Base
 	title="Cursores"
-	description={`Los ${entries.length} cursores de @jotis-me/icons/cursors, los clásicos y los de macOS 26.`}
+	description={`Los ${entries.length} cursores de @jotis-me/assets/cursors, los clásicos y los de macOS 26.`}
 >
 	<div class="flex flex-col gap-7">
 		<header class="flex max-w-[720px] flex-col gap-3.5">
 			<IconsNav current="cursors" />
 			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Cursores</h1>
 			<p class="text-md text-tertiary lg:text-lg">
-				Los {entries.length} cursores, los clásicos y los de macOS 26. Cada uno es un componente suelto de <code class="font-mono text-md">@jotis-me/icons/cursors</code> y un SVG que sirve de <code class="font-mono text-md">cursor</code> en CSS.
+				Los {entries.length} cursores, los clásicos y los de macOS 26. Cada uno es un componente suelto de <code class="font-mono text-md">@jotis-me/assets/cursors</code> y un SVG que sirve de <code class="font-mono text-md">cursor</code> en CSS.
 			</p>
 		</header>
 		<AssetGallery client:load kind="cursors" urls={encodeUrls(urls)} groups={groups} />

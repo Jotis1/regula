@@ -1,6 +1,6 @@
 "use client";
 
-import { IconDotsGrid } from "@jotis-me/icons";
+import { Check, ChevronDown, ChevronRight, DotsGrid, File04, Folder, Minus } from "@untitledui/icons";
 import { type ReactNode, useState } from "react";
 import {
 	Button as AriaButton,
@@ -11,14 +11,14 @@ import {
 	TreeItemContent,
 } from "react-aria-components";
 import { cx } from "../internal/cx.js";
+import { DynIcon, type IconProp, iconSlot } from "../internal/icon.js";
 import { useControllable } from "../internal/use-controllable.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 export interface TreeItem {
 	id: string;
 	label: ReactNode;
 	/** Icono de 16px. Por defecto, `folder` si tiene hijos y `file-04` si no. También un nodo, como un `Avatar` `xs`. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Dato a la derecha, como el tamaño del archivo. */
 	meta?: ReactNode;
 	children?: TreeItem[];
@@ -144,13 +144,10 @@ function ClassicTreeView({
 								) : null}
 								<span className="inline-flex w-4 flex-none">
 									{kids ? (
-										<Icon
-											name={isExpanded ? "chevron-down" : "chevron-right"}
-											size={16}
-										/>
+										<DynIcon icon={isExpanded ? ChevronDown : ChevronRight} size={16} />
 									) : null}
 								</span>
-								{iconSlot(item.icon ?? (kids ? "folder" : "file-04"), md ? 20 : 16)}
+								{iconSlot(item.icon ?? (kids ? Folder : File04), md ? 20 : 16)}
 								<span className="min-w-0 flex-1 truncate">{item.label}</span>
 								{item.meta != null ? (
 									<span className="text-xs font-medium text-quaternary group-data-selected:text-tertiary">
@@ -276,10 +273,7 @@ function AdvancedTreeView({
 										slot="chevron"
 										className="inline-flex w-4 flex-none cursor-pointer rounded-sm border-0 bg-transparent p-0 outline-none data-focus-visible:shadow-focus-ring"
 									>
-										<Icon
-											name={isExpanded ? "chevron-down" : "chevron-right"}
-											size={16}
-										/>
+										<DynIcon icon={isExpanded ? ChevronDown : ChevronRight} size={16} />
 									</AriaButton>
 								) : (
 									<span className="w-4 flex-none" />
@@ -300,14 +294,14 @@ function AdvancedTreeView({
 											)}
 										>
 											{isIndeterminate ? (
-												<Icon name="minus" size={12} />
+												<Minus size={12} />
 											) : isSelected ? (
-												<Icon name="check" size={12} />
+												<Check size={12} />
 											) : null}
 										</span>
 									)}
 								</AriaCheckbox>
-								{iconSlot(item.icon ?? (kids ? "folder" : "file-04"), md ? 20 : 16)}
+								{iconSlot(item.icon ?? (kids ? Folder : File04), md ? 20 : 16)}
 								<span className="min-w-0 flex-1 truncate">{item.label}</span>
 								{item.meta != null ? (
 									<span className="text-xs font-medium text-quaternary group-data-selected:text-tertiary">
@@ -321,7 +315,7 @@ function AdvancedTreeView({
 										state !== false && "opacity-100",
 									)}
 								>
-									<IconDotsGrid size={16} />
+									<DotsGrid size={16} />
 								</span>
 							</>
 						)}

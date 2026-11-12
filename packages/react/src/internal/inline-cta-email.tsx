@@ -1,10 +1,11 @@
 "use client";
 
+import { Mail01 } from "@untitledui/icons";
 import { type FormEvent, useId, useState } from "react";
 import { Button } from "../components/Button.js";
-import { iconSlot } from "../components/Icon.js";
 import { cx } from "./cx.js";
 import { controlClasses, FieldShell, nativeClasses } from "./field.js";
+import { iconSlot } from "./icon.js";
 
 /**
  * Campo de correo y botón del tipo `email` de `InlineCTA`. Va aparte, como isla, para que `InlineCTA` siga siendo de
@@ -33,7 +34,7 @@ export function InlineCTAEmail({
 			<FieldShell id={id} label={label} size="sm">
 				<div className="flex items-start gap-3 @max-md:flex-col @max-md:items-stretch">
 					<div className={cx(controlClasses("sm", false), "max-w-80 flex-1 @max-md:max-w-none")}>
-						{iconSlot("mail-01", 20)}
+						{iconSlot(Mail01, 20)}
 						<input
 							id={id}
 							type="email"

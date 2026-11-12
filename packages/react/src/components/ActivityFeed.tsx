@@ -1,8 +1,8 @@
+import { File04 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Avatar, type AvatarProps } from "./Avatar.js";
-import { Icon } from "./Icon.js";
 import { Tag } from "./Tag.js";
 
 /** Lo que va bajo el texto de un elemento: etiquetas, un archivo o un texto citado. */
@@ -17,7 +17,7 @@ export type ActivitySupporting =
 			name: ReactNode;
 			/** «720 KB». */
 			size?: ReactNode;
-			/** Icono del archivo, como `FileDocumentPdf` de `@jotis-me/icons/files`. Por defecto, un icono genérico. */
+			/** Icono del archivo, como `<FileIcon type="pdf" />` de `@untitledui/file-icons`. Por defecto, un icono genérico. */
 			icon?: ReactNode;
 	  }
 	| {
@@ -88,7 +88,7 @@ function Supporting({ item }: { item: ActivitySupporting }) {
 		return (
 			<div className="flex items-start gap-3">
 				<span className="flex size-10 shrink-0 items-center justify-center text-fg-quaternary">
-					{item.icon ?? <Icon name="file-04" size={32} />}
+					{item.icon ?? <File04 size={32} />}
 				</span>
 				<div className="flex min-w-0 flex-col text-sm">
 					<span className="font-medium text-secondary">{item.name}</span>

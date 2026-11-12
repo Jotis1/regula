@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { FilterLines, InfoCircle, Trash01 } from "@untitledui/icons";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Button, Input, Modal, Slideout } from "../src/index.js";
@@ -21,7 +22,7 @@ function ModalOpener({ onCloseSpy }: { onCloseSpy?: () => void }) {
 			</button>
 			<Modal
 				open={open}
-				icon="trash-01"
+				icon={Trash01}
 				destructive
 				title="¿Eliminar este gasto?"
 				description="No se puede deshacer."
@@ -105,7 +106,7 @@ describe("Modal", () => {
 
 	it("icono destacado en error si es destructivo; apilado reparte los botones y horizontal los alinea a la derecha", () => {
 		const { rerender } = render(
-			<Modal contained icon="trash-01" destructive title="¿Eliminar?" actions={actions} />,
+			<Modal contained icon={Trash01} destructive title="¿Eliminar?" actions={actions} />,
 		);
 		const dialog = screen.getByRole("dialog", { name: "¿Eliminar?" });
 		expect(dialog.className).toContain("max-w-[var(--width-sm)]");
@@ -118,7 +119,7 @@ describe("Modal", () => {
 			<Modal
 				contained
 				layout="horizontal"
-				icon="info-circle"
+				icon={InfoCircle}
 				title="¿Seguro?"
 				actions={actions}
 				width={560}
@@ -136,7 +137,7 @@ describe("Modal", () => {
 		const { renderToStaticMarkup } = await import("react-dom/server");
 		const html = (extra: object) =>
 			renderToStaticMarkup(
-				<Modal contained icon="trash-01" title="¿Eliminar?" actions={actions} {...extra} />,
+				<Modal contained icon={Trash01} title="¿Eliminar?" actions={actions} {...extra} />,
 			);
 		expect(html({ align: undefined, media: undefined, footerStart: undefined, dividers: false })).toBe(
 			html({}),
@@ -207,7 +208,7 @@ describe("Modal", () => {
 			<div style={{ position: "relative" }}>
 				<Modal
 					contained
-					icon="trash-01"
+					icon={Trash01}
 					destructive
 					title="¿Eliminar?"
 					description="No se puede deshacer."
@@ -285,7 +286,7 @@ describe("Slideout", () => {
 			<Slideout
 				contained
 				title="Filtros"
-				icon="filter-lines"
+				icon={FilterLines}
 				footerStart={<Button hierarchy="link-color">Guardar filtro</Button>}
 				actions={<Button>Aplicar</Button>}
 			/>,

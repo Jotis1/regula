@@ -1,8 +1,9 @@
 "use client";
 
+import { Maximize01, PauseCircle, Play, VolumeMax, VolumeX } from "@untitledui/icons";
 import { type CSSProperties, useRef, useState } from "react";
 import { cx } from "../internal/cx.js";
-import { Icon } from "./Icon.js";
+import { DynIcon } from "../internal/icon.js";
 
 export interface VideoPlayerLabels {
 	play: string;
@@ -163,7 +164,7 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 					onClick={toggle}
 					className="absolute top-1/2 left-1/2 -mt-8 -ml-8 inline-flex size-16 cursor-pointer items-center justify-center rounded-full border-0 bg-[#ffffff4d] text-[#ffffff] [backdrop-filter:var(--backdrop-blur-lg)]"
 				>
-					<Icon name="play" size={28} />
+					<Play size={28} />
 				</button>
 			)}
 			{size ? (
@@ -179,7 +180,7 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 						onClick={toggle}
 						aria-label={playing ? l.pause : l.play}
 					>
-						<Icon name={playing ? "pause-circle" : "play"} size={16} />
+						<DynIcon icon={playing ? PauseCircle : Play} size={16} />
 					</button>
 					{size === "sm" ? null : (
 						<>
@@ -191,8 +192,8 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 										onClick={toggleMute}
 										aria-label={muted ? l.unmute : l.mute}
 									>
-										<Icon
-											name={muted || volume === 0 ? "volume-x" : "volume-max"}
+										<DynIcon
+											icon={muted || volume === 0 ? VolumeX : VolumeMax}
 											size={16}
 										/>
 									</button>
@@ -257,7 +258,7 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 									onClick={toggleMute}
 									aria-label={muted ? l.unmute : l.mute}
 								>
-									<Icon name={muted ? "volume-x" : "volume-max"} size={16} />
+									<DynIcon icon={muted ? VolumeX : VolumeMax} size={16} />
 								</button>
 							)}
 						</>
@@ -270,7 +271,7 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 								onClick={toggleMute}
 								aria-label={muted ? l.unmute : l.mute}
 							>
-								<Icon name={muted ? "volume-x" : "volume-max"} size={16} />
+								<DynIcon icon={muted ? VolumeX : VolumeMax} size={16} />
 							</button>
 							<span className="flex-1" />
 						</>
@@ -281,7 +282,7 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 						aria-label={l.fullscreen}
 						onClick={() => void wrap.current?.requestFullscreen?.()}
 					>
-						<Icon name="maximize-01" size={16} />
+						<Maximize01 size={16} />
 					</button>
 				</div>
 			) : (
@@ -292,7 +293,7 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 						onClick={toggle}
 						aria-label={playing ? l.pause : l.play}
 					>
-						<Icon name={playing ? "pause-circle" : "play"} size={20} />
+						<DynIcon icon={playing ? PauseCircle : Play} size={20} />
 					</button>
 					<span className="text-sm font-medium whitespace-nowrap tabular-nums">
 						{clock(time)} / {clock(total)}
@@ -326,7 +327,7 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 						}}
 						aria-label={muted ? l.unmute : l.mute}
 					>
-						<Icon name={muted ? "volume-x" : "volume-max"} size={20} />
+						<DynIcon icon={muted ? VolumeX : VolumeMax} size={20} />
 					</button>
 					<button
 						type="button"
@@ -334,7 +335,7 @@ export function VideoPlayer({ src, poster, duration = 0, size, labels, className
 						aria-label={l.fullscreen}
 						onClick={() => void wrap.current?.requestFullscreen?.()}
 					>
-						<Icon name="maximize-01" size={20} />
+						<Maximize01 size={20} />
 					</button>
 				</div>
 			)}

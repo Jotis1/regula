@@ -1,9 +1,10 @@
+import { DotsVertical, TrendDown01, TrendUp01 } from "@untitledui/icons";
 import { isValidElement, type ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import { DynIcon, type IconProp } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Button } from "./Button.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import { Icon, type IconName } from "./Icon.js";
 
 /**
  * Estilos de icono del Figma (`Metric item`, `1560:266217`): `featured` (círculo de color encima de la etiqueta),
@@ -42,7 +43,7 @@ export interface MetricCardProps {
 	/** Nombre del botón de tres puntos. @default "Más opciones" */
 	menuLabel?: string;
 	/** Icono de la métrica, con el estilo de `iconStyle`. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** @default "featured" */
 	iconStyle?: MetricCardIconStyle;
 	/** Valores de la mini gráfica, sin ejes. Va en el color del `trend`. */
@@ -111,7 +112,7 @@ function MenuButton({ menu, onMenu, menuLabel }: Pick<MetricCardProps, "menu" | 
 		<Button
 			hierarchy="tertiary"
 			size="sm"
-			iconOnly="dots-vertical"
+			iconOnly={DotsVertical}
 			label={menuLabel ?? defaultStrings.moreOptions}
 			onClick={onMenu}
 		/>
@@ -154,7 +155,7 @@ function ClassicMetricCard({
 								up ? "text-success-primary" : "text-error-primary",
 							)}
 						>
-							<Icon name={up ? "trend-up-01" : "trend-down-01"} size={20} />
+							<DynIcon icon={up ? TrendUp01 : TrendDown01} size={20} />
 							<span className="sr-only">
 								{up ? defaultStrings.rising : defaultStrings.falling}{" "}
 							</span>
@@ -195,7 +196,7 @@ function Change({
 						badge && (up ? "text-fg-success-secondary" : "text-fg-error-secondary"),
 					)}
 				>
-					<Icon name={up ? "trend-up-01" : "trend-down-01"} size={badge ? 12 : 16} />
+					<DynIcon icon={up ? TrendUp01 : TrendDown01} size={badge ? 12 : 16} />
 				</span>
 				<span className="sr-only">{up ? defaultStrings.rising : defaultStrings.falling} </span>
 				{change}

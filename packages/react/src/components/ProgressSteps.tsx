@@ -1,8 +1,9 @@
+import { Check } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import type { IconProp } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import { Icon, type IconName } from "./Icon.js";
 
 export type ProgressStepsType =
 	| "icons-centered"
@@ -19,7 +20,7 @@ export interface ProgressStep {
 	/** Texto de apoyo bajo el título. */
 	description?: ReactNode;
 	/** Icono del marcador `featured`. Sin él, ese paso enseña su número. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 }
 
 export interface ProgressStepsLabels {
@@ -81,7 +82,7 @@ function Marker({
 	size: ProgressStepsSize;
 	state: State;
 	index: number;
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 }) {
 	const base = cx("relative flex flex-none items-center justify-center rounded-full", MARK[size]);
 	if (marker === "featured" && icon)
@@ -94,7 +95,7 @@ function Marker({
 		if (state === "complete")
 			return (
 				<span aria-hidden="true" className={cx(base, "bg-success-solid text-white")}>
-					<Icon name="check" size={CHECK[size]} strokeWidth={2} />
+					<Check size={CHECK[size]} strokeWidth={2} />
 				</span>
 			);
 		return (
@@ -114,7 +115,7 @@ function Marker({
 	if (state === "complete")
 		return (
 			<span aria-hidden="true" className={cx(base, "bg-brand-solid text-white")}>
-				<Icon name="check" size={CHECK[size]} strokeWidth={2} />
+				<Check size={CHECK[size]} strokeWidth={2} />
 			</span>
 		);
 	if (state === "current")

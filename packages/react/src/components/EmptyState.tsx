@@ -1,9 +1,10 @@
+import { AlertCircle, SearchLg, UploadCloud02 } from "@untitledui/icons";
 import type { CSSProperties, ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { type EmptyMediaDrawing, emptyMedia } from "../internal/empty-media.generated.js";
+import { DynIcon, type IconComponent, type IconProp } from "../internal/icon.js";
 import { BackgroundPattern } from "./BackgroundPattern.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import { Icon, type IconName } from "./Icon.js";
 
 export type EmptyStateMedia =
 	| "icon"
@@ -23,7 +24,7 @@ export interface EmptyStateProps {
 	 * usuarios e integraciones.
 	 * @default "search-lg"
 	 */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Qué pasa: "Sin resultados", "Aún no hay gastos". */
 	title: ReactNode;
 	/** Por qué está vacío y qué hacer. Nada de "¡Ups!". */
@@ -43,7 +44,7 @@ export interface EmptyStateProps {
 	illustration?: EmptyStateIllustration;
 	/**
 	 * Avatares (`users-radius`, `users-row`) o logos (`integrations`) de la cabecera. Pueden ser fotos, iniciales o
-	 * logos de `@jotis-me/icons/logos`; se recortan y se desvanecen hacia los bordes.
+	 * logos de `@jotis-me/assets/logos`; se recortan y se desvanecen hacia los bordes.
 	 */
 	items?: ReactNode[];
 	/**
@@ -56,11 +57,11 @@ export interface EmptyStateProps {
 
 /** Escala de los dibujos del Figma (hechos a `md`) en cada tamaño. */
 const SCALE: Record<EmptyStateSize, number> = { sm: 0.88, md: 1, lg: 1.28 };
-const ILLUSTRATION_ICON: Record<EmptyStateIllustration, IconName> = {
-	cloud: "search-lg",
-	box: "upload-cloud-02",
-	documents: "upload-cloud-02",
-	"credit-card": "alert-circle",
+const ILLUSTRATION_ICON: Record<EmptyStateIllustration, IconComponent> = {
+	cloud: SearchLg,
+	box: UploadCloud02,
+	documents: UploadCloud02,
+	"credit-card": AlertCircle,
 };
 
 function Drawing({ drawing, scale }: { drawing: EmptyMediaDrawing; scale: number }) {
@@ -107,7 +108,7 @@ function Media({
 }: {
 	media: Exclude<EmptyStateMedia, "icon">;
 	illustration: EmptyStateIllustration;
-	icon: IconName | ReactNode;
+	icon: IconProp;
 	items: ReactNode[];
 	scale: number;
 }) {
@@ -127,7 +128,7 @@ function Media({
 						bottom: (drawing.height - 116) * scale,
 					}}
 				>
-					<Icon name={ILLUSTRATION_ICON[illustration]} size={Math.round(28 * scale)} />
+					<DynIcon icon={ILLUSTRATION_ICON[illustration]} size={Math.round(28 * scale)} />
 				</span>
 			</div>
 		);
@@ -285,7 +286,7 @@ const TEXT: Record<EmptyStateSize, { root: string; title: string; description: s
 
 /** Lo que se ve cuando una lista, tabla o búsqueda no tiene contenido: qué pasa y qué hacer. */
 export function EmptyState({
-	icon = "search-lg",
+	icon = SearchLg,
 	title,
 	description,
 	actions,

@@ -1,8 +1,7 @@
 // Puertos de las vistas previas de maquetación de la guía (reference/components/*/preview.html).
 // `jm-stack` = columna con gap 16 (aquí con el gap que fija cada vista previa).
 
-import { FileDocumentPdf } from "@jotis-me/icons/files";
-import { PaymentVisaMd } from "@jotis-me/icons/payments";
+import { PaymentVisaMd } from "@jotis-me/assets/payments";
 import {
 	AppIcon,
 	Avatar,
@@ -19,9 +18,21 @@ import {
 	SectionLabel,
 	Tabs,
 } from "@jotis-me/react";
+import { FileIcon } from "@untitledui/file-icons";
+import {
+	ArrowLeft,
+	ArrowRight,
+	DotsVertical,
+	HomeLine,
+	Plus,
+	SearchLg,
+	Stars02,
+	UploadCloud02,
+	Zap,
+} from "@untitledui/icons";
 
 const migas = [
-	{ label: "Inicio", icon: "home-line" as const, href: "/" },
+	{ label: "Inicio", icon: HomeLine, href: "/" },
 	{ label: "Ajustes", href: "/" },
 	{ label: "Equipo" },
 ];
@@ -88,15 +99,15 @@ export function PageHeaderExample() {
 function PageHeaderClasica() {
 	return (
 		<PageHeader
-			breadcrumbs={[{ label: "Inicio", icon: "home-line" }, { label: "Pecunia" }]}
+			breadcrumbs={[{ label: "Inicio", icon: HomeLine }, { label: "Pecunia" }]}
 			title="Gastos"
 			description="Controla lo que entra y lo que sale."
 			actions={
 				<>
-					<Button hierarchy="secondary" iconLeading="upload-cloud-02">
+					<Button hierarchy="secondary" iconLeading={UploadCloud02}>
 						Importar
 					</Button>
-					<Button iconLeading="plus">Nuevo gasto</Button>
+					<Button iconLeading={Plus}>Nuevo gasto</Button>
 				</>
 			}
 		/>
@@ -122,7 +133,7 @@ export function CardHeaderExample() {
 						<Button hierarchy="secondary" size="sm">
 							Exportar
 						</Button>
-						<Button size="sm" iconLeading="plus">
+						<Button size="sm" iconLeading={Plus}>
 							Añadir
 						</Button>
 					</>
@@ -178,7 +189,7 @@ export function SectionHeaderExample() {
 						<Button hierarchy="secondary" size="sm">
 							Importar
 						</Button>
-						<Button size="sm" iconLeading="plus">
+						<Button size="sm" iconLeading={Plus}>
 							Nuevo contacto
 						</Button>
 					</>
@@ -193,7 +204,7 @@ export function SectionHeaderExample() {
 			<SectionHeader
 				title="Miembros del equipo"
 				description="Gestiona tu equipo y sus permisos."
-				search={<Input size="sm" icon="search-lg" aria-label="Buscar" placeholder="Buscar" />}
+				search={<Input size="sm" icon={SearchLg} aria-label="Buscar" placeholder="Buscar" />}
 			/>
 			<SectionHeader
 				title="Miembros del equipo"
@@ -248,7 +259,7 @@ const pestañas = [
 	{ id: "equipo", label: "Equipo" },
 	{ id: "plan", label: "Plan" },
 ];
-const menuSeccion = <Button hierarchy="tertiary" size="sm" iconOnly="dots-vertical" label="Más opciones" />;
+const menuSeccion = <Button hierarchy="tertiary" size="sm" iconOnly={DotsVertical} label="Más opciones" />;
 
 export function SectionFooterExample() {
 	return (
@@ -273,7 +284,7 @@ export function ContentDividerExample() {
 			<ContentDivider label="o continúa con" />
 			<ContentDivider label="Octubre 2026" heading />
 			<ContentDivider>
-				<Button hierarchy="secondary" size="sm" iconLeading="plus">
+				<Button hierarchy="secondary" size="sm" iconLeading={Plus}>
 					Cargar más
 				</Button>
 			</ContentDivider>
@@ -292,9 +303,9 @@ export function ContentDividerExample() {
 						size="sm"
 						aria-label="Mover"
 						items={[
-							{ value: "anterior", iconOnly: "arrow-left", label: "Anterior" },
-							{ value: "nuevo", iconOnly: "plus", label: "Nuevo" },
-							{ value: "siguiente", iconOnly: "arrow-right", label: "Siguiente" },
+							{ value: "anterior", iconOnly: ArrowLeft, label: "Anterior" },
+							{ value: "nuevo", iconOnly: Plus, label: "Nuevo" },
+							{ value: "siguiente", iconOnly: ArrowRight, label: "Siguiente" },
 						]}
 					/>
 				}
@@ -315,7 +326,7 @@ export function ContentDividerExample() {
 				}
 			/>
 			<ContentDivider
-				actions={<Button hierarchy="secondary" size="sm" iconOnly="plus" label="Añadir elemento" />}
+				actions={<Button hierarchy="secondary" size="sm" iconOnly={Plus} label="Añadir elemento" />}
 			/>
 		</div>
 	);
@@ -367,7 +378,7 @@ function InlineCTATipos() {
 				description="Precios flexibles que crecen contigo."
 				plan={{
 					name: "Plan básico",
-					icon: "zap",
+					icon: Zap,
 					price: "10 €",
 					period: "al mes",
 					description: "Hasta 10 usuarios, 20 GB por persona y todas las funciones.",
@@ -419,7 +430,7 @@ function InlineCTATipos() {
 				type="receipt"
 				title="Tu último recibo ya está disponible"
 				description="Descarga el recibo de enero de 2027."
-				file={{ name: "Recibo_enero_2027.pdf", size: "200 KB", icon: <FileDocumentPdf /> }}
+				file={{ name: "Recibo_enero_2027.pdf", size: "200 KB", icon: <FileIcon type="pdf" /> }}
 				actions={
 					<>
 						<Button hierarchy="secondary" size="sm">
@@ -437,7 +448,7 @@ export function InlineCTAExample() {
 	return (
 		<div className="flex flex-col gap-6">
 			<InlineCTA
-				icon="stars-02"
+				icon={Stars02}
 				title="Conecta tu banco"
 				description="Importa los movimientos cada día sin subir extractos a mano."
 				actions={

@@ -7,7 +7,6 @@ import {
 	ButtonGroupExample,
 	ButtonUtilityExample,
 	CloseButtonExample,
-	IconExample,
 } from "./examples/actions";
 import { AppIconExample } from "./examples/brand";
 import { CalendarViewExample } from "./examples/calendar";
@@ -177,7 +176,6 @@ export const visualExamples: Record<string, ComponentType> = {
 	SocialButtonGroup: SocialButtonGroupExample,
 	AppStoreBadge: AppStoreBadgeExample,
 	ButtonUtility: ButtonUtilityExample,
-	Icon: IconExample,
 	Input: InputExample,
 	Select: SelectExample,
 	Textarea: TextareaExample,

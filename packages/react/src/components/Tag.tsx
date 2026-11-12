@@ -1,8 +1,8 @@
+import { Check, XClose } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { hiddenInput } from "../internal/choice.js";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export type TagSize = "sm" | "md" | "lg";
 
@@ -13,7 +13,7 @@ export interface TagProps {
 	count?: number;
 	/** Punto verde antes del texto. */
 	dot?: boolean;
-	/** Bandera de 13px antes del texto, como `FlagSpainCircle` de `@jotis-me/icons/flags`. */
+	/** Bandera de 13px antes del texto, como `<FlagEs />` de `@untitledui/country-flags`. */
 	flag?: ReactNode;
 	/** Avatar de 16px antes del texto: la URL de una foto o un nodo. */
 	avatar?: string | ReactNode;
@@ -134,7 +134,7 @@ export function Tag({
 									BOX[size],
 								)}
 							>
-								<Icon name="check" size={CHECK[size]} strokeWidth={1.67} />
+								<Check size={CHECK[size]} strokeWidth={1.67} />
 							</span>
 						</>
 					) : null}
@@ -158,7 +158,7 @@ export function Tag({
 					aria-label={label}
 					className="inline-flex cursor-pointer rounded-[3px] bg-transparent p-0.5 text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
 				>
-					<Icon name="x-close" size={size === "sm" ? 12 : 14} />
+					<XClose size={size === "sm" ? 12 : 14} />
 				</button>
 			) : null}
 		</Root>

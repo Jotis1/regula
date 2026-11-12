@@ -1,6 +1,6 @@
+import { ChevronLeft, ChevronRight, Copy01, Lock01, Plus, RefreshCw01 } from "@untitledui/icons";
 import type { CSSProperties, ReactNode } from "react";
 import { cx } from "../internal/cx.js";
-import { Icon } from "./Icon.js";
 
 export interface BrowserFrameProps {
 	/**
@@ -50,7 +50,7 @@ export function BrowserFrame({
 					: "h-7 bg-secondary text-[13px] leading-[18px]",
 			)}
 		>
-			<Icon name="lock-01" size={12} />
+			<Lock01 size={12} />
 			<span className="truncate">{url}</span>
 		</div>
 	);
@@ -84,14 +84,14 @@ export function BrowserFrame({
 				) : (
 					<>
 						<div className={nav}>
-							<Icon name="chevron-left" size={18} />
-							<Icon name="chevron-right" size={18} />
+							<ChevronLeft size={18} />
+							<ChevronRight size={18} />
 						</div>
 						{address}
 						<div className={cx(nav, "ml-auto")}>
-							<Icon name="refresh-cw-01" size={16} />
-							<Icon name="plus" size={18} />
-							<Icon name="copy-01" size={16} />
+							<RefreshCw01 size={16} />
+							<Plus size={18} />
+							<Copy01 size={16} />
 						</div>
 					</>
 				)}

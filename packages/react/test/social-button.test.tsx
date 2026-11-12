@@ -1,13 +1,13 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { SocialButton, SocialButtonGroup } from "../src/index.js";
+import { expectAccessibleInThemes } from "./helpers.js";
 import {
 	SocialAppleLogoGray,
 	SocialFacebookLogoGray,
 	SocialGoogleLogo,
 	SocialGoogleLogoGray,
-} from "@jotis-me/icons/logos";
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import { SocialButton, SocialButtonGroup } from "../src/index.js";
-import { expectAccessibleInThemes } from "./helpers.js";
+} from "./logo-stub.js";
 
 describe("SocialButton", () => {
 	it("Google en gris: botón con el logo y el texto en castellano", async () => {

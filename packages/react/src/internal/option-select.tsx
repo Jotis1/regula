@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, ChevronDown } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import {
 	Button as AriaButton,
@@ -12,9 +13,9 @@ import {
 } from "react-aria-components";
 import { Avatar, type AvatarProps } from "../components/Avatar.js";
 import { COLOR, type StatusColor } from "../components/Badge.js";
-import { Icon, type IconName, iconSlot } from "../components/Icon.js";
 import { cx } from "./cx.js";
 import { addonClasses, controlClasses, type FieldSize } from "./field.js";
+import { type IconProp, iconSlot } from "./icon.js";
 
 /** Opción de una lista corta: texto, o con apoyo y un icono, avatar o punto delante. */
 export type SelectOption =
@@ -25,7 +26,7 @@ export type SelectOption =
 			/** Texto de apoyo tras la etiqueta, en `text-tertiary` (p. ej. "@olivia"). */
 			supporting?: ReactNode;
 			/** Icono delante, 20px en `fg-quaternary`. */
-			icon?: IconName | ReactNode;
+			icon?: IconProp;
 			/** Avatar delante (`xs`, 24px). */
 			avatar?: Pick<AvatarProps, "src" | "alt" | "initials">;
 			/** Punto de estado delante, del color indicado. */
@@ -39,7 +40,7 @@ export interface Option {
 	value: string;
 	label: ReactNode;
 	supporting?: ReactNode;
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	avatar?: Pick<AvatarProps, "src" | "alt" | "initials">;
 	dot?: StatusColor;
 	disabled?: boolean;
@@ -105,7 +106,7 @@ export interface OptionSelectProps {
 	/** Con `addon`, a qué lado del valor va. */
 	position?: "leading" | "trailing";
 	/** Icono inicial del campo, 20px en `fg-quaternary`. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	className?: string;
 }
 
@@ -202,7 +203,7 @@ export function OptionSelect({
 					}
 				</SelectValue>
 				<span className="inline-flex flex-none text-fg-quaternary">
-					<Icon name="chevron-down" size={field ? 20 : 16} />
+					<ChevronDown size={field ? 20 : 16} />
 				</span>
 			</AriaButton>
 			<Popover
@@ -236,7 +237,7 @@ export function OptionSelect({
 									<Text slot="description" className="hidden" />
 									{isSelected ? (
 										<span className="inline-flex flex-none text-fg-brand-primary">
-											<Icon name="check" size={20} />
+											<Check size={20} />
 										</span>
 									) : null}
 								</>

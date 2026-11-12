@@ -17,13 +17,13 @@ export interface ContentOption {
 	code: string;
 	/**
 	 * Lo que el código necesita importar además del componente: nombres de @jotis-me/react o, por módulo,
-	 * `{ "@jotis-me/icons/logos": ["SocialGoogleLogo"] }`.
+	 * `{ "@jotis-me/assets/logos": ["SocialGoogleLogo"] }`.
 	 */
 	imports?: string[] | Record<string, string[]>;
 }
 
 export type Control =
-	| { kind: "choice"; prop: string; values: string[]; default?: string }
+	| { kind: "choice"; prop: string; values: string[]; default?: string; coerce?: boolean }
 	| { kind: "toggle"; prop: string; default: boolean }
 	| { kind: "number"; prop: string; min?: number; max?: number; step?: number; default?: number }
 	| { kind: "icon"; prop: string }
@@ -33,6 +33,8 @@ export type Control =
 export type Tweak =
 	| { kind: "hidden" }
 	| { kind: "number"; min?: number; max?: number; step?: number }
+	/** Un selector con estos valores, para una prop cuyo tipo es un alias que la tabla no despliega (`ChartLegendPosition`). */
+	| { kind: "choice"; values: string[]; coerce?: boolean }
 	| { kind: "icon" }
 	| { kind: "content"; options: ContentOption[] };
 
@@ -41,13 +43,6 @@ export type Tweak =
  * que ponga un atajo en las demás (un objeto, por ejemplo). `undefined`: sin valor.
  */
 export type State = Record<string, unknown>;
-
-/** Un atajo: un tipo del Figma, que pone de una vez las props que lo definen. */
-export interface Preset {
-	label: string;
-	/** Las props que pone. Las de un control de contenido, por la etiqueta de su opción. */
-	props: Record<string, unknown>;
-}
 
 /**
  * Una regla de incompatibilidad: cuando las props actuales cumplen `when`, las de `disable` no aplican. En `when`,
@@ -76,8 +71,6 @@ export interface Start {
 	fill?: number;
 	/** Ajustes por prop: rango de un número, contenido preparado, props que no se mueven. */
 	tweaks?: Record<string, Tweak>;
-	/** Atajos con los tipos del Figma del componente. */
-	presets?: Preset[];
 	/** Props incompatibles entre sí. */
 	rules?: Rule[];
 }
@@ -104,11 +97,24 @@ export const EXCLUDED = new Set([
 	"autoFocus",
 	"contained",
 	"state",
-	"indeterminate",
 ]);
 
-/** Las props de icono: aceptan el nombre de un icono del núcleo (o un nodo, que el playground no pinta). */
+/** Las props de icono. En el ejemplo se escriben con el nombre del componente (`"Plus"`), que cruza como texto. */
 const ICON_PROP = /^icon(Leading|Trailing|Only)?$/;
+
+/** Las claves que llevan un icono, también dentro de objetos y listas (`{ icon: "Plus" }`). */
+export const ICON_KEY = /^(icon|iconLeading|iconTrailing|iconOnly|trailing)$/;
+const ICON_IN_JSON = /"(icon|iconLeading|iconTrailing|iconOnly|trailing)":"([A-Z][A-Za-z0-9]*)"/g;
+
+/** El valor sin las comillas de los iconos: `{"icon":"Plus"}` → `{"icon":Plus}`, que es JSX válido. */
+const iconsUnquoted = (json: string) => json.replace(ICON_IN_JSON, '"$1":$2');
+
+/** Los componentes de icono que nombra un valor (en una prop de icono, o dentro de un objeto o lista). */
+export function iconNamesIn(prop: string, value: unknown): string[] {
+	if (typeof value === "string") return ICON_KEY.test(prop) && /^[A-Z]/.test(value) ? [value] : [];
+	if (value === null || typeof value !== "object") return [];
+	return [...JSON.stringify(value).matchAll(ICON_IN_JSON)].map((m) => m[2] as string);
+}
 
 /** `error` (`string | boolean`) se maneja como contenido preparado: sin error o con un mensaje. */
 const ERROR_OPTION: ContentOption = {
@@ -119,12 +125,41 @@ const ERROR_OPTION: ContentOption = {
 
 const unquote = (v: string) => v.replace(/^"|"$/g, "");
 
+/** La opción que lleva el valor del punto de partida de una prop de contenido. */
+export const DEFAULT_OPTION = "Por defecto";
+const same = (a: unknown, b: unknown) => a === b || JSON.stringify(a) === JSON.stringify(b);
+
+/** Un valor como JS para el código copiable: claves sin comillas y los iconos como identificador. */
+export function codeOfValue(value: unknown, key = "", indent = 0): string {
+	const pad = "\t".repeat(indent + 1);
+	const end = "\t".repeat(indent);
+	const k = (name: string) => (/^[A-Za-z_$][\w$]*$/.test(name) ? name : JSON.stringify(name));
+	if (typeof value === "string")
+		return ICON_KEY.test(key) && /^[A-Z]/.test(value) ? value : JSON.stringify(value);
+	if (value === null || typeof value !== "object") return JSON.stringify(value);
+	const one = Array.isArray(value)
+		? `[${value.map((x) => codeOfValue(x, key)).join(", ")}]`
+		: `{ ${Object.entries(value)
+				.map(([n, x]) => `${k(n)}: ${codeOfValue(x, n)}`)
+				.join(", ")} }`;
+	if (one.length <= 64) return one;
+	if (Array.isArray(value))
+		return `[\n${value.map((x) => `${pad}${codeOfValue(x, key, indent + 1)},`).join("\n")}\n${end}]`;
+	return `{\n${Object.entries(value)
+		.map(([n, x]) => `${pad}${k(n)}: ${codeOfValue(x, n, indent + 1)},`)
+		.join("\n")}\n${end}}`;
+}
+
 /**
  * Los controles de un componente desde su tabla de props y sus ajustes. Una unión solo da selector si todos sus
  * valores son cadenas; un `number`, un campo numérico; una prop de icono, un selector de icono; el resto de tipos
  * (funciones, nodos, listas) solo tiene control si el ajuste le da contenido preparado.
  */
-export function controlsOf(rows: PropRow[], tweaks: Record<string, Tweak> = {}): Control[] {
+export function controlsOf(
+	rows: PropRow[],
+	tweaks: Record<string, Tweak> = {},
+	startProps: Record<string, unknown> = {},
+): Control[] {
 	const controls: Control[] = [];
 	// `value` es estado cuando el componente avisa de sus cambios; en uno que solo muestra (ProgressBar), es un dato
 	const controlled = rows.some((r) => r.name === "onChange");
@@ -139,12 +174,32 @@ export function controlsOf(rows: PropRow[], tweaks: Record<string, Tweak> = {}):
 			continue;
 		}
 		if (tweak?.kind === "content") {
-			controls.push({ kind: "content", prop: row.name, options: tweak.options });
+			// El valor del punto de partida es la primera opción: sin ella, un control de contenido sin elegir quitaría la prop
+			const given = startProps[row.name];
+			const options =
+				given === undefined || tweak.options.some((o) => same(o.value, given) || o.label === given)
+					? tweak.options
+					: [{ label: DEFAULT_OPTION, value: given, code: codeOfValue(given) }, ...tweak.options];
+			controls.push({ kind: "content", prop: row.name, options });
+			continue;
+		}
+		if (tweak?.kind === "choice") {
+			const d = row.defaultValue === undefined ? undefined : unquote(row.defaultValue);
+			controls.push({
+				kind: "choice",
+				prop: row.name,
+				values: tweak.values,
+				...(tweak.coerce ? { coerce: true } : {}),
+				...(d === undefined ? {} : { default: d }),
+			});
 			continue;
 		}
 		if (
 			tweak?.kind === "icon" ||
-			(!tweak && (row.type === "IconName" || (ICON_PROP.test(row.name) && /ReactNode/.test(row.type))))
+			(!tweak &&
+				ICON_PROP.test(row.name) &&
+				!/^"[^"]*"( · "[^"]*")*$/.test(row.type) &&
+				row.type !== "boolean")
 		) {
 			controls.push({ kind: "icon", prop: row.name });
 			continue;
@@ -165,9 +220,17 @@ export function controlsOf(rows: PropRow[], tweaks: Record<string, Tweak> = {}):
 			});
 			continue;
 		}
-		const parts = row.type.split(" · ");
-		if (parts.length > 1 && parts.every((p) => /^"[^"]*"$/.test(p)))
-			controls.push({ kind: "choice", prop: row.name, values: parts.map(unquote), default: def });
+		// Uniones de literales: textos, `false`, `true` o números (`false | "right" | "bottom"`, `4 · 6`)
+		const parts = row.type.split(/ [|·] /);
+		const literal = (p: string) => /^"[^"]*"$/.test(p) || /^(false|true|\d+(\.\d+)?)$/.test(p);
+		if (parts.length > 1 && parts.every(literal))
+			controls.push({
+				kind: "choice",
+				prop: row.name,
+				values: parts.map(unquote),
+				default: def,
+				...(parts.some((p) => !p.startsWith('"')) ? { coerce: true } : {}),
+			});
 	}
 	return controls;
 }
@@ -192,7 +255,7 @@ export function initialState(pg: Pick<Playground, "start" | "controls">): State 
 				break;
 			case "content":
 				// Empieza en la opción cuyo valor es el del punto de partida, si la hay
-				state[c.prop] = c.options.find((o) => o.value === given || o.label === given)?.label;
+				state[c.prop] = c.options.find((o) => same(o.value, given) || o.label === given)?.label;
 				break;
 		}
 	}
@@ -203,6 +266,11 @@ export function initialState(pg: Pick<Playground, "start" | "controls">): State 
 function resolveValue(c: Control | undefined, value: State[string]): unknown {
 	if (value === undefined || value === "") return undefined;
 	if (c?.kind === "content") return c.options.find((o) => o.label === value)?.value;
+	if (c?.kind === "choice" && c.coerce && typeof value === "string") {
+		if (value === "false") return false;
+		if (value === "true") return true;
+		if (/^\d+(\.\d+)?$/.test(value)) return Number(value);
+	}
 	return value;
 }
 
@@ -269,36 +337,31 @@ export function childrenOf(pg: Pick<Playground, "start" | "controls">, state: St
 	return "children" in disabledProps(pg, state) ? undefined : pg.start.children;
 }
 
-/** El estado tras elegir un atajo: se parte del inicial, para que no se arrastre lo del atajo anterior. */
-export function applyPreset(pg: Pick<Playground, "start" | "controls">, preset: Preset): State {
-	return { ...initialState(pg), ...preset.props };
-}
-
-/** Un atajo está marcado mientras todas sus props valen lo que él dice (con el punto de partida de fondo). */
-export function presetActive(
-	pg: Pick<Playground, "start" | "controls">,
-	preset: Preset,
-	state: State,
-): boolean {
-	return Object.entries(preset.props).every(([prop, value]) => {
-		const now = prop in state ? state[prop] : pg.start.props?.[prop];
-		return JSON.stringify(now ?? null) === JSON.stringify(value ?? null);
-	});
-}
-
 /** Cómo se escribe una prop: `prop`, `prop="texto"` o `prop={expresión}`. Si hay código preparado, es el suyo. */
 const attr = (prop: string, value: unknown, code?: string) => {
 	if (code !== undefined) return `${prop}={${code}}`;
 	if (value === true) return prop;
+	if (typeof value === "string" && ICON_KEY.test(prop) && /^[A-Z]/.test(value)) return `${prop}={${value}}`;
 	if (typeof value === "string" && !/["\n{}]/.test(value)) return `${prop}="${value}"`;
-	return `${prop}={${JSON.stringify(value)}}`;
+	return `${prop}={${iconsUnquoted(JSON.stringify(value))}}`;
 };
 
 const REACT = "@jotis-me/react";
+const UNTITLED = "@untitledui/icons";
 
-/** Los imports del código: el componente y lo que piden las opciones de contenido elegidas, por módulo. */
-export function importsOf(pg: Pick<Playground, "name" | "controls">, state: State): Record<string, string[]> {
+/** Los imports del código: el componente, los iconos y lo que piden las opciones de contenido elegidas, por módulo. */
+export function importsOf(
+	pg: Pick<Playground, "name" | "start" | "controls">,
+	state: State,
+): Record<string, string[]> {
 	const out: Record<string, Set<string>> = { [REACT]: new Set([pg.name]) };
+	// Los iconos que se pintan, en una prop de icono o dentro de un objeto o una lista
+	for (const [prop, value] of Object.entries(propsFor(pg, state)))
+		for (const name of iconNamesIn(prop, value)) {
+			const set = out[UNTITLED] ?? new Set<string>();
+			out[UNTITLED] = set;
+			set.add(name);
+		}
 	for (const c of pg.controls) {
 		if (c.kind !== "content") continue;
 		const imports = c.options.find((o) => o.label === state[c.prop])?.imports;
@@ -337,7 +400,11 @@ export function jsxOf(pg: Pick<Playground, "name" | "start" | "controls">, state
 		const c = byProp.get(prop);
 		if (prop === "children" && c?.kind === "content") continue;
 		if (c?.kind === "toggle" && value === c.default) continue;
-		if (c?.kind === "choice" && value === (c.default ?? undefined)) continue;
+		if (
+			c?.kind === "choice" &&
+			(c.coerce ? String(value) === c.default : value === (c.default ?? undefined))
+		)
+			continue;
 		if (value === false || value === undefined) continue;
 		const code = c?.kind === "content" ? c.options.find((o) => o.label === state[prop])?.code : undefined;
 		attrs.push(attr(prop, value, code));
@@ -373,11 +440,15 @@ export function playgroundOf(
 ): Playground | undefined {
 	const start = STARTS[name];
 	if (!start) return undefined;
-	const controls = controlsOf(rows, start.tweaks);
-	// Sin controles de las props pero con atajos (los controles de contenido llegan con el módulo del componente)
-	if (!controls.length && !start.presets?.length) return undefined;
+	const controls = controlsOf(rows, start.tweaks, start.props);
+	// Sin controles de las props (los controles de contenido llegan con el módulo del componente) no hay ejemplo
+	if (!controls.length && !hasContentTweaks(start)) return undefined;
 	return { name, start, controls, ...opts };
 }
+
+/** Un componente cuyos controles son solo de contenido preparado (los pone su módulo de cliente). */
+const hasContentTweaks = (start: Start) =>
+	Object.values(start.tweaks ?? {}).some((x) => x.kind === "content");
 
 /** Puntos de partida de cada componente, repartidos por grupos en `./starts/`. */
 export { STARTS };

@@ -1,12 +1,20 @@
 "use client";
 
+import {
+	ArrowLeft,
+	ArrowRight,
+	ChevronDown,
+	ChevronLeft,
+	ChevronLeftDouble,
+	ChevronRight,
+	ChevronRightDouble,
+} from "@untitledui/icons";
 import { type ReactNode, useEffect, useState } from "react";
 import { cx } from "../internal/cx.js";
+import type { IconComponent } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
-import type { IconName } from "./Icon.js";
-import { Icon } from "./Icon.js";
 
 export interface PaginationLabels {
 	/** @default "Anterior" */
@@ -173,9 +181,7 @@ function Nav({
 		<Button
 			hierarchy={tone}
 			size="sm"
-			{...(previous
-				? { iconLeading: "arrow-left" as const }
-				: { iconTrailing: "arrow-right" as const })}
+			{...(previous ? { iconLeading: ArrowLeft } : { iconTrailing: ArrowRight })}
 			disabled={previous ? current <= 1 : current >= pages}
 			onClick={() => go(previous ? current - 1 : current + 1)}
 			className={cx(MOBILE_ICON, grouped && "rounded-none")}
@@ -196,7 +202,7 @@ function Step({
 	dir: "previous" | "next";
 	to: number;
 	label: string;
-	icon: IconName;
+	icon: IconComponent;
 }) {
 	const disabled = dir === "previous" ? ctx.current <= 1 : ctx.current >= ctx.pages;
 	return (
@@ -240,7 +246,7 @@ function PageSizeSelect({
 				))}
 			</select>
 			<span className="pointer-events-none absolute right-2.5 flex text-fg-quaternary">
-				<Icon name="chevron-down" size={16} />
+				<ChevronDown size={16} />
 			</span>
 		</span>
 	);
@@ -283,7 +289,7 @@ function LegacyPagination({ ctx, className }: { ctx: Ctx; className?: string }) 
 			<Button
 				hierarchy="secondary"
 				size="sm"
-				iconLeading="arrow-left"
+				iconLeading={ArrowLeft}
 				disabled={current <= 1}
 				onClick={() => go(current - 1)}
 			>
@@ -317,7 +323,7 @@ function LegacyPagination({ ctx, className }: { ctx: Ctx; className?: string }) 
 			<Button
 				hierarchy="secondary"
 				size="sm"
-				iconTrailing="arrow-right"
+				iconTrailing={ArrowRight}
 				disabled={current >= pages}
 				onClick={() => go(current + 1)}
 			>
@@ -460,17 +466,17 @@ export function Pagination({
 					{center ? null : rows}
 				</div>
 				<div className="flex items-center gap-2">
-					<Step ctx={ctx} dir="previous" to={1} label={text.first} icon="chevron-left-double" />
+					<Step ctx={ctx} dir="previous" to={1} label={text.first} icon={ChevronLeftDouble} />
 					<Step
 						ctx={ctx}
 						dir="previous"
 						to={current - 1}
 						label={text.previous}
-						icon="chevron-left"
+						icon={ChevronLeft}
 					/>
 					<Numbers ctx={ctx} size="size-9" />
-					<Step ctx={ctx} dir="next" to={current + 1} label={text.next} icon="chevron-right" />
-					<Step ctx={ctx} dir="next" to={pages} label={text.last} icon="chevron-right-double" />
+					<Step ctx={ctx} dir="next" to={current + 1} label={text.next} icon={ChevronRight} />
+					<Step ctx={ctx} dir="next" to={pages} label={text.last} icon={ChevronRightDouble} />
 				</div>
 				{center ? rows : null}
 			</>

@@ -12,9 +12,9 @@
 	},
 	"dependencies": {
 		"@astrojs/react": "^7.1.2",
-		"@jotis-me/icons": "workspace:*",
 		"@jotis-me/react": "workspace:*",
 		"@tailwindcss/vite": "^4.3.3",
+		"@untitledui/icons": "0.0.23",
 		"astro": "^7",
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1",

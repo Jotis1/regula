@@ -22,7 +22,7 @@ astroNote: "Los `onSelect` de los ítems son funciones y no cruzan de Astro a un
 
 **Título de grupo y pie.** `{ heading: "Equipos" }` abre un grupo con su título (`text-xs` semibold en `brand-secondary`) hasta el siguiente separador o título; no se puede elegir y los lectores lo anuncian como grupo con su nombre. `footer` pone un texto o un botón al final, separado por una raya (`border-secondary`).
 
-**Integraciones.** `variant="integrations"` pinta los `icon` que sean nodos (logos de `@jotis-me/icons/logos`, por ejemplo `IntegrationClaudeLogoGray`) a 20px dentro del hueco de 16, y el panel mide al menos 216px. El paquete no importa los logos: se pasan.
+**Integraciones.** `variant="integrations"` pinta los `icon` que sean nodos (logos de `@jotis-me/assets/logos`, por ejemplo `IntegrationClaudeLogoGray`) a 20px dentro del hueco de 16, y el panel mide al menos 216px. El paquete no importa los logos: se pasan.
 
 **Cuentas.** Las variantes `account-*` llevan la lista `accounts` [{`value`, `name`, `email`?, `avatar`?, `initials`?, `status`?}] con la cuenta elegida marcada con un radio (`account` / `defaultAccount`, `onAccountChange(value)`, `accountsLabel`). La lista sale al final tras un separador, o donde pongas `{ accounts: true }` en `items`; `onAddAccount` añade la fila «Añadir cuenta». `account-button` es el botón de siempre; `account-avatar` es solo el avatar (el menú da su nombre accesible); `account-card-xs`, `-sm` y `-md` y `account-breadcrumb` (migas, con el correo en las filas) enseñan la cuenta elegida. El nombre de plan o los datos de la cuenta van en `header`.
 

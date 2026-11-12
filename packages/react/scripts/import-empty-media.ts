@@ -8,7 +8,7 @@
 // Uso: bun run scripts/import-empty-media.ts <illustration.svg> <file.svg> <folder.svg> <folder-glass.svg>
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { cut, type El, parseSvg } from "../../icons/scripts/import-logos.ts";
+import { cut, type El, parseSvg } from "../../assets/scripts/import-logos.ts";
 
 const GRAYS: Record<string, string> = {
 	"#FAFAFA": "var(--bg-secondary)",

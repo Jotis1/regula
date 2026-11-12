@@ -1,7 +1,6 @@
 // Base común de Stream (design §12): raíz oscura, movimiento, cifras tabulares, tipos de evento y lienzo.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { iconNames } from "@jotis-me/icons";
 import { compile } from "@tailwindcss/node";
 import { act, render } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
@@ -98,7 +97,7 @@ describe("tipos de evento", () => {
 
 	it("los siete tipos, cada uno con un icono del set y su etiqueta", () => {
 		expect(types).toEqual(["follow", "sub", "resub", "gift", "raid", "bits", "donation"]);
-		for (const t of types) expect(iconNames).toContain(STREAM_EVENTS[t].icon);
+		for (const t of types) expect(typeof STREAM_EVENTS[t].icon).toBe("function");
 		expect(STREAM_EVENTS.raid.label).toBe("Raid entrante");
 	});
 
