@@ -4,9 +4,19 @@
 // Arriba van los controles: un desplegable por cada prop con valores cerrados (tamaños, variantes…) y un
 // interruptor por cada booleano. Debajo, la vista previa, y aparte, separado, el código.
 import { iconNames } from "@jotis-me/icons";
-import { BackgroundPattern, CodeSnippet, NumberInput, Select, Toggle } from "@jotis-me/react";
+import { BackgroundPattern, Button, CodeSnippet, NumberInput, Select, Toggle } from "@jotis-me/react";
 import { useState } from "react";
-import { codeOf, type Playground as Data, initialState, propsFor, type State } from "../lib/playground";
+import {
+	applyPreset,
+	childrenOf,
+	codeOf,
+	type Playground as Data,
+	disabledProps,
+	initialState,
+	presetActive,
+	propsFor,
+	type State,
+} from "../lib/playground";
 import { playgroundComponents } from "../lib/playground-components";
 
 export default function Playground({ playground }: { playground: Data }) {
@@ -15,12 +25,47 @@ export default function Playground({ playground }: { playground: Data }) {
 	const Component = playgroundComponents[playground.name];
 	if (!Component) return null;
 	const { next, astro } = codeOf(playground, state);
+	const off = disabledProps(playground, state);
+	const presets = playground.start.presets ?? [];
+	const initial = initialState(playground);
+	const isInitial = JSON.stringify(state) === JSON.stringify(initial);
 	const toggles = playground.controls.filter((c) => c.kind === "toggle");
 	const fields = playground.controls.filter((c) => c.kind !== "toggle");
 
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="flex flex-col overflow-hidden rounded-xl border border-secondary">
+				{presets.length > 0 && (
+					<div
+						role="group"
+						aria-label="Atajos"
+						data-playground-presets
+						className="flex flex-wrap items-center gap-2 border-b border-secondary bg-primary px-5 py-3"
+					>
+						<span className="text-xs font-semibold text-quaternary">Tipos</span>
+						<Button
+							size="sm"
+							hierarchy="secondary"
+							aria-pressed={isInitial}
+							className="aria-pressed:bg-secondary_hover aria-pressed:text-secondary_hover"
+							onClick={() => setState(initial)}
+						>
+							Por defecto
+						</Button>
+						{presets.map((p) => (
+							<Button
+								key={p.label}
+								size="sm"
+								hierarchy="secondary"
+								aria-pressed={presetActive(playground, p, state)}
+								className="aria-pressed:bg-secondary_hover aria-pressed:text-secondary_hover"
+								onClick={() => setState(applyPreset(playground, p))}
+							>
+								{p.label}
+							</Button>
+						))}
+					</div>
+				)}
 				<div
 					data-playground-controls
 					className="flex flex-wrap items-end gap-x-4 gap-y-3 border-b border-secondary bg-primary px-5 py-4"
@@ -34,6 +79,8 @@ export default function Playground({ playground }: { playground: Data }) {
 									value={String(state[c.prop])}
 									onChange={set(c.prop)}
 									options={c.values}
+									disabled={c.prop in off}
+									hint={off[c.prop]}
 								/>
 							) : c.kind === "number" ? (
 								<NumberInput
@@ -48,6 +95,8 @@ export default function Playground({ playground }: { playground: Data }) {
 									min={c.min}
 									max={c.max}
 									step={c.step}
+									disabled={c.prop in off}
+									hint={off[c.prop]}
 								/>
 							) : c.kind === "icon" ? (
 								<Select
@@ -60,6 +109,8 @@ export default function Playground({ playground }: { playground: Data }) {
 										{ value: "", label: "Ninguno" },
 										...iconNames.map((n) => ({ value: n, label: n, icon: n })),
 									]}
+									disabled={c.prop in off}
+									hint={off[c.prop]}
 								/>
 							) : (
 								<Select
@@ -71,6 +122,8 @@ export default function Playground({ playground }: { playground: Data }) {
 										{ value: "", label: "Ninguno" },
 										...c.options.map((o) => ({ value: o.label, label: o.label })),
 									]}
+									disabled={c.prop in off}
+									hint={off[c.prop]}
 								/>
 							)}
 						</div>
@@ -84,6 +137,8 @@ export default function Playground({ playground }: { playground: Data }) {
 									label={c.prop}
 									checked={state[c.prop] === true}
 									onChange={set(c.prop)}
+									disabled={c.prop in off}
+									hint={off[c.prop]}
 								/>
 							))}
 						</div>
@@ -118,7 +173,9 @@ export default function Playground({ playground }: { playground: Data }) {
 						className={`relative ${playground.start.wide || playground.start.fill ? "w-full" : "max-w-full"}`}
 						style={playground.start.fill ? { height: playground.start.fill } : undefined}
 					>
-						<Component {...propsFor(playground, state)}>{playground.start.children}</Component>
+						<Component {...propsFor(playground, state)}>
+							{childrenOf(playground, state)}
+						</Component>
 					</div>
 				</div>
 			</div>

@@ -4,13 +4,17 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import {
+	applyPreset,
 	type ContentOption,
+	childrenOf,
 	codeOf,
 	controlsOf,
+	disabledProps,
 	initialState,
 	jsxOf,
 	type Playground,
 	playgroundOf,
+	presetActive,
 	propsFor,
 	STARTS,
 	type State,
@@ -192,6 +196,40 @@ describe("playground", () => {
 			{ name: "onChange", type: "(v: number) => void", required: false, description: "" },
 		];
 		expect(controlsOf(rows)).toEqual([]);
+	});
+
+	it("Button: solo icono desactiva los iconos de los lados y el texto, pide el label y vuelve con su valor al quitarlo", () => {
+		const pg = button();
+		if (!pg) throw new Error("Button debería tener playground");
+		const state: State = { ...initialState(pg), iconLeading: "plus", iconOnly: "plus" };
+		expect(Object.keys(disabledProps(pg, state))).toEqual(["iconLeading", "iconTrailing", "children"]);
+		expect(disabledProps(pg, state).iconLeading).toMatch(/solo icono/i);
+		expect(propsFor(pg, state)).toMatchObject({ iconOnly: "plus", label: "Nuevo gasto" });
+		expect(propsFor(pg, state)).not.toHaveProperty("iconLeading");
+		expect(childrenOf(pg, state)).toBeUndefined();
+		const { next } = codeOf(pg, state);
+		expect(next).toContain('<Button iconOnly="plus" label="Nuevo gasto" />');
+		expect(next).not.toContain("iconLeading");
+		// Sin iconOnly, el icono de la izquierda que había vuelve
+		const back: State = { ...state, iconOnly: undefined };
+		expect(disabledProps(pg, back)).toEqual({});
+		expect(propsFor(pg, back).iconLeading).toBe("plus");
+		expect(childrenOf(pg, back)).toBe("Nuevo gasto");
+	});
+
+	it("un atajo parte del estado inicial, queda marcado mientras sus props valgan lo que dice y se suelta al cambiar una", () => {
+		const pg = button();
+		if (!pg) throw new Error("Button debería tener playground");
+		const [primary, , , destructive] = pg.start.presets ?? [];
+		if (!primary || !destructive) throw new Error("Button debería tener atajos");
+		const state = applyPreset(pg, destructive);
+		expect(state.destructive).toBe(true);
+		expect(presetActive(pg, destructive, state)).toBe(true);
+		expect(presetActive(pg, primary, state)).toBe(true); // primary sigue siendo la jerarquía
+		expect(presetActive(pg, destructive, { ...state, destructive: false })).toBe(false);
+		// Elegir otro atajo no arrastra lo del anterior
+		const loading = applyPreset(pg, { label: "x", props: { loading: true } });
+		expect(loading.destructive).toBe(false);
 	});
 
 	it("cada punto de partida es de un componente que existe", () => {

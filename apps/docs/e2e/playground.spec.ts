@@ -155,3 +155,35 @@ test("Skeleton: escribir un número en width cambia el ancho y el código", asyn
 	await width.blur();
 	await expect(pg.getByRole("tabpanel")).toContainText("width={220}");
 });
+
+test("Button: el atajo «Solo icono» desactiva los controles que no aplican, con su motivo, y se alcanza con teclado", async ({
+	page,
+}) => {
+	await page.goto("/components/button/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	const presets = pg.getByRole("group", { name: "Atajos" });
+	await expect(presets.getByRole("button", { name: "Por defecto" })).toHaveAttribute(
+		"aria-pressed",
+		"true",
+	);
+	await presets.getByRole("button", { name: "Solo icono" }).click();
+	await expect(presets.getByRole("button", { name: "Solo icono" })).toHaveAttribute("aria-pressed", "true");
+	await expect(presets.getByRole("button", { name: "Por defecto" })).toHaveAttribute(
+		"aria-pressed",
+		"false",
+	);
+	// Los controles que no aplican, desactivados y con el motivo a la vista
+	const control = pg.locator('[data-pg-control="icon"]').filter({ hasText: "iconLeading" });
+	await expect(control.getByRole("button")).toBeDisabled();
+	await expect(control).toContainText("Un botón de solo icono no lleva texto ni iconos a los lados.");
+	await expect(pg.getByRole("tabpanel")).toContainText('<Button iconOnly="plus" label="Nuevo gasto" />');
+	// Volver al por defecto reactiva todo
+	await presets.getByRole("button", { name: "Por defecto" }).click();
+	await expect(control.getByRole("button")).toBeEnabled();
+	await expect(pg.getByRole("tabpanel")).toContainText("<Button>Nuevo gasto</Button>");
+	// Con teclado: Tab llega al atajo y Enter lo elige
+	await presets.getByRole("button", { name: "Destructivo" }).focus();
+	await page.keyboard.press("Enter");
+	await expect(pg.getByRole("tabpanel")).toContainText("destructive");
+});

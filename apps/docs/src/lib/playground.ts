@@ -32,8 +32,31 @@ export type Tweak =
 	| { kind: "icon" }
 	| { kind: "content"; options: ContentOption[] };
 
-/** Lo que vale cada control: texto (selectores, iconos y contenido por su etiqueta), booleano o número. `undefined`: sin valor. */
-export type State = Record<string, string | number | boolean | undefined>;
+/**
+ * Lo que vale cada prop: texto (selectores, iconos y contenido por su etiqueta), booleano o número en los controles; lo
+ * que ponga un atajo en las demás (un objeto, por ejemplo). `undefined`: sin valor.
+ */
+export type State = Record<string, unknown>;
+
+/** Un atajo: un tipo del Figma, que pone de una vez las props que lo definen. */
+export interface Preset {
+	label: string;
+	/** Las props que pone. Las de un control de contenido, por la etiqueta de su opción. */
+	props: Record<string, unknown>;
+}
+
+/**
+ * Una regla de incompatibilidad: cuando las props actuales cumplen `when`, las de `disable` no aplican. En `when`,
+ * `true` es «tiene algún valor», una lista es «es uno de estos» y cualquier otro valor, «es igual a».
+ */
+export interface Rule {
+	when: Record<string, unknown>;
+	disable: string[];
+	/** Props que sí hacen falta cuando la regla aplica (el `label` de un botón de solo icono), salvo que ya valgan algo. */
+	set?: Record<string, unknown>;
+	/** Por qué no aplican: se muestra bajo el control desactivado y se anuncia. */
+	reason: string;
+}
 
 export interface Start {
 	/** Props mínimas para que el componente se pinte con sentido. */
@@ -49,6 +72,10 @@ export interface Start {
 	fill?: number;
 	/** Ajustes por prop: rango de un número, contenido preparado, props que no se mueven. */
 	tweaks?: Record<string, Tweak>;
+	/** Atajos con los tipos del Figma del componente. */
+	presets?: Preset[];
+	/** Props incompatibles entre sí. */
+	rules?: Rule[];
 }
 
 export interface Playground {
@@ -162,8 +189,33 @@ function resolveValue(c: Control | undefined, value: State[string]): unknown {
 	return value;
 }
 
-/** Las props con las que se pinta: el punto de partida con los controles encima (los sin valor no se pasan). */
-export function propsFor(pg: Pick<Playground, "start" | "controls">, state: State): Record<string, unknown> {
+const has = (v: unknown) => v !== undefined && v !== null && v !== false && v !== "";
+const matches = (when: unknown, value: unknown) =>
+	when === true ? has(value) : Array.isArray(when) ? when.includes(value) : when === value;
+
+/** Las reglas que aplican con lo que valen las props ahora. */
+function activeRules(pg: Pick<Playground, "start" | "controls">, state: State): Rule[] {
+	const rules = pg.start.rules;
+	if (!rules?.length) return [];
+	const current = rawProps(pg, state);
+	return rules.filter((rule) =>
+		Object.entries(rule.when).every(([prop, when]) => matches(when, current[prop])),
+	);
+}
+
+/** Las props desactivadas por las reglas con lo que valen ahora, y el motivo de cada una. */
+export function disabledProps(
+	pg: Pick<Playground, "start" | "controls">,
+	state: State,
+): Record<string, string> {
+	const out: Record<string, string> = {};
+	for (const rule of activeRules(pg, state))
+		for (const prop of rule.disable) out[prop] = out[prop] ? `${out[prop]} ${rule.reason}` : rule.reason;
+	return out;
+}
+
+/** El punto de partida con el estado encima, sin quitar nada: es lo que miran las reglas. */
+function rawProps(pg: Pick<Playground, "start" | "controls">, state: State): Record<string, unknown> {
 	const byProp = new Map(pg.controls.map((c) => [c.prop, c]));
 	const props: Record<string, unknown> = { ...pg.start.props };
 	for (const [prop, value] of Object.entries(state)) {
@@ -174,6 +226,41 @@ export function propsFor(pg: Pick<Playground, "start" | "controls">, state: Stat
 		else if (control && control.kind !== "toggle" && control.kind !== "choice") delete props[prop];
 	}
 	return props;
+}
+
+/**
+ * Las props con las que se pinta: el punto de partida con los controles encima (los sin valor no se pasan), sin las
+ * que desactiva alguna regla y con las que esas reglas piden.
+ */
+export function propsFor(pg: Pick<Playground, "start" | "controls">, state: State): Record<string, unknown> {
+	const props = rawProps(pg, state);
+	for (const prop of Object.keys(disabledProps(pg, state))) delete props[prop];
+	for (const rule of activeRules(pg, state))
+		for (const [prop, value] of Object.entries(rule.set ?? {}))
+			if (!has(props[prop])) props[prop] = value;
+	return props;
+}
+
+/** El texto entre las etiquetas, salvo que una regla lo desactive (`children` en su `disable`). */
+export function childrenOf(pg: Pick<Playground, "start" | "controls">, state: State): string | undefined {
+	return "children" in disabledProps(pg, state) ? undefined : pg.start.children;
+}
+
+/** El estado tras elegir un atajo: se parte del inicial, para que no se arrastre lo del atajo anterior. */
+export function applyPreset(pg: Pick<Playground, "start" | "controls">, preset: Preset): State {
+	return { ...initialState(pg), ...preset.props };
+}
+
+/** Un atajo está marcado mientras todas sus props valen lo que él dice (con el punto de partida de fondo). */
+export function presetActive(
+	pg: Pick<Playground, "start" | "controls">,
+	preset: Preset,
+	state: State,
+): boolean {
+	return Object.entries(preset.props).every(([prop, value]) => {
+		const now = prop in state ? state[prop] : pg.start.props?.[prop];
+		return JSON.stringify(now ?? null) === JSON.stringify(value ?? null);
+	});
 }
 
 /** Cómo se escribe una prop: `prop`, `prop="texto"` o `prop={expresión}`. Si hay código preparado, es el suyo. */
@@ -209,7 +296,7 @@ export function jsxOf(pg: Pick<Playground, "name" | "start" | "controls">, state
 		attrs.push(attr(prop, value, code));
 	}
 	const { name } = pg;
-	const children = pg.start.children;
+	const children = childrenOf(pg, state);
 	const oneLine = `<${[name, ...attrs].join(" ")}`;
 	const open =
 		oneLine.length + (children?.length ?? 0) <= 72
@@ -244,7 +331,26 @@ export function playgroundOf(
 
 /** Puntos de partida, con los textos de sus fragmentos de uso (`snippets.ts`). */
 export const STARTS: Record<string, Start> = {
-	Button: { children: "Nuevo gasto" },
+	Button: {
+		children: "Nuevo gasto",
+		presets: [
+			{ label: "Primario", props: { hierarchy: "primary" } },
+			{ label: "Secundario", props: { hierarchy: "secondary" } },
+			{ label: "Terciario", props: { hierarchy: "tertiary" } },
+			{ label: "Destructivo", props: { hierarchy: "primary", destructive: true } },
+			{ label: "Con icono", props: { iconLeading: "plus" } },
+			{ label: "Solo icono", props: { iconOnly: "plus" } },
+			{ label: "Cargando", props: { loading: true } },
+		],
+		rules: [
+			{
+				when: { iconOnly: true },
+				disable: ["iconLeading", "iconTrailing", "children"],
+				set: { label: "Nuevo gasto" },
+				reason: "Un botón de solo icono no lleva texto ni iconos a los lados.",
+			},
+		],
+	},
 	Badge: { children: "Pagado" },
 	BadgeGroup: { props: { badge: "Nuevo", href: "#" }, children: "Hemos publicado los estados vacíos" },
 	Tag: { children: "Facturas" },
