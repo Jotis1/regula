@@ -107,7 +107,7 @@ La isla `Playground` recibe solo JSON (nombre, estado inicial y controles serial
 ### D5. Estructura con el paquete
 
 - **Cabecera:** `HeaderNav` con `brand` (el icono y el nombre como hoy), `items` (las cinco secciones con `current`), `search` (`SiteSearch`) y `actions` (`ThemeMenu`). El enlace «Saltar al contenido» se queda fuera de `HeaderNav`, antes de él.
-- **Barra lateral:** `SidebarNav` con `sections` (Empezar, Fundamentos, Iconos y los grupos de componentes con su número como `badge`), `search` para el filtro y el `active` de la página actual. Los grupos plegables usan `children` y `defaultOpen` en el del componente actual.
+- **Barra lateral (descartado en 3.2, se queda `SideNav.astro` sin JS; ver NOTAS):** `SidebarNav` con `sections` (Empezar, Fundamentos, Iconos y los grupos de componentes con su número como `badge`), `search` para el filtro y el `active` de la página actual. Los grupos plegables usan `children` y `defaultOpen` en el del componente actual.
 - **Menú móvil:** el `Slideout` actual con la misma `SidebarNav`, o el `mobile` de `HeaderNav` si cubre el caso.
 - **Pie:** `Footer` con `brand`, `description` (el texto de ahora), `columns` (Documentación, Paquetes y Suite) y `legal`.
 - **Portada:** `SectionHeader`, `LinkCard`, `FeaturedIcon`, `Badge`, `Button` y `BackgroundPattern` en las secciones que hoy son HTML con utilidades.

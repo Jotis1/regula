@@ -28,14 +28,14 @@
 - El tipado de la plantilla de Astro no ve que los slots son props: `{/* @ts-expect-error */}` con el motivo.
 - `check:js`: sin cambios de límite; `/` y `/components/` siguen dentro.
 
-## 3.2 SidebarNav: pendiente de decisión (no se hace en esta pasada)
+## 3.2 SidebarNav: excepción documentada (decidido el 2026-11-12)
 
 `SideNav.astro` no se puede sustituir por `SidebarNav` con una prop opcional, por un requisito que ya existe: la navegación lateral debe funcionar **sin JavaScript** (`e2e/docnav.spec.ts:83`, `javaScriptEnabled: false`; los grupos son `<details>`). `SidebarNav` es una isla hidratada, sus grupos se abren con botones `aria-expanded` y sus filas son de `text-md` semibold (el DocNav del diseño es compacto, de `text-sm`, con filtro y contadores). Montarla con el paquete exige añadirle: un modo de grupos con `<details>` (sin JS), una densidad compacta, y un filtro con su atajo `/` (hoy `search` solo pinta un campo), más el coste de hidratar ~140 enlaces en todas las páginas. Es rediseñar el componente, más que «una prop opcional retrocompatible» (design D5), así que se deja a decisión de quien lo revisa:
 
 1. **Ampliar `SidebarNav`** con `groups="details"`, `density="compact"` y `onSearch`/filtro (trabajo de varias tareas, con capturas y changeset), o
 2. **Excepción documentada:** la navegación lateral sigue siendo HTML del servidor sin JS, y el requisito «Estructura con el paquete» la excluye (la cabecera, el menú móvil y el pie sí usan el paquete).
 
-Hasta que se decida, 3.2 queda sin marcar y el resto del grupo sigue.
+**Decisión del usuario (2026-11-12): opción 2.** La navegación lateral sigue siendo `SideNav.astro`, HTML del servidor sin JS. La spec la saca del requisito «La web sigue el propio sistema» y añade el escenario «Navegación lateral sin JavaScript», que ya cubre `e2e/docnav.spec.ts` (bloque «sin JavaScript»). El menú móvil sigue siendo el `Slideout` del paquete con esa misma navegación dentro. Ampliar `SidebarNav` (opción 1) queda para un cambio aparte si hace falta. Sin cambios en el paquete.
 
 ## 3.3 Pie con Footer
 
@@ -143,4 +143,11 @@ Hasta que se decida, 3.2 queda sin marcar y el resto del grupo sigue.
 
 - `biome ci`, `turbo run typecheck build` (11/11), tests del paquete (1.226) y de la web (123), `check:size` (121 dentro), `check:js` (todas dentro), artefacto (`artifact:build`, `bun test` 21/21, e2e 247/247) y e2e completo de la web (1.326 pasan, 0 fallos; Chromium para todo y Firefox/WebKit para `e2e/cross-browser/`).
 - Revisado a mano en claro, oscuro y móvil: índice `/components/`, cabecera, pie, portada y el ejemplo interactivo de Button; el resto de páginas, por axe por grupo y el humo de los 121.
-- Sin cerrar: 3.2 y 3.5 esperan la decisión sobre la navegación lateral (ver 3.2).
+- 3.2 y 3.5 se cerraron después, con la decisión sobre la navegación lateral (ver 3.2 y 3.5).
+
+## 3.5 Nada de estructura a mano
+
+- `test/structure.test.ts` recorre `SiteHeader`, `SiteFooter`, `MobileMenu`, `ThemeMenu`, `SiteSearch` y la portada. Cuenta las etiquetas `<a>`, `<button>`, `<nav>`, `<header>` y `<footer>` escritas a mano y falla si no coinciden con la lista `HAND_MADE`, que lleva el motivo de cada una. `SideNav.astro` queda fuera (`EXEMPT`, decisión de 3.2).
+- Lo que se acepta a mano: «Saltar al contenido» (fuera de `HeaderNav`, design D5), el enlace de la marca (entra en el slot `brand`), los tres disparadores de búsqueda con aspecto de campo y la fila de cards de móvil de la portada (NOTAS 3.4).
+- Hueco encontrado y corregido al escribir el test: el botón «Abrir menú» de `MobileMenu` estaba hecho a mano. Ahora es `Button` `hierarchy="tertiary"` `size="lg"` `iconOnly="menu-01"`: mismas medidas (44 px), el mismo fondo al pasar el ratón y el mismo anillo de foco. El icono ya no cambia a `fg-quaternary_hover` al pasar el ratón.
+- Huecos de componentes del grupo 3: solo `HeaderNav` (`underline` y `mobileBar`, changeset `header-nav-underline`, minor). `Footer` y `LinkCard` se usaron sin cambios, y en `SidebarNav` no se tocó nada (3.2).

@@ -103,7 +103,7 @@ Cada card de `/components/` SHALL mostrar una muestra con lo más característic
 - **THEN** ninguna vista previa es una isla que se hidrate, y la página funciona igual con el JavaScript desactivado
 
 ### Requirement: La web sigue el propio sistema
-La web SHALL construirse con los paquetes del propio monorepo y cumplir las reglas de la guía: textos en castellano de España con tuteo, sin emojis y una acción principal por vista. Su estructura (cabecera, navegación lateral, menú móvil, pie y búsqueda) y las secciones de la portada SHALL montarse con componentes de `@jotis-me/react`, sin rehacer a mano lo que ya hace un componente del paquete. Si a un componente le falta algo para la web, SHALL ampliarse el componente. La cabecera SHALL mostrar el icono de app de Regula junto al nombre "Regula" en Bricolage Grotesque bold. Cabecera, contenido y pie SHALL medir como máximo el ancho del contenedor de la guía (`container-max-width-desktop`, 1280 px), centrados; la navegación lateral queda fuera de ese ancho, pegada al borde izquierdo.
+La web SHALL construirse con los paquetes del propio monorepo y cumplir las reglas de la guía: textos en castellano de España con tuteo, sin emojis y una acción principal por vista. Su estructura (cabecera, menú móvil, pie y búsqueda) y las secciones de la portada SHALL montarse con componentes de `@jotis-me/react`, sin rehacer a mano lo que ya hace un componente del paquete. La navegación lateral queda fuera de esta regla: SHALL seguir siendo HTML del servidor que funciona sin JavaScript, con grupos `<details>`. Si a un componente le falta algo para la web, SHALL ampliarse el componente. La cabecera SHALL mostrar el icono de app de Regula junto al nombre "Regula" en Bricolage Grotesque bold. Cabecera, contenido y pie SHALL medir como máximo el ancho del contenedor de la guía (`container-max-width-desktop`, 1280 px), centrados; la navegación lateral queda fuera de ese ancho, pegada al borde izquierdo.
 
 #### Scenario: Cabecera
 - **WHEN** se abre cualquier página
@@ -114,8 +114,12 @@ La web SHALL construirse con los paquetes del propio monorepo y cumplir las regl
 - **THEN** solo importa de `@jotis-me/react`, `@jotis-me/tokens` o `@jotis-me/icons`
 
 #### Scenario: Estructura con el paquete
-- **WHEN** se inspecciona la cabecera, la navegación lateral, el menú móvil, el pie o la búsqueda de cualquier página
-- **THEN** cada uno es un componente de `@jotis-me/react` (`HeaderNav`, `SidebarNav`, `Slideout`, `Footer` y `CommandMenu`, o el que lo sustituya en el catálogo)
+- **WHEN** se inspecciona la cabecera, el menú móvil, el pie o la búsqueda de cualquier página
+- **THEN** cada uno es un componente de `@jotis-me/react` (`HeaderNav`, `Slideout`, `Footer` y `CommandMenu`, o el que lo sustituya en el catálogo)
+
+#### Scenario: Navegación lateral sin JavaScript
+- **WHEN** se abre una página de componente con el JavaScript desactivado
+- **THEN** la navegación lateral se ve entera, sus grupos se abren y se cierran, y el grupo del componente actual está abierto
 
 #### Scenario: Ancho del contenedor
 - **WHEN** se abre una página de componente en una ventana de 1920 px

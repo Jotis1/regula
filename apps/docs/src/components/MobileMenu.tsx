@@ -1,7 +1,7 @@
 // Menú móvil a pantalla completa (reference/docs-design/MobileMenu.dc.html) sobre el Slideout de @jotis-me/react,
 // que trae el foco atrapado, Escape y el foco de vuelta al botón (design §7). Dentro: la búsqueda, la misma
 // navegación lateral (llega como hijos desde Astro, ya pintada) y el tema en tres estados (design §8).
-import { AppIcon, ButtonGroup, Icon, Slideout } from "@jotis-me/react";
+import { AppIcon, Button, ButtonGroup, Icon, Slideout } from "@jotis-me/react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { initDocNav } from "../lib/docnav";
 import { onThemeChange, setTheme, THEME_OPTIONS, type ThemeChoice, themeChoice } from "../lib/theme";
@@ -31,16 +31,15 @@ export default function MobileMenu({ children }: { children?: ReactNode }) {
 
 	return (
 		<>
-			<button
-				type="button"
-				aria-label="Abrir menú"
+			<Button
+				hierarchy="tertiary"
+				size="lg"
+				iconOnly="menu-01"
+				label="Abrir menú"
 				aria-haspopup="dialog"
 				aria-expanded={open}
 				onClick={() => setOpen(true)}
-				className="inline-flex size-11 items-center justify-center rounded-lg text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
-			>
-				<Icon name="menu-01" size={20} />
-			</button>
+			/>
 			<Slideout
 				open={open}
 				onClose={() => setOpen(false)}
