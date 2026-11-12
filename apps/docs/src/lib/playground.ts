@@ -142,7 +142,7 @@ export function controlsOf(rows: PropRow[], tweaks: Record<string, Tweak> = {}):
 		}
 		if (
 			tweak?.kind === "icon" ||
-			(!tweak && ICON_PROP.test(row.name) && /IconName|ReactNode/.test(row.type))
+			(!tweak && (row.type === "IconName" || (ICON_PROP.test(row.name) && /ReactNode/.test(row.type))))
 		) {
 			controls.push({ kind: "icon", prop: row.name });
 			continue;

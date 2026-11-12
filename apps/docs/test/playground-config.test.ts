@@ -29,10 +29,6 @@ import { type PropRow, propsOf } from "../src/lib/props";
  * y esta lista debe quedar vacía al final (tarea 5.7). Quitar un nombre al darle su `Start`.
  */
 const PENDING: string[] = [
-
-
-	"EmptyState", "ProgressBar",
-	"ProgressCircle", "ProgressSteps", "AvatarProfilePhoto", "CheckIcon", "CheckItem", "Rating", "RatingBadge", "Kbd",
 	"CalendarView", "FilterMenu", "FilterPanel", "ActivityGauge", "RadarChart", "ChartMarker", "SectionFooter",
 	"InlineCTA", "LinkCard", "VideoPlayer", "Carousel", "BackgroundOverlay", "TransparencyGrid", "ScaledPreview",
 	"ScreenMockup", "LaptopMockup", "PhoneMockup", "MarketingNav", "Footer", "BlogPostCard", "SubscribeCard",

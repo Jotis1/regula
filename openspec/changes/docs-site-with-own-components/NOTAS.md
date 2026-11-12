@@ -95,3 +95,11 @@ Hasta que se decida, 3.2 queda sin marcar y el resto del grupo sigue.
 - Los menús (`Dropdown`, `ContextMenu`) empiezan cerrados o con su vista previa abierta según el componente (`ContextMenu` con `defaultOpen`, en un marco de 260 px; `CommandMenu`, `Slideout` y `Modal`, contenidos en un marco).
 - **Arreglo en el paquete (changeset `tree-view-meta-contrast`, patch):** axe encontró en `/components/tree-view/` que el texto de apoyo (`meta`) de la fila elegida (`text-quaternary` sobre `bg-secondary_hover`) no llegaba a 4,5:1 en claro. Pasa a `text-tertiary` solo en la fila elegida (`group-data-selected:`); se actualiza el fixture congelado de HTML de `TreeView` (la única diferencia es esa clase). La captura aprobada del ejemplo sigue pasando.
 - `e2e/playground.spec.ts`: el test «un componente sin playground» pasa a `ChannelBanner` (el último pendiente) y se borra en 5.7; el humo salta los selectores desactivados por una regla.
+
+## 5.3 Avisos y carga y Etiquetas e identidad
+
+- Los 9 de Avisos y carga y los 14 de Etiquetas e identidad (con `Kbd`) tienen ejemplo interactivo y atajos con sus tipos del Figma. Nuevos: `EmptyState` (con reglas: la ilustración solo con `media="illustration"` y el icono solo con `media="icon"`), `ProgressBar` (`value` pasa a ser un campo numérico: el componente no tiene `onChange`), `ProgressCircle`, `ProgressSteps` (cinco tipos, vertical), `AvatarProfilePhoto`, `CheckIcon`, `CheckItem`, `Rating`, `RatingBadge` y `Kbd`.
+- Nodos y funciones como contenido preparado en módulos: `actions` de `Alert`, `Banner` y `EmptyState` (botones); `flag` y `avatar` de `Badge` y `Tag` (`FlagSpainCircle` de `@jotis-me/icons/flags` y un `Avatar`); `onRemove` de `Tag` y `onAdd` de `AvatarGroup` (una función vacía, con «Con cierre» y «Con botón de añadir»). `Badge` solo icono desactiva texto, punto, bandera y avatar y pone el `label`.
+- Cambio del motor: un prop de tipo `IconName` (como el `name` de `Icon`) también es un selector de icono.
+- axe encontró que `CheckItem` pinta un `li` fuera de una lista en el ejemplo: el punto de partida lleva `as="div"` (y es lo que escribe el código).
+- Pendiente de este grupo, por decisión: `Notification` y `Alert` no ofrecen `image`/`icon` como nodos (el icono sí, por nombre); `Avatar` `company` queda sin control (un nodo de logo).

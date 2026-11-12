@@ -32,7 +32,7 @@ Cada tarea: config con punto de partida, controles ajustados, atajos con los tip
 
 - [x] 5.1 Acciones y Formularios.
 - [x] 5.2 Navegación y Capas.
-- [ ] 5.3 Avisos y carga, y Etiquetas e identidad.
+- [x] 5.3 Avisos y carga, y Etiquetas e identidad.
 - [ ] 5.4 Datos y Gráficas.
 - [ ] 5.5 Estructura de página, y Contenido y medios.
 - [ ] 5.6 Fondos y maquetas, y Web de marketing.
