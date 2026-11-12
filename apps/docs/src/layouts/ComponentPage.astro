@@ -1,22 +1,26 @@
 ---
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-// Página de un componente (reference/docs-design/Button.dc.html y ButtonM.dc.html): migas Componentes › grupo ›
-// nombre, insignia del grupo, descripción, línea de importación y nota de Astro; «Cuándo usarlo» (la ficha),
-// props, código, «Detalles y accesibilidad» (el resto de la ficha) y
-// anterior/siguiente. A la derecha, el índice «En esta página» y los relacionados del catálogo (design §2).
-import { Badge, Breadcrumbs, Button, Pager } from "@jotis-me/react";
-import { ArrowRight, InfoCircle, Moon01, Play } from "@untitledui/icons";
+// Página de un componente (design D1 de redesign-docs-site-v2): `PageHeader` con migas Componentes › grupo › nombre,
+// descripción, insignia del grupo, la importación en un `Input` de solo lectura con su botón de copiar y la nota de
+// Astro; después, cada sección con su `SectionHeader` (SectionTitle): el ejemplo interactivo, «Cuándo usarlo» (la
+// ficha), props, código, «Detalles y accesibilidad» (el resto de la ficha) y anterior/siguiente. A la derecha, el
+// índice «En esta página» y los relacionados del catálogo.
+import { Badge, Button, Input, PageHeader, Pager } from "@jotis-me/react";
+import { ArrowRight, Copy01, InfoCircle, Moon01, Play } from "@untitledui/icons";
 import CardSections from "../components/CardSections.astro";
 import CodeSnippet from "../components/CodeSnippetIsland";
 import InlineCode from "../components/InlineCode.astro";
+import PageToc from "../components/PageToc.astro";
 import Playground from "../components/Playground";
 import PropsTable from "../components/PropsTable.astro";
+import SectionTitle from "../components/SectionTitle.astro";
 import StreamNote from "../components/StreamNote.astro";
 import type { SplitCard } from "../lib/card";
 import { groupOf, labelOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
 import { compositionCode } from "../lib/composition-code";
 import { inline } from "../lib/inline";
+import { PAGE_SECTIONS } from "../lib/layout";
 import type { Playground as PlaygroundData } from "../lib/playground";
 import type { PropRow } from "../lib/props";
 import { TOC_LINK } from "../lib/toc";
@@ -75,6 +79,7 @@ const compositionSource = inlineCompositions
 	? readFileSync(join(process.cwd(), "src/visual/examples", `${COMPOSITION_FILES[name]}.tsx`), "utf8")
 	: "";
 
+const importLine = `import { ${name} } from "@jotis-me/react"`;
 const has = (...ids: string[]) => card.sections.some((s) => ids.includes(s.id));
 const toc = [
 	playground && { slug: "ejemplo", text: "Ejemplo" },
@@ -87,53 +92,33 @@ const toc = [
 ---
 
 <Base title={label} description={description}>
-	<div class="flex gap-12">
-		<article class="prose min-w-0 max-w-none flex-1">
-			<header class="not-prose mb-10 flex flex-col gap-3.5">
-				<!-- En móvil, sin el grupo, como ButtonM: con él no caben en 390px -->
-				<Breadcrumbs items={crumbs} className="hidden md:block" />
-				<Breadcrumbs items={[crumbs[0], crumbs.at(-1)].filter((c) => c !== undefined)} className="md:hidden" />
-				<div class="flex flex-wrap items-center gap-x-4 gap-y-3">
-					<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">{label}</h1>
-					{group && <Badge color="gray" size="sm">{stream ? `Stream · ${group.label}` : group.label}</Badge>}
-					{stream && <Badge color="gray" size="sm" icon={Moon01}>Siempre en oscuro</Badge>}
-				</div>
-				<p class="max-w-[680px] text-md text-tertiary lg:text-lg"><InlineCode text={description} /></p>
-				<dl class="mt-1 hidden flex-wrap gap-x-7 gap-y-2 text-[13px] leading-5 md:flex">
-					<div class="flex gap-1.5">
-						<dt class="text-quaternary">Importar</dt>
-						<dd class="font-mono text-secondary">{`import { ${name} } from "@jotis-me/react"`}</dd>
+	<div class="flex flex-col gap-10">
+		<PageHeader title={label} breadcrumbs={crumbs} divider={false}>
+			<InlineCode slot="description" text={description} />
+			{
+				group && (
+					<div class="flex flex-wrap gap-2">
+						<Badge color="gray" size="sm">{stream ? `Stream · ${group.label}` : group.label}</Badge>
+						{stream && <Badge color="gray" size="sm" icon={Moon01}>Siempre en oscuro</Badge>}
 					</div>
-					<div class="flex gap-1.5">
-						<dt class="text-quaternary">En Astro</dt>
-						<dd class="text-secondary">
-							{interactive ? <>Isla con <code class="font-mono">client:load</code></> : "Sin isla: se pinta en el servidor"}
-						</dd>
-					</div>
-				</dl>
-				{
-					toc.length > 0 && (
-						<details class="mt-1 rounded-lg shadow-[inset_0_0_0_1px_var(--border-secondary)] xl:hidden">
-							<summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 px-3.5 text-sm font-semibold text-secondary [&::-webkit-details-marker]:hidden">
-								En esta página
-							</summary>
-							<div class="flex flex-col gap-1 px-3.5 pb-3.5">
-								{toc.map((h) => (
-									<a href={`#${h.slug}`} class={TOC_LINK}>
-										{h.text}
-									</a>
-								))}
-							</div>
-						</details>
-					)
-				}
-			</header>
-
+				)
+			}
+			{/* La copia la hace `CopyTooltip` de Base: pulsar cualquier elemento con `data-copy` copia su valor */}
+			<div class="max-w-[520px]" data-copy={importLine} data-import>
+				<Input size="sm" label="Importación" readOnly value={importLine} trailingButton={{ label: "Copiar", icon: Copy01 }} />
+			</div>
+			<p class="m-0 max-w-[720px] text-sm text-tertiary">
+				<span class="font-semibold text-secondary">En Astro.</span>{" "}
+				{interactive ? <>Isla con <code class="font-mono">client:load</code>.</> : "Sin isla: se pinta en el servidor."}
+			</p>
+		</PageHeader>
+		<div class="flex items-start gap-16">
+		<article class={PAGE_SECTIONS}>
 			{
 				playground && (
-					<section aria-labelledby="ejemplo" data-pagefind-ignore>
-						<h2 id="ejemplo">Ejemplo interactivo</h2>
-						<div class="not-prose my-4">
+					<section aria-labelledby="ejemplo" data-pagefind-ignore class="flex flex-col gap-5">
+						<SectionTitle id="ejemplo" title="Ejemplo interactivo" />
+						<div class="not-prose">
 							<Playground client:visible playground={playground} rows={props} />
 						</div>
 						{stream && <StreamNote name={name} />}
@@ -145,8 +130,8 @@ const toc = [
 
 			{
 				compositions.length > 0 && (
-					<section aria-labelledby="composiciones">
-						<h2 id="composiciones">Composiciones</h2>
+					<section aria-labelledby="composiciones" class="flex flex-col gap-5">
+						<SectionTitle id="composiciones" title="Composiciones" />
 						{inlineCompositions ? (
 							<>
 								<p>Montadas con componentes de Regula, con su código para copiar. No se exportan del paquete.</p>
@@ -186,8 +171,8 @@ const toc = [
 				)
 			}
 
-			<section aria-labelledby="props">
-				<h2 id="props">Props</h2>
+			<section aria-labelledby="props" class="flex flex-col gap-5">
+				<SectionTitle id="props" title="Props" />
 				<!-- En móvil la tabla se desplaza dentro de su caja; con teclado, la caja recibe el foco para desplazarla -->
 				<div
 					role="region"
@@ -197,12 +182,12 @@ const toc = [
 				>
 					<PropsTable rows={props} />
 				</div>
-				{card.props && <p class="text-sm text-tertiary" set:html={inline(card.props.raw)} />}
+				{card.props && <p class="m-0 text-sm text-tertiary" set:html={inline(card.props.raw)} />}
 			</section>
 
-			<section aria-labelledby="codigo">
-				<h2 id="codigo">Código</h2>
-				<div class="not-prose my-4" data-code-tabs>
+			<section aria-labelledby="codigo" class="flex flex-col gap-5">
+				<SectionTitle id="codigo" title="Código" />
+				<div class="not-prose" data-code-tabs>
 					<CodeSnippet
 						client:visible
 						tabs={[
@@ -213,7 +198,7 @@ const toc = [
 				</div>
 				{
 					astroNote && (
-						<div class="not-prose my-4 flex gap-3 rounded-xl bg-secondary p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+						<div class="not-prose flex gap-3 rounded-xl bg-secondary p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
 							<InfoCircle size={20} className="mt-px flex-none text-fg-quaternary" />
 							<p class="text-sm text-secondary">
 								<strong class="font-semibold text-primary">Isla en Astro.</strong> <InlineCode text={astroNote} />
@@ -223,7 +208,7 @@ const toc = [
 				}
 				{
 					stream && (
-						<div class="not-prose my-4 flex gap-3 rounded-xl bg-secondary p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)]" data-obs-note>
+						<div class="not-prose flex gap-3 rounded-xl bg-secondary p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)]" data-obs-note>
 							<Play size={20} className="mt-px flex-none text-fg-quaternary" />
 							<p class="text-sm text-secondary">
 								<strong class="font-semibold text-primary">En OBS.</strong> Móntalo en una página de tu app (Astro o Next) y añádela como fuente de navegador con el fondo transparente.
@@ -236,24 +221,16 @@ const toc = [
 			<CardSections card={card} part="detalles" />
 
 			<Pager
-				className="not-prose mt-14"
+				className="not-prose"
 				prev={prev ? { href: href(prev), label: labelOf(prev) } : undefined}
 				next={following ? { href: href(following), label: labelOf(following) } : undefined}
 			/>
 		</article>
-		<nav aria-label="En esta página" class="sticky top-8 hidden w-[184px] shrink-0 flex-col gap-2 self-start pt-1 xl:flex" data-toc>
-			<p class="mb-1 text-xs font-semibold text-quaternary">En esta página</p>
-			{
-				toc.map((h) => (
-					<a href={`#${h.slug}`} class={TOC_LINK} data-toc-link={h.slug}>
-						{h.text}
-					</a>
-				))
-			}
+		<PageToc items={toc}>
 			{
 				(related.length > 0 || stream) && (
-					<>
-						<p class="mt-5 mb-1 text-xs font-semibold text-quaternary">Relacionados</p>
+					<nav aria-label="Relacionados" class="mt-5 flex flex-col gap-2">
+						<p class="mb-1 text-xs font-semibold text-quaternary">Relacionados</p>
 						{related.map((c) => (
 							<a href={href(c)} class={TOC_LINK}>
 								{labelOf(c)}
@@ -264,10 +241,11 @@ const toc = [
 								Guía de Stream
 							</a>
 						)}
-					</>
+					</nav>
 				)
 			}
-		</nav>
+		</PageToc>
+		</div>
 	</div>
 </Base>
 

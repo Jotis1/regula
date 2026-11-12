@@ -89,25 +89,30 @@ test("las páginas de fundamentos llevan migas, índice y anterior/siguiente", a
 
 	await page.goto("/foundations/content/");
 	const toc = page.getByRole("navigation", { name: "En esta página" });
-	await expect(toc.locator("[data-toc-link]")).toHaveText([
+	await expect(toc.getByRole("link")).toHaveText([
 		"La voz",
 		"Dónde cabe el humor",
 		"En lugar de esto, esto otro",
 		"Reglas de escritura",
 		"Cifras y fechas",
 	]);
-	await expect(toc.getByRole("link", { name: "La voz" })).toHaveAttribute("aria-current", "true");
+	await expect(toc.getByRole("link", { name: "La voz" })).toHaveAttribute("aria-current", "location");
 	await page.evaluate(() =>
 		document.getElementById("reglas-de-escritura")?.scrollIntoView({ block: "start" }),
 	);
 	await expect(toc.getByRole("link", { name: "Reglas de escritura" })).toHaveAttribute(
 		"aria-current",
-		"true",
+		"location",
 	);
-	await expect(toc.getByRole("link", { name: "La voz" })).toHaveAttribute("aria-current", "false");
+	// Solo una sección marcada a la vez, y las demás sin el atributo
+	await expect(toc.getByRole("link", { name: "La voz" })).not.toHaveAttribute("aria-current", /.*/);
+	await expect(toc.locator("[aria-current]")).toHaveCount(1);
 	// Al final de la página se marca la última, aunque su título no llegue arriba
 	await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
-	await expect(toc.getByRole("link", { name: "Cifras y fechas" })).toHaveAttribute("aria-current", "true");
+	await expect(toc.getByRole("link", { name: "Cifras y fechas" })).toHaveAttribute(
+		"aria-current",
+		"location",
+	);
 	await expect(page.getByRole("link", { name: "Proponer un cambio" })).toHaveAttribute(
 		"href",
 		"https://github.com/Jotis1/regula/edit/main/apps/docs/src/content/foundations/content.mdx",
@@ -160,11 +165,13 @@ test("Color lleva el índice «En esta página» en columna, como el resto de fu
 	const toc = page.getByRole("navigation", { name: "En esta página" });
 	await expect(toc).toHaveCount(1);
 	await expect(toc).toBeVisible();
-	await expect(toc.getByText("En esta página", { exact: true })).toBeVisible();
-	await expect(toc.getByRole("link", { name: "Proponer un cambio" })).toBeVisible();
+	// La columna entera: el rótulo, los enlaces de ancla y «Proponer un cambio»
+	const column = page.locator("[data-toc]");
+	await expect(column.getByText("En esta página", { exact: true })).toBeVisible();
+	await expect(column.getByRole("link", { name: "Proponer un cambio" })).toBeVisible();
 	const article = await page.locator("article").boundingBox();
-	const column = await toc.boundingBox();
-	expect(column && article && column.x).toBeGreaterThan((article?.x ?? 0) + (article?.width ?? 0));
+	const box = await toc.boundingBox();
+	expect(box && article && box.x).toBeGreaterThan((article?.x ?? 0) + (article?.width ?? 0));
 });
 
 test("anterior y siguiente llevan su flecha, sin cambiar el nombre accesible", async ({ page }) => {
@@ -190,10 +197,10 @@ for (const [path, sections] of tocs)
 	test(`${path} tiene su índice «En esta página» y cada enlace lleva a su sección`, async ({ page }) => {
 		await page.setViewportSize({ width: 1440, height: 900 });
 		await page.goto(path);
-		const links = page.getByRole("navigation", { name: "En esta página" }).locator("[data-toc-link]");
+		const links = page.getByRole("navigation", { name: "En esta página" }).getByRole("link");
 		await expect(links).toHaveText(sections);
-		for (const id of await links.evaluateAll((as) => as.map((a) => a.getAttribute("data-toc-link"))))
-			await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
+		for (const href of await links.evaluateAll((as) => as.map((a) => a.getAttribute("href"))))
+			await expect(page.locator(`[id="${href?.slice(1)}"]`)).toHaveCount(1);
 	});
 
 test("la instalación usa el CodeSnippet de @jotis-me/react, con su resaltado, y no el de Astro", async ({

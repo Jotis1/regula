@@ -21,10 +21,10 @@ const PIECES: { file: string; uses: string }[] = [
 ];
 
 /**
- * Excepción del requisito (decidida en 3.2): la navegación lateral es HTML del servidor que funciona sin JavaScript
- * (`<details>`), y `SidebarNav` es una isla con botones `aria-expanded`. Si algún día se amplía, se quita de aquí.
+ * Sin excepciones desde `redesign-docs-site-v2`: la navegación lateral es `SidebarNav` con `disclosure="native"`, HTML
+ * del servidor que funciona sin JavaScript.
  */
-const EXEMPT = ["components/SideNav.astro"];
+const EXEMPT: string[] = [];
 
 /**
  * Piezas interactivas pintadas a mano (etiquetas en minúscula: `<a>`, `<button>`, `<nav>`, `<header>`, `<footer>`)
@@ -72,8 +72,11 @@ describe("estructura de la web con componentes del paquete", () => {
 			expect(handTags(src(file))).toEqual(allowed.map((h) => h.tag).sort());
 		});
 
-	it("la única pieza de estructura sin componente del paquete es la navegación lateral", () => {
-		expect(EXEMPT).toEqual(["components/SideNav.astro"]);
-		expect(src("components/SideNav.astro")).not.toContain("SidebarNav");
+	it("la navegación lateral es SidebarNav con submenús nativos, sin isla", () => {
+		expect(EXEMPT).toEqual([]);
+		const nav = src("components/SideNav.astro");
+		expect(nav).toContain("SidebarNav");
+		expect(nav).toContain('disclosure="native"');
+		expect(nav).not.toMatch(/<SidebarNav[^>]*client:/);
 	});
 });

@@ -1,6 +1,7 @@
 ---
 // Galería de métodos de pago (`@jotis-me/assets/payments`). La isla (`AssetGallery`) recibe los nombres y las URL de los SVG
 // del paquete, que el build copia como ficheros: se cargan como imágenes perezosas, no como código de la isla.
+import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
@@ -18,14 +19,13 @@ const entries = buildEntries("payments", urls);
 	title="Métodos de pago"
 	description={`Los ${entries.length} métodos de pago de @jotis-me/assets/payments, en dos tamaños.`}
 >
-	<div class="flex flex-col gap-7">
-		<header class="flex max-w-[720px] flex-col gap-3.5">
-			<IconsNav current="payments" />
-			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Métodos de pago</h1>
-			<p class="text-md text-tertiary lg:text-lg">
+	<div class="flex flex-col gap-10">
+		<PageHeader title="Métodos de pago" divider={false}>
+			<Fragment slot="description">
 				Los {entries.length} iconos de métodos de pago: tarjetas, monederos, transferencias y criptomonedas, cada uno en <code class="font-mono text-md">sm</code> (34 × 24) y <code class="font-mono text-md">md</code> (46 × 32). Cada uno es un componente suelto de <code class="font-mono text-md">@jotis-me/assets/payments</code>. Cada marca es de su dueño.
-			</p>
-		</header>
+			</Fragment>
+			<IconsNav current="payments" />
+		</PageHeader>
 		<AssetGallery client:load kind="payments" urls={encodeUrls(urls)} />
 	</div>
 </Base>

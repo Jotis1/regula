@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import { type } from "@jotis-me/tokens";
+import MdxH2 from "../../components/MdxH2.astro";
 import TokenTables from "../../components/TokenTables.astro";
 import FoundationPage from "../../layouts/FoundationPage.astro";
 import { tokenSections } from "../../lib/tokens";
@@ -21,6 +22,6 @@ const { Content, headings } = await render(page);
 	headings={[...headings, ...tokenSections(page.id, type.groups).map((s) => ({ depth: 2, ...s }))]}
 	source={`apps/docs/${page.filePath}`}
 >
-	<Content />
+	<Content components={{ h2: MdxH2 }} />
 	<TokenTables page={page.id} />
 </FoundationPage>

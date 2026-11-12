@@ -1,7 +1,18 @@
 // Navegación de la web, desde el catálogo (src/lib/catalog.ts): las páginas que no son de componente, que usan
 // también la búsqueda y los tests, y la navegación lateral completa de DocNav.dc.html, con los componentes por
 // grupos. Los textos van en castellano; las URLs, en inglés.
-import { COMPONENT_GROUPS, COMPONENT_KEYWORDS, FOUNDATIONS, labelOf, slugOf } from "./lib/catalog";
+import type { SidebarNavItem } from "@jotis-me/react";
+import {
+	COMPONENT_GROUPS,
+	COMPONENT_KEYWORDS,
+	FOUNDATIONS,
+	labelOf,
+	SECTIONS,
+	type SectionId,
+	sectionOf,
+	slugOf,
+} from "./lib/catalog";
+import { fold } from "./search/entries";
 
 export interface NavItem {
 	label: string;
@@ -84,3 +95,61 @@ export const docNav: NavSection[] = [
 
 /** Las páginas que no son de componente (portada, instalación, fundamentos, Stream e iconos), por sección. */
 export const nav = docNav.filter((s) => s.items.length > 0).map((s) => ({ title: s.title, items: s.items }));
+
+/** Qué lleva la navegación lateral: el árbol de la sección actual o, en el menú móvil, los cinco bloques de la web. */
+export type NavScope = "section" | "all";
+
+export interface SidebarTree {
+	items: SidebarNavItem[];
+	/** Texto extra por el que el filtro encuentra un enlace, ya sin tildes, por `href`. Solo lo que no está en su nombre. */
+	keywords: Record<string, string>;
+}
+
+/** El bloque de la navegación que contiene la ruta; lo que no es de ninguno (portada, historial, 404) cuenta como Empezar. */
+export const navSectionOf = (pathname: string): SectionId => sectionOf(pathname) ?? "start";
+
+const byId = (id: SectionId) => docNav.find((s) => s.id === id) as NavSection;
+const ALL_COMPONENTS: NavItem = { label: "Todos los componentes", href: "/components/" };
+const wordsOf = (item: NavItem) => (item.keywords ? fold(item.keywords) : undefined);
+
+/**
+ * Los elementos de `SidebarNav` de una página. `section`: el árbol de su sección (los grupos de Componentes y de
+ * Stream son desplegables, con el de la página actual abierto). `all`: los cinco bloques en el orden de la
+ * cabecera, plegados salvo el de la página actual; como `SidebarNav` solo anida un nivel, los grupos de componentes
+ * son ahí enlaces a su ancla de `/components/`, y el filtro los encuentra también por los componentes que traen.
+ */
+export function sidebarTree(current: string, scope: NavScope): SidebarTree {
+	const here = navSectionOf(current);
+	const keywords: Record<string, string> = {};
+	const leaf = (item: NavItem): SidebarNavItem => {
+		const extra = wordsOf(item);
+		if (extra) keywords[item.href] = extra;
+		return { label: item.label, href: item.href, active: item.href === current };
+	};
+	const groupLeaf = (group: NavGroup): SidebarNavItem => {
+		const href = `/components/#${group.id}`;
+		keywords[href] = fold(group.items.map((i) => `${i.label} ${i.keywords ?? ""}`).join(" "));
+		return { label: group.label, href };
+	};
+	const groupParent = (group: NavGroup): SidebarNavItem => ({
+		label: group.label,
+		badge: String(group.items.length),
+		children: group.items.map(leaf),
+	});
+	const pagesOf = (section: NavSection): NavItem[] =>
+		section.id === "components" ? [ALL_COMPONENTS, ...section.items] : section.items;
+
+	if (scope === "section") {
+		const section = byId(here);
+		return { items: [...pagesOf(section).map(leaf), ...section.groups.map(groupParent)], keywords };
+	}
+	const items = SECTIONS.map((s): SidebarNavItem => {
+		const section = byId(s.id);
+		return {
+			label: section.title,
+			defaultOpen: section.id === here,
+			children: [...pagesOf(section).map(leaf), ...section.groups.map(groupLeaf)],
+		};
+	});
+	return { items, keywords };
+}

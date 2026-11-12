@@ -2,6 +2,7 @@
 // Galería de iconos de línea de Untitled UI. La isla (`AssetGallery`) recibe los nombres y las URL de los SVG que escribe el
 // endpoint `/icons/svg/`, no los dibujos: enseña los primeros y carga el resto al pedirlo. Sin JavaScript se ven los
 // primeros iconos y el panel del primero.
+import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import categoriesByName from "../../data/icon-categories.json";
@@ -29,20 +30,19 @@ const total = ICON_NAMES.length;
 ---
 
 <Base title="Iconos" description={`Los ${total} iconos de línea de Untitled UI que usa la suite: 24×24, trazo de 2px redondeado.`}>
-	<div class="flex flex-col gap-7">
-		<header class="flex max-w-[720px] flex-col gap-3.5">
-			<IconsNav current="icons" />
-			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Iconos</h1>
-			<p class="text-md text-tertiary lg:text-lg">
+	<div class="flex flex-col gap-10">
+		<PageHeader title="Iconos" divider={false}>
+			<Fragment slot="description">
 				Los {total} iconos de línea de <a class="text-brand-secondary underline underline-offset-3" href="https://www.untitledui.com/icons">Untitled UI</a>: 24 × 24, trazo de 2 px con extremos redondos y sin relleno. Toman el color
 				del texto. Elige uno y copia su código.
-			</p>
-			<p id="icon-core-note" class="text-md text-tertiary">
+			</Fragment>
+			<p id="icon-core-note" class="m-0 max-w-[720px] text-md text-tertiary">
 				<strong class="font-semibold text-secondary">En los componentes de Regula</strong> las props de icono aceptan el
 				componente (<code class="font-mono text-md">iconLeading={"{Plus}"}</code>) o un nodo, no un nombre. Cada icono se
 				importa suelto de <code class="font-mono text-md">@untitledui/icons</code>: un bundler deja fuera los que no uses.
 			</p>
-		</header>
+			<IconsNav current="icons" />
+		</PageHeader>
 		<AssetGallery
 			client:load
 			kind="icons"

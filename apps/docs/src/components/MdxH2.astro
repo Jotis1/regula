@@ -1,0 +1,12 @@
+---
+// El `##` de los .mdx de la web: un `SectionTitle` (el `SectionHeader` `sm` del paquete) con el `id` que le pone
+// rehype-slug. Se pasa como `components={{ h2: MdxH2 }}` al contenido de cada página.
+import SectionTitle from "./SectionTitle.astro";
+
+interface Props {
+	id?: string;
+}
+const { id } = Astro.props;
+---
+
+<SectionTitle id={id} flow><slot /></SectionTitle>

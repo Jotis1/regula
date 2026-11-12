@@ -5,8 +5,9 @@
 // La vista previa es una captura WebP de lo más característico del componente (ShowcaseImage.astro, change
 // adopt-untitled-ui-icons), en claro y en oscuro; la hace scripts/capture-showcases.ts.
 import { getCollection } from "astro:content";
-import { Breadcrumbs, LinkCard } from "@jotis-me/react";
+import { LinkCard, PageHeader } from "@jotis-me/react";
 import InlineCode from "../../components/InlineCode.astro";
+import SectionTitle from "../../components/SectionTitle.astro";
 import ShowcaseImage from "../../components/ShowcaseImage.astro";
 import Base from "../../layouts/Base.astro";
 import { COMPONENT_GROUPS, labelOf, slugOf } from "../../lib/catalog";
@@ -31,21 +32,18 @@ const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length,
 	title="Componentes"
 	description={`Los ${total} componentes de @jotis-me/react, agrupados por tipo, con su descripción.`}
 >
-	<article class="prose max-w-none">
-		<header class="not-prose mb-10 flex flex-col gap-3 lg:gap-4">
-			<Breadcrumbs items={[{ label: "Componentes" }]} />
-			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Componentes</h1>
-			<p class="max-w-[720px] text-md text-tertiary lg:text-lg">
+	<div class="flex flex-col gap-10">
+		<PageHeader title="Componentes" breadcrumbs={[{ label: "Componentes" }]} divider={false}>
+			<Fragment slot="description">
 				Los {total} componentes de <code class="font-mono">@jotis-me/react</code>, en los grupos de la navegación: {total -
 					streamCount} de aplicación y {streamCount} de Stream, que van siempre en oscuro.
-			</p>
-		</header>
+			</Fragment>
+		</PageHeader>
+	<article class="prose flex max-w-none flex-col gap-14">
 		{
 			sections.map((section) => (
-				<section aria-labelledby={`seccion-${section.id}`} class="not-prose mb-14">
-					<h2 id={`seccion-${section.id}`} class="mb-6 font-display text-display-xs font-semibold text-primary">
-						{section.title}
-					</h2>
+				<section aria-labelledby={`seccion-${section.id}`} class="not-prose flex flex-col gap-6">
+					<SectionTitle id={`seccion-${section.id}`} title={section.title} />
 					{section.groups.map((group) => (
 						<section aria-labelledby={group.id} class="mb-10">
 							<h3 id={group.id} class="mb-3 flex items-baseline gap-2 text-lg font-semibold text-primary">
@@ -67,4 +65,5 @@ const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length,
 			))
 		}
 	</article>
+	</div>
 </Base>

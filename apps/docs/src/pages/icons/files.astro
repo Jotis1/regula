@@ -1,6 +1,7 @@
 ---
 // Galería de iconos de archivo de `@untitledui/file-icons`. La isla (`AssetGallery`) recibe los tipos y las URL de los SVG que
 // escribe el endpoint `/icons/svg/`: se cargan como imágenes perezosas, no como código de la isla.
+import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
@@ -22,14 +23,13 @@ const groups = groupOptions(entries, FILE_CATEGORIES);
 	title="Iconos de archivo"
 	description={`Los ${entries.length} tipos de archivo de @untitledui/file-icons, en default, gray y solid.`}
 >
-	<div class="flex flex-col gap-7">
-		<header class="flex max-w-[720px] flex-col gap-3.5">
-			<IconsNav current="files" />
-			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Iconos de archivo</h1>
-			<p class="text-md text-tertiary lg:text-lg">
+	<div class="flex flex-col gap-10">
+		<PageHeader title="Iconos de archivo" divider={false}>
+			<Fragment slot="description">
 				Los {entries.length} tipos de archivo, por extensión y genéricos, en default, gray y solid. Se pintan con un solo componente, <code class="font-mono text-md">FileIcon</code> de <code class="font-mono text-md">@untitledui/file-icons</code>.
-			</p>
-		</header>
+			</Fragment>
+			<IconsNav current="files" />
+		</PageHeader>
 		<AssetGallery client:load kind="files" urls={encodeUrls(urls)} groups={groups} />
 	</div>
 </Base>

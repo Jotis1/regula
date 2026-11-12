@@ -1,6 +1,7 @@
 ---
 import { blur, radius, shadows, spacing, type, width } from "@jotis-me/tokens";
 import { radiusRows, shadowRows, spacingRows, tokenSections } from "../lib/tokens";
+import MdxH2 from "./MdxH2.astro";
 
 interface Props {
 	page: string;
@@ -36,7 +37,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 	page === "typography" &&
 		type.groups.map((group) => (
 			<section>
-				<h2 id={ids.get(group.name)}>{group.name}</h2>
+				<MdxH2 id={ids.get(group.name)}>{group.name}</MdxH2>
 				<table>
 					<thead>
 						<tr>
@@ -80,7 +81,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 	page === "layout" && (
 		<>
 			<section>
-				<h2 id={ids.get("Escala de espaciado")}>Escala de espaciado</h2>
+				<MdxH2 id={ids.get("Escala de espaciado")}>Escala de espaciado</MdxH2>
 				<table>
 					<thead>
 						<tr>
@@ -110,7 +111,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 				</table>
 			</section>
 			<section>
-				<h2 id={ids.get("Radios")}>Radios</h2>
+				<MdxH2 id={ids.get("Radios")}>Radios</MdxH2>
 				<table>
 					<thead>
 						<tr>
@@ -138,7 +139,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 				</table>
 			</section>
 			<section>
-				<h2 id={ids.get("Anchos")}>Anchos</h2>
+				<MdxH2 id={ids.get("Anchos")}>Anchos</MdxH2>
 				<table>
 					<thead>
 						<tr>
@@ -173,7 +174,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 	page === "states" && (
 		<>
 			<section>
-				<h2 id={ids.get("Sombras")}>Sombras</h2>
+				<MdxH2 id={ids.get("Sombras")}>Sombras</MdxH2>
 				<table>
 					<thead>
 						<tr>
@@ -200,7 +201,7 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 				</table>
 			</section>
 			<section>
-				<h2 id={ids.get("Desenfoques")}>Desenfoques</h2>
+				<MdxH2 id={ids.get("Desenfoques")}>Desenfoques</MdxH2>
 				<table>
 					<thead>
 						<tr>

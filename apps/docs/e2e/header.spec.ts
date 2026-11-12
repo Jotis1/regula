@@ -85,9 +85,9 @@ test("la búsqueda tiene aspecto de campo y el selector de tema dice lo elegido"
 });
 
 // Medidas de Header.dc.html a 1440px: alto 64, padding lateral 32, icono 28, huecos de 32 entre bloques y 24
-// entre secciones, y la sección actual subrayada 2px en fg-brand-primary_alt. El contenido de la cabecera va en el
-// contenedor de la guía (1280), centrado: a 1440px quedan 80px de margen a cada lado, además del padding.
-const MARGIN = 80;
+// entre secciones, y la sección actual subrayada 2px en fg-brand-primary_alt. La cabecera ocupa todo el ancho
+// (`fullWidth` de HeaderNav, design D1 de redesign-docs-site-v2): sin más margen que el padding de 32px.
+const MARGIN = 0;
 test("a 1440px tiene las medidas del diseño", async ({ page }) => {
 	await page.goto("/components/button/");
 	const box = await header(page).boundingBox();
@@ -119,6 +119,30 @@ test("a 1440px tiene las medidas del diseño", async ({ page }) => {
 	expect(brandAlt).not.toBe("");
 	expect(underline).toContain("inset");
 	expect(underline).toMatch(/-2px/);
+});
+
+// La marca va siempre al borde izquierdo de la ventana (con el padding de 32px), a la altura del lateral, a
+// cualquier ancho: con el contenedor de 1280 centrado, a 1920px quedaría a 352px del borde.
+test("a 1920px la marca sigue alineada con el lateral, en el mismo borde izquierdo que a 1440px", async ({
+	page,
+}) => {
+	const brand = (p: Page) => header(p).getByRole("link", { name: "Regula, portada" });
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/components/button/");
+	const at1440 = await brand(page).boundingBox();
+	await page.setViewportSize({ width: 1920, height: 1000 });
+	await page.reload();
+	const at1920 = await brand(page).boundingBox();
+	const aside = await page.locator("aside").first().boundingBox();
+	expect(aside?.x).toBe(0);
+	expect(at1920?.x).toBe(at1440?.x);
+	// Entre el borde de la ventana y el contenido del lateral (288px de ancho), no en el centro de la ventana
+	expect(at1920?.x).toBeLessThan(aside?.width ?? 0);
+	// Y la búsqueda, pegada al borde derecho
+	const search = await header(page)
+		.getByRole("button", { name: /Buscar en Regula/ })
+		.boundingBox();
+	expect(1920 - ((search?.x ?? 0) + (search?.width ?? 0))).toBe(32);
 });
 
 test("favicon: el icono de app de Regula, en SVG y PNG, servido como fichero", async ({ page, request }) => {

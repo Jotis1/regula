@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Locator, type Page, test } from "@playwright/test";
-import { labelOf } from "../src/lib/catalog";
+import { groupOf, labelOf } from "../src/lib/catalog";
 
 /** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
 async function hydrated(page: Page, selector: string) {
@@ -19,14 +19,21 @@ const pages = readdirSync(dir)
 	}))
 	.map((p) => ({ ...p, label: labelOf(p.name) }));
 
-test("la navegación lateral lista todas las páginas de componente", async ({ page }) => {
-	await page.goto("/foundations/principles/"); // la portada va sin navegación lateral
-	const nav = page.getByRole("navigation", { name: "Documentación" });
-	for (const { label, slug } of pages)
-		await expect(
-			nav.getByRole("link", { name: label, exact: true, includeHidden: true }),
-		).toHaveAttribute("href", `/components/${slug}/`);
-});
+// El lateral lleva el árbol de su sección: Componentes y Stream se reparten las páginas
+for (const [section, start] of [
+	["components", "/components/button/"],
+	["stream", "/components/stream-scene/"],
+] as const)
+	test(`la navegación lateral de ${section} lista sus páginas de componente`, async ({ page }) => {
+		await page.goto(start);
+		const nav = page.getByRole("navigation", { name: "Documentación" });
+		const own = pages.filter((p) => groupOf(p.name)?.section === section);
+		expect(own.length).toBeGreaterThan(0);
+		for (const { label, slug } of own)
+			await expect(
+				nav.getByRole("link", { name: label, exact: true, includeHidden: true }),
+			).toHaveAttribute("href", `/components/${slug}/`);
+	});
 
 for (const { slug, name, label } of pages) {
 	test(`${name}: ficha, ejemplos vivos, props y código`, async ({ page }) => {
@@ -221,7 +228,11 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 		"href",
 		"/components/#acciones",
 	);
-	await expect(page.locator("header dl")).toContainText('import { Button } from "@jotis-me/react"');
+	// La importación, en un campo de solo lectura con su botón de copiar (PageHeader, design D1)
+	const importLine = page.locator("main header").first().getByRole("textbox", { name: "Importación" });
+	await expect(importLine).toHaveValue('import { Button } from "@jotis-me/react"');
+	await expect(importLine).toHaveAttribute("readonly", "");
+	await expect(page.locator("main header").first().getByRole("button", { name: "Copiar" })).toBeVisible();
 	const headings = await page.locator("article h2").allTextContents();
 	expect(headings.slice(0, 5)).toEqual([
 		"Ejemplo interactivo",
@@ -230,13 +241,14 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 		"Código",
 		"Detalles y accesibilidad",
 	]);
-	const toc = page.getByRole("navigation", { name: "En esta página" }).last();
+	const toc = page.getByRole("navigation", { name: "En esta página" });
 	await expect(toc.getByRole("link", { name: "Props" })).toHaveAttribute("href", "#props");
+	const related = page.getByRole("navigation", { name: "Relacionados" });
 	for (const [name, slug] of [
 		["Button group", "button-group"],
 		["Close button", "close-button"],
 	])
-		await expect(toc.getByRole("link", { name, exact: true })).toHaveAttribute(
+		await expect(related.getByRole("link", { name, exact: true })).toHaveAttribute(
 			"href",
 			`/components/${slug}/`,
 		);

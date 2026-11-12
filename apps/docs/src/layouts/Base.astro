@@ -14,12 +14,15 @@ import SideNav from "../components/SideNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import ThemeScript from "../components/ThemeScript.astro";
+import { sectionOf } from "../lib/catalog";
 
 interface Props {
 	title: string;
 	description?: string;
 	/** A todo el ancho, sin navegación lateral ni márgenes (la portada). */
 	wide?: boolean;
+	/** Sin navegación lateral y con los márgenes de siempre. Por defecto la llevan todas las páginas salvo iconos y 404. */
+	sidebar?: boolean;
 	/** Solo el contenido, sin cabecera, navegación ni pie (los lienzos a tamaño real). */
 	bare?: boolean;
 	/** Fuera de buscadores y de la búsqueda de texto completo (Pagefind): la 404. */
@@ -31,10 +34,13 @@ const {
 	wide = false,
 	bare = false,
 	noindex = false,
+	sidebar,
 } = Astro.props;
 // Pagefind indexa solo las páginas con `data-pagefind-body`; sin él, la página queda fuera
 const indexed = noindex ? {} : { "data-pagefind-body": true };
 const current = Astro.url.pathname;
+// Iconos y la 404 (la única página `noindex`) van sin lateral; en la 404 la ruta es la que no existe, así que no sirve
+const hasSidebar = sidebar ?? !(noindex || sectionOf(current) === "icons");
 ---
 
 <!doctype html>
@@ -67,11 +73,13 @@ const current = Astro.url.pathname;
 				</main>
 			) : (
 				<div class="flex">
-					<aside class="sticky top-0 hidden h-screen w-72 shrink-0 overflow-y-auto shadow-[inset_-1px_0_0_var(--border-secondary)] lg:block">
-						<SideNav current={current} />
-					</aside>
+					{hasSidebar && (
+						<aside class="sticky top-0 hidden h-screen w-[296px] shrink-0 overflow-y-auto shadow-[inset_-1px_0_0_var(--border-secondary)] lg:block">
+							<SideNav current={current} />
+						</aside>
+					)}
 					<div class="flex min-w-0 flex-1 flex-col">
-						<main id="contenido" {...indexed} class="flex-1 px-4 py-8 lg:px-8 lg:py-12">
+						<main id="contenido" {...indexed} class="flex-1 px-4 py-8 lg:px-8 lg:pt-10 lg:pb-24">
 							{/* El contenedor de la guía (container-max-width-desktop, 1280): la barra lateral queda fuera */}
 							<div class="mx-auto w-full max-w-container" data-container>
 								<slot />

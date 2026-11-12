@@ -6,6 +6,9 @@ description: Cómo usar los paquetes en una app de Next.js o de Astro.
 ---
 
 import Code from "../../components/compose/Code.astro";
+import MdxH2 from "../../components/MdxH2.astro";
+
+export const components = { h2: MdxH2 };
 
 Tres paquetes, todos en npm: `@jotis-me/tokens` (colores, tipografía, espaciado y fuentes), `@jotis-me/react` (los componentes y el icono de app) y `@jotis-me/assets` (logos, iconos de pago, cursores, trazos a mano y los ficheros de favicon y PWA de cada app, que solo instalas si los usas). Con instalar `@jotis-me/react` llega `@jotis-me/tokens`, y con él los iconos de línea de `@untitledui/icons`.
 

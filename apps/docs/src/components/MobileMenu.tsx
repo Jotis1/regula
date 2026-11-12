@@ -1,6 +1,7 @@
 // Menú móvil a pantalla completa (reference/docs-design/MobileMenu.dc.html) sobre el Slideout de @jotis-me/react,
-// que trae el foco atrapado, Escape y el foco de vuelta al botón (design §7). Dentro: la búsqueda, la misma
-// navegación lateral (llega como hijos desde Astro, ya pintada) y el tema en tres estados (design §8).
+// que trae el foco atrapado, Escape y el foco de vuelta al botón (design §7). Dentro: la búsqueda, el lateral de toda
+// la web (llega como hijos desde Astro, ya pintado: los cinco bloques, plegados salvo el de la página actual, con su
+// filtro) y el tema en tres estados (design §8).
 import { AppIcon, Button, ButtonGroup, Slideout } from "@jotis-me/react";
 import { Menu01, SearchLg } from "@untitledui/icons";
 import { type ReactNode, useEffect, useRef, useState } from "react";

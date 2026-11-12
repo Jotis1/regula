@@ -69,8 +69,8 @@ test("las notas de uso salen en castellano", async ({ page }) => {
 });
 
 test("las URLs van en inglés", async ({ page }) => {
-	// La portada va sin navegación lateral: se mira en una página que la tiene
-	await page.goto("/foundations/principles/");
+	// La portada va sin navegación lateral y el lateral solo lleva su sección: se mira en la de Componentes
+	await page.goto("/components/button/");
 	const hrefs = await page
 		.locator("aside nav a")
 		.evaluateAll((as) => as.map((a) => a.getAttribute("href")));

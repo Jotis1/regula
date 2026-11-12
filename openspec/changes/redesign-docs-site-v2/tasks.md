@@ -4,18 +4,18 @@ Un grupo por parte de la web, en el orden de la tabla de cambios del documento d
 
 ## 0. Antes de empezar
 
-- [ ] 0.1 Comprobar que `unblock-docs-redesign`, `add-docs-variants` y `add-docs-pieces` están archivados y su versión publicada, y subir `apps/docs` a ella.
+- [x] 0.1 Comprobar que `unblock-docs-redesign`, `add-docs-variants` y `add-docs-pieces` están archivados y su versión publicada, y subir `apps/docs` a ella.
 
 ## 1. Esqueleto común
 
-- [ ] 1.1 `SiteHeader` con `HeaderNav` `fullWidth` (design D1). E2E: a 1.920 px la marca queda alineada con el lateral.
-- [ ] 1.2 Layouts con `PageHeader`, `SectionHeader`, columna de lectura y espaciado común. Test: un solo `h1` por página y secciones en `h2`.
-- [ ] 1.3 «En esta página» con `Tabs` de enlaces y la sección que se lee marcada. E2E con `aria-current="location"`.
+- [x] 1.1 `SiteHeader` con `HeaderNav` `fullWidth` (design D1). E2E: a 1.920 px la marca queda alineada con el lateral.
+- [x] 1.2 Layouts con `PageHeader`, `SectionHeader`, columna de lectura y espaciado común. Test: un solo `h1` por página y secciones en `h2`.
+- [x] 1.3 «En esta página» con `Tabs` de enlaces y la sección que se lee marcada. E2E con `aria-current="location"`.
 
 ## 2. Navegación lateral
 
-- [ ] 2.1 `SideNav` con `SidebarNav` `disclosure="native"` y el árbol de la sección (design D2), conservando el script del filtro. E2E: sin JavaScript se abre y se cierra; «tabla» encuentra `Table`; en color no salen los grupos de componentes; portada, iconos y 404 sin lateral.
-- [ ] 2.2 `MobileMenu` con el lateral de toda la web, plegado salvo el bloque actual.
+- [x] 2.1 `SideNav` con `SidebarNav` `disclosure="native"` y el árbol de la sección (design D2), conservando el script del filtro. E2E: sin JavaScript se abre y se cierra; «tabla» encuentra `Table`; en color no salen los grupos de componentes; portada, iconos y 404 sin lateral.
+- [x] 2.2 `MobileMenu` con el lateral de toda la web, plegado salvo el bloque actual.
 
 ## 3. Página de componente
 

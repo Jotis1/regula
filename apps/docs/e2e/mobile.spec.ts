@@ -42,19 +42,45 @@ test("el menú atrapa el foco, se cierra con Escape y devuelve el foco al botón
 	await expect(menuButton(page)).toHaveAttribute("aria-expanded", "false");
 });
 
-test("el menú lleva la navegación con su filtro y navega", async ({ page }) => {
+test("el menú lleva los cinco bloques de la web, plegados salvo el de la página actual", async ({ page }) => {
 	await page.goto("/foundations/color/");
 	await openMenu(page);
 	const nav = menu(page).getByRole("navigation", { name: "Documentación" });
+	const summaries = nav.locator("summary");
+	await expect(summaries).toHaveText(["Empezar", "Fundamentos", "Componentes", "Stream", "Iconos"]);
+	const block = (label: string) =>
+		nav.locator("details").filter({ has: page.locator("summary", { hasText: label }) });
+	await expect(block("Fundamentos")).toHaveAttribute("open", "");
+	for (const other of ["Empezar", "Componentes", "Stream", "Iconos"])
+		await expect(block(other)).not.toHaveAttribute("open", "");
 	await expect(nav.getByRole("link", { name: "Color", exact: true })).toHaveAttribute(
 		"aria-current",
 		"page",
 	);
+	// Se abre otro bloque y se llega a su página
+	await block("Iconos").locator("summary").click();
+	await expect(nav.getByRole("link", { name: "Banderas", exact: true })).toBeVisible();
+	// Sin desbordar a 390 px
+	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});
+
+test("el menú abre el bloque de componentes en una página de componente", async ({ page }) => {
+	await page.goto("/components/button/");
+	await openMenu(page);
+	const nav = menu(page).getByRole("navigation", { name: "Documentación" });
+	await expect(nav.locator("details[open] > summary")).toHaveText(["Componentes"]);
+	await expect(nav.getByRole("link", { name: "Todos los componentes", exact: true })).toBeVisible();
+});
+
+test("el filtro del menú encuentra los grupos por los componentes que traen y navega", async ({ page }) => {
+	await page.goto("/foundations/color/");
+	await openMenu(page);
+	const nav = menu(page).getByRole("navigation", { name: "Documentación" });
 	await nav.getByLabel("Filtrar navegación").fill("tabla");
-	await expect(nav.getByRole("link", { name: "Table", exact: true })).toBeVisible();
+	await expect(nav.getByRole("link", { name: "Datos", exact: true })).toBeVisible();
 	await expect(nav.getByRole("link", { name: "Color", exact: true })).toBeHidden();
-	await nav.getByRole("link", { name: "Table", exact: true }).click();
-	await expect(page).toHaveURL(/\/components\/table\/$/);
+	await nav.getByRole("link", { name: "Datos", exact: true }).click();
+	await expect(page).toHaveURL(/\/components\/#datos$/);
 });
 
 test("la búsqueda del menú abre la búsqueda global", async ({ page }) => {

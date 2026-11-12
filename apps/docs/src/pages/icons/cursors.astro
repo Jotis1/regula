@@ -1,6 +1,7 @@
 ---
 // Galería de cursores (`@jotis-me/assets/cursors`). La isla (`AssetGallery`) recibe los nombres y las URL de los SVG
 // del paquete, que el build copia como ficheros: se cargan como imágenes perezosas, no como código de la isla.
+import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
@@ -19,14 +20,13 @@ const groups = groupOptions(entries, CURSOR_CATEGORIES);
 	title="Cursores"
 	description={`Los ${entries.length} cursores de @jotis-me/assets/cursors, los clásicos y los de macOS 26.`}
 >
-	<div class="flex flex-col gap-7">
-		<header class="flex max-w-[720px] flex-col gap-3.5">
-			<IconsNav current="cursors" />
-			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Cursores</h1>
-			<p class="text-md text-tertiary lg:text-lg">
+	<div class="flex flex-col gap-10">
+		<PageHeader title="Cursores" divider={false}>
+			<Fragment slot="description">
 				Los {entries.length} cursores, los clásicos y los de macOS 26. Cada uno es un componente suelto de <code class="font-mono text-md">@jotis-me/assets/cursors</code> y un SVG que sirve de <code class="font-mono text-md">cursor</code> en CSS.
-			</p>
-		</header>
+			</Fragment>
+			<IconsNav current="cursors" />
+		</PageHeader>
 		<AssetGallery client:load kind="cursors" urls={encodeUrls(urls)} groups={groups} />
 	</div>
 </Base>
