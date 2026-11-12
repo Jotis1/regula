@@ -1,6 +1,6 @@
 {
 	"name": "@jotis-me/react",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"description": "Componentes React de la suite jotis.me para Next.js y Astro, con Tailwind CSS v4.",
 	"license": "MIT",
 	"type": "module",
