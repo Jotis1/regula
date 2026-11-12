@@ -137,7 +137,7 @@ const toc = [
 					<section aria-labelledby="ejemplo" data-pagefind-ignore>
 						<h2 id="ejemplo">Ejemplo interactivo</h2>
 						<div class="not-prose my-4">
-							<Playground client:visible playground={playground} />
+							<Playground client:visible playground={playground} rows={props} />
 						</div>
 						{stream && <StreamNote name={name} />}
 					</section>

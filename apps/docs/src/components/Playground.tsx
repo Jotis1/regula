@@ -5,25 +5,58 @@
 // interruptor por cada booleano. Debajo, la vista previa, y aparte, separado, el código.
 import { iconNames } from "@jotis-me/icons";
 import { BackgroundPattern, Button, CodeSnippet, NumberInput, Select, Toggle } from "@jotis-me/react";
-import { useState } from "react";
+import { type ComponentType, Suspense, use, useState } from "react";
 import {
 	applyPreset,
 	childrenOf,
 	codeOf,
+	controlsOf,
 	type Playground as Data,
 	disabledProps,
 	initialState,
 	presetActive,
 	propsFor,
 	type State,
+	type Tweak,
 } from "../lib/playground";
-import { playgroundComponents } from "../lib/playground-components";
 
-export default function Playground({ playground }: { playground: Data }) {
+/** Lo que exporta el fichero de un componente (src/playground/): el componente y, si los tiene, sus ajustes de cliente. */
+interface PlaygroundModule {
+	default: ComponentType<Record<string, unknown>>;
+	tweaks?: Record<string, Tweak>;
+}
+
+// Un fichero por componente: cada página carga solo el suyo (design D4). El servidor espera a la carga y pinta lo mismo.
+const modules = import.meta.glob<PlaygroundModule>("../playground/*.tsx");
+const cache = new Map<string, Promise<PlaygroundModule>>();
+function load(name: string): Promise<PlaygroundModule> {
+	let promise = cache.get(name);
+	if (!promise) {
+		const loader = modules[`../playground/${name}.tsx`];
+		promise = loader ? loader() : Promise.reject(new Error(`Falta src/playground/${name}.tsx`));
+		cache.set(name, promise);
+	}
+	return promise;
+}
+
+export default function Playground({ playground, rows }: { playground: Data; rows: PropRow[] }) {
+	return (
+		<Suspense fallback={null}>
+			<Loaded playground={playground} rows={rows} />
+		</Suspense>
+	);
+}
+
+import type { PropRow } from "../lib/props";
+
+function Loaded({ playground: data, rows }: { playground: Data; rows: PropRow[] }) {
+	const { default: Component, tweaks } = use(load(data.name));
+	// Los ajustes de cliente (contenido preparado, con nodos) no cruzan de Astro: los controles se rehacen con ellos
+	const playground = tweaks
+		? { ...data, controls: controlsOf(rows, { ...data.start.tweaks, ...tweaks }) }
+		: data;
 	const [state, setState] = useState(() => initialState(playground));
 	const set = (prop: string) => (value: State[string]) => setState((s) => ({ ...s, [prop]: value }));
-	const Component = playgroundComponents[playground.name];
-	if (!Component) return null;
 	const { next, astro } = codeOf(playground, state);
 	const off = disabledProps(playground, state);
 	const presets = playground.start.presets ?? [];
