@@ -160,6 +160,9 @@ export async function generate(opts: Options): Promise<Manifest> {
  * que no salen del repo (Logos) y su orden; cada asset generado reutiliza el blob publicado solo si su sha256 coincide
  * (`assetShas`) o toma el recién subido (`blobs`). Si falta alguno, no hay índice publicable: error con la lista.
  */
+/** Grupos de assets que estuvieron publicados y el repo ya no genera: salen del índice al sincronizar. */
+const RETIRED_GROUPS = ["Icons"];
+
 function buildIndex(opts: Options, generated: Asset[], short: string) {
 	const published = opts.published
 		? (structuredClone(opts.published) as Record<string, unknown>)
@@ -183,12 +186,16 @@ function buildIndex(opts: Options, generated: Asset[], short: string) {
 			file: "components/lib/react-dom.production.min.js",
 		},
 	];
-	const groups = (published?.groups as string[] | undefined) ?? [];
+	// Grupos que el repo ya no genera se retiran del índice (los iconos de línea son ahora los de Untitled UI)
+	const groups = ((published?.groups as string[] | undefined) ?? []).filter(
+		(g) => !RETIRED_GROUPS.includes(g),
+	);
 	index.groups = [...groups, ...ASSET_GROUPS.map(([g]) => g).filter((g) => !groups.includes(g))];
 	const assetGroups = (index.assetGroups ?? {}) as Record<
 		string,
 		{ name: string; tile: string; order: string[]; files: Record<string, AssetRecord> }
 	>;
+	for (const g of RETIRED_GROUPS) delete assetGroups[g];
 	const records = new Map<string, AssetRecord>();
 	const uploads: string[] = [];
 	for (const [group, tile] of ASSET_GROUPS) {

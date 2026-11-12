@@ -231,6 +231,12 @@ describe("índice", () => {
 					order: ["logo.svg"],
 					files: { "logo.svg": { name: "logo.svg", blob: "L1" } },
 				},
+				Icons: {
+					name: "Icons",
+					tile: "xs",
+					order: ["plus.svg"],
+					files: { "plus.svg": { name: "plus.svg", blob: "X1" } },
+				},
 				Pagos: {
 					name: "Pagos",
 					tile: "xs",
@@ -258,6 +264,9 @@ describe("índice", () => {
 			expect(i.createdOnFiles.at).toBe("2026-10-29T17:40:00Z");
 			expect(i.assetGroups.Logos.files["logo.svg"].blob).toBe("L1");
 			expect(i.assetGroups.Pagos.files["visa-md.svg"].blob).toBe("B1");
+			// Un grupo publicado que el repo ya no genera se retira del índice
+			expect(i.assetGroups.Icons).toBeUndefined();
+			expect(i.groups).not.toContain("Icons");
 			expect(m.uploads).toEqual([]);
 			// El mismo nombre con otro contenido: el blob publicado no vale y hay que subir
 			await expect(
