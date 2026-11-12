@@ -103,3 +103,9 @@ Hasta que se decida, 3.2 queda sin marcar y el resto del grupo sigue.
 - Cambio del motor: un prop de tipo `IconName` (como el `name` de `Icon`) también es un selector de icono.
 - axe encontró que `CheckItem` pinta un `li` fuera de una lista en el ejemplo: el punto de partida lleva `as="div"` (y es lo que escribe el código).
 - Pendiente de este grupo, por decisión: `Notification` y `Alert` no ofrecen `image`/`icon` como nodos (el icono sí, por nombre); `Avatar` `company` queda sin control (un nodo de logo).
+
+## 5.4 Datos y Gráficas
+
+- Los 6 de Datos y los 7 de Gráficas tienen ejemplo interactivo con atajos. Nuevos: `CalendarView` (módulo que fija el día de hoy y el mes, porque las fechas son `Date`, y ofrece los eventos de octubre como contenido preparado con su código `new Date(…)`; `defaultView` oculto —no responde a cambios— y los atajos mueven `view`), `FilterMenu`, `FilterPanel` (sus filtros, sin ellos o dos, como contenido preparado), `ActivityGauge`, `RadarChart`, `ChartMarker`. `Table` lleva atajos de orden, selección (casillas, radios, interruptores), franjas y tamaño; `MetricCard`, atajos y dos reglas (el estilo de la gráfica y el del icono solo aplican con gráfica o icono); `PieChart`, el hueco como número de 0 a 0,75.
+- Cambio del motor: un ajuste de contenido gana a la exclusión de props de estado (`defaultValue` de `FilterPanel`).
+- Dudas: las gráficas con `legend` (`boolean | "top" | "right"`) no tienen selector porque su tipo no es una unión de cadenas: la leyenda se mueve con atajos. `Table` no ofrece los tipos de celda del Figma como control (`type` de cada columna, con renderizadores): quedan en las composiciones y la galería hasta 6.1.

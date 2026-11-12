@@ -129,8 +129,10 @@ export function controlsOf(rows: PropRow[], tweaks: Record<string, Tweak> = {}):
 	// `value` es estado cuando el componente avisa de sus cambios; en uno que solo muestra (ProgressBar), es un dato
 	const controlled = rows.some((r) => r.name === "onChange");
 	for (const row of rows) {
-		if (EXCLUDED.has(row.name) || (controlled && row.name === "value")) continue;
 		const tweak = tweaks[row.name];
+		// Un ajuste de contenido gana a la exclusión: lo controlado de un componente puede ofrecer valores preparados
+		if (!(tweak?.kind === "content") && (EXCLUDED.has(row.name) || (controlled && row.name === "value")))
+			continue;
 		if (tweak?.kind === "hidden") continue;
 		if (!tweak && row.name === "error" && /boolean/.test(row.type)) {
 			controls.push({ kind: "content", prop: "error", options: [ERROR_OPTION] });

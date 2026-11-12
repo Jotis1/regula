@@ -29,7 +29,7 @@ import { type PropRow, propsOf } from "../src/lib/props";
  * y esta lista debe quedar vacía al final (tarea 5.7). Quitar un nombre al darle su `Start`.
  */
 const PENDING: string[] = [
-	"CalendarView", "FilterMenu", "FilterPanel", "ActivityGauge", "RadarChart", "ChartMarker", "SectionFooter",
+	"SectionFooter",
 	"InlineCTA", "LinkCard", "VideoPlayer", "Carousel", "BackgroundOverlay", "TransparencyGrid", "ScaledPreview",
 	"ScreenMockup", "LaptopMockup", "PhoneMockup", "MarketingNav", "Footer", "BlogPostCard", "SubscribeCard",
 	"PricingCard", "JobPostCard", "Accordion", "TeamMemberCard", "Testimonial", "StreamGoal", "ChannelPanel",
@@ -165,7 +165,11 @@ describe("configuración del ejemplo interactivo", () => {
 				for (const [prop, value] of Object.entries(r.when)) {
 					check(`una regla (when)`, prop);
 					const c = byProp.get(prop);
-					const values = Array.isArray(value) ? value : value === true ? [] : [value];
+					const values = Array.isArray(value)
+						? value
+						: value === true || value === null
+							? []
+							: [value];
 					for (const v of values) {
 						const bad = invalidValue(c, v);
 						if (bad)
