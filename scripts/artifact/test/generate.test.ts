@@ -68,8 +68,11 @@ describe("catálogo", () => {
 		expect(meta.components.map((c: { name: string }) => c.name).sort()).toEqual(catalog);
 		const exported = Object.entries(react)
 			.filter(
+				// Un objeto cuenta solo si es de React (forwardRef, memo…): las plantillas como `SidebarCards` o `NavMenu`
+				// son objetos con componentes dentro, no componentes (como en apps/docs/test/catalog-sync.test.ts)
 				([n, v]) =>
-					/^[A-Z]/.test(n) && (typeof v === "function" || (typeof v === "object" && v !== null)),
+					/^[A-Z]/.test(n) &&
+					(typeof v === "function" || (typeof v === "object" && v !== null && "$$typeof" in v)),
 			)
 			.map(([n]) => n)
 			.sort();
@@ -299,7 +302,8 @@ describe("tipos", () => {
 		);
 		const tsc = join(import.meta.dirname, "../node_modules/typescript/bin/tsc");
 		expect(() =>
-			execFileSync("node", [tsc, "-p", join(out, "tsconfig.json")], { encoding: "utf8" }),
+			// El runtime que corre el test (Bun o Node): en un equipo sin Node también funciona
+			execFileSync(process.execPath, [tsc, "-p", join(out, "tsconfig.json")], { encoding: "utf8" }),
 		).not.toThrow();
 	}, 120_000);
 });

@@ -8,7 +8,7 @@ import {
 	streamDetail,
 	streamMotion,
 } from "../internal/stream.js";
-import { Icon, type IconName } from "./Icon.js";
+import { type IconName, iconSlot } from "./Icon.js";
 
 export interface StreamAlertProps {
 	/**
@@ -34,7 +34,7 @@ export interface StreamAlertProps {
 	/** Sustituye a la etiqueta del tipo ("Nuevo seguidor"…). */
 	label?: ReactNode;
 	/** Sustituye al icono del tipo. */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** `enter` entra con fundido y 8px de subida en 250 ms; `exit` sale en 200 ms. Con menos movimiento, solo fundido. */
 	state?: StreamMotion;
 	className?: string;
@@ -68,7 +68,7 @@ export function StreamAlert({
 			)}
 		>
 			<span className="inline-flex size-12 flex-none items-center justify-center rounded-xl bg-brand-solid text-white">
-				<Icon name={icon ?? ev.icon} size={24} />
+				{iconSlot(icon ?? ev.icon, 24)}
 			</span>
 			<div className="flex min-w-0 flex-col gap-0.5">
 				<span className="block text-sm font-medium text-tertiary">{label ?? ev.label}</span>

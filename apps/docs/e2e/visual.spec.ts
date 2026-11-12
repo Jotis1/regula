@@ -3,17 +3,20 @@
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 import { catalogComponents } from "../src/lib/catalog";
+import { COMPOSITIONS } from "../src/visual/compositions";
 import { CARD_HEIGHTS, slugOf } from "../src/visual/registry";
 import { compare, hasApproved, missingApproved, readApproved, VIEWPORT_WIDTH } from "./visual/compare";
 
 const MAX_RATIO = 0.02;
+// El catálogo y las composiciones (design D7)
+const entries = [...catalogComponents(), ...COMPOSITIONS.map((c) => c.name)];
 const results = join(import.meta.dirname, "../test-results/visual");
 const themes = ["light", "dark"] as const;
 const label = { light: "claro", dark: "oscuro" } as const;
 
 test.describe("comparador visual (controles)", () => {
-	test("hay captura aprobada en claro y en oscuro de cada componente del catálogo", () => {
-		expect(missingApproved(catalogComponents())).toEqual([]);
+	test("hay captura aprobada en claro y en oscuro de cada componente del catálogo y cada composición", () => {
+		expect(missingApproved(entries)).toEqual([]);
 	});
 
 	test("si falta una captura, dice qué componente y qué tema", () => {
@@ -30,7 +33,7 @@ test.describe("comparador visual (controles)", () => {
 });
 
 test.describe("paridad visual con las capturas aprobadas", () => {
-	for (const name of catalogComponents()) {
+	for (const name of entries) {
 		for (const theme of themes) {
 			test(`${name} (${label[theme]})`, async ({ page }) => {
 				test.skip(!hasApproved(name, theme), `${name} no tiene captura aprobada en ${label[theme]}`);

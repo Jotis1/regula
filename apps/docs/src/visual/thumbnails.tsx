@@ -4,17 +4,31 @@
 // abren van en línea (`defaultOpen`, `contained`, `inline`): un portal no se pinta en el servidor.
 
 import {
+	SocialAppleLogoGray,
+	SocialFacebookLogo,
+	SocialFacebookLogoGray,
+	SocialGoogleLogo,
+	StoreAppStoreLogo,
+	StoreGooglePlayOutlineLogo,
+} from "@jotis-me/icons/logos";
+import {
+	Accordion,
 	ActivityFeed,
+	ActivityGauge,
 	Alert,
 	AppIcon,
+	AppStoreBadge,
 	Avatar,
 	AvatarGroup,
 	AvatarLabel,
+	AvatarProfilePhoto,
+	BackgroundOverlay,
 	BackgroundPattern,
 	Badge,
 	BadgeGroup,
 	Banner,
 	BarChart,
+	BlogPostCard,
 	Breadcrumbs,
 	BrowserFrame,
 	Button,
@@ -27,13 +41,17 @@ import {
 	ChannelBanner,
 	ChannelPanel,
 	ChartLegend,
+	ChartMarker,
 	ChatBadge,
 	ChatBox,
 	type ChatMessage,
 	Checkbox,
+	CheckIcon,
+	CheckItem,
 	CloseButton,
 	CodeSnippet,
 	ColorPicker,
+	ColorPickerDropdown,
 	CommandMenu,
 	ContentDivider,
 	ContextMenu,
@@ -44,15 +62,21 @@ import {
 	FeaturedIcon,
 	FileUpload,
 	FilterBar,
+	FilterMenu,
+	FilterPanel,
+	Footer,
 	HeaderNav,
 	HelpIcon,
 	Icon,
 	type IconName,
 	InlineCTA,
 	Input,
+	JobPostCard,
 	Kbd,
+	LaptopMockup,
 	LineChart,
 	LinkCard,
+	MarketingNav,
 	Message,
 	MessageInput,
 	MetricCard,
@@ -65,13 +89,19 @@ import {
 	Pager,
 	Pagination,
 	PaginationDots,
+	PhoneMockup,
 	PieChart,
+	PricingCard,
 	ProgressBar,
 	ProgressCircle,
 	ProgressSteps,
+	RadarChart,
 	Radio,
 	RadioGroup,
+	Rating,
+	RatingBadge,
 	ScaledPreview,
+	ScreenMockup,
 	SectionFooter,
 	SectionHeader,
 	SectionLabel,
@@ -80,6 +110,8 @@ import {
 	Skeleton,
 	Slideout,
 	Slider,
+	SocialButton,
+	SocialButtonGroup,
 	Spinner,
 	StreamAlert,
 	StreamCountdown,
@@ -88,10 +120,13 @@ import {
 	StreamGoal,
 	StreamScene,
 	StreamStatus,
+	SubscribeCard,
 	Table,
 	Tabs,
 	Tag,
 	TagInput,
+	TeamMemberCard,
+	Testimonial,
 	Textarea,
 	TextEditor,
 	Toggle,
@@ -194,6 +229,34 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		),
 	},
 	CloseButton: { render: () => <CloseButton /> },
+	SocialButton: {
+		render: () => (
+			<div style={row}>
+				{/* Logos distintos de los de SocialButtonGroup: los de color llevan ids y en /components/ no se repiten */}
+				<SocialButton provider="apple" logo={<SocialAppleLogoGray />} />
+				<SocialButton provider="facebook" iconOnly logo={<SocialFacebookLogoGray />} />
+			</div>
+		),
+	},
+	AppStoreBadge: {
+		render: () => (
+			<div style={row}>
+				<AppStoreBadge store="app-store" href="#" logo={<StoreAppStoreLogo />} />
+				<AppStoreBadge store="google-play" href="#" logo={<StoreGooglePlayOutlineLogo />} />
+			</div>
+		),
+	},
+	SocialButtonGroup: {
+		render: () => (
+			<div style={{ width: 240 }}>
+				<SocialButtonGroup layout="row">
+					<SocialButton provider="google" theme="color" iconOnly logo={<SocialGoogleLogo />} />
+					<SocialButton provider="facebook" theme="color" iconOnly logo={<SocialFacebookLogo />} />
+					<SocialButton provider="apple" theme="color" iconOnly logo={<SocialAppleLogoGray />} />
+				</SocialButtonGroup>
+			</div>
+		),
+	},
 	ButtonUtility: {
 		render: () => (
 			<div className="flex items-center gap-1" style={{ paddingTop: 48 }}>
@@ -345,6 +408,14 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			</div>
 		),
 	},
+	ColorPickerDropdown: {
+		render: () => (
+			<div style={row}>
+				<ColorPickerDropdown trigger="swatch-button" />
+				<ColorPickerDropdown trigger="hex-input" />
+			</div>
+		),
+	},
 	ColorPicker: {
 		scale: 0.5,
 		render: () => (
@@ -424,7 +495,12 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		render: () => (
 			<div style={{ height: 400, display: "flex" }}>
 				<SidebarNav
-					brand="jotis.me"
+					brand={
+						<>
+							<AppIcon app="regula" size={32} />
+							Regula
+						</>
+					}
 					items={[
 						{ icon: "home-line", label: "Inicio", href: "/", active: true },
 						{ icon: "bar-chart-01", label: "Panel", href: "/", badge: 3 },
@@ -552,6 +628,179 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 							],
 						},
 					]}
+				/>
+			</div>
+		),
+	},
+	BlogPostCard: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 340 }}>
+				<BlogPostCard
+					href="#"
+					image={
+						<div
+							style={{ width: "100%", height: "100%", background: "var(--utility-brand-200)" }}
+						/>
+					}
+					category="Ahorro"
+					title="La regla del 50/30/20"
+					description="Reparte tu sueldo en tres partes."
+					author={{ name: "Ana Martín", date: "20 ene 2027" }}
+				/>
+			</div>
+		),
+	},
+	SubscribeCard: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 340 }}>
+				<SubscribeCard description="Una vez a la semana, sin spam." />
+			</div>
+		),
+	},
+	PricingCard: {
+		scale: 0.4,
+		render: () => (
+			<div style={{ width: 360 }}>
+				<PricingCard
+					name="Básico"
+					price="10 €"
+					period="al mes"
+					features={["Informes", "Hasta 10 cuentas", "Ayuda por chat"]}
+					actions={<Button size="lg">Empezar</Button>}
+				/>
+			</div>
+		),
+	},
+	JobPostCard: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 480 }}>
+				<JobPostCard
+					href="#"
+					type="card-01"
+					category="Diseño"
+					title="Diseñador de producto"
+					department="Diseño"
+					description="Buscamos a alguien para el equipo de diseño."
+					location="En remoto"
+					employment="Jornada completa"
+				/>
+			</div>
+		),
+	},
+	Accordion: {
+		render: () => (
+			<div style={{ width: 300 }}>
+				<Accordion
+					defaultExpanded={["a"]}
+					items={[
+						{ id: "a", title: "¿Hay prueba gratis?", content: "Sí, 30 días." },
+						{ id: "b", title: "¿Puedo cancelar?", content: "Cuando quieras." },
+					]}
+				/>
+			</div>
+		),
+	},
+	TeamMemberCard: {
+		render: () => (
+			<div style={{ width: 300 }}>
+				<TeamMemberCard
+					type="simple-left"
+					name="Ana Martín"
+					role="Fundadora y directora"
+					bio="Diez años ordenando cuentas."
+				/>
+			</div>
+		),
+	},
+	Testimonial: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 420 }}>
+				<Testimonial
+					quote="Nos ahorra horas cada mes."
+					name="Lucía Ramos"
+					role="Diseñadora, Capas"
+					rating={5}
+					image={
+						<div
+							style={{ width: "100%", height: "100%", background: "var(--utility-brand-300)" }}
+						/>
+					}
+				/>
+			</div>
+		),
+	},
+	Footer: {
+		scale: 0.4,
+		render: () => (
+			<div style={{ width: 1100 }}>
+				<Footer
+					brand={<span style={{ fontWeight: 600, fontSize: 20 }}>Regula</span>}
+					columns={["Producto", "Empresa", "Recursos", "Legal"].map((title) => ({
+						title,
+						links: ["Uno", "Dos", "Tres"].map((label) => ({ label, href: "#" })),
+					}))}
+					copyright="© 2027 Regula"
+				/>
+			</div>
+		),
+	},
+	MarketingNav: {
+		scale: 0.5,
+		render: () => (
+			<div style={{ width: 1100 }}>
+				<MarketingNav
+					brand={<span style={{ fontWeight: 600, fontSize: 20 }}>Regula</span>}
+					items={[
+						{ label: "Producto", href: "#" },
+						{ label: "Precios", href: "#" },
+						{ label: "Recursos", href: "#" },
+						{ label: "Quiénes somos", href: "#" },
+					]}
+				/>
+			</div>
+		),
+	},
+	FilterMenu: {
+		render: () => (
+			<div style={row}>
+				<FilterMenu
+					fields={[{ value: "estado", label: "Estado" }]}
+					operators={[{ value: "es", label: "Es" }]}
+				/>
+				<FilterMenu
+					fields={[{ value: "estado", label: "Estado" }]}
+					operators={[{ value: "es", label: "Es" }]}
+					defaultValue={[
+						{ field: "estado", operator: "es", value: "Activo" },
+						{ field: "estado", operator: "es", value: "Pausado" },
+					]}
+				/>
+			</div>
+		),
+	},
+	FilterPanel: {
+		scale: 0.6,
+		render: () => (
+			<div
+				style={{
+					width: 360,
+					display: "flex",
+					flexDirection: "column",
+					padding: 24,
+					background: "var(--bg-primary_alt)",
+				}}
+			>
+				<FilterPanel
+					fields={[
+						{ value: "estado", label: "Estado" },
+						{ value: "correo", label: "Correo" },
+					]}
+					operators={[{ value: "es", label: "Es" }]}
+					defaultValue={[{ field: "estado", operator: "es", value: "Activo" }]}
 				/>
 			</div>
 		),
@@ -816,6 +1065,42 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 			/>
 		),
 	},
+	Rating: {
+		render: () => (
+			<div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+				<Rating value={4.5} />
+				<Rating value={3.7} color="gray" />
+			</div>
+		),
+	},
+	RatingBadge: {
+		render: () => <RatingBadge title="Mejor del año" supportingText="2.000+ reseñas" />,
+	},
+	CheckIcon: {
+		render: () => (
+			<div style={row}>
+				<CheckIcon />
+				<CheckIcon type="line" color="success" />
+				<CheckIcon type="filled" color="success" />
+			</div>
+		),
+	},
+	CheckItem: {
+		render: () => (
+			<ul style={{ margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+				<CheckItem size="sm">Hasta 10 usuarios</CheckItem>
+				<CheckItem size="sm">20 GB por persona</CheckItem>
+			</ul>
+		),
+	},
+	AvatarProfilePhoto: {
+		render: () => (
+			<div style={row}>
+				<AvatarProfilePhoto size="md" initials="OR" verified />
+				<AvatarProfilePhoto size="sm" />
+			</div>
+		),
+	},
 	AvatarLabel: {
 		render: () => (
 			<AvatarLabel
@@ -968,6 +1253,43 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 					]}
 					format={(v) => `${v} €`}
 				/>
+			</div>
+		),
+	},
+	ActivityGauge: {
+		render: () => (
+			<ActivityGauge
+				size="xs"
+				data={[
+					{ name: "Móvil", value: 72 },
+					{ name: "Escritorio", value: 54 },
+					{ name: "Tableta", value: 38 },
+				]}
+				label="Activos"
+				value="1.000"
+			/>
+		),
+	},
+	RadarChart: {
+		scale: 0.42,
+		render: () => (
+			<div style={{ width: 392 }}>
+				<RadarChart
+					axes={["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]}
+					series={[
+						{ name: "A", data: [820, 560, 380, 520, 440, 900, 300] },
+						{ name: "B", data: [360, 700, 520, 760, 560, 480, 680] },
+					]}
+					legend={false}
+				/>
+			</div>
+		),
+	},
+	ChartMarker: {
+		render: () => (
+			<div style={{ display: "flex", gap: 56, paddingTop: 60 }}>
+				<ChartMarker value="1.218" label="10 ene" height={90} />
+				<ChartMarker value="1.218" type="minimal" height={90} />
 			</div>
 		),
 	},
@@ -1234,6 +1556,62 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 				expiry="06/29"
 				last4="4821"
 			/>
+		),
+	},
+	BackgroundOverlay: {
+		render: () => (
+			<div
+				style={{
+					position: "relative",
+					width: 240,
+					height: 140,
+					borderRadius: 12,
+					overflow: "hidden",
+					background: "var(--bg-brand-solid)",
+				}}
+			>
+				<p
+					style={{
+						position: "absolute",
+						top: 16,
+						left: 16,
+						margin: 0,
+						color: "white",
+						fontWeight: 600,
+						fontSize: 24,
+					}}
+				>
+					Regula
+				</p>
+				<BackgroundOverlay type="gradient" />
+			</div>
+		),
+	},
+	ScreenMockup: {
+		render: () => (
+			<div style={{ width: 240 }}>
+				<ScreenMockup size="xs">
+					<div style={{ position: "absolute", inset: 0, background: "var(--bg-secondary)" }} />
+				</ScreenMockup>
+			</div>
+		),
+	},
+	LaptopMockup: {
+		render: () => (
+			<div style={{ width: 260 }}>
+				<LaptopMockup>
+					<div style={{ position: "absolute", inset: 0, background: "var(--bg-secondary)" }} />
+				</LaptopMockup>
+			</div>
+		),
+	},
+	PhoneMockup: {
+		render: () => (
+			<div style={{ width: 80 }}>
+				<PhoneMockup>
+					<div style={{ position: "absolute", inset: 0, background: "var(--bg-secondary)" }} />
+				</PhoneMockup>
+			</div>
 		),
 	},
 	BrowserFrame: {

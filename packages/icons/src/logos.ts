@@ -3,3 +3,4 @@
 // integración o un perfil, sin cambiar su forma ni sus colores.
 export { type LogoProps, type LogoSet, makeLogo } from "./logo.js";
 export * from "./logos.generated.js";
+export * from "./logos-store.generated.js";

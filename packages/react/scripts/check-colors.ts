@@ -8,8 +8,12 @@ export const ALLOWED: Record<string, string> = {
 	"components/AppIcon.tsx": "El tono de cada app vive solo en su icono (guía, «Iconos de app»).",
 	"components/CreditCard.tsx":
 		"La tarjeta es un objeto: sus colores no cambian con el tema (ficha de CreditCard).",
+	"internal/device-frames.ts":
+		"Los marcos del iPhone y del MacBook son el dispositivo: sus colores no cambian con el tema (fichas de PhoneMockup y LaptopMockup).",
 	"components/BrowserFrame.tsx": "Los colores del semáforo son fijos (ficha de BrowserFrame).",
 	"components/VideoPlayer.tsx": "Controles en blanco y negro fijos sobre el vídeo (ficha de VideoPlayer).",
+	"components/TextEditor.tsx":
+		"Las 16 muestras del selector de color del texto son datos que se escriben en el contenido, no estilo (ficha de TextEditor).",
 };
 
 const PALETTE =

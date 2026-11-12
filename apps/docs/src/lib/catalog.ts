@@ -63,14 +63,16 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "acciones",
 		label: "Acciones",
 		section: "components",
-		components: names("Button ButtonGroup ButtonUtility CloseButton"),
+		components: names(
+			"Button ButtonGroup ButtonUtility CloseButton SocialButton SocialButtonGroup AppStoreBadge",
+		),
 	},
 	{
 		id: "formularios",
 		label: "Formularios",
 		section: "components",
 		components: names(
-			"Input NumberInput TagInput VerificationCodeInput Textarea Select MultiSelect Checkbox Radio RadioGroup Toggle Slider DatePicker FileUpload ColorPicker TextEditor",
+			"Input NumberInput TagInput VerificationCodeInput Textarea Select MultiSelect Checkbox Radio RadioGroup Toggle Slider DatePicker FileUpload ColorPicker ColorPickerDropdown TextEditor",
 		),
 	},
 	{
@@ -99,19 +101,21 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "etiquetas-e-identidad",
 		label: "Etiquetas e identidad",
 		section: "components",
-		components: names("Badge BadgeGroup Tag Avatar AvatarGroup AvatarLabel FeaturedIcon Icon Kbd"),
+		components: names(
+			"Badge BadgeGroup Tag Avatar AvatarGroup AvatarLabel AvatarProfilePhoto CheckIcon CheckItem Rating RatingBadge FeaturedIcon Icon Kbd",
+		),
 	},
 	{
 		id: "datos",
 		label: "Datos",
 		section: "components",
-		components: names("Table MetricCard ActivityFeed CalendarView"),
+		components: names("Table MetricCard ActivityFeed CalendarView FilterMenu FilterPanel"),
 	},
 	{
 		id: "graficas",
 		label: "Gráficas",
 		section: "components",
-		components: names("LineChart BarChart PieChart ChartLegend"),
+		components: names("LineChart BarChart PieChart ActivityGauge RadarChart ChartMarker ChartLegend"),
 	},
 	{
 		id: "estructura-de-pagina",
@@ -131,7 +135,17 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "fondos-y-maquetas",
 		label: "Fondos y maquetas",
 		section: "components",
-		components: names("BackgroundPattern TransparencyGrid ScaledPreview CreditCard BrowserFrame AppIcon"),
+		components: names(
+			"BackgroundPattern BackgroundOverlay TransparencyGrid ScaledPreview CreditCard BrowserFrame ScreenMockup LaptopMockup PhoneMockup AppIcon",
+		),
+	},
+	{
+		id: "web-de-marketing",
+		label: "Web de marketing",
+		section: "components",
+		components: names(
+			"MarketingNav Footer BlogPostCard SubscribeCard PricingCard JobPostCard Accordion TeamMemberCard Testimonial",
+		),
 	},
 	{ id: "stream-alertas", label: "Alertas", section: "stream", components: names("StreamAlert") },
 	{

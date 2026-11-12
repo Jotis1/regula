@@ -54,11 +54,11 @@ test("los logos se cargan como imágenes, no como código de la isla, y el gris 
 
 test("el selector lleva de iconos a logos y marca la página actual", async ({ page }) => {
 	await page.goto("/icons/");
-	const nav = page.getByRole("navigation", { name: "Iconos y logos" });
+	const nav = page.getByRole("navigation", { name: "Iconos y recursos" });
 	await expect(nav.getByRole("link", { name: "Iconos" })).toHaveAttribute("aria-current", "page");
 	await nav.getByRole("link", { name: "Logos" }).click();
 	await expect(page).toHaveURL(/\/icons\/logos\/$/);
 	await expect(
-		page.getByRole("navigation", { name: "Iconos y logos" }).getByRole("link", { name: "Logos" }),
+		page.getByRole("navigation", { name: "Iconos y recursos" }).getByRole("link", { name: "Logos" }),
 	).toHaveAttribute("aria-current", "page");
 });

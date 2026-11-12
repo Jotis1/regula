@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { Icon, IconBarChart01, IconCalendar, iconNames } from "../src/index.js";
+import { allIconNames, Icon, IconBarChart01, IconCalendar, iconNames } from "../src/index.js";
 
 // Los 81 nombres de la guía original (grupo Icons de la versión `9fe2`), fijados aquí: el set puede crecer, no perderlos
 const original: string[] = JSON.parse(
@@ -21,9 +21,9 @@ describe("set de iconos", () => {
 		expect(new Set(iconNames).size).toBe(iconNames.length);
 	});
 
-	it("publica un SVG por icono con currentColor, sin relleno ni color fijo", () => {
+	it("publica un SVG por cada icono del set completo con currentColor, sin relleno ni color fijo", () => {
 		const files = readdirSync(dist);
-		expect(files.map((f) => f.replace(/\.svg$/, "")).sort()).toEqual([...iconNames].sort());
+		expect(files.map((f) => f.replace(/\.svg$/, "")).sort()).toEqual([...allIconNames].sort());
 		for (const f of files) {
 			const svg = readFileSync(join(dist, f), "utf8");
 			expect(svg).toContain('viewBox="0 0 24 24"');

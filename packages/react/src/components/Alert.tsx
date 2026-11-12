@@ -21,7 +21,7 @@ export interface AlertProps {
 	/** Nombre de la X. @default "Descartar" */
 	closeLabel?: string;
 	/** Icono propio. Por defecto, uno según el color (`alert-circle` en error, `check-circle` en éxito…). */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/**
 	 * `floating`: tarjeta con borde y radio. `full`: a todo el ancho, sin radio y con línea inferior.
 	 * @default "floating"
@@ -38,6 +38,13 @@ const ICON: Record<StatusColor, IconName> = {
 	success: "check-circle",
 };
 
+/** Piezas que solo usa `Notification`: lo que va en el sitio del icono, la hora junto al título y lo que va bajo el texto. */
+export interface AlertBodyExtras {
+	lead?: ReactNode;
+	time?: ReactNode;
+	extra?: ReactNode;
+}
+
 /** Clases y contenido comunes a Alert y Notification. */
 export function alertBody({
 	color = "gray",
@@ -47,15 +54,30 @@ export function alertBody({
 	onClose,
 	closeLabel,
 	icon,
-}: AlertProps) {
+	lead,
+	time,
+	extra,
+}: AlertProps & AlertBodyExtras) {
 	return (
 		<>
-			<FeaturedIcon icon={icon ?? ICON[color]} color={color} size="md" variant="outline" />
-			<div className="flex flex-1 flex-col gap-3 pr-8">
+			{lead === undefined ? (
+				<FeaturedIcon icon={icon ?? ICON[color]} color={color} size="md" variant="outline" />
+			) : (
+				lead
+			)}
+			<div className={cx("flex flex-1 flex-col gap-3 pr-8", lead !== undefined && "min-w-0")}>
 				<div>
-					<div className="text-sm font-semibold text-secondary">{title}</div>
+					{time ? (
+						<div className="flex items-baseline gap-2">
+							<div className="text-sm font-semibold text-secondary">{title}</div>
+							<div className="text-sm text-quaternary">{time}</div>
+						</div>
+					) : (
+						<div className="text-sm font-semibold text-secondary">{title}</div>
+					)}
 					{description ? <div className="mt-1 text-sm text-tertiary">{description}</div> : null}
 				</div>
+				{extra}
 				{actions ? <div className="flex gap-3">{actions}</div> : null}
 			</div>
 			{onClose ? (

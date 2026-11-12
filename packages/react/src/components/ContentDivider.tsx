@@ -13,6 +13,12 @@ export interface ContentDividerProps {
 	variant?: "single" | "dual" | "fill";
 	/** Un `Button` en el centro, como "Cargar más". Sustituye a `label`. */
 	children?: ReactNode;
+	/**
+	 * Lo del centro como en el Figma: un `Button` («Añadir»), un `Button` solo icono o un `ButtonGroup` (anterior, añadir
+	 * y siguiente, o «Ver todo / Activos / Inactivos»). Es lo mismo que `children`, con nombre; si llegan los dos, gana
+	 * `actions`.
+	 */
+	actions?: ReactNode;
 	className?: string;
 }
 
@@ -28,10 +34,12 @@ export function ContentDivider({
 	heading,
 	variant = "single",
 	children,
+	actions,
 	className,
 }: ContentDividerProps) {
-	const mid = children ? (
-		children
+	const action = actions ?? children;
+	const mid = action ? (
+		action
 	) : label ? (
 		<span
 			className={cx(

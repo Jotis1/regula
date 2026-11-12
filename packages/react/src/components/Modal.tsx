@@ -18,7 +18,7 @@ export interface ModalProps {
 	title: ReactNode;
 	description?: ReactNode;
 	/** Icono destacado sobre el título (`FeaturedIcon` de 48px). */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** Color del icono. Por defecto, `brand` (`error` si es `destructive`). */
 	color?: StatusColor;
 	/**
@@ -44,6 +44,14 @@ export interface ModalProps {
 	 * @default 480
 	 */
 	width?: number | string;
+	/** Cabecera centrada (`stacked`): icono, título y descripción en el centro, como varios tipos del Figma. */
+	align?: "left" | "center";
+	/** Encima de la cabecera: una foto, un carrusel o un vídeo, a todo el ancho del panel con su margen. */
+	media?: ReactNode;
+	/** A la izquierda del pie, frente a los botones: «No volver a mostrar», «¿Necesitas ayuda?», «Copiar enlace»… */
+	footerStart?: ReactNode;
+	/** Rayas bajo la cabecera y sobre el pie, para modales con mucho contenido. */
+	dividers?: boolean;
 	/** Se pinta dentro de su contenedor (posición relativa) en vez de sobre toda la página, sin atrapar el foco. */
 	contained?: boolean;
 }
@@ -63,10 +71,17 @@ export function Modal({
 	onClose,
 	width,
 	contained,
+	align,
+	media,
+	footerStart,
+	dividers,
 }: ModalProps) {
 	const id = useId();
 	if (!open) return null;
 	const horizontal = layout === "horizontal";
+	const center = align === "center" && !horizontal;
+	// Sin las props nuevas, el HTML es el de siempre
+	const extended = Boolean(align || media || footerStart || dividers);
 	return (
 		<Layer
 			contained={contained}
@@ -77,7 +92,15 @@ export function Modal({
 			labelledBy={`${id}-title`}
 			describedBy={description ? `${id}-desc` : undefined}
 		>
-			<div className={cx("flex gap-4 px-6 pt-6", horizontal ? "flex-row" : "flex-col")}>
+			{media ? <div className="px-6 pt-6">{media}</div> : null}
+			<div
+				className={cx(
+					"flex gap-4 px-6 pt-6",
+					horizontal ? "flex-row" : "flex-col",
+					center && "items-center text-center",
+					dividers && "pb-5 shadow-[inset_0_-1px_0_var(--border-secondary)]",
+				)}
+			>
 				{icon ? (
 					<FeaturedIcon
 						icon={icon}
@@ -98,7 +121,7 @@ export function Modal({
 				</div>
 			</div>
 			{children ? <div className="px-6 pt-5">{children}</div> : null}
-			{actions ? (
+			{actions && !extended ? (
 				<div
 					className={cx(
 						"flex gap-3 px-6 pt-8 pb-6",
@@ -106,6 +129,31 @@ export function Modal({
 					)}
 				>
 					{actions}
+				</div>
+			) : null}
+			{actions && extended ? (
+				<div
+					className={cx(
+						"flex flex-wrap items-center gap-3 px-6 pb-6",
+						// Sin contenido entre medias basta la raya de la cabecera
+						dividers && children
+							? "mt-6 pt-6 shadow-[inset_0_1px_0_var(--border-secondary)]"
+							: dividers
+								? "pt-6"
+								: "pt-8",
+					)}
+				>
+					{footerStart ? (
+						<div className="mr-auto flex items-center gap-3">{footerStart}</div>
+					) : null}
+					<div
+						className={cx(
+							"flex gap-3",
+							footerStart || horizontal ? "[&>*]:flex-none" : "flex-1 [&>*]:flex-1",
+						)}
+					>
+						{actions}
+					</div>
 				</div>
 			) : null}
 			{onClose ? <CloseButton onClick={onClose} className="absolute top-4 right-4" /> : null}

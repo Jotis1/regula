@@ -1,47 +1,14 @@
-// Pie del rediseño (reference/docs-design/Footer.dc.html), con las versiones reales de los paquetes.
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import { expect, type Page, test } from "@playwright/test";
+// Footer en un contenedor de 375 px: las columnas de enlaces se apilan de dos en dos, como el Figma en móvil.
+import { expect, test } from "@playwright/test";
 
-const version = (pkg: string) =>
-	(
-		JSON.parse(
-			readFileSync(join(import.meta.dirname, `../../../packages/${pkg}/package.json`), "utf8"),
-		) as {
-			version: string;
-		}
-	).version;
-const footer = (page: Page) => page.getByRole("contentinfo");
-
-test("muestra la versión de @jotis-me/react y de los otros dos paquetes", async ({ page }) => {
-	await page.goto("/foundations/color/");
-	const versions = footer(page).locator("[data-versions]");
-	await expect(versions).toContainText(`@jotis-me/react ${version("react")}`);
-	await expect(versions).toContainText(`@jotis-me/tokens ${version("tokens")}`);
-	await expect(versions).toContainText(`@jotis-me/icons ${version("icons")}`);
-	// Nada de los datos inventados del diseño
-	await expect(footer(page)).not.toContainText("@jotis/regula");
-	await expect(footer(page)).not.toContainText("untitledui");
-});
-
-test("enlaza al historial y a la documentación y la suite", async ({ page }) => {
-	await page.goto("/");
-	await expect(footer(page).getByRole("link", { name: "Qué ha cambiado" })).toHaveAttribute(
-		"href",
-		"/changelog/",
-	);
-	const nav = footer(page).getByRole("navigation", { name: "Pie" });
-	for (const [name, href] of [
-		["Instalación", "/start/install/"],
-		["Fundamentos", "/foundations/principles/"],
-		["Componentes", "/components/"],
-		["Iconos", "/icons/"],
-		["Vinculum", "https://vinculum.jotis.me"],
-		["Pecunia", "https://pecunia.jotis.me"],
-		["Emptor", "https://emptor.jotis.me"],
-		["Ornatus", "https://ornatus.jotis.me"],
-		["Scaena", "https://scaena.jotis.me"],
-	] as const)
-		await expect(nav.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
-	await expect(footer(page)).toContainText("Regula");
+test("a 375 px las columnas van de dos en dos", async ({ page }) => {
+	await page.goto("/visual/footer/");
+	const footer = page.locator("[data-footer-mobile] footer");
+	const titles = footer.getByRole("heading", { level: 2 });
+	await expect(titles).toHaveCount(4);
+	const boxes = await titles.evaluateAll((els) => els.map((e) => e.getBoundingClientRect()));
+	// Dos por fila: la primera y la segunda a la misma altura, la tercera debajo
+	expect(Math.round(boxes[0]?.top ?? 0)).toBe(Math.round(boxes[1]?.top ?? 1));
+	expect(boxes[2]?.top ?? 0).toBeGreaterThan((boxes[0]?.top ?? 0) + 20);
+	expect(Math.round(boxes[2]?.left ?? 0)).toBe(Math.round(boxes[0]?.left ?? 1));
 });

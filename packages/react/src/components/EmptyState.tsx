@@ -23,7 +23,7 @@ export interface EmptyStateProps {
 	 * usuarios e integraciones.
 	 * @default "search-lg"
 	 */
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	/** Qué pasa: "Sin resultados", "Aún no hay gastos". */
 	title: ReactNode;
 	/** Por qué está vacío y qué hacer. Nada de "¡Ups!". */
@@ -107,7 +107,7 @@ function Media({
 }: {
 	media: Exclude<EmptyStateMedia, "icon">;
 	illustration: EmptyStateIllustration;
-	icon: IconName;
+	icon: IconName | ReactNode;
 	items: ReactNode[];
 	scale: number;
 }) {

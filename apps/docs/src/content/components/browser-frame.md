@@ -5,7 +5,7 @@ description: "Marco de navegador para enseñar una pantalla de la app dentro de 
 interactive: false
 ---
 
-**Props.** `variant` (`safari`: semáforo, navegación, barra de direcciones de hasta 516 px y acciones · `minimal`: semáforo gris y dirección), `url`, `height` (alto del área de contenido), `children` (la pantalla, normalmente componentes reales).
+**Props.** `variant` (`safari`: semáforo, navegación, barra de direcciones de hasta 516 px y acciones · `minimal`: semáforo gris y dirección · `minimal-color`: el mismo con el semáforo en color), `theme` (`dark` pinta el marco y su contenido con el tema oscuro aunque la página esté en claro; `light` o sin él, sigue al tema de la página), `url`, `height` (alto del área de contenido), `children` (la pantalla, normalmente componentes reales).
 
 **Visual.** `radius-xl`, borde `border-secondary` y `shadow-xl`. Barra en `bg-primary` (`minimal`: `bg-secondary`) con línea inferior; dirección en `bg-secondary`. Los colores del semáforo (#EE6A5F, #F5BD4F, #61C454) son fijos; el resto sigue el tema.
 

@@ -1,7 +1,21 @@
 import type { CSSProperties, ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 
-export type CreditCardTheme = "brand-dark" | "brand-light" | "gray-dark" | "gray-light" | "transparent";
+/** Los trece temas del Figma (`Credit card mockup`, `1291:157837`). */
+export type CreditCardTheme =
+	| "brand-dark"
+	| "brand-light"
+	| "gray-dark"
+	| "gray-light"
+	| "transparent"
+	| "transparent-gradient"
+	| "transparent-strip"
+	| "gray-strip"
+	| "gradient-strip"
+	| "salmon-strip"
+	| "gray-strip-vertical"
+	| "gradient-strip-vertical"
+	| "salmon-strip-vertical";
 
 export interface CreditCardProps {
 	/**
@@ -31,7 +45,15 @@ export interface CreditCardProps {
 // Colores fijos de la ficha: la tarjeta es un objeto, no parte de la interfaz.
 const THEME: Record<
 	CreditCardTheme,
-	{ card: string; fg: string; sub: string; edge: boolean; darkChip: boolean }
+	{
+		card: string;
+		fg: string;
+		sub: string;
+		edge: boolean;
+		darkChip: boolean;
+		/** Banda oscura: abajo (la mitad inferior) o a la izquierda (todo menos la franja de color de la derecha). */
+		strip?: "bottom" | "left";
+	}
 > = {
 	"brand-dark": {
 		card: "bg-[linear-gradient(45deg,#312c85,#432dd7)] shadow-lg",
@@ -68,7 +90,73 @@ const THEME: Record<
 		edge: true,
 		darkChip: false,
 	},
+	"transparent-gradient": {
+		card: "bg-[radial-gradient(circle_at_20%_25%,#f9c6d966,transparent_45%),radial-gradient(circle_at_40%_75%,#c8f0d266,transparent_45%),linear-gradient(135deg,#ffffff59,#ffffff1a)] shadow-lg backdrop-blur-lg",
+		fg: "text-[#ffffff]",
+		sub: "text-[#ffffffcc]",
+		edge: true,
+		darkChip: false,
+	},
+	"transparent-strip": {
+		card: "bg-[linear-gradient(135deg,#ffffff8c,#ffffff33)] shadow-lg backdrop-blur-lg",
+		fg: "text-[#ffffff]",
+		sub: "text-[#ffffffcc]",
+		edge: true,
+		darkChip: false,
+		strip: "bottom",
+	},
+	"gray-strip": {
+		card: "bg-[#f5f5f5] shadow-lg",
+		fg: "text-[#404040]",
+		sub: "text-[#737373]",
+		edge: false,
+		darkChip: true,
+		strip: "bottom",
+	},
+	"gradient-strip": {
+		card: "bg-[linear-gradient(180deg,#a5c0ee,#cfc3ef)] shadow-lg",
+		fg: "text-[#ffffff]",
+		sub: "text-[#ffffffcc]",
+		edge: false,
+		darkChip: false,
+		strip: "bottom",
+	},
+	"salmon-strip": {
+		card: "bg-[#f2d8cf] shadow-lg",
+		fg: "text-[#404040]",
+		sub: "text-[#ffffffcc]",
+		edge: false,
+		darkChip: true,
+		strip: "bottom",
+	},
+	"gray-strip-vertical": {
+		card: "bg-[#f5f5f5] shadow-lg",
+		fg: "text-[#ffffff]",
+		sub: "text-[#a3a3a3]",
+		edge: false,
+		darkChip: false,
+		strip: "left",
+	},
+	"gradient-strip-vertical": {
+		card: "bg-[linear-gradient(180deg,#fbc2eb,#a18cd1)] shadow-lg",
+		fg: "text-[#ffffff]",
+		sub: "text-[#ffffffcc]",
+		edge: false,
+		darkChip: false,
+		strip: "left",
+	},
+	"salmon-strip-vertical": {
+		card: "bg-[#f2d8cf] shadow-lg",
+		fg: "text-[#ffffff]",
+		sub: "text-[#ffffffcc]",
+		edge: false,
+		darkChip: false,
+		strip: "left",
+	},
 };
+
+// La banda de los temas `*-strip`: el gris 800 del Figma
+const STRIP = "bg-[#262626]";
 
 // Canto: borde degradado blanco (0,5 → 0,08) recortado al anillo de 1px
 const EDGE: CSSProperties = {
@@ -137,6 +225,17 @@ export function CreditCard({
 					style={EDGE}
 				/>
 			) : null}
+			{t.strip ? (
+				<span
+					aria-hidden="true"
+					data-strip={t.strip}
+					className={cx(
+						"pointer-events-none absolute -z-10",
+						STRIP,
+						t.strip === "bottom" ? "inset-x-0 top-1/2 bottom-0" : "inset-y-0 left-0 right-[88px]",
+					)}
+				/>
+			) : null}
 			<div className="flex items-start justify-between">
 				<span className="font-display text-md font-semibold tracking-[-0.01em]">{company}</span>
 				<Contactless className={t.sub} />
@@ -149,12 +248,18 @@ export function CreditCard({
 						: "bg-[linear-gradient(135deg,#ffffff8c,#ffffff26)] shadow-[inset_0_0_0_1px_#ffffff59]",
 				)}
 			/>
-			<div className="mt-auto flex items-end gap-3">
+			<div
+				className={cx(
+					"mt-auto flex items-end gap-3",
+					t.strip === "bottom" && "text-[#ffffff]",
+					t.strip === "left" && "mr-[84px]",
+				)}
+			>
 				<div className="flex min-w-0 flex-1 flex-col gap-0.5">
 					<div
 						className={cx(
 							"flex justify-between gap-2 text-xs font-semibold tracking-[0.05em]",
-							t.sub,
+							t.strip === "bottom" ? "text-[#ffffff]" : t.sub,
 						)}
 					>
 						<span className="truncate uppercase">{holder}</span>

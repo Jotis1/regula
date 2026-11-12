@@ -77,3 +77,29 @@ describe("logos de terceros (assets/logos)", () => {
 		}
 	});
 });
+
+describe("insignias de tienda (assets/logos/store, complete-figma-coverage 9.5)", () => {
+	const store = readdirSync(join(dir, "store")).filter((f) => f.endsWith(".svg"));
+	it("cinco tiendas, en relleno y en contorno, a 40 de alto", () => {
+		const stores = ["google-play", "app-store", "mac-app-store", "galaxy-store", "app-gallery"];
+		expect([...store].sort()).toEqual(stores.flatMap((s) => [`${s}.svg`, `${s}-outline.svg`]).sort());
+		for (const f of store) {
+			const svg = read("store", f);
+			expect(svg, f).toMatch(
+				/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" width="\d+" height="40" viewBox="0 0 \d+ 40"/,
+			);
+			expect(svg, f).not.toMatch(/foreignObject|data-figma/);
+		}
+	});
+
+	it("el contorno es de un solo color y toma el del texto; los ids llevan el prefijo de su insignia", () => {
+		for (const f of store.filter((f) => f.endsWith("-outline.svg")))
+			expect(read("store", f).match(/#[0-9A-Fa-f]{6}/g), f).toBeNull();
+		for (const f of store) {
+			const svg = read("store", f);
+			const ids = [...svg.matchAll(/ id="([^"]+)"/g)].map((m) => m[1] as string);
+			for (const id of ids) expect(id, f).toMatch(new RegExp(`^store-${f.slice(0, -4)}-`));
+			for (const m of svg.matchAll(/url\(#([^)]+)\)/g)) expect(ids, f).toContain(m[1]);
+		}
+	});
+});

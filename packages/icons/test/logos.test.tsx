@@ -12,12 +12,13 @@ import * as logos from "../src/logos.js";
 const pkg = join(import.meta.dirname, "..");
 
 describe("@jotis-me/icons/logos", () => {
-	it("exporta los 232 logos de apps, los 16 de integraciones y los 34 sociales, con sus grises", () => {
+	it("exporta los 232 logos de apps, los 16 de integraciones y los 34 sociales, con sus grises, y las 10 insignias de tienda", () => {
 		expect(logos.logoNames.app).toHaveLength(232);
 		expect(logos.logoNames.integration).toHaveLength(32);
 		expect(logos.logoNames.social).toHaveLength(68);
+		expect(logos.logoNames.store).toHaveLength(10);
 		const components = Object.keys(logos).filter((k) => /^[A-Z].*Logo(Gray)?$/.test(k));
-		expect(components).toHaveLength(332);
+		expect(components).toHaveLength(342);
 		expect(logos).toHaveProperty("SocialGithubLogo");
 		expect(logos).toHaveProperty("SocialGithubLogoGray");
 		expect(logos).toHaveProperty("AppZapierLogo");

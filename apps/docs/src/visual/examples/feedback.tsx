@@ -19,6 +19,21 @@ export function FeaturedIconExample() {
 				<FeaturedIcon icon="zap" size="sm" />
 				<FeaturedIcon icon="zap" size="xl" />
 			</div>
+			{(["gradient", "dark"] as const).map((variant) => (
+				<div key={variant} className={row}>
+					<FeaturedIcon icon="zap" variant={variant} color="brand" size="lg" />
+					<FeaturedIcon icon="settings-02" variant={variant} color="gray" size="lg" />
+					<FeaturedIcon icon="check-circle" variant={variant} color="success" size="lg" />
+					<FeaturedIcon icon="alert-triangle" variant={variant} color="warning" size="lg" />
+					<FeaturedIcon icon="alert-circle" variant={variant} color="error" size="lg" />
+				</div>
+			))}
+			<div className={row}>
+				<FeaturedIcon icon="check-circle" variant="modern-neue" size="sm" />
+				<FeaturedIcon icon="check-circle" variant="modern-neue" size="md" />
+				<FeaturedIcon icon="check-circle" variant="modern-neue" size="lg" />
+				<FeaturedIcon icon="check-circle" variant="modern-neue" size="xl" />
+			</div>
 		</div>
 	);
 }
@@ -63,6 +78,12 @@ export function ProgressBarExample() {
 			</div>
 			<div className="max-w-[360px]">
 				<ProgressBar value={30} label="bottom" aria-label="Subida" />
+			</div>
+			<div className="max-w-[360px]">
+				<ProgressBar value={50} label="top-floating" aria-label="Importación" />
+			</div>
+			<div className="max-w-[360px]">
+				<ProgressBar value={70} label="bottom-floating" aria-label="Copia de seguridad" />
 			</div>
 		</div>
 	);

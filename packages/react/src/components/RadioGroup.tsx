@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 import { Radio as AriaRadio, RadioGroup as AriaRadioGroup } from "react-aria-components";
 import { type ChoiceSize, ChoiceText, choiceBox, choiceLabel, radioDot } from "../internal/choice.js";
 import { cx } from "../internal/cx.js";
+import { Avatar, type AvatarProps } from "./Avatar.js";
+import { type IconName, iconSlot } from "./Icon.js";
 
 export interface RadioGroupOption {
 	value: string;
@@ -15,6 +17,15 @@ export interface RadioGroupOption {
 	media?: ReactNode;
 	/** Solo en tarjetas: opción deshabilitada. */
 	disabled?: boolean;
+	/** Solo en tarjetas: icono en una caja de 32px (40 en `md`) con borde y sombra (`Icon simple` del Figma). */
+	icon?: IconName | ReactNode;
+	/** Solo en tarjetas: avatar redondo de 32px (40 en `md`) delante del texto. */
+	avatar?: Pick<AvatarProps, "src" | "alt" | "initials">;
+	/**
+	 * Solo en tarjetas: logo de pago en una caja de 46×32px (58×40 en `md`), como un nodo de `@jotis-me/icons/payments`. El
+	 * paquete no los importa.
+	 */
+	paymentIcon?: ReactNode;
 }
 
 export interface RadioGroupProps {
@@ -32,9 +43,11 @@ export interface RadioGroupProps {
 	name?: string;
 	/**
 	 * `card`: cada opción es una tarjeta con borde `border-secondary` que pasa a 2px `border-brand` al elegirla.
+	 * `icon-simple`: la misma tarjeta pensada para llevar delante un `icon`, un `avatar` o un `paymentIcon` por opción
+	 * (también los admite `card`).
 	 * @default "default"
 	 */
-	appearance?: "default" | "card";
+	appearance?: "default" | "card" | "icon-simple";
 	/**
 	 * Solo en tarjetas: círculo (`radio`) o casilla con check (`checkbox`), arriba a la derecha.
 	 * @default "radio"
@@ -58,7 +71,8 @@ export function RadioGroup({
 	"aria-label": ariaLabel,
 	className,
 }: RadioGroupProps) {
-	if (appearance === "card") {
+	if (appearance !== "default") {
+		const md = size === "md";
 		return (
 			<AriaRadioGroup
 				value={value}
@@ -77,7 +91,34 @@ export function RadioGroup({
 					>
 						<span className="flex min-w-0 flex-1 items-start gap-3">
 							{o.media != null ? <span className="flex flex-none">{o.media}</span> : null}
-							<span className="flex min-w-0 flex-col text-sm">
+							{o.media == null && o.paymentIcon != null ? (
+								<span
+									aria-hidden="true"
+									className={cx(
+										"flex flex-none items-center justify-center overflow-hidden rounded-xs bg-fg-white shadow-[inset_0_0_0_1px_var(--border-secondary)] [&>*]:h-full [&>*]:w-full",
+										md ? "h-10 w-[58px]" : "h-8 w-[46px]",
+									)}
+								>
+									{o.paymentIcon}
+								</span>
+							) : null}
+							{o.media == null && o.paymentIcon == null && o.avatar ? (
+								<span aria-hidden="true" className="flex flex-none">
+									<Avatar size={md ? "md" : "sm"} {...o.avatar} />
+								</span>
+							) : null}
+							{o.media == null && o.paymentIcon == null && !o.avatar && o.icon ? (
+								<span
+									aria-hidden="true"
+									className={cx(
+										"flex flex-none items-center justify-center rounded-md bg-primary text-fg-secondary shadow-[var(--shadow-xs-skeuomorphic),inset_0_0_0_1px_var(--border-primary)]",
+										md ? "size-10" : "size-8",
+									)}
+								>
+									{iconSlot(o.icon, md ? 20 : 16)}
+								</span>
+							) : null}
+							<span className={cx("flex min-w-0 flex-col", md ? "text-md" : "text-sm")}>
 								<span className="flex flex-wrap gap-x-1">
 									<span className="font-medium text-secondary">{o.label}</span>
 									{o.supporting != null ? (
@@ -92,18 +133,18 @@ export function RadioGroup({
 						<span
 							aria-hidden="true"
 							className={cx(
-								choiceBox("sm", indicator === "radio"),
+								choiceBox(size, indicator === "radio"),
 								"group-data-selected:bg-brand-solid group-data-selected:shadow-none group-data-focus-visible:shadow-focus-ring",
 							)}
 						>
 							{indicator === "radio" ? (
-								<span className={cx(radioDot("sm"), "hidden group-data-selected:block")} />
+								<span className={cx(radioDot(size), "hidden group-data-selected:block")} />
 							) : (
 								<span className="hidden group-data-selected:inline-flex">
 									{/* El check del icono `check`, en línea: importar Icon traería el set entero a RadioGroup. */}
 									<svg
-										width={12}
-										height={12}
+										width={md ? 14 : 12}
+										height={md ? 14 : 12}
 										viewBox="0 0 24 24"
 										fill="none"
 										stroke="currentColor"

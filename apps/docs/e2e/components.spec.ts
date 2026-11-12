@@ -40,7 +40,8 @@ for (const { slug, name, label } of pages) {
 		);
 		// La isla de ejemplos se hidrata al verse: después tiene contenido
 		const examples = page.locator("#variantes + div astro-island");
-		await examples.scrollIntoViewIfNeeded();
+		// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
+		await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
 		await expect(examples).not.toHaveAttribute("ssr", /.*/);
 		await expect(examples.locator(":scope > *").first()).toBeVisible();
 		expect(await page.locator("section[aria-labelledby=props] tbody tr").count()).toBeGreaterThan(0);
@@ -53,7 +54,8 @@ test("los ejemplos vivos no heredan los estilos del texto largo (tablas, listas,
 	page,
 }) => {
 	await page.goto("/components/date-picker/");
-	const grid = page.locator("#variantes + div table");
+	// El ejemplo de DatePicker lleva dos calendarios (rango y horas): basta con el primero
+	const grid = page.locator("#variantes + div table").first();
 	await grid.scrollIntoViewIfNeeded();
 	const css = await grid.evaluate((t) => {
 		const th = t.querySelector("th") as Element;
@@ -154,9 +156,13 @@ test("Dropdown: la tabla de props lleva la elección y el check de la elegida no
 	await expect(props).toContainText("selectedValue");
 	await expect(props).toContainText("onSelectionChange");
 	const examples = page.locator("#variantes + div astro-island");
-	await examples.scrollIntoViewIfNeeded();
+	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
+	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
 	await expect(examples).not.toHaveAttribute("ssr", /.*/);
-	const checked = examples.locator('[role="menuitemradio"][aria-checked="true"]');
+	// El menú de tema (el de elección única); el de cuentas también marca una con su radio
+	const checked = examples
+		.getByRole("menu", { name: "Tema" })
+		.locator('[role="menuitemradio"][aria-checked="true"]');
 	await expect(checked).toHaveCount(1);
 	const color = (svg: Locator) => svg.evaluate((el) => getComputedStyle(el).color);
 	// El primer icono es el de la opción (gris, fg-quaternary) y el último el check (de marca)
@@ -168,7 +174,8 @@ test("CommandMenu: con el foco en el buscador, la opción activa lleva el anillo
 }) => {
 	await page.goto("/components/command-menu/");
 	const examples = page.locator("#variantes + div astro-island");
-	await examples.scrollIntoViewIfNeeded();
+	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
+	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
 	await expect(examples).not.toHaveAttribute("ssr", /.*/);
 	const search = examples.getByRole("combobox").first();
 	const active = examples.locator('[role="option"][aria-selected="true"]').first();

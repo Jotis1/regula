@@ -70,7 +70,12 @@ test("tiene las secciones y los recuentos del catálogo", async ({ page }) => {
 		new RegExp(`^Componentes\\s*${countOf("components")}$`),
 		new RegExp(`^Stream\\s*${countOf("stream")}$`),
 	]);
-	await expect(group(page, "Acciones").locator("summary")).toContainText("4");
+	// Acciones: Button, ButtonGroup, ButtonUtility, CloseButton, SocialButton, SocialButtonGroup y AppStoreBadge
+	const actions = COMPONENT_GROUPS.find((g) => g.id === "acciones")?.components.length;
+	expect(actions).toBe(7);
+	await expect(group(page, "Acciones").locator("summary")).toHaveText(
+		new RegExp(`^\\s*Acciones\\s*${actions}$`),
+	);
 	await expect(group(page, "Overlay").locator("summary")).toContainText("7");
 });
 

@@ -1,6 +1,21 @@
 // Puertos de las vistas previas de Badge, Tag y los avatares (reference/components/*/preview.html).
 
-import { Avatar, AvatarGroup, AvatarLabel, Badge, BadgeGroup, Kbd, Tag } from "@jotis-me/react";
+import { FlagMexicoCircle, FlagPortugalCircle, FlagSpainCircle } from "@jotis-me/icons/flags";
+import { SocialStripeLogo } from "@jotis-me/icons/logos";
+import {
+	Avatar,
+	AvatarGroup,
+	AvatarLabel,
+	AvatarProfilePhoto,
+	Badge,
+	BadgeGroup,
+	CheckIcon,
+	CheckItem,
+	Kbd,
+	Rating,
+	RatingBadge,
+	Tag,
+} from "@jotis-me/react";
 import { row, stack } from "./actions";
 
 const noop = () => {};
@@ -71,32 +86,90 @@ export function BadgeExample() {
 					Filtro
 				</Badge>
 			</div>
+			<div className={row}>
+				<Badge size="sm" flag={<FlagSpainCircle />}>
+					España
+				</Badge>
+				<Badge type="badge" color="brand" flag={<FlagPortugalCircle />}>
+					Portugal
+				</Badge>
+				<Badge type="modern" size="lg" flag={<FlagMexicoCircle />}>
+					México
+				</Badge>
+				<Badge color="success" avatar={<Avatar size="xs" />}>
+					Lucía
+				</Badge>
+			</div>
+			<div className={row}>
+				<Badge size="sm" color="brand" iconTrailing="arrow-right">
+					Ver
+				</Badge>
+				<Badge type="badge" iconTrailing="arrow-up-right">
+					Abrir
+				</Badge>
+				<Badge type="modern" size="lg" color="error" iconTrailing="arrow-right">
+					Revisar
+				</Badge>
+				<Badge size="sm" iconOnly="plus" label="Añadir" />
+				<Badge color="brand" iconOnly="plus" label="Añadir" />
+				<Badge type="badge" size="lg" color="success" iconOnly="check" label="Hecho" />
+				<Badge type="modern" iconOnly="arrow-right" label="Siguiente" />
+			</div>
 		</div>
 	);
 }
 
+/** Lo de siempre, bandera y avatar delante, y la casilla del Figma en los tres tamaños (se marca sin hidratar: es nativa). */
 export function TagExample() {
 	return (
-		<div className={row}>
-			<Tag>Diseño</Tag>
-			<Tag size="md" count={5}>
-				Facturas
-			</Tag>
-			<Tag size="md" onRemove={noop}>
-				León
-			</Tag>
-			<Tag size="lg" dot>
-				Sincronizado
-			</Tag>
+		<div className={stack}>
+			<div className={row}>
+				<Tag>Diseño</Tag>
+				<Tag size="md" count={5}>
+					Facturas
+				</Tag>
+				<Tag size="md" onRemove={noop}>
+					León
+				</Tag>
+				<Tag size="lg" dot>
+					Sincronizado
+				</Tag>
+			</div>
+			<div className={row}>
+				<Tag flag={<FlagSpainCircle />}>España</Tag>
+				<Tag size="md" flag={<FlagPortugalCircle />} onRemove={noop}>
+					Portugal
+				</Tag>
+				<Tag size="lg" avatar={<Avatar size="xs" />} count={3}>
+					Lucía
+				</Tag>
+			</div>
+			<div className={row}>
+				<Tag checkable defaultChecked>
+					Diseño
+				</Tag>
+				<Tag size="md" checkable flag={<FlagMexicoCircle />}>
+					México
+				</Tag>
+				<Tag size="lg" checkable defaultChecked avatar={<Avatar size="xs" />} onRemove={noop}>
+					Lucía
+				</Tag>
+			</div>
 		</div>
 	);
 }
 
+const AVATAR_SIZES = ["xs", "sm", "md", "lg", "xl", "2xl"] as const;
+
+/**
+ * Los seis tamaños con iniciales, el estado y el icono sin foto, y las tres insignias del Figma (verificado,
+ * contador y empresa) en los seis tamaños. El logo de empresa es uno de `@jotis-me/icons/logos`.
+ */
 export function AvatarExample() {
 	return (
 		<div className={stack}>
 			<div className={row}>
-				{(["xs", "sm", "md", "lg", "xl", "2xl"] as const).map((size) => (
+				{AVATAR_SIZES.map((size) => (
 					<Avatar key={size} size={size} initials="AD" alt="Administrador" />
 				))}
 			</div>
@@ -106,30 +179,167 @@ export function AvatarExample() {
 					items={[{ initials: "AB" }, { initials: "CD" }, { initials: "EF" }, { initials: "+3" }]}
 				/>
 			</div>
+			<div className={row}>
+				{AVATAR_SIZES.map((size) => (
+					<Avatar key={size} size={size} initials="LP" alt="Lucía Pérez" badge="verified" />
+				))}
+			</div>
+			<div className={row}>
+				{AVATAR_SIZES.map((size) => (
+					<Avatar key={size} size={size} initials="MG" alt="Marta Gil" badge="count" count={8} />
+				))}
+			</div>
+			<div className={row}>
+				{AVATAR_SIZES.map((size) => (
+					<Avatar
+						key={size}
+						size={size}
+						initials="JR"
+						alt="Javier Ruiz"
+						badge="company"
+						company={<SocialStripeLogo />}
+						badgeLabel="Stripe"
+					/>
+				))}
+			</div>
 		</div>
 	);
 }
 
+/** El grupo en `md` y, con `onAdd`, el botón de añadir en los tres tamaños del Figma. */
 export function AvatarGroupExample() {
 	return (
-		<div className={row}>
-			<AvatarGroup
-				size="md"
-				items={[{ initials: "AB" }, { initials: "CD" }, { initials: "EF" }, { initials: "GH" }]}
-			/>
+		<div className={stack}>
+			<div className={row}>
+				<AvatarGroup
+					size="md"
+					items={[{ initials: "AB" }, { initials: "CD" }, { initials: "EF" }, { initials: "GH" }]}
+				/>
+			</div>
+			{(["xs", "sm", "md"] as const).map((size) => (
+				<div key={size} className={row}>
+					<AvatarGroup
+						size={size}
+						items={[
+							{ initials: "AB" },
+							{ initials: "CD" },
+							{ initials: "EF" },
+							{ initials: "+5" },
+						]}
+						onAdd={noop}
+						addLabel="Invitar"
+					/>
+				</div>
+			))}
+		</div>
+	);
+}
+
+/** Los tres tamaños del Figma: `sm`, `md` (el de siempre) y `lg`. */
+/** Los tres tipos de check en los tres colores, en los cuatro tamaños. */
+export function CheckIconExample() {
+	return (
+		<div className={stack}>
+			{(["default", "line", "filled"] as const).flatMap((type) =>
+				(["brand", "gray", "success"] as const).map((color) => (
+					<div key={type + color} className={`${row} items-center gap-4`}>
+						{(["sm", "md", "lg", "xl"] as const).map((size) => (
+							<CheckIcon key={size} type={type} color={color} size={size} />
+						))}
+					</div>
+				)),
+			)}
+		</div>
+	);
+}
+
+/** Una lista por tipo, con los tres tamaños. */
+export function CheckItemExample() {
+	return (
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-8">
+			{(["default", "line", "filled"] as const).map((type, i) => (
+				<ul key={type} className="m-0 flex flex-col gap-3 p-0">
+					{(["sm", "md", "lg"] as const).map((size) => (
+						<CheckItem key={size} type={type} color={i === 1 ? "success" : "brand"} size={size}>
+							Todas las funciones y soporte prioritario
+						</CheckItem>
+					))}
+				</ul>
+			))}
+		</div>
+	);
+}
+
+/** Los once rellenos del Figma (de 0 a 5 en medios puntos), en amarillo y en gris, y los tres tamaños. */
+export function RatingExample() {
+	return (
+		<div className={stack}>
+			{[5, 4.5, 3.7, 2.2, 0].map((v) => (
+				<div key={v} className={`${row} items-center gap-6`}>
+					<Rating value={v} />
+					<Rating value={v} color="gray" />
+				</div>
+			))}
+			<div className={`${row} items-center gap-6`}>
+				<Rating value={4} size="sm" />
+				<Rating value={4} size="md" />
+				<Rating value={4} size="lg" />
+			</div>
+		</div>
+	);
+}
+
+/** Con estrellas y sin ellas. */
+export function RatingBadgeExample() {
+	return (
+		<div className={`${row} items-center gap-8`}>
+			<RatingBadge title="Mejor herramienta de diseño" supportingText="2.000+ reseñas" />
+			<RatingBadge title="Producto del día" supportingText="Votado por la comunidad" stars={false} />
+		</div>
+	);
+}
+
+/** Foto de perfil: con iniciales y sello, el icono de usuario y las iniciales sin sello, en los tres tamaños. */
+export function AvatarProfilePhotoExample() {
+	return (
+		<div className={stack}>
+			{(
+				[
+					[true, "OR"],
+					[false, undefined],
+					[false, "AD"],
+				] as const
+			).map(([verified, initials]) => (
+				<div key={String(initials) + verified} className={`${row} items-end gap-8`}>
+					{(["sm", "md", "lg"] as const).map((size) => (
+						<AvatarProfilePhoto
+							key={size}
+							size={size}
+							initials={initials}
+							alt={initials ? (initials === "OR" ? "Olivia Rhye" : "Administrador") : undefined}
+							verified={verified}
+						/>
+					))}
+				</div>
+			))}
 		</div>
 	);
 }
 
 export function AvatarLabelExample() {
 	return (
-		<div className={row}>
-			<AvatarLabel
-				initials="AD"
-				name="Responsable de seguridad"
-				supporting="admin@jotis.me"
-				status="online"
-			/>
+		<div className={stack}>
+			{(["sm", "md", "lg"] as const).map((size) => (
+				<div key={size} className={row}>
+					<AvatarLabel
+						size={size}
+						initials="AD"
+						name="Responsable de seguridad"
+						supporting="admin@jotis.me"
+						status="online"
+					/>
+				</div>
+			))}
 		</div>
 	);
 }

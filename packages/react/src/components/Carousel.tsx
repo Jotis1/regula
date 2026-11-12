@@ -1,5 +1,6 @@
 "use client";
 
+import { IconArrowNarrowLeft, IconArrowNarrowRight } from "@jotis-me/icons";
 import { type KeyboardEvent, type PointerEvent, type ReactNode, useRef } from "react";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
@@ -37,6 +38,11 @@ export interface CarouselProps {
 	/** Diapositiva inicial, desde 0. */
 	defaultIndex?: number;
 	onChange?: (index: number) => void;
+	/**
+	 * Flechas del Figma (`_Testimonial carousel arrow`): `button-chevron` (la de siempre) y `button-arrow` en un círculo,
+	 * o `arrow` sola y larga, sin círculo. Sin ella, la de siempre.
+	 */
+	arrowStyle?: CarouselArrowStyle;
 	labels?: Partial<CarouselLabels>;
 	className?: string;
 }
@@ -45,6 +51,8 @@ export interface CarouselProps {
 const SWIPE = 48;
 
 const ARROW: Record<CarouselSize, string> = { md: "size-9", lg: "size-11" };
+
+export type CarouselArrowStyle = "button-chevron" | "button-arrow" | "arrow";
 
 /**
  * Pasa diapositivas con flechas, puntos, el teclado (← y → con el foco dentro) y deslizando el dedo. No da la vuelta
@@ -57,6 +65,7 @@ export function Carousel({
 	index,
 	defaultIndex = 0,
 	onChange,
+	arrowStyle,
 	labels,
 	className,
 }: CarouselProps) {
@@ -114,9 +123,30 @@ export function Carousel({
 					"absolute top-1/2 z-10 inline-flex -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border-0 bg-primary text-fg-secondary shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-secondary_alt)] transition-colors duration-100 hover:text-fg-secondary_hover focus-visible:shadow-focus-ring focus-visible:outline-none aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:text-fg-secondary",
 					ARROW[size],
 					prev ? "left-4" : "right-4",
+					arrowStyle === "arrow" &&
+						"w-auto rounded-sm bg-transparent px-1 shadow-none hover:text-fg-secondary_hover",
 				)}
 			>
-				<Icon name={prev ? "chevron-left" : "chevron-right"} size={size === "lg" ? 24 : 20} />
+				{arrowStyle === "arrow" ? (
+					prev ? (
+						<IconArrowNarrowLeft size={size === "lg" ? 48 : 40} />
+					) : (
+						<IconArrowNarrowRight size={size === "lg" ? 48 : 40} />
+					)
+				) : (
+					<Icon
+						name={
+							arrowStyle === "button-arrow"
+								? prev
+									? "arrow-left"
+									: "arrow-right"
+								: prev
+									? "chevron-left"
+									: "chevron-right"
+						}
+						size={size === "lg" ? 24 : 20}
+					/>
+				)}
 			</button>
 		);
 	};

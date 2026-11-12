@@ -6,7 +6,7 @@ interactive: true
 astroNote: "`onChange` y `children` son funciones y no cruzan de Astro a una isla: envuelve `Tabs` en un `.tsx` y úsalo con `client:load`."
 ---
 
-**Props.** `items` [{`id`, `label`, `count`?}], `value` / `defaultValue`, `onChange(id)`, `type` (`underline` · `button-brand` · `button-gray` · `button-border` · `button-minimal` · `line`), `size` (`sm` · `md`), `orientation` (`horizontal` · `vertical`) y `aria-label`.
+**Props.** `items` [{`id`, `label`, `count`?}], `value` / `defaultValue`, `onChange(id)`, `type` (`underline` · `button-brand` · `button-gray` · `button-border` · `button-minimal` · `line`), `size` (`sm` · `md`), `fullWidth` (las pestañas se reparten todo el ancho, solo en horizontal), `orientation` (`horizontal` · `vertical`) y `aria-label`.
 
 **Cuál.** `underline` para secciones de página (es la de por defecto); `button-border` como control segmentado dentro de una tarjeta; `button-brand` cuando la navegación es la protagonista; `button-minimal` es un segmentado sin borde, con la actual sobre `bg-primary` y `shadow-sm`; `line` pone una raya de 2px en `fg-brand-primary` a la izquierda de la actual, y solo tiene sentido en vertical (en horizontal se pinta como `underline`, y `underline` en vertical, como `line`).
 

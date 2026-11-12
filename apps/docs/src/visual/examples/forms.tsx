@@ -1,9 +1,16 @@
 // Puertos de las vistas previas de los componentes de formulario.
 
+import { FileDesignFig, FileDocumentPdf, FileMediaMp4 } from "@jotis-me/icons/files";
+import {
+	PaymentAmexMd,
+	PaymentDiscoverMd,
+	PaymentMaestroMd,
+	PaymentMastercardMd,
+	PaymentVisaMd,
+} from "@jotis-me/icons/payments";
 import {
 	Avatar,
 	Checkbox,
-	ColorPicker,
 	DatePicker,
 	FeaturedIcon,
 	FileUpload,
@@ -55,14 +62,48 @@ export function InputExample() {
 				trailingSelect={{ label: "Divisa", options: ["EUR", "USD", "GBP"], defaultValue: "EUR" }}
 			/>
 			<Input label="Contraseña" type="password" defaultValue="secreta1" hint="Al menos 8 caracteres." />
+			<Input
+				label="Número de tarjeta"
+				type="card"
+				defaultValue="4242424242424242"
+				hint="Se agrupa de cuatro en cuatro."
+				cardLogos={{
+					visa: <PaymentVisaMd />,
+					mastercard: <PaymentMastercardMd />,
+					amex: <PaymentAmexMd />,
+					maestro: <PaymentMaestroMd />,
+					discover: <PaymentDiscoverMd />,
+				}}
+			/>
+			<Input
+				label="Web"
+				defaultValue="www.jotis.me"
+				trailingButton={{ label: "Copiar", icon: "copy-01" }}
+				hint="Botón pegado al campo."
+			/>
+			<Input label="Fecha" type="datetime-local" defaultValue="2028-04-16T10:30" />
+			<Input label="Subir archivo" type="file" hint="SVG, PNG, JPG o GIF (máx. 800x400px)." />
 		</div>
 	);
 }
 
 export function TextareaExample() {
 	return (
-		<div className="max-w-[420px]">
+		<div className="grid max-w-[720px] grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
 			<Textarea label="Descripción" placeholder="Escribe una nota…" hint="Máximo 280 caracteres." />
+			<Textarea
+				label="Descripción (sm)"
+				size="sm"
+				placeholder="Escribe una nota…"
+				hint="Máximo 280 caracteres."
+			/>
+			<Textarea label="Etiquetas" defaultTags={["Diseño", "Marketing"]} hint="Dentro del campo." />
+			<Textarea
+				label="Etiquetas fuera"
+				defaultTags={["Diseño", "Marketing"]}
+				tagPlacement="outside"
+				hint="Debajo del campo."
+			/>
 		</div>
 	);
 }
@@ -111,6 +152,19 @@ export function SelectExample() {
 				/>
 			</div>
 			<Select label="Responsable" required defaultValue="olivia" options={MEMBERS} defaultOpen />
+			<Select
+				label="Ciudad"
+				searchable
+				placeholder="Buscar ciudad"
+				hint="Escribe para filtrar la lista."
+				options={["Madrid", "Valencia", "Sevilla", "Barcelona", "Bilbao"]}
+			/>
+			<Select
+				type="tags"
+				label="Equipo"
+				defaultValue={["olivia", "phoenix", "lana"]}
+				options={MEMBERS}
+			/>
 		</div>
 	);
 }
@@ -192,6 +246,93 @@ export function RadioGroupExample() {
 					]}
 				/>
 			</div>
+			<div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+				<RadioGroup
+					appearance="icon-simple"
+					aria-label="Plan con icono"
+					defaultValue="basico"
+					options={[
+						{
+							value: "basico",
+							label: "Básico",
+							supporting: "10 €/mes",
+							hint: "Hasta 10 personas.",
+							icon: "star-01",
+						},
+						{
+							value: "pro",
+							label: "Pro",
+							supporting: "20 €/mes",
+							hint: "Hasta 20 personas.",
+							icon: "zap",
+						},
+					]}
+				/>
+				<RadioGroup
+					appearance="icon-simple"
+					indicator="checkbox"
+					aria-label="Responsable"
+					defaultValue="olivia"
+					options={[
+						{
+							value: "olivia",
+							label: "Olivia Rhye",
+							supporting: "@olivia",
+							hint: "Producto, Integraciones",
+							avatar: { initials: "OR", alt: "" },
+						},
+						{
+							value: "phoenix",
+							label: "Phoenix Baker",
+							supporting: "@phoenix",
+							hint: "Frontend, Pagos",
+							avatar: { initials: "PB", alt: "" },
+						},
+					]}
+				/>
+				<RadioGroup
+					appearance="icon-simple"
+					indicator="checkbox"
+					aria-label="Método de pago"
+					defaultValue="visa"
+					options={[
+						{
+							value: "visa",
+							label: "Visa terminada en 1234",
+							hint: "Caduca 06/2028",
+							paymentIcon: <PaymentVisaMd />,
+						},
+						{
+							value: "mc",
+							label: "Mastercard terminada en 1234",
+							hint: "Caduca 08/2029",
+							paymentIcon: <PaymentMastercardMd />,
+						},
+					]}
+				/>
+				<RadioGroup
+					appearance="icon-simple"
+					size="md"
+					aria-label="Plan md"
+					defaultValue="pro"
+					options={[
+						{
+							value: "basico",
+							label: "Básico",
+							supporting: "10 €/mes",
+							hint: "Hasta 10 personas.",
+							icon: "star-01",
+						},
+						{
+							value: "pro",
+							label: "Pro",
+							supporting: "20 €/mes",
+							hint: "Hasta 20 personas.",
+							icon: "zap",
+						},
+					]}
+				/>
+			</div>
 		</div>
 	);
 }
@@ -213,9 +354,22 @@ export function ToggleExample() {
 }
 
 export function SliderExample() {
+	const percent = (v: number) => `${v}%`;
 	return (
-		<div className="max-w-[360px] pt-3">
-			<Slider defaultValue={40} aria-label="Presupuesto" />
+		<div className="flex max-w-[360px] flex-col gap-8">
+			<div className="pt-3">
+				<Slider defaultValue={40} aria-label="Presupuesto" />
+			</div>
+			<Slider defaultValue={40} aria-label="Volumen" label="bottom" formatValue={percent} />
+			<Slider defaultValue={40} aria-label="Brillo" label="top-floating" formatValue={percent} />
+			<Slider range defaultValue={[25, 50]} aria-label="Precio" label="bottom" formatValue={percent} />
+			<Slider
+				range
+				defaultValue={[25, 50]}
+				aria-label="Rango"
+				label="top-floating"
+				formatValue={percent}
+			/>
 		</div>
 	);
 }
@@ -239,11 +393,52 @@ export function FileUploadExample() {
 				]}
 				onRemove={() => {}}
 			/>
+			<FileUpload
+				className="mt-8"
+				accept=".pdf,.mp4,.fig"
+				hint="PDF, MP4 o Figma (máx. 50 MB)"
+				progressStyle="fill"
+				files={[
+					{
+						name: "requisitos.pdf",
+						size: 204800,
+						progress: 100,
+						status: "complete",
+						icon: <FileDocumentPdf />,
+					},
+					{ name: "grabacion-panel.mp4", size: 16_000_000, progress: 40, icon: <FileMediaMp4 /> },
+					{ name: "prototipo-final.fig", size: 4_200_000, progress: 80, icon: <FileDesignFig /> },
+				]}
+				onRemove={() => {}}
+			/>
 		</div>
 	);
 }
 
+const HORAS = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30"];
+
 export function DatePickerExample() {
+	return (
+		<div className="flex flex-col items-start gap-6">
+			<DatePickerRango />
+			<DatePicker
+				inline
+				today={new Date(2026, 9, 29)}
+				times={HORAS}
+				defaultValue={{ start: new Date(2026, 9, 15), time: "10:30" }}
+				labels={{ dialog: "Selector de fecha y hora" }}
+			/>
+			<DatePicker
+				presentation="modal"
+				today={new Date(2026, 9, 29)}
+				times={HORAS}
+				placeholder="Elegir fecha y hora (modal)"
+			/>
+		</div>
+	);
+}
+
+function DatePickerRango() {
 	return (
 		<DatePicker
 			range
@@ -261,31 +456,31 @@ export function DatePickerExample() {
 	);
 }
 
-export function ColorPickerExample() {
-	return (
-		<ColorPicker
-			defaultValue="#4f39f6"
-			swatches={[
-				"#4f39f6",
-				"#615fff",
-				"#00a63e",
-				"#d08700",
-				"#e7000b",
-				"#00a6f4",
-				"#e12afb",
-				"#171717",
-			]}
-		/>
-	);
-}
-
 export function TextEditorExample() {
+	const text =
+		"<p>Revisar el <b>seguro del coche</b> antes del 15.</p><p>Comparar <i>dos ofertas</i> y llamar al banco.</p>";
 	return (
-		<div className="max-w-[640px]">
+		<div className="grid max-w-[1040px] grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-x-8 gap-y-10">
 			<TextEditor
 				label="Notas"
 				maxLength={500}
 				defaultValue="<p>Revisar el <b>seguro del coche</b> antes del 15.</p><ul><li>Comparar dos ofertas</li><li>Llamar al banco</li></ul>"
+			/>
+			<TextEditor label="Simple" toolbar="simple" size="sm" maxLength={500} defaultValue={text} />
+			<TextEditor
+				className="col-span-full"
+				label="Avanzada"
+				toolbar="advanced"
+				maxLength={500}
+				defaultValue={text}
+				onGenerate={() => {}}
+			/>
+			<TextEditor
+				label="Flotante"
+				toolbar="floating"
+				size="sm"
+				hint="Selecciona texto para ver la barra."
+				defaultValue={text}
 			/>
 		</div>
 	);
@@ -295,6 +490,30 @@ export function MessageInputExample() {
 	return (
 		<div className="max-w-[560px]">
 			<MessageInput placeholder="Pregunta a Emptor…" onAttach={() => {}} onSend={() => {}} />
+			<div className="mt-8 flex flex-col gap-6">
+				<MessageInput variant="minimal" placeholder="Mensaje" onSend={() => {}} />
+				<MessageInput
+					variant="textarea"
+					placeholder="Mensaje"
+					onVoice={() => {}}
+					onAttach={() => {}}
+					onEmoji={() => {}}
+					onSend={() => {}}
+				/>
+				<MessageInput
+					variant="advanced"
+					placeholder="Pregúntame lo que quieras…"
+					onVoice={() => {}}
+					onShortcuts={() => {}}
+					onAttach={() => {}}
+					onSend={() => {}}
+					toolbar={
+						<span className="inline-flex items-center gap-1.5 text-xs font-semibold text-secondary">
+							Emptor
+						</span>
+					}
+				/>
+			</div>
 		</div>
 	);
 }

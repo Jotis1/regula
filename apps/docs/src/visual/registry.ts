@@ -1,6 +1,7 @@
 // Ejemplos para la paridad visual: cada uno reproduce la vista previa de la guía de su componente
 // (reference/components/<Nombre>/preview.html) con los componentes de @jotis-me/react.
 import type { ComponentType } from "react";
+import { COMPOSITION_FILES, COMPOSITIONS } from "./compositions";
 import {
 	ButtonExample,
 	ButtonGroupExample,
@@ -9,22 +10,37 @@ import {
 	IconExample,
 } from "./examples/actions";
 import { AppIconExample } from "./examples/brand";
-import { BarChartExample, ChartLegendExample, LineChartExample, PieChartExample } from "./examples/charts";
+import { CalendarViewExample } from "./examples/calendar";
 import {
-	ActivityFeedExample,
-	CalendarViewExample,
-	CodeSnippetExample,
-	MessageExample,
-	MetricCardExample,
-	TableExample,
-} from "./examples/data";
+	ActivityGaugeExample,
+	BarChartExample,
+	ChartLegendExample,
+	ChartMarkerExample,
+	LineChartExample,
+	PieChartExample,
+	RadarChartExample,
+} from "./examples/charts";
+import { ColorPickerDropdownExample, ColorPickerExample } from "./examples/color";
+import * as colorPickerCompositions from "./examples/color-picker-compositions";
+import { ActivityFeedExample, CodeSnippetExample, MetricCardExample } from "./examples/data";
+import {
+	BackgroundOverlayExample,
+	LaptopMockupExample,
+	PhoneMockupExample,
+	ScreenMockupExample,
+} from "./examples/devices";
 import {
 	AvatarExample,
 	AvatarGroupExample,
 	AvatarLabelExample,
+	AvatarProfilePhotoExample,
 	BadgeExample,
 	BadgeGroupExample,
+	CheckIconExample,
+	CheckItemExample,
 	KbdExample,
+	RatingBadgeExample,
+	RatingExample,
 	TagExample,
 } from "./examples/display";
 import {
@@ -35,9 +51,9 @@ import {
 	SkeletonExample,
 	SpinnerExample,
 } from "./examples/feedback";
+import { FilterBarExample, FilterMenuExample, FilterPanelExample } from "./examples/filter-bar";
 import {
 	CheckboxExample,
-	ColorPickerExample,
 	DatePickerExample,
 	FileUploadExample,
 	InputExample,
@@ -65,6 +81,18 @@ import {
 	SectionLabelExample,
 } from "./examples/layout";
 import {
+	AccordionExample,
+	BlogPostCardExample,
+	FooterExample,
+	JobPostCardExample,
+	MarketingNavExample,
+	PricingCardExample,
+	SubscribeCardExample,
+	TeamMemberCardExample,
+	TestimonialExample,
+} from "./examples/marketing";
+import { MessageExample } from "./examples/message";
+import {
 	BackgroundPatternExample,
 	BrowserFrameExample,
 	CarouselExample,
@@ -73,17 +101,14 @@ import {
 	TransparencyGridExample,
 	VideoPlayerExample,
 } from "./examples/mockups";
+import * as modalCompositions from "./examples/modal-compositions";
 import {
-	BreadcrumbsExample,
 	CommandMenuExample,
 	ContextMenuExample,
 	DropdownExample,
-	FilterBarExample,
 	HeaderNavExample,
 	PagerExample,
 	PaginationDotsExample,
-	PaginationExample,
-	SidebarNavExample,
 	TabsExample,
 	TreeViewExample,
 } from "./examples/navigation";
@@ -98,6 +123,10 @@ import {
 	SlideoutExample,
 	TooltipExample,
 } from "./examples/overlays";
+import { BreadcrumbsExample, PaginationExample } from "./examples/paging";
+import { SidebarNavExample } from "./examples/sidebar";
+import * as slideoutCompositions from "./examples/slideout-compositions";
+import { AppStoreBadgeExample, SocialButtonExample, SocialButtonGroupExample } from "./examples/social";
 import {
 	CamFrameExample,
 	ChannelBannerExample,
@@ -112,6 +141,14 @@ import {
 	StreamSceneExample,
 	StreamStatusExample,
 } from "./examples/stream";
+import { TableExample } from "./examples/table";
+
+// Las composiciones (design D7): un módulo por componente, en el registro con su nombre
+const compositionModules: Record<string, Record<string, unknown>> = {
+	"modal-compositions": modalCompositions,
+	"slideout-compositions": slideoutCompositions,
+	"color-picker-compositions": colorPickerCompositions,
+};
 
 export const visualExamples: Record<string, ComponentType> = {
 	AppIcon: AppIconExample,
@@ -124,6 +161,11 @@ export const visualExamples: Record<string, ComponentType> = {
 	Avatar: AvatarExample,
 	AvatarGroup: AvatarGroupExample,
 	AvatarLabel: AvatarLabelExample,
+	AvatarProfilePhoto: AvatarProfilePhotoExample,
+	CheckIcon: CheckIconExample,
+	CheckItem: CheckItemExample,
+	Rating: RatingExample,
+	RatingBadge: RatingBadgeExample,
 	Badge: BadgeExample,
 	BadgeGroup: BadgeGroupExample,
 	Tag: TagExample,
@@ -131,6 +173,9 @@ export const visualExamples: Record<string, ComponentType> = {
 	Button: ButtonExample,
 	ButtonGroup: ButtonGroupExample,
 	CloseButton: CloseButtonExample,
+	SocialButton: SocialButtonExample,
+	SocialButtonGroup: SocialButtonGroupExample,
+	AppStoreBadge: AppStoreBadgeExample,
 	ButtonUtility: ButtonUtilityExample,
 	Icon: IconExample,
 	Input: InputExample,
@@ -144,6 +189,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	FileUpload: FileUploadExample,
 	DatePicker: DatePickerExample,
 	ColorPicker: ColorPickerExample,
+	ColorPickerDropdown: ColorPickerDropdownExample,
 	TextEditor: TextEditorExample,
 	MessageInput: MessageInputExample,
 	MultiSelect: MultiSelectExample,
@@ -160,6 +206,17 @@ export const visualExamples: Record<string, ComponentType> = {
 	ContextMenu: ContextMenuExample,
 	HeaderNav: HeaderNavExample,
 	FilterBar: FilterBarExample,
+	MarketingNav: MarketingNavExample,
+	Footer: FooterExample,
+	BlogPostCard: BlogPostCardExample,
+	SubscribeCard: SubscribeCardExample,
+	PricingCard: PricingCardExample,
+	JobPostCard: JobPostCardExample,
+	Accordion: AccordionExample,
+	TeamMemberCard: TeamMemberCardExample,
+	Testimonial: TestimonialExample,
+	FilterMenu: FilterMenuExample,
+	FilterPanel: FilterPanelExample,
 	CommandMenu: CommandMenuExample,
 	TreeView: TreeViewExample,
 	Modal: ModalExample,
@@ -189,6 +246,10 @@ export const visualExamples: Record<string, ComponentType> = {
 	TransparencyGrid: TransparencyGridExample,
 	ScaledPreview: ScaledPreviewExample,
 	BrowserFrame: BrowserFrameExample,
+	BackgroundOverlay: BackgroundOverlayExample,
+	ScreenMockup: ScreenMockupExample,
+	LaptopMockup: LaptopMockupExample,
+	PhoneMockup: PhoneMockupExample,
 	CreditCard: CreditCardExample,
 	VideoPlayer: VideoPlayerExample,
 	Carousel: CarouselExample,
@@ -196,6 +257,9 @@ export const visualExamples: Record<string, ComponentType> = {
 	BarChart: BarChartExample,
 	PieChart: PieChartExample,
 	ChartLegend: ChartLegendExample,
+	ActivityGauge: ActivityGaugeExample,
+	RadarChart: RadarChartExample,
+	ChartMarker: ChartMarkerExample,
 	StreamAlert: StreamAlertExample,
 	StreamEvents: StreamEventsExample,
 	StreamStatus: StreamStatusExample,
@@ -208,6 +272,12 @@ export const visualExamples: Record<string, ComponentType> = {
 	StreamScene: StreamSceneExample,
 	ChannelPanel: ChannelPanelExample,
 	ChannelBanner: ChannelBannerExample,
+	...Object.fromEntries(
+		COMPOSITIONS.map((c) => [
+			c.name,
+			compositionModules[COMPOSITION_FILES[c.of] as string]?.[`${c.name}Example`] as ComponentType,
+		]),
+	),
 };
 
 export { CARD_HEIGHTS, DARK_PREVIEWS, slugOf } from "./cards";

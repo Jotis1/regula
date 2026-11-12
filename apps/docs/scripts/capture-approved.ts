@@ -9,6 +9,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 import { chromium } from "@playwright/test";
 import { APPROVED_DIR, approvedPath, VIEWPORT_WIDTH } from "../e2e/visual/compare.ts";
 import { catalogComponents } from "../src/lib/catalog.ts";
+import { COMPOSITIONS } from "../src/visual/compositions.ts";
 import { CARD_HEIGHTS, slugOf } from "../src/visual/registry.ts";
 
 const BASE = "http://localhost:4321";
@@ -16,7 +17,8 @@ const args = process.argv.slice(2);
 const outIndex = args.indexOf("--out");
 const outDir = outIndex >= 0 ? resolve(args[outIndex + 1] ?? "") : APPROVED_DIR;
 const rest = args.filter((a, i) => a !== "--all" && (outIndex < 0 || (i !== outIndex && i !== outIndex + 1)));
-const catalog = catalogComponents();
+// El catálogo y las composiciones (design D7): las dos tienen página /visual/ y captura aprobada
+const catalog = [...catalogComponents(), ...COMPOSITIONS.map((c) => c.name)];
 const names = args.includes("--all") ? catalog : rest;
 
 if (outIndex >= 0 && !args[outIndex + 1]) throw new Error("--out necesita una carpeta");

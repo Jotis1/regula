@@ -4,6 +4,8 @@ import { type ReactNode, useId } from "react";
 import { cx } from "../internal/cx.js";
 import { Layer } from "../internal/layer.js";
 import { CloseButton } from "./CloseButton.js";
+import { FeaturedIcon } from "./FeaturedIcon.js";
+import type { IconName } from "./Icon.js";
 
 export interface SlideoutProps {
 	/**
@@ -17,6 +19,10 @@ export interface SlideoutProps {
 	children?: ReactNode;
 	/** Botones del pie, alineados a la derecha. */
 	actions?: ReactNode;
+	/** Icono destacado (`modern`, gris) a la izquierda del título, como varios tipos del Figma. */
+	icon?: IconName | ReactNode;
+	/** A la izquierda del pie, frente a los botones: «Guardar filtro», «Código para incrustar», «¿Vas?»… */
+	footerStart?: ReactNode;
 	/** Cierra con la X, Escape o un clic fuera. Sin él no hay X y el panel no se puede descartar. */
 	onClose?: () => void;
 	/**
@@ -43,6 +49,8 @@ export function Slideout({
 	description,
 	children,
 	actions,
+	icon,
+	footerStart,
 	onClose,
 	width,
 	side = "right",
@@ -67,7 +75,8 @@ export function Slideout({
 			labelledBy={`${id}-title`}
 			describedBy={description ? `${id}-desc` : undefined}
 		>
-			<div className="flex gap-2 p-6">
+			<div className={icon ? "flex gap-4 p-6" : "flex gap-2 p-6"}>
+				{icon ? <FeaturedIcon icon={icon} color="gray" size="lg" variant="modern" /> : null}
 				<div className="min-w-0 flex-1">
 					<h2 id={`${id}-title`} className="m-0 text-lg font-semibold text-primary">
 						{title}
@@ -81,9 +90,15 @@ export function Slideout({
 				{onClose ? <CloseButton onClick={onClose} className="-mt-2 -mr-2" /> : null}
 			</div>
 			<div className="flex flex-1 flex-col gap-6 overflow-auto px-6 pb-6">{children}</div>
-			{actions ? (
+			{actions && !footerStart ? (
 				<div className="flex justify-end gap-3 px-6 py-4 shadow-[inset_0_1px_0_var(--border-secondary)]">
 					{actions}
+				</div>
+			) : null}
+			{footerStart ? (
+				<div className="flex flex-wrap items-center gap-3 px-6 py-4 shadow-[inset_0_1px_0_var(--border-secondary)]">
+					<div className="mr-auto flex items-center gap-3">{footerStart}</div>
+					{actions ? <div className="flex gap-3">{actions}</div> : null}
 				</div>
 			) : null}
 		</Layer>

@@ -67,7 +67,7 @@ for (const [group, folder] of [
 const logos = join(dist, "logos");
 rmSync(logos, { recursive: true, force: true });
 let logoCount = 0;
-for (const set of ["app", "integration", "social"]) {
+for (const set of ["app", "integration", "social", "store"]) {
 	mkdirSync(join(logos, set), { recursive: true });
 	for (const f of readdirSync(join(sources, "logos", set)).filter((f) => f.endsWith(".svg"))) {
 		writeFileSync(join(logos, set, f), readFileSync(join(sources, "logos", set, f)));
@@ -75,3 +75,18 @@ for (const set of ["app", "integration", "social"]) {
 	}
 }
 console.log(`${logoCount} SVG de logos → dist/logos/`);
+
+// Recursos en color de carpeta plana, uno por entrada: @jotis-me/icons/<entrada>/<nombre>.svg
+for (const [folder, what] of [
+	["flags", "banderas"],
+	["payments", "iconos de pago"],
+	["files", "iconos de archivo y carpetas"],
+	["cursors", "cursores"],
+] as const) {
+	const target = join(dist, folder);
+	rmSync(target, { recursive: true, force: true });
+	mkdirSync(target, { recursive: true });
+	const files = readdirSync(join(sources, folder)).filter((f) => f.endsWith(".svg"));
+	for (const f of files) writeFileSync(join(target, f), readFileSync(join(sources, folder, f)));
+	console.log(`${files.length} SVG de ${what} → dist/${folder}/`);
+}

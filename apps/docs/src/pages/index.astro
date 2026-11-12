@@ -2,7 +2,7 @@
 // Portada (reference/docs-design/Main.dc.html y HomeM.dc.html). Las cifras se cuentan en el build desde los
 // paquetes y el catálogo; la instalación sale del README de @jotis-me/react; las cinco reglas, de la guía.
 import { getCollection } from "astro:content";
-import { iconNames } from "@jotis-me/icons";
+import { allIconNames } from "@jotis-me/icons";
 import chevronRight from "@jotis-me/icons/svg/chevron-right.svg?raw";
 import {
 	AppIcon,
@@ -27,7 +27,7 @@ const components = (await getCollection("components")).length;
 const appGroups = COMPONENT_GROUPS.filter((g) => g.section === "components");
 const appComponents = appGroups.reduce((n, g) => n + g.components.length, 0);
 const streamComponents = components - appComponents;
-const icons = iconNames.length;
+const icons = allIconNames.length;
 const colorTokens = Object.keys(colors).length;
 const install = installTabs(readme);
 

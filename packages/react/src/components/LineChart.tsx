@@ -1,4 +1,16 @@
-import { Axes, type ChartSeries, nice, PAD, pointTitle, seriesColor } from "../internal/chart.js";
+import type { ReactNode } from "react";
+import {
+	Axes,
+	type AxisTitles,
+	type ChartLegendPosition,
+	type ChartSeries,
+	legendSide,
+	nice,
+	padFor,
+	pointTitle,
+	seriesColor,
+} from "../internal/chart.js";
+import { type ChartMarkerAt, MarkerLine, MarkerOverlay } from "../internal/chart-marker.js";
 import { cx } from "../internal/cx.js";
 import { ChartLegend } from "./ChartLegend.js";
 
@@ -14,12 +26,22 @@ export interface LineChartProps {
 	 * @default true
 	 */
 	area?: boolean;
-	/** Leyenda encima. Por defecto, sí con dos series o más. */
-	legend?: boolean;
+	/**
+	 * Leyenda: `true` o `"top"` encima, `"right"` en columna a la derecha, `false` ninguna. Por defecto, encima con dos
+	 * series o más.
+	 */
+	legend?: ChartLegendPosition;
+	/** Títulos de los ejes: `y` va girado a la izquierda y `x` bajo las etiquetas, como `Axis labels` del Figma. */
+	axisLabels?: AxisTitles;
 	/** Proporción del dibujo (se escala al ancho del contenedor). @default 640 */
 	width?: number;
 	/** @default 240 */
 	height?: number;
+	/**
+	 * Marcador (Figma `Chart marker`): línea vertical en una posición, con su punto y la burbuja del valor. Sin él, la
+	 * gráfica es la de siempre.
+	 */
+	marker?: ChartMarkerAt;
 	/** Qué cuenta la gráfica, para lectores de pantalla. @default "Gráfica de líneas" */
 	"aria-label"?: string;
 	className?: string;
@@ -32,78 +54,135 @@ export function LineChart({
 	format,
 	area = true,
 	legend,
+	axisLabels,
 	width = 640,
 	height = 240,
+	marker,
 	className,
 	...rest
 }: LineChartProps) {
-	const plot = { w: width, h: height, pad: PAD };
+	const pad = padFor(axisLabels);
+	const plot = { w: width, h: height, pad };
+	const side = legendSide(legend, series.length);
 	const top = nice(Math.max(0, ...series.flatMap((s) => s.data)));
-	const iw = width - PAD.l - PAD.r;
-	const ih = height - PAD.t - PAD.b;
+	const iw = width - pad.l - pad.r;
+	const ih = height - pad.t - pad.b;
 	const n = labels.length;
 	const point = (v: number, i: number) =>
-		[PAD.l + iw * ((i + 0.5) / n), PAD.t + ih * (1 - v / top)] as const;
+		[pad.l + iw * ((i + 0.5) / n), pad.t + ih * (1 - v / top)] as const;
+	const mi = marker ? Math.max(0, Math.min(n - 1, marker.index)) : 0;
+	const ms = marker ? Math.max(0, Math.min(series.length - 1, marker.series ?? 0)) : 0;
+	const mv = series[ms]?.data[mi] ?? 0;
+	const mark = marker
+		? (() => {
+				const [x, y] = point(mv, mi);
+				return {
+					x,
+					y,
+					color: seriesColor(ms, series[ms]?.color) ?? "currentColor",
+					value: format ? format(mv) : mv,
+				};
+			})()
+		: null;
+	const svgClass =
+		side === "right" ? "h-auto min-w-0 flex-1 overflow-visible" : "h-auto w-full overflow-visible";
+	// Con marcador, el svg va en una caja con la burbuja encima; sin él, el HTML de siempre
+	const wrap = (svg: ReactNode) =>
+		marker && mark ? (
+			<div className={cx("relative", side === "right" ? "min-w-0 flex-1" : "w-full")}>
+				{svg}
+				<MarkerOverlay
+					at={marker}
+					x={mark.x}
+					y={mark.y}
+					width={width}
+					height={height}
+					value={mark.value}
+					label={labels[mi]}
+				/>
+			</div>
+		) : (
+			svg
+		);
 	return (
-		<figure className={cx("m-0 flex flex-col gap-4 font-body", className)}>
-			{(legend ?? series.length > 1) ? <ChartLegend series={series} /> : null}
-			<svg
-				viewBox={`0 0 ${width} ${height}`}
-				role="img"
-				aria-label={rest["aria-label"] ?? "Gráfica de líneas"}
-				className="h-auto w-full overflow-visible"
-			>
-				<Axes plot={plot} top={top} labels={labels} format={format} />
-				{series.map((s, si) => {
-					const pts = s.data.map(point);
-					const c = seriesColor(si, s.color);
-					const d = pts
-						.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`)
-						.join(" ");
-					const first = pts[0];
-					const last = pts[pts.length - 1];
-					return (
-						// biome-ignore lint/suspicious/noArrayIndexKey: el orden de las series es fijo
-						<g key={si}>
-							{si === 0 && area && first && last ? (
+		<figure
+			className={cx(
+				side === "right"
+					? "m-0 flex flex-row items-start gap-6 font-body"
+					: "m-0 flex flex-col gap-4 font-body",
+				className,
+			)}
+		>
+			{side === "top" ? <ChartLegend series={series} /> : null}
+			{wrap(
+				<svg
+					viewBox={`0 0 ${width} ${height}`}
+					role="img"
+					aria-label={rest["aria-label"] ?? "Gráfica de líneas"}
+					className={marker ? "block h-auto w-full overflow-visible" : svgClass}
+				>
+					<Axes plot={plot} top={top} labels={labels} format={format} titles={axisLabels} />
+					{series.map((s, si) => {
+						const pts = s.data.map(point);
+						const c = seriesColor(si, s.color);
+						const d = pts
+							.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`)
+							.join(" ");
+						const first = pts[0];
+						const last = pts[pts.length - 1];
+						return (
+							// biome-ignore lint/suspicious/noArrayIndexKey: el orden de las series es fijo
+							<g key={si}>
+								{si === 0 && area && first && last ? (
+									<path
+										d={`${d} L${last[0]} ${pad.t + ih} L${first[0]} ${pad.t + ih} Z`}
+										fill={c}
+										opacity={0.08}
+									/>
+								) : null}
 								<path
-									d={`${d} L${last[0]} ${PAD.t + ih} L${first[0]} ${PAD.t + ih} Z`}
-									fill={c}
-									opacity={0.08}
-								/>
-							) : null}
-							<path
-								d={d}
-								fill="none"
-								stroke={c}
-								strokeWidth={2}
-								strokeLinejoin="round"
-								strokeLinecap="round"
-							/>
-							{pts.map(([x, y], i) => (
-								<circle
-									// biome-ignore lint/suspicious/noArrayIndexKey: un punto por etiqueta, en orden
-									key={i}
-									cx={x}
-									cy={y}
-									r={3}
-									fill="var(--bg-primary)"
+									d={d}
+									fill="none"
 									stroke={c}
 									strokeWidth={2}
-								>
-									<title>
-										{pointTitle(
-											s.name,
-											labels[i] ?? "",
-											format ? format(s.data[i] ?? 0) : (s.data[i] ?? 0),
-										)}
-									</title>
-								</circle>
-							))}
-						</g>
-					);
-				})}
-			</svg>
+									strokeLinejoin="round"
+									strokeLinecap="round"
+								/>
+								{pts.map(([x, y], i) => (
+									<circle
+										// biome-ignore lint/suspicious/noArrayIndexKey: un punto por etiqueta, en orden
+										key={i}
+										cx={x}
+										cy={y}
+										r={3}
+										fill="var(--bg-primary)"
+										stroke={c}
+										strokeWidth={2}
+									>
+										<title>
+											{pointTitle(
+												s.name,
+												labels[i] ?? "",
+												format ? format(s.data[i] ?? 0) : (s.data[i] ?? 0),
+											)}
+										</title>
+									</circle>
+								))}
+							</g>
+						);
+					})}
+					{mark ? (
+						<MarkerLine
+							x={mark.x}
+							top={mark.y}
+							bottom={pad.t + ih}
+							type={marker?.type ?? "line"}
+							color={mark.color}
+						/>
+					) : null}
+				</svg>,
+			)}
+			{side === "right" ? <ChartLegend vertical series={series} className="flex-none" /> : null}
 		</figure>
 	);
 }

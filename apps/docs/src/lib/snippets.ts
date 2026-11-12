@@ -13,6 +13,12 @@ const usage: Record<string, string> = {
 		{ value: "24h", label: "24 horas", icon: "clock" },
 	]}
 />`,
+	AppStoreBadge: `<AppStoreBadge store="app-store" href="https://apps.apple.com/app/id1" logo={<StoreAppStoreLogo />} />`,
+	SocialButton: `<SocialButton provider="google" theme="gray" logo={<SocialGoogleLogoGray />} />`,
+	SocialButtonGroup: `<SocialButtonGroup label="Entrar con">
+	<SocialButton provider="google" theme="color" logo={<SocialGoogleLogo />} />
+	<SocialButton provider="apple" theme="color" logo={<SocialAppleLogoGray />} />
+</SocialButtonGroup>`,
 	CloseButton: `<CloseButton label="Cerrar aviso" />`,
 	ButtonUtility: `<ButtonUtility icon="copy-01" label="Copiar enlace" onClick={copiar} />`,
 	Icon: `<Icon name="calendar" size={20} />
@@ -26,6 +32,14 @@ const usage: Record<string, string> = {
 	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
 	AvatarGroup: `<AvatarGroup items={[{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }]} />`,
+	Rating: `<Rating value={4.5} />`,
+	RatingBadge: `<RatingBadge title="Mejor herramienta de diseño" supportingText="2.000+ reseñas" />`,
+	CheckIcon: `<CheckIcon type="filled" color="success" size="md" />`,
+	CheckItem: `<ul>
+	<CheckItem>Hasta 10 usuarios</CheckItem>
+	<CheckItem>20 GB por persona</CheckItem>
+</ul>`,
+	AvatarProfilePhoto: `<AvatarProfilePhoto size="lg" src="/fotos/olivia.jpg" alt="Olivia Rhye" verified />`,
 	AvatarLabel: `<AvatarLabel initials="AD" name="Responsable de seguridad" supporting="admin@jotis.me" />`,
 	FeaturedIcon: `<FeaturedIcon icon="alert-circle" color="error" />`,
 	Spinner: `<Spinner label="Importando extracto…" />`,
@@ -77,8 +91,25 @@ const usage: Record<string, string> = {
 	range
 	presets={[{ label: "Este mes", start: new Date(2026, 9, 1), end: new Date(2026, 9, 31) }]}
 	onApply={({ start, end }) => filtrar(start, end)}
+/>
+
+// Horas disponibles y modal: onApply recibe start con la hora puesta y time ("10:30")
+<DatePicker
+	presentation="modal"
+	times={["09:00", "09:30", "10:00", "10:30"]}
+	onApply={({ start, time }) => reservar(start, time)}
 />`,
-	ColorPicker: `<ColorPicker defaultValue="#4f39f6" swatches={["#4f39f6", "#00a63e"]} onChange={guardar} />`,
+	ColorPickerDropdown: `<ColorPickerDropdown trigger="swatch-button" defaultValue="#7f56d9" onChange={guardar} />`,
+	ColorPicker: `<ColorPicker defaultValue="#4f39f6" swatches={["#4f39f6", "#00a63e"]} onChange={guardar} />
+
+// Tipos del Figma: el panel de pestañas, con modelo de color, opacidad y degradado
+<ColorPicker
+	type="solid"
+	defaultModel="hsl"
+	onChange={(hex, opacidad) => guardar(hex, opacidad)}
+	onGradientChange={(paradas) => guardarDegradado(paradas)}
+	onImageChange={(archivo) => subir(archivo)}
+/>`,
 	TextEditor: `<TextEditor label="Notas" maxLength={500} onChange={guardar} />`,
 	MessageInput: `<MessageInput placeholder="Pregunta a Emptor…" onSend={enviar} />`,
 	Tabs: `<Tabs
@@ -95,22 +126,55 @@ const usage: Record<string, string> = {
 		{ label: "Pecunia", href: "/pecunia/" },
 		{ label: "Gastos de octubre" },
 	]}
+/>
+
+// Variantes del Figma: divider "slash", type "text-line" | "button" | "account"
+<Breadcrumbs
+	type="account"
+	divider="slash"
+	items={[
+		{ label: "Regula", avatar: <AppIcon app="regula" size={24} /> },
+		{ label: "Cuenta", accounts: cuentas, onAccountChange: cambiarCuenta },
+		{ label: "Ajustes", href: "/ajustes/" },
+	]}
 />`,
 	PaginationDots: `<PaginationDots total={5} current={pagina} onChange={setPagina} variant="line" aria-label="Diapositivas" />`,
-	Pagination: `<Pagination total={10} page={pagina} onChange={setPagina} />`,
+	Pagination: `<Pagination total={10} page={pagina} onChange={setPagina} />
+
+// Variantes del Figma: type, shape, align y tamaño de página
+<Pagination type="card-minimal" align="right" total={10} pageSizes={[10, 20, 50]} onPageSizeChange={cambiarTamano} />
+<Pagination type="card-advanced" total={24} />
+<Pagination type="card-button-group" shape="circle" total={10} />`,
 	Pager: `<Pager
 	prev={{ href: "/components/badge/", label: "Badge" }}
 	next={{ href: "/components/button/", label: "Button" }}
 />`,
 	SidebarNav: `<SidebarNav
-	brand="jotis.me"
+	type="dual-tier"
+	brand={
+		<>
+			<AppIcon app="regula" size={32} />
+			Regula
+		</>
+	}
 	search
 	items={[
 		{ icon: "home-line", label: "Inicio", href: "/", active: true },
+		{
+			icon: "bar-chart-01",
+			label: "Panel",
+			children: [
+				{ icon: "eye", label: "Resumen", href: "/panel/" },
+				{ icon: "bell-01", label: "Avisos", href: "/panel/avisos/", badge: 10 },
+			],
+		},
 		{ icon: "currency-euro", label: "Pecunia", href: "/pecunia/", badge: 3 },
 	]}
-	footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/ajustes/" }]}
-	user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
+	featured={<SidebarCards.Progress title="Espacio usado" value={80} onClose={() => {}} />}
+	account={{
+		items: [{ label: "Ver perfil", shortcut: "⌘P" }],
+		accounts: [{ value: "ana", name: "Ana", email: "ana@jotis.me", initials: "AN" }],
+	}}
 />`,
 	HeaderNav: `<HeaderNav
 	type="dual-tier"
@@ -150,6 +214,92 @@ const usage: Record<string, string> = {
 		{ divider: true },
 		{ icon: "trash-01", label: "Eliminar", danger: true, onSelect: eliminar },
 	]}
+/>`,
+	FilterMenu: `<FilterMenu
+	fields={[
+		{ value: "estado", label: "Estado" },
+		{ value: "equipo", label: "Equipo", options: [{ value: "diseno", label: "Diseño", supporting: "10 usuarios" }] },
+	]}
+	operators={[{ value: "es", label: "Es" }, { value: "contiene", label: "Contiene" }]}
+	onApply={guardar}
+/>`,
+	FilterPanel: `<Slideout title="Filtros" description="Añade filtros para acotar los resultados." onClose={cerrar}>
+	<FilterPanel fields={campos} operators={operadores} defaultValue={filtros} onApply={aplicar} />
+</Slideout>`,
+	BlogPostCard: `<BlogPostCard
+	href="/blog/50-30-20"
+	image={<img src="/portadas/50-30-20.jpg" alt="" />}
+	category="Ahorro"
+	title="La regla del 50/30/20"
+	description="Reparte tu sueldo en tres partes sin hojas de cálculo."
+	author={{ name: "Ana Martín", date: "20 ene 2027" }}
+/>`,
+	SubscribeCard: `<SubscribeCard description="Una vez a la semana, sin spam." onSubscribe={suscribir} />`,
+	Accordion: `<Accordion
+	single
+	items={[
+		{ id: "prueba", title: "¿Hay una prueba gratis?", content: "Sí: 30 días, sin tarjeta." },
+		{ id: "cancelar", title: "¿Cómo cancelo?", content: "Desde Ajustes, en Suscripción." },
+	]}
+/>`,
+	TeamMemberCard: `<TeamMemberCard
+	type="image-top"
+	name="Ana Martín"
+	role="Fundadora y directora"
+	image={<img src="/equipo/ana.jpg" alt="Ana Martín" />}
+/>`,
+	Testimonial: `<Testimonial
+	quote="Regula nos ha ahorrado horas cada mes."
+	name="Lucía Ramos"
+	role="Diseñadora, Capas"
+	rating={5}
+	image={<img src="/testimonios/lucia.jpg" alt="" />}
+/>`,
+	PricingCard: `<PricingCard
+	type="icon"
+	name="Básico"
+	price="10 €"
+	period="al mes"
+	description="Lo justo para ordenar tus cuentas."
+	features={["Informes y gráficas", "Hasta 10 cuentas", "Ayuda por chat"]}
+	actions={<Button size="lg">Empezar</Button>}
+/>`,
+	JobPostCard: `<JobPostCard
+	href="/empleo/disenador"
+	title="Diseñador de producto"
+	department="Diseño"
+	description="Buscamos a alguien para el equipo de diseño."
+	location="En remoto"
+	employment="Jornada completa"
+/>`,
+	Footer: `<Footer
+	type="large-01"
+	brand={<a href="/">Regula</a>}
+	columns={[
+		{ title: "Producto", links: [{ label: "Precios", href: "/precios" }] },
+		{ title: "Legal", links: [{ label: "Privacidad", href: "/privacidad" }] },
+	]}
+	copyright="© 2027 Regula. Todos los derechos reservados."
+/>`,
+	MarketingNav: `<MarketingNav
+	brand={<a href="/">Regula</a>}
+	menu="dropdown"
+	type="featured-card"
+	items={[
+		{
+			label: "Recursos",
+			panel: {
+				columns: [
+					<NavMenu.Section title="Recursos">
+						<NavMenu.Item href="/blog" icon="stars-02" title="Blog" description="Ideas y guías." />
+					</NavMenu.Section>,
+				],
+				aside: <NavMenu.Card title="Ya está aquí el nuevo panel" description="Más claro y más rápido." />,
+			},
+		},
+		{ label: "Precios", href: "/precios" },
+	]}
+	actions={<Button size="sm">Empezar gratis</Button>}
 />`,
 	FilterBar: `<FilterBar
 	segments={[
@@ -260,6 +410,13 @@ const usage: Record<string, string> = {
 	CalendarView: `<CalendarView
 	events={[{ date: new Date(2026, 9, 29), title: "Pago del alquiler", color: "brand" }]}
 	onSelectDate={(fecha) => abrirDia(fecha)}
+/>
+
+// Semana y día: la hora sale de date y la duración, de duration (minutos)
+<CalendarView
+	defaultView="week"
+	events={[{ date: new Date(2027, 0, 8, 10, 0), title: "Olivia x Riley", color: "indigo", duration: 90 }]}
+	onSelectEvent={(evento) => abrirEvento(evento)}
 />`,
 	CodeSnippet: `<CodeSnippet language="bash" code="bun add @jotis-me/react" />`,
 	PageHeader: `<PageHeader
@@ -320,6 +477,14 @@ const usage: Record<string, string> = {
 	<BackgroundPattern pattern="grid" size="sm" mask="radial" />
 	<div className="relative">Contenido</div>
 </div>`,
+	BackgroundOverlay: `<div className="relative overflow-hidden rounded-xl">
+	<img src="/portada.jpg" alt="" />
+	<BackgroundOverlay type="gradient" />
+	<h2 className="absolute bottom-6 left-6 text-white">Tu dinero, claro</h2>
+</div>`,
+	ScreenMockup: `<ScreenMockup size="lg" src="/capturas/panel.png" alt="Panel de cuentas con el gasto del mes" />`,
+	LaptopMockup: `<LaptopMockup src="/capturas/panel.png" alt="Panel de cuentas con el gasto del mes" />`,
+	PhoneMockup: `<PhoneMockup src="/capturas/movil.png" alt="Panel de cuentas en el móvil" />`,
 	BrowserFrame: `<BrowserFrame url="pecunia.jotis.me/resumen" height={260}>
 	<MetricCard label="Gasto de octubre" value="1.284,50 €" />
 </BrowserFrame>`,
@@ -337,6 +502,8 @@ const usage: Record<string, string> = {
 		{ name: "Presupuesto", data: [1100, 1200, 1200] },
 	]}
 	format={(v) => formatCurrency(v)}
+	legend="right"
+	axisLabels={{ x: "Mes", y: "Gasto" }}
 />`,
 	BarChart: `<BarChart
 	aria-label="Gasto por categoría y mes"
@@ -346,6 +513,8 @@ const usage: Record<string, string> = {
 		{ name: "Ocio", data: [190, 170, 210] },
 	]}
 	format={(v) => formatCurrency(v)}
+	legend="right"
+	axisLabels={{ x: "Mes", y: "Gasto" }}
 />`,
 	PieChart: `<PieChart
 	aria-label="Gasto de octubre por categoría"
@@ -355,6 +524,29 @@ const usage: Record<string, string> = {
 		{ name: "Ocio", value: 210 },
 		{ name: "Otros", value: 374 },
 	]}
+/>`,
+	ActivityGauge: `<ActivityGauge
+	data={[
+		{ name: "Móvil", value: 72 },
+		{ name: "Escritorio", value: 54 },
+		{ name: "Tableta", value: 38 },
+	]}
+	label="Usuarios activos"
+	value="1.000"
+	legend="right"
+/>`,
+	RadarChart: `<RadarChart
+	axes={["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]}
+	series={[
+		{ name: "Esta semana", data: [820, 560, 380, 520, 440, 900, 300] },
+		{ name: "La anterior", data: [360, 700, 520, 760, 560, 480, 680] },
+	]}
+	aria-label="Visitas por día"
+/>`,
+	ChartMarker: `<LineChart
+	labels={["Ago", "Sep", "Oct"]}
+	series={[{ name: "Gastos", data: [1240, 1060, 1284] }]}
+	marker={{ index: 2, label: "Octubre de 2026" }}
 />`,
 	ChartLegend: `<ChartLegend series={[{ name: "Gastos" }, { name: "Presupuesto" }]} />`,
 	StreamAlert: `<StreamAlert key={alerta.id} type="raid" user="TioBigotes" amount={1284} state="enter" />`,
@@ -414,7 +606,7 @@ export function snippetsOf(name: string, interactive: boolean): { next: string; 
 	if (!code) throw new Error(`Falta el fragmento de uso de ${name} en src/lib/snippets.ts`);
 	const imp = `import { ${name} } from "@jotis-me/react";`;
 	return {
-		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n${indent(code, 3)}\n\t\t</>\n\t);\n}`,
+		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n$indent(code, 3)\n\t\t</>\n\t);\n}`,
 		astro: `---\n${imp}\n---\n\n${interactive ? code.replace(`<${name}`, `<${name} client:load`) : code}`,
 	};
 }

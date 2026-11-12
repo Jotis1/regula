@@ -6,7 +6,9 @@ interactive: true
 astroNote: "`onSelect` es una función y no cruza de Astro a una isla: envuélvelo en un `.tsx` y úsalo con `client:load`."
 ---
 
-**Props.** `items` [{`id`, `label`, `icon`, `meta`, `children`}], `defaultOpen` (ids), `defaultSelected` / `selected`, `onSelect(item)`, `aria-label`.
+**Props.** `items` [{`id`, `label`, `icon`, `meta`, `children`}], `defaultOpen` (ids), `defaultSelected` / `selected`, `onSelect(item)`, `aria-label`, `size` (`sm` · `md`), `type` (`default` · `advanced`), `checked` / `defaultChecked` / `onCheckedChange`.
+
+**Avanzado.** El tipo del Figma (`Tree view`, `12451:566966`): cada fila lleva casilla, icono (carpeta, archivo o el nodo de `icon`, como un `Avatar` `xs`), asa de arrastrar (decorativa) y conectores entre niveles. Marcar una carpeta marca todo lo de dentro; con parte marcada, su casilla queda a medias. La flecha abre y cierra sin marcar; la fila (o Espacio) marca y desmarca. `onCheckedChange` recibe las hojas marcadas. `size="md"` sube el alto de las filas y la letra.
 
 **Visual.** Filas de 32px, `text-sm-semibold` en `text-tertiary`, iconos de 16px; seleccionada `bg-secondary_hover`. Sangría de 24px por nivel con línea `border-secondary`.
 

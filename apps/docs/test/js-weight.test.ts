@@ -33,6 +33,26 @@ write(
 );
 write("components/button/index.html", "<html><body>sin JS</body></html>");
 
+// Isla VisualExample (design D11): pide a demanda el fichero de ejemplos de su componente y no los demás
+const visual =
+	'const f={"./examples/display.tsx":()=>d(()=>import(`./display.js`)),"./examples/forms.tsx":()=>d(()=>import(`./forms.js`))};';
+const display = `import{a}from"./shared.js";export const AvatarExample=a;${"z".repeat(1000)}`;
+// En su propio dist, para no cambiar la lista de páginas del resto de tests
+const distVisual = mkdtempSync(join(tmpdir(), "js-weight-visual-"));
+afterAll(() => rmSync(distVisual, { recursive: true, force: true }));
+const writeVisual = (path: string, text: string) => {
+	mkdirSync(join(distVisual, path, ".."), { recursive: true });
+	writeFileSync(join(distVisual, path), text);
+};
+writeVisual("_astro/VisualExample.abc.js", visual);
+writeVisual("_astro/display.js", display);
+writeVisual("_astro/shared.js", shared);
+writeVisual("_astro/forms.js", `export const InputExample=1;${"w".repeat(5000)}`);
+writeVisual(
+	"components/avatar/index.html",
+	`<html><astro-island component-url="/_astro/VisualExample.abc.js" renderer-url="/_astro/client.js" props="{&quot;slot&quot;:[0,&quot;examples&quot;],&quot;name&quot;:[0,&quot;Avatar&quot;]}" opts="{&quot;name&quot;:&quot;VisualExample&quot;}"></astro-island></html>`,
+);
+
 describe("js-weight", () => {
 	it("suma las entradas y sus imports estáticos, y deja aparte los dinámicos", () => {
 		const home = weighPage(dist, "index.html");
@@ -93,5 +113,13 @@ describe("js-weight", () => {
 			gz: 0,
 			files: 0,
 		});
+	});
+
+	it("cuenta como de la página el fichero de ejemplos que pide su VisualExample, y solo ese", () => {
+		const avatar = weighPage(distVisual, "components/avatar/index.html");
+		const urls = avatar.files.filter((f) => f.kind === "static").map((f) => f.url);
+		expect(urls).toContain("/_astro/display.js");
+		expect(urls).toContain("/_astro/shared.js");
+		expect(urls).not.toContain("/_astro/forms.js");
 	});
 });

@@ -57,10 +57,10 @@ describe("catálogo de componentes", () => {
 		expect(new Set(ids).size).toBe(ids.length);
 	});
 
-	it("hay 11 grupos de aplicación y los cuatro de Stream, y entre todos reparten el catálogo", () => {
+	it("hay 12 grupos de aplicación y los cuatro de Stream, y entre todos reparten el catálogo", () => {
 		const count = (s: "components" | "stream") =>
 			COMPONENT_GROUPS.filter((g) => g.section === s).flatMap((g) => g.components).length;
-		expect(COMPONENT_GROUPS.filter((g) => g.section === "components")).toHaveLength(11);
+		expect(COMPONENT_GROUPS.filter((g) => g.section === "components")).toHaveLength(12);
 		expect(COMPONENT_GROUPS.filter((g) => g.section === "stream").map((g) => g.label)).toEqual([
 			"Alertas",
 			"Escenas",
@@ -133,11 +133,24 @@ describe("catálogo de secciones y fundamentos", () => {
 		expect(neighborsOf("Button")).toEqual({
 			prev: undefined,
 			next: "ButtonGroup",
-			related: ["ButtonGroup", "ButtonUtility", "CloseButton"],
+			related: [
+				"ButtonGroup",
+				"ButtonUtility",
+				"CloseButton",
+				"SocialButton",
+				"SocialButtonGroup",
+				"AppStoreBadge",
+			],
 		});
-		expect(neighborsOf("CloseButton").next).toBe("Input");
+		expect(neighborsOf("AppStoreBadge").next).toBe("Input");
 		// El último de Componentes no salta a Stream, ni el primero de Stream vuelve a Componentes
-		expect(neighborsOf("AppIcon").next).toBeUndefined();
+		expect(neighborsOf("AppIcon").next).toBe("MarketingNav");
+		expect(neighborsOf("MarketingNav").next).toBe("Footer");
+		expect(neighborsOf("Footer").next).toBe("BlogPostCard");
+		expect(neighborsOf("SubscribeCard").next).toBe("PricingCard");
+		expect(neighborsOf("JobPostCard").next).toBe("Accordion");
+		expect(neighborsOf("TeamMemberCard").next).toBe("Testimonial");
+		expect(neighborsOf("Testimonial").next).toBeUndefined();
 		expect(neighborsOf("StreamAlert")).toEqual({ prev: undefined, next: "StreamScene", related: [] });
 		expect(neighborsOf("ChannelBanner").next).toBeUndefined();
 		expect(neighborsOf("Ejemplo")).toEqual({ related: [] });

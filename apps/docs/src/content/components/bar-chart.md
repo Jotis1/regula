@@ -5,11 +5,13 @@ description: "Gráfica de barras, apiladas por defecto, para comparar cantidades
 interactive: false
 ---
 
-**Props.** `labels`, `series`, `stacked` (`true` por defecto; `false` para agrupadas), `format(v)`, `legend`, `width`/`height`. Barras de 32px máx. con esquinas de 4px arriba.
+**Props.** `labels`, `series`, `stacked` (`true` por defecto; `false` para agrupadas), `format(v)`, `legend` (`true`/`"top"` encima, `"right"` en columna a la derecha, `false` ninguna), `width`/`height`. Barras de 32px máx. con esquinas de 4px arriba.
 
 **Uso.** Gasto por categoría y mes. Mismos colores de serie que `LineChart`.
 
 **Tercera serie en oscuro.** En oscuro la escala de marca se invierte: la tercera serie (`utility-brand-200`) queda oscura sobre el fondo oscuro. Con tres series o más, deja siempre la leyenda (sale sola desde dos series) y, si hace falta, dale a esa serie un `color` propio.
+
+**Marcador.** `marker` {`index`, `type`?, `value`?, `label`?} pinta el `ChartMarker` del Figma sobre una barra: la línea desde lo alto de la pila y la burbuja con el total.
 
 **Accesibilidad.** El dibujo es una imagen con nombre: pasa en `aria-label` qué cuenta la gráfica; por defecto dice "Gráfica de barras". Cada barra lleva su valor en un título que se ve al pasar el ratón.
 

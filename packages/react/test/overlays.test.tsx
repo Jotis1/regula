@@ -132,6 +132,58 @@ describe("Modal", () => {
 		).toContain("flex-row");
 	});
 
+	it("sin align, media, footerStart ni dividers el HTML es el de siempre", async () => {
+		const { renderToStaticMarkup } = await import("react-dom/server");
+		const html = (extra: object) =>
+			renderToStaticMarkup(
+				<Modal contained icon="trash-01" title="¿Eliminar?" actions={actions} {...extra} />,
+			);
+		expect(html({ align: undefined, media: undefined, footerStart: undefined, dividers: false })).toBe(
+			html({}),
+		);
+		expect(html({})).toContain('class="flex gap-3 px-6 pt-8 pb-6 [&amp;&gt;*]:flex-1"');
+	});
+
+	it("align centra la cabecera; media va encima; footerStart a la izquierda del pie; dividers raya cabecera y pie", () => {
+		const { rerender } = render(
+			<Modal
+				contained
+				align="center"
+				media={<img alt="Portada" src="data:," />}
+				title="Informe publicado"
+				footerStart={<Button hierarchy="link-gray">Ayuda</Button>}
+				dividers
+				actions={actions}
+			>
+				<Input label="Enlace" />
+			</Modal>,
+		);
+		const dialog = screen.getByRole("dialog", { name: "Informe publicado" });
+		const header = screen.getByRole("heading", { name: "Informe publicado" }).closest("div")
+			?.parentElement as HTMLElement;
+		expect(header.className).toContain("text-center");
+		expect(header.className).toContain("inset_0_-1px_0");
+		// La imagen va antes que la cabecera
+		const img = screen.getByRole("img", { name: "Portada" });
+		expect(img.compareDocumentPosition(header) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+		const foot = screen.getByRole("button", { name: "Eliminar" }).parentElement
+			?.parentElement as HTMLElement;
+		expect(foot.className).toContain("inset_0_1px_0");
+		expect(foot.firstElementChild?.className).toContain("mr-auto");
+		expect(foot.firstElementChild?.textContent).toBe("Ayuda");
+		expect(dialog).toBeTruthy();
+		// Sin contenido, una sola raya: la de la cabecera
+		rerender(<Modal contained dividers title="Hecho" actions={actions} />);
+		const foot2 = screen.getByRole("button", { name: "Eliminar" }).parentElement
+			?.parentElement as HTMLElement;
+		expect(foot2.className).not.toContain("inset_0_1px_0");
+		// En horizontal align no centra
+		rerender(<Modal contained layout="horizontal" align="center" title="Hecho" actions={actions} />);
+		expect(
+			screen.getByRole("heading", { name: "Hecho" }).closest("div")?.parentElement?.className,
+		).not.toContain("text-center");
+	});
+
 	it("contained: no se lleva el foco; Escape y clic en el fondo cierran", async () => {
 		const onClose = vi.fn();
 		render(
@@ -219,6 +271,33 @@ describe("Slideout", () => {
 		expect(foot.className).toContain("shadow-[inset_0_1px_0_var(--border-secondary)]");
 		expect(screen.getByRole("textbox", { name: "Concepto" })).toBeTruthy();
 		expect(screen.getByRole("button", { name: "Cerrar" })).toBeTruthy();
+	});
+
+	it("icon y footerStart: icono destacado junto al título y el pie repartido; sin ellos, el HTML de siempre", async () => {
+		const { renderToStaticMarkup } = await import("react-dom/server");
+		const html = (extra: object) =>
+			renderToStaticMarkup(
+				<Slideout contained title="Filtros" actions={<Button>Aplicar</Button>} {...extra} />,
+			);
+		expect(html({ icon: undefined, footerStart: undefined })).toBe(html({}));
+		expect(html({})).toContain('class="flex gap-2 p-6"');
+		render(
+			<Slideout
+				contained
+				title="Filtros"
+				icon="filter-lines"
+				footerStart={<Button hierarchy="link-color">Guardar filtro</Button>}
+				actions={<Button>Aplicar</Button>}
+			/>,
+		);
+		const panel = screen.getByRole("dialog", { name: "Filtros" });
+		const header = screen.getByRole("heading", { name: "Filtros" }).parentElement
+			?.parentElement as HTMLElement;
+		expect(header.className).toContain("gap-4");
+		expect(header.firstElementChild?.getAttribute("aria-hidden")).toBe("true");
+		const start = screen.getByRole("button", { name: "Guardar filtro" }).parentElement as HTMLElement;
+		expect(start.className).toContain("mr-auto");
+		expect(panel.contains(screen.getByRole("button", { name: "Aplicar" }))).toBe(true);
 	});
 
 	it("axe en claro y oscuro (contained) y sobre la página", async () => {

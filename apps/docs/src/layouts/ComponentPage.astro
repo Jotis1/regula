@@ -1,9 +1,11 @@
 ---
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 // Página de un componente (reference/docs-design/Button.dc.html y ButtonM.dc.html): migas Componentes › grupo ›
 // nombre, insignia del grupo, descripción, línea de importación y nota de Astro; «Cuándo usarlo» (la ficha),
 // variantes (el ejemplo del registro), props, código, «Detalles y accesibilidad» (el resto de la ficha) y
 // anterior/siguiente. A la derecha, el índice «En esta página» y los relacionados del catálogo (design §2).
-import { Badge, Breadcrumbs, Icon, Pager } from "@jotis-me/react";
+import { Badge, Breadcrumbs, Button, Icon, Pager } from "@jotis-me/react";
 import CardSections from "../components/CardSections.astro";
 import CodeSnippet from "../components/CodeSnippetIsland";
 import InlineCode from "../components/InlineCode.astro";
@@ -12,10 +14,13 @@ import PropsTable from "../components/PropsTable.astro";
 import StreamNote from "../components/StreamNote.astro";
 import type { SplitCard } from "../lib/card";
 import { groupOf, labelOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
+import { compositionCode } from "../lib/composition-code";
 import { inline } from "../lib/inline";
 import type { Playground as PlaygroundData } from "../lib/playground";
 import type { PropRow } from "../lib/props";
 import { TOC_LINK } from "../lib/toc";
+import { COMPOSITION_FILES, compositionsOf, INLINE_COMPOSITIONS } from "../visual/compositions";
+import VisualExample from "../visual/VisualExample";
 import Base from "./Base.astro";
 
 interface Props {
@@ -64,11 +69,20 @@ const href = (c: string) => `/components/${slugOf(c)}/`;
 // bajo el código y la guía de Stream entre los relacionados
 const stream = group?.section === "stream";
 
+// Los tipos del Figma montados como composiciones (design D7), en su propia página
+const compositions = compositionsOf(name);
+// Pocas (el modal del selector de color): en esta página, con su código; muchas: en su propia página
+const inlineCompositions = compositions.length > 0 && compositions.length <= INLINE_COMPOSITIONS;
+const compositionSource = inlineCompositions
+	? readFileSync(join(process.cwd(), "src/visual/examples", `${COMPOSITION_FILES[name]}.tsx`), "utf8")
+	: "";
+
 const has = (...ids: string[]) => card.sections.some((s) => ids.includes(s.id));
 const toc = [
 	playground && { slug: "ejemplo", text: "Ejemplo" },
 	has("uso", "evita") && { slug: "uso", text: "Cuándo usarlo" },
 	{ slug: "variantes", text: "Variantes y estados" },
+	compositions.length > 0 && { slug: "composiciones", text: "Composiciones" },
 	{ slug: "props", text: "Props" },
 	{ slug: "codigo", text: "Código" },
 	has("detalles", "accesibilidad", "amplia") && { slug: "detalles", text: "Detalles y accesibilidad" },
@@ -150,6 +164,49 @@ const toc = [
 				</div>
 				{stream && !playground && <StreamNote name={name} />}
 			</section>
+
+			{
+				compositions.length > 0 && (
+					<section aria-labelledby="composiciones">
+						<h2 id="composiciones">Composiciones</h2>
+						{inlineCompositions ? (
+							<>
+								<p>Montadas con componentes de Regula, con su código para copiar. No se exportan del paquete.</p>
+								{compositions.map((c) => (
+									<div data-composition={c.name}>
+										<h3>{c.title}</h3>
+										<div
+											data-pagefind-ignore
+											role="region"
+											aria-label={`Composición ${c.title}`}
+											tabindex="0"
+											class="not-prose my-4 overflow-x-auto rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)] focus-visible:shadow-focus-ring focus-visible:outline-none"
+										>
+											<div class="min-w-[640px]">
+												<VisualExample client:visible name={c.name} />
+											</div>
+										</div>
+										<div class="not-prose my-4">
+											<CodeSnippet client:visible language="tsx" code={compositionCode(compositionSource, c.name)} />
+										</div>
+									</div>
+								))}
+							</>
+						) : (
+							<>
+								<p>
+									Los {compositions.length} tipos del Figma de {label} ({compositions.slice(0, 3).map((c) => c.title.toLowerCase()).join(", ")}…), hechos con componentes de Regula y con su código para copiar.
+								</p>
+								<div class="not-prose my-4">
+									<Button hierarchy="secondary" iconTrailing="arrow-right" href={`/components/${slugOf(name)}/composiciones/`}>
+										Ver las {compositions.length} composiciones
+									</Button>
+								</div>
+							</>
+						)}
+					</section>
+				)
+			}
 
 			<section aria-labelledby="props">
 				<h2 id="props">Props</h2>

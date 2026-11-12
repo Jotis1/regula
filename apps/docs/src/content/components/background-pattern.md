@@ -5,7 +5,7 @@ description: "Fondo decorativo detrás de cabeceras, estados vacíos o tarjetas 
 interactive: false
 ---
 
-**Props.** `pattern` (`grid` · `grid-dot` · `grid-check` · `circles` · `squares`), `size` (`sm` · `md` · `lg`: celda de 80/96 px en rejillas; 336/480/768 px en concéntricos), `mask` (`radial` · `radial-down` · `radial-up` · `linear-down` · `linear-up` · `none`), `width`/`height` (área de la rejilla, 1536×960 por defecto), `seed` (reparto de casillas en `grid-check`).
+**Props.** `pattern` (`grid` · `grid-dot` · `grid-check` · `tech-grid` · `circles` · `squares`; `tech-grid` es la matriz de puntos de 12 px, 8 en `sm`, que aparecen y se apagan al azar con `seed`), `size` (`sm` · `md` · `lg`: celda de 80/96 px en rejillas; 336/480/768 px en concéntricos), `mask` (`radial` · `radial-down` · `radial-up` · `linear-down` · `linear-up` · `none`), `width`/`height` (área de la rejilla, 1536×960 por defecto), `seed` (reparto de casillas en `grid-check`).
 
 **Visual.** Líneas `border-secondary` de 1px; puntos `utility-neutral-300` cada 32 px; casillas `bg-secondary`. Ocupa todo su contenedor (`position: absolute; inset: 0`), así que el padre necesita `position: relative` y el contenido, su propio `position: relative` para quedar encima.
 

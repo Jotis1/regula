@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Keyboard, Text } from "react-aria-components";
-import { Icon, type IconName } from "../components/Icon.js";
+import { Icon, type IconName, iconSlot } from "../components/Icon.js";
 import { Kbd } from "../components/Kbd.js";
 import { cx } from "./cx.js";
 
@@ -18,7 +18,7 @@ export const menuItemClasses = (danger?: boolean) =>
 	);
 
 interface MenuItemContentProps {
-	icon?: IconName;
+	icon?: IconName | ReactNode;
 	label: ReactNode;
 	shortcut?: string;
 	/** Check de la opción elegida a la derecha (menú de elección única de `Dropdown`). */
@@ -39,7 +39,7 @@ export function MenuItemContent({ icon, label, shortcut, checked, trailing, lead
 	return (
 		<>
 			{leading}
-			{icon ? <Icon name={icon} size={16} /> : null}
+			{icon ? iconSlot(icon, 16) : null}
 			<Text slot="label" className="flex min-w-0 flex-1 items-center gap-2">
 				{label}
 				{shortcut ? <Kbd className="ml-auto">{shortcut}</Kbd> : null}

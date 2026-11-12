@@ -1,18 +1,22 @@
 ---
-// Selector entre la galería de iconos y la de logos de terceros: dos enlaces con el aspecto de las pestañas
+// Selector entre las galerías de recursos de @jotis-me/icons (iconos, logos, banderas, pagos, archivos y cursores): enlaces con el aspecto de las pestañas
 // `button-minimal`, sin JavaScript. La página actual lleva `aria-current`.
 interface Props {
-	current: "icons" | "logos";
+	current: "icons" | "logos" | "flags" | "payments" | "files" | "cursors";
 }
 const { current } = Astro.props;
 const links = [
 	{ id: "icons", label: "Iconos", href: "/icons/" },
 	{ id: "logos", label: "Logos", href: "/icons/logos/" },
+	{ id: "flags", label: "Banderas", href: "/icons/flags/" },
+	{ id: "payments", label: "Pagos", href: "/icons/payments/" },
+	{ id: "files", label: "Archivos", href: "/icons/files/" },
+	{ id: "cursors", label: "Cursores", href: "/icons/cursors/" },
 ] as const;
 ---
 
-<nav aria-label="Iconos y logos">
-	<ul class="m-0 inline-flex list-none gap-1 rounded-lg bg-secondary_alt p-1 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
+<nav aria-label="Iconos y recursos">
+	<ul class="m-0 inline-flex list-none flex-wrap gap-1 rounded-lg bg-secondary_alt p-1 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
 		{
 			links.map((l) => (
 				<li>

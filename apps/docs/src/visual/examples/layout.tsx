@@ -1,8 +1,13 @@
 // Puertos de las vistas previas de maquetación de la guía (reference/components/*/preview.html).
 // `jm-stack` = columna con gap 16 (aquí con el gap que fija cada vista previa).
 
+import { FileDocumentPdf } from "@jotis-me/icons/files";
+import { PaymentVisaMd } from "@jotis-me/icons/payments";
 import {
+	AppIcon,
+	Avatar,
 	Button,
+	ButtonGroup,
 	CardHeader,
 	ContentDivider,
 	InlineCTA,
@@ -12,9 +17,75 @@ import {
 	SectionFooter,
 	SectionHeader,
 	SectionLabel,
+	Tabs,
 } from "@jotis-me/react";
 
+const migas = [
+	{ label: "Inicio", icon: "home-line" as const, href: "/" },
+	{ label: "Ajustes", href: "/" },
+	{ label: "Equipo" },
+];
+const accionesPerfil = (
+	<>
+		<Button hierarchy="secondary" size="sm">
+			Compartir
+		</Button>
+		<Button size="sm">Editar perfil</Button>
+	</>
+);
+const fotoGrande = <Avatar size="2xl" initials="OR" badge="verified" />;
+
 export function PageHeaderExample() {
+	return (
+		<div className="flex flex-col gap-12">
+			<PageHeaderClasica />
+			<PageHeader
+				breadcrumbs={migas}
+				back={{ href: "/" }}
+				avatar={<Avatar size="md" initials="OR" />}
+				title="Olivia Rhye"
+				description="olivia@jotis.me"
+				actions={accionesPerfil}
+			/>
+			<PageHeader
+				banner
+				breadcrumbs={migas}
+				title="Equipo"
+				description="Gestiona tu equipo y sus permisos."
+				actions={accionesPerfil}
+			/>
+			<PageHeader
+				banner
+				avatar={fotoGrande}
+				breadcrumbs={migas}
+				title="Olivia Rhye"
+				description="olivia@jotis.me"
+				actions={accionesPerfil}
+			/>
+			<PageHeader
+				banner
+				centered
+				avatar={fotoGrande}
+				title="Olivia Rhye"
+				description="olivia@jotis.me"
+				actions={accionesPerfil}
+			/>
+			<div style={{ width: 375 }}>
+				<PageHeader
+					banner
+					avatar={fotoGrande}
+					breadcrumbs={migas}
+					back={{ href: "/" }}
+					title="Olivia Rhye"
+					description="olivia@jotis.me"
+					actions={accionesPerfil}
+				/>
+			</div>
+		</div>
+	);
+}
+
+function PageHeaderClasica() {
 	return (
 		<PageHeader
 			breadcrumbs={[{ label: "Inicio", icon: "home-line" }, { label: "Pecunia" }]}
@@ -119,9 +190,65 @@ export function SectionHeaderExample() {
 				description="Se aplican a todas las apps de la suite."
 				divider={false}
 			/>
+			<SectionHeader
+				title="Miembros del equipo"
+				description="Gestiona tu equipo y sus permisos."
+				search={<Input size="sm" icon="search-lg" aria-label="Buscar" placeholder="Buscar" />}
+			/>
+			<SectionHeader
+				title="Miembros del equipo"
+				description="Gestiona tu equipo y sus permisos."
+				buttonGroup={
+					<ButtonGroup size="sm" aria-label="Periodo" defaultValue="12m" items={periodos} />
+				}
+				menu={menuSeccion}
+			/>
+			<SectionHeader
+				title="Miembros del equipo"
+				description="Gestiona tu equipo y sus permisos."
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Secundaria
+						</Button>
+						<Button size="sm">Principal</Button>
+					</>
+				}
+				menu={menuSeccion}
+				tabs={<Tabs type="button-border" aria-label="Secciones de ajustes" items={pestañas} />}
+			/>
+			<div style={{ width: 375 }}>
+				<SectionHeader
+					title="Miembros del equipo"
+					description="Gestiona tu equipo y sus permisos."
+					buttonGroup={
+						<ButtonGroup
+							size="sm"
+							aria-label="Periodo en móvil"
+							defaultValue="12m"
+							items={periodos}
+						/>
+					}
+					menu={menuSeccion}
+				/>
+			</div>
 		</div>
 	);
 }
+
+const periodos = [
+	{ value: "12m", label: "12 meses" },
+	{ value: "30d", label: "30 días" },
+	{ value: "7d", label: "7 días" },
+];
+const pestañas = [
+	{ id: "datos", label: "Mis datos" },
+	{ id: "perfil", label: "Perfil" },
+	{ id: "contrasena", label: "Contraseña" },
+	{ id: "equipo", label: "Equipo" },
+	{ id: "plan", label: "Plan" },
+];
+const menuSeccion = <Button hierarchy="tertiary" size="sm" iconOnly="dots-vertical" label="Más opciones" />;
 
 export function SectionFooterExample() {
 	return (
@@ -151,25 +278,193 @@ export function ContentDividerExample() {
 				</Button>
 			</ContentDivider>
 			<ContentDivider variant="fill" label="Pendientes" />
+			<ContentDivider
+				actions={
+					<Button hierarchy="secondary" size="sm">
+						Añadir
+					</Button>
+				}
+			/>
+			<ContentDivider
+				variant="dual"
+				actions={
+					<ButtonGroup
+						size="sm"
+						aria-label="Mover"
+						items={[
+							{ value: "anterior", iconOnly: "arrow-left", label: "Anterior" },
+							{ value: "nuevo", iconOnly: "plus", label: "Nuevo" },
+							{ value: "siguiente", iconOnly: "arrow-right", label: "Siguiente" },
+						]}
+					/>
+				}
+			/>
+			<ContentDivider
+				variant="fill"
+				actions={
+					<ButtonGroup
+						size="sm"
+						aria-label="Filtro"
+						defaultValue="todo"
+						items={[
+							{ value: "todo", label: "Ver todo" },
+							{ value: "activos", label: "Activos" },
+							{ value: "inactivos", label: "Inactivos" },
+						]}
+					/>
+				}
+			/>
+			<ContentDivider
+				actions={<Button hierarchy="secondary" size="sm" iconOnly="plus" label="Añadir elemento" />}
+			/>
 		</div>
+	);
+}
+
+const ahoraNo = (
+	<Button hierarchy="secondary" size="sm">
+		Ahora no
+	</Button>
+);
+const novedades = {
+	title: "Acabamos de publicar novedades",
+	description: "El panel nuevo carga más rápido y se lee mejor.",
+};
+const portada = (
+	<div className="flex size-full min-h-40 items-center justify-center bg-brand-solid">
+		<AppIcon app="regula" size={64} />
+	</div>
+);
+
+function InlineCTATipos() {
+	return (
+		<>
+			<InlineCTA
+				type="image"
+				{...novedades}
+				image={portada}
+				actions={
+					<>
+						{ahoraNo}
+						<Button size="sm">Novedades</Button>
+					</>
+				}
+			/>
+			<InlineCTA
+				type="actions"
+				{...novedades}
+				actions={
+					<>
+						{ahoraNo}
+						<Button size="sm">Novedades</Button>
+					</>
+				}
+			/>
+			<InlineCTA type="email" {...novedades} />
+			<InlineCTA
+				type="change-plan"
+				title="Cambia de plan"
+				description="Precios flexibles que crecen contigo."
+				plan={{
+					name: "Plan básico",
+					icon: "zap",
+					price: "10 €",
+					period: "al mes",
+					description: "Hasta 10 usuarios, 20 GB por persona y todas las funciones.",
+				}}
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Saber más
+						</Button>
+						<Button size="sm">Mejorar plan</Button>
+					</>
+				}
+			/>
+			<InlineCTA
+				type="upgrade-plan"
+				title="Mejora tu plan"
+				description="¿Necesitas más espacio? Mejora tu plan hoy."
+				features={[
+					{ title: "10 usuarios", description: "Hasta 10 personas en el equipo." },
+					{ title: "20 GB", description: "20 GB por persona." },
+					{ title: "Todas las funciones", description: "Funciones avanzadas y analítica." },
+				]}
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Todos los planes
+						</Button>
+						<Button size="sm">Mejorar plan</Button>
+					</>
+				}
+			/>
+			<InlineCTA
+				type="payment-method"
+				title="Método de pago"
+				description="Cambia cómo pagas tu plan."
+				payment={{
+					logo: <PaymentVisaMd />,
+					label: "Visa terminada en 1234",
+					expiry: "Caduca el 06/2028",
+					email: "pagos@jotis.me",
+				}}
+				actions={
+					<Button hierarchy="secondary" size="sm">
+						Editar
+					</Button>
+				}
+			/>
+			<InlineCTA
+				type="receipt"
+				title="Tu último recibo ya está disponible"
+				description="Descarga el recibo de enero de 2027."
+				file={{ name: "Recibo_enero_2027.pdf", size: "200 KB", icon: <FileDocumentPdf /> }}
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Descargar
+						</Button>
+						<Button size="sm">Ver</Button>
+					</>
+				}
+			/>
+		</>
 	);
 }
 
 export function InlineCTAExample() {
 	return (
-		<InlineCTA
-			icon="stars-02"
-			title="Conecta tu banco"
-			description="Importa los movimientos cada día sin subir extractos a mano."
-			actions={
-				<>
-					<Button hierarchy="secondary" size="sm">
-						Ahora no
-					</Button>
-					<Button size="sm">Conectar</Button>
-				</>
-			}
-		/>
+		<div className="flex flex-col gap-6">
+			<InlineCTA
+				icon="stars-02"
+				title="Conecta tu banco"
+				description="Importa los movimientos cada día sin subir extractos a mano."
+				actions={
+					<>
+						<Button hierarchy="secondary" size="sm">
+							Ahora no
+						</Button>
+						<Button size="sm">Conectar</Button>
+					</>
+				}
+			/>
+			<InlineCTATipos />
+			<div className="flex flex-col gap-6" style={{ width: 360 }}>
+				<InlineCTA
+					type="image"
+					{...novedades}
+					image={portada}
+					actions={
+						<>
+							{ahoraNo}
+							<Button size="sm">Novedades</Button>
+						</>
+					}
+				/>
+				<InlineCTA type="email" {...novedades} />
+			</div>
+		</div>
 	);
 }
 
