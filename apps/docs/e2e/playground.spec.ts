@@ -45,9 +45,9 @@ test("los controles son desplegables, van encima de la vista previa y el código
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await expect(pg.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
 	// Ningún grupo de botones: cada prop con valores cerrados es un desplegable
-	await expect(pg.locator("[data-pg-control=choice] button[aria-haspopup=listbox]")).toHaveCount(
-		await pg.locator("[data-pg-control=choice]").count(),
-	);
+	await expect(
+		pg.locator("[data-pg-control=choice] button[aria-haspopup=listbox]:not([disabled])"),
+	).toHaveCount(await pg.locator("[data-pg-control=choice]").count());
 	await expect(pg.locator("[data-pg-control=choice] [role=group]")).toHaveCount(0);
 	const controls = await pg.locator("[data-playground-controls]").boundingBox();
 	const preview = await pg.locator("[data-playground-preview]").boundingBox();
@@ -85,7 +85,7 @@ async function choose(pg: Locator, control: string, value: string) {
 async function extremes(page: Page, which: "first" | "last") {
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	const triggers = pg
-		.locator("[data-pg-control=choice] button[aria-haspopup=listbox]")
+		.locator("[data-pg-control=choice] button[aria-haspopup=listbox]:not([disabled])")
 		.filter({ visible: true });
 	for (let i = 0; i < (await triggers.count()); i++) {
 		await triggers.nth(i).click();
@@ -93,7 +93,8 @@ async function extremes(page: Page, which: "first" | "last") {
 		await (which === "first" ? options.first() : options.last()).click();
 	}
 	for (const toggle of await pg.locator("[data-playground-controls]").getByRole("switch").all())
-		if ((await toggle.isChecked()) !== (which === "last")) await flip(page, toggle);
+		if ((await toggle.isEnabled()) && (await toggle.isChecked()) !== (which === "last"))
+			await flip(page, toggle);
 }
 
 /** Pulsa un Toggle: el input va oculto bajo su dibujo, así que se pulsa la etiqueta que lo envuelve. */

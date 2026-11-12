@@ -5,7 +5,7 @@
 // interruptor por cada booleano. Debajo, la vista previa, y aparte, separado, el código.
 import { iconNames } from "@jotis-me/icons";
 import { BackgroundPattern, Button, CodeSnippet, NumberInput, Select, Toggle } from "@jotis-me/react";
-import { type ComponentType, Suspense, use, useState } from "react";
+import { type ComponentType, type ReactNode, Suspense, use, useState } from "react";
 import {
 	applyPreset,
 	childrenOf,
@@ -59,6 +59,7 @@ function Loaded({ playground: data, rows }: { playground: Data; rows: PropRow[] 
 	const set = (prop: string) => (value: State[string]) => setState((s) => ({ ...s, [prop]: value }));
 	const { next, astro } = codeOf(playground, state);
 	const off = disabledProps(playground, state);
+	const props = propsFor(playground, state) as Record<string, unknown> & { children?: ReactNode };
 	const presets = playground.start.presets ?? [];
 	const initial = initialState(playground);
 	const isInitial = JSON.stringify(state) === JSON.stringify(initial);
@@ -206,9 +207,7 @@ function Loaded({ playground: data, rows }: { playground: Data; rows: PropRow[] 
 						className={`relative ${playground.start.wide || playground.start.fill ? "w-full" : "max-w-full"}`}
 						style={playground.start.fill ? { height: playground.start.fill } : undefined}
 					>
-						<Component {...propsFor(playground, state)}>
-							{childrenOf(playground, state)}
-						</Component>
+						<Component {...props}>{props.children ?? childrenOf(playground, state)}</Component>
 					</div>
 				</div>
 			</div>

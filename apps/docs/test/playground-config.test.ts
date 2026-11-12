@@ -16,10 +16,11 @@ import {
 	controlsOf,
 	initialState,
 	type Playground,
-	playgroundOf,
 	propsFor,
 	STARTS,
+	type Start,
 	type State,
+	type Tweak,
 } from "../src/lib/playground";
 import { type PropRow, propsOf } from "../src/lib/props";
 
@@ -28,8 +29,8 @@ import { type PropRow, propsOf } from "../src/lib/props";
  * y esta lista debe quedar vacía al final (tarea 5.7). Quitar un nombre al darle su `Start`.
  */
 const PENDING: string[] = [
-	"ButtonGroup", "CloseButton", "SocialButton", "SocialButtonGroup", "AppStoreBadge", "Slider", "ColorPicker",
-	"ColorPickerDropdown", "Breadcrumbs", "Pagination", "PaginationDots", "Pager", "Dropdown", "ContextMenu",
+
+	"Breadcrumbs", "Pagination", "PaginationDots", "Pager", "Dropdown", "ContextMenu",
 	"HeaderNav", "CommandMenu", "TreeView", "Slideout", "Tooltip", "CopyTooltip", "EmptyState", "ProgressBar",
 	"ProgressCircle", "ProgressSteps", "AvatarProfilePhoto", "CheckIcon", "CheckItem", "Rating", "RatingBadge", "Kbd",
 	"CalendarView", "FilterMenu", "FilterPanel", "ActivityGauge", "RadarChart", "ChartMarker", "SectionFooter",
@@ -63,6 +64,7 @@ const HTML_ATTRS = new Set([
 	"placeholder",
 	"name",
 	"value",
+	"defaultValue",
 	"id",
 	"title",
 	"href",
@@ -103,17 +105,24 @@ function invalidValue(c: Control | undefined, value: unknown): string | undefine
 	return c.options.some((o) => o.label === value) ? undefined : "no es una opción de contenido";
 }
 
-const built = new Map<string, { pg: Playground; rows: PropRow[] }>();
-function playgroundFor(name: string) {
+type PlaygroundModule = { default: Parameters<typeof createElement>[0]; tweaks?: Record<string, Tweak> };
+const built = new Map<string, { pg: Playground; rows: PropRow[]; mod: PlaygroundModule }>();
+/** El ejemplo de un componente como lo arma la isla: los controles de su tabla con los ajustes del punto de partida y de su módulo. */
+async function playgroundFor(name: string) {
 	let b = built.get(name);
 	if (!b) {
 		const rows = rowsOf(name);
-		const pg = playgroundOf(name, rows, {
+		const start = STARTS[name] as Start;
+		const mod = (await import(`../src/playground/${name}.tsx`)) as PlaygroundModule;
+		const controls = controlsOf(rows, { ...start.tweaks, ...mod.tweaks });
+		const pg: Playground = {
+			name,
+			start,
+			controls,
 			interactive: pages.get(name)?.interactive ?? false,
 			dark: false,
-		});
-		if (!pg) throw new Error(`${name} debería tener playground`);
-		b = { pg, rows };
+		};
+		b = { pg, rows, mod };
 		built.set(name, b);
 	}
 	return b;
@@ -128,15 +137,15 @@ describe("configuración del ejemplo interactivo", () => {
 		expect(Object.keys(STARTS).filter((n) => !catalog.includes(n))).toEqual([]);
 	});
 
-	it("cada componente configurado tiene al menos un control", () => {
+	it("cada componente configurado tiene al menos un control", async () => {
 		for (const name of configured)
-			expect(playgroundFor(name).pg.controls.length, name).toBeGreaterThan(0);
+			expect((await playgroundFor(name)).pg.controls.length, name).toBeGreaterThan(0);
 	}, 180_000);
 
-	it("el punto de partida, los atajos, las reglas y los ajustes nombran props que existen y con valores válidos", () => {
+	it("el punto de partida, los atajos, las reglas y los ajustes nombran props que existen y con valores válidos", async () => {
 		const problems: string[] = [];
 		for (const name of configured) {
-			const { pg, rows } = playgroundFor(name);
+			const { pg, rows } = await playgroundFor(name);
 			const start = STARTS[name];
 			const known = new Set(rows.map((r) => r.name));
 			const byProp = new Map(pg.controls.map((c) => [c.prop, c]));
@@ -182,10 +191,7 @@ describe("configuración del ejemplo interactivo", () => {
 		for (const name of configured) {
 			const start = STARTS[name];
 			if (!start?.presets?.length) continue;
-			const { pg } = playgroundFor(name);
-			const mod = (await import(`../src/playground/${name}.tsx`)) as {
-				default: Parameters<typeof createElement>[0];
-			};
+			const { pg, mod } = await playgroundFor(name);
 			for (const preset of start.presets) {
 				const state: State = applyPreset(pg, preset);
 				try {
@@ -203,11 +209,9 @@ describe("configuración del ejemplo interactivo", () => {
 		expect(problems).toEqual([]);
 	}, 180_000);
 
-	it("los controles que salen de las props se rehacen igual con los ajustes del punto de partida", () => {
+	it("el estado inicial cubre todos los controles de cada componente", async () => {
 		for (const name of configured) {
-			const { pg, rows } = playgroundFor(name);
-			expect(controlsOf(rows, STARTS[name]?.tweaks), name).toEqual(pg.controls);
-			// y el estado inicial cubre todos los controles
+			const { pg } = await playgroundFor(name);
 			expect(Object.keys(initialState(pg)).sort(), name).toEqual(pg.controls.map((c) => c.prop).sort());
 		}
 	}, 180_000);

@@ -30,7 +30,7 @@ Comandos: `bun run --cwd apps/docs build`, `bun run --cwd apps/docs test`, `bun 
 
 Cada tarea: config con punto de partida, controles ajustados, atajos con los tipos del Figma (tabla de NOTAS 13.1 de `complete-figma-coverage`) y reglas de incompatibilidad de cada componente del grupo. Se quitan de la lista de pendientes de 4.4. Verificar con el test de configs, un e2e por grupo que recorre los atajos de cada componente sin errores de consola, y axe en las páginas del grupo.
 
-- [ ] 5.1 Acciones y Formularios.
+- [x] 5.1 Acciones y Formularios.
 - [ ] 5.2 Navegación y Capas.
 - [ ] 5.3 Avisos y carga, y Etiquetas e identidad.
 - [ ] 5.4 Datos y Gráficas.
