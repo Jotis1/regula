@@ -58,6 +58,7 @@ const STEPPER =
 /** Campo numérico con botones para restar y sumar, mínimo, máximo y paso, en formato `es-ES`. */
 export function NumberInput({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -86,6 +87,7 @@ export function NumberInput({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

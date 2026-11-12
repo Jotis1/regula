@@ -16,6 +16,15 @@ const SLIDES = [
 	</div>,
 ];
 
+const SIX = ["Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis"].map((text, i) => (
+	<div
+		key={text}
+		className={`flex h-48 items-center justify-center font-semibold ${i % 2 ? "bg-secondary text-secondary" : "bg-brand-solid text-white"}`}
+	>
+		{text}
+	</div>
+));
+
 export const tweaks: Record<string, Tweak> = {
 	slides: {
 		kind: "content",
@@ -28,6 +37,16 @@ export const tweaks: Record<string, Tweak> = {
 					'\t<div className="flex h-48 items-center justify-center bg-brand-solid text-white">Uno</div>,',
 					'\t<div className="flex h-48 items-center justify-center bg-secondary">Dos</div>,',
 					'\t<div className="flex h-48 items-center justify-center bg-tertiary">Tres</div>,',
+					"]",
+				].join("\n"),
+			},
+			{
+				label: "Seis diapositivas",
+				value: SIX,
+				code: [
+					"[",
+					'\t<div className="flex h-48 items-center justify-center bg-brand-solid text-white">Uno</div>,',
+					"\t// … hasta seis",
 					"]",
 				].join("\n"),
 			},

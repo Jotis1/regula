@@ -38,6 +38,7 @@ export interface TextareaProps extends FieldProps, TextareaHTMLAttributes<HTMLTe
 /** Campo de texto multilínea con la misma etiqueta, pista y estados que `Input`. */
 export function Textarea({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -62,6 +63,7 @@ export function Textarea({
 				multiline
 				id={id}
 				label={label}
+				labelAside={labelAside}
 				required={required}
 				hint={hint}
 				error={error}
@@ -81,6 +83,7 @@ export function Textarea({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

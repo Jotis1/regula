@@ -164,6 +164,38 @@ describe("CommandMenu", () => {
 		);
 	});
 
+	it("defaultQuery: se abre con el texto, filtra y avisa una sola vez; al reabrir parte de él", async () => {
+		const seen: string[] = [];
+		const onQueryChange = (q: string) => seen.push(q);
+		const el = (open: boolean) => (
+			<CommandMenu
+				contained
+				open={open}
+				defaultQuery="gasto"
+				onQueryChange={onQueryChange}
+				groups={groups()}
+			/>
+		);
+		const { rerender } = render(el(true));
+		const box = screen.getByRole("combobox") as HTMLInputElement;
+		expect(box.value).toBe("gasto");
+		expect(screen.getAllByRole("option").map((o) => o.textContent)).toEqual([
+			"PecuniaGastos e ingresosG P",
+			"Nuevo gasto⌘N",
+		]);
+		expect(seen).toEqual(["gasto"]);
+		rerender(el(true));
+		expect(seen).toEqual(["gasto"]);
+
+		await userEvent.clear(box);
+		await userEvent.type(box, "x");
+		expect(seen).toEqual(["gasto", "", "x"]);
+		rerender(el(false));
+		rerender(el(true));
+		expect((screen.getByRole("combobox") as HTMLInputElement).value).toBe("gasto");
+		expect(seen).toEqual(["gasto", "", "x", "gasto"]);
+	});
+
 	it("onQueryChange y filter={false}: la app filtra y los grupos se pintan tal cual", async () => {
 		const seen: string[] = [];
 		const onSelect = vi.fn();

@@ -161,6 +161,7 @@ function AddonSelect({
 /** Campo de texto de una línea con etiqueta, pista y error, en tres alturas. */
 export function Input({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -345,6 +346,7 @@ export function Input({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

@@ -94,7 +94,8 @@ describe("playground", () => {
 		if (!pg) throw new Error("Tabs debería tener playground");
 		const { astro } = codeOf(pg, initialState(pg));
 		expect(astro).toMatch(/<Tabs\n\tclient:load\n/);
-		expect(astro).toContain('items={[{"id":"resumen"');
+		// Con o sin sangrado, según venga de un valor preparado o del arranque: lo que cuenta es que es una expresión
+		expect(astro).toMatch(/items=\{\[\s*\{\s*"?id"?:\s*"resumen"/);
 	});
 
 	it("en los que tienen playground, el código de cada estado extremo es JSX válido que importa de @jotis-me/react", () => {

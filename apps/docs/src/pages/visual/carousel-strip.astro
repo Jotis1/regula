@@ -1,0 +1,19 @@
+---
+// Página de prueba del e2e de Carousel con `type="strip"`: se pinta solo en el servidor, sin directiva `client:`,
+// para comprobar con el JavaScript desactivado que la fila se ve y se desplaza. Fuera de la navegación y de las capturas.
+import CarouselStripTest from "../../components/CarouselStripTest";
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<title>Carousel en tira · prueba</title>
+	</head>
+	<body class="m-0 bg-primary p-4 font-body text-primary antialiased">
+		<CarouselStripTest />
+	</body>
+</html>

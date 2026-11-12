@@ -44,6 +44,7 @@ export const defaultStrings = {
 	expandCode: "Ampliar código",
 	showMoreCode: "Ver más",
 	showLessCode: "Ver menos",
+	highlightedLine: "línea destacada",
 	weekdaysMin: ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"],
 	more: "Más acciones",
 	search: "Buscar",

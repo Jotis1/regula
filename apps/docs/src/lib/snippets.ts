@@ -130,6 +130,18 @@ const usage: Record<string, string> = {
 		{ id: "movimientos", label: "Movimientos", count: 12 },
 	]}
 	onChange={cambiarVista}
+/>
+
+// Con href en todos los elementos, enlaces en lugar de pestañas (índice de la página)
+<Tabs
+	aria-label="En esta página"
+	orientation="vertical"
+	type="line"
+	defaultValue="uso"
+	items={[
+		{ id: "uso", label: "Uso", href: "#uso" },
+		{ id: "props", label: "Props", href: "#props" },
+	]}
 />`,
 	Breadcrumbs: `<Breadcrumbs
 	items={[
@@ -204,7 +216,9 @@ const usage: Record<string, string> = {
 	]}
 	search={<Input aria-label="Buscar" placeholder="Buscar" icon={SearchLg} />}
 	account={<Dropdown label="Cuenta" items={[{ label: "Perfil" }]} />}
-/>`,
+/>
+
+<HeaderNav fullWidth brand={<AppIcon app="regula" size={32} />} items={[{ label: "Inicio", href: "/" }]} />`,
 	ContextMenu: `<ContextMenu
 	aria-label="Acciones de la fila"
 	items={[
@@ -331,7 +345,9 @@ const usage: Record<string, string> = {
 		{ label: "Apps", items: [{ icon: CurrencyEuro, label: "Pecunia", onSelect: irAPecunia }] },
 		{ label: "Acciones", items: [{ icon: Plus, label: "Nuevo gasto", shortcut: "⌘N", onSelect: nuevoGasto }] },
 	]}
-/>`,
+/>
+
+<CommandMenu open={abierto} defaultQuery="gasto" onClose={() => setAbierto(false)} groups={grupos} />`,
 	Modal: `<Modal
 	open={abierto}
 	icon={Trash01}
@@ -429,7 +445,10 @@ const usage: Record<string, string> = {
 	events={[{ date: new Date(2027, 0, 8, 10, 0), title: "Olivia x Riley", color: "indigo", duration: 90 }]}
 	onSelectEvent={(evento) => abrirEvento(evento)}
 />`,
-	CodeSnippet: `<CodeSnippet language="bash" code="bun add @jotis-me/react" />`,
+	CodeSnippet: `<CodeSnippet language="bash" code="bun add @jotis-me/react" />
+
+// Líneas destacadas: números desde 1
+<CodeSnippet language="ts" code={cambio} highlight={[4, 5]} />`,
 	PageHeader: `<PageHeader
 	breadcrumbs={[{ label: "Inicio", href: "/", icon: HomeLine }, { label: "Pecunia" }]}
 	title="Gastos"
@@ -501,6 +520,13 @@ const usage: Record<string, string> = {
 </BrowserFrame>`,
 	CreditCard: `<CreditCard theme="brand-dark" company="Pecunia" holder="Administrador" expiry="06/29" last4="4821" />`,
 	Carousel: `<Carousel
+	aria-label="Novedades"
+	slides={[<Tarjeta titulo="Importa tus extractos" />, <Tarjeta titulo="Categoriza solo" />, <Tarjeta titulo="Comparte informes" />]}
+/>
+
+<Carousel
+	type="strip"
+	slideWidth={260}
 	aria-label="Novedades"
 	slides={[<Tarjeta titulo="Importa tus extractos" />, <Tarjeta titulo="Categoriza solo" />, <Tarjeta titulo="Comparte informes" />]}
 />`,

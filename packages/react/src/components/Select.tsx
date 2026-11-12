@@ -64,6 +64,7 @@ export type SelectProps = SingleSelectProps | TagsSelectProps;
 export function Select(props: SelectProps) {
 	const {
 		label,
+		labelAside,
 		required,
 		hint,
 		error,
@@ -84,6 +85,7 @@ export function Select(props: SelectProps) {
 				display="tags"
 				id={id}
 				label={label}
+				labelAside={labelAside}
 				required={required}
 				hint={hint}
 				error={error}
@@ -144,6 +146,7 @@ export function Select(props: SelectProps) {
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

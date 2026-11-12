@@ -102,6 +102,7 @@ export {
 	type CarouselLabels,
 	type CarouselProps,
 	type CarouselSize,
+	type CarouselType,
 } from "./components/Carousel.js";
 export {
 	ChannelBanner,

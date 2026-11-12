@@ -87,6 +87,7 @@ const toOption = (o: MultiSelectOption): Option => (typeof o === "string" ? { va
 /** Selector de varias opciones con buscador y casillas; el campo resume lo elegido. */
 export function MultiSelect({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -225,6 +226,7 @@ export function MultiSelect({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

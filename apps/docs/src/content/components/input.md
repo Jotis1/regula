@@ -6,7 +6,7 @@ interactive: false
 astroNote: "Sin directiva funciona como campo nativo dentro de un `<form>`, también con `prefix` y los desplegables. El botón de la contraseña y `onChange` necesitan una isla: ponlo en un `.tsx` con `client:load`."
 ---
 
-**Props.** `label`, `required` (asterisco en `text-brand-tertiary`, rojo en error), `hint`, `error` (texto o `true`), `icon` (inicial, 20px en `fg-quaternary`), `trailing` (icono final), `size` (`sm` 36px · `md` 40 · `lg` 44), `type` (los nativos y `card`), `cardLogos`, `trailingButton`, y cualquier atributo de `<input>` (`type`, `placeholder`, `value`, `onChange`, `disabled`…).
+**Props.** `label`, `required` (asterisco en `text-brand-tertiary`, rojo en error), `hint`, `error` (texto o `true`), `labelAside` (nodo al final de la fila de la etiqueta, a la derecha y fuera del `<label>`: un clic en sus botones no enfoca el campo), `icon` (inicial, 20px en `fg-quaternary`), `trailing` (icono final), `size` (`sm` 36px · `md` 40 · `lg` 44), `type` (los nativos y `card`), `cardLogos`, `trailingButton`, y cualquier atributo de `<input>` (`type`, `placeholder`, `value`, `onChange`, `disabled`…).
 
 **Texto delante y desplegables.** `prefix` pone un texto fijo delante del valor (`https://`), en `text-tertiary` y separado por un borde `border-primary`; no forma parte del valor. `leadingSelect` y `trailingSelect` meten un desplegable nativo delante (prefijo telefónico) o detrás (divisa), sin separador: `{ options, value, defaultValue, onChange, label, name }`. Su valor va aparte del texto y `label` es obligatorio, porque es el nombre accesible del desplegable.
 

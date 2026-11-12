@@ -68,11 +68,17 @@ export interface HeaderNavProps {
 	 * entonces el de quien usa el componente (por ejemplo, una web con su propia navegación a pantalla completa).
 	 */
 	mobileBar?: ReactNode;
+	/**
+	 * El contenido ocupa todo el ancho, con los 32px de relleno de siempre, en lugar de centrarse en 1280px. Úsalo cuando la
+	 * marca deba alinearse con una navegación lateral.
+	 */
+	fullWidth?: boolean;
 	labels?: Partial<HeaderNavLabels>;
 	className?: string;
 }
 
 const WRAP = "mx-auto w-full max-w-[1280px] px-8";
+const WRAP_FULL = "w-full px-8";
 const BORDER = "shadow-[inset_0_-1px_0_var(--border-secondary)]";
 
 const PILL =
@@ -198,9 +204,11 @@ export function HeaderNav({
 	account,
 	mobile,
 	mobileBar,
+	fullWidth,
 	labels,
 	className,
 }: HeaderNavProps) {
+	const wrap = fullWidth ? WRAP_FULL : WRAP;
 	const l: HeaderNavLabels = {
 		nav: labels?.nav ?? defaultStrings.mainNav,
 		subnav: labels?.subnav ?? defaultStrings.subsections,
@@ -227,7 +235,7 @@ export function HeaderNav({
 				<div className={cx(type !== "tabs" && second && BORDER)}>
 					<div
 						className={cx(
-							WRAP,
+							wrap,
 							"h-16 items-center gap-8",
 							centered ? "grid grid-cols-[1fr_auto_1fr]" : "flex",
 						)}
@@ -247,7 +255,7 @@ export function HeaderNav({
 					<div>
 						<div
 							className={cx(
-								WRAP,
+								wrap,
 								"flex items-center gap-8",
 								type === "tabs" ? "h-11" : "h-16",
 								centered && "justify-center",

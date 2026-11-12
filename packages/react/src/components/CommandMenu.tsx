@@ -72,6 +72,11 @@ export interface CommandMenuProps {
 	/** Cada cambio del buscador (ampliación sobre la guía): para pedir resultados a otra fuente, como un índice de búsqueda. */
 	onQueryChange?: (query: string) => void;
 	/**
+	 * Texto con el que se abre el buscador. Los resultados salen ya filtrados y se llama a `onQueryChange` con él una vez
+	 * al abrir, para que una fuente externa pinte los suyos. Al cerrar y volver a abrir, el buscador parte de él otra vez.
+	 */
+	defaultQuery?: string;
+	/**
 	 * Filtra los elementos por lo escrito. Con `false`, los grupos se pintan tal cual y el filtro es de la app (ampliación sobre la guía).
 	 * @default true
 	 */
@@ -97,6 +102,7 @@ export function CommandMenu({
 	autoFocus = true,
 	labels,
 	onQueryChange,
+	defaultQuery,
 	filter = true,
 }: CommandMenuProps) {
 	const t = {
@@ -108,10 +114,26 @@ export function CommandMenu({
 		close: defaultStrings.toClose,
 		...labels,
 	};
-	const [query, setQuery] = useState("");
+	const [query, setQuery] = useState(defaultQuery ?? "");
 	const [active, setActive] = useState(0);
 	const id = useId();
 	const listRef = useRef<HTMLDivElement>(null);
+	// Último `onQueryChange` y si ya se avisó del texto inicial en esta apertura
+	const notify = useRef(onQueryChange);
+	notify.current = onQueryChange;
+	const announced = useRef(false);
+
+	// Cerrado, el buscador vuelve al texto inicial; abierto, se avisa de él una sola vez
+	useEffect(() => {
+		if (!open) {
+			announced.current = false;
+			setQuery(defaultQuery ?? "");
+			setActive(0);
+		} else if (!announced.current) {
+			announced.current = true;
+			if (defaultQuery) notify.current?.(defaultQuery);
+		}
+	}, [open, defaultQuery]);
 
 	const needle = filter ? query.trim().toLowerCase() : "";
 	const visible = groups

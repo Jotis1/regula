@@ -10,6 +10,15 @@ export interface ToggleProps {
 	label?: ReactNode;
 	/** Texto de apoyo bajo la etiqueta. */
 	hint?: ReactNode;
+	/**
+	 * Nodo tras el texto de la etiqueta, empujado a la derecha y fuera del interruptor: un clic en él no lo activa.
+	 * Con él, `className` va a la fila entera.
+	 */
+	labelAside?: ReactNode;
+	/** Nombre accesible si no hay `label` visible. Con `label`, manda sobre él. */
+	"aria-label"?: string;
+	/** Id del elemento que nombra el interruptor. */
+	"aria-labelledby"?: string;
 	checked?: boolean;
 	defaultChecked?: boolean;
 	onChange?: (checked: boolean) => void;
@@ -40,6 +49,7 @@ const SLIM_HANDLE =
 export function Toggle({
 	label,
 	hint,
+	labelAside,
 	checked,
 	defaultChecked,
 	onChange,
@@ -48,17 +58,22 @@ export function Toggle({
 	disabled,
 	name,
 	className,
+	"aria-label": ariaLabel,
+	"aria-labelledby": ariaLabelledby,
 }: ToggleProps) {
 	const md = size === "md";
 	const slim = variant === "slim";
-	return (
+	const aside = labelAside != null && labelAside !== false;
+	const toggle = (
 		<Switch
 			isSelected={checked}
 			defaultSelected={defaultChecked}
 			onChange={onChange}
 			isDisabled={disabled}
 			name={name}
-			className={cx(choiceLabel(size), className)}
+			aria-label={ariaLabel}
+			aria-labelledby={ariaLabelledby}
+			className={cx(choiceLabel(size), !aside && className)}
 		>
 			<span
 				aria-hidden="true"
@@ -91,5 +106,13 @@ export function Toggle({
 			</span>
 			<ChoiceText label={label} hint={hint} size={size} className="group-data-disabled:opacity-50" />
 		</Switch>
+	);
+	if (!aside) return toggle;
+	// El nodo va fuera del `<label>` del interruptor: sus botones no lo activan al pulsarlos
+	return (
+		<div className={cx("flex items-start", md ? "gap-3" : "gap-2", className)}>
+			{toggle}
+			<div className="ml-auto flex flex-none items-center gap-2">{labelAside}</div>
+		</div>
 	);
 }

@@ -30,6 +30,22 @@ export const navegacion: Record<string, Start> = {
 				{ id: "movimientos", label: "Movimientos", count: 12 },
 			],
 		},
+		tweaks: {
+			// Con `href` en todos, las pestañas pasan a ser una navegación de enlaces
+			items: {
+				kind: "content",
+				options: [
+					{
+						label: "Enlaces a anclas",
+						value: [
+							{ id: "resumen", label: "Resumen", href: "#resumen" },
+							{ id: "movimientos", label: "Movimientos", count: 12, href: "#movimientos" },
+						],
+						code: '[{ id: "resumen", label: "Resumen", href: "#resumen" }, { id: "movimientos", label: "Movimientos", count: 12, href: "#movimientos" }]',
+					},
+				],
+			},
+		},
 	},
 	Breadcrumbs: {
 		props: {

@@ -12,6 +12,12 @@ export const contenidoYMedios: Record<string, Start> = {
 	CodeSnippet: {
 		props: { language: "bash", code: "bun add @jotis-me/react" },
 		wide: true,
+		tweaks: {
+			highlight: {
+				kind: "content",
+				options: [{ label: "Primera línea", value: [1], code: "[1]" }],
+			},
+		},
 	},
 	VideoPlayer: {
 		props: { duration: 125 },

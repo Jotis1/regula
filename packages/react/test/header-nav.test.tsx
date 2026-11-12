@@ -134,6 +134,43 @@ describe("HeaderNav (escritorio)", () => {
 	});
 });
 
+describe("HeaderNav (fullWidth)", () => {
+	const wide = <HeaderNav type="dual-tier" brand={brand} items={ITEMS} search={<span>Buscar</span>} />;
+
+	it("sin la prop el HTML es el de siempre: contenido a 1280px", () => {
+		const html = renderToString(wide);
+		expect(html.match(/max-w-\[1280px\]/g)).toHaveLength(2);
+		expect(html).toContain("mx-auto w-full max-w-[1280px] px-8");
+		expect(
+			renderToString(
+				<HeaderNav
+					type="dual-tier"
+					brand={brand}
+					items={ITEMS}
+					fullWidth={false}
+					search={<span>Buscar</span>}
+				/>,
+			),
+		).toBe(html);
+	});
+
+	it("con fullWidth, las dos filas ocupan todo el ancho con 32px a los lados y la móvil no lleva max-w", () => {
+		const { container } = render(
+			<HeaderNav fullWidth type="dual-tier" brand={brand} items={ITEMS} search={<span>Buscar</span>} />,
+		);
+		const html = container.innerHTML;
+		expect(html).not.toContain("max-w-[1280px]");
+		expect(html).not.toContain("mx-auto");
+		const [desktop, mobileRow] = [
+			container.querySelector(".\\@max-5xl\\:hidden"),
+			container.querySelector(".\\@5xl\\:hidden"),
+		];
+		const rows = [...(desktop?.querySelectorAll(".w-full.px-8") ?? [])];
+		expect(rows).toHaveLength(2);
+		expect(mobileRow?.innerHTML).not.toContain("max-w");
+	});
+});
+
 describe("HeaderNav (menú móvil)", () => {
 	const mobile = {
 		footerItems: [
