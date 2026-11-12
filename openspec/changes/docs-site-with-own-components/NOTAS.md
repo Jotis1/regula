@@ -138,3 +138,9 @@ Hasta que se decida, 3.2 queda sin marcar y el resto del grupo sigue.
 ## 6.2 Límite de JS
 
 - Medido tras quitar la galería: todas las páginas de componente cargan 254,0 kB gzip (el ejemplo interactivo, que ya no arrastra los ejemplos de su grupo). `/components/*/` baja de 380 a **280**; la excepción es `/components/color-picker/`, 307,7 kB (su composición del modal va en la propia página, con dos islas): límite propio de 338. `check:js` pasa. Antes del cambio, Button estaba en ~375 kB: baja un 32 %.
+
+## 7.1 Pasada final
+
+- `biome ci`, `turbo run typecheck build` (11/11), tests del paquete (1.226) y de la web (123), `check:size` (121 dentro), `check:js` (todas dentro), artefacto (`artifact:build`, `bun test` 21/21, e2e 247/247) y e2e completo de la web (1.326 pasan, 0 fallos; Chromium para todo y Firefox/WebKit para `e2e/cross-browser/`).
+- Revisado a mano en claro, oscuro y móvil: índice `/components/`, cabecera, pie, portada y el ejemplo interactivo de Button; el resto de páginas, por axe por grupo y el humo de los 121.
+- Sin cerrar: 3.2 y 3.5 esperan la decisión sobre la navegación lateral (ver 3.2).

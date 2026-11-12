@@ -45,7 +45,7 @@ Cada tarea: config con punto de partida, controles ajustados, atajos con los tip
 
 ## 7. Cierre
 
-- [ ] 7.1 Pasada completa: build, tests de la web y del paquete, `check:js`, `check:size`, `biome ci`, typecheck, e2e completos en los tres navegadores y artefacto (`bun test` de `scripts/artifact`, que no debe cambiar). Revisar en claro, oscuro y móvil una página de cada grupo, `/components/` y la portada. Anotar en `NOTAS.md` lo que se decidió sin consultar.
+- [x] 7.1 Pasada completa: build, tests de la web y del paquete, `check:js`, `check:size`, `biome ci`, typecheck, e2e completos en los tres navegadores y artefacto (`bun test` de `scripts/artifact`, que no debe cambiar). Revisar en claro, oscuro y móvil una página de cada grupo, `/components/` y la portada. Anotar en `NOTAS.md` lo que se decidió sin consultar.
 
 ## Workflow follow-up
 
