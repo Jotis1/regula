@@ -28,6 +28,14 @@ const usage: Record<string, string> = {
 </BadgeGroup>`,
 	Tag: `<Tag size="md" count={5}>Facturas</Tag>`,
 	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
+	IconTile: `<IconTile icon={Mail01} label="Mail01" selected onSelect={() => elegir("Mail01")} />`,
+	TokenSwatch: `<TokenSwatch
+	name="text-primary"
+	light="#171717"
+	dark="#fafafa"
+	utility="text-primary"
+/>
+<CopyTooltip />`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
 	AvatarGroup: `<AvatarGroup items={[{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }]} />`,
 	Rating: `<Rating value={4.5} />`,
@@ -478,6 +486,9 @@ const usage: Record<string, string> = {
 	actions={<Button size="sm" type="submit">Guardar cambios</Button>}
 />`,
 	ContentDivider: `<ContentDivider label="o continúa con" />`,
+	Disclosure: `<Disclosure title="Iconos" aside={<Badge color="brand">3 props</Badge>} defaultOpen>
+	<p>icon, iconLeading e iconTrailing.</p>
+</Disclosure>`,
 	LinkCard: `<LinkCard
 	href="/components/button/"
 	title="Button"
@@ -503,6 +514,10 @@ const usage: Record<string, string> = {
 	TransparencyGrid: `<TransparencyGrid size="md" className="rounded-2xl p-6">
 	<CamFrame ratio="16:9" width={400} name="Tu canal" />
 </TransparencyGrid>`,
+	ExampleCard: `<ExampleCard verdict="dont" caption="No apiles dos primarios.">
+	<Button>Guardar</Button>
+	<Button>Enviar</Button>
+</ExampleCard>`,
 	BackgroundPattern: `<div className="relative">
 	<BackgroundPattern pattern="grid" size="sm" mask="radial" />
 	<div className="relative">Contenido</div>
@@ -530,6 +545,16 @@ const usage: Record<string, string> = {
 	aria-label="Novedades"
 	slides={[<Tarjeta titulo="Importa tus extractos" />, <Tarjeta titulo="Categoriza solo" />, <Tarjeta titulo="Comparte informes" />]}
 />`,
+	CompareSlider: `<CompareSlider
+	label="Tema de la pantalla"
+	before={<Pantalla tema="oscuro" />}
+	after={<Pantalla tema="claro" />}
+	beforeLabel="Oscuro"
+	afterLabel="Claro"
+/>`,
+	Spotlight: `<Spotlight active={cambiado} note="Ahora en gris" notePlacement="bottom">
+	<Button hierarchy="secondary">Exportar</Button>
+</Spotlight>`,
 	VideoPlayer: `<VideoPlayer src="/videos/presentacion.mp4" poster="/videos/presentacion.jpg" />`,
 	LineChart: `<LineChart
 	aria-label="Gastos de agosto a octubre"

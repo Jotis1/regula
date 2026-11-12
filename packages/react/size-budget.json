@@ -118,5 +118,11 @@
 	"TransparencyGrid": 10752,
 	"TreeView": 70656,
 	"VerificationCodeInput": 14336,
-	"VideoPlayer": 13312
+	"VideoPlayer": 13312,
+	"CompareSlider": 15360,
+	"ExampleCard": 14848,
+	"TokenSwatch": 13312,
+	"Disclosure": 10752,
+	"IconTile": 10752,
+	"Spotlight": 10752
 }

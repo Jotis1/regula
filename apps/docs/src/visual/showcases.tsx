@@ -54,12 +54,15 @@ import {
 	ColorPicker,
 	ColorPickerDropdown,
 	CommandMenu,
+	CompareSlider,
 	ContentDivider,
 	ContextMenu,
 	CreditCard,
 	DatePicker,
+	Disclosure,
 	Dropdown,
 	EmptyState,
+	ExampleCard,
 	FeaturedIcon,
 	FileUpload,
 	FilterBar,
@@ -68,6 +71,7 @@ import {
 	Footer,
 	HeaderNav,
 	HelpIcon,
+	IconTile,
 	InlineCTA,
 	Input,
 	JobPostCard,
@@ -112,6 +116,7 @@ import {
 	SocialButton,
 	SocialButtonGroup,
 	Spinner,
+	Spotlight,
 	StreamAlert,
 	StreamCountdown,
 	type StreamEventItem,
@@ -129,6 +134,7 @@ import {
 	Textarea,
 	TextEditor,
 	Toggle,
+	TokenSwatch,
 	Tooltip,
 	TransparencyGrid,
 	TreeView,
@@ -155,6 +161,7 @@ import {
 	Zap,
 } from "@untitledui/icons";
 import type { CSSProperties, ReactNode } from "react";
+import { PantallaGastos } from "./examples/compare-slider";
 
 export interface Showcase {
 	/** La muestra del componente: lo más característico, en una sola forma y quieta. Se centra y se ajusta al marco de la captura. */
@@ -898,6 +905,18 @@ export const SHOWCASES: Record<string, Showcase> = {
 		),
 	},
 
+	Spotlight: {
+		render: () => (
+			<div style={{ paddingBottom: 64 }}>
+				<Spotlight active note="Ahora en gris">
+					<Button hierarchy="secondary" iconLeading={Download01}>
+						Exportar
+					</Button>
+				</Spotlight>
+			</div>
+		),
+	},
+
 	// Avisos
 	Alert: {
 		render: () => (
@@ -1031,6 +1050,39 @@ export const SHOWCASES: Record<string, Showcase> = {
 			<div style={row}>
 				<Kbd>⌘P</Kbd>
 				<Kbd variant="field">Ctrl K</Kbd>
+			</div>
+		),
+	},
+	IconTile: {
+		render: () => (
+			<div className="grid grid-cols-3 gap-3" style={box(300)}>
+				<IconTile icon={Mail01} label="Mail01" onSelect={noop} />
+				<IconTile icon={HomeLine} label="HomeLine" selected onSelect={noop} />
+				<IconTile icon={Calendar} label="Calendar" onSelect={noop} />
+				<IconTile icon={Clock} label="Clock" onSelect={noop} />
+				<IconTile icon={Download01} label="Download01" onSelect={noop} />
+				<IconTile icon={SearchLg} label="SearchLg" onSelect={noop} />
+			</div>
+		),
+	},
+	TokenSwatch: {
+		render: () => (
+			<div className="flex flex-col gap-3" style={box(300)}>
+				<TokenSwatch
+					layout="card"
+					name="text-primary"
+					light="#171717"
+					dark="#fafafa"
+					utility="text-primary"
+					usage="Texto y titulares sobre bg-primary."
+				/>
+				<TokenSwatch
+					layout="card"
+					name="bg-secondary"
+					light="#fafafa"
+					dark="#171717"
+					utility="bg-secondary"
+				/>
 			</div>
 		),
 	},
@@ -1397,6 +1449,21 @@ export const SHOWCASES: Record<string, Showcase> = {
 			</div>
 		),
 	},
+	Disclosure: {
+		render: () => (
+			<div style={box(300)}>
+				<Disclosure title="Iconos" aside={<Badge color="brand">3 props</Badge>} defaultOpen>
+					<div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+						<span>icon</span>
+						<span>iconLeading</span>
+						<span>iconTrailing</span>
+					</div>
+				</Disclosure>
+				<Disclosure title="Tamaño" aside="2 props" />
+				<Disclosure title="Estados" aside="4 props" divider={false} />
+			</div>
+		),
+	},
 	LinkCard: {
 		render: () => (
 			<div style={box(240)}>
@@ -1471,6 +1538,21 @@ export const SHOWCASES: Record<string, Showcase> = {
 			</div>
 		),
 	},
+	CompareSlider: {
+		render: () => (
+			<div style={box(440)}>
+				<CompareSlider
+					label="Tema de la pantalla"
+					before={<PantallaGastos mode="dark" />}
+					after={<PantallaGastos mode="light" />}
+					beforeLabel="Oscuro"
+					afterLabel="Claro"
+					defaultValue={45}
+					height={250}
+				/>
+			</div>
+		),
+	},
 	VideoPlayer: {
 		render: () => (
 			<div style={box(460)}>
@@ -1504,6 +1586,25 @@ export const SHOWCASES: Record<string, Showcase> = {
 			>
 				<Badge color="brand">Transparente</Badge>
 			</TransparencyGrid>
+		),
+	},
+	ExampleCard: {
+		render: () => (
+			<div style={{ ...row, flexWrap: "nowrap", alignItems: "stretch", gap: 16 }}>
+				<div style={box(240)}>
+					<ExampleCard verdict="do" caption="Un primario por pantalla." minHeight={120}>
+						<Button size="sm">Guardar</Button>
+					</ExampleCard>
+				</div>
+				<div style={box(240)}>
+					<ExampleCard verdict="dont" caption="No apiles dos primarios." minHeight={120}>
+						<div style={{ display: "flex", gap: 8 }}>
+							<Button size="sm">Guardar</Button>
+							<Button size="sm">Enviar</Button>
+						</div>
+					</ExampleCard>
+				</div>
+			</div>
 		),
 	},
 	BackgroundPattern: {

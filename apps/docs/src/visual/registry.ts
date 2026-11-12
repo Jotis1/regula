@@ -21,6 +21,7 @@ import {
 } from "./examples/charts";
 import { ColorPickerDropdownExample, ColorPickerExample } from "./examples/color";
 import * as colorPickerCompositions from "./examples/color-picker-compositions";
+import { CompareSliderExample } from "./examples/compare-slider";
 import { ActivityFeedExample, CodeSnippetExample, MetricCardExample } from "./examples/data";
 import {
 	BackgroundOverlayExample,
@@ -37,10 +38,12 @@ import {
 	BadgeGroupExample,
 	CheckIconExample,
 	CheckItemExample,
+	IconTileExample,
 	KbdExample,
 	RatingBadgeExample,
 	RatingExample,
 	TagExample,
+	TokenSwatchExample,
 } from "./examples/display";
 import {
 	FeaturedIconExample,
@@ -72,6 +75,7 @@ import {
 import {
 	CardHeaderExample,
 	ContentDividerExample,
+	DisclosureExample,
 	InlineCTAExample,
 	LinkCardExample,
 	PageHeaderExample,
@@ -96,6 +100,7 @@ import {
 	BrowserFrameExample,
 	CarouselExample,
 	CreditCardExample,
+	ExampleCardExample,
 	ScaledPreviewExample,
 	TransparencyGridExample,
 	VideoPlayerExample,
@@ -126,6 +131,7 @@ import { BreadcrumbsExample, PaginationExample } from "./examples/paging";
 import { SidebarNavExample } from "./examples/sidebar";
 import * as slideoutCompositions from "./examples/slideout-compositions";
 import { AppStoreBadgeExample, SocialButtonExample, SocialButtonGroupExample } from "./examples/social";
+import { SpotlightExample } from "./examples/spotlight";
 import {
 	CamFrameExample,
 	ChannelBannerExample,
@@ -169,6 +175,8 @@ export const visualExamples: Record<string, ComponentType> = {
 	BadgeGroup: BadgeGroupExample,
 	Tag: TagExample,
 	Kbd: KbdExample,
+	IconTile: IconTileExample,
+	TokenSwatch: TokenSwatchExample,
 	Button: ButtonExample,
 	ButtonGroup: ButtonGroupExample,
 	CloseButton: CloseButtonExample,
@@ -220,6 +228,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	Modal: ModalExample,
 	Slideout: SlideoutExample,
 	Tooltip: TooltipExample,
+	Spotlight: SpotlightExample,
 	CopyTooltip: CopyTooltipExample,
 	HelpIcon: HelpIconExample,
 	Alert: AlertExample,
@@ -238,10 +247,12 @@ export const visualExamples: Record<string, ComponentType> = {
 	SectionLabel: SectionLabelExample,
 	SectionFooter: SectionFooterExample,
 	ContentDivider: ContentDividerExample,
+	Disclosure: DisclosureExample,
 	InlineCTA: InlineCTAExample,
 	LinkCard: LinkCardExample,
 	BackgroundPattern: BackgroundPatternExample,
 	TransparencyGrid: TransparencyGridExample,
+	ExampleCard: ExampleCardExample,
 	ScaledPreview: ScaledPreviewExample,
 	BrowserFrame: BrowserFrameExample,
 	BackgroundOverlay: BackgroundOverlayExample,
@@ -251,6 +262,7 @@ export const visualExamples: Record<string, ComponentType> = {
 	CreditCard: CreditCardExample,
 	VideoPlayer: VideoPlayerExample,
 	Carousel: CarouselExample,
+	CompareSlider: CompareSliderExample,
 	LineChart: LineChartExample,
 	BarChart: BarChartExample,
 	PieChart: PieChartExample,

@@ -52,4 +52,16 @@ export const etiquetasEIdentidad: Record<string, Start> = {
 	Kbd: {
 		children: "⌘K",
 	},
+	IconTile: {
+		props: { icon: "Mail01", label: "Mail01" },
+	},
+	TokenSwatch: {
+		props: {
+			name: "text-primary",
+			light: "#171717",
+			dark: "#fafafa",
+			utility: "text-primary",
+			usage: "Texto y titulares sobre bg-primary.",
+		},
+	},
 };

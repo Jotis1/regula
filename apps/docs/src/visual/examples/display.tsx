@@ -10,13 +10,26 @@ import {
 	BadgeGroup,
 	CheckIcon,
 	CheckItem,
+	CopyTooltip,
+	IconTile,
 	Kbd,
 	Rating,
 	RatingBadge,
 	Tag,
+	TokenSwatch,
 } from "@jotis-me/react";
 import { FlagEs, FlagMx, FlagPt } from "@untitledui/country-flags";
-import { ArrowRight, ArrowUpRight, Check, Plus } from "@untitledui/icons";
+import {
+	ArrowRight,
+	ArrowUpRight,
+	Calendar,
+	Check,
+	Clock,
+	Download01,
+	HomeLine,
+	Mail01,
+	Plus,
+} from "@untitledui/icons";
 import { row, stack } from "./actions";
 
 const noop = () => {};
@@ -359,6 +372,47 @@ export function KbdExample() {
 				<Kbd variant="field">⌘ K</Kbd>
 				<Kbd variant="field">/</Kbd>
 			</div>
+		</div>
+	);
+}
+
+/** Rejilla de baldosas: una elegida, un enlace y los tres tamaños de vista previa. */
+export function IconTileExample() {
+	return (
+		<div className={stack}>
+			<div className="grid w-[420px] max-w-full grid-cols-4 gap-3">
+				<IconTile icon={Mail01} label="Mail01" onSelect={noop} />
+				<IconTile icon={HomeLine} label="HomeLine" selected onSelect={noop} />
+				<IconTile icon={Calendar} label="Calendar" onSelect={noop} />
+				<IconTile icon={Download01} label="Download01" href="#" />
+			</div>
+			<div className="grid w-[420px] max-w-full grid-cols-4 gap-3">
+				<IconTile icon={Clock} label="Clock" size={16} onSelect={noop} />
+				<IconTile icon={Clock} label="Clock" size={20} onSelect={noop} />
+				<IconTile icon={Clock} label="Clock" size={24} onSelect={noop} />
+				<IconTile icon={Clock} label="AlignHorizontalCentre02" onSelect={noop} />
+			</div>
+		</div>
+	);
+}
+
+/** Un token en fila (para una celda de tabla) y en tarjeta. Lleva su CopyTooltip, que avisa al copiar. */
+export function TokenSwatchExample() {
+	return (
+		<div className={stack}>
+			<TokenSwatch name="text-primary" light="#171717" dark="#fafafa" utility="text-primary" />
+			<TokenSwatch name="bg-brand-solid" light="#4f39f6" dark="#4f39f6" utility="bg-brand-solid" />
+			<div className="w-[280px] max-w-full">
+				<TokenSwatch
+					layout="card"
+					name="border-primary"
+					light="#d4d4d4"
+					dark="#404040"
+					utility="border-primary"
+					usage="Bordes de inputs, botones secundarios y checkboxes."
+				/>
+			</div>
+			<CopyTooltip />
 		</div>
 	);
 }

@@ -26,4 +26,14 @@ export const contenidoYMedios: Record<string, Start> = {
 		props: { slides: "Tres diapositivas" },
 		wide: true,
 	},
+	CompareSlider: {
+		props: {
+			label: "Tema de la pantalla",
+			before: "Pantalla oscura",
+			after: "Pantalla clara",
+			beforeLabel: "Oscuro",
+			afterLabel: "Claro",
+		},
+		wide: true,
+	},
 };

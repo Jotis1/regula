@@ -11,6 +11,10 @@ export const capas: Record<string, Start> = {
 			children: "Botón",
 		},
 	},
+	Spotlight: {
+		props: { active: true, note: "Ahora en gris" },
+		children: "Guardar cambios",
+	},
 	CopyTooltip: { props: { copyAttribute: "data-copy" } },
 	Slideout: {
 		props: {

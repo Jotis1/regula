@@ -87,7 +87,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		id: "capas",
 		label: "Capas",
 		section: "components",
-		components: names("Modal Slideout Tooltip HelpIcon CopyTooltip"),
+		components: names("Modal Slideout Tooltip HelpIcon CopyTooltip Spotlight"),
 	},
 	{
 		id: "avisos-y-carga",
@@ -102,7 +102,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		label: "Etiquetas e identidad",
 		section: "components",
 		components: names(
-			"Badge BadgeGroup Tag Avatar AvatarGroup AvatarLabel AvatarProfilePhoto CheckIcon CheckItem Rating RatingBadge FeaturedIcon Kbd",
+			"Badge BadgeGroup Tag Avatar AvatarGroup AvatarLabel AvatarProfilePhoto CheckIcon CheckItem Rating RatingBadge FeaturedIcon Kbd IconTile TokenSwatch",
 		),
 	},
 	{
@@ -122,21 +122,21 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		label: "Estructura de página",
 		section: "components",
 		components: names(
-			"PageHeader CardHeader SectionHeader SectionLabel SectionFooter ContentDivider InlineCTA LinkCard",
+			"PageHeader CardHeader SectionHeader SectionLabel SectionFooter ContentDivider Disclosure InlineCTA LinkCard",
 		),
 	},
 	{
 		id: "contenido-y-medios",
 		label: "Contenido y medios",
 		section: "components",
-		components: names("Message MessageInput CodeSnippet VideoPlayer Carousel"),
+		components: names("Message MessageInput CodeSnippet VideoPlayer Carousel CompareSlider"),
 	},
 	{
 		id: "fondos-y-maquetas",
 		label: "Fondos y maquetas",
 		section: "components",
 		components: names(
-			"BackgroundPattern BackgroundOverlay TransparencyGrid ScaledPreview CreditCard BrowserFrame ScreenMockup LaptopMockup PhoneMockup AppIcon",
+			"BackgroundPattern BackgroundOverlay TransparencyGrid ExampleCard ScaledPreview CreditCard BrowserFrame ScreenMockup LaptopMockup PhoneMockup AppIcon",
 		),
 	},
 	{

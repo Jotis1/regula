@@ -29,6 +29,11 @@ export const estructuraDePagina: Record<string, Start> = {
 		props: { label: "o continúa con" },
 		wide: true,
 	},
+	Disclosure: {
+		props: { title: "Iconos", defaultOpen: true },
+		children: "icon, iconLeading e iconTrailing.",
+		wide: true,
+	},
 	SectionFooter: {
 		props: { actions: "Cancelar y guardar" },
 		wide: true,

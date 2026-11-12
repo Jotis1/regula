@@ -6,9 +6,11 @@ import {
 	type BackgroundPatternName,
 	Badge,
 	BrowserFrame,
+	Button,
 	Carousel,
 	CreditCard,
 	EmptyState,
+	ExampleCard,
 	FeaturedIcon,
 	InlineCTA,
 	MetricCard,
@@ -254,6 +256,28 @@ export function TransparencyGridExample() {
 			>
 				<Badge color="brand">Cuadros de 16px</Badge>
 			</TransparencyGrid>
+		</div>
+	);
+}
+
+export function ExampleCardExample() {
+	return (
+		<div className="grid max-w-[640px] grid-cols-2 gap-4">
+			<ExampleCard verdict="do" caption="Un primario por pantalla.">
+				<Button>Guardar</Button>
+			</ExampleCard>
+			<ExampleCard verdict="dont" caption="No apiles dos primarios.">
+				<div className="flex gap-2">
+					<Button>Guardar</Button>
+					<Button>Enviar</Button>
+				</div>
+			</ExampleCard>
+			<ExampleCard verdict="instead" caption="Un enlace pequeño como acción principal." grid={false}>
+				<Button hierarchy="link-gray">Guardar</Button>
+			</ExampleCard>
+			<ExampleCard verdict="better" caption="Un botón con su jerarquía." grid="md" minHeight={120}>
+				<Button>Guardar</Button>
+			</ExampleCard>
 		</div>
 	);
 }

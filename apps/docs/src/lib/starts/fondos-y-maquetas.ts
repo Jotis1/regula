@@ -11,6 +11,10 @@ export const fondosYMaquetas: Record<string, Start> = {
 		fill: 200,
 	},
 	TransparencyGrid: { props: { className: "h-40 w-72 rounded-lg" } },
+	ExampleCard: {
+		props: { verdict: "do", caption: "Un primario por pantalla." },
+		children: "Muestra",
+	},
 	ScaledPreview: {
 		props: { width: 560, box: [280, 90], className: "rounded-lg border border-secondary" },
 		children: "Una pieza a 560 px de ancho, encogida a la caja",

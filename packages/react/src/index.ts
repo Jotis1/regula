@@ -157,6 +157,7 @@ export {
 	type CommandMenuLabels,
 	type CommandMenuProps,
 } from "./components/CommandMenu.js";
+export { CompareSlider, type CompareSliderProps } from "./components/CompareSlider.js";
 export { ContentDivider, type ContentDividerProps } from "./components/ContentDivider.js";
 export {
 	ContextMenu,
@@ -179,6 +180,7 @@ export {
 	type DatePickerProps,
 	type DateRange,
 } from "./components/DatePicker.js";
+export { Disclosure, type DisclosureProps, type DisclosureSize } from "./components/Disclosure.js";
 export {
 	Dropdown,
 	type DropdownAccount,
@@ -194,6 +196,11 @@ export {
 	type EmptyStateProps,
 	type EmptyStateSize,
 } from "./components/EmptyState.js";
+export {
+	ExampleCard,
+	type ExampleCardProps,
+	type ExampleCardVerdict,
+} from "./components/ExampleCard.js";
 export {
 	FeaturedIcon,
 	type FeaturedIconProps,
@@ -237,6 +244,7 @@ export {
 	type HeaderNavType,
 } from "./components/HeaderNav.js";
 export { HelpIcon, type HelpIconProps } from "./components/HelpIcon.js";
+export { IconTile, type IconTileProps, type IconTileSize } from "./components/IconTile.js";
 export {
 	InlineCTA,
 	type InlineCTAFeature,
@@ -381,6 +389,7 @@ export {
 } from "./components/SocialButton.js";
 export { SocialButtonGroup, type SocialButtonGroupProps } from "./components/SocialButtonGroup.js";
 export { Spinner, type SpinnerProps, type SpinnerSize, type SpinnerVariant } from "./components/Spinner.js";
+export { Spotlight, type SpotlightPlacement, type SpotlightProps } from "./components/Spotlight.js";
 export { StreamAlert, type StreamAlertProps } from "./components/StreamAlert.js";
 export {
 	StreamCountdown,
@@ -442,6 +451,11 @@ export {
 	type TextEditorToolbar,
 } from "./components/TextEditor.js";
 export { Toggle, type ToggleProps } from "./components/Toggle.js";
+export {
+	TokenSwatch,
+	type TokenSwatchLayout,
+	type TokenSwatchProps,
+} from "./components/TokenSwatch.js";
 export { Tooltip, type TooltipProps } from "./components/Tooltip.js";
 export {
 	TransparencyGrid,

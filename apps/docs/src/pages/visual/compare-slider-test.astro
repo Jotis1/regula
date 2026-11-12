@@ -1,0 +1,22 @@
+---
+// Página de prueba del e2e de CompareSlider: un comparador en una isla cliente, con un `<output>` que repite el valor.
+// El mismo HTML se pinta en el servidor, así que el e2e sin JavaScript ve la línea en su valor inicial.
+// Fuera de la navegación y de las capturas.
+import CompareSliderTest from "../../components/CompareSliderTest";
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<title>CompareSlider · prueba</title>
+	</head>
+	<body class="m-0 bg-primary p-4 font-body text-primary antialiased">
+		<div class="max-w-xl">
+			<CompareSliderTest client:load />
+		</div>
+	</body>
+</html>

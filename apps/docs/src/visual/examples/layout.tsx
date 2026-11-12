@@ -5,10 +5,12 @@ import { PaymentVisaMd } from "@jotis-me/assets/payments";
 import {
 	AppIcon,
 	Avatar,
+	Badge,
 	Button,
 	ButtonGroup,
 	CardHeader,
 	ContentDivider,
+	Disclosure,
 	InlineCTA,
 	Input,
 	LinkCard,
@@ -484,6 +486,26 @@ const sample = (
 		<Button size="sm">Nuevo gasto</Button>
 	</div>
 );
+
+export function DisclosureExample() {
+	return (
+		<div className="flex max-w-[420px] flex-col">
+			<Disclosure title="Iconos" aside={<Badge color="brand">3 props</Badge>} defaultOpen>
+				<ul className="m-0 list-none space-y-1 p-0">
+					<li>icon</li>
+					<li>iconLeading</li>
+					<li>iconTrailing</li>
+				</ul>
+			</Disclosure>
+			<Disclosure title="Tamaño" size="sm" aside="2 props">
+				Dos props.
+			</Disclosure>
+			<Disclosure title="Sin raya" divider={false}>
+				Un bloque suelto, sin raya inferior.
+			</Disclosure>
+		</div>
+	);
+}
 
 export function LinkCardExample() {
 	return (
