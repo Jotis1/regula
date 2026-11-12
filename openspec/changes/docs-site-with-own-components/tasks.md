@@ -40,8 +40,8 @@ Cada tarea: config con punto de partida, controles ajustados, atajos con los tip
 
 ## 6. Página sin galería y límite de JS
 
-- [ ] 6.1 Quitar «Variantes y estados» de `ComponentPage.astro` y de `[slug].astro` (y su entrada en «En esta página»), dejando el ejemplo interactivo como primera sección y las composiciones donde están (design D6). Actualizar los e2e y tests que buscaban `#variantes` (`components`, `copy`, `stream`, `component-page`) y la ficha de la web que describe la página. Verificar con el scenario «Sin galería de variantes» y los e2e completos.
-- [ ] 6.2 Medir con `check:js` y bajar `/components/*/` en `js-budget.json` a lo medido más un 10 %, con el motivo en `$comment`. Verificar que `check:js` pasa y que el límite queda por debajo de 380.
+- [x] 6.1 Quitar «Variantes y estados» de `ComponentPage.astro` y de `[slug].astro` (y su entrada en «En esta página»), dejando el ejemplo interactivo como primera sección y las composiciones donde están (design D6). Actualizar los e2e y tests que buscaban `#variantes` (`components`, `copy`, `stream`, `component-page`) y la ficha de la web que describe la página. Verificar con el scenario «Sin galería de variantes» y los e2e completos.
+- [x] 6.2 Medir con `check:js` y bajar `/components/*/` en `js-budget.json` a lo medido más un 10 %, con el motivo en `$comment`. Verificar que `check:js` pasa y que el límite queda por debajo de 380.
 
 ## 7. Cierre
 

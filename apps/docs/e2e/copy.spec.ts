@@ -100,17 +100,16 @@ test("la página de CopyTooltip: useCopy desde una isla y, con dos CopyTooltip m
 }) => {
 	await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 	await page.goto("/components/copy-tooltip/");
-	// La isla de los ejemplos y la del CopyTooltip de la página tienen que estar hidratadas
-	const examples = page.locator("#variantes + div astro-island");
-	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
-	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
-	await expect(examples).not.toHaveAttribute("ssr", /.*/);
+	// La isla del ejemplo interactivo (con su botón y su CopyTooltip) y la de la página tienen que estar hidratadas
+	const example = page.locator("section[aria-labelledby=ejemplo]");
+	await example.scrollIntoViewIfNeeded();
+	await expect(example.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
 	await hydrated(page);
 	// El de la página (Base) y el del ejemplo están montados a la vez
 	await expect(page.locator("[data-copy-tooltip]")).toHaveCount(2);
-	const button = examples.getByRole("button", { name: "Copiar variable" });
+	const button = example.getByRole("button", { name: "Copiar instalación" });
 	await copyFrom(page, button);
 	await expect(page.locator("[data-copy-tooltip]:not(:empty)")).toHaveCount(1);
 	await expect(page.locator("[data-copy-tooltip]:not(:empty)")).toHaveText("Copiado");
-	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("var(--bg-brand-solid)");
+	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("bun add @jotis-me/react");
 });

@@ -32,7 +32,6 @@ async function render(name: string, extra: Record<string, unknown> = {}) {
 			astro: '<Ejemplo client:load label="Guardar" />',
 			...extra,
 		},
-		slots: { examples: '<button type="button">Guardar</button>' },
 		request: new Request(`https://regula.jotis.me/components/${name.toLowerCase()}/`),
 	});
 }
@@ -55,7 +54,6 @@ describe("plantilla de página de componente", () => {
 		const at = order(
 			html,
 			">Cuándo usarlo</h2>",
-			">Variantes y estados</h2>",
 			">Props</h2>",
 			">Código</h2>",
 			">Detalles y accesibilidad</h2>",
@@ -64,7 +62,9 @@ describe("plantilla de página de componente", () => {
 		expect([...at].sort((a, b) => a - b)).toEqual(at);
 		expect(html).toContain("Úsalo para probar la plantilla.");
 		expect(html).toContain("Anillo de 4 px.");
-		expect(html).toContain('<button type="button">Guardar</button>');
+		// Sin galería de variantes: el ejemplo interactivo es la primera sección y no hay «Variantes y estados»
+		expect(html).not.toContain("Variantes y estados");
+		expect(html).not.toContain('id="variantes"');
 	});
 
 	it("lleva la línea de importación y la nota de Astro", () => {
@@ -111,8 +111,7 @@ describe("plantilla de página de componente", () => {
 
 	it("el índice «En esta página» lista las secciones que hay", () => {
 		const toc = html.slice(html.indexOf('aria-label="En esta página"'));
-		for (const s of ["uso", "variantes", "props", "codigo", "detalles"])
-			expect(toc).toContain(`href="#${s}"`);
+		for (const s of ["uso", "props", "codigo", "detalles"]) expect(toc).toContain(`href="#${s}"`);
 		// Fuera del catálogo no hay relacionados
 		expect(html).not.toContain(">Relacionados</p>");
 	});

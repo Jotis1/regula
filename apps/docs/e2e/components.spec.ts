@@ -38,12 +38,11 @@ for (const { slug, name, label } of pages) {
 			"aria-current",
 			"page",
 		);
-		// La isla de ejemplos se hidrata al verse: después tiene contenido
-		const examples = page.locator("#variantes + div astro-island");
-		// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
-		await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
-		await expect(examples).not.toHaveAttribute("ssr", /.*/);
-		await expect(examples.locator(":scope > *").first()).toBeVisible();
+		// El ejemplo interactivo se hidrata al verse: después pinta el componente
+		const example = page.locator("section[aria-labelledby=ejemplo]");
+		await example.scrollIntoViewIfNeeded();
+		await expect(example.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+		await expect(example.locator("[data-playground-preview]")).toBeVisible();
 		expect(await page.locator("section[aria-labelledby=props] tbody tr").count()).toBeGreaterThan(0);
 		const code = page.locator("[data-code-tabs]");
 		await expect(code.getByRole("tabpanel")).toContainText(`import { ${name} } from "@jotis-me/react";`);
@@ -54,8 +53,7 @@ test("los ejemplos vivos no heredan los estilos del texto largo (tablas, listas,
 	page,
 }) => {
 	await page.goto("/components/date-picker/");
-	// El ejemplo de DatePicker lleva dos calendarios (rango y horas): basta con el primero
-	const grid = page.locator("#variantes + div table").first();
+	const grid = page.locator("[data-playground-preview] table").first();
 	await grid.scrollIntoViewIfNeeded();
 	const css = await grid.evaluate((t) => {
 		const th = t.querySelector("th") as Element;
@@ -66,21 +64,20 @@ test("los ejemplos vivos no heredan los estilos del texto largo (tablas, listas,
 		};
 	});
 	expect(css).toEqual({ border: "0px", thPadding: "0px", thBg: "rgba(0, 0, 0, 0)" });
+	// El ejemplo interactivo va en una caja `not-prose`: ni listas ni párrafos del texto largo llegan a él
 	await page.goto("/components/text-editor/");
-	const li = page.locator("#variantes + div [role=textbox] li").first();
-	await li.scrollIntoViewIfNeeded();
-	expect(await li.evaluate((e) => getComputedStyle(e).paddingLeft)).toBe("0px");
+	await expect(page.locator("section[aria-labelledby=ejemplo] [data-playground-preview]")).toBeVisible();
+	expect(
+		await page
+			.locator("[data-playground-preview]")
+			.evaluate((el) => !!el.closest(".not-prose") || !el.closest(".prose")),
+	).toBe(true);
 });
 
-test("Button: cinco jerarquías y cinco tamaños vivos, la regla de una primaria y sus props", async ({
-	page,
-}) => {
+test("Button: su ejemplo es un botón de 40px, la regla de una primaria y sus props", async ({ page }) => {
 	await page.goto("/components/button/");
-	const examples = page.locator("#variantes + div");
-	for (const label of ["Guardar", "Cancelar", "Más tarde", "Ver detalles", "Ayuda", "xs", "sm", "xl"])
-		await expect(examples.getByRole("button", { name: label, exact: true })).toBeVisible();
-	await expect(examples.getByRole("button", { name: "Nuevo gasto" })).toHaveCSS("height", "40px");
-	await expect(examples.getByRole("button", { name: "Continuar" })).toHaveCSS("height", "44px");
+	const preview = page.locator("[data-playground-preview]");
+	await expect(preview.getByRole("button", { name: "Nuevo gasto" })).toHaveCSS("height", "40px");
 	await expect(page.locator("section[aria-labelledby=uso]")).toContainText(
 		"Una sola primary por vista o por modal",
 	);
@@ -113,10 +110,7 @@ test("TransparencyGrid: los cuadros usan los colores del tema, en claro y en osc
 		await page.emulateMedia({ colorScheme: scheme });
 		await page.goto("/components/transparency-grid/");
 		// El primer damero de la caja de ejemplos: el que lleva el texto «Cuadros de 8px»
-		const grid = page
-			.locator("#variantes + div div")
-			.filter({ has: page.getByText("Cuadros de 8px") })
-			.last();
+		const grid = page.locator("[data-playground-preview] > div:last-child > *").first();
 		await expect(grid).toBeVisible();
 		return grid.evaluate((el) => {
 			// El color real de cada token en este tema, medido con un elemento de prueba dentro del propio damero
@@ -155,9 +149,9 @@ test("Dropdown: la tabla de props lleva la elección y el check de la elegida no
 	const props = page.getByRole("region", { name: "Props de Dropdown" });
 	await expect(props).toContainText("selectedValue");
 	await expect(props).toContainText("onSelectionChange");
-	const examples = page.locator("#variantes + div astro-island");
-	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
-	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
+	// Los ejemplos del registro (el menú de tema, el de cuentas) están en su página de comparación
+	await page.goto("/visual/dropdown/");
+	const examples = page.locator("body > astro-island");
 	await expect(examples).not.toHaveAttribute("ssr", /.*/);
 	// El menú de tema (el de elección única); el de cuentas también marca una con su radio
 	const checked = examples
@@ -172,10 +166,8 @@ test("Dropdown: la tabla de props lleva la elección y el check de la elegida no
 test("CommandMenu: con el foco en el buscador, la opción activa lleva el anillo de foco; sin foco, solo el fondo", async ({
 	page,
 }) => {
-	await page.goto("/components/command-menu/");
-	const examples = page.locator("#variantes + div astro-island");
-	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
-	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
+	await page.goto("/visual/command-menu/");
+	const examples = page.locator("body > astro-island");
 	await expect(examples).not.toHaveAttribute("ssr", /.*/);
 	const search = examples.getByRole("combobox").first();
 	const active = examples.locator('[role="option"][aria-selected="true"]').first();
@@ -232,10 +224,9 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 	);
 	await expect(page.locator("header dl")).toContainText('import { Button } from "@jotis-me/react"');
 	const headings = await page.locator("article h2").allTextContents();
-	expect(headings.slice(0, 6)).toEqual([
+	expect(headings.slice(0, 5)).toEqual([
 		"Ejemplo interactivo",
 		"Cuándo usarlo",
-		"Variantes y estados",
 		"Props",
 		"Código",
 		"Detalles y accesibilidad",

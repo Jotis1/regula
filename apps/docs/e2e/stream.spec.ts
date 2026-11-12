@@ -49,7 +49,7 @@ test("StreamScene: insignias, ejemplos en oscuro, nota del tema con enlace a tam
 		"href",
 		"/components/stream-scene/full/",
 	);
-	await expect(page.locator("#variantes + div")).toHaveClass(/dark-mode/);
+	await expect(page.locator("[data-playground-preview]")).toHaveClass(/dark-mode/);
 	await expect(page.locator("section[aria-labelledby=codigo] [data-obs-note]")).toContainText("En OBS.");
 	const toc = page.getByRole("navigation", { name: "En esta página" }).last();
 	await expect(toc.getByRole("link", { name: "Guía de Stream" })).toHaveAttribute(
@@ -74,14 +74,4 @@ test("un componente de Stream sin lienzo fijo no enlaza a tamaño real; uno de a
 	await page.goto("/components/button/");
 	await expect(page.locator("[data-stream-note], [data-obs-note]")).toHaveCount(0);
 	await expect(page.getByText("Siempre en oscuro")).toHaveCount(0);
-});
-
-test("StreamAlert: en escritorio las variantes caben en su caja, en una columna", async ({ page }) => {
-	await page.setViewportSize({ width: 1440, height: 900 });
-	await page.goto("/components/stream-alert/");
-	const box = page.locator('[aria-label="Variantes de Stream alert"]');
-	await box.scrollIntoViewIfNeeded();
-	await expect(box.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
-	const [client, scroll] = await box.evaluate((el) => [el.clientWidth, el.scrollWidth]);
-	expect(scroll).toBeLessThanOrEqual(client);
 });
