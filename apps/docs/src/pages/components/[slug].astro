@@ -7,7 +7,6 @@ import { playgroundOf } from "../../lib/playground";
 import { propsOf } from "../../lib/props";
 import { snippetsOf } from "../../lib/snippets";
 import { DARK_PREVIEWS } from "../../visual/registry";
-import VisualExample from "../../visual/VisualExample";
 
 export async function getStaticPaths() {
 	const pages = await getCollection("components");
@@ -22,6 +21,7 @@ const card = splitCard(page.body ?? "");
 // El build corre en apps/docs: las props salen del fuente del componente
 const source = join(process.cwd(), "../..", own ?? `packages/react/src/components/${name}.tsx`);
 const rows = propsOf(source, name);
+// Sobre fondo oscuro, como sus vistas previas de la guía (los de Stream)
 const dark = DARK_PREVIEWS.has(name);
 const playground = playgroundOf(name, rows, { interactive, dark });
 ---
@@ -35,8 +35,5 @@ const playground = playgroundOf(name, rows, { interactive, dark });
 	astro={astro}
 	interactive={interactive}
 	astroNote={astroNote}
-	dark={dark}
 	playground={playground}
->
-	<VisualExample slot="examples" client:visible name={name} />
-</ComponentPage>
+/>

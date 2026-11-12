@@ -73,10 +73,10 @@ test("la cabecera y el menú móvil comparten la elección de tema", async ({ pa
 	await page.goto("/");
 	const header = page.locator("body > header");
 	// El nombre ya vale antes de hidratar: el clic tiene que esperar a la isla
-	await expect(page.locator("body > header astro-island").filter({ hasText: "Tema:" })).not.toHaveAttribute(
-		"ssr",
-		/.*/,
-	);
+	// (la cabecera pinta una isla del tema por versión, escritorio y móvil: se esperan las dos)
+	const islands = page.locator("body > header astro-island").filter({ hasText: "Tema:" });
+	await expect(islands).toHaveCount(2);
+	for (const island of await islands.all()) await expect(island).not.toHaveAttribute("ssr", /.*/);
 	await header.getByRole("button", { name: "Tema: Sistema", exact: true }).click();
 	await page.getByRole("menuitemradio", { name: "Claro", exact: true }).click();
 	await expect(header.getByRole("button", { name: "Tema: Claro", exact: true })).toBeVisible();

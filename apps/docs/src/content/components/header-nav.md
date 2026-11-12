@@ -1,16 +1,16 @@
 ---
 
 name: HeaderNav
-description: "Cabecera de una app con marca, secciones, acciones y cuenta, en cuatro tipos, con su menú móvil."
+description: "Cabecera de una app con marca, secciones, acciones y cuenta, en cinco tipos, con su menú móvil."
 interactive: true
 astroNote: "El menú móvil necesita JavaScript: úsalo en una isla con `client:load`. La marca, las acciones y la cuenta son nodos React, así que va en un `.tsx`."
 ---
 
 **Cuándo usarlo.** La cabecera superior de una app o de una web con varias secciones. Para una navegación lateral de una app densa, `SidebarNav`.
 
-**Props.** `type` (`simple` · `dual-tier` · `tabs` · `centered`), `brand`, `items` (`{ label, href, current?, badge?, icon?, children? }[]`; `children` son las subsecciones), `search` (el buscador), `actions` (botones e iconos de la derecha), `account` (lo de la esquina: un `Dropdown` con la cuenta, un botón de entrar…), `mobile` (`{ footerItems?, footer? }`: los enlaces de pie y la última pieza del panel móvil), `labels` (`nav`, `subnav`, `openMenu`) y `className`.
+**Props.** `type` (`simple` · `dual-tier` · `tabs` · `centered` · `underline`), `brand`, `items` (`{ label, href, current?, badge?, icon?, children? }[]`; `children` son las subsecciones), `search` (el buscador), `actions` (botones e iconos de la derecha), `account` (lo de la esquina: un `Dropdown` con la cuenta, un botón de entrar…), `mobile` (`{ footerItems?, footer? }`: los enlaces de pie y la última pieza del panel móvil), `mobileBar` (lo de la derecha de la fila móvil: si se da, sustituye al botón de menú y al panel integrados), `labels` (`nav`, `subnav`, `openMenu`) y `className`.
 
-**Tipos.** `simple`: una fila de 64px con la marca, las secciones, las acciones y la cuenta. `dual-tier`: una segunda fila de 64px con las subsecciones de la sección actual y, a la derecha, el buscador. `tabs`: una segunda fila de 44px con las subsecciones como pestañas, con la actual subrayada en `fg-brand-primary_alt`. `centered`: la marca a la izquierda, las secciones al centro y las acciones a la derecha, con la segunda fila centrada.
+**Tipos.** `simple`: una fila de 64px con la marca, las secciones, las acciones y la cuenta. `dual-tier`: una segunda fila de 64px con las subsecciones de la sección actual y, a la derecha, el buscador. `tabs`: una segunda fila de 44px con las subsecciones como pestañas, con la actual subrayada en `fg-brand-primary_alt`. `centered`: la marca a la izquierda, las secciones al centro y las acciones a la derecha, con la segunda fila centrada. `underline`: una fila de 64px como `simple`, pero las secciones van en `text-tertiary` de `text-sm`, con la actual en `text-primary` y subrayada 2px en `fg-brand-primary_alt`, sin subsecciones: la cabecera de una web de documentación.
 
 **Visual.** Fondo `bg-primary` con un filo inferior `border-secondary`, contenido a 1280px como máximo con 32px a los lados. Los enlaces son de `text-md` semibold en `text-secondary`, con `bg-primary_hover` al pasar el ratón y para la sección actual; las subsecciones, de `text-sm`. Las pestañas de `tabs` van en `text-quaternary` y la actual en `text-brand-secondary`.
 

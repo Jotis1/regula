@@ -1,10 +1,10 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 
-/** La isla de búsqueda se hidrata con `client:idle`: hasta entonces el atajo no responde. */
+/** La isla de búsqueda se hidrata con `client:idle`: hasta entonces el atajo no responde. La cabecera lleva una por versión (escritorio y móvil). */
 async function ready(page: Page, path = "/") {
 	await page.goto(path);
-	await expect(page.locator("astro-island:not([ssr])").filter({ hasText: "Buscar" })).toHaveCount(1);
+	await expect(page.locator("astro-island:not([ssr])").filter({ hasText: "Buscar" })).toHaveCount(2);
 }
 
 const dialog = (page: Page) => page.getByRole("dialog", { name: "Buscar en Regula" });

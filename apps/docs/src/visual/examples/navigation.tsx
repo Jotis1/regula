@@ -236,6 +236,15 @@ export function HeaderNavExample() {
 					account={headerAccount}
 				/>
 			</HeaderPreview>
+			<HeaderPreview height={65}>
+				<HeaderNav
+					type="underline"
+					brand={headerBrand}
+					items={headerItems}
+					actions={headerActions}
+					account={headerAccount}
+				/>
+			</HeaderPreview>
 			<HeaderPreview height={129}>
 				<HeaderNav
 					type="dual-tier"

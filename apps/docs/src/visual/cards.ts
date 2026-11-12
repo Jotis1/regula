@@ -63,7 +63,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	DatePicker: 960,
 	Dropdown: 1290,
 	ContextMenu: 530,
-	HeaderNav: 440,
+	HeaderNav: 495,
 	MarketingNav: 1980,
 	Footer: 3200,
 	BlogPostCard: 2520,

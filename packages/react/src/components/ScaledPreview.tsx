@@ -21,7 +21,7 @@ export interface ScaledPreviewProps {
 }
 
 /** La escala con la que el contenido cabe en la caja, sin pasar de 1: encoger sí, ampliar no. */
-function fit(width: number, [boxWidth, boxHeight]: [number, number], contentHeight?: number): number {
+function scaleToFit(width: number, [boxWidth, boxHeight]: [number, number], contentHeight?: number): number {
 	const byWidth = boxWidth / width;
 	const byHeight = contentHeight ? boxHeight / contentHeight : Number.POSITIVE_INFINITY;
 	return Math.min(byWidth, byHeight, 1);
@@ -34,7 +34,7 @@ function fit(width: number, [boxWidth, boxHeight]: [number, number], contentHeig
  * con `aria-hidden` e `inert`.
  */
 export function ScaledPreview({ width, box, contentHeight, scale, className, children }: ScaledPreviewProps) {
-	const factor = scale ?? fit(width, box, contentHeight);
+	const factor = scale ?? scaleToFit(width, box, contentHeight);
 	return (
 		<div className={cx("relative overflow-hidden", className)} style={{ width: box[0], height: box[1] }}>
 			<div className="origin-top-left" style={{ width, transform: `scale(${factor})` }}>

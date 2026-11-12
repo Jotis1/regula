@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 // Página de un componente (reference/docs-design/Button.dc.html y ButtonM.dc.html): migas Componentes › grupo ›
 // nombre, insignia del grupo, descripción, línea de importación y nota de Astro; «Cuándo usarlo» (la ficha),
-// variantes (el ejemplo del registro), props, código, «Detalles y accesibilidad» (el resto de la ficha) y
+// props, código, «Detalles y accesibilidad» (el resto de la ficha) y
 // anterior/siguiente. A la derecha, el índice «En esta página» y los relacionados del catálogo (design §2).
 import { Badge, Breadcrumbs, Button, Icon, Pager } from "@jotis-me/react";
 import CardSections from "../components/CardSections.astro";
@@ -37,8 +37,6 @@ interface Props {
 	interactive?: boolean;
 	/** Aviso bajo el fragmento de Astro (props función, islas). */
 	astroNote?: string;
-	/** Ejemplos sobre fondo oscuro, como sus vistas previas de la guía (Stream: `DARK_PREVIEWS`). */
-	dark?: boolean;
 	/** Playground generado de sus props (src/lib/playground.ts); sin él, la página enseña solo sus ejemplos. */
 	playground?: PlaygroundData;
 }
@@ -51,7 +49,6 @@ const {
 	astro,
 	interactive = false,
 	astroNote,
-	dark = false,
 	playground,
 } = Astro.props;
 
@@ -81,7 +78,6 @@ const has = (...ids: string[]) => card.sections.some((s) => ids.includes(s.id));
 const toc = [
 	playground && { slug: "ejemplo", text: "Ejemplo" },
 	has("uso", "evita") && { slug: "uso", text: "Cuándo usarlo" },
-	{ slug: "variantes", text: "Variantes y estados" },
 	compositions.length > 0 && { slug: "composiciones", text: "Composiciones" },
 	{ slug: "props", text: "Props" },
 	{ slug: "codigo", text: "Código" },
@@ -137,7 +133,7 @@ const toc = [
 					<section aria-labelledby="ejemplo" data-pagefind-ignore>
 						<h2 id="ejemplo">Ejemplo interactivo</h2>
 						<div class="not-prose my-4">
-							<Playground client:visible playground={playground} />
+							<Playground client:visible playground={playground} rows={props} />
 						</div>
 						{stream && <StreamNote name={name} />}
 					</section>
@@ -145,25 +141,6 @@ const toc = [
 			}
 
 			<CardSections card={card} part="uso" />
-
-			<section aria-labelledby="variantes">
-				<h2 id="variantes">Variantes y estados</h2>
-				{/* Contenedor: un ejemplo puede adaptarse al ancho de la caja (StreamAlert pasa a una columna) sin cambiar en
-				    /visual/, donde no hay contenedor y la paridad compara con la captura de la guía */}
-				<div
-					data-pagefind-ignore
-					role="region"
-					aria-label={`Variantes de ${label}`}
-					tabindex="0"
-					class:list={[
-						"@container not-prose my-4 flex flex-col gap-6 overflow-x-auto rounded-xl p-6 shadow-[inset_0_0_0_1px_var(--border-secondary)] focus-visible:shadow-focus-ring focus-visible:outline-none",
-						dark && "dark-mode bg-primary text-primary",
-					]}
-				>
-					<slot name="examples" />
-				</div>
-				{stream && !playground && <StreamNote name={name} />}
-			</section>
 
 			{
 				compositions.length > 0 && (

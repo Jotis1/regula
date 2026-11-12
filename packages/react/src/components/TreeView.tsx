@@ -153,7 +153,9 @@ function ClassicTreeView({
 								{iconSlot(item.icon ?? (kids ? "folder" : "file-04"), md ? 20 : 16)}
 								<span className="min-w-0 flex-1 truncate">{item.label}</span>
 								{item.meta != null ? (
-									<span className="text-xs font-medium text-quaternary">{item.meta}</span>
+									<span className="text-xs font-medium text-quaternary group-data-selected:text-tertiary">
+										{item.meta}
+									</span>
 								) : null}
 							</>
 						)}
@@ -308,7 +310,9 @@ function AdvancedTreeView({
 								{iconSlot(item.icon ?? (kids ? "folder" : "file-04"), md ? 20 : 16)}
 								<span className="min-w-0 flex-1 truncate">{item.label}</span>
 								{item.meta != null ? (
-									<span className="text-xs font-medium text-quaternary">{item.meta}</span>
+									<span className="text-xs font-medium text-quaternary group-data-selected:text-tertiary">
+										{item.meta}
+									</span>
 								) : null}
 								<span
 									aria-hidden="true"

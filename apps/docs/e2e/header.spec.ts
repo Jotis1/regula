@@ -55,7 +55,7 @@ for (const [path, current] of [
 		const marked = sections(page).locator("a[aria-current]");
 		await expect(marked).toHaveCount(1);
 		await expect(marked).toHaveText(current);
-		await expect(marked).toHaveAttribute("aria-current", "true");
+		await expect(marked).toHaveAttribute("aria-current", "page");
 	});
 }
 
@@ -85,14 +85,16 @@ test("la búsqueda tiene aspecto de campo y el selector de tema dice lo elegido"
 });
 
 // Medidas de Header.dc.html a 1440px: alto 64, padding lateral 32, icono 28, huecos de 32 entre bloques y 24
-// entre secciones, y la sección actual subrayada 2px en fg-brand-primary_alt.
+// entre secciones, y la sección actual subrayada 2px en fg-brand-primary_alt. El contenido de la cabecera va en el
+// contenedor de la guía (1280), centrado: a 1440px quedan 80px de margen a cada lado, además del padding.
+const MARGIN = 80;
 test("a 1440px tiene las medidas del diseño", async ({ page }) => {
 	await page.goto("/components/button/");
 	const box = await header(page).boundingBox();
 	expect(box?.height).toBe(64);
 	expect(box?.width).toBe(1440);
 	const brand = await header(page).getByRole("link", { name: "Regula, portada" }).boundingBox();
-	expect(brand?.x).toBe(32);
+	expect(brand?.x).toBe(MARGIN + 32);
 	const icon = await header(page).locator("a[aria-label='Regula, portada'] svg:visible").boundingBox();
 	expect([icon?.width, icon?.height]).toEqual([28, 28]);
 	const nav = await sections(page).boundingBox();
@@ -105,7 +107,7 @@ test("a 1440px tiene las medidas del diseño", async ({ page }) => {
 	const search = await header(page)
 		.getByRole("button", { name: /Buscar en Regula/ })
 		.boundingBox();
-	expect(1440 - ((search?.x ?? 0) + (search?.width ?? 0))).toBe(32);
+	expect(1440 - MARGIN - ((search?.x ?? 0) + (search?.width ?? 0))).toBe(32);
 	const toggle = await header(page).getByRole("button", { name: /^Tema/ }).boundingBox();
 	expect((search?.x ?? 0) - ((toggle?.x ?? 0) + (toggle?.width ?? 0))).toBe(32);
 	const underline = await sections(page)

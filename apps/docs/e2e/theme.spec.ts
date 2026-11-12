@@ -22,11 +22,12 @@ const trigger = (page: Page, elegido: "Sistema" | "Claro" | "Oscuro") =>
 	page.getByRole("button", { name: `Tema: ${elegido}`, exact: true });
 
 /** Espera a que la isla del selector esté hidratada: antes, el botón no abre nada. */
-const hydrated = (page: Page) =>
-	expect(page.locator("body > header astro-island").filter({ hasText: "Tema:" })).not.toHaveAttribute(
-		"ssr",
-		/.*/,
-	);
+const hydrated = async (page: Page) => {
+	// La cabecera lleva una isla del selector por versión (escritorio y móvil): se esperan las dos
+	const islands = page.locator("body > header astro-island").filter({ hasText: "Tema:" });
+	await expect(islands).toHaveCount(2);
+	for (const island of await islands.all()) await expect(island).not.toHaveAttribute("ssr", /.*/);
+};
 
 /** Abre el selector de la cabecera y elige una opción. */
 async function choose(
@@ -164,10 +165,9 @@ test("el botón dice lo elegido antes de hidratar: sin el JavaScript de las isla
 	// Sin los módulos de las islas solo corre el script de <head>: el botón se queda como lo pintó el servidor
 	await page.route("**/_astro/*.js", (route) => route.abort());
 	await page.reload();
-	await expect(page.locator("body > header astro-island").filter({ hasText: "Tema:" })).toHaveAttribute(
-		"ssr",
-		"",
-	);
+	await expect(
+		page.locator("body > header astro-island").filter({ hasText: "Tema:" }).first(),
+	).toHaveAttribute("ssr", "");
 	expect(await shownLabels(page, "Oscuro")).toEqual({ text: ["Oscuro"], icon: ["Oscuro"] });
 });
 

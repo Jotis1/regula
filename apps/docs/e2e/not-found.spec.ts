@@ -17,7 +17,7 @@ test("una dirección que no existe da 404 con la página propia", async ({ page 
 
 test("«Buscar en Regula» abre la búsqueda global", async ({ page }) => {
 	await page.goto("/esto-no-existe/");
-	await expect(page.locator("astro-island:not([ssr])").filter({ hasText: "Buscar" })).toHaveCount(1);
+	await expect(page.locator("astro-island:not([ssr])").filter({ hasText: "Buscar" })).toHaveCount(2);
 	await page.locator("[data-not-found]").getByRole("button", { name: "Buscar en Regula" }).click();
 	await expect(page.getByRole("dialog", { name: "Buscar en Regula" })).toBeVisible();
 });

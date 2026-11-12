@@ -594,12 +594,6 @@ const usage: Record<string, string> = {
 />`,
 };
 
-const indent = (code: string, tabs: number) =>
-	code
-		.split("\n")
-		.map((l) => "\t".repeat(tabs) + l)
-		.join("\n");
-
 /** Fragmentos de Next.js y Astro del componente `name`. */
 export function snippetsOf(name: string, interactive: boolean): { next: string; astro: string } {
 	const code = usage[name];

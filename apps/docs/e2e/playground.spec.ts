@@ -45,9 +45,9 @@ test("los controles son desplegables, van encima de la vista previa y el código
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await expect(pg.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
 	// Ningún grupo de botones: cada prop con valores cerrados es un desplegable
-	await expect(pg.locator("[data-pg-control=choice] button[aria-haspopup=listbox]")).toHaveCount(
-		await pg.locator("[data-pg-control=choice]").count(),
-	);
+	await expect(
+		pg.locator("[data-pg-control=choice] button[aria-haspopup=listbox]:not([disabled])"),
+	).toHaveCount(await pg.locator("[data-pg-control=choice]").count());
 	await expect(pg.locator("[data-pg-control=choice] [role=group]")).toHaveCount(0);
 	const controls = await pg.locator("[data-playground-controls]").boundingBox();
 	const preview = await pg.locator("[data-playground-preview]").boundingBox();
@@ -69,12 +69,6 @@ test("en móvil los desplegables ocupan todo el ancho y cambian el código", asy
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
 });
 
-test("un componente sin playground enseña solo sus ejemplos", async ({ page }) => {
-	await page.goto("/components/breadcrumbs/");
-	await expect(page.locator("section[aria-labelledby=ejemplo]")).toHaveCount(0);
-	await expect(page.locator("#variantes")).toBeVisible();
-});
-
 /** Abre el desplegable de un control (el `Select` del paquete) y elige una opción por su nombre. */
 async function choose(pg: Locator, control: string, value: string) {
 	await pg.getByRole("button", { name: new RegExp(String.raw`\b${control}$`) }).click();
@@ -85,7 +79,7 @@ async function choose(pg: Locator, control: string, value: string) {
 async function extremes(page: Page, which: "first" | "last") {
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	const triggers = pg
-		.locator("[data-pg-control=choice] button[aria-haspopup=listbox]")
+		.locator("[data-pg-control=choice] button[aria-haspopup=listbox]:not([disabled])")
 		.filter({ visible: true });
 	for (let i = 0; i < (await triggers.count()); i++) {
 		await triggers.nth(i).click();
@@ -93,7 +87,8 @@ async function extremes(page: Page, which: "first" | "last") {
 		await (which === "first" ? options.first() : options.last()).click();
 	}
 	for (const toggle of await pg.locator("[data-playground-controls]").getByRole("switch").all())
-		if ((await toggle.isChecked()) !== (which === "last")) await flip(page, toggle);
+		if ((await toggle.isEnabled()) && (await toggle.isChecked()) !== (which === "last"))
+			await flip(page, toggle);
 }
 
 /** Pulsa un Toggle: el input va oculto bajo su dibujo, así que se pulsa la etiqueta que lo envuelve. */
@@ -132,4 +127,58 @@ test("BackgroundPattern: el patrón llena su marco y cambia con los controles", 
 	await choose(pg, "pattern", "circles");
 	await expect.poll(() => preview.locator("svg").innerHTML()).not.toBe(before);
 	await expect(pg.locator("pre")).toContainText('pattern="circles"');
+});
+
+test("Button: elegir un icono lo pinta y lo escribe en el código; «Ninguno» lo quita", async ({ page }) => {
+	await page.goto("/components/button/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await choose(pg, "iconLeading", "plus");
+	await expect(pg.getByRole("tabpanel")).toContainText('<Button iconLeading="plus">Nuevo gasto</Button>');
+	await expect(pg.locator("[data-playground-preview] button svg")).toHaveCount(1);
+	await choose(pg, "iconLeading", "Ninguno");
+	await expect(pg.getByRole("tabpanel")).toContainText("<Button>Nuevo gasto</Button>");
+	await expect(pg.locator("[data-playground-preview] button svg")).toHaveCount(0);
+});
+
+test("Skeleton: escribir un número en width cambia el ancho y el código", async ({ page }) => {
+	await page.goto("/components/skeleton/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	const width = pg.locator('[data-pg-control="number"]').filter({ hasText: "width" }).locator("input");
+	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await width.fill("220");
+	await width.blur();
+	await expect(pg.getByRole("tabpanel")).toContainText("width={220}");
+});
+
+test("Button: el atajo «Solo icono» desactiva los controles que no aplican, con su motivo, y se alcanza con teclado", async ({
+	page,
+}) => {
+	await page.goto("/components/button/");
+	const pg = page.locator("section[aria-labelledby=ejemplo]");
+	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	const presets = pg.getByRole("group", { name: "Atajos" });
+	await expect(presets.getByRole("button", { name: "Por defecto" })).toHaveAttribute(
+		"aria-pressed",
+		"true",
+	);
+	await presets.getByRole("button", { name: "Solo icono" }).click();
+	await expect(presets.getByRole("button", { name: "Solo icono" })).toHaveAttribute("aria-pressed", "true");
+	await expect(presets.getByRole("button", { name: "Por defecto" })).toHaveAttribute(
+		"aria-pressed",
+		"false",
+	);
+	// Los controles que no aplican, desactivados y con el motivo a la vista
+	const control = pg.locator('[data-pg-control="icon"]').filter({ hasText: "iconLeading" });
+	await expect(control.getByRole("button")).toBeDisabled();
+	await expect(control).toContainText("Un botón de solo icono no lleva texto ni iconos a los lados.");
+	await expect(pg.getByRole("tabpanel")).toContainText('<Button iconOnly="plus" label="Nuevo gasto" />');
+	// Volver al por defecto reactiva todo
+	await presets.getByRole("button", { name: "Por defecto" }).click();
+	await expect(control.getByRole("button")).toBeEnabled();
+	await expect(pg.getByRole("tabpanel")).toContainText("<Button>Nuevo gasto</Button>");
+	// Con teclado: Tab llega al atajo y Enter lo elige
+	await presets.getByRole("button", { name: "Destructivo" }).focus();
+	await page.keyboard.press("Enter");
+	await expect(pg.getByRole("tabpanel")).toContainText("destructive");
 });

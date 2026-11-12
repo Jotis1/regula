@@ -15,15 +15,15 @@ const open = async (page: Page, width: number) => {
 test("a 1440px las secciones y la segunda fila se ven, y no el botón de menú", async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto("/visual/header-nav/");
-	await page.waitForFunction(() => document.querySelectorAll("header").length >= 5);
+	await page.waitForFunction(() => document.querySelectorAll("header").length >= 6);
 	// La caja de 1280px de cada tipo: escritorio, con las secciones a la vista
-	const dual = page.locator("header").nth(1);
+	const dual = page.locator("header").nth(2);
 	await expect(dual.getByRole("navigation", { name: "Principal" }).first()).toBeVisible();
 	await expect(dual.getByRole("navigation", { name: "Subsecciones" })).toBeVisible();
 	await expect(dual.getByRole("link", { name: "Resumen" })).toHaveAttribute("aria-current", "page");
 	await expect(dual.getByRole("button", { name: "Abrir menú" })).toBeHidden();
 	// Las pestañas de `tabs` son enlaces, no un tablist
-	const tabs = page.locator("header").nth(2);
+	const tabs = page.locator("header").nth(3);
 	await expect(tabs.getByRole("navigation", { name: "Subsecciones" })).toBeVisible();
 	await expect(page.getByRole("tablist")).toHaveCount(0);
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1440);

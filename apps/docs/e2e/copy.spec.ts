@@ -14,7 +14,7 @@ async function hydrated(page: Page) {
 const tooltip = (page: Page) => page.locator("[data-copy-tooltip]");
 
 /** Pulsa el botón, ya en mitad de la ventana (desplazar antes: desplazar después quita la burbuja). */
-async function copyFrom(page: Page, button: Locator) {
+async function copyFrom(button: Locator) {
 	await button.evaluate((el) => el.scrollIntoView({ block: "center" }));
 	await button.click();
 }
@@ -40,7 +40,7 @@ for (const scheme of ["light", "dark"] as const) {
 		await page.goto("/foundations/color/");
 		await hydrated(page);
 		const button = page.getByRole("button", { name: "Copiar bg-brand-solid", exact: true });
-		await copyFrom(page, button);
+		await copyFrom(button);
 		await expect(tooltip(page)).toHaveText("Copiado");
 		await expectAbove(page, button);
 		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("bg-brand-solid");
@@ -64,7 +64,7 @@ for (const scheme of ["light", "dark"] as const) {
 		await page.getByLabel("Buscar icono").fill("calendar");
 		await page.locator('[data-select="calendar"]').click();
 		const button = page.getByRole("button", { name: "Copiar nombre" });
-		await copyFrom(page, button);
+		await copyFrom(button);
 		await expect(tooltip(page)).toHaveText("Copiado");
 		await expectAbove(page, button);
 		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("calendar");
@@ -84,7 +84,7 @@ test("un valor largo no ensancha la burbuja: sigue diciendo solo «Copiado»", a
 	const longest = lengths.indexOf(Math.max(...lengths));
 	expect(lengths[longest]).toBeGreaterThan((lengths[shortest] ?? 0) + 5);
 	const width = async (i: number) => {
-		await copyFrom(page, buttons.nth(i));
+		await copyFrom(buttons.nth(i));
 		await expect(tooltip(page)).toHaveText("Copiado");
 		return (await tooltip(page).locator("> span").boundingBox())?.width;
 	};
@@ -100,17 +100,16 @@ test("la página de CopyTooltip: useCopy desde una isla y, con dos CopyTooltip m
 }) => {
 	await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 	await page.goto("/components/copy-tooltip/");
-	// La isla de los ejemplos y la del CopyTooltip de la página tienen que estar hidratadas
-	const examples = page.locator("#variantes + div astro-island");
-	// La isla es `display: contents` y empieza por la marca de Suspense de React (design D11): se va a su primer elemento
-	await examples.locator(":scope > *").first().scrollIntoViewIfNeeded();
-	await expect(examples).not.toHaveAttribute("ssr", /.*/);
+	// La isla del ejemplo interactivo (con su botón y su CopyTooltip) y la de la página tienen que estar hidratadas
+	const example = page.locator("section[aria-labelledby=ejemplo]");
+	await example.scrollIntoViewIfNeeded();
+	await expect(example.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
 	await hydrated(page);
 	// El de la página (Base) y el del ejemplo están montados a la vez
 	await expect(page.locator("[data-copy-tooltip]")).toHaveCount(2);
-	const button = examples.getByRole("button", { name: "Copiar variable" });
-	await copyFrom(page, button);
+	const button = example.getByRole("button", { name: "Copiar instalación" });
+	await copyFrom(button);
 	await expect(page.locator("[data-copy-tooltip]:not(:empty)")).toHaveCount(1);
 	await expect(page.locator("[data-copy-tooltip]:not(:empty)")).toHaveText("Copiado");
-	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("var(--bg-brand-solid)");
+	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("bun add @jotis-me/react");
 });
