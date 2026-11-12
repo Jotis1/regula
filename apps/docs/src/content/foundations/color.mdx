@@ -54,6 +54,20 @@ Los tokens son **semánticos**: elige por función, no por tono. Cada uno trae s
 	]}
 />
 
+## Un tema dentro de otro
+
+El tema lo pone una clase, no la preferencia del sistema: `dark-mode` en `<html>` o en cualquier contenedor redefine los tokens de ahí hacia dentro. Su pareja es `light-mode`, que los devuelve a su valor claro dentro de una página oscura y apaga las clases `dark:` de lo que contiene. Sirve para enseñar los dos temas a la vez: una vista previa de tema en los ajustes, un antes y después.
+
+<div class="dark-mode rounded-xl bg-primary p-4 ring-1 ring-secondary ring-inset">
+	<p class="text-sm text-secondary">Contenedor con `dark-mode`</p>
+	<div class="light-mode mt-3 rounded-lg bg-primary p-4 ring-1 ring-secondary ring-inset">
+		<p class="text-sm font-semibold text-primary">Dentro, un contenedor con `light-mode`</p>
+		<p class="mt-1 text-sm text-tertiary">Los mismos tokens, con su valor claro.</p>
+	</div>
+</div>
+
+Se anida una vez. Un `dark-mode` dentro de un `light-mode` no está soportado: sus tokens cambian, pero las clases `dark:` no vuelven.
+
 ## Contraste
 
 Todos los pares de texto principales superan 4,5:1 en ambos temas. Excepciones heredadas del archivo, que se mantienen tal cual:

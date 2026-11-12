@@ -52,7 +52,20 @@ const usage: Record<string, string> = {
 		{ title: "Tu empresa", description: "Web y ubicación" },
 		{ title: "Tu equipo", description: "Empieza a colaborar" },
 	]}
-/>`,
+/>
+
+<ProgressSteps
+	aria-label="Alta"
+	current={paso}
+	onChange={setPaso}
+	steps={[
+		{ title: "Tus datos", description: "Nombre y correo" },
+		{ title: "Tu empresa", description: "Web y ubicación" },
+		{ title: "Tu equipo", description: "Empieza a colaborar" },
+	]}
+>
+	{(i) => <p>Contenido del paso {i + 1}</p>}
+</ProgressSteps>`,
 	ProgressCircle: `<ProgressCircle value={40} label="Usuarios activos" />
 <ProgressCircle value={40} shape="half" size="sm" label="Usuarios activos" />`,
 	AppIcon: `<AppIcon app="pecunia" size={48} />`,

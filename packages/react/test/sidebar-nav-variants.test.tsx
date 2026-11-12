@@ -384,3 +384,73 @@ describe("SidebarNav: marca y cuenta según el tipo", () => {
 		expect(group.nextElementSibling?.textContent).toContain("Buscar");
 	});
 });
+
+describe("SidebarNav: disclosure", () => {
+	const grouped: SidebarNavItem[] = [
+		{ icon: HomeLine, label: "Inicio", href: "/" },
+		{ icon: BarChart01, label: "Panel", badge: 2, children: dashboardChildren },
+		{
+			icon: Users01,
+			label: "Equipo",
+			children: [{ label: "Miembros", href: "/equipo/miembros/", active: true }],
+		},
+		{ icon: Star01, label: "Favoritos", defaultOpen: true, children: [{ label: "Uno", href: "/uno/" }] },
+	];
+	const parse = (html: string) => {
+		const host = document.createElement("div");
+		host.innerHTML = html;
+		return host;
+	};
+
+	it("por defecto es script: botones con aria-expanded y ningún details", () => {
+		const html = renderToStaticMarkup(<SidebarNav items={grouped} />);
+		expect(html).not.toContain("<details");
+		expect(html).toContain("aria-expanded");
+		expect(normalizeIds(html)).toBe(
+			normalizeIds(renderToStaticMarkup(<SidebarNav items={grouped} disclosure="script" />)),
+		);
+	});
+
+	it.each(["simple", "sections-dividers", "sections-subheadings"] as const)(
+		"con native en %s cada elemento con hijos es un details, abierto si lleva defaultOpen o contiene el activo",
+		(type) => {
+			const props =
+				type === "simple" ? { items: grouped } : { sections: [{ title: "General", items: grouped }] };
+			const host = parse(
+				renderToStaticMarkup(<SidebarNav type={type} disclosure="native" {...props} />),
+			);
+			const details = [...host.querySelectorAll("details")];
+			expect(details).toHaveLength(3);
+			expect(details.map((d) => d.querySelector("summary")?.textContent)).toEqual([
+				"Panel2",
+				"Equipo",
+				"Favoritos",
+			]);
+			// Panel: cerrado; Equipo: contiene el activo; Favoritos: defaultOpen
+			expect(details.map((d) => d.hasAttribute("open"))).toEqual([false, true, true]);
+			expect(details[1]?.querySelector("a[aria-current='page']")?.textContent).toBe("Miembros");
+			// El navegador anuncia el estado del summary: nada de aria-expanded ni aria-controls
+			expect(host.innerHTML).not.toContain("aria-expanded");
+			expect(host.innerHTML).not.toContain("aria-controls");
+			expect(host.querySelector("button")).toBeNull();
+			// El chevron gira con details[open], y sin movimiento si se pide reducirlo
+			const chevron = details[0]?.querySelector("summary svg:last-of-type");
+			expect(chevron?.getAttribute("class")).toContain("group-open/disclosure:rotate-180");
+			expect(chevron?.getAttribute("class")).toContain("motion-reduce:transition-none");
+		},
+	);
+
+	it("con native se pinta en el servidor y los enlaces de un grupo cerrado siguen en el HTML", () => {
+		const html = renderToStaticMarkup(<SidebarNav items={grouped} disclosure="native" />);
+		expect(html).toContain('href="/panel/avisos/"');
+	});
+
+	it.each(["dual-tier", "slim"] as const)("en %s se ignora: el mismo HTML que con script", (type) => {
+		const render = (disclosure: "script" | "native") =>
+			normalizeIds(
+				renderToStaticMarkup(<SidebarNav type={type} items={grouped} disclosure={disclosure} />),
+			);
+		expect(render("native")).toBe(render("script"));
+		expect(render("native")).not.toContain("<details");
+	});
+});

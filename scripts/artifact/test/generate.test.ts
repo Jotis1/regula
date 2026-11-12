@@ -13,6 +13,7 @@ import { componentReadme } from "../src/content";
 import { generate, LIMITS, type Manifest } from "../src/generate";
 import { mdxToMarkdown } from "../src/guide";
 import { REACT, TOKENS } from "../src/paths";
+import { DARK_VARIANT } from "../src/sheet";
 
 const COMMIT = "0123456789abcdef0123456789abcdef01234567";
 const DATE = "2026-11-06T00:00:00Z";
@@ -123,6 +124,17 @@ describe("límites del tipo", () => {
 	it("ningún fichero pasa de 15 MiB y el total queda por debajo de 1.008", () => {
 		for (const f of manifest.files) expect(f.size, f.path).toBeLessThanOrEqual(LIMITS.fileBytes);
 		expect(manifest.files.length + manifest.assets.length).toBeLessThan(LIMITS.files);
+	});
+
+	it('la hoja publica el tema claro forzado también como data-theme="light"', () => {
+		const sheet = text("components/bundle.css");
+		expect(sheet).toContain('.dark-mode, [data-theme="dark"] {');
+		expect(sheet).toContain('.light-mode, [data-theme="light"] {');
+		// `dark:` se apaga dentro de un contenedor claro, pero no por el `data-theme="light"` de la raíz
+		expect(DARK_VARIANT).toContain(
+			':not(:where(.light-mode, .light-mode *, [data-theme="light"]:not(:root),',
+		);
+		expect(text("README.md")).toContain('`data-theme="light"`');
 	});
 
 	it("la hoja mantiene .jm-root de la guía, para los diseños que envuelven con esa clase", () => {

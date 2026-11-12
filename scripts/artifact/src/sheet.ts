@@ -16,20 +16,27 @@ export const JM_ROOT = `/* Contenedor de los diseños (compatibilidad con la gu�
 .jm-root { font-family: var(--font-body); color: var(--text-primary); -webkit-font-smoothing: antialiased; }
 `;
 
+// El artefacto pone el tema oscuro con `data-theme="dark"`; las apps, con `.dark-mode`
+// Un trozo claro dentro de uno oscuro apaga `dark:`: `data-theme="light"` en un contenedor (en las apps, `.light-mode`).
+// El de `<html>` no cuenta: el visor lo pone en la raíz para su tema claro y un contenedor oscuro debe seguir siéndolo.
+export const DARK_VARIANT =
+	'@custom-variant dark (&:where(.dark-mode, .dark-mode *, [data-theme="dark"], [data-theme="dark"] *):not(:where(.light-mode, .light-mode *, [data-theme="light"]:not(:root), [data-theme="light"]:not(:root) *)));';
+
 export async function buildSheet(): Promise<string> {
 	// `source(none)`: sin detección automática; solo las fuentes declaradas (las de styles.css y los ejemplos)
 	const input = [
 		'@import "tailwindcss" source(none);',
 		'@import "@jotis-me/react/styles.css";',
 		`@source "${EXAMPLES.replaceAll("\\", "/")}";`,
-		// El artefacto pone el tema oscuro con `data-theme="dark"`; las apps, con `.dark-mode`
-		'@custom-variant dark (&:where(.dark-mode, .dark-mode *, [data-theme="dark"], [data-theme="dark"] *));',
+		DARK_VARIANT,
 	].join("\n");
 	const compiler = await compile(input, { base: join(import.meta.dirname, ".."), onDependency: () => {} });
 	const candidates = new Scanner({ sources: compiler.sources }).scan();
 	let css = compiler.build(candidates);
 	// Los valores oscuros de los tokens: el mismo bloque para los dos selectores
 	css = css.replace(/(^|\n)(\s*)\.dark-mode\s*\{/g, '$1$2.dark-mode, [data-theme="dark"] {');
+	// Y los claros de vuelta, para el contenedor claro dentro de uno oscuro
+	css = css.replace(/(^|\n)(\s*)\.light-mode\s*\{/g, '$1$2.light-mode, [data-theme="light"] {');
 	// Las fuentes viven en `project/fonts/`; la hoja, en `project/components/`
 	css = css.replace(/url\((["']?)\.\/fonts\//g, "url($1../fonts/");
 	return `${css}\n${JM_ROOT}`;

@@ -3,10 +3,10 @@
 name: SidebarNav
 description: "Navegación lateral de las apps de la suite: cinco tipos (simple, dos niveles, estrecho y dos de secciones), submenús, tarjetas destacadas, tarjeta de cuenta y diseño adaptable."
 interactive: true
-astroNote: "Los ítems son enlaces y se pintan sin directiva, pero los submenús, el segundo panel, la tarjeta de cuenta y `responsive` necesitan `client:load`. `onLogout`, `account` y `featured` con funciones: envuélvelo en un `.tsx` con `client:load`."
+astroNote: "Los ítems son enlaces y se pintan sin directiva, y con `disclosure=\"native\"` los submenús también (son `<details>`), pero los submenús con `script`, el segundo panel, la tarjeta de cuenta y `responsive` necesitan `client:load`. `onLogout`, `account` y `featured` con funciones: envuélvelo en un `.tsx` con `client:load`."
 ---
 
-**Props.** `type` (`simple`, `dual-tier`, `slim`, `sections-dividers`, `sections-subheadings`), `brand` (texto o nodo) y `mark` (marca compacta de `slim`), `search`, `items` [{`icon`, `label`, `href`, `active`, `badge`, `shortcut`, `trailing`, `children`, `defaultOpen`}], `sections` [{`title`, `items`}] para los dos tipos de secciones, `footerItems`, `featured` (un nodo), `account` (el `Dropdown` de tarjeta de cuenta: `items`, `accounts`, `onAddAccount`…), `user` (props de `AvatarLabel`), `responsive` y `defaultMenuOpen`.
+**Props.** `type` (`simple`, `dual-tier`, `slim`, `sections-dividers`, `sections-subheadings`), `brand` (texto o nodo) y `mark` (marca compacta de `slim`), `search`, `items` [{`icon`, `label`, `href`, `active`, `badge`, `shortcut`, `trailing`, `children`, `defaultOpen`}], `sections` [{`title`, `items`}] para los dos tipos de secciones, `footerItems`, `featured` (un nodo), `account` (el `Dropdown` de tarjeta de cuenta: `items`, `accounts`, `onAddAccount`…), `user` (props de `AvatarLabel`), `responsive` y `defaultMenuOpen`, `disclosure` (`script` o `native`) y `labels`.
 
 **Tipos.** Los del Figma (`Sidebar navigation`, `1158:90768`):
 - `simple`: una columna de 296 px. Un elemento con `children` se despliega bajo él.
@@ -14,6 +14,13 @@ astroNote: "Los ítems son enlaces y se pintan sin directiva, pero los submenús
 - `slim`: 68 px, solo iconos, cada uno con su nombre en un tooltip; el submenú sale en el segundo panel, con el nombre del elemento como título. La marca es `mark`; la ficha del usuario queda en el avatar y `account` es el `Dropdown` `account-avatar`. No lleva buscador ni tarjeta destacada.
 - `sections-dividers`: tarjeta redondeada con los grupos de `sections` separados por rayas.
 - `sections-subheadings`: igual, con el título de cada grupo en mayúsculas; con `search` el buscador es una lupa junto a la marca.
+
+**Cuándo usar cada modo.** `disclosure` decide cómo se despliega un elemento con `children` en `simple`, `sections-dividers` y `sections-subheadings`:
+- `script` (por defecto): un botón con `aria-expanded` y `aria-controls`, con el estado en React. Úsalo si la navegación es una isla de React que ya se hidrata, o si quieres controlar el estado desde fuera.
+- `native`: un `<details>` con su `<summary>` (icono, texto, `badge` y chevron). Se pinta entero en el servidor y se abre y se cierra sin JavaScript, así que sirve para el lateral de una página estática (Astro sin `client:load`). Empieza abierto el que lleva `defaultOpen` o contiene el elemento activo. El aspecto es el mismo; el chevron gira en 100 ms al abrirse, sin transición si el usuario pide menos movimiento, y el contenido no se anima.
+- En `dual-tier` y `slim` la prop se ignora: el elemento elige qué se enseña en el segundo panel y eso necesita estado, así que se comportan como con `script`.
+
+**Buscador y filtro.** El buscador de `search` es un `Input` normal y no filtra nada por sí solo. En modo `native`, filtrar es cosa de quien usa el componente: su script decide qué elementos se ven y abre los `<details>` que tengan coincidencias (`details.open = true`).
 
 **Tarjetas destacadas.** `featured` recibe un nodo. `SidebarCards` trae tres plantillas: `Progress` (barra o `variant="circle"`), `Upgrade` (icono, etiqueta, texto y botón principal) y `Notice` (imagen o icono, texto, un hueco libre y botones). Con `Notice` se hacen las otras ocho del Figma (imagen, cookies, referidos, soporte, evento, mensaje, proyectos, prueba gratuita y QR); la vista previa las enseña todas. `onClose` pinta la X; `outline` la pasa a tarjeta blanca con filo.
 
@@ -23,7 +30,7 @@ astroNote: "Los ítems son enlaces y se pintan sin directiva, pero los submenús
 
 **Visual.** Ítems `text-md-semibold` en `text-secondary`, icono 24px `fg-quaternary`; activo `bg-secondary_hover`. Fondo `bg-primary` y línea derecha `border-secondary`; los tipos de secciones y `slim` van en tarjeta con filo y `rounded-2xl`.
 
-**Accesibilidad.** Es un `<nav>` llamado "Principal"; el ítem `active` lleva `aria-current="page"`. Un ítem sin `href` se pinta como texto, no como enlace a `#`. Un elemento con `children` es un botón con `aria-expanded` y `aria-controls`: Enter o Espacio lo abren y cierran, y cerrado su submenú no está en el árbol de accesibilidad. En `slim` el nombre de cada icono es texto oculto y además sale en el tooltip al enfocar. Cada grupo de `sections` es una lista con el nombre de su título.
+**Accesibilidad.** Es un `<nav>` llamado "Principal"; el ítem `active` lleva `aria-current="page"`. Un ítem sin `href` se pinta como texto, no como enlace a `#`. Un elemento con `children` es un botón con `aria-expanded` y `aria-controls`: Enter o Espacio lo abren y cierran, y cerrado su submenú no está en el árbol de accesibilidad. Con `disclosure="native"` el elemento es el `<summary>` de un `<details>`, sin `aria-expanded` ni `aria-controls`: el navegador anuncia su estado por sí solo, y Enter o Espacio lo abren y cierran igual. En `slim` el nombre de cada icono es texto oculto y además sale en el tooltip al enfocar. Cada grupo de `sections` es una lista con el nombre de su título.
 
 **Diferencias con el Figma.** Las que quedan:
 - El menú de la tarjeta de cuenta se abre debajo o encima de ella (lo decide `Dropdown`), no a su derecha.

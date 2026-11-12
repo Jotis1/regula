@@ -30,7 +30,7 @@ export interface SidebarNavItem {
 	/** Algo al final de la fila, como un `chevron-right` o `arrow-up-right`. */
 	trailing?: ReactNode;
 	/**
-	 * Submenú, de un nivel. En `simple` y los de secciones se despliega bajo el elemento (un botón con `aria-expanded`);
+	 * Submenú, de un nivel. En `simple` y los de secciones se despliega bajo el elemento (un botón con `aria-expanded`, o un `<details>` con `disclosure="native"`);
 	 * en `dual-tier` y `slim` el elemento elige qué se enseña en el segundo panel.
 	 */
 	children?: Omit<SidebarNavItem, "children" | "defaultOpen">[];
@@ -97,6 +97,14 @@ export interface SidebarNavProps {
 	responsive?: boolean;
 	/** Con `responsive`: la navegación empieza abierta en pantallas estrechas (vistas previas y capturas). */
 	defaultMenuOpen?: boolean;
+	/**
+	 * Cómo se despliegan los elementos con `children` en `simple`, `sections-dividers` y `sections-subheadings`:
+	 * `script` (un botón con `aria-expanded`, con el estado en React) o `native` (un `<details>` con su `<summary>`, que se
+	 * pinta en el servidor y se abre y se cierra sin JavaScript). En `dual-tier` y `slim` se ignora. El filtro del buscador
+	 * lo pone quien usa el componente.
+	 * @default "script"
+	 */
+	disclosure?: "script" | "native";
 	/** Textos que trae el componente, para sustituirlos. */
 	labels?: Partial<SidebarNavLabels>;
 	className?: string;
@@ -116,7 +124,16 @@ type Leaf = Omit<SidebarNavItem, "children" | "defaultOpen">;
 const hasActive = (item: SidebarNavItem) => item.active || item.children?.some((c) => c.active);
 
 /** Lo que va dentro de una fila: icono, nombre y lo de la derecha. Con `slim`, el nombre solo para lectores. */
-function RowContent({ item, slim, chevron }: { item: Leaf; slim?: boolean; chevron?: "down" | "up" }) {
+function RowContent({
+	item,
+	slim,
+	chevron,
+}: {
+	item: Leaf;
+	slim?: boolean;
+	/** `turning` es el del modo nativo: abajo, y gira con el `details[open]` que lo contiene. */
+	chevron?: "down" | "up" | "turning";
+}) {
 	if (slim) {
 		return (
 			<>
@@ -144,7 +161,15 @@ function RowContent({ item, slim, chevron }: { item: Leaf; slim?: boolean; chevr
 			{item.shortcut ? <Kbd className={push()}>{item.shortcut}</Kbd> : null}
 			{item.trailing ? <span className={cx("flex shrink-0", push())}>{item.trailing}</span> : null}
 			{chevron ? (
-				<DynIcon icon={chevron === "up" ? ChevronUp : ChevronDown} size={20} className={push()} />
+				<DynIcon
+					icon={chevron === "up" ? ChevronUp : ChevronDown}
+					size={20}
+					className={cx(
+						push(),
+						chevron === "turning" &&
+							"transition-transform duration-100 group-open/disclosure:rotate-180 motion-reduce:transition-none",
+					)}
+				/>
 			) : null}
 		</>
 	);
@@ -205,16 +230,46 @@ function Disclosure({ item }: { item: SidebarNavItem }) {
 	);
 }
 
+/**
+ * Lo mismo con `disclosure="native"`: un `<details>` con su `<summary>`. Sin estado de React, así que se pinta en el
+ * servidor y se abre y se cierra sin JavaScript; el navegador anuncia el estado del `<summary>` por sí solo.
+ */
+function NativeDisclosure({ item }: { item: SidebarNavItem }) {
+	return (
+		<details open={item.defaultOpen ?? !!hasActive(item)} className="group/disclosure">
+			<summary
+				className={cx(
+					ITEM,
+					LINK,
+					"list-none [&::-webkit-details-marker]:hidden group-open/disclosure:[&_svg]:text-fg-tertiary",
+				)}
+			>
+				<RowContent item={item} chevron="turning" />
+			</summary>
+			<ul className="m-0 mt-0.5 flex list-none flex-col gap-0.5 p-0 pl-9">
+				{item.children?.map((child, i) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: lista fija; las etiquetas pueden ser nodos
+					<li key={i}>
+						<Row item={child} />
+					</li>
+				))}
+			</ul>
+		</details>
+	);
+}
+
 interface NavListProps {
 	items: SidebarNavItem[];
 	slim?: boolean;
+	/** `disclosure="native"` en un tipo de una columna: los submenús son `<details>`. */
+	native?: boolean;
 	/** Dos niveles o estrecho: los elementos con submenú eligen el segundo panel. */
 	tiered?: { openKey: number | null; onToggle: (key: number) => void; panelId: string };
 	/** Id del título del grupo, que da nombre a la lista. */
 	labelledBy?: string;
 }
 
-function NavList({ items, slim, tiered, labelledBy }: NavListProps) {
+function NavList({ items, slim, native, tiered, labelledBy }: NavListProps) {
 	return (
 		<ul aria-labelledby={labelledBy} className="m-0 flex list-none flex-col gap-0.5 p-0">
 			{items.map((item, i) => {
@@ -240,7 +295,7 @@ function NavList({ items, slim, tiered, labelledBy }: NavListProps) {
 						button
 					);
 				} else if (item.children?.length) {
-					row = <Disclosure item={item} />;
+					row = native ? <NativeDisclosure item={item} /> : <Disclosure item={item} />;
 				} else {
 					row = <Row item={item} slim={slim} />;
 				}
@@ -279,6 +334,7 @@ export function SidebarNav({
 	onLogout,
 	responsive,
 	defaultMenuOpen,
+	disclosure = "script",
 	labels,
 	className,
 }: SidebarNavProps) {
@@ -292,6 +348,7 @@ export function SidebarNav({
 	const slim = type === "slim";
 	const tiered = slim || type === "dual-tier";
 	const sectioned = type === "sections-dividers" || type === "sections-subheadings";
+	const native = disclosure === "native" && !tiered;
 	const all = sectioned && sections ? sections.flatMap((s) => s.items) : items;
 	const [openKey, setOpenKey] = useState<number | null>(() => {
 		const parents = all.map((item, key) => ({ item, key })).filter(({ item }) => item.children?.length);
@@ -329,6 +386,7 @@ export function SidebarNav({
 							) : null}
 							<NavList
 								items={section.items}
+								native={native}
 								labelledBy={section.title ? headingId : undefined}
 							/>
 						</div>
@@ -336,7 +394,7 @@ export function SidebarNav({
 				})}
 			</div>
 		) : (
-			<NavList items={items} slim={slim} tiered={tier} />
+			<NavList items={items} slim={slim} native={native} tiered={tier} />
 		);
 
 	const accountBlock = account ? (
@@ -404,7 +462,7 @@ export function SidebarNav({
 			) : null}
 			{list}
 			<div className={cx("mt-auto flex flex-col gap-6", slim && "items-center gap-4")}>
-				{footerItems ? <NavList items={footerItems} slim={slim} /> : null}
+				{footerItems ? <NavList items={footerItems} slim={slim} native={native} /> : null}
 				{featured && !slim ? featured : null}
 				{accountBlock}
 			</div>

@@ -1,5 +1,5 @@
 import { Check } from "@untitledui/icons";
-import type { ReactNode } from "react";
+import { type CSSProperties, type ReactNode, useId } from "react";
 import { cx } from "../internal/cx.js";
 import type { IconProp } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
@@ -60,6 +60,18 @@ export interface ProgressStepsProps {
 	orientation?: ProgressStepsOrientation;
 	/** Textos: el estado de cada paso para lectores de pantalla y el «Paso n de N» de los tipos mínimos. */
 	labels?: Partial<ProgressStepsLabels>;
+	/**
+	 * Hace navegables los pasos: cada uno (marcador y texto) es un botón cuyo nombre es el título y que llama a
+	 * `onChange` con su índice, también los pendientes. Quien quiera bloquearlos no pasa `onChange` o lo ignora. El
+	 * componente no guarda el paso actual: `current` sigue siendo de quien lo usa.
+	 */
+	onChange?: (index: number) => void;
+	/**
+	 * Contenido del paso actual, que recibe su índice. En vertical va dentro del `<li>` del actual, bajo su texto; en
+	 * horizontal, en un bloque bajo la lista (y entonces `className` va en el envoltorio de ambos). Va en una región
+	 * `aria-live="polite"`.
+	 */
+	children?: (current: number) => ReactNode;
 	/** Nombre de la lista («Pasos del alta»). */
 	"aria-label"?: string;
 	className?: string;
@@ -159,6 +171,10 @@ const descColor = (state: State, marker: ProgressStepsMarker) =>
 			? "text-quaternary"
 			: "text-tertiary";
 
+/** Botón de un paso navegable: sin borde ni fondo, con el anillo de foco del sistema. */
+const STEP_BUTTON =
+	"cursor-pointer border-0 bg-transparent p-0 text-left outline-none focus-visible:shadow-focus-ring";
+
 /** Pasos de un proceso con su estado: completo, actual o pendiente, en cinco tipos y dos orientaciones. */
 export function ProgressSteps({
 	steps,
@@ -168,9 +184,12 @@ export function ProgressSteps({
 	size = "md",
 	orientation = "horizontal",
 	labels,
+	onChange,
+	children,
 	"aria-label": ariaLabel,
 	className,
 }: ProgressStepsProps) {
+	const uid = useId();
 	const l: ProgressStepsLabels = {
 		complete: labels?.complete ?? defaultStrings.stepComplete,
 		current: labels?.current ?? defaultStrings.stepCurrent,
@@ -187,23 +206,57 @@ export function ProgressSteps({
 	const sm = size === "sm";
 	const markPx = sm ? 24 : 32;
 	const stepOf = l.stepOf(Math.min(at + 1, total), total);
+	const interactive = onChange != null;
+	// Con `children` en horizontal, el contenido va en un bloque bajo la lista y `className` pasa a envolver ambos
+	const below = children != null && !vertical;
+	const listClass = below ? undefined : className;
 
 	// El estado de cada paso, en texto solo para lectores, antes del título
 	const state = (s: State) => <span className="sr-only">{`${l[s]}: `}</span>;
-	const text = (step: ProgressStep, s: State, align = "") => {
+	const text = (step: ProgressStep, s: State, i: number, align = "") => {
 		const sizes = type === "icons-centered" ? (sm ? "text-xs" : "text-sm") : sm ? "text-sm" : "text-md";
 		return (
 			<span className={cx("flex min-w-0 flex-col", align, sizes)}>
-				<span className={cx("font-semibold", titleColor(s, kind))}>
-					{state(s)}
+				<span
+					id={interactive ? `${uid}-t${i}` : undefined}
+					className={cx("font-semibold", titleColor(s, kind))}
+				>
+					{interactive ? null : state(s)}
 					{step.title}
 				</span>
 				{step.description != null ? (
-					<span className={cx("font-normal", descColor(s, kind))}>{step.description}</span>
+					<span
+						id={interactive ? `${uid}-d${i}` : undefined}
+						className={cx("font-normal", descColor(s, kind))}
+					>
+						{step.description}
+					</span>
 				) : null}
 			</span>
 		);
 	};
+	// Con `onChange`, el marcador y el texto de un paso son un botón cuyo nombre es el título; sin él, van sueltos
+	const hit = (i: number, step: ProgressStep, cls: string, kids: ReactNode) =>
+		interactive ? (
+			<button
+				type="button"
+				aria-labelledby={`${uid}-t${i}`}
+				aria-describedby={step.description != null ? `${uid}-d${i}` : undefined}
+				onClick={() => onChange?.(i)}
+				className={cx(STEP_BUTTON, "rounded-md", cls)}
+			>
+				{kids}
+			</button>
+		) : (
+			kids
+		);
+	// En vertical, cada paso lleva su región: solo la del actual tiene contenido, y así se anuncia al cambiar
+	const live = (i: number, style?: CSSProperties) =>
+		children != null && vertical ? (
+			<div aria-live="polite" className={style ? "mt-3" : "mt-2"} style={style}>
+				{i === at ? children(at) : null}
+			</div>
+		) : null;
 	// Línea que sale de un paso hacia el siguiente: de marca si el paso está completo, y punteada con números
 	const line = (i: number, axis: "x" | "y") =>
 		cx(
@@ -219,14 +272,15 @@ export function ProgressSteps({
 					],
 		);
 
+	let list: ReactNode;
 	if (type === "text-line")
-		return (
+		list = (
 			<ol
 				aria-label={ariaLabel}
 				className={cx(
 					"m-0 flex list-none gap-4 p-0 font-body",
 					vertical ? "flex-col" : "flex-row",
-					className,
+					listClass,
 				)}
 			>
 				{steps.map((step, i) => {
@@ -238,23 +292,31 @@ export function ProgressSteps({
 							aria-current={s === "current" ? "step" : undefined}
 							className={cx("flex min-w-0 flex-col gap-2", !vertical && "flex-1")}
 						>
-							<span
-								aria-hidden="true"
-								className={cx(
-									"block h-1 w-full",
-									s === "pending" ? "bg-quaternary" : "bg-brand-solid",
-								)}
-							/>
-							{text(step, s)}
+							{interactive ? state(s) : null}
+							{hit(
+								i,
+								step,
+								"flex w-full flex-col gap-2",
+								<>
+									<span
+										aria-hidden="true"
+										className={cx(
+											"block h-1 w-full",
+											s === "pending" ? "bg-quaternary" : "bg-brand-solid",
+										)}
+									/>
+									{text(step, s, i)}
+								</>,
+							)}
+							{live(i)}
 						</li>
 					);
 				})}
 			</ol>
 		);
-
-	if (minimal)
-		return (
-			<div className={cx("inline-flex items-center gap-3 font-body", className)}>
+	else if (minimal)
+		list = (
+			<div className={cx("inline-flex items-center gap-3 font-body", listClass)}>
 				{type === "minimal" ? (
 					<span className={cx("font-medium text-secondary", sm ? "text-xs" : "text-sm")}>
 						{stepOf}
@@ -271,6 +333,7 @@ export function ProgressSteps({
 				>
 					{steps.map((step, i) => {
 						const s = stateOf(i);
+						const mark = <Marker marker={kind} size={size} state={s} index={i} />;
 						return (
 							<li
 								// biome-ignore lint/suspicious/noArrayIndexKey: los pasos se identifican por su posición
@@ -278,11 +341,27 @@ export function ProgressSteps({
 								aria-current={s === "current" ? "step" : undefined}
 								className="flex items-center"
 							>
-								<span className="sr-only">
-									{state(s)}
-									{step.title}
-								</span>
-								<Marker marker={kind} size={size} state={s} index={i} />
+								{interactive ? (
+									<>
+										{state(s)}
+										<button
+											type="button"
+											onClick={() => onChange?.(i)}
+											className={cx(STEP_BUTTON, "inline-flex rounded-full")}
+										>
+											<span className="sr-only">{step.title}</span>
+											{mark}
+										</button>
+									</>
+								) : (
+									<>
+										<span className="sr-only">
+											{state(s)}
+											{step.title}
+										</span>
+										{mark}
+									</>
+								)}
 								{type === "minimal-connected" && i < total - 1 ? (
 									<span
 										aria-hidden="true"
@@ -295,64 +374,115 @@ export function ProgressSteps({
 				</ol>
 			</div>
 		);
-
-	// icons-centered e icons-text
-	const gap = sm ? "gap-3" : "gap-4";
-	return (
-		<ol
-			aria-label={ariaLabel}
-			className={cx("m-0 flex list-none p-0 font-body", vertical ? "flex-col" : "flex-row", className)}
-		>
-			{steps.map((step, i) => {
-				const s = stateOf(i);
-				const last = i === total - 1;
-				const mark = <Marker marker={kind} size={size} state={s} index={i} icon={step.icon} />;
-				const markHeight = kind === "featured" && step.icon ? (sm ? 40 : 48) : markPx;
-				if (vertical)
+	else {
+		// icons-centered e icons-text
+		const gap = sm ? "gap-3" : "gap-4";
+		list = (
+			<ol
+				aria-label={ariaLabel}
+				className={cx(
+					"m-0 flex list-none p-0 font-body",
+					vertical ? "flex-col" : "flex-row",
+					listClass,
+				)}
+			>
+				{steps.map((step, i) => {
+					const s = stateOf(i);
+					const last = i === total - 1;
+					const mark = <Marker marker={kind} size={size} state={s} index={i} icon={step.icon} />;
+					const markHeight = kind === "featured" && step.icon ? (sm ? 40 : 48) : markPx;
+					if (vertical && interactive)
+						// La línea sale del botón: va suelta en el `<li>` y llega hasta el siguiente paso
+						return (
+							<li
+								// biome-ignore lint/suspicious/noArrayIndexKey: los pasos se identifican por su posición
+								key={i}
+								aria-current={s === "current" ? "step" : undefined}
+								className={cx("relative flex flex-col", !last && (sm ? "pb-6" : "pb-8"))}
+							>
+								{state(s)}
+								{hit(
+									i,
+									step,
+									cx("flex items-start", gap),
+									<>
+										{mark}
+										<span className="min-w-0 pt-0.5">{text(step, s, i)}</span>
+									</>,
+								)}
+								{last ? null : (
+									<span
+										aria-hidden="true"
+										className={cx("absolute block", line(i, "y"))}
+										style={{ top: markHeight + 4, bottom: 0, left: markHeight / 2 - 1 }}
+									/>
+								)}
+								{live(i, { paddingInlineStart: markHeight + (sm ? 12 : 16) })}
+							</li>
+						);
+					if (vertical)
+						return (
+							<li
+								// biome-ignore lint/suspicious/noArrayIndexKey: los pasos se identifican por su posición
+								key={i}
+								aria-current={s === "current" ? "step" : undefined}
+								className={cx("flex items-stretch", gap)}
+							>
+								<span className="flex flex-none flex-col items-center gap-1">
+									{mark}
+									{last ? null : (
+										<span
+											aria-hidden="true"
+											className={cx("block min-h-6 flex-1", line(i, "y"))}
+										/>
+									)}
+								</span>
+								<span className={cx("min-w-0 pt-0.5", !last && (sm ? "pb-6" : "pb-8"))}>
+									{text(step, s, i)}
+									{live(i)}
+								</span>
+							</li>
+						);
 					return (
 						<li
 							// biome-ignore lint/suspicious/noArrayIndexKey: los pasos se identifican por su posición
 							key={i}
 							aria-current={s === "current" ? "step" : undefined}
-							className={cx("flex items-stretch", gap)}
+							className="relative flex min-w-0 flex-1 flex-col items-center gap-3 text-center"
 						>
-							<span className="flex flex-none flex-col items-center gap-1">
-								{mark}
-								{last ? null : (
-									<span
-										aria-hidden="true"
-										className={cx("block min-h-6 flex-1", line(i, "y"))}
-									/>
-								)}
-							</span>
-							<span className={cx("min-w-0 pt-0.5", !last && (sm ? "pb-6" : "pb-8"))}>
-								{text(step, s)}
-							</span>
+							{interactive ? state(s) : null}
+							{last ? null : (
+								<span
+									aria-hidden="true"
+									className={cx("absolute block", line(i, "x"))}
+									style={{
+										top: markHeight / 2 - 1,
+										left: `calc(50% + ${markHeight / 2 + 4}px)`,
+										right: `calc(-50% + ${markHeight / 2 + 4}px)`,
+									}}
+								/>
+							)}
+							{hit(
+								i,
+								step,
+								"flex flex-col items-center gap-3 text-center",
+								<>
+									{mark}
+									{text(step, s, i, "items-center")}
+								</>,
+							)}
 						</li>
 					);
-				return (
-					<li
-						// biome-ignore lint/suspicious/noArrayIndexKey: los pasos se identifican por su posición
-						key={i}
-						aria-current={s === "current" ? "step" : undefined}
-						className="relative flex min-w-0 flex-1 flex-col items-center gap-3 text-center"
-					>
-						{last ? null : (
-							<span
-								aria-hidden="true"
-								className={cx("absolute block", line(i, "x"))}
-								style={{
-									top: markHeight / 2 - 1,
-									left: `calc(50% + ${markHeight / 2 + 4}px)`,
-									right: `calc(-50% + ${markHeight / 2 + 4}px)`,
-								}}
-							/>
-						)}
-						{mark}
-						{text(step, s, "items-center")}
-					</li>
-				);
-			})}
-		</ol>
+				})}
+			</ol>
+		);
+	}
+
+	if (!below) return list;
+	return (
+		<div className={cx("flex flex-col gap-6", className)}>
+			{list}
+			<div aria-live="polite">{children(at)}</div>
+		</div>
 	);
 }

@@ -5,7 +5,6 @@ const PASOS = [
 	{ title: "Cuenta", description: "Tus datos" },
 	{ title: "Empresa", description: "Dónde trabajas" },
 	{ title: "Equipo", description: "A quién invitas" },
-	{ title: "Listo", description: "A trabajar" },
 ];
 
 export const avisosYCarga: Record<string, Start> = {
