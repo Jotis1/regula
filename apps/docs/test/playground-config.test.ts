@@ -30,8 +30,8 @@ import { type PropRow, propsOf } from "../src/lib/props";
  */
 const PENDING: string[] = [
 
-	"Breadcrumbs", "Pagination", "PaginationDots", "Pager", "Dropdown", "ContextMenu",
-	"HeaderNav", "CommandMenu", "TreeView", "Slideout", "Tooltip", "CopyTooltip", "EmptyState", "ProgressBar",
+
+	"EmptyState", "ProgressBar",
 	"ProgressCircle", "ProgressSteps", "AvatarProfilePhoto", "CheckIcon", "CheckItem", "Rating", "RatingBadge", "Kbd",
 	"CalendarView", "FilterMenu", "FilterPanel", "ActivityGauge", "RadarChart", "ChartMarker", "SectionFooter",
 	"InlineCTA", "LinkCard", "VideoPlayer", "Carousel", "BackgroundOverlay", "TransparencyGrid", "ScaledPreview",

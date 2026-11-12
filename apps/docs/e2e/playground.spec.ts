@@ -70,7 +70,7 @@ test("en móvil los desplegables ocupan todo el ancho y cambian el código", asy
 });
 
 test("un componente sin playground enseña solo sus ejemplos", async ({ page }) => {
-	await page.goto("/components/breadcrumbs/");
+	await page.goto("/components/channel-banner/"); // se quita en 5.7, cuando todos tengan ejemplo interactivo
 	await expect(page.locator("section[aria-labelledby=ejemplo]")).toHaveCount(0);
 	await expect(page.locator("#variantes")).toBeVisible();
 });
