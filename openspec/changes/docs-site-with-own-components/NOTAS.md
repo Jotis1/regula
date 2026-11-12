@@ -151,3 +151,8 @@
 - Lo que se acepta a mano: «Saltar al contenido» (fuera de `HeaderNav`, design D5), el enlace de la marca (entra en el slot `brand`), los tres disparadores de búsqueda con aspecto de campo y la fila de cards de móvil de la portada (NOTAS 3.4).
 - Hueco encontrado y corregido al escribir el test: el botón «Abrir menú» de `MobileMenu` estaba hecho a mano. Ahora es `Button` `hierarchy="tertiary"` `size="lg"` `iconOnly="menu-01"`: mismas medidas (44 px), el mismo fondo al pasar el ratón y el mismo anillo de foco. El icono ya no cambia a `fg-quaternary_hover` al pasar el ratón.
 - Huecos de componentes del grupo 3: solo `HeaderNav` (`underline` y `mobileBar`, changeset `header-nav-underline`, minor). `Footer` y `LinkCard` se usaron sin cambios, y en `SidebarNav` no se tocó nada (3.2).
+
+## Corrección de la pasada final (2026-11-12)
+
+- La 7.1 dio `biome ci` por bueno, pero fallaba con 10 avisos que traían commits del grupo 5. Corregidos: se borra `apps/docs/rows.ts` (herramienta temporal para escribir configs, subida por error en `932b17e`), un fragmento de más en la muestra de `HeaderNav`, la función `indent` sin usar de `snippets.ts`, el parámetro `page` sin usar de `copyFrom` (e2e de copiar), una asignación dentro de una expresión en `importsOf` y el formato de un fixture de `TreeView`. En `ScaledPreview`, la función interna `fit` pasa a `scaleToFit` porque Biome la tomaba por un test enfocado (`fit` de Jasmine); no cambia la API, así que no lleva changeset. La fila de atajos del ejemplo interactivo sigue con `role="group"` y lleva un `biome-ignore` con el motivo.
+- Comprobado: `biome ci` limpio, `turbo run typecheck` (11/11), tests del paquete (1.226) y de la web (129), build y e2e de copiar y del ejemplo interactivo (135).

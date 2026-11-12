@@ -303,8 +303,11 @@ export function importsOf(pg: Pick<Playground, "name" | "controls">, state: Stat
 		if (c.kind !== "content") continue;
 		const imports = c.options.find((o) => o.label === state[c.prop])?.imports;
 		const byModule = Array.isArray(imports) ? { [REACT]: imports } : (imports ?? {});
-		for (const [module, names] of Object.entries(byModule))
-			for (const name of names) (out[module] ??= new Set()).add(name);
+		for (const [module, names] of Object.entries(byModule)) {
+			const set = out[module] ?? new Set<string>();
+			out[module] = set;
+			for (const name of names) set.add(name);
+		}
 	}
 	const sorted = (module: string, names: Set<string>) =>
 		[...names].sort((x, y) =>

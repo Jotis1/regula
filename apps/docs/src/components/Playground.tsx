@@ -70,6 +70,7 @@ function Loaded({ playground: data, rows }: { playground: Data; rows: PropRow[] 
 		<div className="flex flex-col gap-4">
 			<div className="flex flex-col overflow-hidden rounded-xl border border-secondary">
 				{presets.length > 0 && (
+					// biome-ignore lint/a11y/useSemanticElements: es una fila de botones de atajo, no un formulario; un <fieldset> pediría <legend> y cambiaría el flujo de la fila
 					<div
 						role="group"
 						aria-label="Atajos"

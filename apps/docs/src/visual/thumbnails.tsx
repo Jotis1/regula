@@ -517,25 +517,23 @@ export const THUMBNAILS: Record<string, Thumbnail> = {
 		crop: "top-left",
 		render: () => (
 			<div style={box(1100)}>
-				<>
-					<HeaderNav
-						type="dual-tier"
-						brand={<AppIcon app="regula" size={32} />}
-						items={[
-							{ label: "Inicio", href: "#" },
-							{
-								label: "Panel",
-								href: "#",
-								current: true,
-								children: [
-									{ label: "Resumen", href: "#", current: true },
-									{ label: "Avisos", href: "#" },
-								],
-							},
-							{ label: "Tareas", href: "#" },
-						]}
-					/>
-				</>
+				<HeaderNav
+					type="dual-tier"
+					brand={<AppIcon app="regula" size={32} />}
+					items={[
+						{ label: "Inicio", href: "#" },
+						{
+							label: "Panel",
+							href: "#",
+							current: true,
+							children: [
+								{ label: "Resumen", href: "#", current: true },
+								{ label: "Avisos", href: "#" },
+							],
+						},
+						{ label: "Tareas", href: "#" },
+					]}
+				/>
 			</div>
 		),
 	},
