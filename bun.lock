@@ -179,6 +179,10 @@
       },
     },
   },
+  "patchedDependencies": {
+    "@untitledui/country-flags@0.0.17": "patches/@untitledui%2Fcountry-flags@0.0.17.patch",
+    "@untitledui/file-icons@0.0.9": "patches/@untitledui%2Ffile-icons@0.0.9.patch",
+  },
   "packages": {
     "@alloc/quick-lru": ["@alloc/quick-lru@5.3.0", "", {}, "sha512-U4+70Pc5ZS9osnCBCE5Jha/ciHM+Yp+CNMNC/7HvYbNRk1Ldd+f7qO65W5qfhu/TCv+/ozljlXXe9Nj8419DMA=="],
 
