@@ -1,0 +1,26 @@
+---
+// Ejemplo en 21:9 de StreamScene, bajo el ejemplo interactivo: la escena con `width={2580}` (3440×1440 con
+// `scale={4/3}`), ajustada al ancho de la columna, y su código. Isla: sin `scale`, el lienzo mide su contenedor.
+import CodeSnippet from "./CodeSnippetIsland";
+import WideSceneCanvas from "./WideSceneCanvas";
+
+const code = `// 3440×1440: lienzo de 2580×1080 a 4/3
+<StreamScene
+	width={2580}
+	scale={4 / 3}
+	variant="ending"
+	next="Próximo directo: jueves, 20:00"
+/>`;
+---
+
+<div class="not-prose flex flex-col gap-4" data-wide-scene>
+	<h3 class="text-md font-semibold text-primary">En 21:9</h3>
+	<p class="text-sm text-tertiary">
+		Para un monitor ultrapanorámico, <code class="font-mono text-secondary">width</code> ensancha el lienzo y el alto
+		sigue en 1080: la rejilla y el pie llegan a los bordes, y el bloque central queda centrado y al mismo tamaño.
+	</p>
+	<div class="overflow-hidden rounded-xl">
+		<WideSceneCanvas client:visible />
+	</div>
+	<CodeSnippet client:visible language="tsx" code={code} />
+</div>

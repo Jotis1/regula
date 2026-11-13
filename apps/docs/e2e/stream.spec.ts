@@ -72,3 +72,22 @@ test("un componente de Stream sin lienzo fijo no enlaza a tamaño real; uno de a
 	await expect(page.locator("[data-stream-note], [data-obs-note]")).toHaveCount(0);
 	await expect(page.getByText("Siempre en oscuro")).toHaveCount(0);
 });
+
+test("StreamScene: la ficha trae un ejemplo en 21:9 con width={2580} y su código para 3440×1440", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto("/components/stream-scene/");
+	const wide = page.locator("[data-wide-scene]");
+	await expect(wide.getByRole("heading", { name: "En 21:9" })).toBeVisible();
+	await wide.scrollIntoViewIfNeeded();
+	const scene = wide.locator("astro-island > *").first();
+	await expect(scene.getByRole("heading", { name: "Hasta la próxima" })).toBeVisible();
+	const ratio = await scene.evaluate((el) => {
+		const r = el.getBoundingClientRect();
+		return r.width / r.height;
+	});
+	expect(ratio).toBeCloseTo(2580 / 1080, 2);
+	await expect(wide).toContainText("width={2580}");
+	await expect(wide).toContainText("scale={4 / 3}");
+});
