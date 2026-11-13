@@ -225,8 +225,13 @@ test("Restablecer: quitar la etiqueta de `size` la devuelve a su valor; «Restab
 	await expect(count(pg)).toHaveText("1 cambio");
 	// El foco no se pierde: se queda en la tira
 	await expect(changes(pg)).toBeFocused();
-	// Desde la fila: el foco pasa al control
+	// Desde la fila: el foco pasa al control, que al recibirlo abre su lista. Con ella abierta lo demás queda fuera del
+	// árbol de accesibilidad, así que se cierra antes de mirar el código
 	await pg.getByRole("button", { name: "Restablecer icon" }).click();
+	await expect(pg.locator('[data-prop="icon"] input')).toBeFocused();
+	await expect(page.getByRole("listbox")).toBeVisible();
+	await page.keyboard.press("Escape");
+	await expect(page.getByRole("listbox")).toHaveCount(0);
 	await expect(code(pg)).not.toContainText("icon=");
 	await expect(pg.locator('[data-prop="icon"] input')).toBeFocused();
 	await expect(count(pg)).toHaveText("Sin cambios");
