@@ -21,6 +21,7 @@ import {
 	type Tweak,
 } from "../src/lib/playground";
 import { PLAYGROUND_ICON_NAMES, resolveIcons } from "../src/lib/playground-icons";
+import { shortcutState } from "../src/lib/playground-inspector";
 import { type PropRow, propsOf } from "../src/lib/props";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -50,17 +51,9 @@ const FIGMA_TYPES: Record<string, { label: string; props: Record<string, unknown
 	readFileSync(join(import.meta.dirname, "fixtures/figma-types.json"), "utf8"),
 );
 /** El estado de un tipo del Figma: sus props sobre el estado inicial, con los valores de contenido por la etiqueta de su opción. */
-const withType = (pg: Playground, props: Record<string, unknown>): State => {
-	const state: State = { ...initialState(pg) };
-	for (const [prop, value] of Object.entries(props)) {
-		const c = pg.controls.find((x) => x.prop === prop);
-		if (c?.kind === "content") {
-			const json = JSON.stringify(value);
-			state[prop] = c.options.find((o) => o.label === value || JSON.stringify(o.value) === json)?.label;
-		} else state[prop] = value;
-	}
-	return state;
-};
+// Es lo que hace el desplegable de atajos al elegir un tipo (`shortcutState`)
+const withType = (pg: Playground, props: Record<string, unknown>): State =>
+	shortcutState(pg, { label: "", props });
 
 /** Atributos de HTML que un componente hereda del elemento que pinta y que no salen en su tabla de props. */
 const HTML_ATTRS = new Set([
@@ -113,6 +106,7 @@ function invalidValue(c: Control | undefined, value: unknown): string | undefine
 	if (c.kind === "number") return typeof value === "number" ? undefined : "no es un número";
 	if (c.kind === "icon")
 		return typeof value === "string" && iconSet.has(value) ? undefined : "no es un icono del selector";
+	if (c.kind === "text") return typeof value === "string" ? undefined : "no es un texto";
 	// Un valor de los tipos del Figma es un valor preparado; una cadena, la etiqueta de una opción
 	const json = JSON.stringify(value);
 	return c.options.some((o) => o.label === value || JSON.stringify(o.value) === json)
@@ -129,7 +123,7 @@ async function playgroundFor(name: string) {
 		const rows = rowsOf(name);
 		const start = STARTS[name] as Start;
 		const mod = (await import(`../src/playground/${name}.tsx`)) as PlaygroundModule;
-		const controls = controlsOf(rows, { ...start.tweaks, ...mod.tweaks }, start.props);
+		const controls = controlsOf(rows, { ...start.tweaks, ...mod.tweaks }, start.props, start.children);
 		const pg: Playground = {
 			name,
 			start,

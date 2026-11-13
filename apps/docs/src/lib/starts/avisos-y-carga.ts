@@ -41,6 +41,34 @@ export const avisosYCarga: Record<string, Start> = {
 			actions: "Limpiar filtros",
 		},
 		wide: true,
+		// Los pies son frases de la ficha (content/components/empty-state.md), letra a letra
+		examples: [
+			{
+				do: {
+					caption: "Di por qué está vacío y ofrece la siguiente acción.",
+					specimens: [
+						{
+							props: {
+								title: "Sin resultados",
+								description:
+									"Ningún movimiento coincide con «León». Prueba con otro término o quita filtros.",
+								actions: [
+									{
+										component: "Button",
+										props: { hierarchy: "secondary", size: "sm" },
+										children: "Limpiar búsqueda",
+									},
+								],
+							},
+						},
+					],
+				},
+				dont: {
+					caption: 'Nada de "¡Ups!".',
+					specimens: [{ props: { title: "¡Ups!", description: "Aquí no hay nada." } }],
+				},
+			},
+		],
 		rules: [
 			{
 				when: {

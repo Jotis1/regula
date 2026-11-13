@@ -84,14 +84,64 @@ test("buscar «cal» deja solo los iconos cuyo nombre lo contiene", async ({ pag
 test("el buscador acepta el nombre con guiones", async ({ page }) => {
 	await ready(page);
 	await page.getByLabel("Buscar icono").fill("search-lg");
-	await expect(page.locator('[data-select="SearchLg"]')).toBeVisible();
+	await expect(page.locator('[data-item="SearchLg"]')).toBeVisible();
 });
 
 test("sin resultados lo dice", async ({ page }) => {
 	await ready(page);
 	await page.getByLabel("Buscar icono").fill("zzzz");
-	await expect(page.getByText("Ese icono no está en el set")).toBeVisible();
+	// Estado vacío que nombra lo buscado y ofrece la salida (docs-site, «Estados de la web»)
+	await expect(page.getByRole("heading", { name: "Nada con «zzzz»" })).toBeVisible();
 	await expect(page.locator("#icon-count")).toHaveText(`0 de ${total}`);
+	await expect(page.locator("#icon-count")).toHaveAttribute("aria-live", "polite");
+	await page.getByRole("button", { name: "Limpiar búsqueda" }).click();
+	await expect(page.getByLabel("Buscar icono")).toHaveValue("");
+	await expect(page.getByLabel("Buscar icono")).toBeFocused();
+	await expect(page.locator("#icon-count")).toHaveText(`${total} iconos`);
+	await expect(page.locator("[data-item]")).toHaveCount(96);
+});
+
+test("cambiar de set: desde /icons/, «Banderas» abre /icons/flags/ y la navegación la marca como actual", async ({
+	page,
+}) => {
+	await page.goto("/icons/");
+	const nav = page.getByRole("navigation", { name: "Tipo de icono" });
+	// Enlaces pintados en el servidor, cada uno con su recuento: funcionan sin esperar a ninguna isla
+	await expect(nav.getByRole("link")).toHaveCount(6);
+	await expect(nav.getByRole("link", { name: /^De línea/ })).toHaveAttribute("aria-current", "page");
+	await expect(nav.getByRole("link", { name: /^De línea/ })).toContainText(String(total));
+	await expect(nav.locator("[aria-current]")).toHaveCount(1);
+	await nav.getByRole("link", { name: /^Banderas/ }).click();
+	await expect(page).toHaveURL(/\/icons\/flags\/$/);
+	const after = page.getByRole("navigation", { name: "Tipo de icono" });
+	await expect(after.getByRole("link", { name: /^Banderas/ })).toHaveAttribute("aria-current", "page");
+	await expect(after.locator("[aria-current]")).toHaveCount(1);
+});
+
+test("los filtros van en una sola fila en escritorio y la rejilla es de baldosas con su nombre", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await ready(page);
+	const tops = await Promise.all(
+		[
+			page.getByLabel("Buscar icono"),
+			page.getByRole("button", { name: /Categoría/ }),
+			page.getByRole("group", { name: "Tamaño de la vista previa" }),
+			page.locator("#icon-count"),
+		].map(async (l) => {
+			const box = await l.boundingBox();
+			return box ? box.y + box.height / 2 : -1;
+		}),
+	);
+	// Mismo eje vertical, con el margen de los distintos altos de cada control
+	expect(Math.max(...tops) - Math.min(...tops)).toBeLessThan(8);
+	const tile = page.locator('[data-item="Activity"] button');
+	await expect(tile).toHaveAttribute("title", "Activity");
+	await expect(tile).toHaveAttribute("aria-pressed", "true");
+	// El panel queda fijo a la derecha, de 320 px
+	const panel = await page.getByRole("complementary", { name: "Icono elegido" }).boundingBox();
+	expect(Math.round(panel?.width ?? 0)).toBe(320);
 });
 
 test("filtrar por categoría deja solo los iconos de esa categoría", async ({ page }) => {
@@ -111,10 +161,10 @@ test("el tamaño de vista previa cambia los iconos de la rejilla", async ({ page
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await ready(page);
 	await page.getByLabel("Buscar icono").fill("calendar");
-	const img = page.locator('[data-select="Calendar"] img');
+	const img = page.locator('[data-item="Calendar"] img');
 	await expect(img).toHaveAttribute("height", "24");
 	await page
-		.getByRole("group", { name: "Tamaño de vista previa" })
+		.getByRole("group", { name: "Tamaño de la vista previa" })
 		.getByRole("button", { name: "16" })
 		.click();
 	await expect(img).toHaveAttribute("height", "16");
@@ -128,8 +178,8 @@ test("elegir Calendar: el panel lo muestra y su código lo importa de @untitledu
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await ready(page);
 	await page.getByLabel("Buscar icono").fill("calendar");
-	await page.locator('[data-select="Calendar"]').click();
-	await expect(page.locator('[data-select="Calendar"]')).toHaveAttribute("aria-pressed", "true");
+	await page.locator('[data-item="Calendar"]').click();
+	await expect(page.locator('[data-item="Calendar"] button')).toHaveAttribute("aria-pressed", "true");
 	const panel = page.getByRole("complementary", { name: "Icono elegido" });
 	await expect(panel.locator("#icon-detail-name")).toHaveText("Calendar");
 	const code = panel.getByRole("tabpanel");
@@ -140,16 +190,26 @@ test("elegir Calendar: el panel lo muestra y su código lo importa de @untitledu
 	await expect(code).toContainText('stroke="currentColor"');
 	await panel.getByRole("button", { name: "Copiar nombre" }).click();
 	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("Calendar");
-	// Uso por contexto de la guía
-	for (const t of ["Botón e input", "xs y menús", "Navegación"])
-		await expect(panel.getByText(t)).toBeVisible();
+	// El icono en varios tamaños, y «Copiar el código» copia el uso en React con su importación
+	await expect(panel.getByRole("list", { name: "Tamaños" }).getByRole("listitem")).toHaveText([
+		"16 px",
+		"20 px",
+		"24 px",
+		"32 px",
+	]);
+	await panel.getByRole("button", { name: "Copiar el código" }).click();
+	// En Windows el portapapeles devuelve los saltos como CRLF
+	const copied = await page.evaluate(() => navigator.clipboard.readText());
+	expect(copied.replaceAll("\r\n", "\n")).toContain(
+		'import { Calendar } from "@untitledui/icons";\n\n<Calendar size={20} />',
+	);
 });
 
 test("un icono que no usa ningún componente se importa igual, de @untitledui/icons", async ({ page }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await ready(page);
 	await page.getByLabel("Buscar icono").fill("rocket-02");
-	await page.locator('[data-select="Rocket02"]').click();
+	await page.locator('[data-item="Rocket02"]').click();
 	const panel = page.getByRole("complementary", { name: "Icono elegido" });
 	await expect(panel.locator("#icon-detail-name")).toHaveText("Rocket02");
 	const code = panel.getByRole("tabpanel");
@@ -172,11 +232,23 @@ test("en móvil, tocar un icono abre la hoja con su código y Escape la cierra d
 	await ready(page);
 	await expect(page.getByRole("complementary", { name: "Icono elegido" })).toBeHidden();
 	await page.getByLabel("Buscar icono").fill("trash-01");
-	const tile = page.locator('[data-select="Trash01"]');
+	const tile = page.locator('[data-item="Trash01"] button');
 	await tile.click();
+	// «Panel en móvil»: hoja inferior (Slideout `bottom`) a todo el ancho, pegada abajo y con el foco dentro
 	const sheet = page.getByRole("dialog", { name: "Trash01" });
 	await expect(sheet).toBeVisible();
+	await expect
+		.poll(async () => {
+			const box = await sheet.boundingBox();
+			return box ? Math.round(box.y + box.height) : null;
+		})
+		.toBe(844);
+	const box = await sheet.boundingBox();
+	expect(Math.round(box?.x ?? -1)).toBe(0);
+	expect(Math.round(box?.width ?? 0)).toBe(390);
+	expect(await sheet.evaluate((el) => el.contains(document.activeElement))).toBe(true);
 	await expect(sheet.getByRole("tabpanel")).toContainText("Trash01");
+	await expect(sheet.getByRole("button", { name: "Copiar el código" })).toBeVisible();
 	await page.keyboard.press("Escape");
 	await expect(sheet).toBeHidden();
 	await expect(tile).toBeFocused();

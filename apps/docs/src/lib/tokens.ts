@@ -1,6 +1,9 @@
 // Agrupa los tokens de @jotis-me/tokens para las páginas de fundamentos.
 // Todo sale del paquete: un token nuevo aparece en su grupo sin tocar la web.
 
+import { fold } from "../search/entries";
+import { contrast, MIN, ratio } from "./contrast";
+
 export interface ThemedToken {
 	light: string;
 	dark: string;
@@ -98,12 +101,12 @@ export function shadowRows(shadows: Record<string, ThemedToken>): ColorRow[] {
 	}));
 }
 
-/** Familias del filtro de Color (Color.dc.html), en su orden. */
+/** Familias del explorador de Color (design D6 de redesign-docs-site-v2), en su orden. */
 export const COLOR_FAMILIES = [
 	["text", "Texto"],
-	["bg", "Fondo"],
-	["border", "Borde"],
-	["fg", "Icono"],
+	["bg", "Fondos"],
+	["border", "Bordes"],
+	["fg", "Iconos"],
 	["utility", "Utility"],
 	["alpha", "Alfa"],
 	["comp", "Componentes"],
@@ -114,6 +117,58 @@ export type ColorFamily = (typeof COLOR_FAMILIES)[number][0];
 export function colorFamily(name: string): ColorFamily {
 	const prefix = name.split("-")[0];
 	return (["text", "bg", "border", "fg", "utility", "alpha"] as const).find((f) => f === prefix) ?? "comp";
+}
+
+/** Contraste de un token en un tema: «17,9:1» y si queda por debajo del mínimo de WCAG AA. */
+export interface TokenRatio {
+	label: string;
+	low: boolean;
+}
+export interface ExplorerToken extends ColorRow {
+	/** Por lo que se encuentra con el filtro: nombre, utilidad, los dos valores y el uso, sin tildes y en minúsculas. */
+	search: string;
+	/** Contraste contra el fondo de cada tema. Solo texto e iconos: de un relleno o un borde no se mide. */
+	ratios?: { light?: TokenRatio; dark?: TokenRatio };
+}
+export interface ExplorerFamily {
+	id: ColorFamily;
+	label: string;
+	tokens: ExplorerToken[];
+}
+
+/**
+ * Los colores del explorador, por familia y en el orden del paquete. El contraste de texto e iconos se mide contra
+ * bg-primary de cada tema, salvo los `_on-brand`, que van sobre las secciones de marca (su nota de uso lo dice:
+ * «sobre bg-brand-section»): medirlos contra blanco daría un «1:1 · bajo» engañoso.
+ */
+export function explorerFamilies(colors: Record<string, ThemedToken>): ExplorerFamily[] {
+	const groundOf = (name: string) => colors[name.includes("_on-brand") ? "bg-brand-section" : "bg-primary"];
+	const tokens = Object.entries(colors).map(([name, t]) => {
+		const family = colorFamily(name);
+		const kind = family === "text" ? "text" : family === "fg" ? "icon" : undefined;
+		const rate = (theme: "light" | "dark"): TokenRatio | undefined => {
+			const ground = groundOf(name);
+			if (!kind || !ground) return undefined;
+			const r = contrast(t[theme], ground[theme]);
+			return r === undefined ? undefined : { label: ratio(r), low: r < MIN[kind] };
+		};
+		const utility = utilityFor(name);
+		const token: ExplorerToken = {
+			name,
+			utility,
+			light: t.light,
+			dark: t.dark,
+			usage: t.usage,
+			search: fold(`${name} ${utility} ${t.light} ${t.dark} ${t.usage}`),
+			ratios: kind ? { light: rate("light"), dark: rate("dark") } : undefined,
+		};
+		return { family, token };
+	});
+	return COLOR_FAMILIES.map(([id, label]) => ({
+		id,
+		label,
+		tokens: tokens.filter((t) => t.family === id).map((t) => t.token),
+	}));
 }
 
 /**

@@ -1,9 +1,46 @@
 // Puntos de partida del ejemplo interactivo del grupo «formularios» del catálogo (design D3).
 import type { Start } from "../playground";
+import { SELECTORES } from "./tipos-del-figma";
+
+/** Los tipos del selector `type` de Input (los de `SELECTORES`, en ./tipos-del-figma): sus reglas dicen con cuáles no aplica cada prop. */
+const TIPOS_DE_INPUT = SELECTORES.Input?.type?.values ?? [];
 
 export const formularios: Record<string, Start> = {
 	Input: {
 		props: { label: "Correo", type: "email", placeholder: "tu@jotis.me" },
+		rules: [
+			{
+				when: { type: TIPOS_DE_INPUT.filter((t) => t !== "password") },
+				disable: ["revealable"],
+				reason: 'Solo con type="password".',
+			},
+			{
+				when: { type: TIPOS_DE_INPUT.filter((t) => t !== "file") },
+				disable: ["chooseFileLabel", "noFileLabel"],
+				reason: 'Solo con type="file".',
+			},
+			{
+				when: { type: TIPOS_DE_INPUT.filter((t) => t !== "datetime-local") },
+				disable: ["pickerLabel"],
+				reason: 'Solo con type="datetime-local".',
+			},
+		],
+		// Los pies son frases de la ficha (content/components/input.md), letra a letra
+		examples: [
+			{
+				do: {
+					caption:
+						"Etiqueta siempre visible (el borde del campo es suave, la etiqueta es lo que lo identifica).",
+					specimens: [{ props: { label: "Correo", placeholder: "tu@jotis.me" } }],
+					width: 280,
+				},
+				dont: {
+					caption: "El placeholder es un ejemplo, nunca la etiqueta.",
+					specimens: [{ props: { "aria-label": "Correo", placeholder: "Correo" } }],
+					width: 280,
+				},
+			},
+		],
 	},
 	NumberInput: {
 		props: { label: "Invitados", defaultValue: 2, min: 1, max: 12 },

@@ -62,21 +62,30 @@ for (const g of GALLERIES) {
 			expect(await page.locator("[data-item]").count()).toBeGreaterThan(0);
 		});
 
-		test("el selector de iconos y recursos enlaza las seis galerías y marca la actual", async ({
+		test("la navegación de sets enlaza las seis galerías con su recuento y marca la actual", async ({
 			page,
 		}) => {
+			await page.setViewportSize({ width: 1440, height: 900 });
 			await ready(page, g);
-			const nav = page.getByRole("navigation", { name: "Iconos y recursos" });
-			for (const name of ["Iconos", "Logos", "Banderas", "Pagos", "Archivos", "Cursores"])
-				await expect(nav.getByRole("link", { name })).toBeVisible();
+			const nav = page.getByRole("navigation", { name: "Tipo de icono" });
+			for (const name of ["De línea", "Logos", "Banderas", "Pagos", "Archivos", "Cursores"])
+				await expect(nav.getByRole("link", { name: new RegExp(`^${name} \\d+$`) })).toBeVisible();
 			await expect(nav.locator("[aria-current=page]")).toHaveCount(1);
+			await expect(nav.locator("[aria-current=page]")).toHaveAttribute("href", g.path);
+			await expect(nav.locator("[aria-current=page]")).toContainText(String(g.entries));
 		});
 
-		test("sin resultados lo dice", async ({ page }) => {
+		test("sin resultados: nombra lo buscado y «Limpiar búsqueda» devuelve la galería entera", async ({
+			page,
+		}) => {
 			await ready(page, g);
 			await page.getByLabel(g.label).fill("zzzz");
 			await expect(page.locator(`#${g.prefix}-count`)).toHaveText(new RegExp(`^0 de ${g.entries}$`));
 			await expect(page.locator("[data-item]")).toHaveCount(0);
+			await expect(page.getByRole("heading", { name: "Nada con «zzzz»" })).toBeVisible();
+			await page.getByRole("button", { name: "Limpiar búsqueda" }).click();
+			await expect(page.getByLabel(g.label)).toHaveValue("");
+			await expect(page.locator(`#${g.prefix}-count`)).toHaveText(`${g.entries} ${g.noun}`);
 		});
 	});
 }
@@ -88,7 +97,7 @@ test("banderas: buscar «españa», elegirla y ver su código; se copia el nombr
 	await ready(page, g);
 	await page.getByLabel(g.label).fill("españa");
 	await expect(page.locator("[data-item]")).toHaveCount(1);
-	await page.locator('[data-select="es"]').click();
+	await page.locator('[data-item="es"]').click();
 	const panel = page.getByRole("complementary", { name: "Bandera elegida" });
 	await expect(panel.locator("#flag-detail-name")).toContainText("es");
 	await expect(panel.locator("#flag-detail-name")).toContainText("España");
@@ -96,6 +105,8 @@ test("banderas: buscar «españa», elegirla y ver su código; se copia el nombr
 	await expect(code).toContainText('import { FlagEs } from "@untitledui/country-flags";');
 	await expect(code).toContainText("<FlagEs size={24} />");
 	await expect(panel.getByRole("tab", { name: "Importar SVG" })).toHaveCount(0);
+	// La bandera en círculo, en varios tamaños
+	await expect(panel.getByRole("list", { name: "Tamaños" }).locator("img")).toHaveCount(4);
 	await panel.getByRole("button", { name: "Copiar nombre" }).click();
 	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("es");
 });
@@ -104,9 +115,9 @@ test("banderas: se buscan también por su código y sin tildes", async ({ page }
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await ready(page, GALLERIES[0]);
 	await page.getByLabel("Buscar bandera").fill("japon");
-	await expect(page.locator('[data-select="jp"]')).toBeVisible();
+	await expect(page.locator('[data-item="jp"]')).toBeVisible();
 	await page.getByLabel("Buscar bandera").fill("jp");
-	await expect(page.locator('[data-select="jp"] img')).toHaveAttribute("src", /\/flags\/jp\.svg/);
+	await expect(page.locator('[data-item="jp"] img')).toHaveAttribute("src", /\/flags\/jp\.svg/);
 });
 
 test("banderas: la misma bandera dos veces en una página se ve entera (los id del recorte se repiten)", async ({
@@ -134,7 +145,7 @@ test("pagos: «visa» tiene sm y md, y su código importa los dos de @jotis-me/a
 	const g = GALLERIES[1];
 	await ready(page, g);
 	await page.getByLabel(g.label).fill("visa");
-	await page.locator('[data-select="visa"]').click();
+	await page.locator('[data-item="visa"]').click();
 	const panel = page.getByRole("complementary", { name: "Método de pago elegido" });
 	await expect(panel.locator("#payment-detail-name")).toHaveText("visa");
 	await expect(panel.getByRole("tabpanel")).toContainText(
@@ -154,8 +165,13 @@ test("archivos: «pdf» da el de documento y «pdf-simple», y su código usa Fi
 		.locator("[data-item]")
 		.evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.item as string).sort());
 	expect(names).toEqual(["pdf", "pdf-simple"]);
-	await page.locator('[data-select="pdf"]').click();
+	await page.locator('[data-item="pdf"]').click();
 	const panel = page.getByRole("complementary", { name: "Icono de archivo elegido" });
+	await expect(panel.getByRole("list", { name: "Variantes" }).getByRole("listitem")).toHaveText([
+		"Default",
+		"Gray",
+		"Solid",
+	]);
 	const code = panel.getByRole("tabpanel");
 	await expect(code).toContainText('import { FileIcon } from "@untitledui/file-icons";');
 	for (const tag of [
@@ -177,7 +193,7 @@ test("cursores: «hand-grab» ofrece su código de React y la regla de CSS con l
 	const g = GALLERIES[3];
 	await ready(page, g);
 	await page.getByLabel(g.label).fill("hand-grab");
-	await page.locator('[data-select="hand-grab"]').click();
+	await page.locator('[data-item="hand-grab"]').click();
 	const panel = page.getByRole("complementary", { name: "Cursor elegido" });
 	await expect(panel.getByRole("tabpanel")).toContainText(
 		'import { CursorHandGrab } from "@jotis-me/assets/cursors";',
@@ -194,11 +210,15 @@ test("en móvil, una galería nueva abre la hoja y no desborda", async ({ page }
 	const g = GALLERIES[0];
 	await ready(page, g);
 	await page.getByLabel(g.label).fill("japón");
-	await page.locator('[data-select="jp"]').click();
+	const tile = page.locator('[data-item="jp"] button');
+	await tile.click();
 	const sheet = page.getByRole("dialog", { name: /jp/ });
 	await expect(sheet).toBeVisible();
+	await expect(sheet).toContainText("Japón");
+	expect(await sheet.evaluate((el) => el.contains(document.activeElement))).toBe(true);
 	await expect(sheet.getByRole("tabpanel")).toContainText("FlagJp");
 	await page.keyboard.press("Escape");
 	await expect(sheet).toBeHidden();
+	await expect(tile).toBeFocused();
 	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
 });

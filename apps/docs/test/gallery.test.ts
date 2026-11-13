@@ -10,11 +10,14 @@ import * as lineIcons from "@untitledui/icons";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { logoCode } from "../src/components/LogoGallery";
 import categoriesByName from "../src/data/icon-categories.json";
 import {
 	buildEntries,
+	CATEGORY_LABELS,
 	CURSOR_CATEGORIES,
 	componentName,
+	countLogos,
 	decodeCategories,
 	decodeTitles,
 	decodeUrls,
@@ -27,11 +30,13 @@ import {
 	groupOptions,
 	hasSvgModule,
 	ICON_CATEGORIES,
+	ICON_SETS,
 	importPath,
 	kebab,
 	pascal,
 	searchQuery,
 	searchText,
+	setTabs,
 	svgModule,
 } from "../src/lib/gallery";
 import { FLAGS, ICON_NAMES } from "../src/lib/untitled";
@@ -275,5 +280,70 @@ describe("el endpoint de SVG", () => {
 			expect(svg).toMatch(/^<svg /);
 			expect(svg).toContain('xmlns="http://www.w3.org/2000/svg"');
 		}
+	});
+});
+
+describe("navegación de sets (redesign-docs-site-v2, D7)", () => {
+	const counts = { icons: 1181, logos: 282, flags: 234, payments: 56, files: 52, cursors: 50 };
+
+	it("los seis sets conservan su URL y todos llevan `href`, para que `Tabs` los pinte como enlaces", () => {
+		expect(ICON_SETS.map((s) => s.href)).toEqual([
+			"/icons/",
+			"/icons/logos/",
+			"/icons/flags/",
+			"/icons/payments/",
+			"/icons/files/",
+			"/icons/cursors/",
+		]);
+		const tabs = setTabs(counts);
+		expect(tabs.every((t) => t.href.startsWith("/icons/"))).toBe(true);
+		expect(tabs.find((t) => t.id === "flags")).toEqual({
+			id: "flags",
+			label: "Banderas",
+			href: "/icons/flags/",
+			count: 234,
+		});
+	});
+
+	it("los logos se cuentan como en su galería: apps, integraciones y redes, sin contar los grises aparte", () => {
+		const dir = join(assetsPkg, "dist/logos");
+		const paths = readdirSync(dir).flatMap((set) =>
+			readdirSync(join(dir, set)).map((f) => `/dist/logos/${set}/${f}`),
+		);
+		expect(countLogos(paths)).toBe(232 + 16 + 34);
+		expect(
+			countLogos([
+				"/dist/logos/social/github.svg",
+				"/dist/logos/social/github-gray.svg",
+				"/dist/logos/app/github.svg",
+				"/dist/logos/store/app-store.svg",
+			]),
+		).toBe(2);
+	});
+
+	it("cada categoría de una entrada tiene su nombre legible para la etiqueta del panel", () => {
+		for (const [kind, entries] of [
+			["icons", icons()],
+			["files", files()],
+		] as const)
+			for (const e of entries)
+				for (const g of e.groups) expect(CATEGORY_LABELS[kind]?.[g], `${kind}: ${g}`).toBeTruthy();
+		expect(CATEGORY_LABELS.flags).toBeUndefined();
+	});
+});
+
+describe("código del logo elegido", () => {
+	it("importa el de color y, si lo hay, el gris, de @jotis-me/assets/logos", () => {
+		const [react, astro] = logoCode(
+			{ set: "social", name: "github", url: "/a.svg", gray: { url: "/b.svg", mono: true } },
+			null,
+		);
+		expect(react?.code).toContain(
+			'import { SocialGithubLogo, SocialGithubLogoGray } from "@jotis-me/assets/logos";',
+		);
+		expect(react?.code).toContain('<SocialGithubLogoGray size={24} title="github" />');
+		expect(astro?.code).toContain('"@jotis-me/assets/logos/social/github.svg?raw"');
+		const [solo] = logoCode({ set: "app", name: "figma", url: "/a.svg" }, null);
+		expect(solo?.code).toContain('import { AppFigmaLogo } from "@jotis-me/assets/logos";');
 	});
 });

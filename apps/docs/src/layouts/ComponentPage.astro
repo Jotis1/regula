@@ -4,9 +4,9 @@ import { join } from "node:path";
 // Página de un componente (design D1 de redesign-docs-site-v2): `PageHeader` con migas Componentes › grupo › nombre,
 // descripción, insignia del grupo, la importación en un `Input` de solo lectura con su botón de copiar y la nota de
 // Astro; después, cada sección con su `SectionHeader` (SectionTitle): el ejemplo interactivo, «Cuándo usarlo» (la
-// ficha), props, código, «Detalles y accesibilidad» (el resto de la ficha) y anterior/siguiente. A la derecha, el
-// índice «En esta página» y los relacionados del catálogo.
-import { Badge, Button, Input, PageHeader, Pager } from "@jotis-me/react";
+// ficha, con sus pares de ejemplo), props, código, «Detalles y accesibilidad» (el resto de la ficha), los relacionados
+// del catálogo como `LinkCard` y anterior/siguiente. A la derecha, el índice «En esta página».
+import { Badge, Button, Input, LinkCard, PageHeader, Pager } from "@jotis-me/react";
 import { ArrowRight, Copy01, InfoCircle, Moon01, Play } from "@untitledui/icons";
 import CardSections from "../components/CardSections.astro";
 import CodeSnippet from "../components/CodeSnippetIsland";
@@ -16,14 +16,13 @@ import Playground from "../components/Playground";
 import PropsTable from "../components/PropsTable.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import StreamNote from "../components/StreamNote.astro";
-import type { SplitCard } from "../lib/card";
+import { type SplitCard, usageOf, usageToc } from "../lib/card";
 import { groupOf, labelOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
 import { compositionCode } from "../lib/composition-code";
 import { inline } from "../lib/inline";
 import { PAGE_SECTIONS } from "../lib/layout";
-import type { Playground as PlaygroundData } from "../lib/playground";
+import { type Playground as PlaygroundData, STARTS } from "../lib/playground";
 import type { PropRow } from "../lib/props";
-import { TOC_LINK } from "../lib/toc";
 import { COMPOSITION_FILES, compositionsOf, INLINE_COMPOSITIONS } from "../visual/compositions";
 import VisualExample from "../visual/VisualExample";
 import Base from "./Base.astro";
@@ -44,8 +43,11 @@ interface Props {
 	astroNote?: string;
 	/** Playground generado de sus props (src/lib/playground.ts); sin él, la página enseña solo sus ejemplos. */
 	playground?: PlaygroundData;
+	/** La descripción de cada componente por su nombre, para las tarjetas de relacionados. */
+	descriptions?: Record<string, string>;
 }
 const {
+	descriptions = {},
 	name,
 	description,
 	card,
@@ -65,7 +67,7 @@ const crumbs = [
 	...(group ? [{ label: group.label, href: `/components/#${group.id}` }] : []),
 	{ label },
 ];
-const { prev, next: following, related } = neighborsOf(name);
+const { prev, next: following } = neighborsOf(name);
 const href = (c: string) => `/components/${slugOf(c)}/`;
 // Los de Stream (Scene.dc.html): insignia «Siempre en oscuro», nota del tema bajo el primer ejemplo, nota de OBS
 // bajo el código y la guía de Stream entre los relacionados
@@ -80,14 +82,37 @@ const compositionSource = inlineCompositions
 	: "";
 
 const importLine = `import { ${name} } from "@jotis-me/react"`;
-const has = (...ids: string[]) => card.sections.some((s) => ids.includes(s.id));
+// «Cuándo usarlo» y «Evita»: el texto de la ficha con los pares de ejemplo del arranque del componente
+const usage = usageOf(card, STARTS[name]?.examples);
+// Relacionados, al final de la página (Main.dc.html): los tres siguientes de su grupo, y la guía en los de Stream
+const siblings = group ? [...group.components] : [];
+const at = siblings.findIndex((c) => slugOf(c) === slugOf(name));
+const relatedCards = [
+	...(at < 0 ? [] : [...siblings.slice(at + 1), ...siblings.slice(0, at)].slice(0, 3)).map((c) => ({
+		href: href(c),
+		title: labelOf(c),
+		description: descriptions[c] ?? "",
+	})),
+	...(stream
+		? [
+				{
+					href: "/foundations/stream/",
+					title: "Guía de Stream",
+					description:
+						"Componentes para directos: alertas, escenas, overlay y canal, siempre en oscuro.",
+				},
+			]
+		: []),
+];
+const has = (...ids: string[]) => usage.card.sections.some((s) => ids.includes(s.id));
 const toc = [
 	playground && { slug: "ejemplo", text: "Ejemplo" },
-	has("uso", "evita") && { slug: "uso", text: "Cuándo usarlo" },
+	...usageToc(usage),
 	compositions.length > 0 && { slug: "composiciones", text: "Composiciones" },
 	{ slug: "props", text: "Props" },
 	{ slug: "codigo", text: "Código" },
 	has("detalles", "accesibilidad", "amplia") && { slug: "detalles", text: "Detalles y accesibilidad" },
+	relatedCards.length > 0 && { slug: "relacionados", text: "Relacionados" },
 ].filter((t): t is { slug: string; text: string } => !!t);
 ---
 
@@ -126,7 +151,7 @@ const toc = [
 				)
 			}
 
-			<CardSections card={card} part="uso" />
+			<CardSections name={name} usage={usage} part="uso" />
 
 			{
 				compositions.length > 0 && (
@@ -173,15 +198,8 @@ const toc = [
 
 			<section aria-labelledby="props" class="flex flex-col gap-5">
 				<SectionTitle id="props" title="Props" />
-				<!-- En móvil la tabla se desplaza dentro de su caja; con teclado, la caja recibe el foco para desplazarla -->
-				<div
-					role="region"
-					aria-label={`Props de ${label}`}
-					tabindex="0"
-					class="overflow-x-auto rounded-sm focus-visible:shadow-focus-ring focus-visible:outline-none"
-				>
-					<PropsTable rows={props} />
-				</div>
+				<!-- Desde `lg`, la tabla en su caja; por debajo, una lista plegable, una prop por fila -->
+				<PropsTable rows={props} label={label} />
 				{card.props && <p class="m-0 text-sm text-tertiary" set:html={inline(card.props.raw)} />}
 			</section>
 
@@ -218,7 +236,24 @@ const toc = [
 				}
 			</section>
 
-			<CardSections card={card} part="detalles" />
+			<CardSections name={name} usage={usage} part="detalles" />
+
+			{
+				relatedCards.length > 0 && (
+					<section aria-labelledby="relacionados" class="flex flex-col gap-5">
+						<SectionTitle id="relacionados" title="Relacionados" />
+						<nav aria-label="Relacionados" class="not-prose">
+							<ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+								{relatedCards.map((c) => (
+									<LinkCard as="li" href={c.href} title={c.title}>
+										<InlineCode slot="description" text={c.description} />
+									</LinkCard>
+								))}
+							</ul>
+						</nav>
+					</section>
+				)
+			}
 
 			<Pager
 				className="not-prose"
@@ -226,25 +261,7 @@ const toc = [
 				next={following ? { href: href(following), label: labelOf(following) } : undefined}
 			/>
 		</article>
-		<PageToc items={toc}>
-			{
-				(related.length > 0 || stream) && (
-					<nav aria-label="Relacionados" class="mt-5 flex flex-col gap-2">
-						<p class="mb-1 text-xs font-semibold text-quaternary">Relacionados</p>
-						{related.map((c) => (
-							<a href={href(c)} class={TOC_LINK}>
-								{labelOf(c)}
-							</a>
-						))}
-						{stream && (
-							<a href="/foundations/stream/" class={TOC_LINK}>
-								Guía de Stream
-							</a>
-						)}
-					</nav>
-				)
-			}
-		</PageToc>
+		<PageToc items={toc} />
 		</div>
 	</div>
 </Base>

@@ -44,7 +44,7 @@ for (const old of ["/usage/tailwind/", "/foundations/spacing/", "/foundations/sh
 
 test("el texto de la guía sale tal cual", async ({ page }) => {
 	await page.goto("/foundations/content/");
-	// En «En lugar de» va dos veces, tabla en escritorio y tarjetas en móvil: una se ve
+	// En «En lugar de esto, esto otro» es el pie de su tarjeta «Mejor»
 	await expect(page.getByText('"Aún no hay gastos. Qué calma."').filter({ visible: true })).toHaveCount(1);
 	await page.goto("/foundations/color/");
 	await expect(page.getByText("Las series usan, en este orden")).toBeVisible();
@@ -61,11 +61,13 @@ test("contenido y tono: la voz, las reglas de formato y los ejemplos de la guía
 		'Mayúscula solo al principio: "Nuevo movimiento", no "Nuevo Movimiento".',
 	);
 	await expect(main).toContainText("Cifras con formato español: 1.284,50 €, fechas 29 oct 2026.");
-	const instead = page.getByRole("table", { name: /lo que se evita y lo que se escribe/ });
-	await expect(instead.getByRole("row", { name: /Error leve/ })).toContainText(
+	// «En lugar de esto, esto otro» ya no es una tabla: cada caso es un par de tarjetas (e2e/rules.spec.ts)
+	await expect(page.getByRole("table", { name: /lo que se evita y lo que se escribe/ })).toHaveCount(0);
+	await expect(page.locator('[data-example-pair="Error leve"]')).toContainText(
 		'"Se ha producido un error de validación."',
 	);
-	await expect(page.getByRole("heading", { name: "Aún no hay gastos" })).toBeVisible();
+	// El ejemplo vivo de «Dónde cabe el humor»; el de las tarjetas es inerte y no cuenta como título
+	await expect(page.getByRole("heading", { name: "Aún no hay gastos" }).last()).toBeVisible();
 });
 
 test("las páginas de fundamentos llevan migas, índice y anterior/siguiente", async ({ page }) => {
@@ -91,8 +93,8 @@ test("las páginas de fundamentos llevan migas, índice y anterior/siguiente", a
 	const toc = page.getByRole("navigation", { name: "En esta página" });
 	await expect(toc.getByRole("link")).toHaveText([
 		"La voz",
-		"Dónde cabe el humor",
 		"En lugar de esto, esto otro",
+		"Dónde cabe el humor",
 		"Reglas de escritura",
 		"Cifras y fechas",
 	]);
@@ -187,11 +189,11 @@ test("anterior y siguiente llevan su flecha, sin cambiar el nombre accesible", a
 // del final (espaciado, sombras, tipografía) entran en él
 const tocs: [string, string[]][] = [
 	["/start/install/", ["Next.js (App Router)", "Astro", "Nombres de las utilidades", "Sin Tailwind"]],
-	["/foundations/principles/", ["Los cuatro principios"]],
-	["/foundations/layout/", ["Lo esencial", "Escala de espaciado", "Radios", "Anchos"]],
-	["/foundations/states/", ["Lo esencial", "Sombras", "Desenfoques"]],
-	["/foundations/iconography/", ["Lo esencial"]],
-	["/foundations/backgrounds/", ["Lo esencial"]],
+	["/foundations/principles/", ["Con ejemplos", "Los cuatro principios"]],
+	["/foundations/layout/", ["Con ejemplos", "Lo esencial", "Escala de espaciado", "Radios", "Anchos"]],
+	["/foundations/states/", ["Con ejemplos", "Lo esencial", "Sombras", "Desenfoques"]],
+	["/foundations/iconography/", ["Con ejemplos", "Lo esencial"]],
+	["/foundations/backgrounds/", ["Con ejemplos", "Lo esencial"]],
 ];
 for (const [path, sections] of tocs)
 	test(`${path} tiene su índice «En esta página» y cada enlace lleva a su sección`, async ({ page }) => {

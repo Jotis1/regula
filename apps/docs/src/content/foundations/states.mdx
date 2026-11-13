@@ -7,8 +7,25 @@ order: 6
 import { Button } from "@jotis-me/react";
 import Essentials from "../../components/compose/Essentials.astro";
 import Example from "../../components/compose/Example.astro";
+import Pair from "../../components/compose/Pair.astro";
+import Rule from "../../components/compose/Rule.astro";
 
 {/* Texto de la guía (reference/GUIA.md, «Sombras y estados»), repartido en tarjetas sin reescribirlo */}
+
+## Con ejemplos
+
+La sombra dice a qué altura está cada cosa.
+
+<Pair>
+	<Rule verdict="do" caption="`shadow-xs-skeuomorphic` en botones: lo justo para parecer pulsables.">
+		<Button hierarchy="secondary">Exportar</Button>
+		<Button>Guardar</Button>
+	</Rule>
+	<Rule verdict="dont" caption="`shadow-xl` es de los modales. Un botón no flota.">
+		<Button hierarchy="secondary" className="shadow-xl">Exportar</Button>
+		<Button className="shadow-xl">Guardar</Button>
+	</Rule>
+</Pair>
 
 ## Lo esencial
 

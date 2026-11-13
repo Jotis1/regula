@@ -36,13 +36,37 @@ const TEXT: Record<string, (p: Props) => string> = {
 					`| \`${e.name}\`${e.on === "white" ? " (con texto blanco)" : ""} | ${exceptionRatio(e, "light")} | ${exceptionRatio(e, "dark")} | ${e.how} |`,
 			),
 		].join("\n"),
-	Instead: (p) =>
-		[
-			"| Cuándo | En lugar de | Mejor |",
-			"| --- | --- | --- |",
-			...(p.rows as Item[]).map((r) => `| ${r.when} | ${r.bad} | ${r.good} |`),
-		].join("\n"),
 };
+
+const VERDICT: Record<string, string> = {
+	do: "Esto sí",
+	dont: "Esto no",
+	instead: "En lugar de",
+	better: "Mejor",
+};
+const attr = (tag: string, name: string) => {
+	const m = tag.match(new RegExp(`${name}=(?:"([^"]*)"|'([^']*)')`));
+	return m?.[1] ?? m?.[2];
+};
+
+/**
+ * Un `<Pair>` de reglas con ejemplo (`<Rule verdict caption>`): en la guía quedan el veredicto y su frase; el espécimen
+ * es visual. Con `title` (contenido y tono), el par va en una sola línea.
+ */
+function pairToMarkdown(open: string, inner: string, file: string): string {
+	const rules = [...inner.matchAll(/<Rule\s[^\n]*>/g)].map((m) => {
+		const verdict = VERDICT[attr(m[0], "verdict") ?? ""];
+		const caption = attr(m[0], "caption");
+		if (!verdict || !caption)
+			throw new Error(`${file}: <Rule> sin verdict o caption que pasar a markdown (guide.ts)`);
+		return { verdict, caption };
+	});
+	if (!rules.length) throw new Error(`${file}: <Pair> sin <Rule> (guide.ts)`);
+	const title = attr(open, "title");
+	return title
+		? `- **${sentence(title)}** ${rules.map((r) => `${r.verdict}: ${r.caption}`).join(" ")}`
+		: rules.map((r) => `- **${r.verdict}.** ${r.caption}`).join("\n");
+}
 
 /** Recorta desde `start` hasta el cierre equilibrado de `{`/`[`/`(` (las cadenas cuentan como texto). */
 function balanced(text: string, start: number): number {
@@ -70,7 +94,12 @@ function propsOf(tag: string): Props {
 		else {
 			const open = m.index + m[0].length - 1;
 			const end = balanced(tag, open);
-			props[m[1] as string] = new Function(`return (${tag.slice(open + 1, end - 1)});`)();
+			// Un icono (`icon={Stars02}`) es un identificador importado, no un literal: en la guía no pinta nada
+			try {
+				props[m[1] as string] = new Function(`return (${tag.slice(open + 1, end - 1)});`)();
+			} catch (error) {
+				if (!(error instanceof ReferenceError)) throw error;
+			}
 			re.lastIndex = end;
 		}
 		m = re.exec(tag);
@@ -102,7 +131,8 @@ export function mdxToMarkdown(source: string, file = "página"): string {
 			const selfClosing = open.endsWith("/>");
 			const close = selfClosing ? j + 1 : rest.indexOf(`</${name}>`) + `</${name}>`.length;
 			if (!selfClosing && close < `</${name}>`.length) throw new Error(`${file}: <${name}> sin cerrar`);
-			if (TEXT[name]) out.push(`${(TEXT[name] as (p: Props) => string)(propsOf(open))}\n`);
+			if (name === "Pair") out.push(`${pairToMarkdown(open, rest.slice(j + 1, close), file)}\n`);
+			else if (TEXT[name]) out.push(`${(TEXT[name] as (p: Props) => string)(propsOf(open))}\n`);
 			else if (!VISUAL.has(name))
 				throw new Error(`${file}: <${name}> no sabe pasar a markdown (guide.ts)`);
 			i += close;

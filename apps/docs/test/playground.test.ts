@@ -54,10 +54,13 @@ const button = () => playgroundOf("Button", rowsOf("Button"), { interactive: fal
 describe("playground", () => {
 	it("Button: selectores de hierarchy y size, interruptores de destructive y loading, y selectores de icono", () => {
 		const pg = button();
+		// El texto entre las etiquetas y `label` (el nombre del botón de solo icono) son campos de texto
 		expect(pg?.controls.map((c) => `${c.kind}:${c.prop}`)).toEqual([
+			"text:children",
 			"icon:iconLeading",
 			"icon:iconTrailing",
 			"icon:iconOnly",
+			"text:label",
 			"choice:hierarchy",
 			"choice:size",
 			"toggle:destructive",
@@ -218,11 +221,23 @@ describe("playground", () => {
 		expect(childrenOf(pg, back)).toBe("Nuevo gasto");
 	});
 
-	it("no hay atajos: los controles de propiedades son la única forma de cambiar el ejemplo", () => {
+	it("los atajos son datos del arranque (`shortcuts`), no la fila de botones `presets` que se quitó", () => {
 		const pg = button();
 		if (!pg) throw new Error("Button debería tener playground");
-		expect(pg.start).not.toHaveProperty("presets");
+		expect(pg.start.shortcuts?.map((s) => s.label)).toContain("Solo icono");
 		for (const [name, start] of Object.entries(STARTS)) expect(start, name).not.toHaveProperty("presets");
+	});
+
+	it("un interruptor que por defecto va encendido se escribe al apagarlo", () => {
+		const pg: Playground = {
+			name: "Input",
+			start: {},
+			controls: [{ kind: "toggle", prop: "revealable", default: true }],
+			interactive: false,
+			dark: false,
+		};
+		expect(jsxOf(pg, { revealable: true })).toBe("<Input />");
+		expect(jsxOf(pg, { revealable: false })).toBe("<Input revealable={false} />");
 	});
 
 	it("los iconos dentro de objetos y listas se escriben como identificador y se importan", () => {

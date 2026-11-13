@@ -101,7 +101,7 @@ test("encuentra tokens e iconos; un icono abre la galería con él elegido", asy
 		.click();
 	await expect(page).toHaveURL(/\/icons\/\?icono=Calendar$/);
 	await expect(page.locator("#icon-search")).toHaveValue("Calendar");
-	await expect(page.locator('[data-select="Calendar"]')).toHaveAttribute("aria-pressed", "true");
+	await expect(page.locator('[data-item="Calendar"] button')).toHaveAttribute("aria-pressed", "true");
 });
 
 test("busca también en el texto de las páginas (Pagefind)", async ({ page }) => {

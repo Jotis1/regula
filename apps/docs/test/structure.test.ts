@@ -44,13 +44,8 @@ const HAND_MADE: Record<string, { tag: string; why: string }[]> = {
 	"search/SiteSearch.tsx": [
 		{ tag: "button", why: "disparador de la búsqueda con aspecto de campo (NOTAS 3.4)" },
 	],
-	"pages/index.astro": [
-		{ tag: "button", why: "«Busca lo que te falte», disparador con aspecto de campo (NOTAS 3.4)" },
-		{
-			tag: "a",
-			why: "fila de las cards de móvil con icono y chevron, que LinkCard no tiene (NOTAS 3.4)",
-		},
-	],
+	// Desde `redesign-docs-site-v2` la búsqueda de la portada es un `Input` de solo lectura y el mapa, `LinkCard`
+	"pages/index.astro": [],
 };
 
 const handTags = (code: string) =>

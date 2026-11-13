@@ -4,6 +4,26 @@ import type { Start } from "../playground";
 export const etiquetasEIdentidad: Record<string, Start> = {
 	Badge: {
 		children: "Pagado",
+		// Los pies son frases de la ficha (content/components/badge.md), letra a letra
+		examples: [
+			{
+				section: "evita",
+				do: {
+					caption:
+						'El estado no debe depender solo del color: la palabra ("Pagado", "Vencido") es obligatoria.',
+					specimens: [
+						{ props: { color: "success", dot: true }, children: "Pagado" },
+						{ props: { color: "error", dot: true }, children: "Vencido" },
+					],
+				},
+				dont: {
+					caption: "Nada de frases.",
+					specimens: [
+						{ props: { color: "success" }, children: "El pago se ha completado correctamente" },
+					],
+				},
+			},
+		],
 		rules: [
 			{
 				when: { iconOnly: true },

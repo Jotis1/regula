@@ -1,69 +1,127 @@
 ---
-// Índice de componentes (design §10): los grupos del catálogo en su orden, cada componente en una card con su vista
-// previa, su descripción de la ficha y el enlace a su página. Los cuatro grupos de Stream van al final, bajo su sección.
+// Índice de componentes (design D5 y D8 de redesign-docs-site-v2): cabecera con el buscador y el desplegable de grupo,
+// el mapa de los 16 grupos («Qué necesitas hacer») y, debajo, cada grupo con sus cards. Los cuatro de Stream van al
+// final, con «Stream:» delante.
 //
-// La vista previa es una captura WebP de lo más característico del componente (ShowcaseImage.astro, change
-// adopt-untitled-ui-icons), en claro y en oscuro; la hace scripts/capture-showcases.ts.
+// La vista previa de cada card es una captura WebP de lo más característico del componente (ShowcaseImage.astro,
+// change adopt-untitled-ui-icons), en claro y en oscuro; la hace scripts/capture-showcases.ts.
+//
+// Todo es HTML del servidor: sin JavaScript se ve entero y el buscador y el desplegable, que no harían nada, no se
+// pintan (`noscript:hidden`). Con él, src/lib/component-index.ts filtra las cards, lleva al grupo elegido y retira
+// el `Skeleton` de cada captura al cargar.
 import { getCollection } from "astro:content";
-import { LinkCard, PageHeader } from "@jotis-me/react";
+import { Button, EmptyState, Input, LinkCard, PageHeader, Select } from "@jotis-me/react";
+import { SearchLg } from "@untitledui/icons";
 import InlineCode from "../../components/InlineCode.astro";
 import SectionTitle from "../../components/SectionTitle.astro";
 import ShowcaseImage from "../../components/ShowcaseImage.astro";
 import Base from "../../layouts/Base.astro";
-import { COMPONENT_GROUPS, labelOf, slugOf } from "../../lib/catalog";
+import { COMPONENT_GROUPS, COMPONENT_KEYWORDS, labelOf, slugOf } from "../../lib/catalog";
 
 const pages = await getCollection("components");
 const descriptions = new Map(pages.map((p) => [p.data.name, p.data.description]));
-const sections = [
-	{
-		id: "components",
-		title: "Componentes de aplicación",
-		groups: COMPONENT_GROUPS.filter((g) => g.section === "components"),
-	},
-	{ id: "stream", title: "Stream", groups: COMPONENT_GROUPS.filter((g) => g.section === "stream") },
-] as const;
 const total = pages.length;
-// Las tres primeras cards, a la vista al cargar, no son perezosas: una de ellas suele ser el LCP
+const count = (n: number) => `${n} ${n === 1 ? "componente" : "componentes"}.`;
+// Los de Stream comparten nombres con los avisos de aplicación («Alertas»): se leen con su sección delante
+const groups = COMPONENT_GROUPS.map((g) => ({
+	...g,
+	title: g.section === "stream" ? `Stream: ${g.label}` : g.label,
+	summary: `${g.description} ${count(g.components.length)}`,
+}));
+const streamGroups = groups.filter((g) => g.section === "stream");
+const streamCount = streamGroups.reduce((n, g) => n + g.components.length, 0);
+// Las tres primeras cards, las que antes se ven, no son perezosas: una de ellas suele ser el LCP
 const eagerSet = new Set((COMPONENT_GROUPS[0]?.components ?? []).slice(0, 3));
-const streamCount = sections[1].groups.reduce((n, g) => n + g.components.length, 0);
+// El desplegable lleva a un ancla: la del mapa o la de un grupo. Las mismas props las usa al montarse en el navegador
+const groupSelect = {
+	id: "ir-a-grupo",
+	label: "Ir a un grupo",
+	defaultValue: "grupos",
+	options: [
+		{ value: "grupos", label: "Todos los grupos" },
+		...groups.map((g) => ({ value: g.id, label: g.title })),
+	],
+};
+// `<` fuera del JSON para que nada cierre la etiqueta <script>
+const json = (value: unknown) => JSON.stringify(value).replaceAll("<", "\\u003c");
 ---
 
 <Base
 	title="Componentes"
-	description={`Los ${total} componentes de @jotis-me/react, agrupados por tipo, con su descripción.`}
+	description={`Los ${total} componentes de @jotis-me/react, agrupados por lo que resuelven, con su descripción.`}
 >
-	<div class="flex flex-col gap-10">
+	<div class="flex flex-col gap-14" data-index>
 		<PageHeader title="Componentes" breadcrumbs={[{ label: "Componentes" }]} divider={false}>
 			<Fragment slot="description">
-				Los {total} componentes de <code class="font-mono">@jotis-me/react</code>, en los grupos de la navegación: {total -
-					streamCount} de aplicación y {streamCount} de Stream, que van siempre en oscuro.
+				Los {total} componentes de <code class="font-mono">@jotis-me/react</code>, agrupados por lo que resuelven: {
+					total - streamCount
+				} de aplicación y {streamCount} de Stream, que van siempre en oscuro.
 			</Fragment>
+			<div class="flex flex-wrap items-end gap-3 noscript:hidden">
+				<div class="w-full max-w-[520px] min-w-0 sm:w-auto sm:min-w-[260px] sm:flex-1" data-index-search>
+					<Input
+						id="buscar-componente"
+						label="Buscar por nombre o por lo que hace"
+						placeholder="Prueba con «fecha» o «aviso»"
+						icon={SearchLg}
+						autoComplete="off"
+						enterKeyHint="search"
+					/>
+				</div>
+				<div class="w-full sm:w-60" data-index-select>
+					<Select {...groupSelect} />
+					<script is:inline type="application/json" data-select set:html={json(groupSelect)} />
+				</div>
+				<p class="m-0 basis-full text-sm text-tertiary empty:hidden" role="status" data-index-count></p>
+			</div>
 		</PageHeader>
-	<article class="prose flex max-w-none flex-col gap-14">
+
+		<section aria-labelledby="grupos" class="flex flex-col gap-5" data-index-map>
+			<SectionTitle
+				id="grupos"
+				title="Qué necesitas hacer"
+				description={`${groups.length} grupos: ${groups.length - streamGroups.length} de aplicación y ${streamGroups.length} de Stream. Elige por la tarea y baja al grupo.`}
+			/>
+			<ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 xl:grid-cols-4">
+				{groups.map((g) => <LinkCard as="li" href={`#${g.id}`} title={g.title} description={g.summary} />)}
+			</ul>
+		</section>
+
 		{
-			sections.map((section) => (
-				<section aria-labelledby={`seccion-${section.id}`} class="not-prose flex flex-col gap-6">
-					<SectionTitle id={`seccion-${section.id}`} title={section.title} />
-					{section.groups.map((group) => (
-						<section aria-labelledby={group.id} class="mb-10">
-							<h3 id={group.id} class="mb-3 flex items-baseline gap-2 text-lg font-semibold text-primary">
-								{group.label}
-								<span class="text-sm font-normal text-tertiary">{group.components.length}</span>
-							</h3>
-							<ul class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3" data-group={group.id}>
-								{group.components.map((name) => (
-									<LinkCard as="li" href={`/components/${slugOf(name)}/`} title={labelOf(name)}>
-										{/* La vista previa va fuera del enlace (HTML válido y sin nada interactivo dentro de él): LinkCard estira el enlace sobre toda la card */}
-										<ShowcaseImage slot="preview" name={name} slug={slugOf(name)} eager={eagerSet.has(name)} />
-										<InlineCode slot="description" text={descriptions.get(name) ?? ""} />
-									</LinkCard>
-								))}
-							</ul>
-						</section>
-					))}
+			groups.map((group) => (
+				<section aria-labelledby={group.id} class="flex flex-col gap-5" data-index-group>
+					<SectionTitle id={group.id} title={group.title} description={group.summary} />
+					<ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 xl:grid-cols-3 xl:gap-4" data-group={group.id}>
+						{group.components.map((name) => (
+							<LinkCard as="li" href={`/components/${slugOf(name)}/`} title={labelOf(name)}>
+								{/* La vista previa va fuera del enlace (HTML válido y sin nada interactivo dentro de él): LinkCard estira el enlace sobre toda la card */}
+								<ShowcaseImage slot="preview" name={name} slug={slugOf(name)} eager={eagerSet.has(name)} />
+								<InlineCode slot="description" text={descriptions.get(name) ?? ""} />
+							</LinkCard>
+						))}
+					</ul>
 				</section>
 			))
 		}
-	</article>
+
+		<div data-index-empty hidden>
+			{/* El título entra por su slot, con el hueco de lo buscado; `title=""` solo cumple el tipo, como en SectionTitle */}
+			<EmptyState
+				title=""
+				description="Ningún componente coincide. Revisa la errata o prueba con lo que hace: «fecha», «tabla», «aviso»."
+			>
+				<Fragment slot="title">Nada con «<span data-index-term></span>»</Fragment>
+				<Button slot="actions" hierarchy="secondary">Limpiar búsqueda</Button>
+			</EmptyState>
+		</div>
+
+		<script is:inline type="application/json" data-index-keywords set:html={json(COMPONENT_KEYWORDS)} />
 	</div>
 </Base>
+
+<script>
+	import { initComponentIndex } from "../../lib/component-index";
+
+	const root = document.querySelector<HTMLElement>("[data-index]");
+	if (root) initComponentIndex(root);
+</script>

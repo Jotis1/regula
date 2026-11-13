@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Locator, type Page, test } from "@playwright/test";
-import { groupOf, labelOf } from "../src/lib/catalog";
+import { COMPONENT_GROUPS, groupOf, labelOf } from "../src/lib/catalog";
 
 /** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
 async function hydrated(page: Page, selector: string) {
@@ -234,24 +234,31 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 	await expect(importLine).toHaveAttribute("readonly", "");
 	await expect(page.locator("main header").first().getByRole("button", { name: "Copiar" })).toBeVisible();
 	const headings = await page.locator("article h2").allTextContents();
-	expect(headings.slice(0, 5)).toEqual([
+	expect(headings.slice(0, 7)).toEqual([
 		"Ejemplo interactivo",
 		"Cuándo usarlo",
+		"Evita",
 		"Props",
 		"Código",
 		"Detalles y accesibilidad",
+		"Relacionados",
 	]);
 	const toc = page.getByRole("navigation", { name: "En esta página" });
 	await expect(toc.getByRole("link", { name: "Props" })).toHaveAttribute("href", "#props");
+	// Relacionados, al final de la página: los tres siguientes de su grupo en `LinkCard`, con su descripción
 	const related = page.getByRole("navigation", { name: "Relacionados" });
+	await expect(related.getByRole("link")).toHaveCount(3);
 	for (const [name, slug] of [
 		["Button group", "button-group"],
+		["Button utility", "button-utility"],
 		["Close button", "close-button"],
 	])
-		await expect(related.getByRole("link", { name, exact: true })).toHaveAttribute(
+		await expect(related.getByRole("link", { name: new RegExp(`^${name}`) })).toHaveAttribute(
 			"href",
 			`/components/${slug}/`,
 		);
+	await expect(related.getByRole("link", { name: /^Button group/ })).toContainText("Grupo segmentado");
+	await expect(toc.getByRole("link", { name: "Relacionados" })).toHaveAttribute("href", "#relacionados");
 	const pager = page.getByRole("navigation", { name: "Anterior y siguiente" });
 	await expect(pager.getByRole("link")).toHaveCount(1);
 	await expect(pager.getByRole("link", { name: /Siguiente\s*Button group/ })).toHaveAttribute(
@@ -279,6 +286,9 @@ test("a 390px ninguna página de componente se desplaza en horizontal: la tabla 
 		if ((await page.evaluate(() => document.documentElement.scrollWidth)) > 390) wide.push(slug);
 	}
 	expect(wide).toEqual([]);
+	// Por debajo de `lg` las props son una lista plegable; la tabla, con su caja que recibe el foco, es de escritorio
+	await expect(page.getByRole("list", { name: /^Props de / })).toBeVisible();
+	await page.setViewportSize({ width: 1440, height: 900 });
 	await expect(page.getByRole("region", { name: /^Props de / })).toHaveAttribute("tabindex", "0");
 });
 
@@ -287,7 +297,7 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 }) => {
 	await page.goto("/components/");
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Componentes");
-	const index = page.locator("article");
+	const index = page.locator("[data-index]");
 	// El enlace de cada card (las vistas previas pueden llevar enlaces dibujados: Breadcrumbs, SidebarNav…)
 	const links = index.locator("[data-group] > li > a");
 	await expect(links).toHaveCount(pages.length);
@@ -298,8 +308,180 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 	}
 	// Las migas de cada página apuntan a estas anclas (/components/#acciones)
 	for (const id of ["acciones", "formularios", "stream-escenas", "stream-canal"])
-		await expect(page.locator(`h3#${id}`)).toHaveCount(1);
-	await expect(page.locator("#seccion-stream + section h3")).toHaveText(/Alertas/);
+		await expect(page.locator(`#${id} h2`)).toHaveCount(1);
+	// Los de Stream se leen con su sección delante: «Alertas» no se confunde con «Avisos y carga»
+	await expect(page.locator("#stream-alertas h2")).toHaveText("Stream: Alertas");
+	await expect(page.locator("#acciones")).toContainText(
+		"Lo que se pulsa para que pase algo. 7 componentes.",
+	);
+});
+
+// El índice (redesign-docs-site-v2, design D5 y D8): mapa de grupos, buscador, desplegable de grupo y estados
+const visibleCards = (page: Page) => page.locator("[data-group] > li:visible > a");
+
+test("/components/ · Mapa de grupos: antes de las cards hay un enlace por cada uno de los 16 grupos, con su frase y su recuento", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	const map = page.getByRole("region", { name: /^Qué necesitas hacer/ });
+	const links = map.getByRole("link");
+	await expect(links).toHaveCount(COMPONENT_GROUPS.length);
+	expect(COMPONENT_GROUPS).toHaveLength(16);
+	for (const g of COMPONENT_GROUPS) {
+		const n = g.components.length;
+		const link = map.locator(`a[href="#${g.id}"]`);
+		await expect(link).toHaveCount(1);
+		await expect(link).toContainText(g.section === "stream" ? `Stream: ${g.label}` : g.label);
+		await expect(link).toContainText(`${g.description} ${n} ${n === 1 ? "componente" : "componentes"}.`);
+	}
+	// El mapa va antes de la primera card
+	const before = await page.evaluate(() => {
+		const map = document.querySelector("[data-index-map]") as Element;
+		const card = document.querySelector("[data-group] > li") as Element;
+		return !!(map.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING);
+	});
+	expect(before).toBe(true);
+	// Y cada enlace lleva a su grupo
+	await map.getByRole("link", { name: /^Gráficas/ }).click();
+	await expect(page).toHaveURL(/\/components\/#graficas$/);
+	await expect(page.locator("#graficas")).toBeInViewport();
+});
+
+test("/components/ · Buscar por lo que hace: «fecha» deja DatePicker y CalendarView y anuncia cuántos quedan", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	const search = page.getByRole("textbox", { name: "Buscar por nombre o por lo que hace" });
+	const status = page.locator("[data-index-count]");
+	await expect(status).toHaveAttribute("role", "status");
+	await expect(status).toBeEmpty();
+	await search.fill("fecha");
+	await expect(visibleCards(page)).toHaveCount(2);
+	expect(await visibleCards(page).evaluateAll((els) => els.map((a) => a.getAttribute("href")))).toEqual([
+		"/components/date-picker/",
+		"/components/calendar-view/",
+	]);
+	await expect(status).toHaveText(`2 de ${pages.length} componentes`);
+	// Solo quedan los grupos con resultados; el mapa se aparta mientras se busca
+	await expect(page.locator("[data-index-group]:visible")).toHaveCount(2);
+	await expect(page.locator("[data-index-map]")).toBeHidden();
+	// Por nombre (como se lee y como se escribe en el código), sin tildes ni mayúsculas, y por palabra clave
+	await search.fill("DATEPICKER");
+	await expect(visibleCards(page)).toHaveCount(1);
+	await search.fill("boton");
+	await expect(page.locator('[data-group] > li:visible > a[href="/components/button/"]')).toHaveCount(1);
+	// Varias palabras: tienen que estar todas
+	await search.fill("fecha rango");
+	await expect(visibleCards(page)).toHaveCount(1);
+	// Escape lo vacía y vuelve todo
+	await search.press("Escape");
+	await expect(search).toHaveValue("");
+	await expect(visibleCards(page)).toHaveCount(pages.length);
+	await expect(page.locator("[data-index-map]")).toBeVisible();
+	await expect(status).toBeEmpty();
+});
+
+test("/components/ · Sin resultados en el índice: «botonn» enseña un estado vacío que lo nombra y «Limpiar búsqueda»", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	const search = page.getByRole("textbox", { name: "Buscar por nombre o por lo que hace" });
+	const empty = page.locator("[data-index-empty]");
+	await expect(empty).toBeHidden();
+	await search.fill("botonn");
+	await expect(visibleCards(page)).toHaveCount(0);
+	await expect(empty).toBeVisible();
+	await expect(empty.getByRole("heading")).toHaveText("Nada con «botonn»");
+	await expect(page.locator("[data-index-count]")).toHaveText("Sin resultados");
+	await empty.getByRole("button", { name: "Limpiar búsqueda" }).click();
+	await expect(empty).toBeHidden();
+	await expect(search).toHaveValue("");
+	await expect(search).toBeFocused();
+	await expect(visibleCards(page)).toHaveCount(pages.length);
+});
+
+test("/components/: el desplegable de grupo lleva al ancla del grupo, con ratón y con teclado, y su código no se pide hasta usarlo", async ({
+	page,
+}) => {
+	const scripts: string[] = [];
+	page.on("request", (r) => {
+		if (r.resourceType() === "script") scripts.push(r.url());
+	});
+	await page.goto("/components/");
+	await page.waitForLoadState("networkidle");
+	const atLoad = scripts.length;
+	const select = page.getByRole("button", { name: /Ir a un grupo/ });
+	await expect(select).toContainText("Todos los grupos");
+	// Con una búsqueda a medias, ir a un grupo la limpia: el grupo podía estar escondido
+	await page.getByRole("textbox", { name: "Buscar por nombre o por lo que hace" }).fill("fecha");
+	await select.click();
+	const options = page.getByRole("option");
+	await expect(options).toHaveCount(COMPONENT_GROUPS.length + 1);
+	expect(scripts.length).toBeGreaterThan(atLoad);
+	await page.getByRole("option", { name: "Stream: Canal" }).click();
+	await expect(page).toHaveURL(/#stream-canal$/);
+	await expect(page.locator("#stream-canal")).toBeInViewport();
+	await expect(visibleCards(page)).toHaveCount(pages.length);
+	// Ya montado, con teclado
+	await page.getByRole("button", { name: /Ir a un grupo/ }).focus();
+	await page.keyboard.press("Enter");
+	await page.getByRole("option", { name: "Formularios" }).click();
+	await expect(page).toHaveURL(/#formularios$/);
+	await expect(page.locator("#formularios")).toBeInViewport();
+});
+
+test("/components/: con teclado y sin haberlo tocado antes, Enter abre el desplegable de grupo", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	await page.getByRole("button", { name: /Ir a un grupo/ }).focus();
+	await page.keyboard.press("Enter");
+	await expect(page.getByRole("listbox")).toBeVisible();
+	await page.keyboard.press("ArrowDown");
+	await page.keyboard.press("Enter");
+	await expect(page).toHaveURL(/#acciones$/);
+});
+
+test("/components/ · carga: cada captura lleva un Skeleton en su hueco hasta que carga su imagen", async ({
+	page,
+}) => {
+	// Las capturas no llegan hasta que se suelta la espera
+	let release: () => void = () => {};
+	const held = new Promise<void>((resolve) => {
+		release = resolve;
+	});
+	await page.route(/\.webp(\?|$)/, async (route) => {
+		await held;
+		await route.continue();
+	});
+	await page.goto("/components/", { waitUntil: "domcontentloaded" });
+	const first = page.locator('[data-showcase-card="Button"]');
+	await first.scrollIntoViewIfNeeded();
+	const skeleton = first.locator("> span");
+	await expect(skeleton).toBeVisible();
+	await expect(skeleton).toHaveAttribute("aria-hidden", "true");
+	// El texto de la card ya está: solo espera la captura
+	await expect(card(page, "button").locator("> a")).toContainText("Button");
+	release();
+	await expect(first).toHaveAttribute("data-loaded", "");
+	await expect(skeleton).toBeHidden();
+	// Las tres primeras siguen sin ser perezosas: el Skeleton no cambia cómo se cargan
+	await expect(first.locator("img").first()).toHaveAttribute("loading", "eager");
+});
+
+test.describe("/components/ sin JavaScript", () => {
+	test.use({ javaScriptEnabled: false });
+
+	test("se ve entero y el buscador y el desplegable, que no harían nada, no se pintan", async ({
+		page,
+	}) => {
+		await page.goto("/components/");
+		await expect(visibleCards(page)).toHaveCount(pages.length);
+		await expect(page.locator("[data-index-map] a")).toHaveCount(16);
+		await expect(page.locator("[data-index-search] input")).toBeHidden();
+		await expect(page.locator("[data-index-select]")).toBeHidden();
+		await expect(page.locator("[data-index-empty]")).toBeHidden();
+	});
 });
 
 // Capturas de las cards (change adopt-untitled-ui-icons): una imagen WebP por tema de lo más característico de cada componente,

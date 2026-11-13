@@ -134,7 +134,9 @@ function CarouselStrip({
 			<ul
 				ref={list}
 				aria-label={ariaLabel}
-				className="m-0 flex list-none snap-x snap-mandatory gap-3 overflow-x-auto p-0 pb-3 motion-safe:scroll-smooth"
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: la tira se desplaza; con el teclado tiene que poder enfocarse para moverla
+				tabIndex={0}
+				className="m-0 flex list-none snap-x snap-mandatory gap-3 overflow-x-auto rounded-md p-0 pb-3 outline-none focus-visible:shadow-focus-ring motion-safe:scroll-smooth"
 				style={{ scrollSnapType: "x mandatory" }}
 			>
 				{slides.map((slide, i) => (

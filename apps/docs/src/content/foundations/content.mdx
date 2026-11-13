@@ -4,24 +4,86 @@ description: "Voz cercana y con humor seco, castellano de España, formatos de c
 order: 2
 ---
 
-import { Alert, EmptyState } from "@jotis-me/react";
+import { Alert, Button, EmptyState, Input } from "@jotis-me/react";
+import { Inbox01, Plus, Stars02 } from "@untitledui/icons";
 import Essentials from "../../components/compose/Essentials.astro";
 import Example from "../../components/compose/Example.astro";
 import Fit from "../../components/compose/Fit.astro";
 import Formats from "../../components/compose/Formats.astro";
-import Instead from "../../components/compose/Instead.astro";
+import Pair from "../../components/compose/Pair.astro";
+import Rule from "../../components/compose/Rule.astro";
 import Terms from "../../components/compose/Terms.astro";
 
-{/* Texto de la guía (reference/GUIA.md, «Contenido y tono»), repartido en las piezas de Tone.dc.html sin reescribirlo */}
+{/* Texto de la guía (reference/GUIA.md, «Contenido y tono»), repartido en las piezas de Content.dc.html sin reescribirlo */}
 
 ## La voz
 
 **Voz: cercana, desenfadada y con humor seco.** Quien use la app no debe sentir que habla con una empresa sin sentimientos, pero tampoco con alguien que vive en una terminal. Sin jerga técnica ni referencias de nicho.
 
 <Essentials
-	icon="stars-02"
+	icon={Stars02}
 	items={[{ title: "Una broma por pantalla como mucho", text: "Y si no mejora el texto, se quita." }]}
 />
+
+## En lugar de esto, esto otro
+
+Los mismos componentes, con el texto mal y con el texto bien.
+
+<Pair title="Estado vacío">
+	<Rule verdict="instead" caption='"No se encontraron resultados."'>
+		<EmptyState title="No se encontraron resultados." />
+	</Rule>
+	<Rule verdict="better" caption='"Aún no hay gastos. Qué calma."'>
+		<EmptyState icon={Inbox01} title="Aún no hay gastos" description="Qué calma." />
+	</Rule>
+</Pair>
+
+<Pair title="Error leve">
+	<Rule verdict="instead" caption='"Se ha producido un error de validación."' width={300}>
+		<div class="w-full"><Input label="Correo" defaultValue="hola@pecunia" error="Se ha producido un error de validación." /></div>
+	</Rule>
+	<Rule verdict="better" caption='"Ese correo no parece un correo. Revísalo."' width={300}>
+		<div class="w-full"><Input label="Correo" defaultValue="hola@pecunia" error="Ese correo no parece un correo. Revísalo." /></div>
+	</Rule>
+</Pair>
+
+<Pair title="Confirmación">
+	<Rule verdict="instead" caption='"Los cambios se han guardado correctamente."' width={360}>
+		<div class="w-full"><Alert color="success" title="Los cambios se han guardado correctamente." /></div>
+	</Rule>
+	<Rule verdict="better" caption='"Guardado. Ya no se te va a olvidar."' width={360}>
+		<div class="w-full"><Alert color="success" title="Guardado" description="Ya no se te va a olvidar." /></div>
+	</Rule>
+</Pair>
+
+<Pair title="Error">
+	<Rule verdict="instead" caption='"Error 422"' width={300}>
+		<div class="w-full"><Input label="Correo" defaultValue="hola@" error="Error 422" /></div>
+	</Rule>
+	<Rule verdict="better" caption='"Introduce un correo válido."' width={300}>
+		<div class="w-full"><Input label="Correo" defaultValue="hola@" error="Introduce un correo válido." /></div>
+	</Rule>
+</Pair>
+
+<Pair title="Botón">
+	<Rule verdict="instead" caption='"Aceptar"'>
+		<Button hierarchy="secondary">Aceptar</Button>
+	</Rule>
+	<Rule verdict="better" caption='"Guardar", "Eliminar gasto", "Exportar"'>
+		<Button hierarchy="secondary">Guardar</Button>
+		<Button hierarchy="secondary">Eliminar gasto</Button>
+		<Button hierarchy="secondary">Exportar</Button>
+	</Rule>
+</Pair>
+
+<Pair title="Mayúsculas">
+	<Rule verdict="instead" caption='"Nuevo Movimiento"'>
+		<Button hierarchy="secondary" iconLeading={Plus}>Nuevo Movimiento</Button>
+	</Rule>
+	<Rule verdict="better" caption='"Nuevo movimiento"'>
+		<Button hierarchy="secondary" iconLeading={Plus}>Nuevo movimiento</Button>
+	</Rule>
+</Pair>
 
 ## Dónde cabe el humor
 
@@ -33,23 +95,10 @@ Una pizca de ironía donde no estorba; en pagos, borrados y fallos graves, claro
 	nots={["Pagos", "Borrados", "Fallos graves"]}
 />
 
-## En lugar de esto, esto otro
-
-<Instead
-	rows={[
-		{ when: "Estado vacío", bad: '"No se encontraron resultados."', good: '"Aún no hay gastos. Qué calma."' },
-		{ when: "Error leve", bad: '"Se ha producido un error de validación."', good: '"Ese correo no parece un correo. Revísalo."' },
-		{ when: "Confirmación", bad: '"Los cambios se han guardado correctamente."', good: '"Guardado. Ya no se te va a olvidar."' },
-		{ when: "Error", bad: '"Error 422"', good: '"Introduce un correo válido."' },
-		{ when: "Botón", bad: '"Aceptar"', good: '"Guardar", "Eliminar gasto", "Exportar"' },
-		{ when: "Mayúsculas", bad: '"Nuevo Movimiento"', good: '"Nuevo movimiento"' },
-	]}
-/>
-
 <Example caption="Humor en el estado vacío y en la confirmación. En el cobro fallido, ni una broma.">
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 		<div class="rounded-xl bg-primary p-5 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
-			<EmptyState icon="inbox-01" title="Aún no hay gastos" description="Qué calma. Cuando apuntes el primero, aparecerá aquí." />
+			<EmptyState icon={Inbox01} title="Aún no hay gastos" description="Qué calma. Cuando apuntes el primero, aparecerá aquí." />
 		</div>
 		<div class="flex flex-col justify-center gap-4">
 			<Alert color="success" title="Guardado" description="Ya no se te va a olvidar." />

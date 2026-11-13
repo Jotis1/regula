@@ -667,6 +667,13 @@ export function iconsOf(code: string): string[] {
 	return [...names].sort();
 }
 
+/** Sangra con `tabs` tabuladores cada línea que no está vacía. */
+const indent = (code: string, tabs: number) =>
+	code
+		.split("\n")
+		.map((line) => (line ? "\t".repeat(tabs) + line : line))
+		.join("\n");
+
 /** Fragmentos de Next.js y Astro del componente `name`. */
 export function snippetsOf(name: string, interactive: boolean): { next: string; astro: string } {
 	const code = usage[name];
@@ -679,7 +686,7 @@ export function snippetsOf(name: string, interactive: boolean): { next: string; 
 			? "// Los iconos son funciones y no pasan a una isla: monta el componente en un .tsx y úsalo con client:load\n"
 			: "";
 	return {
-		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n$indent(code, 3)\n\t\t</>\n\t);\n}`,
+		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n${indent(code, 3)}\n\t\t</>\n\t);\n}`,
 		astro: `---\n${imp}\n${islandNote}---\n\n${interactive ? code.replace(`<${name}`, `<${name} client:load`) : code}`,
 	};
 }

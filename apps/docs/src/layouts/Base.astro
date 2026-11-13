@@ -74,7 +74,7 @@ const hasSidebar = sidebar ?? !(noindex || sectionOf(current) === "icons");
 			) : (
 				<div class="flex">
 					{hasSidebar && (
-						<aside class="sticky top-0 hidden h-screen w-[296px] shrink-0 overflow-y-auto shadow-[inset_-1px_0_0_var(--border-secondary)] lg:block">
+						<aside class="sticky top-0 hidden h-screen w-[296px] shrink-0 overflow-y-auto border-r border-secondary lg:block">
 							<SideNav current={current} />
 						</aside>
 					)}

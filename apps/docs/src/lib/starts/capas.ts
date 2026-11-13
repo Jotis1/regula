@@ -37,5 +37,54 @@ export const capas: Record<string, Start> = {
 		},
 		// `contained` llena a su padre (`absolute inset-0`): sin marco, su padre no mide nada y el diálogo se encoge
 		fill: 360,
+		// Los pies son frases de la ficha (content/components/modal.md), letra a letra
+		examples: [
+			{
+				do: {
+					caption:
+						"Solo un `Button` primario en `actions`: el que confirma la decisión del título.",
+					specimens: [
+						{
+							props: {
+								contained: true,
+								title: "¿Eliminar este gasto?",
+								description: "Se borrará también de los informes.",
+								actions: [
+									{
+										component: "Button",
+										props: { hierarchy: "secondary" },
+										children: "Cancelar",
+									},
+									{
+										component: "Button",
+										props: { destructive: true },
+										children: "Eliminar",
+									},
+								],
+							},
+						},
+					],
+					frame: 300,
+				},
+				dont: {
+					caption:
+						"Si un modal necesita dos acciones principales, son dos decisiones y van en dos pasos.",
+					specimens: [
+						{
+							props: {
+								contained: true,
+								title: "¿Guardar los cambios?",
+								description: "Puedes guardarlos y enviarlos ahora o más tarde.",
+								actions: [
+									{ component: "Button", children: "Guardar" },
+									{ component: "Button", children: "Guardar y enviar" },
+								],
+							},
+						},
+					],
+					frame: 300,
+				},
+			},
+		],
 	},
 };

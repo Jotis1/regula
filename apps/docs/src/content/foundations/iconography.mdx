@@ -4,11 +4,28 @@ description: "Iconos de línea de 24×24 y trazo de 2px."
 order: 7
 ---
 
-import { Calendar } from "@untitledui/icons";
+import { Button } from "@jotis-me/react";
+import { Calendar, Plus } from "@untitledui/icons";
 import Essentials from "../../components/compose/Essentials.astro";
 import Example from "../../components/compose/Example.astro";
+import OversizedIcon from "../../components/compose/OversizedIcon";
+import Pair from "../../components/compose/Pair.astro";
+import Rule from "../../components/compose/Rule.astro";
 
 {/* Texto de la guía (reference/GUIA.md, «Iconografía»), repartido en tarjetas sin reescribirlo */}
+
+## Con ejemplos
+
+El tamaño del icono lo pone el control, no quien lo usa.
+
+<Pair>
+	<Rule verdict="do" caption="20px en botones e inputs: pasa el componente del icono y el botón le da su tamaño.">
+		<Button iconLeading={Plus}>Nuevo gasto</Button>
+	</Rule>
+	<Rule verdict="dont" caption="Un icono a 28px dentro de un botón: pesa más que el texto al que acompaña.">
+		<OversizedIcon label="Nuevo gasto" />
+	</Rule>
+</Pair>
 
 ## Lo esencial
 

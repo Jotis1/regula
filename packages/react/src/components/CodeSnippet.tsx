@@ -2,6 +2,7 @@
 
 import { Check, Copy01, Maximize01 } from "@untitledui/icons";
 import { Fragment, type KeyboardEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { reportCopyFailure } from "../internal/copy.js";
 import { cx } from "../internal/cx.js";
 import { DynIcon } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
@@ -134,11 +135,13 @@ export function CodeSnippet({
 
 	useEffect(() => () => clearTimeout(timer.current), []);
 
-	const copy = async () => {
+	const copy = async (anchor: Element) => {
 		try {
 			await navigator.clipboard.writeText(current.code);
 		} catch {
-			// Sin permiso de portapapeles: el botón confirma igual, como en la guía
+			// Sin permiso de portapapeles: no se confirma, y el `CopyTooltip` de la página (si lo hay) lo avisa
+			reportCopyFailure(anchor);
+			return;
 		}
 		setCopied(true);
 		clearTimeout(timer.current);
@@ -165,7 +168,7 @@ export function CodeSnippet({
 	const copyButton = (position: string) => (
 		<button
 			type="button"
-			onClick={copy}
+			onClick={(e) => void copy(e.currentTarget)}
 			aria-label={copied ? defaultStrings.copied : defaultStrings.copyCode}
 			className={cx(position, buttonBase)}
 		>

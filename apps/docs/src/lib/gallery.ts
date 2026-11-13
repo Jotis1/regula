@@ -340,3 +340,39 @@ export function groupOptions(
 		.filter((g) => g.n > 0)
 		.map((g) => ({ value: g.value, label: `${g.label} (${g.n})` }));
 }
+
+/** Un set de `/icons/`: las cinco galerías de `AssetGallery` y la de logos. */
+export type IconSet = GalleryKind | "logos";
+
+/** Los seis sets, en el orden de su navegación, cada uno en su URL. */
+export const ICON_SETS: { id: IconSet; label: string; href: string }[] = [
+	{ id: "icons", label: "De línea", href: "/icons/" },
+	{ id: "logos", label: "Logos", href: "/icons/logos/" },
+	{ id: "flags", label: "Banderas", href: "/icons/flags/" },
+	{ id: "payments", label: "Pagos", href: "/icons/payments/" },
+	{ id: "files", label: "Archivos", href: "/icons/files/" },
+	{ id: "cursors", label: "Cursores", href: "/icons/cursors/" },
+];
+
+/** Los elementos de la navegación de sets (`Tabs` con `href`), cada uno con su recuento. */
+export const setTabs = (counts: Record<IconSet, number>) =>
+	ICON_SETS.map((s) => ({ ...s, count: counts[s.id] }));
+
+/**
+ * Cuántos logos enseña la galería entre los SVG de `@jotis-me/assets/logos`: los de apps, integraciones y redes (las
+ * insignias de tiendas, `store`, son de `AppStoreBadge`), y la versión gris de un logo no cuenta aparte.
+ */
+export const countLogos = (paths: string[]) =>
+	new Set(
+		paths.flatMap((p) => {
+			const m = p.match(/logos\/(app|integration|social)\/(.+?)(-gray)?\.svg$/);
+			return m ? [`${m[1]}/${m[2]}`] : [];
+		}),
+	).size;
+
+/** El nombre legible de las categorías de cada galería (sin recuento), para la etiqueta del panel. */
+export const CATEGORY_LABELS: Partial<Record<GalleryKind, Record<string, string>>> = {
+	icons: ICON_CATEGORIES,
+	files: FILE_CATEGORIES,
+	cursors: CURSOR_CATEGORIES,
+};

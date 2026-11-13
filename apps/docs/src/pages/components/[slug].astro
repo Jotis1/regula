@@ -24,6 +24,10 @@ const rows = propsOf(source, name);
 // Sobre fondo oscuro, como sus vistas previas de la guía (los de Stream)
 const dark = DARK_PREVIEWS.has(name);
 const playground = playgroundOf(name, rows, { interactive, dark });
+// La descripción de cada componente, para las tarjetas de relacionados
+const descriptions = Object.fromEntries(
+	(await getCollection("components")).map((p) => [p.data.name, p.data.description]),
+);
 ---
 
 <ComponentPage
@@ -36,4 +40,5 @@ const playground = playgroundOf(name, rows, { interactive, dark });
 	interactive={interactive}
 	astroNote={astroNote}
 	playground={playground}
+	descriptions={descriptions}
 />

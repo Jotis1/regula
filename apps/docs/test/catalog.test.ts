@@ -71,6 +71,14 @@ describe("catálogo de componentes", () => {
 		expect(count("stream")).toBeGreaterThan(0);
 	});
 
+	it("cada grupo tiene su frase: una sola, corta, con punto final y distinta de las demás", () => {
+		for (const g of COMPONENT_GROUPS) {
+			expect(g.description, g.id).toMatch(/^[A-ZÁÉÍÓÚÑ][^.]{8,58}\.$/);
+		}
+		const phrases = COMPONENT_GROUPS.map((g) => g.description);
+		expect(new Set(phrases).size).toBe(COMPONENT_GROUPS.length);
+	});
+
 	it("groupOf acepta el nombre o el slug", () => {
 		expect(groupOf("Button")?.label).toBe("Acciones");
 		expect(groupOf("button-group")?.label).toBe("Acciones");

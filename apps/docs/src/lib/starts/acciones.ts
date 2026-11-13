@@ -10,6 +10,41 @@ const DIA_SEMANA_MES = [
 export const acciones: Record<string, Start> = {
 	Button: {
 		children: "Nuevo gasto",
+		// Los pies son frases de la ficha (content/components/button.md), letra a letra
+		examples: [
+			{
+				do: {
+					caption:
+						"Una sola `primary` por vista o por modal: es la acción que esperas que el usuario haga.",
+					specimens: [
+						{ props: { hierarchy: "secondary" }, children: "Cancelar" },
+						{ children: "Guardar" },
+					],
+				},
+				dont: {
+					caption: "No apiles dos primarios.",
+					specimens: [{ children: "Guardar" }, { children: "Exportar" }],
+				},
+			},
+			{
+				section: "evita",
+				do: {
+					caption: "Si borrar es una opción más, usa `secondary` normal.",
+					specimens: [
+						{
+							props: { hierarchy: "secondary", iconLeading: "Trash01" },
+							children: "Eliminar gasto",
+						},
+					],
+				},
+				dont: {
+					caption: "No todo lo negativo es un botón rojo.",
+					specimens: [
+						{ props: { destructive: true, iconLeading: "Trash01" }, children: "Eliminar gasto" },
+					],
+				},
+			},
+		],
 		rules: [
 			{
 				when: { iconOnly: true },
