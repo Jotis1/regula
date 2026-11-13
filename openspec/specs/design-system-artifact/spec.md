@@ -21,7 +21,9 @@ Un comando del repo SHALL generar, sin red, la carpeta `project/` del artefacto 
 - el índice, `tokens.json`, la guía (`README.md` y secciones) y las fuentes;
 - cada componente del catálogo con su ficha y su vista previa;
 - el bundle, la hoja y los tipos;
-- los grupos de assets de iconos de app, adornos, patrones, logos de terceros, iconos de línea del set completo, banderas, pagos, archivos y cursores.
+- los grupos de assets de iconos de app, adornos, patrones, logos de terceros, pagos y cursores.
+
+Los iconos de línea, los de archivo y las banderas no SHALL ir como assets: la guía del artefacto SHALL decir que se toman de los paquetes de Untitled UI.
 
 #### Scenario: Un componente por ficha
 - **WHEN** se genera el artefacto
@@ -37,16 +39,15 @@ Un comando del repo SHALL generar, sin red, la carpeta `project/` del artefacto 
 
 #### Scenario: Logos de terceros
 - **WHEN** se genera el artefacto
-- **THEN** su índice tiene un grupo de assets con cada logo de `@jotis-me/icons/logos` en SVG, separado del grupo «Logos» que se conserva del publicado
+- **THEN** su índice tiene un grupo de assets con cada logo de `@jotis-me/assets/logos` en SVG, separado del grupo «Logos» que se conserva del publicado
 
 #### Scenario: Sets nuevos de assets
 - **WHEN** se genera el artefacto
-- **THEN** su índice tiene un grupo de assets para cada uno de estos sets, con cada SVG del paquete:
-  - iconos de línea del set completo
-  - banderas
-  - pagos
-  - archivos y carpetas
-  - cursores
+- **THEN** su índice tiene un grupo de assets para pagos y otro para cursores, con cada SVG del paquete, y no tiene grupos de iconos de línea, banderas ni archivos
+
+#### Scenario: Iconos en las vistas previas
+- **WHEN** una vista previa del artefacto monta un ejemplo que usa iconos de `@untitledui/icons`
+- **THEN** los iconos se ven, sin red, porque van dentro del bundle
 
 ### Requirement: Componentes reales en el artefacto
 El bundle del artefacto SHALL ser `@jotis-me/react` compilado como un único script clásico que lee React de `window.React` y expone los componentes en `window.Jotis` con los mismos nombres y props que el paquete.

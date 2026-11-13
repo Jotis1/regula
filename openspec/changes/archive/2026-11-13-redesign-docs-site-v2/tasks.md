@@ -55,7 +55,7 @@ Un grupo por parte de la web, en el orden de la tabla de cambios del documento d
 
 ## 9. Cierre
 
-- [ ] 9.1 Auditoría completa (axe y Lighthouse en portada, índice, una de fundamentos y una de componente), `check:js` con los límites revisados y el e2e completo con Firefox y WebKit.
+- [x] 9.1 Auditoría completa (axe y Lighthouse en portada, índice, una de fundamentos y una de componente), `check:js` con los límites revisados y el e2e completo con Firefox y WebKit.
 
 ## Workflow follow-up
 

@@ -50,7 +50,7 @@
 - [x] 7.3 Generar las capturas de todo el catálogo y **revisarlas una a una** (hoja de contactos en claro y en oscuro): ninguna recortada, deformada ni ilegible; rehacer las muestras que no queden bien y guardar las capturas en `src/assets/showcase/`
 - [x] 7.4 Sustituir `LivePreview.astro` por `ShowcaseImage.astro` en el índice (dos `<img>` por tema, `loading="lazy"`, dimensiones fijas, damero vacío si falta); borrar `LivePreview.astro`, `visual/thumbs.ts` y lo que solo usaban; verificar con `e2e/components.spec.ts` (card con imagen, cambia con el tema, solo se pide la del tema activo, sin salto de maquetación, vista previa decorativa) y mirando la página en claro, oscuro y 390 px
 - [x] 7.5 Añadir `test/showcases.test.ts` (cada componente tiene sus capturas; máximo por imagen y total) y fijar los máximos con lo medido; verificar que falla al quitar una captura y al superar el peso
-- [ ] 7.6 Quitar la excepción de Lighthouse del índice en `lighthouserc.json` y ejecutar `bun run --cwd apps/docs test:lighthouse`; verificar que las cuatro páginas superan 90
+- [x] 7.6 Quitar la excepción de Lighthouse del índice en `lighthouserc.json` y ejecutar `bun run --cwd apps/docs test:lighthouse`; verificar que las cuatro páginas superan 90
 - [x] 7.7 Documentar en `apps/docs/README.md` cómo regenerar las capturas y cuándo (al tocar un componente o su muestra); verificar que el comando documentado funciona tal cual
 
 ## 8. Artefacto
