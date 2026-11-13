@@ -12,6 +12,7 @@ export default defineConfig({
 		plugins: [tailwindcss()],
 		// Estos dos paquetes importan sus ficheros sin extensión (`from "./Ad"`), y Node no los resuelve: los empaqueta Vite.
 		// Con Bun no se nota, porque sí los resuelve; en CI y en Vercel el build corre con Node.
-		ssr: { noExternal: ["@untitledui/country-flags", "@untitledui/file-icons"] },
+		// Va en `resolve` y no en `ssr`: Astro genera las páginas en su propio entorno de Vite (`prerender`), que no lee `ssr`.
+		resolve: { noExternal: ["@untitledui/country-flags", "@untitledui/file-icons"] },
 	},
 });
