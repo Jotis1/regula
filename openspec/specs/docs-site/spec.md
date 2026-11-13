@@ -456,3 +456,10 @@ La web SHALL tener estados de carga, sin resultados y error para sus partes que 
 #### Scenario: Copiar falla
 - **WHEN** el navegador no deja usar el portapapeles y el usuario pulsa copiar en un fragmento de código
 - **THEN** aparece un aviso de error que dice que no se ha podido copiar y que se puede seleccionar el texto y copiarlo a mano, y no se cierra hasta que el usuario lo cierra
+
+### Requirement: Escena en 21:9
+La ficha de `StreamScene` SHALL incluir un ejemplo en 21:9 (`width={2580}`) con el código para 3440×1440.
+
+#### Scenario: Ejemplo ultrapanorámico
+- **WHEN** se abre `/components/stream-scene/`
+- **THEN** hay un ejemplo de la escena en 21:9 con su código, que usa `width={2580}` y `scale={4/3}`
