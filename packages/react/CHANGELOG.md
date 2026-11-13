@@ -1,5 +1,65 @@
 # @jotis-me/react
 
+## 0.8.0
+
+### Minor Changes
+
+- 9b2d21a: Seis componentes nuevos:
+  - `CompareSlider`: dos capas con una línea que se arrastra o se mueve con el teclado para descubrir la de abajo.
+  - `Spotlight`: un anillo de marca alrededor de un trozo de interfaz, con una nota opcional.
+  - `Disclosure`: bloque plegable denso con título y acompañante, en `<details>` y sin JavaScript.
+  - `ExampleCard`: un espécimen sobre el damero con su veredicto («Esto sí», «Esto no», «En lugar de», «Mejor») y un texto.
+  - `IconTile`: baldosa con un icono y su nombre, que se puede elegir.
+  - `TokenSwatch`: un token de color con su valor claro y oscuro a la vez, en fila o en tarjeta, con su utilidad para copiar.
+- 9775c65: Ocho variantes nuevas, todas opcionales:
+  - `HeaderNav`: `fullWidth`, la cabecera a todo el ancho en lugar de centrada a 1.280 px.
+  - `Tabs`: con `href` en todos sus elementos, es una navegación de enlaces con `aria-current`, sin `tablist`.
+  - `Carousel`: `type="strip"`, una tira que se desliza con `scroll-snap`, sin flechas ni JavaScript, y `slideWidth`.
+  - `Toggle`: acepta `aria-label` y `aria-labelledby`.
+  - `labelAside` en `Input`, `Textarea`, `Select`, `MultiSelect`, `NumberInput`, `TagInput`, `VerificationCodeInput` y `Toggle`: un nodo al final de la fila de la etiqueta, fuera del `<label>`.
+  - `CodeSnippet`: `highlight`, las líneas que se destacan, en el código o en cada pestaña.
+  - `CommandMenu`: `defaultQuery`, el texto con el que se abre el buscador.
+  - `Slideout`: `side="bottom"`, una hoja inferior.
+- a39a147: Los iconos pasan a ser los de Untitled UI. `@jotis-me/icons` desaparece (queda obsoleto en npm) y su contenido se reparte entre los paquetes oficiales de Untitled UI (MIT) y `@jotis-me/assets`, que es nuevo. Es una versión con cambios incompatibles.
+
+  **Qué cambia**
+  - `@jotis-me/react` trae `@untitledui/icons` como dependencia y ya no depende de `@jotis-me/icons`. Las props de icono (`icon`, `iconLeading`, `iconTrailing`, `iconOnly`, `trailing`…) aceptan un componente (`iconLeading={Plus}`) o un nodo ya pintado (`iconLeading={<Plus size={16} />}`), no un nombre en cadena (`iconLeading="plus"` es ahora un error de tipos). Desaparecen `Icon`, `IconName` e `iconNames`; se exportan los tipos `IconProp`, `IconComponent` e `IconComponentProps`.
+  - El icono de app (`appIconSvg`, `apps`, `validateApps`, `hues`…) está en `@jotis-me/react`, también como entrada sin React: `@jotis-me/react/app-icon`.
+  - `@jotis-me/assets` publica lo que Untitled UI no trae: logos de terceros (`/logos`), iconos de pago (`/payments`), cursores (`/cursors`), trazos a mano (`/hand-drawn/*`), texturas (`/patterns/*`) y los ficheros de favicon y PWA de cada app (`/app-icons/*`), con los mismos nombres de fichero.
+  - La web: las cards de `/components/` vuelven a mostrar una captura, el ejemplo interactivo ya no tiene la fila «Tipos» (todo se cambia con los controles de propiedades, que ahora también ofrecen los valores del Figma que antes solo daban los atajos) y las galerías de `/icons/` leen de los paquetes nuevos.
+
+  **Cómo migrar**
+
+  | Antes (`0.7`)                                                 | Ahora                                                                           |
+  | ------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+  | `icon="search-lg"`, `iconLeading="plus"`                      | `icon={SearchLg}`, `iconLeading={Plus}` (de `@untitledui/icons`)                |
+  | `<Icon name="calendar" title="Fecha" />`                      | `<Calendar role="img" aria-label="Fecha" aria-hidden="false" />`                |
+  | `<Icon name="loading-02" spin />`                             | `<Loading02 className="animate-spin motion-reduce:animate-none" />`             |
+  | `IconRocket02` de `@jotis-me/icons`                           | `Rocket02` de `@untitledui/icons`                                               |
+  | `@jotis-me/icons/svg/*.svg`                                   | Sin SVG sueltos: los iconos son componentes y en Astro se pintan en el servidor |
+  | `@jotis-me/icons/logos`, `/payments`, `/cursors`              | `@jotis-me/assets/logos`, `/payments`, `/cursors`                               |
+  | `@jotis-me/icons/app-icons/*`, `/hand-drawn/*`, `/patterns/*` | `@jotis-me/assets/app-icons/*`, `/hand-drawn/*`, `/patterns/*`                  |
+  | `appIconSvg` de `@jotis-me/icons/app-icon`                    | `appIconSvg` de `@jotis-me/react/app-icon`                                      |
+  | `FlagSpainCircle` de `@jotis-me/icons/flags`                  | `FlagEs` de `@untitledui/country-flags` (código ISO, solo en círculo)           |
+  | `FileDocumentPdf` de `@jotis-me/icons/files`                  | `<FileIcon type="pdf" />` de `@untitledui/file-icons`                           |
+
+  `bun run scripts/migrate-icons.ts <rutas>` (en el repo de Regula) hace el cambio de nombres por componentes: pasa `icon="x"` a `icon={X}` y `<Icon name="x" />` a `<X />` con su importación.
+
+  **Dos cosas a tener en cuenta**
+  - Un componente es una función y no cruza de un Server Component de Next.js, ni de un `.astro` a una isla (`client:*`): ahí pasa el nodo (`<Plus size={16} />`) o monta el componente en un `.tsx` de cliente. Un nodo se pinta con su propio tamaño: ponle `size`.
+  - Se eliminan sin sustituto: las banderas en cuadrado y rectángulo (Untitled UI solo trae el círculo, 234 frente a las 261 de antes), las variantes de carpeta (marca, gris, ruido, transparente, abierta y cerrada) y los iconos de archivo que `@untitledui/file-icons` no tiene. Tres iconos de línea no existen en `@untitledui/icons`: `align-top-01` (`AlignTopArrow01`), `align-top-02` (`AlignTopArrow02`) y `help-hexagon` (`HelpOctagon`, el más parecido).
+- 2bf31d8: - `CopyTooltip`: prop `onCopyError`. Con ella, cuando una copia falla el componente no pinta su burbuja y avisa a quien la pasa, para dar el aviso con una `Notification` de error que no se cierre sola.
+  - `CodeSnippet`: si el navegador no deja copiar, el botón ya no confirma «Copiado»: avisa del fallo al `CopyTooltip` de la página.
+  - `Carousel` con `type="strip"`: la tira se puede enfocar con el teclado para desplazarla.
+- 5105804: - `SidebarNav`: prop `disclosure` (`"script"` por defecto, `"native"`). Con `"native"`, cada elemento con `children` de los tipos `simple`, `sections-dividers` y `sections-subheadings` es un `<details>` que se abre y se cierra sin JavaScript; en `dual-tier` y `slim` se ignora.
+  - `ProgressSteps`: props `onChange(index)`, que hace de cada paso un botón, y `children`, una función que pinta el contenido del paso actual (bajo su título en vertical, bajo la lista en horizontal).
+
+### Patch Changes
+
+- Updated dependencies [a39a147]
+- Updated dependencies [5105804]
+  - @jotis-me/tokens@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes
