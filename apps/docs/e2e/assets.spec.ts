@@ -1,7 +1,10 @@
 import { readdirSync } from "node:fs";
+import { createRequire } from "node:module";
 import { join } from "node:path";
 import { expect, type Page, test } from "@playwright/test";
-import * as flags from "@untitledui/country-flags";
+
+// Por `require`: la entrada ESM del paquete importa sus ficheros sin extensión y Node no la carga
+const flags: Record<string, unknown> = createRequire(import.meta.url)("@untitledui/country-flags");
 
 // Las galerías de banderas, pagos, archivos y cursores son la misma isla (`AssetGallery`) que la de iconos.
 const dist = (dir: string) => join(import.meta.dirname, "../../../packages/assets/dist", dir);
