@@ -59,6 +59,12 @@ export interface HeaderNavProps {
 	search?: ReactNode;
 	/** Botones e iconos de la derecha. */
 	actions?: ReactNode;
+	/**
+	 * `actions` también en la fila móvil (por debajo de 1024px), entre la marca y el botón de menú o `mobileBar`: para
+	 * botones que no deben perderse en móvil, como el del tema. Se pinta dos veces en el HTML (la CSS enseña una), así
+	 * que lo que vaya en `actions` no debe llevar `id` fijos.
+	 */
+	mobileActions?: boolean;
 	/** Lo de la esquina: un `Dropdown` con la cuenta, un botón de entrar… */
 	account?: ReactNode;
 	/** El menú móvil (con la cabecera por debajo de 1024px de ancho): enlaces de pie y su última pieza. */
@@ -201,6 +207,7 @@ export function HeaderNav({
 	items,
 	search,
 	actions,
+	mobileActions,
 	account,
 	mobile,
 	mobileBar,
@@ -220,6 +227,16 @@ export function HeaderNav({
 	const second = type !== "simple" && type !== "underline" && sub ? sub : undefined;
 	const underline = type === "underline";
 	const close = () => setMenuOpen(false);
+
+	const menuButton = (
+		<Button
+			hierarchy="tertiary"
+			iconOnly={Menu01}
+			label={l.openMenu}
+			aria-expanded={menuOpen}
+			onClick={() => setMenuOpen(true)}
+		/>
+	);
 
 	const right = (
 		<div className={cx("flex items-center gap-3", centered && "justify-end")}>
@@ -288,16 +305,15 @@ export function HeaderNav({
 					)}
 				>
 					<div className="flex min-w-0 items-center">{brand}</div>
-					{mobileBar ? (
+					{mobileActions && actions != null ? (
+						<div className="flex flex-none items-center gap-1">
+							{actions}
+							{mobileBar ?? menuButton}
+						</div>
+					) : mobileBar ? (
 						<div className="flex items-center gap-1">{mobileBar}</div>
 					) : (
-						<Button
-							hierarchy="tertiary"
-							iconOnly={Menu01}
-							label={l.openMenu}
-							aria-expanded={menuOpen}
-							onClick={() => setMenuOpen(true)}
-						/>
+						menuButton
 					)}
 				</div>
 				{mobileBar ? null : (

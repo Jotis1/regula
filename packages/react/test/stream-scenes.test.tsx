@@ -206,6 +206,47 @@ describe("StreamScene", () => {
 		vi.unstubAllGlobals();
 	});
 
+	it("con width={2580} y scale={4/3} ocupa 3440×1440 y el lienzo interior mide 2580×1080", () => {
+		const { container } = render(<StreamScene width={2580} scale={4 / 3} />);
+		const outer = container.firstElementChild as HTMLElement;
+		expect(outer.style.width).toBe("3440px");
+		expect(outer.style.height).toBe("1440px");
+		const stage = outer.firstElementChild as HTMLElement;
+		expect(stage.style.width).toBe("2580px");
+		expect(stage.style.height).toBe("1080px");
+	});
+
+	it("sin `scale`, con width={2580} la proporción y la escala salen del ancho nuevo", () => {
+		vi.stubGlobal(
+			"ResizeObserver",
+			class {
+				observe() {}
+				disconnect() {}
+			},
+		);
+		const spy = vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(1290);
+		const { container } = render(<StreamScene width={2580} />);
+		const outer = container.firstElementChild as HTMLElement;
+		expect(outer.style.aspectRatio).toBe("2580 / 1080");
+		expect((outer.firstElementChild as HTMLElement).style.transform).toBe("scale(0.5)");
+		spy.mockRestore();
+		vi.unstubAllGlobals();
+	});
+
+	it.each([1280, 1919, 2000.5, Number.NaN, Number.POSITIVE_INFINITY, -2580])(
+		"width={%s} no es válido y se trata como 1920",
+		(width) => {
+			const html = (w?: number) => renderToString(<StreamScene width={w} scale={0.25} />);
+			expect(html(width)).toBe(html());
+		},
+	);
+
+	it("sin width, el HTML es el mismo que con width={1920}", () => {
+		expect(renderToString(<StreamScene variant="ending" scale={0.5} />)).toBe(
+			renderToString(<StreamScene variant="ending" width={1920} scale={0.5} />),
+		);
+	});
+
 	it("pasa axe en claro y oscuro", async () => {
 		vi.useRealTimers();
 		await expectAccessibleInThemes(

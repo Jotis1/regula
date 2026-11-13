@@ -28,7 +28,13 @@ export interface StreamSceneProps {
 	next?: ReactNode;
 	/** @default "twitch.tv/tucanal" */
 	handle?: ReactNode;
-	/** Mide `1920 × scale`. Sin él se ajusta al ancho del contenedor (en OBS, a 1920, queda 1:1). */
+	/**
+	 * Ancho del lienzo lógico; el alto es siempre 1080. Para 3440×1440, `width={2580}` con `scale={4/3}`. Un entero de
+	 * al menos 1920; cualquier otro valor se trata como 1920.
+	 * @default 1920
+	 */
+	width?: number;
+	/** Mide `width × scale`. Sin él se ajusta al ancho del contenedor (en OBS, a 1920, queda 1:1). */
 	scale?: number;
 	className?: string;
 }
@@ -54,9 +60,15 @@ const SCENES: Record<StreamSceneVariant, { badge: string; title: string; sub: st
 };
 
 const GRID = streamGrid(96, "70% 65%");
+const BASE_WIDTH = 1920;
+
+/** El ancho pedido si es un entero de al menos 1920; si no, 1920. */
+function canvasWidth(width: number | undefined): number {
+	return Number.isInteger(width) && (width as number) >= BASE_WIDTH ? (width as number) : BASE_WIDTH;
+}
 
 /**
- * Escena de 1920×1080 para los momentos sin juego (empezando, pausa, final, offline), siempre en oscuro. Es de
+ * Escena de 1920×1080 (o más ancha, con `width`) para los momentos sin juego (empezando, pausa, final, offline), siempre en oscuro. Es de
  * servidor: solo el lienzo (que mide su contenedor sin `scale`) y la cuenta atrás son de cliente.
  */
 export function StreamScene({
@@ -72,13 +84,14 @@ export function StreamScene({
 	channel,
 	next,
 	handle,
+	width,
 	scale,
 	className,
 }: StreamSceneProps) {
 	const d = SCENES[variant] ?? SCENES.starting;
 	const countdown = (variant === "starting" || variant === "brb") && (seconds != null || target != null);
 	return (
-		<StreamStage width={1920} height={1080} scale={scale} className={className}>
+		<StreamStage width={canvasWidth(width)} height={1080} scale={scale} className={className}>
 			<div aria-hidden="true" className="pointer-events-none absolute inset-0" style={GRID} />
 			<div className="absolute inset-[0_0_128px_0] flex flex-col items-center justify-center gap-8 px-[240px] text-center">
 				<span className="inline-flex h-14 items-center gap-3.5 rounded-full border-2 border-primary bg-primary_alt px-7 text-[28px] leading-9 font-medium text-secondary">

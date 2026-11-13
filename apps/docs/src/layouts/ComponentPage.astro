@@ -16,6 +16,7 @@ import Playground from "../components/Playground";
 import PropsTable from "../components/PropsTable.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import StreamNote from "../components/StreamNote.astro";
+import WideScene from "../components/WideScene.astro";
 import { type SplitCard, usageOf, usageToc } from "../lib/card";
 import { groupOf, labelOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
 import { compositionCode } from "../lib/composition-code";
@@ -147,6 +148,7 @@ const toc = [
 							<Playground client:visible playground={playground} rows={props} />
 						</div>
 						{stream && <StreamNote name={name} />}
+						{name === "StreamScene" && <WideScene />}
 					</section>
 				)
 			}

@@ -213,40 +213,55 @@ export function ProgressSteps({
 
 	// El estado de cada paso, en texto solo para lectores, antes del título
 	const state = (s: State) => <span className="sr-only">{`${l[s]}: `}</span>;
-	const text = (step: ProgressStep, s: State, i: number, align = "") => {
-		const sizes = type === "icons-centered" ? (sm ? "text-xs" : "text-sm") : sm ? "text-sm" : "text-md";
-		return (
-			<span className={cx("flex min-w-0 flex-col", align, sizes)}>
-				<span
-					id={interactive ? `${uid}-t${i}` : undefined}
-					className={cx("font-semibold", titleColor(s, kind))}
-				>
-					{interactive ? null : state(s)}
-					{step.title}
-				</span>
-				{step.description != null ? (
-					<span
-						id={interactive ? `${uid}-d${i}` : undefined}
-						className={cx("font-normal", descColor(s, kind))}
-					>
-						{step.description}
-					</span>
-				) : null}
-			</span>
-		);
-	};
-	// Con `onChange`, el marcador y el texto de un paso son un botón cuyo nombre es el título; sin él, van sueltos
-	const hit = (i: number, step: ProgressStep, cls: string, kids: ReactNode) =>
-		interactive ? (
-			<button
-				type="button"
-				aria-labelledby={`${uid}-t${i}`}
-				aria-describedby={step.description != null ? `${uid}-d${i}` : undefined}
-				onClick={() => onChange?.(i)}
-				className={cx(STEP_BUTTON, "rounded-md", cls)}
+	const sizes = type === "icons-centered" ? (sm ? "text-xs" : "text-sm") : sm ? "text-sm" : "text-md";
+	const desc = (step: ProgressStep, s: State, i: number, style?: CSSProperties) =>
+		step.description != null ? (
+			<span
+				id={interactive ? `${uid}-d${i}` : undefined}
+				className={cx("font-normal", descColor(s, kind), interactive && sizes)}
+				style={style}
 			>
-				{kids}
-			</button>
+				{step.description}
+			</span>
+		) : null;
+	// Con `onChange`, solo el título: la descripción va fuera del botón (`hit`), para que su texto visible sea su nombre
+	const text = (step: ProgressStep, s: State, i: number, align = "") => (
+		<span className={cx("flex min-w-0 flex-col", align, sizes)}>
+			<span
+				id={interactive ? `${uid}-t${i}` : undefined}
+				className={cx("font-semibold", titleColor(s, kind))}
+			>
+				{interactive ? null : state(s)}
+				{step.title}
+			</span>
+			{interactive ? null : desc(step, s, i)}
+		</span>
+	);
+	// Con `onChange`, el marcador y el título de un paso son un botón cuyo nombre es el título, y la descripción va
+	// debajo, fuera del botón, como su descripción accesible (WCAG 2.5.3); sin él, van sueltos. `wrap` agrupa el botón
+	// y la descripción; `descStyle`, en vertical, la sangra hasta la columna del título.
+	const hit = (
+		i: number,
+		step: ProgressStep,
+		s: State,
+		cls: string,
+		kids: ReactNode,
+		wrap = "",
+		descStyle?: CSSProperties,
+	) =>
+		interactive ? (
+			<span className={cx("flex flex-col", wrap)}>
+				<button
+					type="button"
+					aria-labelledby={`${uid}-t${i}`}
+					aria-describedby={step.description != null ? `${uid}-d${i}` : undefined}
+					onClick={() => onChange?.(i)}
+					className={cx(STEP_BUTTON, "rounded-md", cls)}
+				>
+					{kids}
+				</button>
+				{desc(step, s, i, descStyle)}
+			</span>
 		) : (
 			kids
 		);
@@ -296,6 +311,7 @@ export function ProgressSteps({
 							{hit(
 								i,
 								step,
+								s,
 								"flex w-full flex-col gap-2",
 								<>
 									<span
@@ -404,11 +420,14 @@ export function ProgressSteps({
 								{hit(
 									i,
 									step,
+									s,
 									cx("flex items-start", gap),
 									<>
 										{mark}
 										<span className="min-w-0 pt-0.5">{text(step, s, i)}</span>
 									</>,
+									"",
+									{ paddingInlineStart: markHeight + (sm ? 12 : 16) },
 								)}
 								{last ? null : (
 									<span
@@ -465,11 +484,13 @@ export function ProgressSteps({
 							{hit(
 								i,
 								step,
+								s,
 								"flex flex-col items-center gap-3 text-center",
 								<>
 									{mark}
 									{text(step, s, i, "items-center")}
 								</>,
+								"items-center text-center",
 							)}
 						</li>
 					);
