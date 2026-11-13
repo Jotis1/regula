@@ -271,6 +271,44 @@ describe("ProgressSteps: pasos navegables", () => {
 		);
 	});
 
+	it.each(TYPES.flatMap((type) => ORIENTATIONS.map((orientation) => ({ type, orientation }))))(
+		"$type $orientation: la descripción va fuera del botón, debajo, y el texto visible del botón es su título (WCAG 2.5.3)",
+		({ type, orientation }) => {
+			render(
+				<ProgressSteps
+					steps={STEPS}
+					current={1}
+					type={type}
+					orientation={orientation}
+					onChange={() => {}}
+					marker="number"
+				/>,
+			);
+			for (const step of STEPS) {
+				const button = screen.getByRole("button", { name: step.title });
+				expect(button.textContent).not.toContain(step.description);
+				// Lo visible del botón (sin lo que va oculto a los lectores) es su nombre
+				const visible = [...button.querySelectorAll("*")]
+					.filter((el) => el.children.length === 0 && !el.closest("[aria-hidden=true]"))
+					.map((el) => el.textContent)
+					.join("");
+				expect(visible).toBe(step.title);
+				if (type === "minimal" || type === "minimal-connected") continue;
+				const desc = screen.getByText(step.description as string);
+				expect(button.contains(desc)).toBe(false);
+				expect(button.nextElementSibling).toBe(desc);
+				expect(button.getAttribute("aria-describedby")).toBe(desc.id);
+			}
+		},
+	);
+
+	it("sin onChange, la descripción sigue junto al título, en el mismo bloque", () => {
+		render(<ProgressSteps steps={STEPS} current={1} />);
+		const title = screen.getByText("Tus datos");
+		expect(title.nextElementSibling?.textContent).toBe("Nombre y correo");
+		expect(screen.queryAllByRole("button")).toHaveLength(0);
+	});
+
 	it("Enter y Espacio activan el paso enfocado, que lleva el anillo de foco del sistema", async () => {
 		const onChange = vi.fn();
 		render(<ProgressSteps steps={STEPS} current={0} onChange={onChange} />);

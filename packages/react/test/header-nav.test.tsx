@@ -171,6 +171,42 @@ describe("HeaderNav (fullWidth)", () => {
 	});
 });
 
+describe("HeaderNav (mobileActions)", () => {
+	const theme = <button type="button">Tema</button>;
+	const mobileRow = (container: HTMLElement) => container.querySelector(".\\@5xl\\:hidden") as HTMLElement;
+
+	it("sin la prop, las acciones no salen en la fila móvil y el HTML es el de siempre", () => {
+		const html = renderToString(<HeaderNav brand={brand} items={ITEMS} actions={theme} />);
+		expect(
+			renderToString(<HeaderNav brand={brand} items={ITEMS} actions={theme} mobileActions={false} />),
+		).toBe(html);
+		const { container } = render(<HeaderNav brand={brand} items={ITEMS} actions={theme} />);
+		expect(within(mobileRow(container)).queryByRole("button", { name: "Tema" })).toBeNull();
+	});
+
+	it("con la prop, la fila móvil lleva la marca, las acciones y después el botón de menú", () => {
+		const { container } = render(<HeaderNav mobileActions brand={brand} items={ITEMS} actions={theme} />);
+		const buttons = within(mobileRow(container)).getAllByRole("button");
+		expect(buttons).toHaveLength(2);
+		expect(buttons[0]?.textContent).toBe("Tema");
+		expect(buttons[1]).toBe(within(mobileRow(container)).getByRole("button", { name: "Abrir menú" }));
+	});
+
+	it("con mobileBar, las acciones van antes de lo que da mobileBar", () => {
+		const { container } = render(
+			<HeaderNav
+				mobileActions
+				brand={brand}
+				items={ITEMS}
+				actions={theme}
+				mobileBar={<button type="button">Menú propio</button>}
+			/>,
+		);
+		const buttons = within(mobileRow(container)).getAllByRole("button");
+		expect(buttons.map((b) => b.textContent)).toEqual(["Tema", "Menú propio"]);
+	});
+});
+
 describe("HeaderNav (menú móvil)", () => {
 	const mobile = {
 		footerItems: [
