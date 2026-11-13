@@ -1,14 +1,15 @@
+import { ChevronRight, SlashDivider } from "@untitledui/icons";
 import { Fragment, type ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import { DynIcon, type IconProp, iconSlot } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Dropdown, type DropdownAccount } from "./Dropdown.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 export interface BreadcrumbItem {
 	label: string;
 	href?: string;
 	/** Icono en lugar del texto (el texto queda para lectores de pantalla). Pensado para el primero, `home-line`. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Avatar o logo delante del texto, para `type="account"` (el logo de la empresa, por ejemplo). */
 	avatar?: ReactNode;
 	/**
@@ -133,8 +134,8 @@ export function Breadcrumbs({
 						<Fragment key={i}>
 							{i > 0 ? (
 								<li aria-hidden="true" className="flex">
-									<Icon
-										name={divider === "slash" ? "slash-divider" : "chevron-right"}
+									<DynIcon
+										icon={divider === "slash" ? SlashDivider : ChevronRight}
 										size={16}
 									/>
 								</li>

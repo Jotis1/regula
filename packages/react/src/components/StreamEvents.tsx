@@ -1,5 +1,6 @@
 import { type ReactNode, useId } from "react";
 import { cx } from "../internal/cx.js";
+import { DynIcon } from "../internal/icon.js";
 import {
 	keyText,
 	STREAM_EVENTS,
@@ -10,7 +11,6 @@ import {
 	streamShort,
 } from "../internal/stream.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export interface StreamEventItem {
 	type: StreamEventType;
@@ -95,7 +95,7 @@ export function StreamEvents({
 							)}
 						>
 							<span className="inline-flex size-8 flex-none items-center justify-center rounded-lg bg-tertiary text-fg-secondary">
-								<Icon name={ev.icon} size={16} />
+								<DynIcon icon={ev.icon} size={16} />
 							</span>
 							<span className="flex min-w-0 flex-1 flex-col">
 								<span className="truncate text-md font-semibold text-primary">{it.user}</span>

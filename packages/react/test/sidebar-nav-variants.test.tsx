@@ -2,6 +2,16 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import {
+	BarChart01,
+	Bell01,
+	CurrencyEuro,
+	Eye,
+	HomeLine,
+	Settings02,
+	Star01,
+	Users01,
+} from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { SidebarCards, SidebarNav, type SidebarNavItem } from "../src/index.js";
@@ -12,25 +22,25 @@ const BEFORE: { full: string; bare: string } = JSON.parse(
 );
 
 const dashboardChildren = [
-	{ icon: "eye" as const, label: "Resumen", href: "/panel/" },
-	{ icon: "bell-01" as const, label: "Avisos", href: "/panel/avisos/", badge: 10 },
-	{ icon: "star-01" as const, label: "Guardados", href: "/panel/guardados/" },
+	{ icon: Eye, label: "Resumen", href: "/panel/" },
+	{ icon: Bell01, label: "Avisos", href: "/panel/avisos/", badge: 10 },
+	{ icon: Star01, label: "Guardados", href: "/panel/guardados/" },
 ];
 
 // React reparte ids por orden de render y este componente pide dos más que antes: no es parte del HTML que se compara
 const normalizeIds = (html: string) => html.replace(/_R_[a-z0-9]+_/g, "_R_");
 
 const items: SidebarNavItem[] = [
-	{ icon: "home-line", label: "Inicio", href: "/" },
-	{ icon: "bar-chart-01", label: "Panel", children: dashboardChildren },
-	{ icon: "users-01", label: "Equipo", href: "/equipo/", badge: 8 },
+	{ icon: HomeLine, label: "Inicio", href: "/" },
+	{ icon: BarChart01, label: "Panel", children: dashboardChildren },
+	{ icon: Users01, label: "Equipo", href: "/equipo/", badge: 8 },
 ];
 
 describe("SidebarNav: el de siempre", () => {
 	const base = [
-		{ icon: "home-line" as const, label: "Inicio", href: "/", active: true },
-		{ icon: "bar-chart-01" as const, label: "Panel", href: "/panel/", badge: 3 },
-		{ icon: "currency-euro" as const, label: "Pecunia" },
+		{ icon: HomeLine, label: "Inicio", href: "/", active: true },
+		{ icon: BarChart01, label: "Panel", href: "/panel/", badge: 3 },
+		{ icon: CurrencyEuro, label: "Pecunia" },
 	];
 
 	it("sin las props nuevas el HTML es el de antes", () => {
@@ -39,12 +49,12 @@ describe("SidebarNav: el de siempre", () => {
 				brand="jotis.me"
 				search
 				items={base}
-				footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/ajustes/" }]}
+				footerItems={[{ icon: Settings02, label: "Ajustes", href: "/ajustes/" }]}
 				user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 			/>,
 		);
-		expect(normalizeIds(full)).toBe(normalizeIds(BEFORE.full));
-		expect(normalizeIds(renderToStaticMarkup(<SidebarNav items={base} />))).toBe(
+		expect(normalizeIds(full)).toMatchBefore(normalizeIds(BEFORE.full));
+		expect(normalizeIds(renderToStaticMarkup(<SidebarNav items={base} />))).toMatchBefore(
 			normalizeIds(BEFORE.bare),
 		);
 	});
@@ -175,7 +185,7 @@ describe("SidebarNav: secciones", () => {
 	const sections = [
 		{
 			title: "General",
-			items: [{ icon: "home-line" as const, label: "Panel", href: "/", active: true }],
+			items: [{ icon: HomeLine, label: "Panel", href: "/", active: true }],
 		},
 		{
 			title: "Equipos",
@@ -372,5 +382,75 @@ describe("SidebarNav: marca y cuenta según el tipo", () => {
 		expect(group.tagName).toBe("SPAN");
 		expect(group.textContent).toBe("Regula");
 		expect(group.nextElementSibling?.textContent).toContain("Buscar");
+	});
+});
+
+describe("SidebarNav: disclosure", () => {
+	const grouped: SidebarNavItem[] = [
+		{ icon: HomeLine, label: "Inicio", href: "/" },
+		{ icon: BarChart01, label: "Panel", badge: 2, children: dashboardChildren },
+		{
+			icon: Users01,
+			label: "Equipo",
+			children: [{ label: "Miembros", href: "/equipo/miembros/", active: true }],
+		},
+		{ icon: Star01, label: "Favoritos", defaultOpen: true, children: [{ label: "Uno", href: "/uno/" }] },
+	];
+	const parse = (html: string) => {
+		const host = document.createElement("div");
+		host.innerHTML = html;
+		return host;
+	};
+
+	it("por defecto es script: botones con aria-expanded y ningún details", () => {
+		const html = renderToStaticMarkup(<SidebarNav items={grouped} />);
+		expect(html).not.toContain("<details");
+		expect(html).toContain("aria-expanded");
+		expect(normalizeIds(html)).toBe(
+			normalizeIds(renderToStaticMarkup(<SidebarNav items={grouped} disclosure="script" />)),
+		);
+	});
+
+	it.each(["simple", "sections-dividers", "sections-subheadings"] as const)(
+		"con native en %s cada elemento con hijos es un details, abierto si lleva defaultOpen o contiene el activo",
+		(type) => {
+			const props =
+				type === "simple" ? { items: grouped } : { sections: [{ title: "General", items: grouped }] };
+			const host = parse(
+				renderToStaticMarkup(<SidebarNav type={type} disclosure="native" {...props} />),
+			);
+			const details = [...host.querySelectorAll("details")];
+			expect(details).toHaveLength(3);
+			expect(details.map((d) => d.querySelector("summary")?.textContent)).toEqual([
+				"Panel2",
+				"Equipo",
+				"Favoritos",
+			]);
+			// Panel: cerrado; Equipo: contiene el activo; Favoritos: defaultOpen
+			expect(details.map((d) => d.hasAttribute("open"))).toEqual([false, true, true]);
+			expect(details[1]?.querySelector("a[aria-current='page']")?.textContent).toBe("Miembros");
+			// El navegador anuncia el estado del summary: nada de aria-expanded ni aria-controls
+			expect(host.innerHTML).not.toContain("aria-expanded");
+			expect(host.innerHTML).not.toContain("aria-controls");
+			expect(host.querySelector("button")).toBeNull();
+			// El chevron gira con details[open], y sin movimiento si se pide reducirlo
+			const chevron = details[0]?.querySelector("summary svg:last-of-type");
+			expect(chevron?.getAttribute("class")).toContain("group-open/disclosure:rotate-180");
+			expect(chevron?.getAttribute("class")).toContain("motion-reduce:transition-none");
+		},
+	);
+
+	it("con native se pinta en el servidor y los enlaces de un grupo cerrado siguen en el HTML", () => {
+		const html = renderToStaticMarkup(<SidebarNav items={grouped} disclosure="native" />);
+		expect(html).toContain('href="/panel/avisos/"');
+	});
+
+	it.each(["dual-tier", "slim"] as const)("en %s se ignora: el mismo HTML que con script", (type) => {
+		const render = (disclosure: "script" | "native") =>
+			normalizeIds(
+				renderToStaticMarkup(<SidebarNav type={type} items={grouped} disclosure={disclosure} />),
+			);
+		expect(render("native")).toBe(render("script"));
+		expect(render("native")).not.toContain("<details");
 	});
 });

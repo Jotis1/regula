@@ -1,7 +1,9 @@
 // Menú móvil a pantalla completa (reference/docs-design/MobileMenu.dc.html) sobre el Slideout de @jotis-me/react,
-// que trae el foco atrapado, Escape y el foco de vuelta al botón (design §7). Dentro: la búsqueda, la misma
-// navegación lateral (llega como hijos desde Astro, ya pintada) y el tema en tres estados (design §8).
-import { AppIcon, Button, ButtonGroup, Icon, Slideout } from "@jotis-me/react";
+// que trae el foco atrapado, Escape y el foco de vuelta al botón (design §7). Dentro: la búsqueda, el lateral de toda
+// la web (llega como hijos desde Astro, ya pintado: los cinco bloques, plegados salvo el de la página actual, con su
+// filtro) y el tema en tres estados (design §8).
+import { AppIcon, Button, ButtonGroup, Slideout } from "@jotis-me/react";
+import { Menu01, SearchLg } from "@untitledui/icons";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { initDocNav } from "../lib/docnav";
 import { onThemeChange, setTheme, THEME_OPTIONS, type ThemeChoice, themeChoice } from "../lib/theme";
@@ -34,7 +36,7 @@ export default function MobileMenu({ children }: { children?: ReactNode }) {
 			<Button
 				hierarchy="tertiary"
 				size="lg"
-				iconOnly="menu-01"
+				iconOnly={Menu01}
 				label="Abrir menú"
 				aria-haspopup="dialog"
 				aria-expanded={open}
@@ -74,7 +76,7 @@ export default function MobileMenu({ children }: { children?: ReactNode }) {
 							onClick={search}
 							className="flex h-11 w-full items-center gap-2 rounded-lg border border-primary bg-primary pr-2 pl-3 text-left text-sm text-quaternary shadow-xs transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
 						>
-							<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
+							<SearchLg size={20} className="shrink-0 text-fg-quaternary" />
 							<span className="grow">Buscar en Regula</span>
 						</button>
 					</div>

@@ -1,7 +1,8 @@
+import { XClose } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 export type StatusColor = "gray" | "brand" | "error" | "warning" | "success";
 export type BadgeColor = StatusColor | "slate" | "sky" | "blue" | "indigo" | "purple" | "pink" | "orange";
@@ -18,13 +19,13 @@ interface BadgeBase {
 	/** Punto de color antes del texto. */
 	dot?: boolean;
 	/** Icono de 12px antes del texto. */
-	icon?: IconName | ReactNode;
-	/** Bandera de 16px antes del texto, como `FlagSpainCircle` de `@jotis-me/icons/flags`. */
+	icon?: IconProp;
+	/** Bandera de 16px antes del texto, como `<FlagEs />` de `@untitledui/country-flags`. */
 	flag?: ReactNode;
 	/** Avatar de 16px antes del texto: la URL de una foto o un nodo. */
 	avatar?: string | ReactNode;
 	/** Icono de 12px después del texto. */
-	iconTrailing?: IconName | ReactNode;
+	iconTrailing?: IconProp;
 	/** Muestra una X para quitarlo. */
 	onRemove?: () => void;
 	/** Nombre accesible de la X. Por defecto, "Quitar". */
@@ -41,7 +42,7 @@ interface BadgeWithText extends BadgeBase {
 
 interface BadgeIconOnly extends BadgeBase {
 	/** Solo el icono, de 12px, en un badge cuadrado (o redondo en `pill`) de 22, 24 o 28px. */
-	iconOnly: IconName | NonNullable<ReactNode>;
+	iconOnly: NonNullable<IconProp>;
 	/** Lo que significa el icono, para lectores de pantalla. Obligatorio: no hay texto visible. */
 	label: string;
 	children?: undefined;
@@ -239,7 +240,7 @@ export function Badge({
 						modern && MODERN_REMOVE,
 					)}
 				>
-					<Icon name="x-close" size={12} />
+					<XClose size={12} />
 				</button>
 			) : null}
 		</span>

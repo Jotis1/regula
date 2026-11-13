@@ -44,7 +44,7 @@ for (const old of ["/usage/tailwind/", "/foundations/spacing/", "/foundations/sh
 
 test("el texto de la guía sale tal cual", async ({ page }) => {
 	await page.goto("/foundations/content/");
-	// En «En lugar de» va dos veces, tabla en escritorio y tarjetas en móvil: una se ve
+	// En «En lugar de esto, esto otro» es el pie de su tarjeta «Mejor»
 	await expect(page.getByText('"Aún no hay gastos. Qué calma."').filter({ visible: true })).toHaveCount(1);
 	await page.goto("/foundations/color/");
 	await expect(page.getByText("Las series usan, en este orden")).toBeVisible();
@@ -61,11 +61,13 @@ test("contenido y tono: la voz, las reglas de formato y los ejemplos de la guía
 		'Mayúscula solo al principio: "Nuevo movimiento", no "Nuevo Movimiento".',
 	);
 	await expect(main).toContainText("Cifras con formato español: 1.284,50 €, fechas 29 oct 2026.");
-	const instead = page.getByRole("table", { name: /lo que se evita y lo que se escribe/ });
-	await expect(instead.getByRole("row", { name: /Error leve/ })).toContainText(
+	// «En lugar de esto, esto otro» ya no es una tabla: cada caso es un par de tarjetas (e2e/rules.spec.ts)
+	await expect(page.getByRole("table", { name: /lo que se evita y lo que se escribe/ })).toHaveCount(0);
+	await expect(page.locator('[data-example-pair="Error leve"]')).toContainText(
 		'"Se ha producido un error de validación."',
 	);
-	await expect(page.getByRole("heading", { name: "Aún no hay gastos" })).toBeVisible();
+	// El ejemplo vivo de «Dónde cabe el humor»; el de las tarjetas es inerte y no cuenta como título
+	await expect(page.getByRole("heading", { name: "Aún no hay gastos" }).last()).toBeVisible();
 });
 
 test("las páginas de fundamentos llevan migas, índice y anterior/siguiente", async ({ page }) => {
@@ -89,25 +91,30 @@ test("las páginas de fundamentos llevan migas, índice y anterior/siguiente", a
 
 	await page.goto("/foundations/content/");
 	const toc = page.getByRole("navigation", { name: "En esta página" });
-	await expect(toc.locator("[data-toc-link]")).toHaveText([
+	await expect(toc.getByRole("link")).toHaveText([
 		"La voz",
-		"Dónde cabe el humor",
 		"En lugar de esto, esto otro",
+		"Dónde cabe el humor",
 		"Reglas de escritura",
 		"Cifras y fechas",
 	]);
-	await expect(toc.getByRole("link", { name: "La voz" })).toHaveAttribute("aria-current", "true");
+	await expect(toc.getByRole("link", { name: "La voz" })).toHaveAttribute("aria-current", "location");
 	await page.evaluate(() =>
 		document.getElementById("reglas-de-escritura")?.scrollIntoView({ block: "start" }),
 	);
 	await expect(toc.getByRole("link", { name: "Reglas de escritura" })).toHaveAttribute(
 		"aria-current",
-		"true",
+		"location",
 	);
-	await expect(toc.getByRole("link", { name: "La voz" })).toHaveAttribute("aria-current", "false");
+	// Solo una sección marcada a la vez, y las demás sin el atributo
+	await expect(toc.getByRole("link", { name: "La voz" })).not.toHaveAttribute("aria-current", /.*/);
+	await expect(toc.locator("[aria-current]")).toHaveCount(1);
 	// Al final de la página se marca la última, aunque su título no llegue arriba
 	await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
-	await expect(toc.getByRole("link", { name: "Cifras y fechas" })).toHaveAttribute("aria-current", "true");
+	await expect(toc.getByRole("link", { name: "Cifras y fechas" })).toHaveAttribute(
+		"aria-current",
+		"location",
+	);
 	await expect(page.getByRole("link", { name: "Proponer un cambio" })).toHaveAttribute(
 		"href",
 		"https://github.com/Jotis1/regula/edit/main/apps/docs/src/content/foundations/content.mdx",
@@ -124,7 +131,7 @@ for (const [href, text] of [
 	["/foundations/backgrounds/", "Uno o dos por vista, nunca en pantallas de trabajo."],
 	["/foundations/brand/", "el icono identifica la app, no la tiñe."],
 	["/foundations/stream/", "la cuenta atrás y las barras solo cambian cuando cambia el dato."],
-	["/start/install/", "llegan los otros dos."],
+	["/start/install/", "y con él los iconos de línea de @untitledui/icons."],
 ] as const) {
 	test(`${href} lleva el texto de la guía`, async ({ page }) => {
 		await page.goto(href);
@@ -160,11 +167,13 @@ test("Color lleva el índice «En esta página» en columna, como el resto de fu
 	const toc = page.getByRole("navigation", { name: "En esta página" });
 	await expect(toc).toHaveCount(1);
 	await expect(toc).toBeVisible();
-	await expect(toc.getByText("En esta página", { exact: true })).toBeVisible();
-	await expect(toc.getByRole("link", { name: "Proponer un cambio" })).toBeVisible();
+	// La columna entera: el rótulo, los enlaces de ancla y «Proponer un cambio»
+	const column = page.locator("[data-toc]");
+	await expect(column.getByText("En esta página", { exact: true })).toBeVisible();
+	await expect(column.getByRole("link", { name: "Proponer un cambio" })).toBeVisible();
 	const article = await page.locator("article").boundingBox();
-	const column = await toc.boundingBox();
-	expect(column && article && column.x).toBeGreaterThan((article?.x ?? 0) + (article?.width ?? 0));
+	const box = await toc.boundingBox();
+	expect(box && article && box.x).toBeGreaterThan((article?.x ?? 0) + (article?.width ?? 0));
 });
 
 test("anterior y siguiente llevan su flecha, sin cambiar el nombre accesible", async ({ page }) => {
@@ -180,20 +189,20 @@ test("anterior y siguiente llevan su flecha, sin cambiar el nombre accesible", a
 // del final (espaciado, sombras, tipografía) entran en él
 const tocs: [string, string[]][] = [
 	["/start/install/", ["Next.js (App Router)", "Astro", "Nombres de las utilidades", "Sin Tailwind"]],
-	["/foundations/principles/", ["Los cuatro principios"]],
-	["/foundations/layout/", ["Lo esencial", "Escala de espaciado", "Radios", "Anchos"]],
-	["/foundations/states/", ["Lo esencial", "Sombras", "Desenfoques"]],
-	["/foundations/iconography/", ["Lo esencial"]],
-	["/foundations/backgrounds/", ["Lo esencial"]],
+	["/foundations/principles/", ["Con ejemplos", "Los cuatro principios"]],
+	["/foundations/layout/", ["Con ejemplos", "Lo esencial", "Escala de espaciado", "Radios", "Anchos"]],
+	["/foundations/states/", ["Con ejemplos", "Lo esencial", "Sombras", "Desenfoques"]],
+	["/foundations/iconography/", ["Con ejemplos", "Lo esencial"]],
+	["/foundations/backgrounds/", ["Con ejemplos", "Lo esencial"]],
 ];
 for (const [path, sections] of tocs)
 	test(`${path} tiene su índice «En esta página» y cada enlace lleva a su sección`, async ({ page }) => {
 		await page.setViewportSize({ width: 1440, height: 900 });
 		await page.goto(path);
-		const links = page.getByRole("navigation", { name: "En esta página" }).locator("[data-toc-link]");
+		const links = page.getByRole("navigation", { name: "En esta página" }).getByRole("link");
 		await expect(links).toHaveText(sections);
-		for (const id of await links.evaluateAll((as) => as.map((a) => a.getAttribute("data-toc-link"))))
-			await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
+		for (const href of await links.evaluateAll((as) => as.map((a) => a.getAttribute("href"))))
+			await expect(page.locator(`[id="${href?.slice(1)}"]`)).toHaveCount(1);
 	});
 
 test("la instalación usa el CodeSnippet de @jotis-me/react, con su resaltado, y no el de Astro", async ({

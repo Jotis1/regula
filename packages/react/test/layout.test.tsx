@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { HomeLine, Stars02 } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -38,7 +39,7 @@ describe("frontera servidor", () => {
 		const html = renderToString(
 			<>
 				<PageHeader
-					breadcrumbs={[{ label: "Inicio", icon: "home-line" }, { label: "Pecunia" }]}
+					breadcrumbs={[{ label: "Inicio", icon: HomeLine }, { label: "Pecunia" }]}
 					title="Gastos"
 					actions={actions}
 				/>
@@ -46,7 +47,7 @@ describe("frontera servidor", () => {
 				<SectionHeader title="Contactos" description="Personas." />
 				<SectionFooter start={<Button hierarchy="link-gray">Ayuda</Button>} actions={actions} card />
 				<ContentDivider label="o continúa con" />
-				<InlineCTA icon="stars-02" title="Conecta tu banco" actions={actions} />
+				<InlineCTA icon={Stars02} title="Conecta tu banco" actions={actions} />
 			</>,
 		);
 		expect(html).toContain("<h1");
@@ -62,7 +63,7 @@ describe("PageHeader", () => {
 	it("migas, h1, descripción, acciones y línea inferior", () => {
 		const { container } = render(
 			<PageHeader
-				breadcrumbs={[{ label: "Inicio", icon: "home-line" }, { label: "Pecunia" }]}
+				breadcrumbs={[{ label: "Inicio", icon: HomeLine }, { label: "Pecunia" }]}
 				title="Gastos"
 				description="Controla lo que entra y lo que sale."
 				actions={actions}
@@ -91,7 +92,7 @@ describe("PageHeader", () => {
 	it("axe en claro y oscuro", async () => {
 		await expectAccessibleInThemes(
 			<PageHeader
-				breadcrumbs={[{ label: "Inicio", icon: "home-line" }, { label: "Pecunia" }]}
+				breadcrumbs={[{ label: "Inicio", icon: HomeLine }, { label: "Pecunia" }]}
 				title="Gastos"
 				description="Controla lo que entra y lo que sale."
 				actions={actions}
@@ -239,7 +240,7 @@ describe("ContentDivider", () => {
 describe("InlineCTA", () => {
 	it("icono, título, descripción y acciones", () => {
 		const { container } = render(
-			<InlineCTA icon="stars-02" title="Conecta tu banco" description="Importa." actions={actions} />,
+			<InlineCTA icon={Stars02} title="Conecta tu banco" description="Importa." actions={actions} />,
 		);
 		expect(screen.getByRole("heading", { level: 3, name: "Conecta tu banco" })).toBeTruthy();
 		expect(container.querySelector("svg")).not.toBeNull();
@@ -261,7 +262,7 @@ describe("InlineCTA", () => {
 	it("axe en claro y oscuro", async () => {
 		await expectAccessibleInThemes(
 			<InlineCTA
-				icon="stars-02"
+				icon={Stars02}
 				title="Conecta tu banco"
 				image="/foto.jpg"
 				imageAlt="Banco"

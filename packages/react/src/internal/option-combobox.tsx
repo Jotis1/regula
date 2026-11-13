@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, ChevronDown, SearchLg } from "@untitledui/icons";
 import { type ReactNode, useContext } from "react";
 import {
 	Button as AriaButton,
@@ -12,9 +13,9 @@ import {
 	Text,
 	useFilter,
 } from "react-aria-components";
-import { Icon, type IconName, iconSlot } from "../components/Icon.js";
 import { cx } from "./cx.js";
 import { controlClasses, type FieldSize, nativeClasses } from "./field.js";
+import { type IconProp, iconSlot } from "./icon.js";
 import { type Option, OptionBody, type SelectOption, toOption } from "./option-select.js";
 import { defaultStrings } from "./strings.js";
 
@@ -38,7 +39,7 @@ export interface OptionComboboxProps {
 	"aria-describedby"?: string;
 	size: FieldSize;
 	/** Icono inicial. Por defecto, la lupa. */
-	icon?: IconName | React.ReactNode;
+	icon?: IconProp;
 }
 
 /**
@@ -125,7 +126,7 @@ export function OptionCombobox({
 				)}
 			>
 				<span className="inline-flex flex-none text-fg-quaternary">
-					{iconSlot(icon ?? "search-lg", 20)}
+					{iconSlot(icon ?? SearchLg, 20)}
 				</span>
 				<Input id={id} placeholder={placeholder} className={nativeClasses(size)} />
 				<AriaButton
@@ -133,7 +134,7 @@ export function OptionCombobox({
 					excludeFromTabOrder
 					className="inline-flex flex-none cursor-pointer rounded-sm border-0 bg-transparent p-0 text-fg-quaternary outline-none data-disabled:cursor-not-allowed"
 				>
-					<Icon name="chevron-down" size={20} />
+					<ChevronDown size={20} />
 				</AriaButton>
 			</Frame>
 			<Popover
@@ -166,7 +167,7 @@ export function OptionCombobox({
 									<Text slot="description" className="hidden" />
 									{isSelected ? (
 										<span className="inline-flex flex-none text-fg-brand-primary">
-											<Icon name="check" size={20} />
+											<Check size={20} />
 										</span>
 									) : null}
 								</>

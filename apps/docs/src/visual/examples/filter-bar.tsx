@@ -13,6 +13,7 @@ import {
 	Select,
 	Slideout,
 } from "@jotis-me/react";
+import { Calendar, SearchLg } from "@untitledui/icons";
 import { useState } from "react";
 
 const hoy = new Date(2027, 0, 8);
@@ -80,7 +81,7 @@ export function FilterBarExample() {
 			<FilterBar
 				type="simple"
 				dates={
-					<Button hierarchy="secondary" size="sm" iconLeading="calendar">
+					<Button hierarchy="secondary" size="sm" iconLeading={Calendar}>
 						Elegir fechas
 					</Button>
 				}
@@ -123,7 +124,7 @@ export function FilterBarExample() {
 						control: (
 							<Input
 								size="sm"
-								icon="search-lg"
+								icon={SearchLg}
 								aria-label="Buscar un pedido"
 								placeholder="Buscar"
 							/>

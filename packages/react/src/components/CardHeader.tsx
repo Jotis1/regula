@@ -1,3 +1,4 @@
+import { DotsVertical } from "@untitledui/icons";
 import { isValidElement, type ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { Line } from "../internal/line.js";
@@ -67,7 +68,7 @@ export function CardHeader({
 					<Button
 						hierarchy="tertiary"
 						size="sm"
-						iconOnly="dots-vertical"
+						iconOnly={DotsVertical}
 						label={menuLabel ?? defaultStrings.moreOptions}
 						onClick={onMenu}
 					/>

@@ -6,9 +6,33 @@ order: 4
 
 import Essentials from "../../components/compose/Essentials.astro";
 import Example from "../../components/compose/Example.astro";
+import Pair from "../../components/compose/Pair.astro";
+import Rule from "../../components/compose/Rule.astro";
 import Terms from "../../components/compose/Terms.astro";
 
 {/* Texto de la guía (reference/GUIA.md, «Tipografía»), repartido en las piezas sin reescribirlo */}
+
+## Con ejemplos
+
+El mismo texto, con la familia y el peso que le tocan y con los que no.
+
+<Pair>
+	<Rule verdict="do" caption="Título de página en app: `display-sm-semibold`, en Bricolage Grotesque.">
+		<p class="font-display text-display-sm font-semibold text-primary">Gastos de octubre</p>
+	</Rule>
+	<Rule verdict="dont" caption="No uses bold en display.">
+		<p class="font-display text-display-sm font-bold text-primary">Gastos de octubre</p>
+	</Rule>
+</Pair>
+
+<Pair>
+	<Rule verdict="do" caption="**Geist** para todo lo funcional. Cuerpo de lectura: `text-md` (16/24)." width={360}>
+		<p class="text-md text-tertiary">Lo apuntas ahora y no lo buscas en marzo.</p>
+	</Rule>
+	<Rule verdict="dont" caption="**Bricolage Grotesque** es solo para titulares, no para párrafos." width={360}>
+		<p class="font-display text-md text-tertiary">Lo apuntas ahora y no lo buscas en marzo.</p>
+	</Rule>
+</Pair>
 
 ## Las tres familias
 

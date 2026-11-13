@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Clock, Copy01, HelpCircle, Mail01 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { detectCardNetwork, formatCardNumber } from "../src/components/Input.js";
@@ -27,18 +28,12 @@ describe("Input y Textarea: sin las props nuevas", () => {
 		);
 		expect(
 			renderToStaticMarkup(<Input label="Clave" type="password" size="sm" error="Mala" required />),
-		).toBe(INPUT_BEFORE[1]);
+		).toMatchBefore(INPUT_BEFORE[1]);
 		expect(
 			renderToStaticMarkup(
-				<Input
-					label="Web"
-					prefix="https://"
-					trailing="help-circle"
-					icon="mail-01"
-					defaultValue="x"
-				/>,
+				<Input label="Web" prefix="https://" trailing={HelpCircle} icon={Mail01} defaultValue="x" />,
 			),
-		).toBe(INPUT_BEFORE[2]);
+		).toMatchBefore(INPUT_BEFORE[2]);
 		expect(
 			renderToStaticMarkup(
 				<Input
@@ -48,8 +43,8 @@ describe("Input y Textarea: sin las props nuevas", () => {
 					disabled
 				/>,
 			),
-		).toBe(INPUT_BEFORE[3]);
-		expect(renderToStaticMarkup(<Input type="date" size="lg" />)).toBe(INPUT_BEFORE[4]);
+		).toMatchBefore(INPUT_BEFORE[3]);
+		expect(renderToStaticMarkup(<Input type="date" size="lg" />)).toMatchBefore(INPUT_BEFORE[4]);
 	});
 
 	it("el HTML de TagInput y Textarea es el de antes", () => {
@@ -57,16 +52,16 @@ describe("Input y Textarea: sin las props nuevas", () => {
 			renderToStaticMarkup(
 				<TagInput label="Etiquetas" defaultValue={["a", "b"]} hint="Pista" name="t" />,
 			),
-		).toBe(TAGS_BEFORE[0]);
+		).toMatchBefore(TAGS_BEFORE[0]);
 		expect(
 			renderToStaticMarkup(
 				<TagInput label="Etiquetas" placement="outside" size="lg" defaultValue={["a"]} error="Mal" />,
 			),
-		).toBe(TAGS_BEFORE[1]);
+		).toMatchBefore(TAGS_BEFORE[1]);
 		expect(
 			renderToStaticMarkup(<Textarea label="Notas" hint="Pista" rows={3} defaultValue="hola" />),
-		).toBe(TAGS_BEFORE[2]);
-		expect(renderToStaticMarkup(<Textarea error disabled required />)).toBe(TAGS_BEFORE[3]);
+		).toMatchBefore(TAGS_BEFORE[2]);
+		expect(renderToStaticMarkup(<Textarea error disabled required />)).toMatchBefore(TAGS_BEFORE[3]);
 	});
 });
 
@@ -161,7 +156,7 @@ describe("Input trailingButton", () => {
 			<Input
 				label="Web"
 				defaultValue="jotis.me"
-				trailingButton={{ label: "Copiar", icon: "copy-01", onClick }}
+				trailingButton={{ label: "Copiar", icon: Copy01, onClick }}
 			/>,
 		);
 		const button = screen.getByRole("button", { name: "Copiar" });
@@ -224,7 +219,7 @@ describe("Input type=datetime-local", () => {
 	});
 
 	it("con icon propio no pone el botón del calendario", () => {
-		render(<Input label="Fecha" type="datetime-local" icon="clock" />);
+		render(<Input label="Fecha" type="datetime-local" icon={Clock} />);
 		expect(screen.queryByRole("button", { name: "Elegir fecha" })).toBeNull();
 	});
 });
@@ -361,7 +356,7 @@ describe("accesibilidad de los campos nuevos", () => {
 			<Input label="Tarjeta" type="card" cardLogos={{ visa: <svg /> }} defaultValue="4242" />,
 		);
 		await expectAccessibleInThemes(
-			<Input label="Web" hint="Pista" trailingButton={{ label: "Copiar", icon: "copy-01" }} />,
+			<Input label="Web" hint="Pista" trailingButton={{ label: "Copiar", icon: Copy01 }} />,
 		);
 		await expectAccessibleInThemes(<Input label="Fecha" type="datetime-local" error="Mal" />);
 		await expectAccessibleInThemes(<Input label="Archivo" type="file" hint="SVG o PNG" />);

@@ -1,7 +1,7 @@
+import { User01 } from "@untitledui/icons";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 import { VerifiedSeal } from "../internal/verified-seal.js";
-import { Icon } from "./Icon.js";
 
 export type AvatarProfilePhotoSize = "sm" | "md" | "lg";
 
@@ -82,7 +82,7 @@ export function AvatarProfilePhoto({
 						{initials}
 					</span>
 				) : (
-					<Icon name="user-01" size={ICON[size]} />
+					<User01 size={ICON[size]} />
 				)}
 			</span>
 			{verified ? (

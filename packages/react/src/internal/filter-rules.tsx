@@ -1,10 +1,9 @@
 "use client";
 
+import { ChevronDown, Plus, XClose } from "@untitledui/icons";
 // Lo que comparten `FilterMenu` y `FilterPanel` (Figma `Filters dropdown menu` y `Filters slideout menu`): las filas de
 // filtros (campo, operador y valor), el estado vacío y los botones del pie.
-import { IconPlus, IconXClose } from "@jotis-me/icons";
 import { Button } from "../components/Button.js";
-import { Icon } from "../components/Icon.js";
 import { MultiSelect, type MultiSelectOption } from "../components/MultiSelect.js";
 import { cx } from "./cx.js";
 import { defaultStrings } from "./strings.js";
@@ -101,7 +100,7 @@ function NativeSelect({
 				))}
 			</select>
 			<span className="pointer-events-none absolute right-2.5 flex text-fg-quaternary">
-				<Icon name="chevron-down" size={16} />
+				<ChevronDown size={16} />
 			</span>
 		</span>
 	);
@@ -223,7 +222,7 @@ function RuleRow({
 		<Button
 			hierarchy="tertiary"
 			size="sm"
-			iconOnly={<IconXClose size={20} />}
+			iconOnly={<XClose size={20} />}
 			label={t.remove(n)}
 			onClick={onRemove}
 			className="shrink-0"
@@ -267,7 +266,7 @@ export function FilterEmpty({ onAdd, t }: { onAdd: () => void; t: FilterLabels }
 
 export function AddButton({ onAdd, t }: { onAdd: () => void; t: FilterLabels }) {
 	return (
-		<Button hierarchy="secondary" size="sm" iconLeading={<IconPlus size={16} />} onClick={onAdd}>
+		<Button hierarchy="secondary" size="sm" iconLeading={<Plus size={16} />} onClick={onAdd}>
 			{t.addFilter}
 		</Button>
 	);

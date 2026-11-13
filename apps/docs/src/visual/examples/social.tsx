@@ -1,5 +1,5 @@
 // Vista previa de SocialButton, SocialButtonGroup y AppStoreBadge. Va en su propio fichero: los logos
-// (`@jotis-me/icons/logos`) solo los cargan estas páginas.
+// (`@jotis-me/assets/logos`) solo los cargan estas páginas.
 
 import {
 	SocialAppleLogo,
@@ -23,7 +23,7 @@ import {
 	StoreGooglePlayOutlineLogo,
 	StoreMacAppStoreLogo,
 	StoreMacAppStoreOutlineLogo,
-} from "@jotis-me/icons/logos";
+} from "@jotis-me/assets/logos";
 import {
 	type AppStore,
 	AppStoreBadge,

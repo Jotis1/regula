@@ -2,7 +2,7 @@
 // para Next.js (página de servidor) y para Astro (con `client:load` si el componente es interactivo).
 
 const usage: Record<string, string> = {
-	Button: `<Button iconLeading="plus">Nuevo gasto</Button>
+	Button: `<Button iconLeading={Plus}>Nuevo gasto</Button>
 <Button hierarchy="secondary" href="/ajustes">Ajustes</Button>`,
 	ButtonGroup: `<ButtonGroup
 	aria-label="Periodo"
@@ -10,7 +10,7 @@ const usage: Record<string, string> = {
 	items={[
 		{ value: "30d", label: "30 días" },
 		{ value: "7d", label: "7 días" },
-		{ value: "24h", label: "24 horas", icon: "clock" },
+		{ value: "24h", label: "24 horas", icon: Clock },
 	]}
 />`,
 	AppStoreBadge: `<AppStoreBadge store="app-store" href="https://apps.apple.com/app/id1" logo={<StoreAppStoreLogo />} />`,
@@ -20,9 +20,7 @@ const usage: Record<string, string> = {
 	<SocialButton provider="apple" theme="color" logo={<SocialAppleLogoGray />} />
 </SocialButtonGroup>`,
 	CloseButton: `<CloseButton label="Cerrar aviso" />`,
-	ButtonUtility: `<ButtonUtility icon="copy-01" label="Copiar enlace" onClick={copiar} />`,
-	Icon: `<Icon name="calendar" size={20} />
-<Icon name="check-circle" title="Pagado" />`,
+	ButtonUtility: `<ButtonUtility icon={Copy01} label="Copiar enlace" onClick={copiar} />`,
 	Badge: `<Badge color="success">Pagado</Badge>
 <Badge type="modern" color="success" dot>En línea</Badge>`,
 	BadgeGroup: `<BadgeGroup badge="Nuevo" href="/novedades/">
@@ -30,6 +28,14 @@ const usage: Record<string, string> = {
 </BadgeGroup>`,
 	Tag: `<Tag size="md" count={5}>Facturas</Tag>`,
 	Kbd: `<Kbd variant="field">Ctrl K</Kbd>`,
+	IconTile: `<IconTile icon={Mail01} label="Mail01" selected onSelect={() => elegir("Mail01")} />`,
+	TokenSwatch: `<TokenSwatch
+	name="text-primary"
+	light="#171717"
+	dark="#fafafa"
+	utility="text-primary"
+/>
+<CopyTooltip />`,
 	Avatar: `<Avatar initials="AD" alt="Administrador" status="online" />`,
 	AvatarGroup: `<AvatarGroup items={[{ initials: "AB" }, { initials: "CD" }, { initials: "+3" }]} />`,
 	Rating: `<Rating value={4.5} />`,
@@ -41,7 +47,7 @@ const usage: Record<string, string> = {
 </ul>`,
 	AvatarProfilePhoto: `<AvatarProfilePhoto size="lg" src="/fotos/olivia.jpg" alt="Olivia Rhye" verified />`,
 	AvatarLabel: `<AvatarLabel initials="AD" name="Responsable de seguridad" supporting="admin@jotis.me" />`,
-	FeaturedIcon: `<FeaturedIcon icon="alert-circle" color="error" />`,
+	FeaturedIcon: `<FeaturedIcon icon={AlertCircle} color="error" />`,
 	Spinner: `<Spinner label="Importando extracto…" />`,
 	Skeleton: `<Skeleton circle width={40} height={40} />
 <Skeleton lines={3} />`,
@@ -54,11 +60,24 @@ const usage: Record<string, string> = {
 		{ title: "Tu empresa", description: "Web y ubicación" },
 		{ title: "Tu equipo", description: "Empieza a colaborar" },
 	]}
-/>`,
+/>
+
+<ProgressSteps
+	aria-label="Alta"
+	current={paso}
+	onChange={setPaso}
+	steps={[
+		{ title: "Tus datos", description: "Nombre y correo" },
+		{ title: "Tu empresa", description: "Web y ubicación" },
+		{ title: "Tu equipo", description: "Empieza a colaborar" },
+	]}
+>
+	{(i) => <p>Contenido del paso {i + 1}</p>}
+</ProgressSteps>`,
 	ProgressCircle: `<ProgressCircle value={40} label="Usuarios activos" />
 <ProgressCircle value={40} shape="half" size="sm" label="Usuarios activos" />`,
 	AppIcon: `<AppIcon app="pecunia" size={48} />`,
-	Input: `<Input label="Correo" type="email" icon="mail-01" placeholder="tu@jotis.me" required />`,
+	Input: `<Input label="Correo" type="email" icon={Mail01} placeholder="tu@jotis.me" required />`,
 	NumberInput: `<NumberInput label="Invitados" defaultValue={2} min={1} max={12} />`,
 	TagInput: `<TagInput label="Etiquetas" defaultValue={["diseño", "código"]} onChange={guardar} />`,
 	VerificationCodeInput: `<VerificationCodeInput label="Código de verificación" onComplete={(code) => verificar(code)} />`,
@@ -119,10 +138,22 @@ const usage: Record<string, string> = {
 		{ id: "movimientos", label: "Movimientos", count: 12 },
 	]}
 	onChange={cambiarVista}
+/>
+
+// Con href en todos los elementos, enlaces en lugar de pestañas (índice de la página)
+<Tabs
+	aria-label="En esta página"
+	orientation="vertical"
+	type="line"
+	defaultValue="uso"
+	items={[
+		{ id: "uso", label: "Uso", href: "#uso" },
+		{ id: "props", label: "Props", href: "#props" },
+	]}
 />`,
 	Breadcrumbs: `<Breadcrumbs
 	items={[
-		{ label: "Inicio", icon: "home-line", href: "/" },
+		{ label: "Inicio", icon: HomeLine, href: "/" },
 		{ label: "Pecunia", href: "/pecunia/" },
 		{ label: "Gastos de octubre" },
 	]}
@@ -159,16 +190,16 @@ const usage: Record<string, string> = {
 	}
 	search
 	items={[
-		{ icon: "home-line", label: "Inicio", href: "/", active: true },
+		{ icon: HomeLine, label: "Inicio", href: "/", active: true },
 		{
-			icon: "bar-chart-01",
+			icon: BarChart01,
 			label: "Panel",
 			children: [
-				{ icon: "eye", label: "Resumen", href: "/panel/" },
-				{ icon: "bell-01", label: "Avisos", href: "/panel/avisos/", badge: 10 },
+				{ icon: Eye, label: "Resumen", href: "/panel/" },
+				{ icon: Bell01, label: "Avisos", href: "/panel/avisos/", badge: 10 },
 			],
 		},
-		{ icon: "currency-euro", label: "Pecunia", href: "/pecunia/", badge: 3 },
+		{ icon: CurrencyEuro, label: "Pecunia", href: "/pecunia/", badge: 3 },
 	]}
 	featured={<SidebarCards.Progress title="Espacio usado" value={80} onClose={() => {}} />}
 	account={{
@@ -191,18 +222,20 @@ const usage: Record<string, string> = {
 			],
 		},
 	]}
-	search={<Input aria-label="Buscar" placeholder="Buscar" icon="search-lg" />}
+	search={<Input aria-label="Buscar" placeholder="Buscar" icon={SearchLg} />}
 	account={<Dropdown label="Cuenta" items={[{ label: "Perfil" }]} />}
-/>`,
+/>
+
+<HeaderNav fullWidth brand={<AppIcon app="regula" size={32} />} items={[{ label: "Inicio", href: "/" }]} />`,
 	ContextMenu: `<ContextMenu
 	aria-label="Acciones de la fila"
 	items={[
-		{ icon: "copy-01", label: "Copiar", shortcut: "⌘C", onSelect: copiar },
-		{ icon: "edit-02", label: "Editar", onSelect: editar },
+		{ icon: Copy01, label: "Copiar", shortcut: "⌘C", onSelect: copiar },
+		{ icon: Edit02, label: "Editar", onSelect: editar },
 		{ divider: true },
 		{ label: "Más herramientas", items: [{ label: "Exportar a CSV" }, { label: "Imprimir" }] },
 		{ divider: true },
-		{ icon: "trash-01", label: "Eliminar", danger: true, onSelect: eliminar },
+		{ icon: Trash01, label: "Eliminar", danger: true, onSelect: eliminar },
 	]}
 >
 	<Fila />
@@ -210,9 +243,9 @@ const usage: Record<string, string> = {
 	Dropdown: `<Dropdown
 	label="Acciones"
 	items={[
-		{ icon: "copy-01", label: "Duplicar", onSelect: duplicar },
+		{ icon: Copy01, label: "Duplicar", onSelect: duplicar },
 		{ divider: true },
-		{ icon: "trash-01", label: "Eliminar", danger: true, onSelect: eliminar },
+		{ icon: Trash01, label: "Eliminar", danger: true, onSelect: eliminar },
 	]}
 />`,
 	FilterMenu: `<FilterMenu
@@ -291,7 +324,7 @@ const usage: Record<string, string> = {
 			panel: {
 				columns: [
 					<NavMenu.Section title="Recursos">
-						<NavMenu.Item href="/blog" icon="stars-02" title="Blog" description="Ideas y guías." />
+						<NavMenu.Item href="/blog" icon={Stars02} title="Blog" description="Ideas y guías." />
 					</NavMenu.Section>,
 				],
 				aside: <NavMenu.Card title="Ya está aquí el nuevo panel" description="Más claro y más rápido." />,
@@ -317,13 +350,15 @@ const usage: Record<string, string> = {
 	open={abierto}
 	onClose={() => setAbierto(false)}
 	groups={[
-		{ label: "Apps", items: [{ icon: "currency-euro", label: "Pecunia", onSelect: irAPecunia }] },
-		{ label: "Acciones", items: [{ icon: "plus", label: "Nuevo gasto", shortcut: "⌘N", onSelect: nuevoGasto }] },
+		{ label: "Apps", items: [{ icon: CurrencyEuro, label: "Pecunia", onSelect: irAPecunia }] },
+		{ label: "Acciones", items: [{ icon: Plus, label: "Nuevo gasto", shortcut: "⌘N", onSelect: nuevoGasto }] },
 	]}
-/>`,
+/>
+
+<CommandMenu open={abierto} defaultQuery="gasto" onClose={() => setAbierto(false)} groups={grupos} />`,
 	Modal: `<Modal
 	open={abierto}
-	icon="trash-01"
+	icon={Trash01}
 	destructive
 	title="¿Eliminar este gasto?"
 	description="Se borrará también de los informes. No se puede deshacer."
@@ -347,7 +382,7 @@ const usage: Record<string, string> = {
 	CopyTooltip: `<Button onClick={(e) => copiar("bg-brand-solid", e.currentTarget)}>Copiar utilidad</Button>
 <CopyTooltip />`,
 	Tooltip: `<Tooltip title="Exportar a CSV" text="Incluye los movimientos filtrados.">
-	<Button hierarchy="secondary" iconOnly="download-01" label="Exportar" />
+	<Button hierarchy="secondary" iconOnly={Download01} label="Exportar" />
 </Tooltip>`,
 	HelpIcon: `<label>Cuota mensual <HelpIcon title="Qué incluye" text="Impuestos incluidos, sin descuentos." placement="right" /></label>`,
 	Alert: `<Alert color="error" title="No se pudo sincronizar" description="Revisa la conexión con el banco." />`,
@@ -358,7 +393,7 @@ const usage: Record<string, string> = {
 	onClose={quitarAviso}
 />`,
 	Banner: `<Banner
-	icon="zap"
+	icon={Zap}
 	title="Nueva versión de Pecunia."
 	description="Ahora con presupuestos compartidos."
 	actions={<Button size="sm">Ver novedades</Button>}
@@ -418,12 +453,15 @@ const usage: Record<string, string> = {
 	events={[{ date: new Date(2027, 0, 8, 10, 0), title: "Olivia x Riley", color: "indigo", duration: 90 }]}
 	onSelectEvent={(evento) => abrirEvento(evento)}
 />`,
-	CodeSnippet: `<CodeSnippet language="bash" code="bun add @jotis-me/react" />`,
+	CodeSnippet: `<CodeSnippet language="bash" code="bun add @jotis-me/react" />
+
+// Líneas destacadas: números desde 1
+<CodeSnippet language="ts" code={cambio} highlight={[4, 5]} />`,
 	PageHeader: `<PageHeader
-	breadcrumbs={[{ label: "Inicio", href: "/", icon: "home-line" }, { label: "Pecunia" }]}
+	breadcrumbs={[{ label: "Inicio", href: "/", icon: HomeLine }, { label: "Pecunia" }]}
 	title="Gastos"
 	description="Controla lo que entra y lo que sale."
-	actions={<Button iconLeading="plus">Nuevo gasto</Button>}
+	actions={<Button iconLeading={Plus}>Nuevo gasto</Button>}
 />`,
 	CardHeader: `<CardHeader
 	title="Suscripciones"
@@ -434,7 +472,7 @@ const usage: Record<string, string> = {
 	SectionHeader: `<SectionHeader
 	title="Contactos"
 	description="Personas y empresas con las que tratas."
-	actions={<Button size="sm" iconLeading="plus">Nuevo contacto</Button>}
+	actions={<Button size="sm" iconLeading={Plus}>Nuevo contacto</Button>}
 />`,
 	SectionLabel: `<SectionLabel
 	title="Equipo"
@@ -448,6 +486,9 @@ const usage: Record<string, string> = {
 	actions={<Button size="sm" type="submit">Guardar cambios</Button>}
 />`,
 	ContentDivider: `<ContentDivider label="o continúa con" />`,
+	Disclosure: `<Disclosure title="Iconos" aside={<Badge color="brand">3 props</Badge>} defaultOpen>
+	<p>icon, iconLeading e iconTrailing.</p>
+</Disclosure>`,
 	LinkCard: `<LinkCard
 	href="/components/button/"
 	title="Button"
@@ -455,7 +496,7 @@ const usage: Record<string, string> = {
 	preview={<Button size="sm">Nuevo gasto</Button>}
 />`,
 	InlineCTA: `<InlineCTA
-	icon="stars-02"
+	icon={Stars02}
 	title="Conecta tu banco"
 	description="Importa los movimientos cada día sin subir extractos a mano."
 	actions={
@@ -473,6 +514,10 @@ const usage: Record<string, string> = {
 	TransparencyGrid: `<TransparencyGrid size="md" className="rounded-2xl p-6">
 	<CamFrame ratio="16:9" width={400} name="Tu canal" />
 </TransparencyGrid>`,
+	ExampleCard: `<ExampleCard verdict="dont" caption="No apiles dos primarios.">
+	<Button>Guardar</Button>
+	<Button>Enviar</Button>
+</ExampleCard>`,
 	BackgroundPattern: `<div className="relative">
 	<BackgroundPattern pattern="grid" size="sm" mask="radial" />
 	<div className="relative">Contenido</div>
@@ -492,7 +537,24 @@ const usage: Record<string, string> = {
 	Carousel: `<Carousel
 	aria-label="Novedades"
 	slides={[<Tarjeta titulo="Importa tus extractos" />, <Tarjeta titulo="Categoriza solo" />, <Tarjeta titulo="Comparte informes" />]}
+/>
+
+<Carousel
+	type="strip"
+	slideWidth={260}
+	aria-label="Novedades"
+	slides={[<Tarjeta titulo="Importa tus extractos" />, <Tarjeta titulo="Categoriza solo" />, <Tarjeta titulo="Comparte informes" />]}
 />`,
+	CompareSlider: `<CompareSlider
+	label="Tema de la pantalla"
+	before={<Pantalla tema="oscuro" />}
+	after={<Pantalla tema="claro" />}
+	beforeLabel="Oscuro"
+	afterLabel="Claro"
+/>`,
+	Spotlight: `<Spotlight active={cambiado} note="Ahora en gris" notePlacement="bottom">
+	<Button hierarchy="secondary">Exportar</Button>
+</Spotlight>`,
 	VideoPlayer: `<VideoPlayer src="/videos/presentacion.mp4" poster="/videos/presentacion.jpg" />`,
 	LineChart: `<LineChart
 	aria-label="Gastos de agosto a octubre"
@@ -576,12 +638,12 @@ const usage: Record<string, string> = {
 	StreamScene: `<StreamScene variant="brb" seconds={480} countdownLabel="Vuelvo en" />`,
 	ChannelPanel: `<ChannelPanel
 	title="Horario"
-	icon="calendar"
+	icon={Calendar}
 	rows={[
 		{ label: "Lunes", value: "20:00" },
 		{ label: "Viernes", value: "22:00" },
 	]}
-	action={{ label: "Ver todos los enlaces", href: "/enlaces", icon: "arrow-right" }}
+	action={{ label: "Ver todos los enlaces", href: "/enlaces", icon: ArrowRight }}
 />`,
 	ChannelBanner: `<ChannelBanner
 	scale={1}
@@ -595,12 +657,36 @@ const usage: Record<string, string> = {
 };
 
 /** Fragmentos de Next.js y Astro del componente `name`. */
+/** Los iconos que usa un fragmento: `icon={Plus}`, `icon: Clock`… (nombres de `@untitledui/icons`). */
+export function iconsOf(code: string): string[] {
+	const names = new Set<string>();
+	for (const m of code.matchAll(
+		/\b(?:icon|iconLeading|iconTrailing|iconOnly|trailing)(?:=\{|: )([A-Z]\w*)\b/g,
+	))
+		names.add(m[1] as string);
+	return [...names].sort();
+}
+
+/** Sangra con `tabs` tabuladores cada línea que no está vacía. */
+const indent = (code: string, tabs: number) =>
+	code
+		.split("\n")
+		.map((line) => (line ? "\t".repeat(tabs) + line : line))
+		.join("\n");
+
+/** Fragmentos de Next.js y Astro del componente `name`. */
 export function snippetsOf(name: string, interactive: boolean): { next: string; astro: string } {
 	const code = usage[name];
 	if (!code) throw new Error(`Falta el fragmento de uso de ${name} en src/lib/snippets.ts`);
-	const imp = `import { ${name} } from "@jotis-me/react";`;
+	const icons = iconsOf(code);
+	const imp = `import { ${name} } from "@jotis-me/react";${icons.length ? `\nimport { ${icons.join(", ")} } from "@untitledui/icons";` : ""}`;
+	// Un icono como componente es una función: no cruza de un `.astro` a una isla (`client:*`)
+	const islandNote =
+		interactive && icons.length
+			? "// Los iconos son funciones y no pasan a una isla: monta el componente en un .tsx y úsalo con client:load\n"
+			: "";
 	return {
-		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n$indent(code, 3)\n\t\t</>\n\t);\n}`,
-		astro: `---\n${imp}\n---\n\n${interactive ? code.replace(`<${name}`, `<${name} client:load`) : code}`,
+		next: `${imp}\n\nexport default function Page() {\n\treturn (\n\t\t<>\n${indent(code, 3)}\n\t\t</>\n\t);\n}`,
+		astro: `---\n${imp}\n${islandNote}---\n\n${interactive ? code.replace(`<${name}`, `<${name} client:load`) : code}`,
 	};
 }

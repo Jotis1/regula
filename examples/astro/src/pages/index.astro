@@ -1,7 +1,7 @@
 ---
-import Calendar from "@jotis-me/icons/svg/calendar.svg?raw";
 // Solo componentes estáticos: se pintan en el servidor y no envían JavaScript.
-import { Button, CloseButton, Icon } from "@jotis-me/react";
+import { Button, CloseButton } from "@jotis-me/react";
+import { Calendar, CheckCircle, Plus } from "@untitledui/icons";
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -9,13 +9,13 @@ import Layout from "../layouts/Layout.astro";
 	<main class="flex flex-col gap-6">
 		<h1 class="font-display text-display-sm font-semibold">Componentes estáticos</h1>
 		<div class="flex flex-wrap items-center gap-3">
-			<Button iconLeading="plus">Nuevo gasto</Button>
+			<Button iconLeading={Plus}>Nuevo gasto</Button>
 			<Button hierarchy="secondary">Cancelar</Button>
 			<Button hierarchy="link-color" href="/interactivo/">Ver los interactivos</Button>
 			<CloseButton />
-			<span class="text-fg-brand-primary"><Icon name="check-circle" title="Correcto" /></span>
-			<!-- Icono SVG suelto, sin React -->
-			<span id="svg-suelto" class="text-fg-tertiary" set:html={Calendar} />
+			<span class="text-fg-brand-primary"><CheckCircle size={24} role="img" aria-label="Correcto" aria-hidden={undefined} /></span>
+			<!-- Un icono suelto: se pinta en el servidor, sin enviar JavaScript -->
+			<span id="svg-suelto" class="text-fg-tertiary"><Calendar size={24} /></span>
 		</div>
 	</main>
 </Layout>

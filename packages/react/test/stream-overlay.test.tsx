@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
+import { Bell01 } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { ChatBadge, StreamAlert, type StreamEventItem, StreamEvents, StreamStatus } from "../src/index.js";
@@ -73,7 +74,7 @@ describe("StreamAlert", () => {
 				user="lucia_pixel"
 				detail="Bienvenida."
 				label="Seguidora"
-				icon="bell-01"
+				icon={Bell01}
 			/>,
 		);
 		expect(container.textContent).toContain("Seguidora");

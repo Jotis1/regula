@@ -2,11 +2,11 @@
 
 import { type ReactNode, useEffect, useState } from "react";
 import { cx } from "../internal/cx.js";
+import type { IconProp } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Button } from "./Button.js";
 import { CloseButton } from "./CloseButton.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import type { IconName } from "./Icon.js";
 import { Input } from "./Input.js";
 
 export interface BannerEmail {
@@ -23,7 +23,7 @@ export interface BannerProps {
 	title: ReactNode;
 	description?: ReactNode;
 	/** Icono destacado de 48px: `modern` en el tema por defecto y `light` en `brand`. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	actions?: ReactNode;
 	/** Campo de correo de 360px con botón, para captar suscripciones. */
 	email?: BannerEmail;

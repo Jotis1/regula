@@ -6,7 +6,7 @@ interactive: false
 astroNote: "Con `action.onClick` necesita una función: envuélvelo en un `.tsx` y úsalo como isla `client:load`. Con `action.href`, no."
 ---
 
-**Props.** `title`, `icon` (nombre de `Icon`), `children` (párrafos), `rows` (`{ label, value }`, para horario, normas cortas o enlaces), `action` (`{ label, href, icon?, hierarchy?, onClick? }`), `width`.
+**Props.** `title`, `icon` (un icono de `@untitledui/icons`, o un nodo), `children` (párrafos), `rows` (`{ label, value }`, para horario, normas cortas o enlaces), `action` (`{ label, href, icon?, hierarchy?, onClick? }`), `width`.
 
 **Cuándo usarlo.** En "Sobre el canal", horario, normas y enlaces. Twitch pide 320px de ancho: exporta cada panel como imagen PNG a 640px de ancho (2x) para que se vea nítido en pantallas densas. El título va en Bricolage Grotesque semibold (24/32); el resto, en Geist. La acción es un `Button` secundario a todo el ancho.
 

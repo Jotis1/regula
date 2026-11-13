@@ -1,8 +1,19 @@
 // Puertos de las vistas previas de la guía (reference/components/*/preview.html) para la paridad visual.
 // `jm-stack` = columna con gap 16; `jm-row` = fila que envuelve con gap 12.
 
-import { iconNames } from "@jotis-me/icons";
-import { Button, ButtonGroup, ButtonUtility, CloseButton, Icon } from "@jotis-me/react";
+import { Button, ButtonGroup, ButtonUtility, CloseButton } from "@jotis-me/react";
+import {
+	AlignLeft,
+	ArrowRight,
+	Clock,
+	Copy01,
+	DotsVertical,
+	Download01,
+	Edit02,
+	Grid01,
+	Plus,
+	Trash01,
+} from "@untitledui/icons";
 
 export const stack = "flex flex-col gap-4";
 export const row = "flex flex-wrap items-center gap-3";
@@ -20,23 +31,23 @@ export function ButtonExample() {
 			<div className={row}>
 				<Button size="xs">xs</Button>
 				<Button size="sm">sm</Button>
-				<Button size="md" iconLeading="plus">
+				<Button size="md" iconLeading={Plus}>
 					Nuevo gasto
 				</Button>
-				<Button size="lg" iconTrailing="arrow-right">
+				<Button size="lg" iconTrailing={ArrowRight}>
 					Continuar
 				</Button>
 				<Button size="xl">xl</Button>
 			</div>
 			<div className={row}>
 				<Button destructive>Eliminar</Button>
-				<Button destructive hierarchy="secondary" iconLeading="trash-01">
+				<Button destructive hierarchy="secondary" iconLeading={Trash01}>
 					Borrar
 				</Button>
 				<Button loading>Guardando</Button>
 				<Button disabled>Deshabilitado</Button>
-				<Button hierarchy="secondary" iconOnly="edit-02" label="Editar" />
-				<Button hierarchy="tertiary" iconOnly="dots-vertical" label="Más" />
+				<Button hierarchy="secondary" iconOnly={Edit02} label="Editar" />
+				<Button hierarchy="tertiary" iconOnly={DotsVertical} label="Más" />
 			</div>
 		</div>
 	);
@@ -65,15 +76,15 @@ export function ButtonUtilityExample() {
 	const tools = (hierarchy: "secondary" | "tertiary", size: "xs" | "sm", first?: boolean) => (
 		<div className="flex items-center gap-1">
 			<ButtonUtility
-				icon="copy-01"
+				icon={Copy01}
 				label="Copiar"
 				hierarchy={hierarchy}
 				size={size}
 				tooltipOpen={first}
 			/>
-			<ButtonUtility icon="edit-02" label="Editar" hierarchy={hierarchy} size={size} />
-			<ButtonUtility icon="download-01" label="Descargar" hierarchy={hierarchy} size={size} />
-			<ButtonUtility icon="trash-01" label="Borrar" hierarchy={hierarchy} size={size} disabled />
+			<ButtonUtility icon={Edit02} label="Editar" hierarchy={hierarchy} size={size} />
+			<ButtonUtility icon={Download01} label="Descargar" hierarchy={hierarchy} size={size} />
+			<ButtonUtility icon={Trash01} label="Borrar" hierarchy={hierarchy} size={size} disabled />
 		</div>
 	);
 	return (
@@ -96,7 +107,7 @@ export function ButtonGroupExample() {
 		{ value: "a", label: "12 meses" },
 		{ value: "b", label: "30 días" },
 		{ value: "m", label: "7 días" },
-		{ value: "d", label: "24 horas", icon: "clock" as const },
+		{ value: "d", label: "24 horas", icon: Clock },
 	];
 	const dots = [
 		{ value: "on", label: "Activos", dot: true },
@@ -104,9 +115,9 @@ export function ButtonGroupExample() {
 		{ value: "all", label: "Todos" },
 	];
 	const views = [
-		{ value: "grid", iconOnly: "grid-01" as const, label: "Cuadrícula" },
-		{ value: "list", iconOnly: "align-left" as const, label: "Lista" },
-		{ value: "add", iconOnly: "plus" as const, label: "Añadir vista" },
+		{ value: "grid", iconOnly: Grid01, label: "Cuadrícula" },
+		{ value: "list", iconOnly: AlignLeft, label: "Lista" },
+		{ value: "add", iconOnly: Plus, label: "Añadir vista" },
 	];
 	return (
 		<div className={stack}>
@@ -120,18 +131,6 @@ export function ButtonGroupExample() {
 				<ButtonGroup size="sm" defaultValue="on" aria-label="Estado (pequeño)" items={dots} />
 				<ButtonGroup size="sm" defaultValue="grid" aria-label="Vista (pequeño)" items={views} />
 			</div>
-		</div>
-	);
-}
-
-export function IconExample() {
-	return (
-		<div className="flex flex-wrap gap-4 text-fg-secondary">
-			{iconNames.map((n) => (
-				<span key={n} title={n}>
-					<Icon name={n} size={24} />
-				</span>
-			))}
 		</div>
 	);
 }

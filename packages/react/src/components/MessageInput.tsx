@@ -1,11 +1,10 @@
 "use client";
 
-import { IconCommand, IconFaceSmile, IconMicrophone02 } from "@jotis-me/icons";
+import { Command, FaceSmile, Microphone02, Paperclip, Send01 } from "@untitledui/icons";
 import { type KeyboardEvent, type ReactNode, useState } from "react";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Button } from "./Button.js";
-import { Icon } from "./Icon.js";
 
 export type MessageInputVariant = "minimal" | "textarea" | "advanced";
 
@@ -96,7 +95,7 @@ export function MessageInput({
 		<Button
 			hierarchy="tertiary"
 			size="xs"
-			iconOnly={<IconMicrophone02 size={16} />}
+			iconOnly={<Microphone02 size={16} />}
 			label={t.voice}
 			disabled={disabled}
 			onClick={onVoice}
@@ -112,7 +111,7 @@ export function MessageInput({
 				<Button
 					hierarchy="secondary"
 					size="lg"
-					iconOnly="send-01"
+					iconOnly={Send01}
 					label={sendLabel}
 					disabled={disabled || empty}
 					onClick={send}
@@ -139,7 +138,7 @@ export function MessageInput({
 						<Button
 							hierarchy="tertiary"
 							size="xs"
-							iconOnly="paperclip"
+							iconOnly={Paperclip}
 							label={attachLabel}
 							disabled={disabled}
 							onClick={onAttach}
@@ -149,7 +148,7 @@ export function MessageInput({
 						<Button
 							hierarchy="tertiary"
 							size="xs"
-							iconOnly={<IconFaceSmile size={16} />}
+							iconOnly={<FaceSmile size={16} />}
 							label={t.emoji}
 							disabled={disabled}
 							onClick={onEmoji}
@@ -185,7 +184,7 @@ export function MessageInput({
 								disabled={disabled}
 								className={TEXT_ACTION}
 							>
-								<IconCommand size={14} />
+								<Command size={14} />
 								{t.shortcuts}
 							</button>
 						) : null}
@@ -196,13 +195,13 @@ export function MessageInput({
 								disabled={disabled}
 								className={TEXT_ACTION}
 							>
-								<Icon name="paperclip" size={14} />
+								<Paperclip size={14} />
 								{attachLabel}
 							</button>
 						) : null}
 						<Button
 							size="xs"
-							iconOnly="send-01"
+							iconOnly={Send01}
 							label={sendLabel}
 							disabled={disabled || empty}
 							onClick={send}
@@ -235,13 +234,13 @@ export function MessageInput({
 					<Button
 						hierarchy="tertiary"
 						size="sm"
-						iconOnly="paperclip"
+						iconOnly={Paperclip}
 						label={attachLabel}
 						disabled={disabled}
 						onClick={onAttach}
 					/>
 				) : null}
-				<Button size="sm" iconTrailing="send-01" disabled={disabled || empty} onClick={send}>
+				<Button size="sm" iconTrailing={Send01} disabled={disabled || empty} onClick={send}>
 					{sendLabel}
 				</Button>
 			</div>

@@ -13,15 +13,6 @@ export const webDeMarketing: Record<string, Start> = {
 	MarketingNav: {
 		props: { items: "Con menús", brand: "Regula", actions: "Entrar y empezar", previewItem: "Producto" },
 		wide: true,
-		presets: [
-			{ label: "Sencillo", props: { type: "simple" } },
-			{ label: "Con tarjeta destacada", props: { type: "featured-card" } },
-			{ label: "Con pie", props: { type: "simple-with-footer" } },
-			{ label: "Dos columnas", props: { type: "simple-2-col" } },
-			{ label: "Ancho completo", props: { menu: "full-width" } },
-			{ label: "Flotante", props: { floating: true } },
-			{ label: "Solo enlaces", props: { items: "Solo enlaces" } },
-		],
 	},
 	Footer: {
 		props: {
@@ -54,17 +45,6 @@ export const webDeMarketing: Record<string, Start> = {
 			],
 		},
 		wide: true,
-		presets: [
-			{ label: "Grande 01", props: { type: "large-01" } },
-			{ label: "Con redes", props: { type: "large-02" } },
-			{ label: "Con aside", props: { type: "large-03" } },
-			{
-				label: "Con llamada",
-				props: { type: "large-09", cta: { title: "Empieza hoy", description: "30 días gratis." } },
-			},
-			{ label: "Pequeño", props: { type: "small-01" } },
-			{ label: "De marca", props: { theme: "brand" } },
-		],
 	},
 	BlogPostCard: {
 		props: {
@@ -80,21 +60,9 @@ export const webDeMarketing: Record<string, Start> = {
 			],
 			image: "Portada",
 		},
-		presets: [
-			{ label: "Sencilla 01", props: { type: "simple-01" } },
-			{ label: "Sencilla 02", props: { type: "simple-02" } },
-			{ label: "Tarjeta 01", props: { type: "card-01" } },
-			{ label: "Tarjeta 04", props: { type: "card-04" } },
-			{ label: "Horizontal", props: { orientation: "horizontal" } },
-		],
 	},
 	SubscribeCard: {
 		props: { description: "Una vez a la semana, sin spam." },
-		presets: [
-			{ label: "Por defecto", props: { type: "default" } },
-			{ label: "Con línea", props: { type: "line" } },
-			{ label: "Con aviso de privacidad", props: { privacy: "Puedes darte de baja cuando quieras." } },
-		],
 	},
 	PricingCard: {
 		props: {
@@ -106,21 +74,6 @@ export const webDeMarketing: Record<string, Start> = {
 			actions: "Empezar y comparar",
 		},
 		wide: true,
-		presets: [
-			{ label: "Con icono", props: { type: "icon" } },
-			{ label: "Destacado", props: { type: "call-out", callout: "¡El más elegido!" } },
-			{ label: "Icono desplazado", props: { type: "icon-offset" } },
-			{
-				label: "Dos listas",
-				props: {
-					type: "dual-check-items",
-					featuresTitle: "Funciones",
-					featuresDescription: "Todo lo del plan gratis, y además:",
-				},
-			},
-			{ label: "Con insignia", props: { type: "badge", badge: "Popular" } },
-			{ label: "Con aviso", props: { type: "banner", banner: "Dos meses gratis" } },
-		],
 	},
 	JobPostCard: {
 		props: {
@@ -132,22 +85,10 @@ export const webDeMarketing: Record<string, Start> = {
 			employment: "Jornada completa",
 			salary: "40.000–50.000 €",
 		},
-		presets: [
-			{ label: "Sencilla", props: { type: "simple" } },
-			{ label: "Tarjeta 01", props: { type: "card-01" } },
-			{ label: "Tarjeta 02", props: { type: "card-02" } },
-			{ label: "Con bandera", props: { flag: "Bandera" } },
-		],
 	},
 	Accordion: {
 		props: { items: PREGUNTAS, defaultExpanded: ["a"] },
 		wide: true,
-		presets: [
-			{ label: "Icono a la derecha", props: { iconPosition: "right" } },
-			{ label: "Icono a la izquierda", props: { iconPosition: "left" } },
-			{ label: "Con divisor", props: { divider: true } },
-			{ label: "Solo uno abierto", props: { single: true } },
-		],
 	},
 	TeamMemberCard: {
 		props: {
@@ -156,13 +97,6 @@ export const webDeMarketing: Record<string, Start> = {
 			bio: "Diez años ordenando cuentas.",
 			image: "Foto",
 		},
-		presets: [
-			{ label: "Sencilla a la izquierda", props: { type: "simple-left" } },
-			{ label: "Sencilla centrada", props: { type: "simple-center" } },
-			{ label: "Imagen arriba", props: { type: "image-top" } },
-			{ label: "Imagen a la izquierda", props: { type: "image-left" } },
-			{ label: "Con redes", props: { socials: "Redes" } },
-		],
 	},
 	Testimonial: {
 		props: {
@@ -172,12 +106,5 @@ export const webDeMarketing: Record<string, Start> = {
 			company: "Capas",
 			image: "Foto",
 		},
-		presets: [
-			{ label: "Flotante", props: { type: "floating" } },
-			{ label: "A todo el ancho", props: { type: "full-width" } },
-			{ label: "Con valoración", props: { rating: 5 } },
-			{ label: "Con flechas", props: { onPrevious: "Con flechas", onNext: "Con flechas" } },
-			{ label: "Pequeño", props: { size: "sm" } },
-		],
 	},
 };

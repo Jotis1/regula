@@ -44,12 +44,12 @@ describe("CalendarView: la de siempre", () => {
 				]}
 			/>,
 		);
-		expect(full).toBe(BEFORE.full);
+		expect(full).toMatchBefore(BEFORE.full);
 		expect(
 			renderToStaticMarkup(
 				<CalendarView today={new Date(2026, 9, 29)} month={new Date(2026, 10, 3)} />,
 			),
-		).toBe(BEFORE.bare);
+		).toMatchBefore(BEFORE.bare);
 	});
 
 	it("sin selector de vista no hay desplegable", () => {

@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, ChevronDown, SearchLg } from "@untitledui/icons";
 import { type ReactNode, useId, useState } from "react";
 import {
 	Button as AriaButton,
@@ -26,7 +27,6 @@ import {
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
-import { Icon } from "./Icon.js";
 import { Tag } from "./Tag.js";
 
 export type MultiSelectOption = string | { value: string; label: string; supporting?: ReactNode };
@@ -87,6 +87,7 @@ const toOption = (o: MultiSelectOption): Option => (typeof o === "string" ? { va
 /** Selector de varias opciones con buscador y casillas; el campo resume lo elegido. */
 export function MultiSelect({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -139,7 +140,7 @@ export function MultiSelect({
 					}}
 					className="flex items-center gap-2 px-3.5 py-2.5 text-fg-quaternary shadow-[inset_0_-1px_0_var(--border-secondary)]"
 				>
-					<Icon name="search-lg" size={20} />
+					<SearchLg size={20} />
 					<AriaInput
 						placeholder={searchLabel}
 						aria-describedby={NO_DESCRIPTION}
@@ -187,7 +188,7 @@ export function MultiSelect({
 								)}
 							>
 								<span className="hidden group-data-selected:inline-flex">
-									<Icon name="check" size={12} strokeWidth={1.67} />
+									<Check size={12} strokeWidth={1.67} />
 								</span>
 							</span>
 							<span
@@ -225,6 +226,7 @@ export function MultiSelect({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}
@@ -279,7 +281,7 @@ export function MultiSelect({
 								<span className="truncate text-placeholder">{placeholder}</span>
 							)}
 						</span>
-						<Icon name="chevron-down" size={16} />
+						<ChevronDown size={16} />
 					</AriaButton>
 					{open && !byUser ? null : (
 						<Popover

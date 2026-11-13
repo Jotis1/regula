@@ -1,5 +1,8 @@
+import { join } from "node:path";
+import { compile } from "@tailwindcss/node";
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { FilterLines, InfoCircle, Trash01 } from "@untitledui/icons";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Button, Input, Modal, Slideout } from "../src/index.js";
@@ -21,7 +24,7 @@ function ModalOpener({ onCloseSpy }: { onCloseSpy?: () => void }) {
 			</button>
 			<Modal
 				open={open}
-				icon="trash-01"
+				icon={Trash01}
 				destructive
 				title="¿Eliminar este gasto?"
 				description="No se puede deshacer."
@@ -47,6 +50,29 @@ function SlideoutOpener() {
 				title="Alquiler"
 				description="Movimiento del 1 de octubre"
 				onClose={() => setOpen(false)}
+				actions={<Button>Guardar</Button>}
+			>
+				<Input label="Concepto" defaultValue="Alquiler" />
+			</Slideout>
+		</>
+	);
+}
+
+function BottomOpener({ onCloseSpy }: { onCloseSpy?: () => void }) {
+	const [open, setOpen] = useState(false);
+	return (
+		<>
+			<button type="button" onClick={() => setOpen(true)}>
+				Ver detalle
+			</button>
+			<Slideout
+				open={open}
+				side="bottom"
+				title="Detalle"
+				onClose={() => {
+					onCloseSpy?.();
+					setOpen(false);
+				}}
 				actions={<Button>Guardar</Button>}
 			>
 				<Input label="Concepto" defaultValue="Alquiler" />
@@ -105,7 +131,7 @@ describe("Modal", () => {
 
 	it("icono destacado en error si es destructivo; apilado reparte los botones y horizontal los alinea a la derecha", () => {
 		const { rerender } = render(
-			<Modal contained icon="trash-01" destructive title="¿Eliminar?" actions={actions} />,
+			<Modal contained icon={Trash01} destructive title="¿Eliminar?" actions={actions} />,
 		);
 		const dialog = screen.getByRole("dialog", { name: "¿Eliminar?" });
 		expect(dialog.className).toContain("max-w-[var(--width-sm)]");
@@ -118,7 +144,7 @@ describe("Modal", () => {
 			<Modal
 				contained
 				layout="horizontal"
-				icon="info-circle"
+				icon={InfoCircle}
 				title="¿Seguro?"
 				actions={actions}
 				width={560}
@@ -136,7 +162,7 @@ describe("Modal", () => {
 		const { renderToStaticMarkup } = await import("react-dom/server");
 		const html = (extra: object) =>
 			renderToStaticMarkup(
-				<Modal contained icon="trash-01" title="¿Eliminar?" actions={actions} {...extra} />,
+				<Modal contained icon={Trash01} title="¿Eliminar?" actions={actions} {...extra} />,
 			);
 		expect(html({ align: undefined, media: undefined, footerStart: undefined, dividers: false })).toBe(
 			html({}),
@@ -207,7 +233,7 @@ describe("Modal", () => {
 			<div style={{ position: "relative" }}>
 				<Modal
 					contained
-					icon="trash-01"
+					icon={Trash01}
 					destructive
 					title="¿Eliminar?"
 					description="No se puede deshacer."
@@ -285,7 +311,7 @@ describe("Slideout", () => {
 			<Slideout
 				contained
 				title="Filtros"
-				icon="filter-lines"
+				icon={FilterLines}
 				footerStart={<Button hierarchy="link-color">Guardar filtro</Button>}
 				actions={<Button>Aplicar</Button>}
 			/>,
@@ -298,6 +324,101 @@ describe("Slideout", () => {
 		const start = screen.getByRole("button", { name: "Guardar filtro" }).parentElement as HTMLElement;
 		expect(start.className).toContain("mr-auto");
 		expect(panel.contains(screen.getByRole("button", { name: "Aplicar" }))).toBe(true);
+	});
+
+	describe('side="bottom"', () => {
+		it("foco atrapado, Escape cierra y el foco vuelve al botón", async () => {
+			render(<BottomOpener />);
+			const opener = screen.getByRole("button", { name: "Ver detalle" });
+			await userEvent.click(opener);
+			const panel = screen.getByRole("dialog", { name: "Detalle" });
+			await waitFor(() => expect(panel.contains(document.activeElement)).toBe(true));
+			for (let i = 0; i < 5; i++) {
+				await userEvent.tab();
+				expect(panel.contains(document.activeElement)).toBe(true);
+			}
+			await userEvent.keyboard("{Escape}");
+			expect(screen.queryByRole("dialog")).toBeNull();
+			await waitFor(() => expect(document.activeElement).toBe(opener));
+		});
+
+		it("la X y el clic fuera cierran", async () => {
+			const spy = vi.fn();
+			render(<BottomOpener onCloseSpy={spy} />);
+			await userEvent.click(screen.getByRole("button", { name: "Ver detalle" }));
+			await userEvent.click(screen.getByRole("button", { name: "Cerrar" }));
+			expect(spy).toHaveBeenCalledTimes(1);
+			await userEvent.click(screen.getByRole("button", { name: "Ver detalle" }));
+			const overlay = screen.getByRole("dialog").parentElement?.parentElement as HTMLElement;
+			expect(overlay.className).toContain("items-end");
+			await userEvent.click(overlay);
+			expect(spy).toHaveBeenCalledTimes(2);
+			expect(screen.queryByRole("dialog")).toBeNull();
+		});
+
+		it("ancho completo, alto máximo del 85 %, esquinas superiores 2xl y cuerpo con su propio scroll", () => {
+			render(
+				<Slideout contained side="bottom" title="Detalle" width={480}>
+					<p>Contenido</p>
+				</Slideout>,
+			);
+			const panel = screen.getByRole("dialog", { name: "Detalle" });
+			expect(panel.className).toContain("w-full");
+			expect(panel.className).toContain("max-h-[85dvh]");
+			expect(panel.className).toContain("rounded-t-2xl");
+			expect(panel.className).not.toContain("max-w-[400px]");
+			expect(panel.className).not.toContain("h-full");
+			expect(panel.style.maxWidth).toBe("");
+			expect(panel.parentElement?.className).toContain("items-end");
+			const body = screen.getByText("Contenido").parentElement as HTMLElement;
+			expect(body.className).toContain("overflow-auto");
+			expect(body.className).toContain("min-h-0");
+		});
+
+		it("asa decorativa de 36×4 px en bg-quaternary arriba, oculta a los lectores", () => {
+			render(<Slideout contained side="bottom" title="Detalle" />);
+			const panel = screen.getByRole("dialog", { name: "Detalle" });
+			const handle = panel.firstElementChild as HTMLElement;
+			expect(handle.getAttribute("aria-hidden")).toBe("true");
+			expect(handle.className).toContain("w-9");
+			expect(handle.className).toContain("h-1");
+			expect(handle.className).toContain("bg-quaternary");
+			expect(handle.textContent).toBe("");
+		});
+
+		it("entra en vertical desde @starting-style; con menos movimiento, solo fundido", async () => {
+			render(<Slideout contained side="bottom" title="Detalle" />);
+			const panel = screen.getByRole("dialog", { name: "Detalle" });
+			const compiler = await compile('@import "tailwindcss";\n@import "../styles.css";', {
+				base: join(import.meta.dirname, "..", "test"),
+				onDependency: () => {},
+			});
+			const out = compiler.build(panel.className.split(" "));
+			expect(out).toContain("@starting-style");
+			expect(out).toMatch(/starting\\:translate-y-full\s*\{\s*--tw-translate-y: 100%/);
+			expect(out).toMatch(/starting\\:opacity-0/);
+			expect(out).toMatch(
+				/prefers-reduced-motion: reduce\)\s*\{\s*@starting-style\s*\{\s*\.motion-reduce\\:starting\\:translate-y-0\s*\{\s*--tw-translate-y: 0px/,
+			);
+			expect(out).toMatch(
+				/prefers-reduced-motion: reduce\)\s*\{\s*\.motion-reduce\\:transition-opacity\s*\{\s*transition-property: opacity/,
+			);
+		});
+	});
+
+	it("right y left no cambian: sin asa, sin alto máximo y con sus clases de siempre", async () => {
+		const { renderToStaticMarkup } = await import("react-dom/server");
+		const html = (extra: object) =>
+			renderToStaticMarkup(<Slideout contained title="Filtros" {...extra} />);
+		expect(html({ side: "right" })).toBe(html({}));
+		for (const side of ["right", "left"]) {
+			const out = html({ side });
+			expect(out).not.toContain("aria-hidden");
+			expect(out).not.toContain("85dvh");
+			expect(out).not.toContain("starting:");
+			expect(out).not.toContain("min-h-0");
+			expect(out).toContain("h-full w-full max-w-[400px]");
+		}
 	});
 
 	it("axe en claro y oscuro (contained) y sobre la página", async () => {

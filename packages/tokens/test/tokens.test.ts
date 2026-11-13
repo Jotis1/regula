@@ -41,6 +41,18 @@ describe("tokens.css", () => {
 		}
 	});
 
+	it("devuelve a su valor claro, dentro de .light-mode, cada token que cambia entre temas", () => {
+		const light = block(":root");
+		const dark = block(".dark-mode");
+		const back = block(".light-mode");
+		expect(css).toContain(".light-mode {\n\tcolor-scheme: light;");
+		expect(css.indexOf(".light-mode {")).toBeGreaterThan(css.indexOf(".dark-mode {"));
+		expect([...back.keys()].sort()).toEqual([...dark.keys()].sort());
+		for (const [name, value] of back) expect(value).toBe(light.get(name));
+		expect(back.get("text-primary")).toBe("#171717");
+		expect(back.get("bg-primary")).toBe("#ffffff");
+	});
+
 	it("deja el hueco del anillo de foco en #0A0A0A en oscuro", () => {
 		expect(block(".dark-mode").get("focus-ring-shadow")).toBe("0 0 0 2px #0a0a0a, 0 0 0 4px #615fff");
 	});

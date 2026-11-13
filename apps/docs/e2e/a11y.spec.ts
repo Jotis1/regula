@@ -3,12 +3,13 @@ import { join, relative, sep } from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 
-// Todas las páginas construidas de la web (sin las de comparación visual, que no son navegables)
+// Todas las páginas construidas de la web (sin las de comparación visual ni las de captura de las cards, que no son navegables)
 const dist = join(import.meta.dirname, "../dist");
 function pages(dir: string): string[] {
 	return readdirSync(dir).flatMap((f) => {
 		const p = join(dir, f);
-		if (statSync(p).isDirectory()) return f === "visual" || f === "_astro" ? [] : pages(p);
+		if (statSync(p).isDirectory())
+			return f === "visual" || f === "showcase" || f === "_astro" ? [] : pages(p);
 		return f === "index.html" ? [`/${relative(dist, dir).split(sep).join("/")}/`.replace("//", "/")] : [];
 	});
 }

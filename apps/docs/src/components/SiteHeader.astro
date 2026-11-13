@@ -23,7 +23,7 @@ const items = SECTIONS.map((s) => ({ label: s.label, href: s.href, current: curr
 	Saltar al contenido
 </a>
 {/* @ts-expect-error: los slots de Astro llegan a HeaderNav como props (brand, actions y mobileBar), que el tipado de la plantilla no ve */}
-<HeaderNav type="underline" items={items} labels={{ nav: "Secciones" }} className="bg-primary">
+<HeaderNav type="underline" fullWidth items={items} labels={{ nav: "Secciones" }} className="bg-primary">
 	<a
 		slot="brand"
 		href="/"

@@ -6,6 +6,9 @@ import { cx } from "../internal/cx.js";
 import { OptionSelect } from "../internal/option-select.js";
 import { useControllable } from "../internal/use-controllable.js";
 
+// El paquete no depende de los tipos de Node: el empaquetador de la app sustituye `process.env.NODE_ENV`
+declare const process: { env: { NODE_ENV?: string } } | undefined;
+
 export type TabsType =
 	| "underline"
 	| "button-brand"
@@ -21,6 +24,12 @@ export interface TabItem {
 	label: ReactNode;
 	/** Contador junto a la etiqueta (por ejemplo, elementos sin leer). */
 	count?: number;
+	/**
+	 * Destino del elemento. Si todos los elementos llevan `href`, `Tabs` deja de ser un `tablist` y se pinta como una
+	 * `<nav>` de enlaces con el mismo aspecto: el actual lleva `aria-current` (`location` si el `href` es un ancla, `page`
+	 * si no). Si solo lo llevan algunos, se avisa en desarrollo y se pinta como `tablist`.
+	 */
+	href?: string;
 }
 
 export interface TabsProps {
@@ -87,6 +96,21 @@ const TAB: Record<TabsType, string> = {
 	line: "h-auto rounded-none py-2 data-selected:text-brand-secondary data-selected:shadow-[inset_2px_0_0_var(--fg-brand-primary_alt)] data-selected:data-focus-visible:shadow-[inset_2px_0_0_var(--fg-brand-primary_alt),var(--focus-ring-shadow)]",
 };
 
+// El mismo aspecto para los enlaces: `aria-current` hace de «seleccionada», y `hover:` y `focus-visible:`, de los estados de
+// React Aria. Van escritos enteros para que Tailwind los encuentre.
+const LINK_TAB: Record<TabsType, string> = {
+	underline:
+		"h-auto rounded-none px-1 pt-0 pb-3 aria-[current]:text-brand-secondary aria-[current]:shadow-[inset_0_-2px_0_var(--fg-brand-primary_alt)] aria-[current]:focus-visible:shadow-[inset_0_-2px_0_var(--fg-brand-primary_alt),var(--focus-ring-shadow)]",
+	"button-brand":
+		"hover:bg-brand-primary_alt hover:text-brand-secondary aria-[current]:bg-brand-primary_alt aria-[current]:text-brand-secondary",
+	"button-gray":
+		"hover:bg-primary_hover hover:text-secondary aria-[current]:bg-primary_hover aria-[current]:text-secondary",
+	"button-border": "aria-[current]:bg-primary_alt aria-[current]:text-secondary aria-[current]:shadow-sm",
+	"button-minimal":
+		"hover:text-secondary aria-[current]:bg-primary aria-[current]:text-secondary aria-[current]:shadow-sm",
+	line: "h-auto rounded-none py-2 aria-[current]:text-brand-secondary aria-[current]:shadow-[inset_2px_0_0_var(--fg-brand-primary_alt)] aria-[current]:focus-visible:shadow-[inset_2px_0_0_var(--fg-brand-primary_alt),var(--focus-ring-shadow)]",
+};
+
 /** Pestañas para cambiar entre vistas hermanas dentro de una página. Flechas, Inicio y Fin mueven la selección. */
 export function Tabs({
 	items,
@@ -116,6 +140,54 @@ export function Tabs({
 		setCurrent(id);
 		onChange?.(id);
 	};
+	const withHref = items.filter((item) => item.href != null).length;
+	const linked = items.length > 0 && withHref === items.length;
+	if (withHref > 0 && !linked && typeof process !== "undefined" && process.env.NODE_ENV !== "production")
+		console.warn(
+			"Tabs: solo algunos elementos llevan `href`. Para pintar enlaces, todos tienen que llevarlo; se pintan como pestañas.",
+		);
+	if (linked) {
+		return (
+			<nav aria-label={rest["aria-label"]} className={className}>
+				<ul
+					className={cx(
+						"m-0 flex list-none gap-1 p-0 font-body",
+						vertical && "flex-col items-stretch",
+						stretch ? LIST[type].replace("inline-flex w-fit", "flex w-full") : LIST[type],
+					)}
+				>
+					{items.map((item) => (
+						<li key={item.id} className={cx(stretch && "flex flex-1")}>
+							<a
+								href={item.href}
+								aria-current={
+									item.id === current
+										? item.href?.startsWith("#")
+											? "location"
+											: "page"
+										: undefined
+								}
+								className={cx(
+									"group inline-flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-md px-3 py-2 font-semibold text-quaternary no-underline outline-none transition-colors duration-100 hover:text-secondary focus-visible:shadow-focus-ring",
+									size === "md" ? "h-11 text-md" : "h-9 text-sm",
+									vertical && "w-full justify-start",
+									stretch && "flex-1 justify-center",
+									LINK_TAB[type],
+								)}
+							>
+								{item.label}
+								{item.count != null ? (
+									<span className="rounded-full bg-utility-neutral-50 px-2 text-xs font-medium text-utility-neutral-700 inset-ring inset-ring-utility-neutral-200 group-aria-[current]:bg-utility-brand-50 group-aria-[current]:text-utility-brand-700 group-aria-[current]:inset-ring-utility-brand-200">
+										{item.count}
+									</span>
+								) : null}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		);
+	}
 	return (
 		<AriaTabs
 			selectedKey={current}

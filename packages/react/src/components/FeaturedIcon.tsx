@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
+import { CheckCircle } from "@untitledui/icons";
 import { cx } from "../internal/cx.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import type { StatusColor } from "./Badge.js";
-import { type IconName, iconSlot } from "./Icon.js";
 
 export type FeaturedIconSize = "sm" | "md" | "lg" | "xl";
 export type FeaturedIconVariant = "light" | "gradient" | "dark" | "modern" | "modern-neue" | "outline";
 
 export interface FeaturedIconProps {
 	/** Por defecto, `check-circle`. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Tiene que coincidir con el significado del contenedor: un modal de borrado lleva `error`. */
 	color?: StatusColor;
 	/** Lado: `sm` 32 · `md` 40 · `lg` 48 · `xl` 56. */
@@ -95,7 +95,7 @@ const MODERN_RADIUS: Record<FeaturedIconSize, string> = {
 
 /** Icono dentro de una forma, para encabezar modales, alertas, estados vacíos y tarjetas. Es decorativo. */
 export function FeaturedIcon({
-	icon = "check-circle",
+	icon = CheckCircle,
 	color = "brand",
 	size = "md",
 	variant = "light",

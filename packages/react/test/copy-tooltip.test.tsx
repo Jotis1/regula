@@ -140,6 +140,20 @@ describe("CopyTooltip", () => {
 		expect(bubble().textContent).toBe("No se pudo copiar: selecciónalo a mano");
 	});
 
+	it("con onCopyError, el fallo lo avisa quien la pasa y no sale la burbuja", async () => {
+		writeText.mockRejectedValue(new Error("denegado"));
+		const onCopyError = vi.fn();
+		render(
+			<>
+				<CopyButton value="x" />
+				<CopyTooltip onCopyError={onCopyError} />
+			</>,
+		);
+		await press("Copiar");
+		expect(onCopyError).toHaveBeenCalledTimes(1);
+		expect(bubble().textContent).toBe("");
+	});
+
 	it("los textos se pueden sustituir", async () => {
 		render(
 			<>

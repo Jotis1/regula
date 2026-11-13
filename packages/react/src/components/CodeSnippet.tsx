@@ -1,13 +1,17 @@
 "use client";
 
-import { type KeyboardEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { Check, Copy01, Maximize01 } from "@untitledui/icons";
+import { Fragment, type KeyboardEvent, type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { reportCopyFailure } from "../internal/copy.js";
 import { cx } from "../internal/cx.js";
+import { DynIcon } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export interface CodeSnippetTab {
 	label: string;
 	code: string;
+	/** Líneas de esta pestaña que se destacan (desde 1). Mandan sobre el `highlight` del bloque. */
+	highlight?: number[];
 }
 
 export interface CodeSnippetProps {
@@ -22,6 +26,12 @@ export interface CodeSnippetProps {
 	 * @default true
 	 */
 	lineNumbers?: boolean;
+	/**
+	 * Números de línea que se destacan, desde 1: llevan el fondo `bg-brand-primary_alt` y una raya de 2px en
+	 * `fg-brand-primary` a la izquierda. A los lectores de pantalla se les anuncia una vez por cada bloque de líneas seguidas.
+	 * Con `tabs`, cada pestaña puede llevar el suyo.
+	 */
+	highlight?: number[];
 	/**
 	 * `horizontal` (por defecto): tarjeta con la columna de números a la izquierda. `vertical`: tarjeta gris que enmarca el
 	 * código, sin números de línea salvo que se pidan, y con las pestañas (si hay) en su cabecera.
@@ -44,44 +54,54 @@ const KEYWORDS =
 const TOKENS =
 	/(\/\/[^\n]*|#[^\n]*|\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|`(?:\\.|[^`\\])*`)|([A-Za-z_$][\w$]*)|([\s\S])/g;
 
-/** Trocea el código en comentarios, cadenas, palabras clave y nombres con los colores de la guía. */
-export function highlight(src: string): ReactNode[] {
-	const out: ReactNode[] = [];
-	let k = 0;
+/** Un trozo de código: con `cls` va en un `span` con ese color; sin él, es texto suelto. */
+type Piece = { cls?: string; text: string };
+
+function tokenize(src: string): Piece[] {
+	const out: Piece[] = [];
 	for (const m of src.matchAll(TOKENS)) {
 		const at = m.index ?? 0;
-		if (m[1])
-			out.push(
-				<span key={k++} className="text-utility-green-700">
-					{m[1]}
-				</span>,
-			);
-		else if (m[2])
-			out.push(
-				<span key={k++} className="text-primary">
-					{m[2]}
-				</span>,
-			);
+		if (m[1]) out.push({ cls: "text-utility-green-700", text: m[1] });
+		else if (m[2]) out.push({ cls: "text-primary", text: m[2] });
 		else if (m[3]) {
 			const word = m[3];
 			const next = /^\s*[:(]/.test(src.slice(at + word.length));
 			const prev = src[at - 1];
-			if (KEYWORDS.test(word))
-				out.push(
-					<span key={k++} className="text-utility-pink-600">
-						{word}
-					</span>,
-				);
+			if (KEYWORDS.test(word)) out.push({ cls: "text-utility-pink-600", text: word });
 			else if (/^[A-Z]/.test(word) || prev === "." || next)
-				out.push(
-					<span key={k++} className="text-utility-blue-600">
-						{word}
-					</span>,
-				);
-			else out.push(word);
-		} else out.push(m[4]);
+				out.push({ cls: "text-utility-blue-600", text: word });
+			else out.push({ text: word });
+		} else out.push({ text: m[4] as string });
 	}
 	return out;
+}
+
+const pieceNode = (p: Piece, key: number): ReactNode =>
+	p.cls ? (
+		<span key={key} className={p.cls}>
+			{p.text}
+		</span>
+	) : (
+		p.text
+	);
+
+/** Trocea el código en comentarios, cadenas, palabras clave y nombres con los colores de la guía. */
+export function highlight(src: string): ReactNode[] {
+	return tokenize(src).map(pieceNode);
+}
+
+/** Lo mismo que `highlight`, repartido por líneas: un comentario o una cadena de varias líneas se parte con ellas. */
+function highlightLines(src: string): ReactNode[][] {
+	const lines: ReactNode[][] = [[]];
+	let k = 0;
+	for (const piece of tokenize(src)) {
+		const parts = piece.text.split("\n");
+		parts.forEach((text, i) => {
+			if (i > 0) lines.push([]);
+			if (text) (lines[lines.length - 1] as ReactNode[]).push(pieceNode({ cls: piece.cls, text }, k++));
+		});
+	}
+	return lines;
 }
 
 /** Bloque de código con números de línea, resaltado sencillo, pestañas y botón de copiar. */
@@ -90,6 +110,7 @@ export function CodeSnippet({
 	language,
 	tabs,
 	lineNumbers: lineNumbersProp,
+	highlight: highlightProp,
 	variant = "horizontal",
 	maxHeight,
 	onExpand,
@@ -106,14 +127,21 @@ export function CodeSnippet({
 	const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 	const current = list[Math.min(index, list.length - 1)] as CodeSnippetTab;
 	const lines = current.code.replace(/\n$/, "").split("\n");
+	const marked = new Set(
+		(current.highlight ?? highlightProp ?? []).filter(
+			(n) => Number.isInteger(n) && n >= 1 && n <= lines.length,
+		),
+	);
 
 	useEffect(() => () => clearTimeout(timer.current), []);
 
-	const copy = async () => {
+	const copy = async (anchor: Element) => {
 		try {
 			await navigator.clipboard.writeText(current.code);
 		} catch {
-			// Sin permiso de portapapeles: el botón confirma igual, como en la guía
+			// Sin permiso de portapapeles: no se confirma, y el `CopyTooltip` de la página (si lo hay) lo avisa
+			reportCopyFailure(anchor);
+			return;
 		}
 		setCopied(true);
 		clearTimeout(timer.current);
@@ -140,11 +168,11 @@ export function CodeSnippet({
 	const copyButton = (position: string) => (
 		<button
 			type="button"
-			onClick={copy}
+			onClick={(e) => void copy(e.currentTarget)}
 			aria-label={copied ? defaultStrings.copied : defaultStrings.copyCode}
 			className={cx(position, buttonBase)}
 		>
-			<Icon name={copied ? "check" : "copy-01"} size={16} />
+			<DynIcon icon={copied ? Check : Copy01} size={16} />
 		</button>
 	);
 
@@ -229,7 +257,28 @@ export function CodeSnippet({
 				tabIndex={0}
 				className={`m-0 flex-1 overflow-auto p-5 ${onExpand ? "pr-20" : "pr-14"} font-mono text-code-sm text-primary [tab-size:2] focus-visible:shadow-[inset_0_0_0_2px_var(--focus-ring)] focus-visible:outline-none`}
 			>
-				<code>{highlight(lines.join("\n"))}</code>
+				<code>
+					{marked.size === 0
+						? highlight(lines.join("\n"))
+						: highlightLines(lines.join("\n")).map((nodes, i) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: una entrada por línea
+								<Fragment key={i}>
+									{marked.has(i + 1) ? (
+										<span className="-mx-5 inline-block min-h-5 min-w-[calc(100%+2.5rem)] bg-brand-primary_alt px-5 align-top shadow-[inset_2px_0_0_var(--fg-brand-primary)]">
+											{marked.has(i) ? null : (
+												<span className="sr-only">
+													{defaultStrings.highlightedLine}
+												</span>
+											)}
+											{nodes}
+										</span>
+									) : (
+										nodes
+									)}
+									{i < lines.length - 1 ? "\n" : null}
+								</Fragment>
+							))}
+				</code>
 			</pre>
 			{headerCopy ? null : copyButton(vertical ? "absolute top-2 right-2" : "absolute top-3 right-3")}
 			{onExpand ? (
@@ -242,7 +291,7 @@ export function CodeSnippet({
 						buttonBase,
 					)}
 				>
-					<Icon name="maximize-01" size={16} />
+					<Maximize01 size={16} />
 				</button>
 			) : null}
 			<span className="sr-only" aria-live="polite">

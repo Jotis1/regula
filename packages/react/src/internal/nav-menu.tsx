@@ -1,8 +1,8 @@
 // Plantillas de los menús de MarketingNav (design: «paneles con plantillas exportadas»). Se exportan juntas en el
 // objeto `NavMenu` (`NavMenu.Item`, `NavMenu.Section`, `NavMenu.Card`), como `SidebarCards`.
 import type { ReactNode } from "react";
-import { type IconName, iconSlot } from "../components/Icon.js";
 import { cx } from "./cx.js";
+import { type IconProp, iconSlot } from "./icon.js";
 
 export interface NavMenuItemProps {
 	href: string;
@@ -10,7 +10,7 @@ export interface NavMenuItemProps {
 	/** Una o dos líneas bajo el título. */
 	description?: ReactNode;
 	/** Icono de 24 en el color de la marca: un nombre del núcleo o un nodo. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/**
 	 * `plain` el icono suelto · `boxed` dentro de una caja de 40 con borde (los menús de cuatro columnas del Figma).
 	 * @default "plain"

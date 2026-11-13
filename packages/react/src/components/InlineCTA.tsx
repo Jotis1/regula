@@ -1,8 +1,9 @@
+import { CheckCircle, File04, Mail01 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import { InlineCTAEmail } from "../internal/inline-cta-email.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 /** Los siete tipos del Figma (`Inline CTA`, `1255:131915`). */
 export type InlineCTAType =
@@ -17,7 +18,7 @@ export type InlineCTAType =
 export interface InlineCTAPlan {
 	name: ReactNode;
 	/** Icono del plan, en un `FeaturedIcon` pequeño. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Precio, como «10 €». */
 	price: ReactNode;
 	/** Tras el precio, como «al mes». */
@@ -31,7 +32,7 @@ export interface InlineCTAFeature {
 }
 
 export interface InlineCTAPayment {
-	/** Logo de la tarjeta, como `<PaymentVisa />` de `@jotis-me/icons/payments`. */
+	/** Logo de la tarjeta, como `<PaymentVisaMd />` de `@jotis-me/assets/payments`. */
 	logo?: ReactNode;
 	/** «Visa terminada en 1234». */
 	label: ReactNode;
@@ -45,7 +46,7 @@ export interface InlineCTAFile {
 	name: ReactNode;
 	/** Tamaño ya escrito, como «200 KB». */
 	size?: ReactNode;
-	/** Icono del tipo de archivo, como `<FileTypePdf />` de `@jotis-me/icons/files`. */
+	/** Icono del tipo de archivo, como `<FileIcon type="pdf" />` de `@untitledui/file-icons`. */
 	icon?: ReactNode;
 }
 
@@ -57,7 +58,7 @@ export interface InlineCTAProps {
 	/** Los botones: siempre uno para descartar ("Ahora no") y la acción, la última. */
 	actions?: ReactNode;
 	/** Icono destacado (`FeaturedIcon` modern gris de 48px) sobre el título. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Imagen a la izquierda (240px de ancho): una URL o un nodo. */
 	image?: string | ReactNode;
 	/** Texto alternativo de la imagen cuando es una URL. Sin él, la imagen es decorativa. */
@@ -218,7 +219,7 @@ function TypedInlineCTA({
 							// biome-ignore lint/suspicious/noArrayIndexKey: lista fija del plan
 							<li key={i} className="flex gap-3">
 								<span className="mt-0.5 flex flex-none text-fg-success-primary">
-									<Icon name="check-circle" size={20} />
+									<CheckCircle size={20} />
 								</span>
 								<span className="flex flex-col">
 									<span className="text-md font-medium text-secondary">{f.title}</span>
@@ -246,7 +247,7 @@ function TypedInlineCTA({
 						{payment.expiry ? <span className="text-tertiary">{payment.expiry}</span> : null}
 						{payment.email ? (
 							<span className="mt-2 inline-flex items-center gap-1.5 text-tertiary [&_svg]:text-fg-quaternary">
-								<Icon name="mail-01" size={16} />
+								<Mail01 size={16} />
 								{payment.email}
 							</span>
 						) : null}
@@ -267,7 +268,7 @@ function TypedInlineCTA({
 				>
 					<div className="flex min-w-0 flex-1 items-center gap-3">
 						<span className="flex size-10 flex-none items-center justify-center [&_svg]:size-10">
-							{file.icon ?? <Icon name="file-04" size={32} />}
+							{file.icon ?? <File04 size={32} />}
 						</span>
 						<span className="flex min-w-0 flex-col text-sm">
 							<span className="truncate font-medium text-secondary">{file.name}</span>

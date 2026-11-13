@@ -2,11 +2,12 @@
 // mismas fuentes que la web. La isla de búsqueda lo descarga al abrirse; el texto completo lo pone Pagefind.
 
 import { getCollection } from "astro:content";
-import { allIconNames } from "@jotis-me/icons";
 import { colors, radius, shadows, spacing, type } from "@jotis-me/tokens";
 import type { APIRoute } from "astro";
 import { COMPONENT_KEYWORDS, groupOf, labelOf, slugOf } from "../lib/catalog";
+import { kebab } from "../lib/gallery";
 import { colorGroups, radiusRows, shadowRows, spacingRows } from "../lib/tokens";
+import { ICON_NAMES } from "../lib/untitled";
 import { nav } from "../nav";
 import type { SearchEntry } from "../search/entries";
 
@@ -73,11 +74,12 @@ export const GET: APIRoute = async () => {
 			href: "/foundations/states/",
 			keywords: row.name,
 		})),
-		...allIconNames.map((name) => ({
+		...ICON_NAMES.map((name) => ({
 			group: "icons" as const,
 			label: name,
-			description: "Icono",
+			description: "Icono de Untitled UI",
 			href: `/icons/?icono=${name}`,
+			keywords: kebab(name),
 		})),
 	];
 	return new Response(JSON.stringify(entries), { headers: { "Content-Type": "application/json" } });

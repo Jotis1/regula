@@ -50,6 +50,7 @@ const cellsOf = (code: string, n: number) =>
 /** Código de verificación de 4 o 6 dígitos, una casilla por dígito, con pegado y autocompletado. */
 export function VerificationCodeInput({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -127,6 +128,7 @@ export function VerificationCodeInput({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

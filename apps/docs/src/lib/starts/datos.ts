@@ -42,34 +42,9 @@ export const datos: Record<string, Start> = {
 	Table: {
 		props: { title: "Movimientos", count: "240", columns: COLUMNAS, rows: FILAS },
 		wide: true,
-		presets: [
-			{
-				label: "Con orden",
-				props: {
-					columns: COLUMNAS.map((c) => ({ ...c, sortable: true })),
-					defaultSort: { key: "importe", direction: "descending" },
-				},
-			},
-			{ label: "Con casillas", props: { selection: "checkbox" } },
-			{ label: "Con radios", props: { selection: "radio" } },
-			{ label: "Con interruptores", props: { selection: "toggle" } },
-			{ label: "Con franjas", props: { striped: true } },
-			{ label: "Compacta", props: { size: "sm" } },
-		],
 	},
 	MetricCard: {
 		props: { label: "Gasto del mes", value: "1.284 €", change: "12%", period: "vs. septiembre" },
-		presets: [
-			{ label: "A la baja", props: { trend: "down" } },
-			{ label: "Con insignia", props: { changeBadge: true } },
-			{
-				label: "Con gráfica",
-				props: { chart: [820, 910, 880, 1100, 960, 1284], chartStyle: "sparkline" },
-			},
-			{ label: "Con área", props: { chart: [820, 910, 880, 1100, 960, 1284], chartStyle: "area" } },
-			{ label: "Con icono", props: { icon: "currency-euro", iconStyle: "featured" } },
-			{ label: "Con icono moderno", props: { icon: "currency-euro", iconStyle: "modern" } },
-		],
 		rules: [
 			{
 				when: { chart: null },
@@ -100,32 +75,14 @@ export const datos: Record<string, Start> = {
 				},
 			],
 		},
-		presets: [
-			{ label: "Con línea", props: { divider: "line" } },
-			{ label: "Con divisor", props: { divider: "divider" } },
-			{ label: "Con conector", props: { divider: "connector" } },
-			{ label: "Sin separador", props: { divider: "none" } },
-			{ label: "Mensajes", props: { type: "messages" } },
-		],
 	},
 	CalendarView: {
 		props: {},
 		tweaks: { defaultView: { kind: "hidden" } },
 		wide: true,
-		presets: [
-			{ label: "Mes", props: { view: "month" } },
-			{ label: "Semana", props: { view: "week" } },
-			{ label: "Día", props: { view: "day" } },
-			{ label: "Con eventos", props: { events: "Octubre" } },
-		],
 	},
 	FilterMenu: {
 		props: { fields: CAMPOS, operators: OPERADORES },
-		presets: [
-			{ label: "Alineado al principio", props: { align: "start" } },
-			{ label: "Alineado al final", props: { align: "end" } },
-			{ label: "Con filtros", props: { defaultValue: DOS_FILTROS } },
-		],
 	},
 	FilterPanel: {
 		props: { fields: CAMPOS, operators: OPERADORES, defaultValue: "Sin filtros" },
@@ -138,6 +95,5 @@ export const datos: Record<string, Start> = {
 				],
 			},
 		},
-		presets: [{ label: "Con dos filtros", props: { defaultValue: "Dos filtros" } }],
 	},
 };

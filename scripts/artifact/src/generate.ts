@@ -160,6 +160,9 @@ export async function generate(opts: Options): Promise<Manifest> {
  * que no salen del repo (Logos) y su orden; cada asset generado reutiliza el blob publicado solo si su sha256 coincide
  * (`assetShas`) o toma el recién subido (`blobs`). Si falta alguno, no hay índice publicable: error con la lista.
  */
+/** Grupos de assets que estuvieron publicados y el repo ya no genera: salen del índice al sincronizar. */
+const RETIRED_GROUPS = ["Icons"];
+
 function buildIndex(opts: Options, generated: Asset[], short: string) {
 	const published = opts.published
 		? (structuredClone(opts.published) as Record<string, unknown>)
@@ -183,12 +186,16 @@ function buildIndex(opts: Options, generated: Asset[], short: string) {
 			file: "components/lib/react-dom.production.min.js",
 		},
 	];
-	const groups = (published?.groups as string[] | undefined) ?? [];
+	// Grupos que el repo ya no genera se retiran del índice (los iconos de línea son ahora los de Untitled UI)
+	const groups = ((published?.groups as string[] | undefined) ?? []).filter(
+		(g) => !RETIRED_GROUPS.includes(g),
+	);
 	index.groups = [...groups, ...ASSET_GROUPS.map(([g]) => g).filter((g) => !groups.includes(g))];
 	const assetGroups = (index.assetGroups ?? {}) as Record<
 		string,
 		{ name: string; tile: string; order: string[]; files: Record<string, AssetRecord> }
 	>;
+	for (const g of RETIRED_GROUPS) delete assetGroups[g];
 	const records = new Map<string, AssetRecord>();
 	const uploads: string[] = [];
 	for (const [group, tile] of ASSET_GROUPS) {
@@ -236,7 +243,7 @@ function usage(): string {
 	return `
 ## Uso en este artefacto
 
-Los componentes son los de \`@jotis-me/react\`, compilados para React 18: están en \`window.Jotis\` (\`Jotis.Button\`, \`Jotis.Input\`, \`Jotis.Table\`…) con los mismos nombres y props que en las apps, junto a \`Jotis.iconNames\`. Cada vista previa monta su ejemplo de \`Jotis.previews\`, el mismo que la web compara con su captura aprobada. Para el tema oscuro, pon \`data-theme="dark"\` en \`<html>\` o en un contenedor (en las apps, la clase \`dark-mode\`).
+Los componentes son los de \`@jotis-me/react\`, compilados para React 18: están en \`window.Jotis\` (\`Jotis.Button\`, \`Jotis.Input\`, \`Jotis.Table\`…) con los mismos nombres y props que en las apps. Los iconos de línea, los de archivo y las banderas son los de Untitled UI (\`@untitledui/icons\`, \`@untitledui/file-icons\` y \`@untitledui/country-flags\`): las vistas previas los llevan dentro del bundle y, en tus apps, se importan de esos paquetes. Cada vista previa monta su ejemplo de \`Jotis.previews\`, el mismo que la web compara con su captura aprobada. Para el tema oscuro, pon \`data-theme="dark"\` en \`<html>\` o en un contenedor (en las apps, la clase \`dark-mode\`). Para un trozo claro dentro de uno oscuro (enseñar los dos temas a la vez), pon \`data-theme="light"\` en su contenedor (en las apps, \`light-mode\`); no se anida un oscuro dentro de ese claro.
 
 Envuelve el diseño en un elemento con la clase \`jm-root\`: le da la fuente de texto, el color \`text-primary\` y \`box-sizing: border-box\`. La hoja (\`components/bundle.css\`) es la de las apps, con el reset de Tailwind (preflight) incluido: títulos y párrafos sin margen, listas sin viñetas, imágenes en bloque y botones sin estilo del navegador. Da a tu HTML los márgenes y estilos que necesite, como en una app de la suite.
 `;

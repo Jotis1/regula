@@ -1,11 +1,11 @@
 "use client";
 
+import { AlertCircle, CheckCircle, File04, Loading02, Trash01, UploadCloud02 } from "@untitledui/icons";
 import { type DragEvent, type ReactNode, useId, useState } from "react";
 import { cx } from "../internal/cx.js";
 import { formatBytes } from "../internal/format.js";
 import { defaultStrings } from "../internal/strings.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import { Icon } from "./Icon.js";
 import { ProgressBar } from "./ProgressBar.js";
 
 export interface UploadFile {
@@ -18,7 +18,7 @@ export interface UploadFile {
 	/** Mensaje si `status` es `error`. */
 	error?: string;
 	/**
-	 * Icono del archivo en lugar del genérico: el de su tipo, como `<FileTypePdf />` de `@jotis-me/icons/files`. El
+	 * Icono del archivo en lugar del genérico: el de su tipo, como `<FileIcon type="pdf" />` de `@untitledui/file-icons`. El
 	 * paquete no los importa. Con error se sigue pintando el aviso.
 	 */
 	icon?: ReactNode;
@@ -132,7 +132,7 @@ export function FileUpload({
 					}}
 					className="sr-only"
 				/>
-				<FeaturedIcon icon="upload-cloud-02" variant="modern" size="md" color="gray" />
+				<FeaturedIcon icon={UploadCloud02} variant="modern" size="md" color="gray" />
 				<span className="text-sm text-tertiary">
 					<span className="font-semibold text-brand-secondary">{t.upload}</span> {t.orDrag}
 				</span>
@@ -176,7 +176,7 @@ export function FileUpload({
 									</span>
 								) : (
 									<FeaturedIcon
-										icon={failed ? "alert-circle" : "file-04"}
+										icon={failed ? AlertCircle : File04}
 										variant="modern"
 										size="md"
 										color={failed ? "error" : "gray"}
@@ -200,12 +200,12 @@ export function FileUpload({
 												<span aria-hidden="true"> | </span>
 												{done ? (
 													<span className="font-medium text-success-primary">
-														<Icon name="check-circle" size={14} /> {percent}%
+														<CheckCircle size={14} /> {percent}%
 														<span className="sr-only">, {t.complete}</span>
 													</span>
 												) : (
 													<span>
-														<Icon name="upload-cloud-02" size={14} /> {percent}%
+														<UploadCloud02 size={14} /> {percent}%
 														<span className="sr-only">, {t.uploading}</span>
 													</span>
 												)}
@@ -216,11 +216,14 @@ export function FileUpload({
 												<span aria-hidden="true"> | </span>
 												{done ? (
 													<span className="font-medium text-success-primary">
-														<Icon name="check-circle" size={14} /> {t.complete}
+														<CheckCircle size={14} /> {t.complete}
 													</span>
 												) : (
 													<span>
-														<Icon name="loading-02" size={14} spin />{" "}
+														<Loading02
+															size={14}
+															className="animate-spin motion-reduce:animate-none"
+														/>{" "}
 														{t.uploading}
 													</span>
 												)}
@@ -241,7 +244,7 @@ export function FileUpload({
 									aria-label={t.remove(f.name)}
 									className="absolute top-3 right-3 inline-flex cursor-pointer rounded-md border-0 bg-transparent p-1.5 text-fg-quaternary transition-colors duration-100 hover:bg-primary_hover hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none"
 								>
-									<Icon name="trash-01" size={16} />
+									<Trash01 size={16} />
 								</button>
 							</li>
 						);

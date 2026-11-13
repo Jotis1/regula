@@ -1,9 +1,10 @@
+import { AlertCircle, Check, File04, Link01 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import { MessageAudioPlayer } from "../internal/message-audio.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Avatar, type AvatarProps } from "./Avatar.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 /** Los nueve tipos del Figma (`Message`, `1242:996`). */
 export type MessageType =
@@ -29,7 +30,7 @@ export interface MessageReaction {
 }
 
 export interface MessageAction {
-	icon: IconName | ReactNode;
+	icon: IconProp;
 	label: string;
 	onClick?: () => void;
 }
@@ -59,7 +60,7 @@ export interface MessageMedia {
 export interface MessageFile {
 	name: ReactNode;
 	size?: ReactNode;
-	/** Icono del tipo, como `<FileImageJpg />` de `@jotis-me/icons/files`. */
+	/** Icono del tipo, como `<FileIcon type="jpg" />` de `@untitledui/file-icons`. */
 	icon?: ReactNode;
 	href?: string;
 }
@@ -233,11 +234,11 @@ function StatusMark({
 				title={t.retry}
 				className="inline-flex cursor-pointer rounded-full border-0 bg-transparent p-0 text-fg-error-primary focus-visible:shadow-focus-ring focus-visible:outline-none"
 			>
-				<Icon name="alert-circle" size={16} />
+				<AlertCircle size={16} />
 			</button>
 		) : (
 			<span className="inline-flex text-fg-error-primary">
-				<Icon name="alert-circle" size={16} />
+				<AlertCircle size={16} />
 				<span className="sr-only">{t.failed}</span>
 			</span>
 		);
@@ -249,10 +250,10 @@ function StatusMark({
 				read ? "w-5 text-fg-brand-primary" : "w-4 text-fg-quaternary",
 			)}
 		>
-			<Icon name="check" size={16} />
+			<Check size={16} />
 			{read ? (
 				<span className="absolute top-0 left-1">
-					<Icon name="check" size={16} />
+					<Check size={16} />
 				</span>
 			) : null}
 			<span className="sr-only">{read ? t.read : t.unread}</span>
@@ -357,7 +358,7 @@ function LinkCard({ link, preview }: { link: MessageLink; preview: boolean }) {
 			{!preview && (link.title || link.description) ? (
 				<div className="flex gap-2 rounded-md bg-primary p-2.5 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
 					<span className="mt-0.5 flex flex-none text-fg-quaternary">
-						<Icon name="link-01" size={16} />
+						<Link01 size={16} />
 					</span>
 					<span className="flex min-w-0 flex-col text-sm">
 						{link.title ? (
@@ -426,7 +427,7 @@ function TypedMessage({
 		const inner = (
 			<>
 				<span className="flex size-10 flex-none items-center justify-center [&_svg]:size-10">
-					{file.icon ?? <Icon name="file-04" size={32} />}
+					{file.icon ?? <File04 size={32} />}
 				</span>
 				<span className="flex min-w-0 flex-col text-sm">
 					<span className="truncate font-medium text-secondary">{file.name}</span>

@@ -1,5 +1,5 @@
-import { IconRocket02 } from "@jotis-me/icons";
 import { render } from "@testing-library/react";
+import { Check, Rocket02 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import {
@@ -11,7 +11,6 @@ import {
 	ButtonUtility,
 	EmptyState,
 	FeaturedIcon,
-	Icon,
 	InlineCTA,
 	Input,
 	Modal,
@@ -20,10 +19,10 @@ import {
 } from "../src/index.js";
 
 // Un icono del set completo que no está en el núcleo: se pasa ya pintado, con su propio dibujo
-const rocket = <IconRocket02 data-testid="rocket" />;
+const rocket = <Rocket02 data-testid="rocket" />;
 
 /** El dibujo del icono de prueba, para comprobar que acaba pintado dentro del componente. */
-const rocketPath = () => (renderToStaticMarkup(<IconRocket02 />).match(/ d="([^"]+)"/) ?? [])[1] ?? "";
+const rocketPath = () => (renderToStaticMarkup(<Rocket02 />).match(/ d="([^"]+)"/) ?? [])[1] ?? "";
 
 describe("las props de icono aceptan un nodo", () => {
 	const paths = rocketPath();
@@ -64,8 +63,8 @@ describe("las props de icono aceptan un nodo", () => {
 	});
 
 	it("con un nombre del núcleo pinta lo mismo que el nodo equivalente", () => {
-		const byName = renderToStaticMarkup(<Badge icon="check">Ok</Badge>);
-		const byNode = renderToStaticMarkup(<Badge icon={<Icon name="check" size={12} />}>Ok</Badge>);
+		const byName = renderToStaticMarkup(<Badge icon={Check}>Ok</Badge>);
+		const byNode = renderToStaticMarkup(<Badge icon={<Check size={12} />}>Ok</Badge>);
 		expect(byName).toBe(byNode);
 		expect(byName).toContain('width="12"');
 	});

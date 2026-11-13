@@ -39,11 +39,12 @@ for (const scheme of ["light", "dark"] as const) {
 		await page.emulateMedia({ colorScheme: scheme });
 		await page.goto("/foundations/color/");
 		await hydrated(page);
-		const button = page.getByRole("button", { name: "Copiar bg-brand-solid", exact: true });
+		// El explorador se abre por Texto; el botón de `TokenSwatch` se llama como su utilidad
+		const button = page.getByRole("button", { name: "text-primary", exact: true });
 		await copyFrom(button);
 		await expect(tooltip(page)).toHaveText("Copiado");
 		await expectAbove(page, button);
-		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("bg-brand-solid");
+		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("text-primary");
 		// Se va sola
 		await expect(tooltip(page)).toHaveText("", { timeout: 4000 });
 	});
@@ -62,12 +63,12 @@ for (const scheme of ["light", "dark"] as const) {
 		await hydrated(page);
 		// La galería enseña los primeros iconos: «calendar» se busca
 		await page.getByLabel("Buscar icono").fill("calendar");
-		await page.locator('[data-select="calendar"]').click();
+		await page.locator('[data-item="Calendar"] button').click();
 		const button = page.getByRole("button", { name: "Copiar nombre" });
 		await copyFrom(button);
 		await expect(tooltip(page)).toHaveText("Copiado");
 		await expectAbove(page, button);
-		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("calendar");
+		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("Calendar");
 	});
 }
 
@@ -76,10 +77,9 @@ test("un valor largo no ensancha la burbuja: sigue diciendo solo «Copiado»", a
 	await page.goto("/foundations/color/");
 	await hydrated(page);
 	// Mide con un token corto y con el copiado más largo de la tabla: la burbuja mide lo mismo
-	const buttons = page.locator("table button[data-copy]");
-	const lengths = await buttons.evaluateAll((els) =>
-		els.map((e) => (e.getAttribute("data-copy") ?? "").length),
-	);
+	// La utilidad de cada token es un botón de `TokenSwatch`, que copia su propio texto
+	const buttons = page.locator("table:visible button");
+	const lengths = await buttons.evaluateAll((els) => els.map((e) => (e.textContent ?? "").length));
 	const shortest = lengths.indexOf(Math.min(...lengths));
 	const longest = lengths.indexOf(Math.max(...lengths));
 	expect(lengths[longest]).toBeGreaterThan((lengths[shortest] ?? 0) + 5);
@@ -112,4 +112,29 @@ test("la página de CopyTooltip: useCopy desde una isla y, con dos CopyTooltip m
 	await expect(page.locator("[data-copy-tooltip]:not(:empty)")).toHaveCount(1);
 	await expect(page.locator("[data-copy-tooltip]:not(:empty)")).toHaveText("Copiado");
 	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("bun add @jotis-me/react");
+});
+
+test("copiar falla: un aviso de error dice qué ha pasado y cómo seguir, y no se cierra solo", async ({
+	page,
+}) => {
+	// El navegador no deja usar el portapapeles
+	await page.addInitScript(() => {
+		Object.defineProperty(navigator, "clipboard", {
+			configurable: true,
+			value: { writeText: () => Promise.reject(new Error("denegado")) },
+		});
+	});
+	await page.goto("/start/install/");
+	await hydrated(page);
+	await page.getByRole("button", { name: "Copiar" }).first().click();
+	const alert = page.getByRole("alert");
+	await expect(alert).toContainText("No se ha podido copiar");
+	await expect(alert).toContainText("Selecciona el texto y cópialo a mano.");
+	// Sin la burbuja de siempre, y sigue ahí pasado el tiempo en que una burbuja se habría ido
+	await expect(tooltip(page)).toHaveText("");
+	await page.waitForTimeout(7000);
+	await expect(alert).toBeVisible();
+	// Se va cuando se cierra
+	await alert.getByRole("button").click();
+	await expect(alert).toHaveCount(0);
 });

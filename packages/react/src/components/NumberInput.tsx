@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown, ChevronUp, Minus, Plus } from "@untitledui/icons";
 import { useId } from "react";
 import { Input as AriaInput, Button, Group, I18nProvider, NumberField } from "react-aria-components";
 import { cx } from "../internal/cx.js";
@@ -13,7 +14,6 @@ import {
 	nativeClasses,
 } from "../internal/field.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export interface NumberInputProps extends FieldProps {
 	value?: number;
@@ -58,6 +58,7 @@ const STEPPER =
 /** Campo numérico con botones para restar y sumar, mínimo, máximo y paso, en formato `es-ES`. */
 export function NumberInput({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -86,6 +87,7 @@ export function NumberInput({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}
@@ -121,7 +123,7 @@ export function NumberInput({
 								aria-label={decrementLabel}
 								className={cx(STEPPER, SQUARE[size], "self-stretch border-r border-primary")}
 							>
-								<Icon name="minus" size={20} />
+								<Minus size={20} />
 							</Button>
 						)}
 						<div
@@ -146,14 +148,14 @@ export function NumberInput({
 									aria-label={incrementLabel}
 									className={cx(STEPPER, "flex-1 border-b border-primary")}
 								>
-									<Icon name="chevron-up" size={12} />
+									<ChevronUp size={12} />
 								</Button>
 								<Button
 									slot="decrement"
 									aria-label={decrementLabel}
 									className={cx(STEPPER, "flex-1")}
 								>
-									<Icon name="chevron-down" size={12} />
+									<ChevronDown size={12} />
 								</Button>
 							</div>
 						) : (
@@ -162,7 +164,7 @@ export function NumberInput({
 								aria-label={incrementLabel}
 								className={cx(STEPPER, SQUARE[size], "self-stretch", fieldSeparator)}
 							>
-								<Icon name="plus" size={20} />
+								<Plus size={20} />
 							</Button>
 						)}
 					</Group>

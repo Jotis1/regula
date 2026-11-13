@@ -13,8 +13,8 @@ astroNote: "Descartarla con `onClick` necesita una función: envuélvela en un `
 - `email`: el campo de correo con su etiqueta y el botón «Suscribirse»; el botón o Enter avisan con `onSubmit(correo)`.
 - `change-plan`: tarjeta interior con el icono, el nombre, el precio y la descripción del plan, y los botones dentro.
 - `upgrade-plan`: lista de lo que incluye, cada cosa con su check en verde.
-- `payment-method`: la tarjeta con el logo (de `@jotis-me/icons/payments`), «Visa terminada en 1234», la caducidad, el correo y el botón de editar.
-- `receipt`: el archivo con su icono (de `@jotis-me/icons/files`), nombre y tamaño, y los botones.
+- `payment-method`: la tarjeta con el logo (de `@jotis-me/assets/payments`), «Visa terminada en 1234», la caducidad, el correo y el botón de editar.
+- `receipt`: el archivo con su icono (`FileIcon` de `@untitledui/file-icons`), nombre y tamaño, y los botones.
 
 **Estrecha.** Con `type`, la tarjeta se adapta a su propio ancho (container queries): por debajo de 448 px la imagen va arriba y los botones ocupan todo el ancho, con la acción principal arriba, como el Figma en móvil.
 

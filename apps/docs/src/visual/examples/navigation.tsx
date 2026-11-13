@@ -7,7 +7,7 @@ import {
 	IntegrationFigmaLogoGray,
 	IntegrationGeminiLogoGray,
 	IntegrationGithubLogoGray,
-} from "@jotis-me/icons/logos";
+} from "@jotis-me/assets/logos";
 import {
 	AppIcon,
 	Avatar,
@@ -26,6 +26,35 @@ import {
 	Tabs,
 	TreeView,
 } from "@jotis-me/react";
+import {
+	ArrowLeft,
+	ArrowRight,
+	BarChart01,
+	Bell01,
+	CheckCircle,
+	Code01,
+	Copy01,
+	CurrencyEuro,
+	Download01,
+	Edit02,
+	File04,
+	HomeLine,
+	Inbox01,
+	LogOut01,
+	Monitor01,
+	Moon01,
+	Paperclip,
+	Plus,
+	RefreshCw01,
+	SearchLg,
+	Settings02,
+	Star01,
+	Sun,
+	Trash01,
+	UploadCloud02,
+	User01,
+	Users01,
+} from "@untitledui/icons";
 import { useState } from "react";
 import { stack } from "./actions";
 
@@ -88,13 +117,13 @@ export function SidebarNavExample() {
 				brand="jotis.me"
 				search
 				items={[
-					{ icon: "home-line", label: "Inicio", href: "/", active: true },
-					{ icon: "bar-chart-01", label: "Panel", href: "/", badge: 3 },
-					{ icon: "currency-euro", label: "Pecunia", href: "/" },
-					{ icon: "users-01", label: "Vinculum", href: "/" },
-					{ icon: "file-04", label: "Ornatus", href: "/" },
+					{ icon: HomeLine, label: "Inicio", href: "/", active: true },
+					{ icon: BarChart01, label: "Panel", href: "/", badge: 3 },
+					{ icon: CurrencyEuro, label: "Pecunia", href: "/" },
+					{ icon: Users01, label: "Vinculum", href: "/" },
+					{ icon: File04, label: "Ornatus", href: "/" },
 				]}
-				footerItems={[{ icon: "settings-02", label: "Ajustes", href: "/" }]}
+				footerItems={[{ icon: Settings02, label: "Ajustes", href: "/" }]}
 				user={{ initials: "AD", name: "Administrador", supporting: "admin@jotis.me" }}
 			/>
 		</div>
@@ -135,11 +164,11 @@ export function ContextMenuExample() {
 				previewAt={{ x: 16, y: 16 }}
 				aria-label="Navegador"
 				items={[
-					{ icon: "arrow-left", label: "Atrás" },
-					{ icon: "arrow-right", label: "Adelante" },
-					{ icon: "refresh-cw-01", label: "Recargar", shortcut: "⌘R" },
-					{ icon: "edit-02", label: "Editar página" },
-					{ icon: "star-01", label: "Añadir a favoritos" },
+					{ icon: ArrowLeft, label: "Atrás" },
+					{ icon: ArrowRight, label: "Adelante" },
+					{ icon: RefreshCw01, label: "Recargar", shortcut: "⌘R" },
+					{ icon: Edit02, label: "Editar página" },
+					{ icon: Star01, label: "Añadir a favoritos" },
 					{ divider: true },
 					{
 						section: "Barras",
@@ -164,9 +193,9 @@ export function ContextMenuExample() {
 					},
 					{ divider: true },
 					{
-						icon: "code-01",
+						icon: Code01,
 						label: "Más herramientas",
-						items: [{ label: "Guardar como", icon: "download-01" }, { label: "Desarrollador" }],
+						items: [{ label: "Guardar como", icon: Download01 }, { label: "Desarrollador" }],
 					},
 				]}
 				className={zone}
@@ -187,11 +216,11 @@ const headerBrand = (
 );
 
 const headerItems: HeaderNavItem[] = [
-	{ label: "Inicio", href: "#", icon: "home-line" },
+	{ label: "Inicio", href: "#", icon: HomeLine },
 	{
 		label: "Panel",
 		href: "#",
-		icon: "bar-chart-01",
+		icon: BarChart01,
 		current: true,
 		children: [
 			{ label: "Resumen", href: "#", current: true },
@@ -201,20 +230,20 @@ const headerItems: HeaderNavItem[] = [
 			{ label: "Informes programados", href: "#" },
 		],
 	},
-	{ label: "Proyectos", href: "#", icon: "inbox-01", children: [{ label: "Todos", href: "#" }] },
-	{ label: "Tareas", href: "#", icon: "check-circle", badge: 8 },
-	{ label: "Usuarios", href: "#", icon: "users-01" },
+	{ label: "Proyectos", href: "#", icon: Inbox01, children: [{ label: "Todos", href: "#" }] },
+	{ label: "Tareas", href: "#", icon: CheckCircle, badge: 8 },
+	{ label: "Usuarios", href: "#", icon: Users01 },
 ];
 
 const headerActions = (
 	<>
-		<Button hierarchy="tertiary" iconOnly="search-lg" label="Buscar" />
-		<Button hierarchy="tertiary" iconOnly="settings-02" label="Ajustes" />
-		<Button hierarchy="tertiary" iconOnly="bell-01" label="Avisos" />
+		<Button hierarchy="tertiary" iconOnly={SearchLg} label="Buscar" />
+		<Button hierarchy="tertiary" iconOnly={Settings02} label="Ajustes" />
+		<Button hierarchy="tertiary" iconOnly={Bell01} label="Avisos" />
 	</>
 );
 const headerAccount = <Dropdown label="Cuenta" items={[{ label: "Perfil" }, { label: "Salir" }]} />;
-const headerSearch = <Input aria-label="Buscar" placeholder="Buscar" icon="search-lg" size="sm" />;
+const headerSearch = <Input aria-label="Buscar" placeholder="Buscar" icon={SearchLg} size="sm" />;
 
 /** Una cabecera a 1280px de ancho (la CSS elige escritorio por el ancho de la propia cabecera), encogida a la caja. */
 function HeaderPreview({ height, children }: { height: number; children: React.ReactNode }) {
@@ -284,8 +313,8 @@ export function HeaderNavExample() {
 					search={headerSearch}
 					mobile={{
 						footerItems: [
-							{ label: "Ajustes", href: "#", icon: "settings-02" },
-							{ label: "Soporte", href: "#", icon: "user-01" },
+							{ label: "Ajustes", href: "#", icon: Settings02 },
+							{ label: "Soporte", href: "#", icon: User01 },
 						],
 						footer: <AvatarLabel initials="OR" name="Olivia Rhye" supporting="olivia@jotis.me" />,
 					}}
@@ -324,11 +353,11 @@ export function DropdownExample() {
 						/>
 					}
 					items={[
-						{ icon: "user-01", label: "Ver perfil", shortcut: "⌘P" },
-						{ icon: "settings-02", label: "Ajustes", shortcut: "⌘S" },
-						{ icon: "copy-01", label: "Duplicar" },
+						{ icon: User01, label: "Ver perfil", shortcut: "⌘P" },
+						{ icon: Settings02, label: "Ajustes", shortcut: "⌘S" },
+						{ icon: Copy01, label: "Duplicar" },
 						{ divider: true },
-						{ icon: "trash-01", label: "Eliminar", danger: true },
+						{ icon: Trash01, label: "Eliminar", danger: true },
 					]}
 				/>
 			</div>
@@ -339,9 +368,9 @@ export function DropdownExample() {
 					selectedValue={theme}
 					onSelectionChange={setTheme}
 					items={[
-						{ icon: "monitor-01", label: "Sistema", value: "sistema" },
-						{ icon: "sun", label: "Claro", value: "claro" },
-						{ icon: "moon-01", label: "Oscuro", value: "oscuro" },
+						{ icon: Monitor01, label: "Sistema", value: "sistema" },
+						{ icon: Sun, label: "Claro", value: "claro" },
+						{ icon: Moon01, label: "Oscuro", value: "oscuro" },
 					]}
 				/>
 			</div>
@@ -363,7 +392,7 @@ export function DropdownExample() {
 						{ label: "Ventas" },
 						{ label: "Soporte" },
 						{ divider: true },
-						{ icon: "plus", label: "Crear equipo" },
+						{ icon: Plus, label: "Crear equipo" },
 					]}
 				/>
 			</div>
@@ -374,8 +403,8 @@ export function DropdownExample() {
 					variant="integrations"
 					defaultOpen
 					items={[
-						{ icon: "code-01", label: "Ver como markdown" },
-						{ icon: "copy-01", label: "Copiar como markdown" },
+						{ icon: Code01, label: "Ver como markdown" },
+						{ icon: Copy01, label: "Copiar como markdown" },
 						{ divider: true },
 						{ icon: <IntegrationClaudeLogoGray />, label: "Abrir en Claude" },
 						{ icon: <IntegrationCursorLogoGray />, label: "Abrir en Cursor" },
@@ -402,12 +431,12 @@ export function DropdownExample() {
 					}
 					footer={<span>© Jotis</span>}
 					items={[
-						{ icon: "user-01", label: "Ver perfil", shortcut: "⌘P" },
-						{ icon: "settings-02", label: "Ajustes", shortcut: "⌘S" },
+						{ icon: User01, label: "Ver perfil", shortcut: "⌘P" },
+						{ icon: Settings02, label: "Ajustes", shortcut: "⌘S" },
 						{ divider: true },
 						{ accounts: true },
 						{ divider: true },
-						{ icon: "log-out-01", label: "Cerrar sesión" },
+						{ icon: LogOut01, label: "Cerrar sesión" },
 					]}
 				/>
 			</div>
@@ -461,21 +490,21 @@ export function CommandMenuExample() {
 						label: "Apps",
 						items: [
 							{
-								icon: "currency-euro",
+								icon: CurrencyEuro,
 								label: "Pecunia",
 								description: "Gastos e ingresos",
 								shortcut: "G P",
 							},
-							{ icon: "users-01", label: "Vinculum", description: "Contactos" },
-							{ icon: "file-04", label: "Ornatus", description: "Lector Markdown" },
+							{ icon: Users01, label: "Vinculum", description: "Contactos" },
+							{ icon: File04, label: "Ornatus", description: "Lector Markdown" },
 						],
 					},
 					{
 						label: "Acciones",
 						items: [
-							{ icon: "plus", label: "Nuevo gasto", shortcut: "⌘N" },
-							{ icon: "upload-cloud-02", label: "Importar extracto" },
-							{ icon: "moon-01", label: "Cambiar a modo oscuro" },
+							{ icon: Plus, label: "Nuevo gasto", shortcut: "⌘N" },
+							{ icon: UploadCloud02, label: "Importar extracto" },
+							{ icon: Moon01, label: "Cambiar a modo oscuro" },
 						],
 					},
 				]}
@@ -507,7 +536,7 @@ const equipo = [
 		label: "Proyectos",
 		children: [
 			{ id: "brief", label: "Brief.pdf" },
-			{ id: "zip", label: "recursos.zip", icon: "paperclip" as const },
+			{ id: "zip", label: "recursos.zip", icon: Paperclip },
 		],
 	},
 	{ id: "ajustes", label: "Ajustes", children: [{ id: "aj1", label: "Cuenta" }] },
@@ -538,7 +567,7 @@ export function TreeViewExample() {
 						],
 					},
 					{ id: "recetas", label: "Recetas", children: [{ id: "r1", label: "paella.md" }] },
-					{ id: "arch", label: "Archivo", icon: "inbox-01" },
+					{ id: "arch", label: "Archivo", icon: Inbox01 },
 				]}
 			/>
 			<TreeView aria-label="Equipo en md" size="md" defaultOpen={["org", "dis"]} items={equipo} />

@@ -1,47 +1,48 @@
 ---
-// Portada (reference/docs-design/Main.dc.html y HomeM.dc.html). Las cifras se cuentan en el build desde los
-// paquetes y el catálogo; la instalación sale del README de @jotis-me/react; las cinco reglas, de la guía.
+// Portada (design D4 de redesign-docs-site-v2; lienzo Home, HomeDark y HomeMobile). Las cifras se cuentan en el build
+// desde los paquetes y el catálogo; la instalación sale del README de @jotis-me/react; las cinco reglas, de la guía.
+// Sin cabecera de página ni lateral: lleva su propio titular. Las piezas con estado son islas de `components/home/`.
 import { getCollection } from "astro:content";
-import { allIconNames } from "@jotis-me/icons";
-import chevronRight from "@jotis-me/icons/svg/chevron-right.svg?raw";
 import {
 	AppIcon,
 	appIcons,
 	BackgroundPattern,
-	Badge,
 	Button,
-	Icon,
-	type IconName,
+	type IconComponent,
+	Input,
 	Kbd,
 	LinkCard,
-	StreamStatus,
+	SectionHeader,
+	TransparencyGrid,
 } from "@jotis-me/react";
 import { colors } from "@jotis-me/tokens";
+import { ArrowRight, BarChart01, Bell01, Calendar, Lock01, SearchLg, Send01, Zap } from "@untitledui/icons";
 import readme from "../../../../packages/react/README.md?raw";
 import CodeSnippet from "../components/CodeSnippetIsland";
 import HeroForm from "../components/HeroForm";
+import RulesStory from "../components/home/RulesStory";
+import RulesStrip from "../components/home/RulesStrip";
+import { thousands } from "../components/home/story";
+import ThemeCompare from "../components/home/ThemeCompare";
+import SectionTitle from "../components/SectionTitle.astro";
+import ShowcaseImage from "../components/ShowcaseImage.astro";
 import Base from "../layouts/Base.astro";
 import { COMPONENT_GROUPS, FOUNDATIONS } from "../lib/catalog";
 import { installTabs } from "../lib/readme";
+import { ICON_NAMES } from "../lib/untitled";
 
 const components = (await getCollection("components")).length;
 const appGroups = COMPONENT_GROUPS.filter((g) => g.section === "components");
+const streamGroups = COMPONENT_GROUPS.filter((g) => g.section === "stream");
 const appComponents = appGroups.reduce((n, g) => n + g.components.length, 0);
 const streamComponents = components - appComponents;
-const icons = allIconNames.length;
+const icons = thousands(ICON_NAMES.length);
 const colorTokens = Object.keys(colors).length;
-const install = installTabs(readme);
+// En la primera pantalla va solo el comando de cada framework; la hoja de estilos y el resto, en la guía
+const install = installTabs(readme).map((t) => ({ label: t.label, code: t.code.split("\n\n")[0] ?? t.code }));
 
-const previewIcons: IconName[] = [
-	"search-lg",
-	"calendar",
-	"bell-01",
-	"lock-01",
-	"bar-chart-01",
-	"send-01",
-	"palette",
-	"zap",
-];
+const previewIcons: IconComponent[] = [SearchLg, Calendar, Bell01, Lock01, BarChart01, Send01, Zap];
+const swatches = ["bg-brand-solid", "bg-primary-solid", "bg-tertiary", "bg-success-solid", "bg-error-solid"];
 const apps = [
 	{ app: "ornatus", what: "Lector de Markdown" },
 	{ app: "vinculum", what: "Acortador de enlaces" },
@@ -51,63 +52,38 @@ const apps = [
 	{ app: "scaena", what: "El escenario del canal" },
 ] as const;
 
-// Las cinco reglas, con el texto de la guía (reference/GUIA.md: Principios, Color y Contenido y tono)
-const rules = [
-	{
-		title: "Neutro primero, marca con intención",
-		text: "Casi todo es gris: texto, bordes, fondos. Si una pantalla tiene más de dos o tres manchas de marca, sobra alguna.",
-	},
-	{
-		title: "Una acción principal",
-		text: "Cada vista y cada modal tiene como mucho un Button primary. El resto, secondary o tertiary.",
-	},
-	{
-		title: "Todo input lleva etiqueta visible",
-		text: "border-primary (1,5:1) queda por debajo del 3:1 para bordes de control.",
-	},
-	{
-		title: "Un estado nunca va solo con color",
-		text: "Un estado siempre lleva palabra o icono además del color.",
-	},
-	{ title: "Cifras con formato español", text: "1.284,50 €, fechas 29 oct 2026." },
-];
-
-const section = "mx-auto max-w-[1280px] px-4 lg:px-8";
-const h2 = "font-display text-display-xs font-semibold text-primary lg:text-display-sm";
-const card =
-	"flex rounded-xl bg-primary text-primary shadow-[inset_0_0_0_1px_var(--border-secondary)] transition-shadow duration-150 hover:shadow-[inset_0_0_0_1px_var(--border-primary),var(--shadow-md)] focus-visible:shadow-focus-ring focus-visible:outline-none motion-reduce:transition-none";
-const thumb = "flex items-center justify-center bg-secondary";
 const map = [
 	{
 		title: "Fundamentos",
 		href: "/foundations/principles/",
 		text: "Principios, tono, color, tipografía y el resto de la guía, con sus tokens.",
-		meta: `${FOUNDATIONS.length} apartados · ${colorTokens} tokens de color`,
-		short: `${FOUNDATIONS.length} apartados y sus tokens`,
+		meta: `${FOUNDATIONS.length} apartados y ${colorTokens} tokens de color.`,
 	},
 	{
 		title: "Componentes",
 		href: "/components/",
 		text: "Botones, formularios, navegación, capas, avisos, datos, gráficas y maquetas.",
-		meta: `${appComponents} de aplicación · ${appGroups.length} grupos`,
-		short: `${appComponents} de aplicación en ${appGroups.length} grupos`,
+		meta: `${appComponents} de aplicación en ${appGroups.length} grupos.`,
 	},
 	{
 		title: "Stream",
 		href: "/foundations/stream/",
 		text: "Alertas, escenas, chat y paneles para Twitch. Siempre en oscuro.",
-		meta: `${streamComponents} componentes · guía propia`,
-		short: `${streamComponents} componentes para Twitch`,
+		meta: `${streamComponents} componentes en ${streamGroups.length} grupos.`,
 	},
 	{
 		title: "Iconos",
 		href: "/icons/",
 		text: "El set de línea de 24 px, con buscador y el código listo para copiar.",
-		meta: `${icons} iconos · React, SVG y en bruto`,
-		short: `${icons}, con buscador`,
+		meta: `${icons} iconos.`,
 	},
 ];
-const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "play", Iconos: "star-01" };
+
+const container = "mx-auto w-full max-w-[1280px] px-4 lg:px-8";
+const over = "m-0 text-xs font-semibold text-quaternary";
+// La muestra de las cards del mapa: mismo formato que las capturas del índice (16:10), solo desde `lg`
+const sample =
+	"flex aspect-[16/10] items-center justify-center shadow-[inset_0_-1px_0_var(--border-secondary)]";
 ---
 
 <Base title="Regula" wide>
@@ -115,170 +91,131 @@ const mobileIcon: Record<string, IconName> = { Componentes: "grid-01", Stream: "
 		<div aria-hidden="true" class="pointer-events-none absolute inset-0 flex justify-center">
 			<BackgroundPattern pattern="grid" size="lg" mask="radial-down" width={1440} height={640} />
 		</div>
-		<div class={`relative flex flex-wrap items-center gap-14 py-10 lg:pt-22 lg:pb-24 ${section}`}>
-			<div class="flex min-w-0 flex-[1_1_520px] flex-col gap-5 lg:gap-6">
+		<div
+			class={`relative grid grid-cols-1 items-center gap-10 py-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16 lg:pt-20 lg:pb-22 ${container}`}
+		>
+			<div class="flex min-w-0 flex-col gap-5 lg:gap-6">
 				<div class="flex items-center gap-3">
-					<span aria-hidden="true" class="hidden lg:flex lg:dark:hidden"><AppIcon app="regula" variant="light" size={40} /></span>
-					<span aria-hidden="true" class="hidden lg:dark:flex"><AppIcon app="regula" size={40} /></span>
-					<p class="text-sm font-medium text-tertiary">El sistema de diseño de la suite jotis.me</p>
+					<span aria-hidden="true" class="flex dark:hidden"><AppIcon app="regula" variant="light" size={40} /></span>
+					<span aria-hidden="true" class="hidden dark:flex"><AppIcon app="regula" size={40} /></span>
+					<p class="m-0 text-sm font-medium text-tertiary">El sistema de diseño de la suite jotis.me</p>
 				</div>
-				<h1 id="hero-t" class="max-w-[640px] font-display text-display-lg font-semibold tracking-[-0.02em] text-balance text-primary lg:text-display-xl">
+				<h1
+					id="hero-t"
+					class="m-0 max-w-[640px] font-display text-display-md font-semibold tracking-[-0.02em] text-balance text-primary lg:text-display-xl"
+				>
 					Las reglas de la suite, con el código al lado.
 				</h1>
-				<p class="max-w-[560px] text-md text-tertiary lg:text-lg" data-counts>
-					Fundamentos, tokens, {icons} iconos y {components} componentes<span class="hidden lg:inline"
-						>{" "}para Vinculum, Pecunia, Emptor, Ornatus y lo que venga</span
-					>. Se consulta con una mano mientras la otra
-					programa.
+				<p class="m-0 max-w-[560px] text-md text-tertiary lg:text-lg" data-counts>
+					Fundamentos, tokens, {icons} iconos y {components} componentes para Vinculum, Pecunia, Emptor, Ornatus y lo
+					que venga. Se consulta con una mano mientras la otra programa.
 				</p>
-				<div class="flex flex-col gap-3 pt-1 lg:flex-row lg:flex-wrap lg:items-center lg:pt-2">
-					<Button size="xl" href="/start/install/" iconTrailing="arrow-right">Instalar en tu proyecto</Button>
-					<button
-						type="button"
-						data-open-search
-						aria-keyshortcuts="Control+K Meta+K"
-						class="flex h-12 items-center gap-2 rounded-lg border border-primary bg-primary pr-2.5 pl-3.5 text-left text-md text-quaternary shadow-xs transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none lg:w-80"
-					>
-						<Icon name="search-lg" size={20} className="shrink-0 text-fg-quaternary" />
-						<span class="grow">Busca lo que te falte</span>
-						<Kbd variant="field" className="hidden lg:inline-flex">Ctrl K</Kbd>
-					</button>
+				<div class="max-w-[560px]" data-install>
+					<CodeSnippet client:visible tabs={install} lineNumbers={false} />
+				</div>
+				<div class="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-center">
+					<Button size="xl" href="/start/install/" iconTrailing={ArrowRight}>Seguir la instalación</Button>
+					<div class="min-w-60 lg:max-w-80 lg:flex-1">
+						<Input
+							size="lg"
+							aria-label="Buscar en Regula"
+							aria-haspopup="dialog"
+							aria-keyshortcuts="Control+K Meta+K"
+							placeholder="Busca lo que te falte"
+							readOnly
+							data-open-search
+							icon={SearchLg}
+						>
+							<Kbd slot="trailing" variant="field">Ctrl K</Kbd>
+						</Input>
+					</div>
 				</div>
 			</div>
-			<figure class="m-0 hidden max-w-[480px] flex-[1_1_400px] flex-col gap-3 lg:flex">
+			<figure class="m-0 flex min-w-0 flex-col gap-3">
 				<HeroForm client:visible />
 				<figcaption class="pl-1 text-xs text-quaternary">No es una captura: son los componentes de verdad. Prueba a escribir.</figcaption>
 			</figure>
 		</div>
 	</section>
 
-	<section aria-labelledby="install-t" class={`flex flex-wrap items-start gap-x-16 gap-y-8 pt-10 pb-2 lg:pt-16 lg:pb-6 ${section}`}>
-		<div class="flex max-w-[400px] flex-[1_1_320px] flex-col gap-3">
-			<p class="text-sm font-semibold text-brand-tertiary">Empezar</p>
-			<h2 id="install-t" class={h2}>Tres pasos y a lo tuyo</h2>
-			<p class="text-md text-tertiary">
-				Instala el paquete, importa la hoja en tu CSS de Tailwind v4 y usa los componentes. El resto es usar las
-				utilidades de siempre con los nombres del sistema.
-			</p>
-			<div><Button hierarchy="link-color" href="/start/install/" iconTrailing="arrow-right">Guía de instalación completa</Button></div>
-		</div>
-		<div class="min-w-0 flex-[1_1_520px]">
-			<CodeSnippet client:visible tabs={install} />
-		</div>
-	</section>
+	<div class={`flex flex-col gap-12 pt-10 pb-16 lg:gap-18 lg:pt-16 lg:pb-24 ${container}`}>
+		<section id="reglas" aria-labelledby="reglas-t" class="flex flex-col gap-6">
+			<div class="flex flex-col gap-2">
+				<p class={over}>Cinco reglas, una pantalla</p>
+				<div id="reglas-t"><SectionHeader title="Llega así. En cinco pasos, deja de doler." /></div>
+			</div>
+			{/* Una u otra según el ancho: la que no se ve no llega a hidratarse (`client:visible`) */}
+			<div class="hidden lg:block" data-story="steps"><RulesStory client:visible /></div>
+			<div class="lg:hidden" data-story="strip"><RulesStrip client:visible /></div>
+		</section>
 
-	<section aria-labelledby="map-t" class={`flex flex-col gap-4 pt-10 pb-2 lg:gap-6 lg:pt-14 lg:pb-6 ${section}`}>
-		<h2 id="map-t" class={h2}>Dónde está cada cosa</h2>
-		<ul class="m-0 hidden list-none grid-cols-4 gap-4 p-0 lg:grid">
-			{
-				map.map((m) => (
-					<LinkCard as="li" href={m.href} title={m.title} className="bg-primary">
-						{/* La muestra, inerte y fuera del enlace: LinkCard estira el enlace sobre toda la card */}
-						<div slot="preview" class={`h-37 shadow-[inset_0_-1px_0_var(--border-secondary)] ${thumb}`}>
-							{m.title === "Fundamentos" && (
-								<div class="flex items-center gap-4">
-									<span class="font-display text-display-lg font-semibold tracking-[-0.02em] text-primary">Aa</span>
-									<div class="grid grid-cols-3 gap-1.5">
-										{["bg-brand-solid", "bg-primary-solid", "bg-quaternary", "bg-error-solid", "bg-warning-solid", "bg-success-solid"].map((c) => (
-											<span class={`size-[22px] rounded-md ${c}`} />
+		<section id="asi" aria-labelledby="asi-t" class="flex flex-col gap-2">
+			<p class={over}>Así se ve</p>
+			<ThemeCompare client:visible />
+		</section>
+
+		<section id="mapa" aria-labelledby="mapa-t" class="flex flex-col gap-5">
+			<SectionTitle id="mapa-t" title="Por dónde seguir" />
+			<ul class="m-0 grid list-none grid-cols-1 gap-3 p-0 lg:grid-cols-4 lg:gap-4">
+				{
+					map.map((m) => (
+						<LinkCard as="li" href={m.href} title={m.title} className="bg-primary">
+							{/* La muestra, inerte y fuera del enlace: LinkCard estira el enlace sobre toda la card */}
+							<div slot="preview" class="hidden lg:block">
+								{m.title === "Fundamentos" && (
+									<TransparencyGrid className={`${sample} gap-2`}>
+										{swatches.map((c) => (
+											<span class={`size-10 rounded-lg shadow-[inset_0_0_0_1px_var(--border-secondary)] ${c}`} />
 										))}
-									</div>
-								</div>
-							)}
-							{m.title === "Componentes" && (
-								<div class="flex flex-col items-center gap-3">
-									<div class="flex gap-2">
-										<Button hierarchy="secondary" size="sm" iconLeading="download-01" tabIndex={-1}>Exportar</Button>
-										<Button size="sm" tabIndex={-1}>Guardar</Button>
-									</div>
-									<div class="flex items-center gap-2">
-										<Badge color="brand" size="sm">Nuevo</Badge>
-										<Badge color="warning" size="sm" dot>Pendiente</Badge>
-									</div>
-								</div>
-							)}
-							{m.title === "Stream" && <StreamStatus status="live" viewers={128} />}
-							{m.title === "Iconos" && (
-								<div class="grid grid-cols-4 gap-x-6 gap-y-4 text-fg-secondary">
-									{previewIcons.map((name) => <Icon name={name} size={24} />)}
-								</div>
-							)}
-						</div>
-						<Fragment slot="description">
-							{m.text}
-							<span class="mt-2 block text-xs text-quaternary" data-map-meta>{m.meta}</span>
-						</Fragment>
-					</LinkCard>
-				))
-			}
-		</ul>
-		<div class="flex flex-col gap-3 lg:hidden">
-			{
-				map.map((m) => (
-					<a href={m.href} class={`${card} items-center gap-4 p-3`}>
-						<span aria-hidden="true" class={`size-16 shrink-0 rounded-lg ${thumb} ${m.title === "Stream" ? "dark-mode bg-primary text-fg-secondary" : "text-fg-secondary"}`}>
-							{m.title === "Fundamentos" ? (
-								<span class="font-display text-display-xs font-semibold text-primary">Aa</span>
-							) : (
-								<Icon name={mobileIcon[m.title] as IconName} size={28} />
-							)}
-						</span>
-						<span class="min-w-0 grow">
-							<span class="block text-md font-semibold">{m.title}</span>
-							<span class="block text-sm text-tertiary">{m.short}</span>
-						</span>
-						<span aria-hidden="true" class="flex size-5 text-fg-quaternary [&>svg]:size-5" set:html={chevronRight} />
-					</a>
-				))
-			}
-		</div>
-	</section>
+									</TransparencyGrid>
+								)}
+								{m.title === "Componentes" && <ShowcaseImage name="Button" slug="button" />}
+								{m.title === "Stream" && <ShowcaseImage name="StreamStatus" slug="stream-status" />}
+								{m.title === "Iconos" && (
+									<TransparencyGrid className={`${sample} gap-4 text-fg-secondary`}>
+										{previewIcons.map((Icon) => <Icon size={24} />)}
+									</TransparencyGrid>
+								)}
+							</div>
+							<Fragment slot="description">
+								{m.text}{" "}<span data-map-meta>{m.meta}</span>
+							</Fragment>
+						</LinkCard>
+					))
+				}
+			</ul>
+		</section>
 
-	<section aria-labelledby="rules-t" class={`flex flex-wrap gap-x-16 gap-y-6 pt-10 pb-2 lg:pt-14 lg:pb-6 ${section}`}>
-		<div class="flex max-w-[360px] flex-[1_1_280px] flex-col gap-3">
-			<h2 id="rules-t" class={h2}>Cinco reglas que se olvidan</h2>
-			<p class="hidden text-md text-tertiary lg:block">El resto está en los fundamentos. Estas son las que más se saltan con prisa.</p>
-			<div class="hidden lg:block"><Button hierarchy="link-color" href="/foundations/principles/" iconTrailing="arrow-right">Leer los principios</Button></div>
-		</div>
-		<ol class="grid flex-[1_1_560px] grid-cols-1 gap-x-8 lg:grid-cols-2">
-			{
-				rules.map((r, i) => (
-					<li class="flex gap-4 py-4 shadow-[inset_0_-1px_0_var(--border-secondary)]">
-						<span class="font-mono text-sm leading-6 text-quaternary">{String(i + 1).padStart(2, "0")}</span>
-						<div>
-							<p class="text-md font-semibold text-primary">{r.title}</p>
-							<p class="mt-0.5 text-sm text-tertiary">{r.text}</p>
-						</div>
-					</li>
-				))
-			}
-		</ol>
-	</section>
-
-	<section aria-labelledby="suite-t" class={`flex flex-col gap-4 pt-8 pb-12 lg:gap-6 lg:pt-14 lg:pb-22 ${section}`}>
-		<div class="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-			<h2 id="suite-t" class="font-display text-xl font-semibold text-primary lg:text-display-xs">Las apps que lo usan</h2>
-			<p class="hidden text-sm text-tertiary lg:block">Cada una con su tono en el icono. La interfaz, en índigo para todas.</p>
-		</div>
-		<ul class="grid grid-cols-3 gap-2 sm:grid-cols-6 lg:gap-4">
-			{
-				apps.map(({ app, what }) => (
-					<li class="flex flex-col items-center gap-1.5 lg:flex-row lg:gap-3 lg:rounded-xl lg:p-3 lg:shadow-[inset_0_0_0_1px_var(--border-secondary)]">
-						<span aria-hidden="true" class="flex lg:hidden"><AppIcon app={app} size={48} /></span>
-						<span aria-hidden="true" class="hidden lg:flex"><AppIcon app={app} size={40} /></span>
-						<div class="min-w-0 text-center lg:text-left">
-							<p class="text-xs font-medium text-secondary lg:text-sm lg:font-semibold lg:text-primary">{appIcons[app].name}</p>
-							<p class="hidden text-xs text-tertiary lg:block">{what}</p>
-						</div>
-					</li>
-				))
-			}
-		</ul>
-	</section>
+		<section id="suite" aria-labelledby="suite-t" class="flex flex-col gap-5">
+			<SectionTitle id="suite-t" title="La suite" description="Seis apps, una sola gramática." />
+			<ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 lg:grid-cols-3">
+				{
+					apps.map(({ app, what }) => (
+						<li class="flex items-center gap-3 rounded-xl border border-secondary p-3">
+							<span aria-hidden="true" class="flex lg:hidden"><AppIcon app={app} size={40} /></span>
+							<span aria-hidden="true" class="hidden lg:flex"><AppIcon app={app} size={48} /></span>
+							<div class="flex min-w-0 flex-col">
+								<p class="m-0 text-sm font-semibold text-primary">{appIcons[app].name}</p>
+								<p class="m-0 text-sm text-tertiary">{what}</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</div>
 </Base>
 
 <script>
-	// El buscador de la portada abre la búsqueda global (SiteSearch escucha este evento)
-	for (const b of document.querySelectorAll("[data-open-search]"))
-		b.addEventListener("click", () => window.dispatchEvent(new CustomEvent("regula:search")));
+	// El campo de búsqueda de la portada abre la búsqueda global (SiteSearch escucha este evento): es de solo lectura,
+	// así que escribir en él no hace nada; se abre con el ratón, con Intro y con la barra espaciadora
+	const open = () => window.dispatchEvent(new CustomEvent("regula:search"));
+	for (const field of document.querySelectorAll<HTMLElement>("[data-open-search]")) {
+		field.addEventListener("click", open);
+		field.addEventListener("keydown", (e) => {
+			if (e.key !== "Enter" && e.key !== " ") return;
+			e.preventDefault();
+			open();
+		});
+	}
 </script>

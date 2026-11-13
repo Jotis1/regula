@@ -1,10 +1,10 @@
 "use client";
 
-import { type ReactNode, useId } from "react";
+import { useId } from "react";
 import { type FieldProps, FieldShell, type FieldSize } from "../internal/field.js";
+import type { IconProp } from "../internal/icon.js";
 import { OptionCombobox } from "../internal/option-combobox.js";
 import { OptionSelect, type SelectOption } from "../internal/option-select.js";
-import type { IconName } from "./Icon.js";
 import { MultiSelect } from "./MultiSelect.js";
 
 export type { SelectOption };
@@ -20,7 +20,7 @@ interface SelectBaseProps extends FieldProps {
 	 */
 	size?: FieldSize;
 	/** Icono inicial, 20px en `fg-quaternary`. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	disabled?: boolean;
 	/** Nombre del campo al enviar el formulario. */
 	name?: string;
@@ -64,6 +64,7 @@ export type SelectProps = SingleSelectProps | TagsSelectProps;
 export function Select(props: SelectProps) {
 	const {
 		label,
+		labelAside,
 		required,
 		hint,
 		error,
@@ -84,6 +85,7 @@ export function Select(props: SelectProps) {
 				display="tags"
 				id={id}
 				label={label}
+				labelAside={labelAside}
 				required={required}
 				hint={hint}
 				error={error}
@@ -144,6 +146,7 @@ export function Select(props: SelectProps) {
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

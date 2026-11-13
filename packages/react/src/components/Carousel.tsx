@@ -1,11 +1,18 @@
 "use client";
 
-import { IconArrowNarrowLeft, IconArrowNarrowRight } from "@jotis-me/icons";
-import { type KeyboardEvent, type PointerEvent, type ReactNode, useRef } from "react";
+import {
+	ArrowLeft,
+	ArrowNarrowLeft,
+	ArrowNarrowRight,
+	ArrowRight,
+	ChevronLeft,
+	ChevronRight,
+} from "@untitledui/icons";
+import { type KeyboardEvent, type PointerEvent, type ReactNode, useEffect, useRef, useState } from "react";
 import { cx } from "../internal/cx.js";
+import { DynIcon } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
-import { Icon } from "./Icon.js";
 import { PaginationDots } from "./PaginationDots.js";
 
 export type CarouselSize = "md" | "lg";
@@ -45,7 +52,22 @@ export interface CarouselProps {
 	arrowStyle?: CarouselArrowStyle;
 	labels?: Partial<CarouselLabels>;
 	className?: string;
+	/**
+	 * `slides` pasa de una en una con flechas y puntos. `strip` es una fila que se desplaza en horizontal con el dedo
+	 * o la rueda, se detiene en cada diapositiva y deja ver parte de la siguiente: sin flechas y sin JavaScript para
+	 * desplazarse (`index`, `defaultIndex`, `onChange` y `arrowStyle` no cuentan; de `labels`, solo `slideOf`).
+	 * @default "slides"
+	 */
+	type?: CarouselType;
+	/**
+	 * Ancho de cada diapositiva en `strip`, en px. Nunca pasa del ancho del contenedor menos 48px, para que asome la
+	 * siguiente.
+	 * @default 300
+	 */
+	slideWidth?: number;
 }
+
+export type CarouselType = "slides" | "strip";
 
 /** Lo que hay que arrastrar, en px, para que cuente como pasar de diapositiva. */
 const SWIPE = 48;
@@ -58,7 +80,89 @@ export type CarouselArrowStyle = "button-chevron" | "button-arrow" | "arrow";
  * Pasa diapositivas con flechas, puntos, el teclado (← y → con el foco dentro) y deslizando el dedo. No da la vuelta
  * ni avanza solo.
  */
-export function Carousel({
+export function Carousel({ type = "slides", slideWidth, ...props }: CarouselProps) {
+	return type === "strip" ? (
+		<CarouselStrip {...props} slideWidth={slideWidth} />
+	) : (
+		<CarouselSlides {...props} />
+	);
+}
+
+/**
+ * La lista y el desplazamiento son HTML y CSS: se ven y funcionan sin hidratar. El `IntersectionObserver` solo mueve
+ * los puntos, que sin él marcan la primera.
+ */
+function CarouselStrip({
+	slides,
+	"aria-label": ariaLabel,
+	size = "md",
+	slideWidth = 300,
+	labels,
+	className,
+}: Omit<CarouselProps, "type">) {
+	const list = useRef<HTMLUListElement>(null);
+	const [at, setAt] = useState(0);
+	const total = slides.length;
+	// biome-ignore lint/correctness/useExhaustiveDependencies: se vuelve a observar si cambia el número de diapositivas
+	useEffect(() => {
+		const root = list.current;
+		if (!root || typeof IntersectionObserver === "undefined") return;
+		const ratios = new Map<Element, number>();
+		const items = Array.from(root.children);
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) ratios.set(e.target, e.intersectionRatio);
+				let best = 0;
+				let top = -1;
+				items.forEach((el, i) => {
+					const r = ratios.get(el) ?? 0;
+					if (r > top) {
+						top = r;
+						best = i;
+					}
+				});
+				setAt(best);
+			},
+			{ root, threshold: [0, 0.25, 0.5, 0.75, 1] },
+		);
+		for (const el of items) observer.observe(el);
+		return () => observer.disconnect();
+	}, [total]);
+
+	return (
+		<div className={cx("font-body", className)}>
+			<ul
+				ref={list}
+				aria-label={ariaLabel}
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: la tira se desplaza; con el teclado tiene que poder enfocarse para moverla
+				tabIndex={0}
+				className="m-0 flex list-none snap-x snap-mandatory gap-3 overflow-x-auto rounded-md p-0 pb-3 outline-none focus-visible:shadow-focus-ring motion-safe:scroll-smooth"
+				style={{ scrollSnapType: "x mandatory" }}
+			>
+				{slides.map((slide, i) => (
+					<li
+						// biome-ignore lint/suspicious/noArrayIndexKey: las diapositivas se identifican por su posición
+						key={i}
+						className="min-w-0 max-w-[calc(100%-3rem)] flex-none snap-start"
+						style={{ width: slideWidth }}
+					>
+						{slide}
+					</li>
+				))}
+			</ul>
+			<div className="flex justify-center">
+				<PaginationDots
+					total={total}
+					current={at + 1}
+					size={size}
+					labels={{ pageOf: labels?.slideOf ?? defaultStrings.pageOf }}
+				/>
+			</div>
+		</div>
+	);
+}
+
+function CarouselSlides({
 	slides,
 	"aria-label": ariaLabel,
 	size = "md",
@@ -68,7 +172,7 @@ export function Carousel({
 	arrowStyle,
 	labels,
 	className,
-}: CarouselProps) {
+}: Omit<CarouselProps, "type" | "slideWidth">) {
 	const l: CarouselLabels = {
 		carousel: labels?.carousel ?? defaultStrings.carousel,
 		slide: labels?.slide ?? defaultStrings.slide,
@@ -129,20 +233,20 @@ export function Carousel({
 			>
 				{arrowStyle === "arrow" ? (
 					prev ? (
-						<IconArrowNarrowLeft size={size === "lg" ? 48 : 40} />
+						<ArrowNarrowLeft size={size === "lg" ? 48 : 40} />
 					) : (
-						<IconArrowNarrowRight size={size === "lg" ? 48 : 40} />
+						<ArrowNarrowRight size={size === "lg" ? 48 : 40} />
 					)
 				) : (
-					<Icon
-						name={
+					<DynIcon
+						icon={
 							arrowStyle === "button-arrow"
 								? prev
-									? "arrow-left"
-									: "arrow-right"
+									? ArrowLeft
+									: ArrowRight
 								: prev
-									? "chevron-left"
-									: "chevron-right"
+									? ChevronLeft
+									: ChevronRight
 						}
 						size={size === "lg" ? 24 : 20}
 					/>

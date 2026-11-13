@@ -1,5 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Mail01, Star01, Zap } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { MultiSelect, RadioGroup, Select } from "../src/index.js";
@@ -47,7 +48,7 @@ describe("RadioGroup, Select y MultiSelect: sin las props nuevas", () => {
 					placeholder="Elige"
 					size="sm"
 					error="e"
-					icon="mail-01"
+					icon={Mail01}
 				/>,
 			),
 			renderToStaticMarkup(
@@ -55,7 +56,7 @@ describe("RadioGroup, Select y MultiSelect: sin las props nuevas", () => {
 			),
 		];
 		html.forEach((h, i) => {
-			expect(h, `caso ${i}`).toBe(BEFORE[i]);
+			expect(h, `caso ${i}`).toMatchBefore(BEFORE[i]);
 		});
 	});
 });
@@ -67,14 +68,14 @@ describe("RadioGroup: icon-simple, avatar e icono de pago", () => {
 			label: "Plan básico",
 			supporting: "10 €/mes",
 			hint: "Hasta 10 usuarios",
-			icon: "star-01" as const,
+			icon: Star01,
 		},
 		{
 			value: "pro",
 			label: "Plan pro",
 			supporting: "20 €/mes",
 			hint: "Hasta 20 usuarios",
-			icon: "zap" as const,
+			icon: Zap,
 		},
 	];
 
@@ -96,7 +97,7 @@ describe("RadioGroup: icon-simple, avatar e icono de pago", () => {
 				aria-label="Plan"
 				appearance="icon-simple"
 				options={[
-					{ value: "a", label: "Plan básico", icon: "zap" },
+					{ value: "a", label: "Plan básico", icon: Zap },
 					{ value: "b", label: "Olivia Rhye", avatar: { initials: "OR" } },
 					{ value: "c", label: "Visa terminada en 1234", paymentIcon: <svg data-logo="visa" /> },
 				]}
@@ -157,7 +158,7 @@ describe("RadioGroup: icon-simple, avatar e icono de pago", () => {
 				appearance="icon-simple"
 				size="md"
 				options={[
-					{ value: "a", label: "Plan", icon: "zap" },
+					{ value: "a", label: "Plan", icon: Zap },
 					{ value: "b", label: "Visa", paymentIcon: <svg data-logo="x" /> },
 					{ value: "c", label: "Olivia", avatar: { initials: "OR" } },
 				]}
@@ -183,16 +184,16 @@ describe("RadioGroup: icon-simple, avatar e icono de pago", () => {
 						media: <i data-m="media" />,
 						paymentIcon: <i data-m="pago" />,
 						avatar: { initials: "AA" },
-						icon: "zap",
+						icon: Zap,
 					},
 					{
 						value: "b",
 						label: "B",
 						paymentIcon: <i data-m="pago" />,
 						avatar: { initials: "BB" },
-						icon: "zap",
+						icon: Zap,
 					},
-					{ value: "c", label: "C", avatar: { initials: "CC" }, icon: "zap" },
+					{ value: "c", label: "C", avatar: { initials: "CC" }, icon: Zap },
 				]}
 			/>,
 		);

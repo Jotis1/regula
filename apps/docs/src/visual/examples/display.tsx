@@ -1,7 +1,6 @@
 // Puertos de las vistas previas de Badge, Tag y los avatares (reference/components/*/preview.html).
 
-import { FlagMexicoCircle, FlagPortugalCircle, FlagSpainCircle } from "@jotis-me/icons/flags";
-import { SocialStripeLogo } from "@jotis-me/icons/logos";
+import { SocialStripeLogo } from "@jotis-me/assets/logos";
 import {
 	Avatar,
 	AvatarGroup,
@@ -11,11 +10,26 @@ import {
 	BadgeGroup,
 	CheckIcon,
 	CheckItem,
+	CopyTooltip,
+	IconTile,
 	Kbd,
 	Rating,
 	RatingBadge,
 	Tag,
+	TokenSwatch,
 } from "@jotis-me/react";
+import { FlagEs, FlagMx, FlagPt } from "@untitledui/country-flags";
+import {
+	ArrowRight,
+	ArrowUpRight,
+	Calendar,
+	Check,
+	Clock,
+	Download01,
+	HomeLine,
+	Mail01,
+	Plus,
+} from "@untitledui/icons";
 import { row, stack } from "./actions";
 
 const noop = () => {};
@@ -87,13 +101,13 @@ export function BadgeExample() {
 				</Badge>
 			</div>
 			<div className={row}>
-				<Badge size="sm" flag={<FlagSpainCircle />}>
+				<Badge size="sm" flag={<FlagEs />}>
 					España
 				</Badge>
-				<Badge type="badge" color="brand" flag={<FlagPortugalCircle />}>
+				<Badge type="badge" color="brand" flag={<FlagPt />}>
 					Portugal
 				</Badge>
-				<Badge type="modern" size="lg" flag={<FlagMexicoCircle />}>
+				<Badge type="modern" size="lg" flag={<FlagMx />}>
 					México
 				</Badge>
 				<Badge color="success" avatar={<Avatar size="xs" />}>
@@ -101,19 +115,19 @@ export function BadgeExample() {
 				</Badge>
 			</div>
 			<div className={row}>
-				<Badge size="sm" color="brand" iconTrailing="arrow-right">
+				<Badge size="sm" color="brand" iconTrailing={ArrowRight}>
 					Ver
 				</Badge>
-				<Badge type="badge" iconTrailing="arrow-up-right">
+				<Badge type="badge" iconTrailing={ArrowUpRight}>
 					Abrir
 				</Badge>
-				<Badge type="modern" size="lg" color="error" iconTrailing="arrow-right">
+				<Badge type="modern" size="lg" color="error" iconTrailing={ArrowRight}>
 					Revisar
 				</Badge>
-				<Badge size="sm" iconOnly="plus" label="Añadir" />
-				<Badge color="brand" iconOnly="plus" label="Añadir" />
-				<Badge type="badge" size="lg" color="success" iconOnly="check" label="Hecho" />
-				<Badge type="modern" iconOnly="arrow-right" label="Siguiente" />
+				<Badge size="sm" iconOnly={Plus} label="Añadir" />
+				<Badge color="brand" iconOnly={Plus} label="Añadir" />
+				<Badge type="badge" size="lg" color="success" iconOnly={Check} label="Hecho" />
+				<Badge type="modern" iconOnly={ArrowRight} label="Siguiente" />
 			</div>
 		</div>
 	);
@@ -136,8 +150,8 @@ export function TagExample() {
 				</Tag>
 			</div>
 			<div className={row}>
-				<Tag flag={<FlagSpainCircle />}>España</Tag>
-				<Tag size="md" flag={<FlagPortugalCircle />} onRemove={noop}>
+				<Tag flag={<FlagEs />}>España</Tag>
+				<Tag size="md" flag={<FlagPt />} onRemove={noop}>
 					Portugal
 				</Tag>
 				<Tag size="lg" avatar={<Avatar size="xs" />} count={3}>
@@ -148,7 +162,7 @@ export function TagExample() {
 				<Tag checkable defaultChecked>
 					Diseño
 				</Tag>
-				<Tag size="md" checkable flag={<FlagMexicoCircle />}>
+				<Tag size="md" checkable flag={<FlagMx />}>
 					México
 				</Tag>
 				<Tag size="lg" checkable defaultChecked avatar={<Avatar size="xs" />} onRemove={noop}>
@@ -163,7 +177,7 @@ const AVATAR_SIZES = ["xs", "sm", "md", "lg", "xl", "2xl"] as const;
 
 /**
  * Los seis tamaños con iniciales, el estado y el icono sin foto, y las tres insignias del Figma (verificado,
- * contador y empresa) en los seis tamaños. El logo de empresa es uno de `@jotis-me/icons/logos`.
+ * contador y empresa) en los seis tamaños. El logo de empresa es uno de `@jotis-me/assets/logos`.
  */
 export function AvatarExample() {
 	return (
@@ -358,6 +372,47 @@ export function KbdExample() {
 				<Kbd variant="field">⌘ K</Kbd>
 				<Kbd variant="field">/</Kbd>
 			</div>
+		</div>
+	);
+}
+
+/** Rejilla de baldosas: una elegida, un enlace y los tres tamaños de vista previa. */
+export function IconTileExample() {
+	return (
+		<div className={stack}>
+			<div className="grid w-[420px] max-w-full grid-cols-4 gap-3">
+				<IconTile icon={Mail01} label="Mail01" onSelect={noop} />
+				<IconTile icon={HomeLine} label="HomeLine" selected onSelect={noop} />
+				<IconTile icon={Calendar} label="Calendar" onSelect={noop} />
+				<IconTile icon={Download01} label="Download01" href="#" />
+			</div>
+			<div className="grid w-[420px] max-w-full grid-cols-4 gap-3">
+				<IconTile icon={Clock} label="Clock" size={16} onSelect={noop} />
+				<IconTile icon={Clock} label="Clock" size={20} onSelect={noop} />
+				<IconTile icon={Clock} label="Clock" size={24} onSelect={noop} />
+				<IconTile icon={Clock} label="AlignHorizontalCentre02" onSelect={noop} />
+			</div>
+		</div>
+	);
+}
+
+/** Un token en fila (para una celda de tabla) y en tarjeta. Lleva su CopyTooltip, que avisa al copiar. */
+export function TokenSwatchExample() {
+	return (
+		<div className={stack}>
+			<TokenSwatch name="text-primary" light="#171717" dark="#fafafa" utility="text-primary" />
+			<TokenSwatch name="bg-brand-solid" light="#4f39f6" dark="#4f39f6" utility="bg-brand-solid" />
+			<div className="w-[280px] max-w-full">
+				<TokenSwatch
+					layout="card"
+					name="border-primary"
+					light="#d4d4d4"
+					dark="#404040"
+					utility="border-primary"
+					usage="Bordes de inputs, botones secundarios y checkboxes."
+				/>
+			</div>
+			<CopyTooltip />
 		</div>
 	);
 }

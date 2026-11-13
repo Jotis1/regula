@@ -1,7 +1,7 @@
+import { Plus } from "@untitledui/icons";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Avatar, type AvatarProps, type AvatarSize } from "./Avatar.js";
-import { Icon } from "./Icon.js";
 import { Tooltip } from "./Tooltip.js";
 
 export interface AvatarGroupProps {
@@ -55,7 +55,7 @@ export function AvatarGroup({ items, size = "sm", onAdd, addLabel, className }: 
 						ADD_SIZE[size],
 					)}
 				>
-					<Icon name="plus" size={ADD_ICON[size]} />
+					<Plus size={ADD_ICON[size]} />
 				</button>
 			</Tooltip>
 		</span>

@@ -84,4 +84,14 @@ describe("theme.css con Tailwind v4", () => {
 		expect(css).toContain(".dark-mode");
 		expect(css).not.toContain("prefers-color-scheme: dark");
 	});
+
+	it("no aplica dark: dentro de un light-mode, aunque un ancestro sea dark-mode", () => {
+		const css = build(["dark:bg-primary"]);
+		const selector = css.slice(
+			css.indexOf(".dark\\:bg-primary"),
+			css.indexOf("}", css.indexOf(".dark\\:bg-primary")),
+		);
+		expect(selector).toContain(":where(.dark-mode, .dark-mode *)");
+		expect(selector).toContain(":not(:where(.light-mode, .light-mode *))");
+	});
 });

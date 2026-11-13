@@ -1,13 +1,12 @@
 // Puertos de las vistas previas de los componentes de formulario.
 
-import { FileDesignFig, FileDocumentPdf, FileMediaMp4 } from "@jotis-me/icons/files";
 import {
 	PaymentAmexMd,
 	PaymentDiscoverMd,
 	PaymentMaestroMd,
 	PaymentMastercardMd,
 	PaymentVisaMd,
-} from "@jotis-me/icons/payments";
+} from "@jotis-me/assets/payments";
 import {
 	Avatar,
 	Checkbox,
@@ -28,6 +27,8 @@ import {
 	Toggle,
 	VerificationCodeInput,
 } from "@jotis-me/react";
+import { FileIcon } from "@untitledui/file-icons";
+import { Copy01, CurrencyEuro, Globe01, Mail01, SearchLg, Star01, Users01, Zap } from "@untitledui/icons";
 import { row, stack } from "./actions";
 
 export function InputExample() {
@@ -36,19 +37,19 @@ export function InputExample() {
 			<Input
 				label="Correo"
 				required
-				icon="mail-01"
+				icon={Mail01}
 				placeholder="tu@jotis.me"
 				hint="Solo lo usamos para avisos."
 			/>
-			<Input label="Importe" placeholder="0,00" trailing="currency-euro" />
+			<Input label="Importe" placeholder="0,00" trailing={CurrencyEuro} />
 			<Input
 				label="Correo"
-				icon="mail-01"
+				icon={Mail01}
 				defaultValue="mal@correo"
 				error="Introduce un correo válido."
 			/>
 			<Input label="Usuario" disabled defaultValue="jotis" />
-			<Input label="Buscar" size="sm" icon="search-lg" placeholder="sm" />
+			<Input label="Buscar" size="sm" icon={SearchLg} placeholder="sm" />
 			<Input label="Nombre" size="lg" placeholder="lg" />
 			<Input label="Web" prefix="https://" placeholder="jotis.me" />
 			<Input
@@ -78,7 +79,7 @@ export function InputExample() {
 			<Input
 				label="Web"
 				defaultValue="www.jotis.me"
-				trailingButton={{ label: "Copiar", icon: "copy-01" }}
+				trailingButton={{ label: "Copiar", icon: Copy01 }}
 				hint="Botón pegado al campo."
 			/>
 			<Input label="Fecha" type="datetime-local" defaultValue="2028-04-16T10:30" />
@@ -137,7 +138,7 @@ export function SelectExample() {
 				/>
 				<Select
 					label="País"
-					icon="globe-01"
+					icon={Globe01}
 					defaultValue="es"
 					options={[
 						{ value: "es", label: "España", supporting: "+34" },
@@ -212,14 +213,14 @@ export function RadioGroupExample() {
 							label: "Básico",
 							supporting: "10 €/mes",
 							hint: "Hasta 10 personas.",
-							media: <FeaturedIcon icon="zap" variant="modern" color="gray" size="sm" />,
+							media: <FeaturedIcon icon={Zap} variant="modern" color="gray" size="sm" />,
 						},
 						{
 							value: "equipo",
 							label: "Equipo",
 							supporting: "20 €/mes",
 							hint: "Hasta 20 personas.",
-							media: <FeaturedIcon icon="users-01" variant="modern" color="gray" size="sm" />,
+							media: <FeaturedIcon icon={Users01} variant="modern" color="gray" size="sm" />,
 						},
 					]}
 				/>
@@ -257,14 +258,14 @@ export function RadioGroupExample() {
 							label: "Básico",
 							supporting: "10 €/mes",
 							hint: "Hasta 10 personas.",
-							icon: "star-01",
+							icon: Star01,
 						},
 						{
 							value: "pro",
 							label: "Pro",
 							supporting: "20 €/mes",
 							hint: "Hasta 20 personas.",
-							icon: "zap",
+							icon: Zap,
 						},
 					]}
 				/>
@@ -321,14 +322,14 @@ export function RadioGroupExample() {
 							label: "Básico",
 							supporting: "10 €/mes",
 							hint: "Hasta 10 personas.",
-							icon: "star-01",
+							icon: Star01,
 						},
 						{
 							value: "pro",
 							label: "Pro",
 							supporting: "20 €/mes",
 							hint: "Hasta 20 personas.",
-							icon: "zap",
+							icon: Zap,
 						},
 					]}
 				/>
@@ -404,10 +405,20 @@ export function FileUploadExample() {
 						size: 204800,
 						progress: 100,
 						status: "complete",
-						icon: <FileDocumentPdf />,
+						icon: <FileIcon type="pdf" />,
 					},
-					{ name: "grabacion-panel.mp4", size: 16_000_000, progress: 40, icon: <FileMediaMp4 /> },
-					{ name: "prototipo-final.fig", size: 4_200_000, progress: 80, icon: <FileDesignFig /> },
+					{
+						name: "grabacion-panel.mp4",
+						size: 16_000_000,
+						progress: 40,
+						icon: <FileIcon type="mp4" />,
+					},
+					{
+						name: "prototipo-final.fig",
+						size: 4_200_000,
+						progress: 80,
+						icon: <FileIcon type="fig" />,
+					},
 				]}
 				onRemove={() => {}}
 			/>

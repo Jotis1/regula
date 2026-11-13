@@ -1,5 +1,6 @@
 // Envoltorio .tsx: las props que son funciones (onChange) no pueden pasar de un .astro a una isla.
 import { ButtonGroup } from "@jotis-me/react";
+import { Clock } from "@untitledui/icons";
 import { useState } from "react";
 
 export default function Periodo() {
@@ -13,7 +14,7 @@ export default function Periodo() {
 				items={[
 					{ value: "a", label: "12 meses" },
 					{ value: "m", label: "7 días" },
-					{ value: "d", label: "24 horas", icon: "clock" },
+					{ value: "d", label: "24 horas", icon: Clock },
 				]}
 			/>
 			<p className="text-sm text-tertiary" data-testid="elegido">

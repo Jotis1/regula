@@ -1,211 +1,26 @@
 ---
-import { Icon } from "@jotis-me/react";
-// Tabla de tokens de Color (reference/docs-design/Color.dc.html), generada desde @jotis-me/tokens: un token nuevo
-// aparece sin tocar la web. Muestra claro/oscuro, uso, valores, contraste WCAG contra bg-primary de cada tema
-// (texto e iconos, calculado en el build) y la utilidad para copiar. Sin JavaScript se lee entera; el filtro de texto
-// y de familia es lo único que necesita JavaScript (design §6).
+// Explorador de tokens de Color (design D6 de redesign-docs-site-v2), generado desde @jotis-me/tokens: un token nuevo
+// aparece sin tocar la web. Filtro por nombre, valor o uso, elección de familia y, de cada token, sus dos valores a la
+// vez, su utilidad para copiar y su nota de uso; en escritorio, además, el contraste WCAG de texto e iconos (calculado
+// en el build). Lo pinta `TokenExplorerView` en el servidor, sin isla; el script solo esconde lo que no toca.
+// Sin JavaScript se leen todas las familias seguidas y las pestañas son enlaces a cada una; el filtro no aparece.
 import { colors } from "@jotis-me/tokens";
-import { contrast, MIN, ratio } from "../lib/contrast";
-import { COLOR_FAMILIES, colorFamily, utilityFor } from "../lib/tokens";
-import { fold } from "../search/entries";
+import { explorerFamilies } from "../lib/tokens";
+import TokenExplorerView from "./TokenExplorerView";
 
-// Fondo contra el que se mide cada token: bg-primary, salvo los `_on-brand`, que van sobre las secciones de marca
-// (su nota de uso lo dice: «sobre bg-brand-section»). Medirlos contra blanco daría un «1:1 · bajo» engañoso.
-const groundOf = (name: string) => colors[name.includes("_on-brand") ? "bg-brand-section" : "bg-primary"];
-const rows = Object.entries(colors).map(([name, t]) => {
-	const family = colorFamily(name);
-	const kind =
-		family === "text" ? "text" : family === "fg" ? "icon" : family === "border" ? "border" : "fill";
-	const rate = (theme: "light" | "dark") => {
-		if (kind !== "text" && kind !== "icon") return undefined;
-		const r = contrast(t[theme], groundOf(name)[theme]);
-		return r === undefined ? undefined : { label: ratio(r), low: r < MIN[kind] };
-	};
-	return {
-		name,
-		family,
-		kind,
-		light: t.light,
-		dark: t.dark,
-		usage: t.usage,
-		utility: utilityFor(name),
-		rl: rate("light"),
-		rd: rate("dark"),
-	};
-});
-const counts = Object.fromEntries(
-	COLOR_FAMILIES.map(([id]) => [id, rows.filter((r) => r.family === id).length]),
-);
-
-// Media muestra con el color sobre el fondo de su tema, como en el diseño: texto, icono, borde o relleno
-const half = (kind: string, color: string, ground: string) => {
-	const s = "flex:1;display:flex;align-items:center;justify-content:center;";
-	if (kind === "text") return `${s}background:${ground};color:${color}`;
-	if (kind === "icon") return `${s}background:${ground};color:${color}`;
-	if (kind === "border") return `${s}background:${ground};box-shadow:inset 0 0 0 3px ${color}`;
-	// Con alfa, sobre un gris medio para que se vea la transparencia
-	return `${s}background:linear-gradient(${color},${color}),${color.length > 7 ? "#a3a3a3" : ground}`;
-};
-const th = "px-4 py-3 text-left text-xs font-medium text-tertiary";
-// La tabla tiene unos 4.600 nodos y casi toda queda fuera de la vista al cargar. Con `content-visibility: auto` el
-// navegador no la maqueta ni la pinta hasta que se acerca, y sigue en el árbol de accesibilidad y en Ctrl+F. Sin
-// eso, en Lighthouse móvil (CPU ×4) su maquetación retrasaba el primer pintado y el LCP de Color en ~0,8 s y lo
-// dejaba al borde de 90. El alto estimado (~130 px por fila más la cabecera) evita que la barra de desplazamiento
-// salte; `auto` recuerda el alto real en cuanto se ha pintado una vez, con o sin filtro.
-const estimatedHeight = `auto ${rows.length * 130 + 48}px`;
+const families = explorerFamilies(colors);
 ---
 
-<div class="not-prose my-4 flex flex-col gap-5" data-tokens>
-	<p class="text-sm text-tertiary">
-		Pulsa la utilidad para copiarla. La muestra enseña el valor claro a la izquierda y el oscuro a la derecha.
-	</p>
-	<div class="flex flex-col gap-4" data-tokens-filters hidden>
-		<div class="flex flex-col gap-1.5 md:w-[280px]">
-			<label for="tokens-filter" class="text-sm font-medium text-secondary">Filtrar tokens</label>
-			<div class="flex h-10 items-center gap-2 rounded-lg border border-primary bg-primary px-3 text-fg-quaternary shadow-xs focus-within:shadow-focus-ring">
-				<Icon name="search-md" size={20} className="shrink-0" />
-				<input
-					id="tokens-filter"
-					type="search"
-					placeholder="brand, error, hover…"
-					autocomplete="off"
-					class="min-w-0 grow border-0 bg-transparent text-md text-primary outline-none placeholder:text-placeholder"
-				/>
-			</div>
-		</div>
-		<div role="group" aria-label="Familia de tokens" class="flex flex-wrap rounded-lg shadow-xs">
-			{
-				[["all", "Todas", rows.length] as const, ...COLOR_FAMILIES.map(([id, label]) => [id, label, counts[id]] as const)].map(
-					([id, label, n], i, all) => (
-						<button
-							type="button"
-							data-family={id}
-							aria-pressed={id === "all" ? "true" : "false"}
-							class:list={[
-								"-ml-px h-10 border border-primary bg-primary px-3.5 text-sm font-semibold text-secondary first:ml-0 hover:bg-primary_hover focus-visible:z-10 focus-visible:shadow-focus-ring focus-visible:outline-none aria-pressed:bg-secondary aria-pressed:text-primary",
-								i === 0 && "rounded-l-lg",
-								i === all.length - 1 && "rounded-r-lg",
-							]}
-						>
-							{label} <span class="font-medium text-quaternary tabular-nums">{n}</span>
-						</button>
-					),
-				)
-			}
-		</div>
-	</div>
-	<div
-		class="overflow-x-auto rounded-xl shadow-[inset_0_0_0_1px_var(--border-secondary)] [content-visibility:auto]"
-		style={`contain-intrinsic-size: ${estimatedHeight}`}
-		data-tokens-table
-	>
-		<table class="w-full min-w-[760px] border-collapse text-sm">
-			<caption class="sr-only">Tokens de color, con sus valores en claro y oscuro, su contraste y su utilidad de Tailwind</caption>
-			<thead>
-				<tr class="bg-secondary">
-					<th scope="col" class={`${th} w-24 pl-5`}>Muestra</th>
-					<th scope="col" class={th}>Token y uso</th>
-					<th scope="col" class={`${th} w-32`}>Claro</th>
-					<th scope="col" class={`${th} w-32`}>Oscuro</th>
-					<th scope="col" class={`${th} w-60 pr-5`}>Utilidad de Tailwind</th>
-				</tr>
-			</thead>
-			<tbody>
-				{
-					rows.map((r) => (
-						<tr
-							class="shadow-[inset_0_1px_0_var(--border-secondary)] hover:bg-primary_hover"
-							data-token-family={r.family}
-							data-token-search={fold(`${r.name} ${r.usage}`)}
-						>
-							<td class="py-3 pr-4 pl-5 align-top">
-								<span aria-hidden="true" class="flex h-10 w-14 overflow-hidden rounded-md shadow-[inset_0_0_0_1px_var(--border-secondary)]">
-									{[["light", "#ffffff"], ["dark", "#0a0a0a"]].map(([theme, ground]) => (
-										// La muestra «Aa» va en un pseudoelemento: es decoración (aria-hidden) y un texto _on-brand
-										// sobre blanco no da contraste, que es justo lo que enseña la muestra
-										<span
-											style={half(r.kind, r[theme as "light" | "dark"], ground as string)}
-											class:list={[
-												"font-display text-[15px] font-semibold",
-												r.kind === "text" && "before:content-['Aa']",
-											]}
-										>
-											{r.kind === "icon" && <Icon name="star-01" size={16} />}
-										</span>
-									))}
-								</span>
-							</td>
-							<th scope="row" class="px-4 py-3 text-left align-top font-normal">
-								<span class="block font-mono text-[13px] font-medium text-primary">{r.name}</span>
-								<span class="mt-0.5 block text-[13px] text-tertiary">{r.usage}</span>
-							</th>
-							{[r.light, r.dark].map((value, i) => {
-								const rate = i === 0 ? r.rl : r.rd;
-								return (
-									<td class="px-4 py-3 align-top">
-										<span class="block font-mono text-[13px] text-secondary">{value}</span>
-										{rate && (
-											<span class="block text-xs text-quaternary tabular-nums" data-ratio>
-												{rate.label}
-												{rate.low && " · bajo"}
-											</span>
-										)}
-									</td>
-								);
-							})}
-							<td class="py-2.5 pr-5 pl-4 align-top">
-								<button
-									type="button"
-									data-copy={r.utility}
-									aria-label={`Copiar ${r.utility}`}
-									class="inline-flex h-7 items-center gap-1.5 rounded-md bg-secondary px-2 font-mono text-xs font-medium whitespace-nowrap text-secondary shadow-[inset_0_0_0_1px_var(--border-secondary)] hover:bg-secondary_hover hover:text-primary focus-visible:shadow-focus-ring focus-visible:outline-none"
-								>
-									{r.utility}
-									<Icon name="copy-01" size={14} className="text-fg-quaternary" />
-								</button>
-							</td>
-						</tr>
-					))
-				}
-			</tbody>
-		</table>
-		<p class="px-5 py-10 text-center text-sm text-tertiary" data-tokens-empty hidden>
-			Ningún token se llama así. Prueba con la función (fondo, borde, error) o mira en otra familia.
-		</p>
-	</div>
-	<p class="text-xs text-quaternary">Contraste calculado sobre bg-primary de cada tema (los <code class="font-mono">_on-brand</code>, sobre bg-brand-section), con los valores de @jotis-me/tokens.</p>
-</div>
+<TokenExplorerView families={families} />
+<noscript>
+	<style is:inline>
+		[data-tokens] [data-token-family] { display: block; }
+		[data-tokens] [data-tokens-js] { display: none; }
+	</style>
+</noscript>
 
 <script>
-	import { fold } from "../search/entries";
+	import { initTokenExplorer } from "../lib/token-explorer";
 
-	for (const root of document.querySelectorAll<HTMLElement>("[data-tokens]")) {
-		const filters = root.querySelector<HTMLElement>("[data-tokens-filters]");
-		const input = root.querySelector<HTMLInputElement>("#tokens-filter");
-		const empty = root.querySelector<HTMLElement>("[data-tokens-empty]");
-		const buttons = [...root.querySelectorAll<HTMLButtonElement>("[data-family]")];
-		const rows = [...root.querySelectorAll<HTMLElement>("[data-token-family]")];
-		if (!filters || !input || !empty) continue;
-		filters.hidden = false;
-		let family = "all";
-		const apply = () => {
-			const q = fold(input.value.trim());
-			let shown = 0;
-			for (const row of rows) {
-				const hit =
-					(family === "all" || row.dataset.tokenFamily === family) &&
-					(!q || (row.dataset.tokenSearch ?? "").includes(q));
-				row.hidden = !hit;
-				if (hit) shown++;
-			}
-			empty.hidden = shown > 0;
-		};
-		for (const b of buttons)
-			b.addEventListener("click", () => {
-				family = b.dataset.family ?? "all";
-				for (const o of buttons) o.setAttribute("aria-pressed", String(o === b));
-				apply();
-			});
-		input.addEventListener("input", apply);
-	}
+	initTokenExplorer();
 </script>

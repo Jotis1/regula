@@ -1,7 +1,9 @@
 // Base común de la familia Stream (Twitch), design §12. Sin "use client": la usan componentes de servidor.
+
+import { CurrencyEuro, RefreshCw01, Star01, Stars02, UserPlus01, Users01, Zap } from "@untitledui/icons";
 import type { CSSProperties } from "react";
-import type { IconName } from "../components/Icon.js";
 import { formatCurrency, formatNumber } from "./format.js";
+import type { IconComponent } from "./icon.js";
 
 /**
  * Raíz de cada componente de Stream: siempre en oscuro. `dark-mode` redefine los tokens en su subárbol (el
@@ -32,14 +34,14 @@ export function streamMotion(state: StreamMotion | undefined): string | undefine
 export type StreamEventType = "follow" | "sub" | "resub" | "gift" | "raid" | "bits" | "donation";
 
 /** Icono y etiqueta de cada tipo de evento, compartidos por StreamAlert y StreamEvents. */
-export const STREAM_EVENTS: Record<StreamEventType, { icon: IconName; label: string }> = {
-	follow: { icon: "user-plus-01", label: "Nuevo seguidor" },
-	sub: { icon: "star-01", label: "Nueva suscripción" },
-	resub: { icon: "refresh-cw-01", label: "Suscripción renovada" },
-	gift: { icon: "stars-02", label: "Suscripciones regaladas" },
-	raid: { icon: "users-01", label: "Raid entrante" },
-	bits: { icon: "zap", label: "Bits" },
-	donation: { icon: "currency-euro", label: "Donación" },
+export const STREAM_EVENTS: Record<StreamEventType, { icon: IconComponent; label: string }> = {
+	follow: { icon: UserPlus01, label: "Nuevo seguidor" },
+	sub: { icon: Star01, label: "Nueva suscripción" },
+	resub: { icon: RefreshCw01, label: "Suscripción renovada" },
+	gift: { icon: Stars02, label: "Suscripciones regaladas" },
+	raid: { icon: Users01, label: "Raid entrante" },
+	bits: { icon: Zap, label: "Bits" },
+	donation: { icon: CurrencyEuro, label: "Donación" },
 };
 
 export interface StreamEventData {

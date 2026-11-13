@@ -1,10 +1,10 @@
 "use client";
 
+import { HelpCircle } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import type { BubbleAlign, BubbleSide } from "../internal/bubble.js";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 import { Tooltip } from "./Tooltip.js";
 
 export interface HelpIconProps {
@@ -42,7 +42,7 @@ export function HelpIcon({ title, text, placement, arrow, label, open, className
 					className,
 				)}
 			>
-				<Icon name="help-circle" size={16} />
+				<HelpCircle size={16} />
 			</button>
 		</Tooltip>
 	);

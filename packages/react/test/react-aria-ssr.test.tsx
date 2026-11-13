@@ -68,9 +68,9 @@ describe("react-aria-components en SSR", () => {
 		document.body.append(container);
 		const serverIds = [...container.querySelectorAll("[id]")].map((e) => e.id);
 		const recoverable: unknown[] = [];
-		await act(async () => {
-			hydrateRoot(container, <Demo />, { onRecoverableError: (e) => recoverable.push(e) });
-		});
+		const root = await act(async () =>
+			hydrateRoot(container, <Demo />, { onRecoverableError: (e) => recoverable.push(e) }),
+		);
 
 		expect(recoverable).toEqual([]);
 		expect(errors).not.toHaveBeenCalled();
@@ -84,6 +84,8 @@ describe("react-aria-components en SSR", () => {
 		expect(document.getElementById(input.getAttribute("aria-describedby") ?? "")?.textContent).toBe(
 			"Solo lo usamos para avisos.",
 		);
+		// Se desmonta: Dialog deja un temporizador de 500 ms que, si sobrevive al fichero, salta ya sin `document`
+		await act(async () => root.unmount());
 		container.remove();
 	});
 
@@ -97,14 +99,16 @@ describe("react-aria-components en SSR", () => {
 		expect(danglingAriaRefs(container)).toEqual([]);
 		const serverIds = [...container.querySelectorAll("[id]")].map((e) => e.id);
 		const recoverable: unknown[] = [];
-		await act(async () => {
-			hydrateRoot(container, <Fields />, { onRecoverableError: (e) => recoverable.push(e) });
-		});
+		const root = await act(async () =>
+			hydrateRoot(container, <Fields />, { onRecoverableError: (e) => recoverable.push(e) }),
+		);
 		expect(recoverable).toEqual([]);
 		expect(errors).not.toHaveBeenCalled();
 		expect(warns).not.toHaveBeenCalled();
 		expect([...container.querySelectorAll("[id]")].map((e) => e.id)).toEqual(serverIds);
 		expect(danglingAriaRefs(container)).toEqual([]);
+		// Se desmonta, como arriba
+		await act(async () => root.unmount());
 		container.remove();
 	});
 });

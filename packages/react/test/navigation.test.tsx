@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { HomeLine } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { pageList } from "../src/components/Pagination.js";
@@ -126,7 +127,7 @@ describe("Tabs", () => {
 
 describe("Breadcrumbs", () => {
 	const crumbs = [
-		{ label: "Inicio", icon: "home-line" as const, href: "/" },
+		{ label: "Inicio", icon: HomeLine, href: "/" },
 		{ label: "Pecunia", href: "/pecunia/" },
 		{ label: "Gastos de octubre" },
 	];

@@ -35,8 +35,8 @@ describe("FilterBar y TreeView: los de siempre", () => {
 					/>,
 				),
 			),
-		).toBe(FB.full);
-		expect(ids(renderToStaticMarkup(<FilterBar />))).toBe(FB.bare);
+		).toMatchBefore(FB.full);
+		expect(ids(renderToStaticMarkup(<FilterBar />))).toMatchBefore(FB.bare);
 		const items = [
 			{ id: "a", label: "Proyectos", children: [{ id: "a1", label: "Brief", meta: "2 KB" }] },
 			{ id: "b", label: "Notas" },
@@ -47,7 +47,7 @@ describe("FilterBar y TreeView: los de siempre", () => {
 					<TreeView aria-label="Archivos" items={items} defaultOpen={["a"]} defaultSelected="a1" />,
 				),
 			),
-		).toBe(TV.html);
+		).toMatchBefore(TV.html);
 	});
 });
 

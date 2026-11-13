@@ -1,12 +1,12 @@
 // SocialButtonGroup en el ejemplo interactivo (un fichero por componente: design D4): sus hijos son botones, que se
 // eligen entre opciones preparadas.
-import { SocialAppleLogoGray, SocialFacebookLogo, SocialGoogleLogo } from "@jotis-me/icons/logos";
+import { SocialAppleLogoGray, SocialFacebookLogo, SocialGoogleLogo } from "@jotis-me/assets/logos";
 import { SocialButton } from "@jotis-me/react";
 import type { Tweak } from "../lib/playground";
 
 export { SocialButtonGroup as default } from "@jotis-me/react";
 
-const LOGOS = { "@jotis-me/icons/logos": ["SocialAppleLogoGray", "SocialFacebookLogo", "SocialGoogleLogo"] };
+const LOGOS = { "@jotis-me/assets/logos": ["SocialAppleLogoGray", "SocialFacebookLogo", "SocialGoogleLogo"] };
 
 export const tweaks: Record<string, Tweak> = {
 	children: {
@@ -34,7 +34,7 @@ export const tweaks: Record<string, Tweak> = {
 				code: '<SocialButton provider="google" theme="color" logo={<SocialGoogleLogo />} />',
 				imports: {
 					"@jotis-me/react": ["SocialButton"],
-					"@jotis-me/icons/logos": ["SocialGoogleLogo"],
+					"@jotis-me/assets/logos": ["SocialGoogleLogo"],
 				},
 			},
 		],

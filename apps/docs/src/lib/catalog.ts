@@ -49,6 +49,8 @@ export interface ComponentGroup {
 	/** Ancla en `/components/` (`/components/#acciones`). */
 	id: string;
 	label: string;
+	/** Para qué sirve el grupo, en una frase: la del mapa de grupos y la cabecera del grupo en `/components/`. */
+	description: string;
 	/** Los cuatro grupos de Stream cuelgan de su sección, no de Componentes. */
 	section: "components" | "stream";
 	/** Nombres de componente, en el orden en que se muestran. */
@@ -62,6 +64,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 	{
 		id: "acciones",
 		label: "Acciones",
+		description: "Lo que se pulsa para que pase algo.",
 		section: "components",
 		components: names(
 			"Button ButtonGroup ButtonUtility CloseButton SocialButton SocialButtonGroup AppStoreBadge",
@@ -70,6 +73,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 	{
 		id: "formularios",
 		label: "Formularios",
+		description: "Para pedir datos sin que duela.",
 		section: "components",
 		components: names(
 			"Input NumberInput TagInput VerificationCodeInput Textarea Select MultiSelect Checkbox Radio RadioGroup Toggle Slider DatePicker FileUpload ColorPicker ColorPickerDropdown TextEditor",
@@ -78,6 +82,7 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 	{
 		id: "navegacion",
 		label: "Navegación",
+		description: "Para moverse y saber dónde estás.",
 		section: "components",
 		components: names(
 			"Tabs Breadcrumbs Pagination PaginationDots Pager SidebarNav Dropdown ContextMenu HeaderNav CommandMenu TreeView FilterBar",
@@ -86,12 +91,14 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 	{
 		id: "capas",
 		label: "Capas",
+		description: "Lo que aparece encima de la página.",
 		section: "components",
-		components: names("Modal Slideout Tooltip HelpIcon CopyTooltip"),
+		components: names("Modal Slideout Tooltip HelpIcon CopyTooltip Spotlight"),
 	},
 	{
 		id: "avisos-y-carga",
 		label: "Avisos y carga",
+		description: "Para decir qué pasa y cuánto falta.",
 		section: "components",
 		components: names(
 			"Alert Notification Banner EmptyState ProgressBar ProgressCircle ProgressSteps Spinner Skeleton",
@@ -100,69 +107,85 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 	{
 		id: "etiquetas-e-identidad",
 		label: "Etiquetas e identidad",
+		description: "Estados, personas y marcas.",
 		section: "components",
 		components: names(
-			"Badge BadgeGroup Tag Avatar AvatarGroup AvatarLabel AvatarProfilePhoto CheckIcon CheckItem Rating RatingBadge FeaturedIcon Icon Kbd",
+			"Badge BadgeGroup Tag Avatar AvatarGroup AvatarLabel AvatarProfilePhoto CheckIcon CheckItem Rating RatingBadge FeaturedIcon Kbd IconTile TokenSwatch",
 		),
 	},
 	{
 		id: "datos",
 		label: "Datos",
+		description: "Tablas, listas y cifras.",
 		section: "components",
 		components: names("Table MetricCard ActivityFeed CalendarView FilterMenu FilterPanel"),
 	},
 	{
 		id: "graficas",
 		label: "Gráficas",
+		description: "Números que se miran.",
 		section: "components",
 		components: names("LineChart BarChart PieChart ActivityGauge RadarChart ChartMarker ChartLegend"),
 	},
 	{
 		id: "estructura-de-pagina",
 		label: "Estructura de página",
+		description: "Cabeceras, secciones y pies.",
 		section: "components",
 		components: names(
-			"PageHeader CardHeader SectionHeader SectionLabel SectionFooter ContentDivider InlineCTA LinkCard",
+			"PageHeader CardHeader SectionHeader SectionLabel SectionFooter ContentDivider Disclosure InlineCTA LinkCard",
 		),
 	},
 	{
 		id: "contenido-y-medios",
 		label: "Contenido y medios",
+		description: "Texto largo, código y vídeo.",
 		section: "components",
-		components: names("Message MessageInput CodeSnippet VideoPlayer Carousel"),
+		components: names("Message MessageInput CodeSnippet VideoPlayer Carousel CompareSlider"),
 	},
 	{
 		id: "fondos-y-maquetas",
 		label: "Fondos y maquetas",
+		description: "Decorado y marcos.",
 		section: "components",
 		components: names(
-			"BackgroundPattern BackgroundOverlay TransparencyGrid ScaledPreview CreditCard BrowserFrame ScreenMockup LaptopMockup PhoneMockup AppIcon",
+			"BackgroundPattern BackgroundOverlay TransparencyGrid ExampleCard ScaledPreview CreditCard BrowserFrame ScreenMockup LaptopMockup PhoneMockup AppIcon",
 		),
 	},
 	{
 		id: "web-de-marketing",
 		label: "Web de marketing",
+		description: "Para contar la app a quien no la tiene.",
 		section: "components",
 		components: names(
 			"MarketingNav Footer BlogPostCard SubscribeCard PricingCard JobPostCard Accordion TeamMemberCard Testimonial",
 		),
 	},
-	{ id: "stream-alertas", label: "Alertas", section: "stream", components: names("StreamAlert") },
+	{
+		id: "stream-alertas",
+		label: "Alertas",
+		description: "Lo que salta en pantalla.",
+		section: "stream",
+		components: names("StreamAlert"),
+	},
 	{
 		id: "stream-escenas",
 		label: "Escenas",
+		description: "Pantallas completas del directo.",
 		section: "stream",
 		components: names("StreamScene StreamCountdown"),
 	},
 	{
 		id: "stream-overlay",
 		label: "Overlay",
+		description: "Lo que va encima del juego.",
 		section: "stream",
 		components: names("CamFrame ChatBox ChatBadge StreamGoal StreamEvents NowPlaying StreamStatus"),
 	},
 	{
 		id: "stream-canal",
 		label: "Canal",
+		description: "La página del canal.",
 		section: "stream",
 		components: names("ChannelPanel ChannelBanner"),
 	},

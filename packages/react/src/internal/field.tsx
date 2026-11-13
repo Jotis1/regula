@@ -12,6 +12,11 @@ export interface FieldProps {
 	hint?: ReactNode;
 	/** Mensaje de error, o `true` para marcar el error sin texto. */
 	error?: string | boolean;
+	/**
+	 * Nodo al final de la fila de la etiqueta, a la derecha y fuera del `<label>`: un «Cambiado» con su botón
+	 * «Restablecer», por ejemplo. Un clic en él no enfoca el campo ni abre el desplegable.
+	 */
+	labelAside?: ReactNode;
 }
 
 // Borde de 1px y shadow-xs; en foco, solo el borde de 2px en border-brand (sin anillo exterior, como el Figma).
@@ -81,24 +86,33 @@ export function FieldShell({
 	error,
 	size = "md",
 	className,
+	labelAside,
 	children,
 }: FieldShellProps) {
 	const message = typeof error === "string" && error ? error : hint;
+	const labelEl = label ? (
+		<label id={`${id}-label`} htmlFor={id} className="text-sm font-medium text-secondary">
+			{label}
+			{required ? (
+				<span
+					aria-hidden="true"
+					className={cx("ml-0.5", error ? "text-error-primary" : "text-brand-tertiary")}
+				>
+					*
+				</span>
+			) : null}
+		</label>
+	) : null;
 	return (
 		<div className={cx("flex min-w-0 flex-col gap-1.5 font-body", className)}>
-			{label ? (
-				<label id={`${id}-label`} htmlFor={id} className="text-sm font-medium text-secondary">
-					{label}
-					{required ? (
-						<span
-							aria-hidden="true"
-							className={cx("ml-0.5", error ? "text-error-primary" : "text-brand-tertiary")}
-						>
-							*
-						</span>
-					) : null}
-				</label>
-			) : null}
+			{labelAside != null && labelAside !== false ? (
+				<div className="flex min-w-0 items-center gap-2">
+					{labelEl}
+					<div className="ml-auto flex flex-none items-center gap-2">{labelAside}</div>
+				</div>
+			) : (
+				labelEl
+			)}
 			{children}
 			{message ? (
 				<p

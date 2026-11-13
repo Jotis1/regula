@@ -1,8 +1,10 @@
 ---
 // Historial de cambios (design §10): las versiones salen de los CHANGELOG.md de los paquetes en el build. Con los tres
 // paquetes en `fixed` comparten versión, así que cada una aparece una vez. Sin versiones publicadas, un estado vacío.
-import { Breadcrumbs, EmptyState } from "@jotis-me/react";
+import { EmptyState, PageHeader } from "@jotis-me/react";
+import { Clock } from "@untitledui/icons";
 import InlineCode from "../components/InlineCode.astro";
+import SectionTitle from "../components/SectionTitle.astro";
 import Base from "../layouts/Base.astro";
 import { type ChangeKind, changeBlocks, mergeChangelogs } from "../lib/changelog";
 
@@ -26,32 +28,29 @@ const short = (pkgs: string[]) =>
 
 <Base
 	title="Historial de cambios"
-	description="Qué ha cambiado en cada versión de @jotis-me/react, @jotis-me/tokens y @jotis-me/icons."
+	description="Qué ha cambiado en cada versión de @jotis-me/react, @jotis-me/tokens y @jotis-me/assets."
 >
-	<article class="max-w-[760px]">
-		<header class="mb-10 flex flex-col gap-3 lg:gap-4">
-			<Breadcrumbs items={[{ label: "Historial de cambios" }]} />
-			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Historial de cambios</h1>
-			<p class="text-md text-tertiary lg:text-lg">
+	<div class="flex flex-col gap-10">
+		<PageHeader title="Historial de cambios" breadcrumbs={[{ label: "Historial de cambios" }]} divider={false}>
+			<Fragment slot="description">
 				Qué ha cambiado en cada versión. Los tres paquetes (<code class="font-mono">@jotis-me/react</code>,
 				<code class="font-mono">tokens</code> e <code class="font-mono">icons</code>) comparten número de versión.
-			</p>
-		</header>
+			</Fragment>
+		</PageHeader>
+	<article class="flex max-w-[720px] flex-col gap-14">
 		{
 			versions.length === 0 ? (
 				<EmptyState
-					icon="clock"
+					icon={Clock}
 					title="Aún no hay versiones publicadas"
 					description="Cuando se publique la primera, sus cambios aparecerán aquí."
 				/>
 			) : (
 				versions.map((v) => (
-					<section aria-labelledby={`v${v.version}`} class="mb-12" data-version={v.version}>
-						<h2 id={`v${v.version}`} class="mb-5 font-display text-display-xs font-semibold text-primary">
-							{v.version}
-						</h2>
+					<section aria-labelledby={`v${v.version}`} class="flex flex-col gap-6" data-version={v.version}>
+						<SectionTitle id={`v${v.version}`} title={v.version} />
 						{ORDER.filter((kind) => v.entries.some((e) => e.kind === kind)).map((kind) => (
-							<section class="mb-6">
+							<section>
 								<h3 class="mb-3 text-md font-semibold text-primary">{KINDS[kind]}</h3>
 								<ul class="flex flex-col gap-3">
 									{v.entries
@@ -84,4 +83,5 @@ const short = (pkgs: string[]) =>
 			)
 		}
 	</article>
+	</div>
 </Base>

@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { Plus, SearchLg } from "@untitledui/icons";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { Button, EmptyState } from "../src/index.js";
@@ -7,13 +8,13 @@ import { expectAccessibleInThemes } from "./helpers.js";
 // Textos de la vista previa de la guía
 const example = (
 	<EmptyState
-		icon="search-lg"
+		icon={SearchLg}
 		title="Sin resultados"
 		description="Ningún movimiento coincide con «León». Prueba con otro término o quita filtros."
 		actions={
 			<>
 				<Button hierarchy="secondary">Limpiar búsqueda</Button>
-				<Button iconLeading="plus">Nuevo movimiento</Button>
+				<Button iconLeading={Plus}>Nuevo movimiento</Button>
 			</>
 		}
 	/>

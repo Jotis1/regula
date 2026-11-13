@@ -1,7 +1,7 @@
+import { ArrowUpRight } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { Avatar } from "./Avatar.js";
-import { Icon } from "./Icon.js";
 
 export type TeamMemberCardType =
 	| "simple-left"
@@ -21,7 +21,7 @@ export interface TeamMemberCardProps {
 	avatar?: string;
 	/** La foto grande de los `image-*` (un nodo: una `<img>` con su `alt`). */
 	image?: ReactNode;
-	/** Enlaces a sus redes, con nombre (iconos de `@jotis-me/icons/logos`). */
+	/** Enlaces a sus redes, con nombre (iconos de `@jotis-me/assets/logos`). */
 	socials?: ReactNode;
 	/** Con él, el nombre es un enlace (y la flecha del panel de cristal). */
 	href?: string;
@@ -122,7 +122,7 @@ export function TeamMemberCard({
 				>
 					{href ? (
 						<span aria-hidden="true" className="absolute top-5 right-5 flex text-white">
-							<Icon name="arrow-up-right" size={24} />
+							<ArrowUpRight size={24} />
 						</span>
 					) : null}
 					{text}

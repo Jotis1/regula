@@ -5,7 +5,7 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, readdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
-export const PACKAGES = ["packages/tokens", "packages/icons", "packages/react"];
+export const PACKAGES = ["packages/tokens", "packages/assets", "packages/react"];
 const root = join(import.meta.dirname, "..");
 export const PACK_DIR = join(root, ".pack");
 

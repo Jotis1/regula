@@ -1,11 +1,24 @@
 "use client";
 
+import {
+	AlignCenter,
+	AlignLeft,
+	AlignRight,
+	Bold01,
+	Dotpoints01,
+	Image01,
+	Italic01,
+	Link01,
+	Stars02,
+	Type01,
+	Underline01,
+} from "@untitledui/icons";
 import { type ReactNode, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Button as AriaButton, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import { cx } from "../internal/cx.js";
+import { DynIcon, type IconComponent } from "../internal/icon.js";
 import { OptionSelect, type SelectOption } from "../internal/option-select.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon, type IconName } from "./Icon.js";
 import { Tooltip } from "./Tooltip.js";
 
 export interface TextEditorLabels {
@@ -318,7 +331,7 @@ export function TextEditor({
 	const tooltips = toolbar !== undefined;
 	const button = (
 		command: Command | "createLink" | "insertImage" | "generate",
-		icon: IconName,
+		icon: IconComponent,
 		name: string,
 	) => {
 		const toggles = command !== "createLink" && command !== "insertImage" && command !== "generate";
@@ -346,7 +359,7 @@ export function TextEditor({
 					toggles && active[command] && "bg-primary_hover text-editor-icon-fg_active",
 				)}
 			>
-				<Icon name={icon} size={20} />
+				<DynIcon icon={icon} size={20} />
 			</button>
 		);
 		return tooltips ? <Tooltip title={name}>{control}</Tooltip> : control;
@@ -424,23 +437,23 @@ export function TextEditor({
 	const item = (name: Item) => {
 		switch (name) {
 			case "bold":
-				return button("bold", "bold-01", t.bold);
+				return button("bold", Bold01, t.bold);
 			case "italic":
-				return button("italic", "italic-01", t.italic);
+				return button("italic", Italic01, t.italic);
 			case "underline":
-				return button("underline", "underline-01", t.underline);
+				return button("underline", Underline01, t.underline);
 			case "list":
-				return button("insertUnorderedList", "dotpoints-01", t.list);
+				return button("insertUnorderedList", Dotpoints01, t.list);
 			case "link":
-				return button("createLink", "link-01", t.link);
+				return button("createLink", Link01, t.link);
 			case "image":
-				return button("insertImage", "image-01", t.image);
+				return button("insertImage", Image01, t.image);
 			case "generate":
-				return button("generate", "stars-02", t.generate);
+				return button("generate", Stars02, t.generate);
 			case "left":
-				return button("justifyLeft", "align-left", t.alignLeft);
+				return button("justifyLeft", AlignLeft, t.alignLeft);
 			case "center":
-				return button("justifyCenter", "align-center", t.alignCenter);
+				return button("justifyCenter", AlignCenter, t.alignCenter);
 			case "color":
 				return colorButton;
 		}
@@ -472,7 +485,7 @@ export function TextEditor({
 					aria-label={t.font}
 					size="sm"
 					variant="field"
-					icon="type-01"
+					icon={Type01}
 				/>
 			</div>
 			<div className="w-[88px]">
@@ -502,16 +515,16 @@ export function TextEditor({
 		);
 		bar = (
 			<div role="toolbar" aria-label={t.toolbar} className="flex flex-wrap items-center gap-0.5">
-				{button("bold", "bold-01", t.bold)}
-				{button("italic", "italic-01", t.italic)}
-				{button("underline", "underline-01", t.underline)}
+				{button("bold", Bold01, t.bold)}
+				{button("italic", Italic01, t.italic)}
+				{button("underline", Underline01, t.underline)}
 				{separator}
-				{button("insertUnorderedList", "dotpoints-01", t.list)}
-				{button("createLink", "link-01", t.link)}
+				{button("insertUnorderedList", Dotpoints01, t.list)}
+				{button("createLink", Link01, t.link)}
 				{separator}
-				{button("justifyLeft", "align-left", t.alignLeft)}
-				{button("justifyCenter", "align-center", t.alignCenter)}
-				{button("justifyRight", "align-right", t.alignRight)}
+				{button("justifyLeft", AlignLeft, t.alignLeft)}
+				{button("justifyCenter", AlignCenter, t.alignCenter)}
+				{button("justifyRight", AlignRight, t.alignRight)}
 			</div>
 		);
 	} else if (toolbar === "simple" || toolbar === "advanced") {

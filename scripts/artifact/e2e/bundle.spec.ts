@@ -1,6 +1,5 @@
 // El bundle del artefacto con React 18 (design D6 y Risks): expone el catálogo en window.Jotis, monta cada ejemplo sin
 // errores y la hoja pinta los tokens en claro y en oscuro (`data-theme="dark"`).
-import { iconNames } from "@jotis-me/icons";
 import { colors } from "@jotis-me/tokens";
 import { expect, test } from "@playwright/test";
 import { catalogComponents } from "../../../apps/docs/src/lib/catalog";
@@ -12,16 +11,14 @@ const rgb = (hex: string) => {
 	return `rgb(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255})`;
 };
 
-test("con React 18, window.Jotis tiene cada componente del catálogo, sus ejemplos e iconNames", async ({
-	page,
-}) => {
+test("con React 18, window.Jotis tiene cada componente del catálogo, y sus ejemplos", async ({ page }) => {
 	const errors = collectErrors(page);
 	await serve(page);
 	await page.goto(`${ORIGIN}/`);
 	const info = await page.evaluate(() => {
 		const J = (
 			window as unknown as {
-				Jotis: Record<string, unknown> & { previews: object; iconNames: string[] };
+				Jotis: Record<string, unknown> & { previews: object };
 			}
 		).Jotis;
 		const R = (window as unknown as { React: { version: string } }).React;
@@ -29,13 +26,11 @@ test("con React 18, window.Jotis tiene cada componente del catálogo, sus ejempl
 			react: R.version,
 			keys: Object.keys(J),
 			previews: Object.keys(J.previews),
-			iconNames: J.iconNames,
 		};
 	});
 	expect(info.react).toMatch(/^18\./);
 	expect(catalog.filter((n) => !info.keys.includes(n))).toEqual([]);
 	expect([...info.previews].sort()).toEqual([...catalog].sort());
-	expect(info.iconNames).toEqual([...iconNames]);
 	expect(errors).toEqual([]);
 });
 

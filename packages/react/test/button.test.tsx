@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { AlignLeft, ArrowRight, Clock, DotsVertical, Edit02, Grid01, Plus, Trash01 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Button, ButtonGroup, type ButtonGroupItem, CloseButton } from "../src/index.js";
@@ -17,7 +18,7 @@ describe("Button", () => {
 
 	it("aplica jerarquía, tamaño e icono inicial", () => {
 		render(
-			<Button hierarchy="secondary" size="lg" iconLeading="plus">
+			<Button hierarchy="secondary" size="lg" iconLeading={Plus}>
 				Nuevo gasto
 			</Button>,
 		);
@@ -32,7 +33,7 @@ describe("Button", () => {
 
 	it("los iconos de xs miden 16", () => {
 		render(
-			<Button size="xs" iconTrailing="arrow-right">
+			<Button size="xs" iconTrailing={ArrowRight}>
 				xs
 			</Button>,
 		);
@@ -47,7 +48,7 @@ describe("Button", () => {
 	});
 
 	it("solo icono: lleva el nombre accesible de label", () => {
-		render(<Button hierarchy="secondary" iconOnly="edit-02" label="Editar" />);
+		render(<Button hierarchy="secondary" iconOnly={Edit02} label="Editar" />);
 		const button = screen.getByRole("button", { name: "Editar" });
 		expect(button.className).toContain("w-10");
 	});
@@ -75,7 +76,7 @@ describe("Button", () => {
 		const button = screen.getByRole("button", { name: "Guardando" });
 		expect(button.getAttribute("aria-busy")).toBe("true");
 		expect((button as HTMLButtonElement).disabled).toBe(true);
-		expect(button.querySelector("svg")?.getAttribute("class")).toContain("jm-icon-spin");
+		expect(button.querySelector("svg")?.getAttribute("class")).toContain("animate-spin");
 	});
 
 	it("con href se pinta como enlace con el mismo aspecto", () => {
@@ -100,7 +101,7 @@ describe("Button", () => {
 		// @ts-expect-error: no existe la jerarquía "ghost"
 		const a = <Button hierarchy="ghost">x</Button>;
 		// @ts-expect-error: un botón solo con icono necesita label
-		const b = <Button iconOnly="edit-02" />;
+		const b = <Button iconOnly={Edit02} />;
 		expect([a, b]).toHaveLength(2);
 	});
 
@@ -108,10 +109,10 @@ describe("Button", () => {
 		await expectAccessibleInThemes(
 			<div>
 				<Button>Guardar</Button>
-				<Button hierarchy="secondary" destructive iconLeading="trash-01">
+				<Button hierarchy="secondary" destructive iconLeading={Trash01}>
 					Borrar
 				</Button>
-				<Button hierarchy="tertiary" iconOnly="dots-vertical" label="Más" />
+				<Button hierarchy="tertiary" iconOnly={DotsVertical} label="Más" />
 				<Button hierarchy="link-color" href="/detalles">
 					Ver detalles
 				</Button>
@@ -140,8 +141,8 @@ describe("CloseButton", () => {
 	});
 
 	it("sin las props nuevas, el HTML es el de antes", () => {
-		expect(renderToStaticMarkup(<CloseButton />)).toBe(CLOSE_BEFORE[0]);
-		expect(renderToStaticMarkup(<CloseButton label="Cerrar aviso" />)).toBe(CLOSE_BEFORE[1]);
+		expect(renderToStaticMarkup(<CloseButton />)).toMatchBefore(CLOSE_BEFORE[0]);
+		expect(renderToStaticMarkup(<CloseButton label="Cerrar aviso" />)).toMatchBefore(CLOSE_BEFORE[1]);
 	});
 
 	it.each([
@@ -173,7 +174,7 @@ describe("ButtonGroup", () => {
 	const items = [
 		{ value: "a", label: "12 meses" },
 		{ value: "b", label: "30 días" },
-		{ value: "d", label: "24 horas", icon: "clock" as const },
+		{ value: "d", label: "24 horas", icon: Clock },
 	];
 
 	it("marca la opción elegida con aria-pressed y cambia al pulsar", async () => {
@@ -207,7 +208,7 @@ describe("ButtonGroup", () => {
 	it("sin las props nuevas, el HTML es el de antes", () => {
 		expect(
 			renderToStaticMarkup(<ButtonGroup aria-label="Periodo" items={items} defaultValue="b" />),
-		).toBe(GROUP_BEFORE);
+		).toMatchBefore(GROUP_BEFORE);
 	});
 
 	it("size: md mide 40 px y sm 36 px, con los rellenos del Figma", () => {
@@ -217,7 +218,7 @@ describe("ButtonGroup", () => {
 				size="sm"
 				items={[
 					{ value: "a", label: "Texto" },
-					{ value: "b", label: "Reloj", icon: "clock" },
+					{ value: "b", label: "Reloj", icon: Clock },
 				]}
 			/>,
 		);
@@ -238,8 +239,8 @@ describe("ButtonGroup", () => {
 				aria-label="Vista"
 				onChange={onChange}
 				items={[
-					{ value: "grid", iconOnly: "grid-01", label: "Cuadrícula" },
-					{ value: "list", iconOnly: "align-left", label: "Lista" },
+					{ value: "grid", iconOnly: Grid01, label: "Cuadrícula" },
+					{ value: "list", iconOnly: AlignLeft, label: "Lista" },
 				]}
 			/>,
 		);
@@ -254,9 +255,9 @@ describe("ButtonGroup", () => {
 
 	it("iconOnly exige label y no admite texto (tipos)", () => {
 		// @ts-expect-error sin label no hay nombre accesible
-		const sinLabel: ButtonGroupItem = { value: "a", iconOnly: "grid-01" };
+		const sinLabel: ButtonGroupItem = { value: "a", iconOnly: Grid01 };
 		// @ts-expect-error con iconOnly no se admite icon
-		const conIcon: ButtonGroupItem = { value: "a", iconOnly: "grid-01", label: "A", icon: "clock" };
+		const conIcon: ButtonGroupItem = { value: "a", iconOnly: Grid01, label: "A", icon: Clock };
 		expect([sinLabel, conIcon]).toHaveLength(2);
 	});
 
@@ -285,7 +286,7 @@ describe("ButtonGroup", () => {
 				size="sm"
 				defaultValue="grid"
 				items={[
-					{ value: "grid", iconOnly: "grid-01", label: "Cuadrícula" },
+					{ value: "grid", iconOnly: Grid01, label: "Cuadrícula" },
 					{ value: "on", label: "Activo", dot: true },
 				]}
 			/>,

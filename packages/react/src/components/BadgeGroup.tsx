@@ -1,6 +1,6 @@
+import { ArrowRight } from "@untitledui/icons";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { cx } from "../internal/cx.js";
-import { Icon } from "./Icon.js";
 
 export type BadgeGroupColor = "gray" | "brand" | "error" | "warning" | "success";
 export type BadgeGroupType = "pill" | "modern";
@@ -112,7 +112,7 @@ export function BadgeGroup({
 	const modern = type === "modern";
 	const leading = badgePosition === "leading";
 	const interactive = rest.href !== undefined || rest.onClick !== undefined;
-	const arrow = (px: number) => (interactive ? <Icon name="arrow-right" size={px} /> : null);
+	const arrow = (px: number) => (interactive ? <ArrowRight size={px} /> : null);
 	const dot = <span aria-hidden="true" className={cx("size-2 shrink-0 rounded-full", palette.dot)} />;
 
 	const inner = (

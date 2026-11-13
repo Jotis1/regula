@@ -1,5 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Copy01, Edit02 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Dropdown, type DropdownAccount, type DropdownItem } from "../src/index.js";
@@ -32,16 +33,16 @@ const files: DropdownItem[] = [
 describe("Dropdown: sin las props nuevas", () => {
 	it("el HTML es el de antes", () => {
 		const items = [
-			{ label: "Editar", icon: "edit-02" as const, shortcut: "⌘E" },
+			{ label: "Editar", icon: Edit02, shortcut: "⌘E" },
 			{ divider: true as const },
 			{ label: "Borrar", danger: true },
 		];
-		expect(renderToStaticMarkup(<Dropdown items={items} />)).toBe(BEFORE[0]);
+		expect(renderToStaticMarkup(<Dropdown items={items} />)).toMatchBefore(BEFORE[0]);
 		expect(
 			renderToStaticMarkup(
 				<Dropdown label="Cuenta" header={<b>Olivia</b>} defaultOpen items={items} />,
 			),
-		).toBe(BEFORE[1]);
+		).toMatchBefore(BEFORE[1]);
 		expect(
 			renderToStaticMarkup(
 				<Dropdown
@@ -54,7 +55,7 @@ describe("Dropdown: sin las props nuevas", () => {
 					]}
 				/>,
 			),
-		).toBe(BEFORE[2]);
+		).toMatchBefore(BEFORE[2]);
 	});
 });
 
@@ -205,7 +206,7 @@ describe("Dropdown: integrations", () => {
 				label="Copiar"
 				defaultOpen
 				items={[
-					{ label: "Ver como markdown", icon: "copy-01" },
+					{ label: "Ver como markdown", icon: Copy01 },
 					{ divider: true },
 					{ label: "Abrir en v0", icon: <svg data-logo="v0" /> },
 				]}

@@ -1,8 +1,8 @@
+import { VolumeMax } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { STREAM_ROOT } from "../internal/stream.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export interface NowPlayingLabels {
 	/** @default "Suena ahora" */
@@ -60,7 +60,7 @@ export function NowPlaying({
 				{cover ? (
 					<img src={cover} alt="" className="size-full object-cover" />
 				) : (
-					<Icon name="volume-max" size={24} />
+					<VolumeMax size={24} />
 				)}
 			</div>
 			<div className="flex min-w-0 flex-col">

@@ -1,14 +1,24 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
-import { renderToString } from "react-dom/server";
-import { describe, expect, it } from "vitest";
-import { ProgressSteps } from "../src/index.js";
+import { userEvent } from "@testing-library/user-event";
+import { HomeLine, Stars02, User01, Users01 } from "@untitledui/icons";
+import { renderToStaticMarkup, renderToString } from "react-dom/server";
+import { describe, expect, it, vi } from "vitest";
+import {
+	ProgressSteps,
+	type ProgressStepsOrientation,
+	type ProgressStepsProps,
+	type ProgressStepsType,
+} from "../src/index.js";
+import { CASES } from "./fixtures/progress-steps-cases.js";
 import { expectAccessibleInThemes } from "./helpers.js";
 
 const STEPS = [
-	{ title: "Tus datos", description: "Nombre y correo", icon: "user-01" as const },
-	{ title: "Tu empresa", description: "Web y ubicación", icon: "home-line" as const },
-	{ title: "Tu equipo", description: "Empieza a colaborar", icon: "users-01" as const },
-	{ title: "Tus redes", description: "Publicación automática", icon: "stars-02" as const },
+	{ title: "Tus datos", description: "Nombre y correo", icon: User01 },
+	{ title: "Tu empresa", description: "Web y ubicación", icon: HomeLine },
+	{ title: "Tu equipo", description: "Empieza a colaborar", icon: Users01 },
+	{ title: "Tus redes", description: "Publicación automática", icon: Stars02 },
 ];
 
 describe("ProgressSteps", () => {
@@ -192,6 +202,195 @@ describe("ProgressSteps", () => {
 				/>
 				<ProgressSteps steps={STEPS} current={1} type="text-line" aria-label="Alta 3" />
 				<ProgressSteps steps={STEPS} current={2} type="minimal" aria-label="Alta 4" />
+			</>,
+		);
+	});
+});
+
+const BEFORE: Record<keyof typeof CASES, string> = JSON.parse(
+	readFileSync(join(import.meta.dirname, "fixtures/progress-steps-before.json"), "utf8"),
+);
+
+describe("ProgressSteps: el de siempre", () => {
+	it.each(Object.keys(CASES) as (keyof typeof CASES)[])(
+		"%s: sin las props nuevas el HTML es el de antes",
+		(name) => {
+			const props = CASES[name] as unknown as ProgressStepsProps;
+			expect(renderToStaticMarkup(<ProgressSteps {...props} />)).toMatchBefore(BEFORE[name]);
+		},
+	);
+});
+
+const TYPES: ProgressStepsType[] = [
+	"icons-centered",
+	"icons-text",
+	"text-line",
+	"minimal",
+	"minimal-connected",
+];
+const ORIENTATIONS: ProgressStepsOrientation[] = ["horizontal", "vertical"];
+
+describe("ProgressSteps: pasos navegables", () => {
+	it.each(TYPES.flatMap((type) => ORIENTATIONS.map((orientation) => ({ type, orientation }))))(
+		"$type $orientation: cada paso es un botón con su título como nombre y pulsar el tercero llama a onChange(2)",
+		async ({ type, orientation }) => {
+			const onChange = vi.fn();
+			render(
+				<ProgressSteps
+					steps={STEPS}
+					current={0}
+					type={type}
+					orientation={orientation}
+					onChange={onChange}
+					aria-label="Alta"
+				/>,
+			);
+			const buttons = screen.getAllByRole("button");
+			expect(buttons.map((b) => b.getAttribute("type"))).toEqual(Array(4).fill("button"));
+			for (const step of STEPS) expect(screen.getByRole("button", { name: step.title })).toBeTruthy();
+			await userEvent.click(screen.getByRole("button", { name: "Tu equipo" }));
+			expect(onChange).toHaveBeenCalledTimes(1);
+			expect(onChange).toHaveBeenCalledWith(2);
+			// Un pendiente y uno completo también se pulsan
+			await userEvent.click(screen.getByRole("button", { name: "Tus datos" }));
+			expect(onChange).toHaveBeenLastCalledWith(0);
+			// Cada botón va dentro de su <li> y el actual sigue llevando aria-current
+			const items = screen.getAllByRole("listitem");
+			expect(items.map((li) => li.querySelectorAll("button").length)).toEqual([1, 1, 1, 1]);
+			expect(items.map((li) => li.getAttribute("aria-current"))).toEqual(["step", null, null, null]);
+			expect(items[1]?.querySelector(".sr-only")?.textContent).toBe("pendiente: ");
+		},
+	);
+
+	it("la descripción es la descripción del botón y no entra en su nombre", () => {
+		render(<ProgressSteps steps={STEPS} current={0} onChange={() => {}} />);
+		const button = screen.getByRole("button", { name: "Tus datos" });
+		expect(button.getAttribute("aria-describedby")).not.toBeNull();
+		expect(screen.getByRole("button", { name: "Tus datos", description: "Nombre y correo" })).toBe(
+			button,
+		);
+	});
+
+	it("Enter y Espacio activan el paso enfocado, que lleva el anillo de foco del sistema", async () => {
+		const onChange = vi.fn();
+		render(<ProgressSteps steps={STEPS} current={0} onChange={onChange} />);
+		await userEvent.tab();
+		const first = screen.getByRole("button", { name: "Tus datos" });
+		expect(document.activeElement).toBe(first);
+		expect(first.className).toContain("focus-visible:shadow-focus-ring");
+		await userEvent.tab();
+		await userEvent.keyboard("{Enter}");
+		expect(onChange).toHaveBeenLastCalledWith(1);
+		await userEvent.tab();
+		await userEvent.keyboard(" ");
+		expect(onChange).toHaveBeenLastCalledWith(2);
+		expect(onChange).toHaveBeenCalledTimes(2);
+	});
+
+	it("sin onChange no hay botones, aunque haya children", () => {
+		render(
+			<ProgressSteps steps={STEPS} current={0} orientation="vertical">
+				{() => <p>Contenido</p>}
+			</ProgressSteps>,
+		);
+		expect(screen.queryAllByRole("button")).toHaveLength(0);
+	});
+
+	it("se pinta en el servidor con onChange", () => {
+		const html = renderToString(<ProgressSteps steps={STEPS} current={1} onChange={() => {}} />);
+		expect(html).toContain("<button");
+		expect(html).toContain('aria-current="step"');
+	});
+});
+
+describe("ProgressSteps: contenido del paso actual", () => {
+	const content = (i: number) => <p data-testid="contenido">Paso {i}</p>;
+
+	it.each(TYPES.filter((t) => t !== "minimal" && t !== "minimal-connected"))(
+		"%s en vertical: el contenido va dentro del <li> del actual, bajo su título, en una región polite",
+		(type) => {
+			render(
+				<ProgressSteps steps={STEPS} current={1} type={type} orientation="vertical">
+					{content}
+				</ProgressSteps>,
+			);
+			const items = screen.getAllByRole("listitem");
+			const text = screen.getByTestId("contenido");
+			expect(text.textContent).toBe("Paso 1");
+			expect(items[1]?.contains(text)).toBe(true);
+			const region = text.closest("[aria-live]");
+			expect(region?.getAttribute("aria-live")).toBe("polite");
+			expect(items[1]?.contains(region)).toBe(true);
+			// Va después del título
+			const title = within(items[1] as HTMLElement).getByText("Tu empresa");
+			expect(title.compareDocumentPosition(text) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+			// Los demás pasos no llevan contenido
+			expect(screen.getAllByTestId("contenido")).toHaveLength(1);
+		},
+	);
+
+	// `icons-text` siempre es vertical: no tiene versión horizontal
+	it.each(TYPES.filter((t) => t !== "icons-text"))(
+		"%s en horizontal: el contenido va en un bloque bajo la lista, en una región polite",
+		(type) => {
+			const { container } = render(
+				<ProgressSteps steps={STEPS} current={2} type={type} className="mi-clase" aria-label="Alta">
+					{content}
+				</ProgressSteps>,
+			);
+			const text = screen.getByTestId("contenido");
+			expect(text.textContent).toBe("Paso 2");
+			const ol = screen.getByRole("list", { name: "Alta" });
+			expect(ol.contains(text)).toBe(false);
+			const region = text.closest("[aria-live]") as HTMLElement;
+			expect(region.getAttribute("aria-live")).toBe("polite");
+			expect(ol.compareDocumentPosition(region) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+			// La clase del usuario pasa al envoltorio de la lista y el bloque
+			expect((container.firstElementChild as HTMLElement).className).toContain("mi-clase");
+			expect(ol.className).not.toContain("mi-clase");
+		},
+	);
+
+	it("el contenido sigue al paso actual y, con todos completos, recibe la longitud de la lista", () => {
+		const { rerender } = render(
+			<ProgressSteps steps={STEPS} current={0}>
+				{content}
+			</ProgressSteps>,
+		);
+		expect(screen.getByTestId("contenido").textContent).toBe("Paso 0");
+		rerender(
+			<ProgressSteps steps={STEPS} current={9}>
+				{content}
+			</ProgressSteps>,
+		);
+		expect(screen.getByTestId("contenido").textContent).toBe("Paso 4");
+	});
+
+	it("axe con onChange y contenido, en claro y oscuro", async () => {
+		await expectAccessibleInThemes(
+			<>
+				{TYPES.map((type) => (
+					<ProgressSteps
+						key={type}
+						steps={STEPS}
+						current={1}
+						type={type}
+						marker="number"
+						onChange={() => {}}
+						aria-label={`Alta ${type}`}
+					>
+						{content}
+					</ProgressSteps>
+				))}
+				<ProgressSteps
+					steps={STEPS}
+					current={1}
+					orientation="vertical"
+					onChange={() => {}}
+					aria-label="V"
+				>
+					{content}
+				</ProgressSteps>
 			</>,
 		);
 	});

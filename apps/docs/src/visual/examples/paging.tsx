@@ -2,10 +2,11 @@
 // (que comparten `navigation.tsx`) no carguen el desplegable de cuentas ni el Select de las filas por página.
 
 import { AppIcon, Breadcrumbs, Pagination } from "@jotis-me/react";
+import { HomeLine } from "@untitledui/icons";
 import { stack } from "./actions";
 
 const crumbs = [
-	{ label: "Inicio", icon: "home-line" as const, href: "/" },
+	{ label: "Inicio", icon: HomeLine, href: "/" },
 	{ label: "Ajustes", href: "/" },
 	{ label: "Equipo" },
 ];
@@ -20,7 +21,7 @@ export function BreadcrumbsExample() {
 		<div className={stack}>
 			<Breadcrumbs
 				items={[
-					{ label: "Inicio", icon: "home-line", href: "/" },
+					{ label: "Inicio", icon: HomeLine, href: "/" },
 					{ label: "Pecunia", href: "/" },
 					{ label: "Gastos de octubre" },
 				]}

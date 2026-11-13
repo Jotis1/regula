@@ -4,11 +4,31 @@ description: "Banners, patrones de fondo, trazos a mano y maquetas."
 order: 8
 ---
 
-import { BackgroundPattern } from "@jotis-me/react";
+import { BackgroundPattern, Banner } from "@jotis-me/react";
 import Essentials from "../../components/compose/Essentials.astro";
 import Example from "../../components/compose/Example.astro";
+import Pair from "../../components/compose/Pair.astro";
+import Rule from "../../components/compose/Rule.astro";
 
 {/* Texto de la guía (reference/GUIA.md, «Fondos y adornos»), repartido en tarjetas sin reescribirlo */}
+
+## Con ejemplos
+
+Los adornos funcionan mientras son pocos.
+
+<Pair>
+	<Rule verdict="do" caption="**Banners**: avisos globales. Uno a la vez.">
+		<div class="flex w-full flex-col gap-2">
+			<Banner slim title="Mantenimiento el sábado de 8:00 a 9:00." />
+		</div>
+	</Rule>
+	<Rule verdict="dont" caption="Con dos banners a la vez, ninguno es el aviso.">
+		<div class="flex w-full flex-col gap-2">
+			<Banner slim title="Mantenimiento el sábado de 8:00 a 9:00." />
+			<Banner slim theme="brand" title="Ya puedes exportar tus gastos." />
+		</div>
+	</Rule>
+</Pair>
 
 ## Lo esencial
 

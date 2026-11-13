@@ -1,6 +1,7 @@
+import { Play, ShieldTick, Star01, Stars02, Zap } from "@untitledui/icons";
 import { cx } from "../internal/cx.js";
+import { DynIcon, type IconComponent } from "../internal/icon.js";
 import { STREAM_ROOT } from "../internal/stream.js";
-import { Icon, type IconName } from "./Icon.js";
 
 export type ChatBadgeKind = "broadcaster" | "mod" | "vip" | "sub" | "bits";
 
@@ -19,29 +20,29 @@ export interface ChatBadgeProps {
 
 // Receta de Badge sobre las escalas utility en oscuro: fondo -50, borde -200, icono -700. Cada rol lleva además su
 // icono, así que no depende solo del color. Clases enteras: Tailwind solo genera las que ve escritas.
-const BADGES: Record<ChatBadgeKind, { icon: IconName; label: string; tone: string }> = {
+const BADGES: Record<ChatBadgeKind, { icon: IconComponent; label: string; tone: string }> = {
 	broadcaster: {
-		icon: "play",
+		icon: Play,
 		label: "Streamer",
 		tone: "bg-utility-brand-50 text-utility-brand-700 inset-ring-utility-brand-200",
 	},
 	mod: {
-		icon: "shield-tick",
+		icon: ShieldTick,
 		label: "Moderador",
 		tone: "bg-utility-emerald-50 text-utility-emerald-700 inset-ring-utility-emerald-200",
 	},
 	vip: {
-		icon: "stars-02",
+		icon: Stars02,
 		label: "VIP",
 		tone: "bg-utility-pink-50 text-utility-pink-700 inset-ring-utility-pink-200",
 	},
 	sub: {
-		icon: "star-01",
+		icon: Star01,
 		label: "Suscriptor",
 		tone: "bg-utility-sky-50 text-utility-sky-700 inset-ring-utility-sky-200",
 	},
 	bits: {
-		icon: "zap",
+		icon: Zap,
 		label: "Bits",
 		tone: "bg-utility-purple-50 text-utility-purple-700 inset-ring-utility-purple-200",
 	},
@@ -64,7 +65,7 @@ export function ChatBadge({ kind = "sub", size = 20, title, className }: ChatBad
 			)}
 			style={{ width: size, height: size }}
 		>
-			<Icon name={b.icon} size={Math.round(size * 0.65)} strokeWidth={2.25} />
+			<DynIcon icon={b.icon} size={Math.round(size * 0.65)} strokeWidth={2.25} />
 		</span>
 	);
 }

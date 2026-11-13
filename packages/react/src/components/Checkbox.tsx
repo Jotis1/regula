@@ -1,9 +1,9 @@
 "use client";
 
+import { Check, Minus } from "@untitledui/icons";
 import { type InputHTMLAttributes, type ReactNode, useEffect, useId, useRef } from "react";
 import { type ChoiceSize, ChoiceText, choiceBox, choiceLabel, hiddenInput } from "../internal/choice.js";
 import { cx } from "../internal/cx.js";
-import { Icon } from "./Icon.js";
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
 	/** Etiqueta junto a la casilla. */
@@ -54,10 +54,10 @@ export function Checkbox({
 				)}
 			>
 				{indeterminate ? (
-					<Icon name="minus" size={markSize} strokeWidth={1.67} />
+					<Minus size={markSize} strokeWidth={1.67} />
 				) : (
 					<span className="hidden group-has-[:checked]:inline-flex">
-						<Icon name="check" size={markSize} strokeWidth={1.67} />
+						<Check size={markSize} strokeWidth={1.67} />
 					</span>
 				)}
 			</span>

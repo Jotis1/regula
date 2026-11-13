@@ -140,7 +140,9 @@ describe("composiciones", () => {
 			expect(code, c.name).toContain('from "@jotis-me/react"');
 			expect(code, c.name).not.toMatch(/Lienzo|\bcontained\b/);
 			for (const [, from] of code.matchAll(/from "([^"]+)"/g))
-				expect(from, c.name).toMatch(/^@jotis-me\/(react|icons(\/logos)?)$/);
+				expect(from, c.name).toMatch(
+					/^(@jotis-me\/(react|assets\/logos|assets\/payments)|@untitledui\/(icons|file-icons|country-flags))$/,
+				);
 		}
 	});
 

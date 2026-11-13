@@ -1,8 +1,9 @@
 "use client";
 
-import { IconArrowDown, IconArrowUp } from "@jotis-me/icons";
+import { ArrowDown, ArrowUp, ChevronDown, DotsVertical, File04 } from "@untitledui/icons";
 import { type ReactNode, useId, useState } from "react";
 import { cx } from "../internal/cx.js";
+import type { IconProp } from "../internal/icon.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Avatar, type AvatarProps } from "./Avatar.js";
 import { AvatarGroup } from "./AvatarGroup.js";
@@ -10,7 +11,6 @@ import { Badge, type BadgeColor, COLOR } from "./Badge.js";
 import { Button } from "./Button.js";
 import { Checkbox } from "./Checkbox.js";
 import { HelpIcon } from "./HelpIcon.js";
-import { Icon, type IconName } from "./Icon.js";
 import { ProgressBar } from "./ProgressBar.js";
 import { Radio } from "./Radio.js";
 import { Toggle } from "./Toggle.js";
@@ -43,13 +43,13 @@ export interface TableCellAvatar {
 	subtitle?: ReactNode;
 	avatar?: AvatarProps;
 }
-/** `file`: icono del tipo (`@jotis-me/icons/files`), nombre y tamaño. */
+/** `file`: icono del tipo (`FileIcon` de `@untitledui/file-icons`), nombre y tamaño. */
 export interface TableCellFile {
 	name: ReactNode;
 	size?: ReactNode;
 	icon?: ReactNode;
 }
-/** `payment`: logo de la tarjeta (`@jotis-me/icons/payments`), «Visa terminada en 1234» y caducidad. */
+/** `payment`: logo de la tarjeta (`@jotis-me/assets/payments`), «Visa terminada en 1234» y caducidad. */
 export interface TableCellPayment {
 	logo?: ReactNode;
 	label: ReactNode;
@@ -58,7 +58,7 @@ export interface TableCellPayment {
 /** `badge`: una insignia. */
 export type TableCellBadge =
 	| string
-	| { label: ReactNode; color?: BadgeColor; dot?: boolean; icon?: IconName | ReactNode };
+	| { label: ReactNode; color?: BadgeColor; dot?: boolean; icon?: IconProp };
 /** `badges`: varias insignias; con más de `max`, «+N». */
 export interface TableCellBadges {
 	labels: string[];
@@ -94,7 +94,7 @@ export type TableCellRating = number;
 /** `actions`: botones de texto («Borrar», «Editar»); el último va en el color de marca. */
 export type TableCellActions = { label: string; onClick?: () => void }[];
 /** `action-icons`: botones de icono con nombre (copiar, descargar, borrar, editar). */
-export type TableCellActionIcons = { icon: IconName | ReactNode; label: string; onClick?: () => void }[];
+export type TableCellActionIcons = { icon: IconProp; label: string; onClick?: () => void }[];
 /** `menu`: el botón de tres puntos; con `node`, lo que pases (un `Dropdown`). */
 export type TableCellMenu = { label?: string; onClick?: () => void; node?: ReactNode };
 
@@ -392,7 +392,7 @@ function CellSelect({ cell }: { cell: TableCellSelect }) {
 				))}
 			</select>
 			<span className="pointer-events-none absolute right-2.5 flex text-fg-quaternary">
-				<Icon name="chevron-down" size={16} />
+				<ChevronDown size={16} />
 			</span>
 		</span>
 	);
@@ -434,7 +434,7 @@ function renderCell(type: TableCellType, value: unknown, t: TableLabels, name: s
 			return (
 				<span className="flex items-center gap-3">
 					<span className="flex size-10 flex-none items-center justify-center [&_svg]:size-10">
-						{v.icon ?? <Icon name="file-04" size={32} />}
+						{v.icon ?? <File04 size={32} />}
 					</span>
 					<span className="flex min-w-0 flex-col">
 						<span className="font-medium whitespace-nowrap text-primary">{v.name}</span>
@@ -496,7 +496,7 @@ function renderCell(type: TableCellType, value: unknown, t: TableLabels, name: s
 					<Badge
 						size="sm"
 						color={up ? "success" : "error"}
-						icon={up ? <IconArrowUp size={12} /> : <IconArrowDown size={12} />}
+						icon={up ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
 					>
 						<span className="sr-only">{up ? "Sube " : "Baja "}</span>
 						{v.change}
@@ -569,7 +569,7 @@ function renderCell(type: TableCellType, value: unknown, t: TableLabels, name: s
 					<Button
 						hierarchy="tertiary"
 						size="xs"
-						iconOnly="dots-vertical"
+						iconOnly={DotsVertical}
 						label={v.label ?? t.menu}
 						onClick={v.onClick}
 					/>
@@ -715,9 +715,9 @@ function TypedTable<R>({
 													)}
 												>
 													{sorted === "descending" ? (
-														<IconArrowUp size={12} />
+														<ArrowUp size={12} />
 													) : (
-														<IconArrowDown size={12} />
+														<ArrowDown size={12} />
 													)}
 												</span>
 											</button>

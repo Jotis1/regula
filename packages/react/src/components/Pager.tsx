@@ -1,6 +1,6 @@
+import { ArrowLeft, ArrowRight } from "@untitledui/icons";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export interface PagerLink {
 	href: string;
@@ -49,7 +49,7 @@ export function Pager({ prev, next, labels, className, ...rest }: PagerProps) {
 			{prev ? (
 				<a href={prev.href} rel="prev" className={LINK}>
 					<span className={DIRECTION}>
-						<Icon name="arrow-left" size={16} className="text-fg-quaternary" />
+						<ArrowLeft size={16} className="text-fg-quaternary" />
 						{t.previous}
 					</span>
 					<span className="text-md font-semibold">{prev.label}</span>
@@ -59,7 +59,7 @@ export function Pager({ prev, next, labels, className, ...rest }: PagerProps) {
 				<a href={next.href} rel="next" className={cx(LINK, "items-end text-right")}>
 					<span className={DIRECTION}>
 						{t.next}
-						<Icon name="arrow-right" size={16} className="text-fg-quaternary" />
+						<ArrowRight size={16} className="text-fg-quaternary" />
 					</span>
 					<span className="text-md font-semibold">{next.label}</span>
 				</a>

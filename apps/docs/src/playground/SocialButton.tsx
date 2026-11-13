@@ -1,5 +1,5 @@
 // SocialButton en el ejemplo interactivo (un fichero por componente: design D4): el logo, que es un nodo de
-// @jotis-me/icons/logos, se elige entre opciones preparadas.
+// @jotis-me/assets/logos, se elige entre opciones preparadas.
 import {
 	SocialAppleLogo,
 	SocialAppleLogoGray,
@@ -13,7 +13,7 @@ import {
 	SocialGoogleLogoGray,
 	SocialXLogo,
 	SocialXLogoGray,
-} from "@jotis-me/icons/logos";
+} from "@jotis-me/assets/logos";
 import type { ReactNode } from "react";
 import type { Tweak } from "../lib/playground";
 
@@ -41,7 +41,7 @@ export const tweaks: Record<string, Tweak> = {
 			label,
 			value,
 			code: `<${name} />`,
-			imports: { "@jotis-me/icons/logos": [name] },
+			imports: { "@jotis-me/assets/logos": [name] },
 		})),
 	},
 };

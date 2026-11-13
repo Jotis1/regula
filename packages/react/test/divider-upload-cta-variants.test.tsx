@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Bank, Plus, Zap } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -36,12 +37,12 @@ describe("los de siempre", () => {
 					</ContentDivider>
 				</>,
 			),
-		).toBe(BEFORE.divider);
+		).toMatchBefore(BEFORE.divider);
 		expect(
 			renderToStaticMarkup(
 				<FileUpload accept=".pdf" hint="PDF (máx. 10 MB)" files={files} id="subida" />,
 			),
-		).toBe(BEFORE.upload);
+		).toMatchBefore(BEFORE.upload);
 		expect(
 			renderToStaticMarkup(
 				<>
@@ -49,12 +50,12 @@ describe("los de siempre", () => {
 						title="Conecta tu banco"
 						description="Importa movimientos"
 						actions={<button type="button">Conectar</button>}
-						icon="bank"
+						icon={Bank}
 					/>
 					<InlineCTA title="Novedades" image="/foto.jpg" imageAlt="Foto" />
 				</>,
 			),
-		).toBe(BEFORE.cta);
+		).toMatchBefore(BEFORE.cta);
 	});
 });
 
@@ -71,7 +72,7 @@ describe("ContentDivider: actions", () => {
 				/>
 				<ContentDivider
 					actions={
-						<Button hierarchy="secondary" size="sm" iconOnly="plus" label="Añadir elemento" />
+						<Button hierarchy="secondary" size="sm" iconOnly={Plus} label="Añadir elemento" />
 					}
 				/>
 				<ContentDivider
@@ -166,7 +167,7 @@ describe("InlineCTA: los siete tipos", () => {
 				title="Cambia de plan"
 				plan={{
 					name: "Plan básico",
-					icon: "zap",
+					icon: Zap,
 					price: "10 €",
 					period: "al mes",
 					description: "Hasta 10 usuarios.",

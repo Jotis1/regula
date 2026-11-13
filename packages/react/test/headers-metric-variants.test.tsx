@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { DotsVertical, Eye, HomeLine, TrendUp01 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import {
@@ -30,19 +31,19 @@ describe("los de siempre", () => {
 					<MetricCard label="Ingresos" value="2.000 €" change="3%" trend="down" />
 				</>,
 			),
-		).toBe(BEFORE.metric);
+		).toMatchBefore(BEFORE.metric);
 		expect(
 			renderToStaticMarkup(
 				<PageHeader
 					title="Gastos"
 					description="Lo que entra y sale"
-					breadcrumbs={[{ label: "Inicio", href: "/", icon: "home-line" }, { label: "Gastos" }]}
+					breadcrumbs={[{ label: "Inicio", href: "/", icon: HomeLine }, { label: "Gastos" }]}
 					actions={<button type="button">Nuevo</button>}
 				>
 					<p>Hijos</p>
 				</PageHeader>,
 			),
-		).toBe(BEFORE.page);
+		).toMatchBefore(BEFORE.page);
 		expect(
 			renderToStaticMarkup(
 				<>
@@ -56,7 +57,7 @@ describe("los de siempre", () => {
 					</SectionHeader>
 				</>,
 			),
-		).toBe(BEFORE.section);
+		).toMatchBefore(BEFORE.section);
 	});
 });
 
@@ -98,7 +99,7 @@ describe("MetricCard: icono y gráfica", () => {
 					label="Visitas"
 					value="2.000"
 					change="100%"
-					icon="trend-up-01"
+					icon={TrendUp01}
 					iconStyle={iconStyle}
 					menu
 				/>,
@@ -109,7 +110,7 @@ describe("MetricCard: icono y gráfica", () => {
 					label="Visitas"
 					value="2.000"
 					change="100%"
-					icon="trend-up-01"
+					icon={TrendUp01}
 					iconStyle={iconStyle}
 					menu
 				/>,
@@ -126,7 +127,7 @@ describe("MetricCard: icono y gráfica", () => {
 					value="2.000"
 					change="100%"
 					period="vs. el mes pasado"
-					icon="eye"
+					icon={Eye}
 					chart={DATA}
 					chartStyle={chartStyle}
 					menu
@@ -239,7 +240,7 @@ describe("SectionHeader: pestañas, búsqueda y grupo de botones", () => {
 						]}
 					/>
 				}
-				menu={<Button hierarchy="tertiary" size="sm" iconOnly="dots-vertical" label="Más opciones" />}
+				menu={<Button hierarchy="tertiary" size="sm" iconOnly={DotsVertical} label="Más opciones" />}
 			/>,
 		);
 		expect(screen.getByRole("textbox", { name: "Buscar" })).toBeTruthy();
@@ -254,7 +255,7 @@ describe("SectionHeader: pestañas, búsqueda y grupo de botones", () => {
 				title="Equipo"
 				description="Gestiona tu equipo."
 				search={<input aria-label="Buscar" />}
-				menu={<Button hierarchy="tertiary" size="sm" iconOnly="dots-vertical" label="Más opciones" />}
+				menu={<Button hierarchy="tertiary" size="sm" iconOnly={DotsVertical} label="Más opciones" />}
 				tabs={
 					<Tabs
 						type="button-border"

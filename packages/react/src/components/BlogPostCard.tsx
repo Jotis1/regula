@@ -1,9 +1,9 @@
+import { ArrowUpRight } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { Avatar } from "./Avatar.js";
 import { Badge, type BadgeColor } from "./Badge.js";
 import { BadgeGroup } from "./BadgeGroup.js";
-import { Icon } from "./Icon.js";
 
 export type BlogPostCardType =
 	| "simple-01"
@@ -160,7 +160,7 @@ export function BlogPostCard({
 										aria-hidden="true"
 										className="flex shrink-0 pt-1 text-fg-quaternary"
 									>
-										<Icon name="arrow-up-right" size={20} />
+										<ArrowUpRight size={20} />
 									</span>
 								)}
 							</h3>
@@ -195,7 +195,7 @@ export function BlogPostCard({
 							className="flex items-center gap-2 text-md font-semibold text-brand-secondary"
 						>
 							{readLabel}
-							<Icon name="arrow-up-right" size={20} />
+							<ArrowUpRight size={20} />
 						</span>
 					) : null}
 				</div>

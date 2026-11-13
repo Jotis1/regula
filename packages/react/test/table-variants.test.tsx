@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { Copy01, Trash01 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Table, type TableCellType, type TableColumn } from "../src/index.js";
@@ -190,8 +191,8 @@ const cell: Cells = {
 	rating: 4.5,
 	actions: [{ label: "Borrar" }, { label: "Editar" }],
 	"action-icons": [
-		{ icon: "copy-01", label: "Copiar" },
-		{ icon: "trash-01", label: "Borrar" },
+		{ icon: Copy01, label: "Copiar" },
+		{ icon: Trash01, label: "Borrar" },
 	],
 	menu: { label: "Más opciones" },
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown, FilterLines } from "@untitledui/icons";
 import { useState } from "react";
 import { Button as AriaButton, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import { cx } from "../internal/cx.js";
@@ -15,7 +16,6 @@ import {
 	type FilterRule,
 } from "../internal/filter-rules.js";
 import { useControllable } from "../internal/use-controllable.js";
-import { Icon } from "./Icon.js";
 
 export type { FilterField, FilterLabels, FilterRule } from "../internal/filter-rules.js";
 
@@ -89,7 +89,7 @@ export function FilterMenu({
 					className,
 				)}
 			>
-				<Icon name="filter-lines" size={20} className="text-fg-quaternary" />
+				<FilterLines size={20} className="text-fg-quaternary" />
 				<span className="flex items-center gap-1.5 px-0.5">
 					{t.filters}
 					{/* Los espacios son para el nombre accesible: «Filtros 3 filtros activos»; en flex no se ven */}
@@ -101,7 +101,7 @@ export function FilterMenu({
 					) : null}
 					{count ? <span className="sr-only">{` ${t.active(count)}`}</span> : null}
 				</span>
-				<Icon name="chevron-down" size={16} className="text-fg-quaternary" />
+				<ChevronDown size={16} className="text-fg-quaternary" />
 			</AriaButton>
 			<Popover
 				placement={align === "end" ? "bottom end" : "bottom start"}

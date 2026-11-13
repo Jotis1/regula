@@ -4,11 +4,42 @@ description: "Neutro primero, una acción principal, profundidad sutil."
 order: 1
 ---
 
+import { Badge, Button } from "@jotis-me/react";
 import Essentials from "../../components/compose/Essentials.astro";
+import Pair from "../../components/compose/Pair.astro";
+import Rule from "../../components/compose/Rule.astro";
 
 {/* Texto de la guía (reference/GUIA.md, introducción y «Principios»), repartido en tarjetas sin reescribirlo */}
 
 El sistema de diseño de la suite jotis.me (Vinculum, Pecunia, Emptor, Ornatus y lo que venga). Interfaz de aplicación sobria: grises neutros, un solo color de marca (índigo), Geist y Geist Mono para leer, Bricolage Grotesque para los titulares. Claro y oscuro desde el primer día.
+
+## Con ejemplos
+
+Los dos principios que más se rompen, con componentes de verdad.
+
+<Pair>
+	<Rule verdict="do" caption="Casi todo es gris. El índigo marca lo interactivo y lo actual.">
+		<Badge color="gray">Borrador</Badge>
+		<Badge color="gray">Archivado</Badge>
+		<Badge color="brand">Actual</Badge>
+	</Rule>
+	<Rule verdict="dont" caption="Si una pantalla tiene más de dos o tres manchas de marca, sobra alguna.">
+		<Badge color="brand">Borrador</Badge>
+		<Badge color="brand">Archivado</Badge>
+		<Badge color="brand">Actual</Badge>
+	</Rule>
+</Pair>
+
+<Pair>
+	<Rule verdict="do" caption="Cada vista y cada modal tiene como mucho un `Button` `primary`. El resto, `secondary` o `tertiary`.">
+		<Button hierarchy="secondary">Cancelar</Button>
+		<Button>Guardar</Button>
+	</Rule>
+	<Rule verdict="dont" caption="Con dos primarios juntos, ninguno es la acción principal.">
+		<Button>Guardar</Button>
+		<Button>Exportar</Button>
+	</Rule>
+</Pair>
 
 ## Los cuatro principios
 

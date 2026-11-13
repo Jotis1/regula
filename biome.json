@@ -9,7 +9,7 @@
 		"includes": [
 			"**",
 			"!reference",
-			"!packages/icons/assets",
+			"!packages/assets/assets",
 			"!scripts/artifact/static",
 			"!**/dist",
 			"!**/.astro",

@@ -1,6 +1,6 @@
 "use client";
 
-import { IconMinusCircle, IconPlusCircle } from "@jotis-me/icons";
+import { MinusCircle, PlusCircle } from "@untitledui/icons";
 import { type KeyboardEvent, type ReactNode, useId, useRef } from "react";
 import { cx } from "../internal/cx.js";
 import { useControllable } from "../internal/use-controllable.js";
@@ -87,7 +87,7 @@ export function Accordion({
 				const id = `${base}-${i}`;
 				const icon = (
 					<span aria-hidden="true" className={cx("flex shrink-0 text-fg-quaternary", Plus)}>
-						{isOpen ? <IconMinusCircle size={24} /> : <IconPlusCircle size={24} />}
+						{isOpen ? <MinusCircle size={24} /> : <PlusCircle size={24} />}
 					</span>
 				);
 				return (

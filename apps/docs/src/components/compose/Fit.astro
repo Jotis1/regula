@@ -1,6 +1,6 @@
 ---
+import { CheckCircle, XClose } from "@untitledui/icons";
 // «Cabe / No cabe» (Tone.dc.html): dos tarjetas con lo que sí y lo que no, en el texto de la guía.
-import { Icon } from "@jotis-me/react";
 import { inline } from "../../lib/inline";
 
 interface Props {
@@ -11,8 +11,8 @@ interface Props {
 }
 const { fits, nots, fitsLabel = "Cabe", notsLabel = "No cabe" } = Astro.props;
 const cards = [
-	{ label: fitsLabel, items: fits, icon: "check-circle", color: "text-fg-success-primary" },
-	{ label: notsLabel, items: nots, icon: "x-close", color: "text-fg-error-primary" },
+	{ label: fitsLabel, items: fits, icon: CheckCircle, color: "text-fg-success-primary" },
+	{ label: notsLabel, items: nots, icon: XClose, color: "text-fg-error-primary" },
 ] as const;
 ---
 
@@ -21,7 +21,7 @@ const cards = [
 		cards.map((c) => (
 			<div class="flex flex-col gap-3 rounded-xl p-4 shadow-[inset_0_0_0_1px_var(--border-secondary)] md:p-5">
 				<p class="flex items-center gap-2 text-sm font-semibold text-primary">
-					<Icon name={c.icon} size={20} className={c.color} />
+					<c.icon size={20} className={c.color} />
 					{c.label}
 				</p>
 				<ul class="flex list-disc flex-col gap-1.5 pl-[18px] text-sm text-secondary">

@@ -1,8 +1,7 @@
-import { IconCurrencyDollarCircle, IconMarkerPin01 } from "@jotis-me/icons";
+import { ArrowUpRight, Clock, CurrencyDollarCircle, MarkerPin01 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { Badge, type BadgeColor } from "./Badge.js";
-import { Icon } from "./Icon.js";
 
 export interface JobPostCardProps {
 	/** La oferta. El título es el enlace y toda la tarjeta responde al clic. */
@@ -15,7 +14,7 @@ export interface JobPostCardProps {
 	departmentColor?: BadgeColor;
 	/** Lugar: «En remoto», «Madrid». */
 	location?: ReactNode;
-	/** Bandera del lugar en `card-02` (de `@jotis-me/icons/flags`). */
+	/** Bandera del lugar en `card-02` (de `@untitledui/country-flags`). */
 	flag?: ReactNode;
 	/** Jornada: «Jornada completa». */
 	employment?: ReactNode;
@@ -54,11 +53,11 @@ export function JobPostCard({
 		type === "card-02"
 			? null
 			: location
-				? { key: "lugar", icon: <IconMarkerPin01 size={20} />, text: location }
+				? { key: "lugar", icon: <MarkerPin01 size={20} />, text: location }
 				: null,
-		employment ? { key: "jornada", icon: <Icon name="clock" size={20} />, text: employment } : null,
+		employment ? { key: "jornada", icon: <Clock size={20} />, text: employment } : null,
 		type === "card-02" && salary
-			? { key: "sueldo", icon: <IconCurrencyDollarCircle size={20} />, text: salary }
+			? { key: "sueldo", icon: <CurrencyDollarCircle size={20} />, text: salary }
 			: null,
 	].filter((m) => m !== null);
 	const dept = department ? (
@@ -114,7 +113,7 @@ export function JobPostCard({
 							className="flex items-center gap-1.5 text-sm font-semibold text-brand-secondary @max-md:hidden"
 						>
 							{viewLabel}
-							<Icon name="arrow-up-right" size={20} />
+							<ArrowUpRight size={20} />
 						</span>
 						<span className="@md:hidden">{dept}</span>
 					</>

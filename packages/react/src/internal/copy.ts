@@ -18,6 +18,11 @@ export function onCopy(fn: (notice: CopyNotice) => void): () => void {
 	};
 }
 
+/** Avisa de una copia que ha fallado en un componente que copia por su cuenta (`CodeSnippet`). */
+export function reportCopyFailure(anchor: Element): void {
+	listeners.values().next().value?.({ ok: false, anchor });
+}
+
 /**
  * Copia `text` y avisa del resultado. Devuelve si se pudo. Aunque no haya ningún `CopyTooltip` montado, copia igual.
  * No se espera a que nadie lo muestre: el aviso nunca retrasa ni cambia lo copiado. Si hay varios `CopyTooltip` montados

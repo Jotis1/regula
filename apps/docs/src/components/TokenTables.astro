@@ -1,6 +1,11 @@
 ---
+// Tablas de tokens que cierran las páginas de tipografía, espaciado y estados, generadas desde @jotis-me/tokens. Desde
+// `md` cada sección es una tabla; por debajo, una tarjeta por token (nombre que se copia, muestra, valor y uso), sin
+// tabla que se desplace a lo ancho, como el explorador de Color. La copia la hace el `CopyTooltip` de la página
+// (`data-copy`).
 import { blur, radius, shadows, spacing, type, width } from "@jotis-me/tokens";
 import { radiusRows, shadowRows, spacingRows, tokenSections } from "../lib/tokens";
+import MdxH2 from "./MdxH2.astro";
 
 interface Props {
 	page: string;
@@ -29,203 +34,172 @@ const typeStyle = (family: string, s: (typeof type.groups)[number]["styles"][num
 	]
 		.filter(Boolean)
 		.join(";");
+
+interface Row {
+	/** Lo que se lee en el botón. */
+	name: string;
+	/** Lo que se copia al pulsarlo. */
+	copy: string;
+	/** La utilidad, junto al nombre, cuando el botón copia otra cosa o no la enseña. */
+	hint?: string;
+	/** Una frase pintada con el estilo del token, bajo el nombre (tipografía). */
+	text?: string;
+	/** La muestra de la segunda columna: su clase (`spacer`, `radius-sample`, `shadow-sample`) y su estilo. */
+	sample?: { class: string; style: string };
+	value?: string;
+	usage: string;
+}
+interface Section {
+	title: string;
+	head: [string, string, string];
+	rows: Row[];
+}
+
+const sections: Section[] =
+	page === "typography"
+		? type.groups.map((group) => ({
+				title: group.name,
+				head: ["Estilo", "Tamaño", "Uso"],
+				rows: group.styles.map((s) => ({
+					name: s.name,
+					copy: typeUtility(group.family, s.name),
+					text: typeStyle(group.family, s),
+					value: `${s.fontSize}/${s.lineHeight}`,
+					usage: s.usage ?? "",
+				})),
+			}))
+		: page === "layout"
+			? [
+					{
+						title: "Escala de espaciado",
+						head: ["Token", "Valor", "Uso"],
+						rows: spacingRows(spacing).map((row) => ({
+							name: row.name,
+							copy: row.utility ?? `var(--${row.name})`,
+							hint: row.utility,
+							sample: { class: "spacer", style: `width:${row.value}` },
+							value: row.value,
+							usage: row.usage,
+						})),
+					},
+					{
+						title: "Radios",
+						head: ["Utilidad", "Valor", "Uso"],
+						rows: radiusRows(radius).map((row) => ({
+							name: row.utility ?? row.name,
+							copy: row.utility ?? row.name,
+							sample: { class: "radius-sample", style: `border-radius:${row.value}` },
+							value: row.value,
+							usage: row.usage,
+						})),
+					},
+					{
+						title: "Anchos",
+						head: ["Token", "Valor", "Uso"],
+						rows: Object.entries(width).map(([name, t]) => ({
+							name,
+							copy: `var(--${name})`,
+							value: t.value,
+							usage: t.usage,
+						})),
+					},
+				]
+			: page === "states"
+				? [
+						{
+							title: "Sombras",
+							head: ["Utilidad", "Muestra", "Uso"],
+							rows: shadowRows(shadows).map((row) => ({
+								name: row.utility,
+								copy: row.utility,
+								sample: { class: "shadow-sample", style: `box-shadow:var(--${row.name})` },
+								usage: row.usage,
+							})),
+						},
+						{
+							title: "Desenfoques",
+							head: ["Utilidad", "Valor", "Uso"],
+							rows: Object.entries(blur).map(([name, t]) => ({
+								name,
+								copy: name,
+								value: t.value,
+								usage: t.usage,
+							})),
+						},
+					]
+				: [];
 ---
 
-
 {
-	page === "typography" &&
-		type.groups.map((group) => (
-			<section>
-				<h2 id={ids.get(group.name)}>{group.name}</h2>
+	sections.map((section) => (
+		<section>
+			<MdxH2 id={ids.get(section.title)}>{section.title}</MdxH2>
+			<div class="max-md:hidden">
 				<table>
 					<thead>
 						<tr>
-							<th>Estilo</th>
-							<th>Tamaño</th>
-							<th>Uso</th>
+							{section.head.map((h) => (
+								<th>{h}</th>
+							))}
 						</tr>
 					</thead>
 					<tbody>
-						{group.styles.map((s) => (
+						{section.rows.map((row) => (
 							<tr>
 								<td>
 									<button
 										type="button"
 										class="token-copy"
-										data-copy={typeUtility(group.family, s.name)}
-										aria-label={`Copiar ${s.name}`}
-										title={typeUtility(group.family, s.name)}
+										data-copy={row.copy}
+										aria-label={`Copiar ${row.name}`}
+										title={row.copy === row.name ? undefined : row.copy}
 									>
-										{s.name}
-									</button>
-									<p class="mt-2 text-primary" style={typeStyle(group.family, s)}>
-										Gasto de octubre
-									</p>
-								</td>
-								<td>
-									<code>
-										{s.fontSize}/{s.lineHeight}
-									</code>
-								</td>
-								<td>{s.usage ?? ""}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
-		))
-}
-
-{
-	page === "layout" && (
-		<>
-			<section>
-				<h2 id={ids.get("Escala de espaciado")}>Escala de espaciado</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Token</th>
-							<th>Valor</th>
-							<th>Uso</th>
-						</tr>
-					</thead>
-					<tbody>
-						{spacingRows(spacing).map((row) => (
-							<tr>
-								<td>
-									<button type="button" class="token-copy" data-copy={row.utility ?? `var(--${row.name})`} aria-label={`Copiar ${row.name}`}
-										title={row.utility ?? `var(--${row.name})`}>
 										{row.name}
 									</button>
-									{row.utility && <span class="ml-2 text-xs text-quaternary">{row.utility}</span>}
+									{row.hint && <span class="ml-2 text-xs text-quaternary">{row.hint}</span>}
+									{row.text && (
+										<p class="mt-2 text-primary" style={row.text}>
+											Gasto de octubre
+										</p>
+									)}
 								</td>
 								<td>
-									<span class="spacer" style={`width:${row.value}`} />
-									<code>{row.value}</code>
+									{row.sample && <span class={row.sample.class} style={row.sample.style} />}
+									{row.value && <code>{row.value}</code>}
 								</td>
 								<td>{row.usage}</td>
 							</tr>
 						))}
 					</tbody>
 				</table>
-			</section>
-			<section>
-				<h2 id={ids.get("Radios")}>Radios</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Utilidad</th>
-							<th>Valor</th>
-							<th>Uso</th>
-						</tr>
-					</thead>
-					<tbody>
-						{radiusRows(radius).map((row) => (
-							<tr>
-								<td>
-									<button type="button" class="token-copy" data-copy={row.utility} aria-label={`Copiar ${row.utility}`}>
-										{row.utility}
-									</button>
-								</td>
-								<td>
-									<span class="radius-sample" style={`border-radius:${row.value}`} />
-									<code>{row.value}</code>
-								</td>
-								<td>{row.usage}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
-			<section>
-				<h2 id={ids.get("Anchos")}>Anchos</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Token</th>
-							<th>Valor</th>
-							<th>Uso</th>
-						</tr>
-					</thead>
-					<tbody>
-						{Object.entries(width).map(([name, t]) => (
-							<tr>
-								<td>
-									<button type="button" class="token-copy" data-copy={`var(--${name})`} aria-label={`Copiar ${name}`}
-										title={`var(--${name})`}>
-										{name}
-									</button>
-								</td>
-								<td>
-									<code>{t.value}</code>
-								</td>
-								<td>{t.usage}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
-		</>
-	)
-}
-
-{
-	page === "states" && (
-		<>
-			<section>
-				<h2 id={ids.get("Sombras")}>Sombras</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Utilidad</th>
-							<th>Muestra</th>
-							<th>Uso</th>
-						</tr>
-					</thead>
-					<tbody>
-						{shadowRows(shadows).map((row) => (
-							<tr>
-								<td>
-									<button type="button" class="token-copy" data-copy={row.utility} aria-label={`Copiar ${row.utility}`}>
-										{row.utility}
-									</button>
-								</td>
-								<td>
-									<span class="shadow-sample" style={`box-shadow:var(--${row.name})`} />
-								</td>
-								<td>{row.usage}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
-			<section>
-				<h2 id={ids.get("Desenfoques")}>Desenfoques</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Utilidad</th>
-							<th>Valor</th>
-							<th>Uso</th>
-						</tr>
-					</thead>
-					<tbody>
-						{Object.entries(blur).map(([name, t]) => (
-							<tr>
-								<td>
-									<button type="button" class="token-copy" data-copy={name} aria-label={`Copiar ${name}`}>
-										{name}
-									</button>
-								</td>
-								<td>
-									<code>{t.value}</code>
-								</td>
-								<td>{t.usage}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</section>
-		</>
-	)
+			</div>
+			<ul class="not-prose m-0 flex list-none flex-col gap-3 p-0 md:hidden" data-token-cards>
+				{section.rows.map((row) => (
+					<li class="flex min-w-0 flex-col items-start gap-3 rounded-xl border border-secondary bg-primary p-4">
+						<div class="flex max-w-full flex-wrap items-center gap-x-3 gap-y-1">
+							<button
+								type="button"
+								class="token-copy whitespace-normal break-all"
+								data-copy={row.copy}
+								aria-label={`Copiar ${row.name}`}
+							>
+								{row.name}
+							</button>
+							{row.value && <code class="font-mono text-xs text-tertiary">{row.value}</code>}
+							{row.hint && <span class="text-xs text-quaternary">{row.hint}</span>}
+						</div>
+						{row.text && (
+							<p class="max-w-full break-words text-primary" style={row.text}>
+								Gasto de octubre
+							</p>
+						)}
+						{row.sample && (
+							<span class:list={[row.sample.class, "mr-0 max-w-full"]} style={row.sample.style} />
+						)}
+						{row.usage && <p class="text-sm text-tertiary">{row.usage}</p>}
+					</li>
+				))}
+			</ul>
+		</section>
+	))
 }

@@ -26,6 +26,11 @@ export interface CopyTooltipProps {
 	 * @default 1500
 	 */
 	duration?: number;
+	/**
+	 * Se llama cuando una copia falla (el navegador no deja usar el portapapeles). Con ella, el componente no pinta su
+	 * burbuja de fallo: el aviso lo da quien la pasa, por ejemplo con una `Notification` de error que no se cierre sola.
+	 */
+	onCopyError?: () => void;
 }
 
 interface Placed {
@@ -49,17 +54,24 @@ const ROOM_ABOVE = 32 + GAP + MARGIN;
  * se copie con `useCopy`, o con `copyAttribute`, avisa aquí. Dice solo «Copiado», sin repetir el valor, que podría ser
  * largo. Se anuncia a lectores de pantalla sin mover el foco.
  */
-export function CopyTooltip({ copyAttribute, labels, duration = 1500 }: CopyTooltipProps) {
+export function CopyTooltip({ copyAttribute, labels, duration = 1500, onCopyError }: CopyTooltipProps) {
 	const t = { copied: defaultStrings.copied, failed: defaultStrings.copyFailed, ...labels };
 	const [placed, setPlaced] = useState<Placed | null>(null);
 	const [pending, setPending] = useState<Omit<Placed, "shift"> | null>(null);
 	const root = useRef<HTMLDivElement>(null);
 	const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+	// En una ref: el aviso de fallo puede cambiar sin volver a suscribirse a las copias
+	const failure = useRef(onCopyError);
+	failure.current = onCopyError;
 
 	// El aviso de cada copia: dónde va (encima del elemento, o debajo si no cabe) y cuándo se va
 	useEffect(
 		() =>
 			onCopy(({ ok, anchor }) => {
+				if (!ok && failure.current) {
+					failure.current();
+					return;
+				}
 				const rect = anchor.getBoundingClientRect();
 				const below = rect.top < ROOM_ABOVE;
 				setPending({ ok, below, x: rect.left + rect.width / 2, y: below ? rect.bottom : rect.top });

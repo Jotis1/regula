@@ -1,0 +1,37 @@
+---
+// Página de prueba del e2e de SidebarNav con `disclosure="native"`: se pinta solo en el servidor, sin directiva `client:`,
+// para comprobar con el JavaScript desactivado que los submenús se ven y se abren. Fuera de la navegación y de las capturas.
+import { SidebarNav } from "@jotis-me/react";
+import "../../styles/global.css";
+
+const panel = [
+	{ label: "Resumen", href: "#resumen" },
+	{ label: "Avisos", href: "#avisos", badge: 10 },
+];
+const equipo = [
+	{ label: "Miembros", href: "#miembros", active: true },
+	{ label: "Roles", href: "#roles" },
+];
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex" />
+		<title>SidebarNav nativo · prueba</title>
+	</head>
+	<body class="m-0 bg-primary p-4 font-body text-primary antialiased">
+		<div class="h-[640px]">
+			<SidebarNav
+				brand="Regula"
+				disclosure="native"
+				items={[
+					{ label: "Inicio", href: "#inicio" },
+					{ label: "Panel", children: panel },
+					{ label: "Equipo", children: equipo },
+				]}
+			/>
+		</div>
+	</body>
+</html>

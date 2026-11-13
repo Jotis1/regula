@@ -7,13 +7,13 @@ import net from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import tls from "node:tls";
-import { iconNames } from "@jotis-me/icons";
 import * as react from "@jotis-me/react";
 import { catalogComponents, slugOf } from "../../../apps/docs/src/lib/catalog";
 import { componentReadme } from "../src/content";
 import { generate, LIMITS, type Manifest } from "../src/generate";
 import { mdxToMarkdown } from "../src/guide";
 import { REACT, TOKENS } from "../src/paths";
+import { DARK_VARIANT } from "../src/sheet";
 
 const COMMIT = "0123456789abcdef0123456789abcdef01234567";
 const DATE = "2026-11-06T00:00:00Z";
@@ -126,6 +126,17 @@ describe("límites del tipo", () => {
 		expect(manifest.files.length + manifest.assets.length).toBeLessThan(LIMITS.files);
 	});
 
+	it('la hoja publica el tema claro forzado también como data-theme="light"', () => {
+		const sheet = text("components/bundle.css");
+		expect(sheet).toContain('.dark-mode, [data-theme="dark"] {');
+		expect(sheet).toContain('.light-mode, [data-theme="light"] {');
+		// `dark:` se apaga dentro de un contenedor claro, pero no por el `data-theme="light"` de la raíz
+		expect(DARK_VARIANT).toContain(
+			':not(:where(.light-mode, .light-mode *, [data-theme="light"]:not(:root),',
+		);
+		expect(text("README.md")).toContain('`data-theme="light"`');
+	});
+
 	it("la hoja mantiene .jm-root de la guía, para los diseños que envuelven con esa clase", () => {
 		const sheet = text("components/bundle.css");
 		expect(sheet).toContain(".jm-root, .jm-root * { box-sizing: border-box; }");
@@ -168,15 +179,16 @@ describe("tokens, fuentes y assets", () => {
 			expect(existsSync(join(out, "project", font.file)), font.file).toBe(true);
 	});
 
-	it("los grupos de assets salen del repo, con los iconos en el orden de @jotis-me/icons", () => {
+	it("los grupos de assets salen del repo; los iconos de línea, los de archivo y las banderas no son assets", () => {
 		const names = (group: string) => manifest.assets.filter((a) => a.group === group).map((a) => a.name);
-		expect(names("Icons")).toEqual(iconNames.map((n) => `${n}.svg`));
+		expect(manifest.assets.map((a) => a.group)).not.toContain("Icons");
 		expect(names("App icons")).toContain("scaena-default.svg");
 		expect(names("Hand-drawn").length).toBe(87);
 		expect(names("Patterns").length).toBe(4);
-		const icon = text("assets/Icons/plus.svg");
-		expect(icon).toContain("#525252");
-		expect(icon).not.toContain("currentColor");
+		expect(names("Pagos").length).toBe(112);
+		expect(names("Cursores").length).toBe(50);
+		const icon = text("assets/Pagos/visa-md.svg");
+		expect(icon).toContain('xmlns="http://www.w3.org/2000/svg"');
 		expect(text("assets/Hand-drawn/arrow-01.svg")).toContain("#171717");
 	});
 
@@ -218,8 +230,8 @@ describe("índice", () => {
 	});
 
 	it("con el publicado: conserva sus claves y Logos, reutiliza un blob igual y exige subir uno distinto", async () => {
-		const plus = manifest.assets.find((a) => a.group === "Icons" && a.name === "plus.svg");
-		if (!plus) throw new Error("falta plus.svg");
+		const plus = manifest.assets.find((a) => a.group === "Pagos" && a.name === "visa-md.svg");
+		if (!plus) throw new Error("falta visa-md.svg");
 		const published = {
 			...index(),
 			createdOnFiles: { v: 1, at: "2026-10-29T17:40:00Z" },
@@ -235,7 +247,13 @@ describe("índice", () => {
 					name: "Icons",
 					tile: "xs",
 					order: ["plus.svg"],
-					files: { "plus.svg": { name: "plus.svg", blob: "B1" } },
+					files: { "plus.svg": { name: "plus.svg", blob: "X1" } },
+				},
+				Pagos: {
+					name: "Pagos",
+					tile: "xs",
+					order: ["visa-md.svg"],
+					files: { "visa-md.svg": { name: "visa-md.svg", blob: "B1" } },
 				},
 			},
 		};
@@ -257,7 +275,10 @@ describe("índice", () => {
 			expect(i.extra).toBe("se conserva");
 			expect(i.createdOnFiles.at).toBe("2026-10-29T17:40:00Z");
 			expect(i.assetGroups.Logos.files["logo.svg"].blob).toBe("L1");
-			expect(i.assetGroups.Icons.files["plus.svg"].blob).toBe("B1");
+			expect(i.assetGroups.Pagos.files["visa-md.svg"].blob).toBe("B1");
+			// Un grupo publicado que el repo ya no genera se retira del índice
+			expect(i.assetGroups.Icons).toBeUndefined();
+			expect(i.groups).not.toContain("Icons");
 			expect(m.uploads).toEqual([]);
 			// El mismo nombre con otro contenido: el blob publicado no vale y hay que subir
 			await expect(
@@ -270,7 +291,7 @@ describe("índice", () => {
 					blobs,
 					assetShas: { B1: "otro" },
 				}),
-			).rejects.toThrow("Icons/plus.svg");
+			).rejects.toThrow("Pagos/visa-md.svg");
 		} finally {
 			rmSync(again, { recursive: true, force: true });
 		}

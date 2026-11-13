@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { CurrencyEuro, File04, Inbox01, Moon01, Plus, Users01 } from "@untitledui/icons";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { CommandMenu, type TreeItem, TreeView } from "../src/index.js";
@@ -10,20 +11,20 @@ const groups = (onSelect = vi.fn()) => [
 		label: "Apps",
 		items: [
 			{
-				icon: "currency-euro" as const,
+				icon: CurrencyEuro,
 				label: "Pecunia",
 				description: "Gastos e ingresos",
 				shortcut: "G P",
 			},
-			{ icon: "users-01" as const, label: "Vinculum", description: "Contactos" },
-			{ icon: "file-04" as const, label: "Ornatus", description: "Lector Markdown", onSelect },
+			{ icon: Users01, label: "Vinculum", description: "Contactos" },
+			{ icon: File04, label: "Ornatus", description: "Lector Markdown", onSelect },
 		],
 	},
 	{
 		label: "Acciones",
 		items: [
-			{ icon: "plus" as const, label: "Nuevo gasto", shortcut: "⌘N" },
-			{ icon: "moon-01" as const, label: "Cambiar a modo oscuro", keywords: "tema noche" },
+			{ icon: Plus, label: "Nuevo gasto", shortcut: "⌘N" },
+			{ icon: Moon01, label: "Cambiar a modo oscuro", keywords: "tema noche" },
 		],
 	},
 ];
@@ -163,6 +164,38 @@ describe("CommandMenu", () => {
 		);
 	});
 
+	it("defaultQuery: se abre con el texto, filtra y avisa una sola vez; al reabrir parte de él", async () => {
+		const seen: string[] = [];
+		const onQueryChange = (q: string) => seen.push(q);
+		const el = (open: boolean) => (
+			<CommandMenu
+				contained
+				open={open}
+				defaultQuery="gasto"
+				onQueryChange={onQueryChange}
+				groups={groups()}
+			/>
+		);
+		const { rerender } = render(el(true));
+		const box = screen.getByRole("combobox") as HTMLInputElement;
+		expect(box.value).toBe("gasto");
+		expect(screen.getAllByRole("option").map((o) => o.textContent)).toEqual([
+			"PecuniaGastos e ingresosG P",
+			"Nuevo gasto⌘N",
+		]);
+		expect(seen).toEqual(["gasto"]);
+		rerender(el(true));
+		expect(seen).toEqual(["gasto"]);
+
+		await userEvent.clear(box);
+		await userEvent.type(box, "x");
+		expect(seen).toEqual(["gasto", "", "x"]);
+		rerender(el(false));
+		rerender(el(true));
+		expect((screen.getByRole("combobox") as HTMLInputElement).value).toBe("gasto");
+		expect(seen).toEqual(["gasto", "", "x", "gasto"]);
+	});
+
 	it("onQueryChange y filter={false}: la app filtra y los grupos se pintan tal cual", async () => {
 		const seen: string[] = [];
 		const onSelect = vi.fn();
@@ -191,7 +224,7 @@ const tree: TreeItem[] = [
 			{ id: "leeme", label: "LEEME.md", meta: "2 KB" },
 		],
 	},
-	{ id: "arch", label: "Archivo", icon: "inbox-01" },
+	{ id: "arch", label: "Archivo", icon: Inbox01 },
 ];
 
 const row = (name: string) => screen.getByRole("row", { name: new RegExp(name) });

@@ -1,10 +1,10 @@
 "use client";
 
+import { ChevronDown } from "@untitledui/icons";
 import { type ReactNode, useId, useState } from "react";
 import { Button as AriaButton, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import { cx } from "../internal/cx.js";
 import { ColorPicker, type ColorPickerProps } from "./ColorPicker.js";
-import { Icon } from "./Icon.js";
 
 export type ColorPickerDropdownTrigger =
 	| "swatch-sm"
@@ -86,9 +86,7 @@ export function ColorPickerDropdown({
 	const swatch = (size: string) => (
 		<span aria-hidden="true" className={cx("shrink-0", SWATCH, size)} style={{ background: hex }} />
 	);
-	const chevron = (size: number) => (
-		<Icon name="chevron-down" size={size} className="shrink-0 text-fg-quaternary" />
-	);
+	const chevron = (size: number) => <ChevronDown size={size} className="shrink-0 text-fg-quaternary" />;
 	const named = `${label}: #${shown}`;
 
 	let button: ReactNode;

@@ -28,5 +28,9 @@
 		"@changesets/cli": "^3.0.3",
 		"turbo": "^2.11.10",
 		"typescript": "^7.0.2"
+	},
+	"patchedDependencies": {
+		"@untitledui/country-flags@0.0.17": "patches/@untitledui%2Fcountry-flags@0.0.17.patch",
+		"@untitledui/file-icons@0.0.9": "patches/@untitledui%2Ffile-icons@0.0.9.patch"
 	}
 }

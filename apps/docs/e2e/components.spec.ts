@@ -2,8 +2,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Locator, type Page, test } from "@playwright/test";
-import { PNG } from "pngjs";
-import { labelOf } from "../src/lib/catalog";
+import { COMPONENT_GROUPS, groupOf, labelOf } from "../src/lib/catalog";
 
 /** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
 async function hydrated(page: Page, selector: string) {
@@ -20,14 +19,21 @@ const pages = readdirSync(dir)
 	}))
 	.map((p) => ({ ...p, label: labelOf(p.name) }));
 
-test("la navegación lateral lista todas las páginas de componente", async ({ page }) => {
-	await page.goto("/foundations/principles/"); // la portada va sin navegación lateral
-	const nav = page.getByRole("navigation", { name: "Documentación" });
-	for (const { label, slug } of pages)
-		await expect(
-			nav.getByRole("link", { name: label, exact: true, includeHidden: true }),
-		).toHaveAttribute("href", `/components/${slug}/`);
-});
+// El lateral lleva el árbol de su sección: Componentes y Stream se reparten las páginas
+for (const [section, start] of [
+	["components", "/components/button/"],
+	["stream", "/components/stream-scene/"],
+] as const)
+	test(`la navegación lateral de ${section} lista sus páginas de componente`, async ({ page }) => {
+		await page.goto(start);
+		const nav = page.getByRole("navigation", { name: "Documentación" });
+		const own = pages.filter((p) => groupOf(p.name)?.section === section);
+		expect(own.length).toBeGreaterThan(0);
+		for (const { label, slug } of own)
+			await expect(
+				nav.getByRole("link", { name: label, exact: true, includeHidden: true }),
+			).toHaveAttribute("href", `/components/${slug}/`);
+	});
 
 for (const { slug, name, label } of pages) {
 	test(`${name}: ficha, ejemplos vivos, props y código`, async ({ page }) => {
@@ -222,25 +228,37 @@ test("Button: migas con su grupo, importación, índice, relacionados y anterior
 		"href",
 		"/components/#acciones",
 	);
-	await expect(page.locator("header dl")).toContainText('import { Button } from "@jotis-me/react"');
+	// La importación, en un campo de solo lectura con su botón de copiar (PageHeader, design D1)
+	const importLine = page.locator("main header").first().getByRole("textbox", { name: "Importación" });
+	await expect(importLine).toHaveValue('import { Button } from "@jotis-me/react"');
+	await expect(importLine).toHaveAttribute("readonly", "");
+	await expect(page.locator("main header").first().getByRole("button", { name: "Copiar" })).toBeVisible();
 	const headings = await page.locator("article h2").allTextContents();
-	expect(headings.slice(0, 5)).toEqual([
+	expect(headings.slice(0, 7)).toEqual([
 		"Ejemplo interactivo",
 		"Cuándo usarlo",
+		"Evita",
 		"Props",
 		"Código",
 		"Detalles y accesibilidad",
+		"Relacionados",
 	]);
-	const toc = page.getByRole("navigation", { name: "En esta página" }).last();
+	const toc = page.getByRole("navigation", { name: "En esta página" });
 	await expect(toc.getByRole("link", { name: "Props" })).toHaveAttribute("href", "#props");
+	// Relacionados, al final de la página: los tres siguientes de su grupo en `LinkCard`, con su descripción
+	const related = page.getByRole("navigation", { name: "Relacionados" });
+	await expect(related.getByRole("link")).toHaveCount(3);
 	for (const [name, slug] of [
 		["Button group", "button-group"],
+		["Button utility", "button-utility"],
 		["Close button", "close-button"],
 	])
-		await expect(toc.getByRole("link", { name, exact: true })).toHaveAttribute(
+		await expect(related.getByRole("link", { name: new RegExp(`^${name}`) })).toHaveAttribute(
 			"href",
 			`/components/${slug}/`,
 		);
+	await expect(related.getByRole("link", { name: /^Button group/ })).toContainText("Grupo segmentado");
+	await expect(toc.getByRole("link", { name: "Relacionados" })).toHaveAttribute("href", "#relacionados");
 	const pager = page.getByRole("navigation", { name: "Anterior y siguiente" });
 	await expect(pager.getByRole("link")).toHaveCount(1);
 	await expect(pager.getByRole("link", { name: /Siguiente\s*Button group/ })).toHaveAttribute(
@@ -268,6 +286,9 @@ test("a 390px ninguna página de componente se desplaza en horizontal: la tabla 
 		if ((await page.evaluate(() => document.documentElement.scrollWidth)) > 390) wide.push(slug);
 	}
 	expect(wide).toEqual([]);
+	// Por debajo de `lg` las props son una lista plegable; la tabla, con su caja que recibe el foco, es de escritorio
+	await expect(page.getByRole("list", { name: /^Props de / })).toBeVisible();
+	await page.setViewportSize({ width: 1440, height: 900 });
 	await expect(page.getByRole("region", { name: /^Props de / })).toHaveAttribute("tabindex", "0");
 });
 
@@ -276,7 +297,7 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 }) => {
 	await page.goto("/components/");
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Componentes");
-	const index = page.locator("article");
+	const index = page.locator("[data-index]");
 	// El enlace de cada card (las vistas previas pueden llevar enlaces dibujados: Breadcrumbs, SidebarNav…)
 	const links = index.locator("[data-group] > li > a");
 	await expect(links).toHaveCount(pages.length);
@@ -287,75 +308,254 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 	}
 	// Las migas de cada página apuntan a estas anclas (/components/#acciones)
 	for (const id of ["acciones", "formularios", "stream-escenas", "stream-canal"])
-		await expect(page.locator(`h3#${id}`)).toHaveCount(1);
-	await expect(page.locator("#seccion-stream + section h3")).toHaveText(/Alertas/);
+		await expect(page.locator(`#${id} h2`)).toHaveCount(1);
+	// Los de Stream se leen con su sección delante: «Alertas» no se confunde con «Avisos y carga»
+	await expect(page.locator("#stream-alertas h2")).toHaveText("Stream: Alertas");
+	await expect(page.locator("#acciones")).toContainText(
+		"Lo que se pulsa para que pase algo. 7 componentes.",
+	);
 });
 
-// Vistas previas en vivo de las cards (change live-component-previews): la muestra de cada componente, pintada en el
-// servidor, inerte y fuera del enlace, que cubre toda la card.
+// El índice (redesign-docs-site-v2, design D5 y D8): mapa de grupos, buscador, desplegable de grupo y estados
+const visibleCards = (page: Page) => page.locator("[data-group] > li:visible > a");
+
+test("/components/ · Mapa de grupos: antes de las cards hay un enlace por cada uno de los 16 grupos, con su frase y su recuento", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	const map = page.getByRole("region", { name: /^Qué necesitas hacer/ });
+	const links = map.getByRole("link");
+	await expect(links).toHaveCount(COMPONENT_GROUPS.length);
+	expect(COMPONENT_GROUPS).toHaveLength(16);
+	for (const g of COMPONENT_GROUPS) {
+		const n = g.components.length;
+		const link = map.locator(`a[href="#${g.id}"]`);
+		await expect(link).toHaveCount(1);
+		await expect(link).toContainText(g.section === "stream" ? `Stream: ${g.label}` : g.label);
+		await expect(link).toContainText(`${g.description} ${n} ${n === 1 ? "componente" : "componentes"}.`);
+	}
+	// El mapa va antes de la primera card
+	const before = await page.evaluate(() => {
+		const map = document.querySelector("[data-index-map]") as Element;
+		const card = document.querySelector("[data-group] > li") as Element;
+		return !!(map.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING);
+	});
+	expect(before).toBe(true);
+	// Y cada enlace lleva a su grupo
+	await map.getByRole("link", { name: /^Gráficas/ }).click();
+	await expect(page).toHaveURL(/\/components\/#graficas$/);
+	await expect(page.locator("#graficas")).toBeInViewport();
+});
+
+test("/components/ · Buscar por lo que hace: «fecha» deja DatePicker y CalendarView y anuncia cuántos quedan", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	const search = page.getByRole("textbox", { name: "Buscar por nombre o por lo que hace" });
+	const status = page.locator("[data-index-count]");
+	await expect(status).toHaveAttribute("role", "status");
+	await expect(status).toBeEmpty();
+	await search.fill("fecha");
+	await expect(visibleCards(page)).toHaveCount(2);
+	expect(await visibleCards(page).evaluateAll((els) => els.map((a) => a.getAttribute("href")))).toEqual([
+		"/components/date-picker/",
+		"/components/calendar-view/",
+	]);
+	await expect(status).toHaveText(`2 de ${pages.length} componentes`);
+	// Solo quedan los grupos con resultados; el mapa se aparta mientras se busca
+	await expect(page.locator("[data-index-group]:visible")).toHaveCount(2);
+	await expect(page.locator("[data-index-map]")).toBeHidden();
+	// Por nombre (como se lee y como se escribe en el código), sin tildes ni mayúsculas, y por palabra clave
+	await search.fill("DATEPICKER");
+	await expect(visibleCards(page)).toHaveCount(1);
+	await search.fill("boton");
+	await expect(page.locator('[data-group] > li:visible > a[href="/components/button/"]')).toHaveCount(1);
+	// Varias palabras: tienen que estar todas
+	await search.fill("fecha rango");
+	await expect(visibleCards(page)).toHaveCount(1);
+	// Escape lo vacía y vuelve todo
+	await search.press("Escape");
+	await expect(search).toHaveValue("");
+	await expect(visibleCards(page)).toHaveCount(pages.length);
+	await expect(page.locator("[data-index-map]")).toBeVisible();
+	await expect(status).toBeEmpty();
+});
+
+test("/components/ · Sin resultados en el índice: «botonn» enseña un estado vacío que lo nombra y «Limpiar búsqueda»", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	const search = page.getByRole("textbox", { name: "Buscar por nombre o por lo que hace" });
+	const empty = page.locator("[data-index-empty]");
+	await expect(empty).toBeHidden();
+	await search.fill("botonn");
+	await expect(visibleCards(page)).toHaveCount(0);
+	await expect(empty).toBeVisible();
+	await expect(empty.getByRole("heading")).toHaveText("Nada con «botonn»");
+	await expect(page.locator("[data-index-count]")).toHaveText("Sin resultados");
+	await empty.getByRole("button", { name: "Limpiar búsqueda" }).click();
+	await expect(empty).toBeHidden();
+	await expect(search).toHaveValue("");
+	await expect(search).toBeFocused();
+	await expect(visibleCards(page)).toHaveCount(pages.length);
+});
+
+test("/components/: el desplegable de grupo lleva al ancla del grupo, con ratón y con teclado, y su código no se pide hasta usarlo", async ({
+	page,
+}) => {
+	const scripts: string[] = [];
+	page.on("request", (r) => {
+		if (r.resourceType() === "script") scripts.push(r.url());
+	});
+	await page.goto("/components/");
+	await page.waitForLoadState("networkidle");
+	const atLoad = scripts.length;
+	const select = page.getByRole("button", { name: /Ir a un grupo/ });
+	await expect(select).toContainText("Todos los grupos");
+	// Con una búsqueda a medias, ir a un grupo la limpia: el grupo podía estar escondido
+	await page.getByRole("textbox", { name: "Buscar por nombre o por lo que hace" }).fill("fecha");
+	await select.click();
+	const options = page.getByRole("option");
+	await expect(options).toHaveCount(COMPONENT_GROUPS.length + 1);
+	expect(scripts.length).toBeGreaterThan(atLoad);
+	await page.getByRole("option", { name: "Stream: Canal" }).click();
+	await expect(page).toHaveURL(/#stream-canal$/);
+	await expect(page.locator("#stream-canal")).toBeInViewport();
+	await expect(visibleCards(page)).toHaveCount(pages.length);
+	// Ya montado, con teclado
+	await page.getByRole("button", { name: /Ir a un grupo/ }).focus();
+	await page.keyboard.press("Enter");
+	await page.getByRole("option", { name: "Formularios" }).click();
+	await expect(page).toHaveURL(/#formularios$/);
+	await expect(page.locator("#formularios")).toBeInViewport();
+});
+
+test("/components/: con teclado y sin haberlo tocado antes, Enter abre el desplegable de grupo", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	await page.getByRole("button", { name: /Ir a un grupo/ }).focus();
+	await page.keyboard.press("Enter");
+	await expect(page.getByRole("listbox")).toBeVisible();
+	await page.keyboard.press("ArrowDown");
+	await page.keyboard.press("Enter");
+	await expect(page).toHaveURL(/#acciones$/);
+});
+
+test("/components/ · carga: cada captura lleva un Skeleton en su hueco hasta que carga su imagen", async ({
+	page,
+}) => {
+	// Las capturas no llegan hasta que se suelta la espera
+	let release: () => void = () => {};
+	const held = new Promise<void>((resolve) => {
+		release = resolve;
+	});
+	await page.route(/\.webp(\?|$)/, async (route) => {
+		await held;
+		await route.continue();
+	});
+	await page.goto("/components/", { waitUntil: "domcontentloaded" });
+	const first = page.locator('[data-showcase-card="Button"]');
+	await first.scrollIntoViewIfNeeded();
+	const skeleton = first.locator("> span");
+	await expect(skeleton).toBeVisible();
+	await expect(skeleton).toHaveAttribute("aria-hidden", "true");
+	// El texto de la card ya está: solo espera la captura
+	await expect(card(page, "button").locator("> a")).toContainText("Button");
+	release();
+	await expect(first).toHaveAttribute("data-loaded", "");
+	await expect(skeleton).toBeHidden();
+	// Las tres primeras siguen sin ser perezosas: el Skeleton no cambia cómo se cargan
+	await expect(first.locator("img").first()).toHaveAttribute("loading", "eager");
+});
+
+test.describe("/components/ sin JavaScript", () => {
+	test.use({ javaScriptEnabled: false });
+
+	test("se ve entero y el buscador y el desplegable, que no harían nada, no se pintan", async ({
+		page,
+	}) => {
+		await page.goto("/components/");
+		await expect(visibleCards(page)).toHaveCount(pages.length);
+		await expect(page.locator("[data-index-map] a")).toHaveCount(16);
+		await expect(page.locator("[data-index-search] input")).toBeHidden();
+		await expect(page.locator("[data-index-select]")).toBeHidden();
+		await expect(page.locator("[data-index-empty]")).toBeHidden();
+	});
+});
+
+// Capturas de las cards (change adopt-untitled-ui-icons): una imagen WebP por tema de lo más característico de cada componente,
+// inerte y fuera del enlace, que cubre toda la card.
 const card = (page: Page, slug: string) =>
 	page.locator(`[data-group] > li:has(> a[href="/components/${slug}/"])`);
 
-test("/components/: la card de ButtonGroup pinta un ButtonGroup del paquete, sin imágenes, y su nombre se lee separado", async ({
+/** Las imágenes de una card que se ven con el tema actual (la del otro tema va con `display: none`). */
+const shown = (page: Page, name: string) =>
+	page
+		.locator(`[data-showcase-card="${name}"] img`)
+		.evaluateAll((els) =>
+			els
+				.filter((e) => getComputedStyle(e).display !== "none")
+				.map((e) => (e as HTMLImageElement).dataset.showcaseTheme),
+		);
+
+test("/components/: la card de ButtonGroup es una captura WebP, decorativa, y su nombre se lee separado", async ({
 	page,
 }) => {
 	await page.goto("/components/");
 	const c = card(page, "button-group");
 	await c.scrollIntoViewIfNeeded();
-	const preview = c.locator("[data-live-preview]");
-	await expect(preview.locator("button")).toHaveCount(3);
-	await expect(preview.locator("button").nth(1)).toHaveText("7 días");
-	await expect(page.locator("[data-group] img")).toHaveCount(0);
+	const preview = c.locator("[data-showcase-card]");
+	await expect(preview.locator("img").first()).toHaveAttribute("src", /button-group-light.*\.webp$/);
 	await expect(preview).toHaveAttribute("aria-hidden", "true");
 	await expect(preview).toHaveAttribute("inert", "");
+	await expect(preview.locator("img").first()).toHaveAttribute("alt", "");
+	// La imagen ya no es el componente montado: no hay botones dentro de la card
+	await expect(preview.locator("button")).toHaveCount(0);
+	await expect(page.locator("[data-group] [data-live-preview]")).toHaveCount(0);
 	await expect(c.locator("> a")).toHaveAccessibleName(/^Button group Grupo segmentado/);
 });
 
-test("/components/: la card enseña la muestra del componente, sobre el damero", async ({ page }) => {
-	await page.goto("/components/");
-	const preview = page.locator('[data-live-preview="Button"]');
-	await preview.scrollIntoViewIfNeeded();
-	// Su muestra (un botón), no el ejemplo del registro con todas las jerarquías y tamaños
-	await expect(preview.locator("button")).toHaveCount(1);
-	await expect(preview.locator("button")).toHaveText("Nuevo gasto");
-	// El damero sutil de fondo (design D4)
-	expect(await preview.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("linear-gradient");
-});
-
-test("/components/: Tab va de card en card sin entrar en las vistas previas", async ({ page }) => {
-	await page.goto("/components/");
-	const first = page.locator("[data-group] > li > a").first();
-	await first.focus();
-	for (let i = 0; i < 12; i++) {
-		const inside = await page.evaluate(() => !!document.activeElement?.closest("[data-live-preview]"));
-		expect(inside).toBe(false);
-		await expect(page.locator(":focus")).toHaveAttribute("href", /^\/components\/[a-z-]+\/$/);
-		await page.keyboard.press("Tab");
-	}
-});
-
-test("/components/: un clic sobre un botón dibujado abre la página del componente", async ({ page }) => {
-	await page.goto("/components/");
-	const button = card(page, "button").locator("[data-live-preview] button");
-	await button.scrollIntoViewIfNeeded();
-	const box = await button.boundingBox();
-	expect(box).not.toBeNull();
-	if (box) await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-	await expect(page).toHaveURL(/\/components\/button\/$/);
-});
-
-test("/components/: el tema cambia las vistas previas sin pedir nada; las de Stream van siempre en oscuro", async ({
+test("/components/: cada imagen reserva su hueco y casi todas son perezosas, para que la página no salte al cargarla", async ({
 	page,
 }) => {
 	await page.goto("/components/");
-	const button = page.locator('[data-live-preview="Button"]');
-	const alert = page.locator('[data-live-preview="StreamAlert"]');
-	const bg = (l: typeof button) => l.evaluate((el) => getComputedStyle(el).backgroundColor);
-	const lightButton = await bg(button);
-	const streamLight = await bg(alert);
-	await expect(alert).toHaveClass(/dark-mode/);
-	const requests: string[] = [];
-	page.on("request", (r) => requests.push(r.url()));
+	const attrs = await page.locator("[data-showcase-card] img").evaluateAll((els) =>
+		els.map((e) => ({
+			lazy: e.getAttribute("loading"),
+			w: e.getAttribute("width"),
+			h: e.getAttribute("height"),
+		})),
+	);
+	expect(attrs.length).toBeGreaterThan(200);
+	for (const a of attrs) expect({ w: a.w, h: a.h }).toEqual({ w: "800", h: "500" });
+	// Todas perezosas salvo la captura clara de las tres primeras cards, que están a la vista al cargar (suele ser el LCP)
+	expect(attrs.filter((a) => a.lazy === "eager")).toHaveLength(3);
+	expect(attrs.filter((a) => a.lazy !== "eager" && a.lazy !== "lazy")).toEqual([]);
+});
+
+test("/components/: solo se descarga la captura del tema activo y la de las cards que se acercan a la pantalla", async ({
+	page,
+}) => {
+	const requested: string[] = [];
+	page.on("request", (r) => {
+		if (/\.webp(\?|$)/.test(r.url())) requested.push(r.url());
+	});
+	await page.goto("/components/");
+	await page.waitForLoadState("networkidle");
+	expect(requested.length).toBeGreaterThan(0);
+	// Con el tema claro no se pide ninguna oscura de una card de aplicación…
+	expect(requested.filter((u) => /button-dark/.test(u))).toEqual([]);
+	// …y no se piden las de las 120 cards a la vez: las de abajo esperan
+	expect(requested.length).toBeLessThan(60);
+});
+
+test("/components/: el tema cambia las capturas sin recargar; las de Stream van siempre en oscuro", async ({
+	page,
+}) => {
+	await page.goto("/components/");
+	await expect.poll(() => shown(page, "Button")).toEqual(["light"]);
+	await expect.poll(() => shown(page, "StreamAlert")).toEqual(["dark"]);
 	// El selector de tema de la cabecera: se abre y se elige Oscuro
 	// (una isla por versión de la cabecera, escritorio y móvil: se esperan las dos)
 	const themeIslands = page.locator("body > header astro-island").filter({ hasText: "Tema:" });
@@ -363,19 +563,40 @@ test("/components/: el tema cambia las vistas previas sin pedir nada; las de Str
 	for (const island of await themeIslands.all()) await expect(island).not.toHaveAttribute("ssr", /.*/);
 	await page.getByRole("button", { name: /^Tema: / }).click();
 	await page.getByRole("menuitemradio", { name: "Oscuro", exact: true }).click();
-	await expect.poll(() => bg(button)).not.toBe(lightButton);
-	expect(requests.filter((u) => /previews|\.webp|\.png/.test(u))).toEqual([]);
+	await expect.poll(() => shown(page, "Button")).toEqual(["dark"]);
 	// Stream no cambia: ya estaba en oscuro
-	expect(await bg(alert)).toBe(streamLight);
+	expect(await shown(page, "StreamAlert")).toEqual(["dark"]);
 });
 
-test("/components/: ninguna vista previa es una isla y la página no carga VisualExample", async ({
+test("/components/: Tab va de card en card sin entrar en las capturas", async ({ page }) => {
+	await page.goto("/components/");
+	const first = page.locator("[data-group] > li > a").first();
+	await first.focus();
+	for (let i = 0; i < 12; i++) {
+		const inside = await page.evaluate(() => !!document.activeElement?.closest("[data-showcase-card]"));
+		expect(inside).toBe(false);
+		await expect(page.locator(":focus")).toHaveAttribute("href", /^\/components\/[a-z-]+\/$/);
+		await page.keyboard.press("Tab");
+	}
+});
+
+test("/components/: un clic sobre la captura abre la página del componente", async ({ page }) => {
+	await page.goto("/components/");
+	const image = card(page, "button").locator("[data-showcase-card]");
+	await image.scrollIntoViewIfNeeded();
+	// La imagen no recibe el ratón (pointer-events: none): el clic llega al enlace de la card que la cubre
+	const box = await image.boundingBox();
+	if (!box) throw new Error("la captura no tiene caja");
+	await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+	await expect(page).toHaveURL(/\/components\/button\/$/);
+});
+
+test("/components/: sin islas en las cards, sin la página de ejemplos y sin ids repetidos", async ({
 	page,
 }) => {
 	await page.goto("/components/");
-	await expect(page.locator("[data-live-preview] astro-island")).toHaveCount(0);
+	await expect(page.locator("[data-showcase-card] astro-island")).toHaveCount(0);
 	await expect(page.locator("astro-island[component-url*='VisualExample']")).toHaveCount(0);
-	// Sin ids repetidos entre las 78 muestras (Dropdown abierto de inicio los repetía en su HTML de servidor)
 	const repeated = await page.evaluate(() => {
 		const seen = new Map<string, number>();
 		for (const el of document.querySelectorAll("[id]")) seen.set(el.id, (seen.get(el.id) ?? 0) + 1);
@@ -384,43 +605,26 @@ test("/components/: ninguna vista previa es una isla y la página no carga Visua
 	expect(repeated).toEqual([]);
 });
 
-test("/components/: ninguna de las vistas previas sale vacía (también StreamScene y ChannelBanner, con escala fija)", async ({
-	page,
-}) => {
+test("/components/: todas las cards tienen su imagen y se cargan sin error", async ({ page }) => {
 	test.setTimeout(120_000);
 	await page.goto("/components/");
-	const names = (await page
-		.locator("[data-live-preview]")
-		.evaluateAll((els) => els.map((e) => e.getAttribute("data-live-preview")))) as string[];
-	expect(names).toHaveLength(pages.length);
-	const blank: string[] = [];
-	for (const name of names) {
-		const stage = page.locator(`[data-live-preview="${name}"] > div`);
-		await stage.scrollIntoViewIfNeeded();
-		const shot = PNG.sync.read(await stage.screenshot());
-		const colors = new Set<number>();
-		for (let i = 0; i < shot.data.length; i += 4)
-			colors.add(
-				((shot.data[i] ?? 0) << 16) | ((shot.data[i + 1] ?? 0) << 8) | (shot.data[i + 2] ?? 0),
-			);
-		// Vacía = solo el damero (dos colores) y quizá un borde
-		if (colors.size <= 3) blank.push(name);
-	}
-	expect(blank).toEqual([]);
-});
-
-// Las muestras del índice se pintan a su tamaño real: ninguna se encoge con `transform: scale()` (design D2).
-test("ninguna muestra del índice se encoge", async ({ page }) => {
-	await page.goto("/components/");
-	const scales = await page.locator("[data-live-preview]").evaluateAll((els) =>
-		els.map((el) => {
-			const thumb = el.querySelector("[data-thumb]");
-			const t = thumb ? getComputedStyle(thumb).transform : "none";
-			const scale = t === "none" ? 1 : Number(t.match(/matrix\(([^,]+),/)?.[1] ?? 1);
-			return { name: el.getAttribute("data-live-preview") as string, scale };
-		}),
+	// Se baja hasta el final para que se pidan todas las imágenes perezosas
+	await page.evaluate(async () => {
+		for (let y = 0; y < document.body.scrollHeight; y += 700) {
+			window.scrollTo(0, y);
+			await new Promise((r) => setTimeout(r, 40));
+		}
+	});
+	await page.waitForLoadState("networkidle");
+	const broken = await page.locator("[data-showcase-card]").evaluateAll((els) =>
+		els
+			.filter((el) => {
+				const visible = [...el.querySelectorAll("img")].find(
+					(i) => getComputedStyle(i).display !== "none",
+				);
+				return !visible?.complete || visible.naturalWidth === 0;
+			})
+			.map((el) => el.getAttribute("data-showcase-card")),
 	);
-	expect(scales.length).toBeGreaterThan(100);
-	const shrunk = scales.filter((s) => s.scale < 1).map((s) => s.name);
-	expect(shrunk, "muestras encogidas").toEqual([]);
+	expect(broken).toEqual([]);
 });

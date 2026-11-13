@@ -1,10 +1,9 @@
-import { IconSearchLg, IconXClose } from "@jotis-me/icons";
+import { ChevronDown, FilterLines, SearchLg, XClose } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 import { Button } from "./Button.js";
 import { ButtonGroup, type ButtonGroupItem } from "./ButtonGroup.js";
-import { Icon } from "./Icon.js";
 import { Input } from "./Input.js";
 import { Tag } from "./Tag.js";
 
@@ -134,7 +133,7 @@ function ClassicFilterBar({
 						<div className="w-[296px] max-w-full">
 							<Input
 								size="sm"
-								icon="search-lg"
+								icon={SearchLg}
 								placeholder={searchPlaceholder ?? t.search}
 								aria-label={t.search}
 								onChange={onSearch ? (e) => onSearch(e.target.value) : undefined}
@@ -142,12 +141,7 @@ function ClassicFilterBar({
 						</div>
 					) : null}
 					{extra}
-					<Button
-						hierarchy="secondary"
-						size="sm"
-						iconLeading="filter-lines"
-						onClick={onOpenFilters}
-					>
+					<Button hierarchy="secondary" size="sm" iconLeading={FilterLines} onClick={onOpenFilters}>
 						{t.filters}
 						{count ? " " : null}
 						{count ? (
@@ -213,7 +207,7 @@ function NativeSelect({
 				))}
 			</select>
 			<span className="pointer-events-none absolute right-2.5 flex text-fg-quaternary">
-				<Icon name="chevron-down" size={16} />
+				<ChevronDown size={16} />
 			</span>
 		</span>
 	);
@@ -264,7 +258,7 @@ function TypedFilterBar({
 		<div className="w-[296px] max-w-full @max-md:w-auto @max-md:flex-1">
 			<Input
 				size="sm"
-				icon="search-lg"
+				icon={SearchLg}
 				placeholder={searchPlaceholder ?? t.search}
 				aria-label={t.search}
 				onChange={onSearch ? (e) => onSearch(e.target.value) : undefined}
@@ -275,7 +269,7 @@ function TypedFilterBar({
 		<Button
 			hierarchy="secondary"
 			size="sm"
-			iconLeading="filter-lines"
+			iconLeading={FilterLines}
 			onClick={onOpenFilters}
 			className="@max-md:px-2!"
 		>
@@ -360,7 +354,7 @@ function TypedFilterBar({
 				<Button
 					hierarchy="secondary"
 					size="sm"
-					iconOnly={<IconSearchLg size={20} />}
+					iconOnly={<SearchLg size={20} />}
 					label={t.search}
 					onClick={onOpenSearch}
 				/>
@@ -390,7 +384,7 @@ function TypedFilterBar({
 								<Button
 									hierarchy="secondary"
 									size="sm"
-									iconOnly="filter-lines"
+									iconOnly={FilterLines}
 									label="Añadir un filtro"
 									onClick={add}
 								/>
@@ -421,7 +415,7 @@ function TypedFilterBar({
 									<Button
 										hierarchy="tertiary"
 										size="sm"
-										iconOnly={<IconXClose size={20} />}
+										iconOnly={<XClose size={20} />}
 										label={`Quitar el filtro ${i + 1}`}
 										onClick={() =>
 											onConditionsChange?.(conditions.filter((_, k) => k !== i))
@@ -436,7 +430,7 @@ function TypedFilterBar({
 					<Button
 						hierarchy="secondary"
 						size="sm"
-						iconLeading="filter-lines"
+						iconLeading={FilterLines}
 						onClick={onOpenFilters}
 						className="w-full"
 					>

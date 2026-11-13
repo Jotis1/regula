@@ -1,9 +1,9 @@
+import { Clock, Eye } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { formatNumber } from "../internal/format.js";
 import { STREAM_ROOT, TABULAR } from "../internal/stream.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export type StreamStatusValue = "live" | "offline" | "rerun";
 
@@ -77,14 +77,14 @@ export function StreamStatus({
 			</span>
 			{live && viewers != null ? (
 				<span className={meta}>
-					<Icon name="eye" size={16} className="text-fg-tertiary" />
+					<Eye size={16} className="text-fg-tertiary" />
 					{formatNumber(viewers)}
 					<span className="sr-only"> {t.viewers}</span>
 				</span>
 			) : null}
 			{live && uptime ? (
 				<span className={meta}>
-					<Icon name="clock" size={16} className="text-fg-tertiary" />
+					<Clock size={16} className="text-fg-tertiary" />
 					{uptime}
 					<span className="sr-only"> {t.uptime}</span>
 				</span>

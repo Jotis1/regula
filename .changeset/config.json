@@ -3,7 +3,7 @@
 	"changelog": "@changesets/cli/changelog",
 	"commit": false,
 	"format": false,
-	"fixed": [["@jotis-me/tokens", "@jotis-me/icons", "@jotis-me/react"]],
+	"fixed": [["@jotis-me/tokens", "@jotis-me/assets", "@jotis-me/react"]],
 	"linked": [],
 	"access": "public",
 	"baseBranch": "main",

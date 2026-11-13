@@ -3,14 +3,12 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { iconNames } from "@jotis-me/icons";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import { catalogComponents } from "../src/lib/catalog";
 import {
-	applyPreset,
 	type Control,
 	codeOf,
 	controlsOf,
@@ -22,6 +20,8 @@ import {
 	type State,
 	type Tweak,
 } from "../src/lib/playground";
+import { PLAYGROUND_ICON_NAMES, resolveIcons } from "../src/lib/playground-icons";
+import { shortcutState } from "../src/lib/playground-inspector";
 import { type PropRow, propsOf } from "../src/lib/props";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -41,7 +41,19 @@ const rowsOf = (name: string): PropRow[] =>
 
 const catalog = catalogComponents();
 const configured = catalog.filter((n) => n in STARTS);
-const iconSet = new Set<string>(iconNames);
+const iconSet = new Set<string>(PLAYGROUND_ICON_NAMES);
+
+/**
+ * Los tipos del Figma de cada componente tal como los ofrecían los atajos que se quitaron del ejemplo (change
+ * adopt-untitled-ui-icons): lo que ponían tiene que seguir alcanzándose con los controles de propiedades.
+ */
+const FIGMA_TYPES: Record<string, { label: string; props: Record<string, unknown> }[]> = JSON.parse(
+	readFileSync(join(import.meta.dirname, "fixtures/figma-types.json"), "utf8"),
+);
+/** El estado de un tipo del Figma: sus props sobre el estado inicial, con los valores de contenido por la etiqueta de su opción. */
+// Es lo que hace el desplegable de atajos al elegir un tipo (`shortcutState`)
+const withType = (pg: Playground, props: Record<string, unknown>): State =>
+	shortcutState(pg, { label: "", props });
 
 /** Atributos de HTML que un componente hereda del elemento que pinta y que no salen en su tabla de props. */
 const HTML_ATTRS = new Set([
@@ -83,14 +95,23 @@ function invalidValue(c: Control | undefined, value: unknown): string | undefine
 	if ((value === undefined || value === null) && c.kind !== "toggle" && c.kind !== "choice")
 		return undefined;
 	if (c.kind === "choice")
-		return typeof value === "string" && c.values.includes(value)
+		return (
+			c.coerce
+				? c.values.includes(String(value))
+				: typeof value === "string" && c.values.includes(value)
+		)
 			? undefined
 			: `no es uno de ${c.values.join(", ")}`;
 	if (c.kind === "toggle") return typeof value === "boolean" ? undefined : "no es booleano";
 	if (c.kind === "number") return typeof value === "number" ? undefined : "no es un número";
 	if (c.kind === "icon")
-		return typeof value === "string" && iconSet.has(value) ? undefined : "no es un icono del núcleo";
-	return c.options.some((o) => o.label === value) ? undefined : "no es una opción de contenido";
+		return typeof value === "string" && iconSet.has(value) ? undefined : "no es un icono del selector";
+	if (c.kind === "text") return typeof value === "string" ? undefined : "no es un texto";
+	// Un valor de los tipos del Figma es un valor preparado; una cadena, la etiqueta de una opción
+	const json = JSON.stringify(value);
+	return c.options.some((o) => o.label === value || JSON.stringify(o.value) === json)
+		? undefined
+		: "no es un valor preparado";
 }
 
 type PlaygroundModule = { default: Parameters<typeof createElement>[0]; tweaks?: Record<string, Tweak> };
@@ -102,7 +123,7 @@ async function playgroundFor(name: string) {
 		const rows = rowsOf(name);
 		const start = STARTS[name] as Start;
 		const mod = (await import(`../src/playground/${name}.tsx`)) as PlaygroundModule;
-		const controls = controlsOf(rows, { ...start.tweaks, ...mod.tweaks });
+		const controls = controlsOf(rows, { ...start.tweaks, ...mod.tweaks }, start.props, start.children);
 		const pg: Playground = {
 			name,
 			start,
@@ -130,7 +151,7 @@ describe("configuración del ejemplo interactivo", () => {
 			expect((await playgroundFor(name)).pg.controls.length, name).toBeGreaterThan(0);
 	}, 180_000);
 
-	it("el punto de partida, los atajos, las reglas y los ajustes nombran props que existen y con valores válidos", async () => {
+	it("el punto de partida, las reglas y los ajustes nombran props que existen y con valores válidos", async () => {
 		const problems: string[] = [];
 		for (const name of configured) {
 			const { pg, rows } = await playgroundFor(name);
@@ -143,16 +164,6 @@ describe("configuración del ejemplo interactivo", () => {
 			};
 			for (const prop of Object.keys(start?.props ?? {})) check("el punto de partida", prop);
 			for (const prop of Object.keys(start?.tweaks ?? {})) check("un ajuste", prop);
-			for (const p of start?.presets ?? []) {
-				for (const [prop, value] of Object.entries(p.props)) {
-					check(`el atajo «${p.label}»`, prop);
-					const bad = invalidValue(byProp.get(prop), value);
-					if (bad)
-						problems.push(
-							`${name}: el atajo «${p.label}» pone ${prop}=${JSON.stringify(value)}, que ${bad}`,
-						);
-				}
-			}
 			for (const r of start?.rules ?? []) {
 				for (const [prop, value] of Object.entries(r.when)) {
 					check(`una regla (when)`, prop);
@@ -178,24 +189,61 @@ describe("configuración del ejemplo interactivo", () => {
 		expect(problems).toEqual([]);
 	}, 180_000);
 
-	it("cada atajo pinta sin errores y su código es JSX válido de @jotis-me/react", async () => {
+	it("los tipos del Figma de cada componente se alcanzan con los controles, con valores válidos", async () => {
 		const problems: string[] = [];
-		for (const name of configured) {
-			const start = STARTS[name];
-			if (!start?.presets?.length) continue;
+		for (const [name, types] of Object.entries(FIGMA_TYPES)) {
+			if (!configured.includes(name)) {
+				problems.push(`${name}: tiene tipos del Figma pero no ejemplo interactivo`);
+				continue;
+			}
+			const { pg, rows } = await playgroundFor(name);
+			const byProp = new Map(pg.controls.map((c) => [c.prop, c]));
+			const rowOf = new Map(rows.map((r) => [r.name, r]));
+			for (const type of types) {
+				for (const [prop, value] of Object.entries(type.props)) {
+					const control = byProp.get(prop);
+					if (control) {
+						const bad = invalidValue(control, value);
+						if (bad)
+							problems.push(`${name} «${type.label}»: ${prop}=${JSON.stringify(value)} ${bad}`);
+						continue;
+					}
+					// Sin control: solo vale si la prop es texto libre (un `label`, un `placeholder`), no una variante
+					const row = rowOf.get(prop);
+					const free =
+						typeof value === "string" &&
+						(inherited(prop) || /^(string|ReactNode|string | ReactNode)$/.test(row?.type ?? ""));
+					if (!free)
+						problems.push(
+							`${name} «${type.label}»: ${prop} no tiene control y no es texto libre`,
+						);
+				}
+			}
+		}
+		expect(problems).toEqual([]);
+	}, 180_000);
+
+	it("cada tipo del Figma pinta sin errores y su código es JSX válido de @jotis-me/react", async () => {
+		const problems: string[] = [];
+		for (const [name, types] of Object.entries(FIGMA_TYPES)) {
+			if (!configured.includes(name)) continue;
 			const { pg, mod } = await playgroundFor(name);
-			for (const preset of start.presets) {
-				const state: State = applyPreset(pg, preset);
+			for (const type of types) {
+				const state = withType(pg, type.props);
 				try {
 					renderToStaticMarkup(
-						createElement(mod.default, propsFor(pg, state) as object, pg.start.children),
+						createElement(
+							mod.default,
+							resolveIcons(propsFor(pg, state)) as object,
+							pg.start.children,
+						),
 					);
 				} catch (e) {
-					problems.push(`${name} «${preset.label}»: ${(e as Error).message}`);
+					problems.push(`${name} «${type.label}»: ${(e as Error).message}`);
 				}
 				const { next } = codeOf(pg, state);
 				const errors = syntaxErrors(next);
-				if (errors.length) problems.push(`${name} «${preset.label}»: ${errors.join("; ")}`);
+				if (errors.length) problems.push(`${name} «${type.label}»: ${errors.join("; ")}`);
 			}
 		}
 		expect(problems).toEqual([]);

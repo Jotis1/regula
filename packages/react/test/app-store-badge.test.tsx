@@ -1,8 +1,8 @@
-import { StoreAppStoreLogo, StoreGooglePlayOutlineLogo } from "@jotis-me/icons/logos";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { AppStoreBadge } from "../src/index.js";
 import { expectAccessibleInThemes } from "./helpers.js";
+import { StoreAppStoreLogo, StoreGooglePlayOutlineLogo } from "./logo-stub.js";
 
 describe("AppStoreBadge", () => {
 	it("App Store con href: un enlace con el dibujo cuyo nombre es la tienda", async () => {

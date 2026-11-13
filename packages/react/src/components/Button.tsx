@@ -1,3 +1,4 @@
+import { Loading02 } from "@untitledui/icons";
 import {
 	type AnchorHTMLAttributes,
 	type ButtonHTMLAttributes,
@@ -6,7 +7,7 @@ import {
 	type Ref,
 } from "react";
 import { cx } from "../internal/cx.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 
 export type ButtonHierarchy = "primary" | "secondary" | "tertiary" | "link-color" | "link-gray";
 export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -30,18 +31,18 @@ interface ButtonBase {
 }
 
 interface WithText extends ButtonBase {
-	/** Icono antes del texto: nombre del set o un nodo. */
-	iconLeading?: IconName | ReactNode;
-	/** Icono después del texto: nombre del set o un nodo. */
-	iconTrailing?: IconName | ReactNode;
+	/** Icono antes del texto: un componente de `@untitledui/icons` (`Plus`) o un nodo. */
+	iconLeading?: IconProp;
+	/** Icono después del texto: un componente de `@untitledui/icons` (`Plus`) o un nodo. */
+	iconTrailing?: IconProp;
 	iconOnly?: undefined;
 	label?: string;
 	children?: ReactNode;
 }
 
 interface IconOnly extends ButtonBase {
-	/** Botón solo con icono: un nombre del set núcleo o un nodo (`<IconRocket02 />`). Exige `label` para lectores de pantalla. */
-	iconOnly: IconName | ReactNode;
+	/** Botón solo con icono: un componente de `@untitledui/icons` (`Rocket02`) o un nodo (`<Rocket02 />`). Exige `label` para lectores de pantalla. */
+	iconOnly: IconProp;
 	/** Nombre accesible del botón solo con icono. */
 	label: string;
 	iconLeading?: undefined;
@@ -134,7 +135,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 		destructive && "focus-visible:shadow-focus-ring-error",
 		className,
 	);
-	const spinner = <Icon name="loading-02" size={iconSize} spin />;
+	const spinner = <Loading02 size={iconSize} className="animate-spin motion-reduce:animate-none" />;
 	const content = iconOnly ? (
 		<>
 			{loading ? spinner : iconSlot(iconOnly, iconSize)}

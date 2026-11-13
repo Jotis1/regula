@@ -1,0 +1,28 @@
+---
+// Una regla con su ejemplo: la `ExampleCard` del paquete con el espécimen (componentes de verdad) y el veredicto con
+// su frase. El espécimen va `inert`: enseña cómo queda, no hace nada, así que sus botones no suman paradas de
+// tabulador ni sus avisos se anuncian. Se pinta en el servidor, sin isla.
+import { ExampleCard, type ExampleCardVerdict } from "@jotis-me/react";
+import { inline } from "../../lib/inline";
+
+interface Props {
+	verdict: ExampleCardVerdict;
+	/** La frase junto al veredicto, con el marcado de la guía (`código` y **negrita**). */
+	caption: string;
+	/** Ancho máximo del espécimen, en px (campos, avisos). */
+	width?: number;
+}
+const { verdict, caption, width } = Astro.props;
+---
+
+<ExampleCard verdict={verdict} caption={caption}>
+	{/* El pie con su marcado (`código`): el slot manda sobre la prop, que solo cumple con el tipo */}
+	<span slot="caption" set:html={inline(caption)} />
+	<div
+		inert
+		class="flex w-full flex-wrap items-center justify-center gap-3"
+		style={width ? `max-width: ${width}px` : undefined}
+	>
+		<slot />
+	</div>
+</ExampleCard>

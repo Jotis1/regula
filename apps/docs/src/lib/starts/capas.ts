@@ -10,13 +10,10 @@ export const capas: Record<string, Start> = {
 			open: true,
 			children: "Botón",
 		},
-		presets: [
-			{ label: "Arriba", props: { placement: "top" } },
-			{ label: "Abajo", props: { placement: "bottom" } },
-			{ label: "A la izquierda", props: { placement: "left" } },
-			{ label: "A la derecha", props: { placement: "right" } },
-			{ label: "Sin flecha", props: { arrow: false } },
-		],
+	},
+	Spotlight: {
+		props: { active: true, note: "Ahora en gris" },
+		children: "Guardar cambios",
 	},
 	CopyTooltip: { props: { copyAttribute: "data-copy" } },
 	Slideout: {
@@ -29,30 +26,65 @@ export const capas: Record<string, Start> = {
 			actions: "Guardar y cancelar",
 		},
 		fill: 360,
-		presets: [
-			{ label: "Con icono", props: { icon: "edit-02" } },
-			{ label: "A la izquierda", props: { side: "left" } },
-			{ label: "Ancho", props: { width: 560 } },
-			{ label: "Con ayuda al pie", props: { footerStart: "Ayuda" } },
-		],
 	},
 	Modal: {
 		props: {
 			open: true,
 			contained: true,
-			icon: "trash-01",
+			icon: "Trash01",
 			title: "¿Eliminar este gasto?",
 			description: "Se borrará también de los informes. No se puede deshacer.",
 		},
-		presets: [
-			{ label: "Alerta", props: { icon: "alert-triangle", color: "warning" } },
-			{ label: "Destructivo", props: { icon: "trash-01", destructive: true } },
-			{ label: "Éxito", props: { icon: "check-circle", color: "success" } },
-			{ label: "Horizontal", props: { layout: "horizontal" } },
-			{ label: "A la izquierda", props: { align: "left" } },
-			{ label: "Con divisores", props: { dividers: true, footerStart: "Ayuda" } },
-		],
 		// `contained` llena a su padre (`absolute inset-0`): sin marco, su padre no mide nada y el diálogo se encoge
 		fill: 360,
+		// Los pies son frases de la ficha (content/components/modal.md), letra a letra
+		examples: [
+			{
+				do: {
+					caption:
+						"Solo un `Button` primario en `actions`: el que confirma la decisión del título.",
+					specimens: [
+						{
+							props: {
+								contained: true,
+								title: "¿Eliminar este gasto?",
+								description: "Se borrará también de los informes.",
+								actions: [
+									{
+										component: "Button",
+										props: { hierarchy: "secondary" },
+										children: "Cancelar",
+									},
+									{
+										component: "Button",
+										props: { destructive: true },
+										children: "Eliminar",
+									},
+								],
+							},
+						},
+					],
+					frame: 300,
+				},
+				dont: {
+					caption:
+						"Si un modal necesita dos acciones principales, son dos decisiones y van en dos pasos.",
+					specimens: [
+						{
+							props: {
+								contained: true,
+								title: "¿Guardar los cambios?",
+								description: "Puedes guardarlos y enviarlos ahora o más tarde.",
+								actions: [
+									{ component: "Button", children: "Guardar" },
+									{ component: "Button", children: "Guardar y enviar" },
+								],
+							},
+						},
+					],
+					frame: 300,
+				},
+			},
+		],
 	},
 };

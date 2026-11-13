@@ -1,31 +1,30 @@
 ---
-// Galería de banderas (`@jotis-me/icons/flags`). La isla (`AssetGallery`) recibe los nombres y las URL de los SVG
-// del paquete, que el build copia como ficheros: se cargan como imágenes perezosas, no como código de la isla.
+// Galería de banderas de `@untitledui/country-flags`. La isla (`AssetGallery`) recibe los códigos, el nombre de cada país en
+// castellano y las URL de los SVG que escribe el endpoint `/icons/svg/`: se cargan como imágenes perezosas, no como código.
+import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
-import { buildEntries, encodeUrls } from "../../lib/gallery";
+import { encodeTitles, encodeUrls } from "../../lib/gallery";
+import { FLAGS } from "../../lib/untitled";
 
-const urls = import.meta.glob<string>("../../../../../packages/icons/dist/flags/*.svg", {
-	query: "?no-inline",
-	import: "default",
-	eager: true,
-});
-const entries = buildEntries("flags", urls);
+const urls = Object.fromEntries(
+	FLAGS.map(({ code }) => [`/icons/svg/flags/${code}.svg`, `/icons/svg/flags/${code}.svg`]),
+);
+const titles = Object.fromEntries(FLAGS.map(({ code, title }) => [code, title]));
 ---
 
 <Base
 	title="Banderas"
-	description={`Las ${entries.length} banderas de países y regiones de @jotis-me/icons/flags, en círculo, cuadrado y rectángulo.`}
+	description={`Las ${FLAGS.length} banderas de países de @untitledui/country-flags, en círculo.`}
 >
-	<div class="flex flex-col gap-7">
-		<header class="flex max-w-[720px] flex-col gap-3.5">
+	<div class="flex flex-col gap-10">
+		<PageHeader title="Banderas" divider={false}>
+			<Fragment slot="description">
+				Las {FLAGS.length} banderas de países, en círculo (24 × 24). Cada una es un componente suelto de <code class="font-mono text-md">@untitledui/country-flags</code>, con el código ISO de su país (<code class="font-mono text-md">FlagEs</code>): tu app solo carga las que importa.
+			</Fragment>
 			<IconsNav current="flags" />
-			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Banderas</h1>
-			<p class="text-md text-tertiary lg:text-lg">
-				Las {entries.length} banderas de países y regiones, cada una en círculo (20 × 20), cuadrado (20 × 20) y rectángulo (30 × 20). Cada una es un componente suelto de <code class="font-mono text-md">@jotis-me/icons/flags</code>: tu app solo carga las que importa.
-			</p>
-		</header>
-		<AssetGallery client:load kind="flags" urls={encodeUrls(urls)} />
+		</PageHeader>
+		<AssetGallery client:load kind="flags" urls={encodeUrls(urls)} titles={encodeTitles(titles)} />
 	</div>
 </Base>

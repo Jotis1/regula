@@ -1,0 +1,29 @@
+---
+// Título de una sección de página (design D1 de redesign-docs-site-v2): el `SectionHeader` `sm` del paquete, con el
+// `id` al que apunta el índice «En esta página» en la caja que lo envuelve (así el `section[aria-labelledby]` de la
+// página puede nombrarse con ella). Sin `title`, el texto es el contenido: así lo usan los `##` de los .mdx.
+// `flow` añade los márgenes de las secciones que se suceden dentro de un texto corrido (56 px antes, 20 después).
+import { SectionHeader } from "@jotis-me/react";
+
+interface Props {
+	id?: string;
+	title?: string;
+	description?: string;
+	flow?: boolean;
+}
+const { id, title, description, flow = false } = Astro.props;
+---
+
+<div id={id} class:list={["not-prose", flow && "mt-14 mb-5 first:mt-0"]}>
+	{
+		title !== undefined ? (
+			<SectionHeader size="sm" title={title} description={description} />
+		) : (
+			<SectionHeader size="sm" title="">
+				<Fragment slot="title">
+					<slot />
+				</Fragment>
+			</SectionHeader>
+		)
+	}
+</div>

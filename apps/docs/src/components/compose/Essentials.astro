@@ -1,7 +1,7 @@
 ---
 // Tarjetas de «lo esencial» (Color.dc.html y Tone.dc.html): título, texto de la guía y, si hace falta, unas muestras.
 // Con una sola tarjeta sirve de nota destacada (la de «La voz» en Contenido y tono).
-import { FeaturedIcon, type IconName } from "@jotis-me/react";
+import { FeaturedIcon, type IconComponent } from "@jotis-me/react";
 import { inline } from "../../lib/inline";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 		swatches?: string[];
 	}[];
 	/** Icono destacado para una nota de una sola tarjeta. */
-	icon?: IconName;
+	icon?: IconComponent;
 }
 const { items, icon } = Astro.props;
 ---

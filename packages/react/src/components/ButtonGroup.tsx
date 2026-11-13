@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import { useControllable } from "../internal/use-controllable.js";
-import { type IconName, iconSlot } from "./Icon.js";
 
 interface ButtonGroupItemBase {
 	value: string;
@@ -15,12 +15,12 @@ export type ButtonGroupItem = ButtonGroupItemBase &
 	(
 		| {
 				label?: ReactNode;
-				icon?: IconName | ReactNode;
+				icon?: IconProp;
 				iconOnly?: undefined;
 		  }
 		| {
 				/** Solo icono: `label` pasa a ser el nombre accesible y no se ve. */
-				iconOnly: IconName | ReactNode;
+				iconOnly: IconProp;
 				label: string;
 				icon?: undefined;
 				dot?: undefined;

@@ -2,7 +2,8 @@
 // Sistema, Claro y Oscuro y la opción actual marcada. El botón lleva las tres opciones (icono y nombre) y
 // la CSS deja ver la de lo elegido según `data-tema` de <html>, que ya pone el script de <head> antes de pintar: el
 // botón dice lo bueno desde la primera pintura, antes de que esta isla se hidrate y aunque el servidor no lo sepa.
-import { Button, Dropdown, Icon } from "@jotis-me/react";
+import { Button, Dropdown } from "@jotis-me/react";
+import { ChevronDown, Monitor01, Moon01, Sun } from "@untitledui/icons";
 import { useEffect, useState } from "react";
 import {
 	followSystem,
@@ -13,7 +14,7 @@ import {
 	themeChoice,
 } from "../lib/theme";
 
-const ICONS = { sistema: "monitor-01", claro: "sun", oscuro: "moon-01" } as const;
+const ICONS = { sistema: Monitor01, claro: Sun, oscuro: Moon01 } as const;
 
 const ITEMS = THEME_OPTIONS.map((o) => ({ icon: ICONS[o.value], label: o.label, value: o.value }));
 
@@ -34,10 +35,15 @@ const TEXT_SHOWN: Record<ThemeChoice, string> = {
 const TRIGGER = (
 	<Button
 		hierarchy="secondary"
-		iconTrailing="chevron-down"
-		iconLeading={THEME_OPTIONS.map((o) => (
-			<Icon key={o.value} name={ICONS[o.value]} size={20} className={ICON_SHOWN[o.value]} />
-		))}
+		iconTrailing={ChevronDown}
+		iconLeading={
+			<>
+				{THEME_OPTIONS.map((o) => {
+					const Icon = ICONS[o.value];
+					return <Icon key={o.value} size={20} className={ICON_SHOWN[o.value]} />;
+				})}
+			</>
+		}
 	>
 		{/* El nombre accesible es «Tema: Claro»: los textos ocultos (display: none) no cuentan */}
 		<span className="sr-only">Tema: </span>

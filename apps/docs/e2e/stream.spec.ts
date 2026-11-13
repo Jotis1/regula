@@ -31,7 +31,7 @@ test("StreamScene: insignias, ejemplos en oscuro, nota del tema con enlace a tam
 }) => {
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto("/components/stream-scene/");
-	const header = page.locator("article header");
+	const header = page.locator("main header").first();
 	await expect(header.getByText("Stream · Escenas")).toBeVisible();
 	await expect(header.getByText("Siempre en oscuro")).toBeVisible();
 	const crumbs = page.getByRole("navigation", { name: /migas/i });
@@ -51,7 +51,7 @@ test("StreamScene: insignias, ejemplos en oscuro, nota del tema con enlace a tam
 	);
 	await expect(page.locator("[data-playground-preview]")).toHaveClass(/dark-mode/);
 	await expect(page.locator("section[aria-labelledby=codigo] [data-obs-note]")).toContainText("En OBS.");
-	const toc = page.getByRole("navigation", { name: "En esta página" }).last();
+	const toc = page.getByRole("navigation", { name: "Relacionados" });
 	await expect(toc.getByRole("link", { name: "Guía de Stream" })).toHaveAttribute(
 		"href",
 		"/foundations/stream/",
@@ -66,10 +66,7 @@ test("un componente de Stream sin lienzo fijo no enlaza a tamaño real; uno de a
 	await expect(page.locator("[data-stream-note]")).toHaveCount(1);
 	await expect(page.getByRole("link", { name: "Ver a tamaño real" })).toHaveCount(0);
 	await expect(
-		page
-			.getByRole("navigation", { name: "En esta página" })
-			.last()
-			.getByRole("link", { name: "Guía de Stream" }),
+		page.getByRole("navigation", { name: "Relacionados" }).getByRole("link", { name: "Guía de Stream" }),
 	).toBeVisible();
 	await page.goto("/components/button/");
 	await expect(page.locator("[data-stream-note], [data-obs-note]")).toHaveCount(0);

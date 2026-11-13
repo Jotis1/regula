@@ -1,8 +1,8 @@
+import { User01 } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 import { VerifiedSeal } from "../internal/verified-seal.js";
-import { Icon } from "./Icon.js";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 export type AvatarStatus = "online" | "offline";
@@ -31,7 +31,7 @@ export interface AvatarProps {
 	/** Número de `badge="count"`. Desde 100 se escribe «99+». */
 	count?: number;
 	/**
-	 * Logo de `badge="company"`: la URL de una imagen o un nodo, como un logo de `@jotis-me/icons/logos`, que se
+	 * Logo de `badge="company"`: la URL de una imagen o un nodo, como un logo de `@jotis-me/assets/logos`, que se
 	 * estira al círculo.
 	 */
 	company?: string | ReactNode;
@@ -122,7 +122,7 @@ export function Avatar({
 			) : initials ? (
 				<span aria-hidden={alt ? true : undefined}>{initials}</span>
 			) : (
-				<Icon name="user-01" size={ICON_SIZE[size]} />
+				<User01 size={ICON_SIZE[size]} />
 			)}
 			{dot ? (
 				<span

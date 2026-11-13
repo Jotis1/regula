@@ -8,7 +8,7 @@ astroNote: "Los botones y las flechas necesitan JavaScript: úsalo en una isla c
 
 **Cuándo usarlo.** Cantidades pequeñas que se ajustan de una en una o de un paso fijo: invitados, noches, horas. Para un rango continuo, `Slider`; para importes largos, `Input` con su prefijo o desplegable de divisa.
 
-**Props.** `label`, `required`, `hint`, `error` (como `Input`), `value` / `defaultValue`, `onChange(n)` (recibe `NaN` si se vacía), `min`, `max`, `step` (1 por defecto), `orientation` (`horizontal`: − y + a los lados, separados por un borde; `vertical`: dos chevrons apilados detrás), `size` (`sm` 36px · `md` 40 · `lg` 44), `formatOptions` (decimales, divisa, porcentaje), `placeholder`, `disabled`, `name`, `decrementLabel` / `incrementLabel` («Restar» y «Sumar»).
+**Props.** `label`, `required`, `hint`, `error` (como `Input`), `labelAside` (nodo a la derecha de la etiqueta, fuera del `<label>`), `value` / `defaultValue`, `onChange(n)` (recibe `NaN` si se vacía), `min`, `max`, `step` (1 por defecto), `orientation` (`horizontal`: − y + a los lados, separados por un borde; `vertical`: dos chevrons apilados detrás), `size` (`sm` 36px · `md` 40 · `lg` 44), `formatOptions` (decimales, divisa, porcentaje), `placeholder`, `disabled`, `name`, `decrementLabel` / `incrementLabel` («Restar» y «Sumar»).
 
 **Estados.** Los del marco de `Input`: borde `border-primary`, foco de 2px `border-brand` sin anillo exterior, error con `border-error_subtle` y mensaje en `text-error-primary`, deshabilitado al 50%. Los botones pasan a `bg-primary_hover` al pasar el ratón y se deshabilitan solos en el mínimo y en el máximo.
 

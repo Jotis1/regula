@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertCircle, Calendar, Eye, EyeOff } from "@untitledui/icons";
 import {
 	type ChangeEvent,
 	type HTMLInputTypeAttribute,
@@ -22,9 +23,9 @@ import {
 	fieldSeparator,
 	nativeClasses,
 } from "../internal/field.js";
+import { DynIcon, type IconProp, iconSlot } from "../internal/icon.js";
 import { OptionSelect, type SelectOption } from "../internal/option-select.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon, type IconName, iconSlot } from "./Icon.js";
 
 /** Desplegable dentro del campo: prefijo telefónico, divisa… Su valor va aparte del texto. */
 export interface InputAddonSelect {
@@ -79,7 +80,7 @@ export function formatCardNumber(value: string): string {
 export interface InputTrailingButton {
 	label: ReactNode;
 	/** Icono de 20px delante del texto. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -93,7 +94,7 @@ export interface InputProps
 	 */
 	type?: HTMLInputTypeAttribute | "card";
 	/**
-	 * Logo de cada red para `type="card"`, como un nodo de `@jotis-me/icons/payments`. El paquete no los importa. Sin el de la
+	 * Logo de cada red para `type="card"`, como un nodo de `@jotis-me/assets/payments`. El paquete no los importa. Sin el de la
 	 * red detectada, no se pinta ninguno.
 	 */
 	cardLogos?: Partial<Record<CardNetwork, ReactNode>>;
@@ -111,9 +112,9 @@ export interface InputProps
 	 */
 	size?: FieldSize;
 	/** Icono inicial, 20px en `fg-quaternary`. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Icono final, 16px. Con error se sustituye por el de alerta. */
-	trailing?: IconName | ReactNode;
+	trailing?: IconProp;
 	/** Texto fijo delante del valor (`https://`), en `text-tertiary` y separado por un borde. No forma parte del valor. */
 	prefix?: ReactNode;
 	/** Desplegable delante del valor, sin separador (prefijo telefónico). */
@@ -160,6 +161,7 @@ function AddonSelect({
 /** Campo de texto de una línea con etiqueta, pista y error, en tres alturas. */
 export function Input({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -250,7 +252,7 @@ export function Input({
 				onClick={() => inputRef.current?.showPicker?.()}
 				className="inline-flex flex-none cursor-pointer rounded-sm border-0 bg-transparent p-0 text-fg-quaternary transition-colors duration-100 hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none disabled:cursor-not-allowed"
 			>
-				<Icon name="calendar" size={20} />
+				<Calendar size={20} />
 			</button>
 		) : icon ? (
 			iconSlot(icon, 20)
@@ -291,7 +293,7 @@ export function Input({
 			) : null}
 			{error ? (
 				<span className="inline-flex text-fg-error-secondary">
-					<Icon name="alert-circle" size={16} />
+					<AlertCircle size={16} />
 				</span>
 			) : trailing && !password ? (
 				<span className="inline-flex">{iconSlot(trailing, 16)}</span>
@@ -309,7 +311,7 @@ export function Input({
 					onClick={() => setRevealed((r) => !r)}
 					className="inline-flex flex-none cursor-pointer rounded-sm border-0 bg-transparent p-0 text-fg-quaternary transition-colors duration-100 hover:text-fg-quaternary_hover focus-visible:shadow-focus-ring focus-visible:outline-none disabled:cursor-not-allowed"
 				>
-					<Icon name={revealed ? "eye-off" : "eye"} size={16} />
+					<DynIcon icon={revealed ? EyeOff : Eye} size={16} />
 				</button>
 			) : null}
 		</>
@@ -344,6 +346,7 @@ export function Input({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

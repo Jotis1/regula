@@ -10,7 +10,7 @@ La librería SHALL exportar cada componente del catálogo del sistema, con su ti
 
 #### Scenario: Exportaciones
 - **WHEN** se lista lo que exporta el punto de entrada del paquete
-- **THEN** aparecen, como mínimo, Accordion, ActivityFeed, ActivityGauge, Alert, AppIcon, AppStoreBadge, Avatar, AvatarGroup, AvatarLabel, AvatarProfilePhoto, BackgroundOverlay, BackgroundPattern, Badge, BadgeGroup, Banner, BarChart, BlogPostCard, Breadcrumbs, BrowserFrame, Button, ButtonGroup, ButtonUtility, CalendarView, CardHeader, Carousel, ChartLegend, ChartMarker, CheckIcon, CheckItem, Checkbox, CloseButton, CodeSnippet, ColorPicker, ColorPickerDropdown, CommandMenu, ContentDivider, ContextMenu, CopyTooltip, CreditCard, DatePicker, Dropdown, EmptyState, FeaturedIcon, FileUpload, FilterBar, FilterMenu, FilterPanel, Footer, HeaderNav, HelpIcon, Icon, InlineCTA, Input, JobPostCard, Kbd, LaptopMockup, LineChart, LinkCard, MarketingNav, Message, MessageInput, MetricCard, Modal, MultiSelect, Notification, NumberInput, PageHeader, Pager, Pagination, PaginationDots, PhoneMockup, PieChart, PricingCard, ProgressBar, ProgressCircle, ProgressSteps, RadarChart, Radio, RadioGroup, Rating, RatingBadge, ScaledPreview, ScreenMockup, SectionFooter, SectionHeader, SectionLabel, Select, SidebarNav, Skeleton, Slideout, Slider, SocialButton, SocialButtonGroup, Spinner, SubscribeCard, Table, Tabs, Tag, TagInput, TeamMemberCard, Testimonial, TextEditor, Textarea, Toggle, Tooltip, TransparencyGrid, TreeView, VerificationCodeInput y VideoPlayer, y los de Stream: CamFrame, ChannelBanner, ChannelPanel, ChatBadge, ChatBox, NowPlaying, StreamAlert, StreamCountdown, StreamEvents, StreamGoal, StreamScene y StreamStatus, todos con sus tipos de props
+- **THEN** aparecen, como mínimo, Accordion, ActivityFeed, ActivityGauge, Alert, AppIcon, AppStoreBadge, Avatar, AvatarGroup, AvatarLabel, AvatarProfilePhoto, BackgroundOverlay, BackgroundPattern, Badge, BadgeGroup, Banner, BarChart, BlogPostCard, Breadcrumbs, BrowserFrame, Button, ButtonGroup, ButtonUtility, CalendarView, CardHeader, Carousel, ChartLegend, ChartMarker, CheckIcon, CheckItem, Checkbox, CloseButton, CodeSnippet, ColorPicker, ColorPickerDropdown, CommandMenu, CompareSlider, ContentDivider, ContextMenu, CopyTooltip, CreditCard, DatePicker, Disclosure, Dropdown, EmptyState, ExampleCard, FeaturedIcon, FileUpload, FilterBar, FilterMenu, FilterPanel, Footer, HeaderNav, HelpIcon, IconTile, InlineCTA, Input, JobPostCard, Kbd, LaptopMockup, LineChart, LinkCard, MarketingNav, Message, MessageInput, MetricCard, Modal, MultiSelect, Notification, NumberInput, PageHeader, Pager, Pagination, PaginationDots, PhoneMockup, PieChart, PricingCard, ProgressBar, ProgressCircle, ProgressSteps, RadarChart, Radio, RadioGroup, Rating, RatingBadge, ScaledPreview, ScreenMockup, SectionFooter, SectionHeader, SectionLabel, Select, SidebarNav, Skeleton, Slideout, Slider, SocialButton, SocialButtonGroup, Spinner, Spotlight, SubscribeCard, Table, Tabs, Tag, TagInput, TeamMemberCard, Testimonial, TextEditor, Textarea, Toggle, TokenSwatch, Tooltip, TransparencyGrid, TreeView, VerificationCodeInput y VideoPlayer, y los de Stream: CamFrame, ChannelBanner, ChannelPanel, ChatBadge, ChatBox, NowPlaying, StreamAlert, StreamCountdown, StreamEvents, StreamGoal, StreamScene y StreamStatus, todos con sus tipos de props
 
 #### Scenario: Catálogo coherente
 - **WHEN** se compara lo que exporta el paquete con los componentes que tienen página en la web
@@ -20,8 +20,8 @@ La librería SHALL exportar cada componente del catálogo del sistema, con su ti
 Las props de cada componente SHALL coincidir en nombre, tipo y valores por defecto con sus tipos publicados y con la ficha de su página en la web; un cambio incompatible en ellas SHALL considerarse ruptura de API.
 
 #### Scenario: Props del botón
-- **WHEN** se usa `Button` con `hierarchy="secondary" size="lg" iconLeading="plus"`
-- **THEN** se pinta un botón secundario de 44px de alto con el icono `plus` a la izquierda del texto
+- **WHEN** se usa `Button` con `hierarchy="secondary" size="lg" iconLeading={Plus}`, con `Plus` de `@untitledui/icons`
+- **THEN** se pinta un botón secundario de 44px de alto con el icono `Plus` a la izquierda del texto
 
 #### Scenario: Prop inexistente
 - **WHEN** un proyecto TypeScript pasa `hierarchy="ghost"` a `Button`
@@ -543,7 +543,7 @@ Por debajo del ancho de escritorio, `HeaderNav` SHALL sustituir las secciones po
 `ButtonUtility` SHALL ser un botón de solo icono en tamaños `xs` y `sm` y jerarquías `secondary` y `tertiary`, con nombre accesible obligatorio, que SHALL mostrarse en un tooltip al pasar el ratón o enfocarlo con el teclado. Con `href` SHALL ser un enlace con el mismo aspecto.
 
 #### Scenario: Nombre en tooltip
-- **WHEN** el usuario llega con Tab a un `ButtonUtility` con `icon="copy-01"` y `label="Copiar"`
+- **WHEN** el usuario llega con Tab a un `ButtonUtility` con `icon={Copy01}` y `label="Copiar"`
 - **THEN** el botón se llama «Copiar», muestra el anillo de foco y abre un tooltip con «Copiar»
 
 #### Scenario: Deshabilitado
@@ -576,7 +576,7 @@ Por debajo del ancho de escritorio, `HeaderNav` SHALL sustituir las secciones po
 Las cabeceras de usuarios e integraciones de `EmptyState` SHALL pintar los avatares o logos que reciban (`items`), sea cual sea su contenido (fotos, iniciales o logos), recortados y desvanecidos hacia los bordes como en el Figma, y SHALL pintarse sin ellos con su icono central.
 
 #### Scenario: Integraciones con logos
-- **WHEN** se pinta `EmptyState` con `media="integrations"` e `items` con doce logos de `@jotis-me/icons/logos`
+- **WHEN** se pinta `EmptyState` con `media="integrations"` e `items` con doce logos de `@jotis-me/assets/logos`
 - **THEN** se ven dos filas de logos que se desvanecen hacia los lados sobre el título
 
 #### Scenario: Usuarios sin fotos
@@ -591,11 +591,23 @@ Cada componente del Figma «Yoruverse UI v8.0» que no sea una sección de pági
 - **THEN** hay una forma documentada de pintar ese valor con los componentes de Regula
 
 ### Requirement: Iconos de cualquier set en los componentes
-Las props de icono de los componentes (`icon`, `iconLeading`, `iconTrailing` y similares) SHALL aceptar el nombre de un icono del set núcleo o un nodo ya pintado, de modo que se pueda usar cualquiera de los 1.172 iconos del set completo sin que el componente cargue el set entero.
+Las props de icono de los componentes (`icon`, `iconLeading`, `iconTrailing`, `iconOnly` y similares) SHALL aceptar un componente de icono (el de `@untitledui/icons` o cualquiera que acepte `size` y `className`) o un nodo ya pintado, y no SHALL aceptar nombres en cadena. Cuando reciben un componente, SHALL pintarlo con el tamaño y el color de su sitio. El paquete SHALL contener solo los dibujos de los iconos que usan sus propios componentes.
 
 #### Scenario: Icono fuera del núcleo
-- **WHEN** se pinta `Button` con `iconLeading={<IconRocket02 />}`, un icono que no está en el núcleo
-- **THEN** el botón pinta ese icono con el tamaño y el color de su sitio, y el paquete empaquetado no contiene el dibujo de ningún otro icono fuera del núcleo
+- **WHEN** se pinta `Button` con `iconLeading={Rocket02}`
+- **THEN** el botón pinta ese icono con el tamaño y el color de su sitio, igual en `sm` que en `xl`
+
+#### Scenario: Icono como nodo
+- **WHEN** se pinta `Button` con `iconLeading={<Rocket02 className="text-fg-brand-primary" />}`
+- **THEN** el botón pinta el nodo tal cual, con el color que trae
+
+#### Scenario: Nombre en cadena
+- **WHEN** un proyecto TypeScript pasa `iconLeading="plus"` a `Button`
+- **THEN** la compilación falla con un error de tipo
+
+#### Scenario: Solo lo que se usa
+- **WHEN** una app importa solo `Button` y construye para producción
+- **THEN** el bundle de cliente contiene el icono de carga del botón y ningún otro dibujo de `@untitledui/icons`
 
 ### Requirement: Variantes de avatar
 `Avatar` SHALL ofrecer, además de los estados en línea y desconectado, la insignia de verificado, un contador y un avatar pequeño de empresa en la esquina, en sus seis tamaños, y sin foto ni iniciales SHALL pintar el icono de usuario. `AvatarGroup` SHALL ofrecer un botón de añadir al final, con nombre accesible. `AvatarLabel` SHALL ofrecer los tamaños `sm`, `md` y `lg`.
@@ -630,7 +642,7 @@ Las props de icono de los componentes (`icon`, `iconLeading`, `iconTrailing` y s
 `ButtonGroup` SHALL ofrecer los tamaños `sm` y `md` y elementos con icono delante, de solo icono (con nombre accesible) o con punto. `CloseButton` SHALL ofrecer los tamaños `sm`, `md` y `lg` y la versión para fondo oscuro.
 
 #### Scenario: Solo icono
-- **WHEN** se pinta un elemento de `ButtonGroup` con `iconOnly="grid-01"` y `label="Cuadrícula"`
+- **WHEN** se pinta un elemento de `ButtonGroup` con `iconOnly={Grid01}` y `label="Cuadrícula"`
 - **THEN** el elemento solo enseña el icono y se llama «Cuadrícula»
 
 ### Requirement: Botones de redes y de tiendas
@@ -845,3 +857,159 @@ Regula SHALL ofrecer las tarjetas de marketing del Figma con su variante de escr
 #### Scenario: Abrir
 - **WHEN** el usuario pulsa la pregunta de un `Accordion` cerrado
 - **THEN** se abre la respuesta, el botón anuncia `aria-expanded="true"` y el icono pasa de más a menos
+
+### Requirement: Submenús nativos de la navegación lateral
+`SidebarNav` SHALL admitir `disclosure="native"`, con el que cada elemento con `children` de los tipos `simple`, `sections-dividers` y `sections-subheadings` SHALL pintarse como `<details>` con su `<summary>` y abrirse y cerrarse sin JavaScript, con el mismo aspecto que con `disclosure="script"`. SHALL estar abierto de inicio el elemento que lleva `defaultOpen` o el que contiene el activo. Sin la prop, `SidebarNav` SHALL comportarse como hasta ahora.
+
+#### Scenario: Sin JavaScript
+- **WHEN** se pinta en el servidor un `SidebarNav` con `disclosure="native"` y dos grupos, el segundo con el elemento activo, y se abre la página con el JavaScript desactivado
+- **THEN** el segundo grupo se ve abierto con el activo marcado con `aria-current="page"`, y el primero se abre y se cierra al pulsar su título
+
+#### Scenario: Sin la prop
+- **WHEN** se pinta `SidebarNav` sin `disclosure`
+- **THEN** el HTML es el mismo que antes de este cambio
+
+#### Scenario: Tipos con segundo panel
+- **WHEN** se pinta `SidebarNav` con `type="slim"` y `disclosure="native"`
+- **THEN** se comporta como con `disclosure="script"`
+
+### Requirement: Pasos navegables
+`ProgressSteps` SHALL admitir `onChange` y `children`. Con `onChange`, cada paso SHALL ser un botón que llama a `onChange` con su índice; con `children`, el componente SHALL pintar el contenido del paso actual y anunciar su cambio a los lectores de pantalla. Sin las props nuevas, `ProgressSteps` SHALL comportarse como hasta ahora.
+
+#### Scenario: Pulsar un paso
+- **WHEN** en un `ProgressSteps` de cuatro pasos con `onChange` y el primero como actual se pulsa el tercero
+- **THEN** se llama a `onChange(2)`, y cada paso es un botón con el título del paso como nombre
+
+#### Scenario: Contenido del actual
+- **WHEN** se pinta en vertical con `children={(i) => <p>Paso {i}</p>}` y el segundo como actual
+- **THEN** el texto «Paso 1» va dentro del segundo elemento de la lista, bajo su título, en una región que se anuncia al cambiar
+
+#### Scenario: Con teclado
+- **WHEN** el usuario llega con Tab a un paso y pulsa Enter
+- **THEN** el paso lleva el anillo de foco y se llama a `onChange` con su índice
+
+### Requirement: Cabecera a ancho completo
+`HeaderNav` SHALL admitir `fullWidth`, con el que su contenido ocupa todo el ancho disponible con el relleno lateral de siempre, en lugar de centrarse en el contenedor de 1.280 px. Sin la prop, `HeaderNav` SHALL comportarse como hasta ahora.
+
+#### Scenario: Ventana ancha
+- **WHEN** se pinta `HeaderNav` con `fullWidth` en una ventana de 1.920 px
+- **THEN** la marca empieza a 32 px del borde izquierdo y las acciones acaban a 32 px del derecho
+
+### Requirement: Pestañas que navegan
+Cuando todos los elementos de `Tabs` llevan `href`, `Tabs` SHALL pintarse como una navegación de enlaces con el mismo aspecto que las pestañas, sin `tablist`, con `aria-current` en el actual: `location` si su `href` es un ancla y `page` si no.
+
+#### Scenario: Índice de la página
+- **WHEN** se pinta `Tabs` en vertical con `type="line"`, tres elementos con `href` de ancla y el segundo como actual
+- **THEN** es una `<nav>` con nombre y tres enlaces, el segundo con `aria-current="location"` y la raya de 2 px a su izquierda, y no hay ningún elemento con `role="tab"`
+
+#### Scenario: Sin href
+- **WHEN** se pinta `Tabs` sin `href` en sus elementos
+- **THEN** el HTML es el mismo que antes de este cambio
+
+#### Scenario: Enlaces en vertical y en móvil
+- **WHEN** se pinta en vertical a 390 px un `Tabs` con `href` en todos sus elementos
+- **THEN** sigue siendo la lista de enlaces, sin pasar al desplegable de las pestañas verticales
+
+### Requirement: Carrusel en tira
+`Carousel` SHALL admitir `type="strip"`, que enseña las diapositivas en una fila que se desplaza en horizontal, se detiene en cada una y deja ver parte de la siguiente, sin flechas y sin JavaScript para desplazarse.
+
+#### Scenario: Deslizar
+- **WHEN** a 390 px se pinta un `Carousel` con `type="strip"` y seis diapositivas, con el JavaScript desactivado
+- **THEN** se ve la primera entera y parte de la segunda, la fila se desplaza con el dedo y se detiene en cada diapositiva, y no hay flechas
+
+#### Scenario: Lista con nombre
+- **WHEN** un lector de pantalla llega a la tira
+- **THEN** la anuncia como lista con su nombre y seis elementos
+
+### Requirement: Interruptor sin etiqueta visible
+`Toggle` SHALL aceptar `aria-label` y `aria-labelledby` como nombre accesible del interruptor, también sin `label`.
+
+#### Scenario: En una fila
+- **WHEN** se pinta `Toggle` sin `label` y con `aria-label="Activar recordatorio"`
+- **THEN** el interruptor tiene `role="switch"` y se llama «Activar recordatorio»
+
+### Requirement: Acompañante de la etiqueta
+Los campos con etiqueta (`Input`, `Textarea`, `Select`, `MultiSelect`, `NumberInput` y `TagInput`) y `Toggle` SHALL admitir `labelAside`, un nodo que se pinta al final de la fila de la etiqueta, fuera del elemento `<label>`.
+
+#### Scenario: Cambiado y restablecer
+- **WHEN** se pinta `Select` con `label="size"` y `labelAside` con un `Badge` «Cambiado» y un `Button` «Restablecer»
+- **THEN** los dos van en la fila de la etiqueta, alineados a la derecha, y pulsar «Restablecer» no abre el desplegable
+
+### Requirement: Líneas destacadas en el código
+`CodeSnippet` SHALL admitir `highlight`, en el código o en cada pestaña: una lista de números de línea, desde 1, que se pintan con fondo y raya de marca y que se anuncian como destacadas a los lectores de pantalla.
+
+#### Scenario: Líneas cambiadas
+- **WHEN** se pinta `CodeSnippet` con un código de seis líneas y `highlight={[4, 5]}`
+- **THEN** las líneas 4 y 5 llevan el fondo y la raya, y un lector oye una vez que están destacadas
+
+### Requirement: Buscador con texto inicial
+`CommandMenu` SHALL admitir `defaultQuery`, el texto con el que se abre su buscador, y SHALL avisar de él con `onQueryChange` al abrirse.
+
+#### Scenario: Abrir con texto
+- **WHEN** se abre `CommandMenu` con `defaultQuery="input"`
+- **THEN** el buscador muestra «input», los resultados ya están filtrados y se llama a `onQueryChange("input")`
+
+### Requirement: Hoja inferior
+`Slideout` SHALL admitir `side="bottom"`, que lo pinta como una hoja que sube desde abajo, a todo el ancho, con el alto de su contenido hasta el 85 % de la pantalla y su cuerpo con desplazamiento propio. El foco, Escape, la X y el clic fuera SHALL funcionar como en los otros lados.
+
+#### Scenario: Detalle en móvil
+- **WHEN** a 390 px se abre un `Slideout` con `side="bottom"` y se pulsa Escape
+- **THEN** la hoja ocupa el ancho de la pantalla pegada abajo con el foco dentro, y al cerrarse el foco vuelve a quien la abrió
+
+### Requirement: Comparador con línea
+`CompareSlider` SHALL superponer dos capas y descubrir la de abajo hasta una línea que el usuario mueve con el ratón, el dedo o el teclado. El control SHALL ser un deslizador con nombre accesible que anuncia el porcentaje y la capa que se ve a cada lado. La capa tapada SHALL quedar fuera del árbol de accesibilidad.
+
+#### Scenario: Arrastrar
+- **WHEN** en un `CompareSlider` con `defaultValue={50}` el usuario lleva la línea al 80 %
+- **THEN** se ve el 80 % izquierdo de `before` y el 20 % derecho de `after`, y se llama a `onChange(80)`
+
+#### Scenario: Con teclado
+- **WHEN** el usuario llega con Tab al control y pulsa → tres veces y después Fin
+- **THEN** el valor pasa a 53 y después a 100, con el anillo de foco visible
+
+#### Scenario: Sin JavaScript
+- **WHEN** se pinta en el servidor con `defaultValue={30}`
+- **THEN** la línea está al 30 % y las dos capas se ven a su lado
+
+### Requirement: Foco sobre una zona
+`Spotlight` SHALL envolver un contenido y, con `active`, rodearlo de un anillo de marca y mostrar su nota, que SHALL enlazarse al contenido como descripción y anunciarse al activarse. Sin `active`, SHALL pintar solo el contenido.
+
+#### Scenario: Señalar un cambio
+- **WHEN** un `Spotlight` con `note="Ahora en gris"` pasa a `active`
+- **THEN** el contenido lleva el anillo, la nota aparece junto a él y un lector oye «Ahora en gris»
+
+#### Scenario: Movimiento reducido
+- **WHEN** el sistema pide movimiento reducido
+- **THEN** el anillo y la nota aparecen sin transición
+
+### Requirement: Bloque plegable
+`Disclosure` SHALL pintar un bloque con título, un acompañante opcional a la derecha y un contenido que se abre y se cierra con `<details>`, sin JavaScript, en `sm` y `md`.
+
+#### Scenario: Grupo de propiedades
+- **WHEN** se pinta `Disclosure` con `title="Iconos"`, `aside` con «3 props» y `defaultOpen`
+- **THEN** se ve abierto, con «3 props» a la derecha del título, y se cierra al pulsar el título también con el JavaScript desactivado
+
+### Requirement: Tarjeta de ejemplo
+`ExampleCard` SHALL pintar un espécimen sobre el damero de transparencia con un pie que lleva un veredicto (`do`, `dont`, `instead` o `better`) como palabra e icono, y un texto. SHALL ser una figura con su leyenda.
+
+#### Scenario: Esto no
+- **WHEN** se pinta `ExampleCard` con `verdict="dont"`, dos botones primarios dentro y `caption="No apiles dos primarios."`
+- **THEN** es un `<figure>` con los botones sobre el damero y una leyenda con un badge de error que dice «Esto no» y el texto
+
+### Requirement: Baldosa de icono
+`IconTile` SHALL pintar un icono con su nombre como botón que se puede elegir (o como enlace con `href`), con estado elegido que se anuncia y se ve sin depender solo del color, y con el nombre completo como nombre accesible aunque se recorte.
+
+#### Scenario: Elegir
+- **WHEN** se pulsa un `IconTile` con `label="Mail01"` y `onSelect`
+- **THEN** se llama a `onSelect`, y con `selected` el botón tiene `aria-pressed="true"` y un filo de 2 px
+
+### Requirement: Muestra de token
+`TokenSwatch` SHALL pintar el nombre de un token de color con su valor claro y su valor oscuro a la vez, cada uno con su muestra y su hexadecimal, en fila o en tarjeta, y SHALL copiar su utilidad al pulsarla con el aviso de `CopyTooltip`.
+
+#### Scenario: Los dos temas a la vez
+- **WHEN** se pinta `TokenSwatch` de `text-primary` en una página oscura
+- **THEN** se ven las muestras `#171717` y `#fafafa` con sus valores, cada una con un filo que se distingue de su propio color
+
+#### Scenario: Copiar
+- **WHEN** el usuario pulsa la utilidad `text-primary`
+- **THEN** se copia al portapapeles y se confirma con «Copiado»

@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarDate, isSameDay } from "@internationalized/date";
+import { Calendar, ChevronLeft, ChevronRight } from "@untitledui/icons";
 import { useEffect, useRef, useState } from "react";
 import {
 	Button as AriaButton,
@@ -24,7 +25,6 @@ import { OVERLAY, OVERLAY_POSITION } from "../internal/overlay.js";
 import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
-import { Icon } from "./Icon.js";
 
 export interface DateRange {
 	start: Date | null;
@@ -218,11 +218,11 @@ export function DatePicker({
 		<>
 			<div className="mb-3 flex items-center justify-between">
 				<AriaButton slot="previous" aria-label={t.previousMonth} className={NAV}>
-					<Icon name="chevron-left" size={20} />
+					<ChevronLeft size={20} />
 				</AriaButton>
 				<span className="text-md font-semibold text-secondary">{formatMonth(toDate(focused))}</span>
 				<AriaButton slot="next" aria-label={t.nextMonth} className={NAV}>
-					<Icon name="chevron-right" size={20} />
+					<ChevronRight size={20} />
 				</AriaButton>
 			</div>
 			{/* Separación vertical de 4px entre filas, como la rejilla de la guía; el margen negativo quita la de los bordes */}
@@ -387,7 +387,7 @@ export function DatePicker({
 			<Button
 				hierarchy="secondary"
 				size="sm"
-				iconLeading="calendar"
+				iconLeading={Calendar}
 				aria-haspopup="dialog"
 				aria-expanded={open}
 				onClick={() => setOpen(!open)}

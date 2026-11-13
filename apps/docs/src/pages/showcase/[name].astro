@@ -1,0 +1,101 @@
+---
+// Página de captura de una card de /components/ (change adopt-untitled-ui-icons): la muestra del componente (visual/showcases.tsx),
+// centrada y ajustada a un marco de 640×400 sobre el damero de transparencia. Fuera de la navegación, del buscador y del
+// mapa del sitio. La fotografía scripts/capture-showcases.ts: tema oscuro con ?tema=oscuro (los de Stream, siempre oscuros).
+// Se pinta en el servidor, sin JavaScript de React; un script en línea mide la muestra y la ajusta cuando están las fuentes.
+import "../../styles/global.css";
+import { TransparencyGrid } from "@jotis-me/react";
+import { catalogComponents, slugOf } from "../../lib/catalog";
+import { DARK_PREVIEWS } from "../../visual/cards";
+import { SHOWCASE_BOX, SHOWCASE_FILL, SHOWCASE_SCALE } from "../../visual/showcase";
+import { SHOWCASES, ShowcaseOf } from "../../visual/showcases";
+
+export function getStaticPaths() {
+	return catalogComponents()
+		.filter((name) => SHOWCASES[name])
+		.map((name) => ({ params: { name: slugOf(name) }, props: { name } }));
+}
+const { name } = Astro.props;
+const alwaysDark = DARK_PREVIEWS.has(name);
+const fit = { box: SHOWCASE_BOX, fill: SHOWCASE_FILL, scale: SHOWCASE_SCALE };
+---
+
+<!doctype html>
+<html lang="es" class:list={[alwaysDark && "dark-mode"]}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex" />
+		<title>{name} · captura de la card</title>
+		<script is:inline>
+			if (new URLSearchParams(location.search).get("tema") === "oscuro") document.documentElement.classList.add("dark-mode");
+		</script>
+	</head>
+	<body class="m-0 bg-primary font-body text-primary antialiased">
+		<TransparencyGrid
+			id="stage"
+			data-showcase={name}
+			className="relative overflow-hidden"
+			style={{ width: SHOWCASE_BOX.width, height: SHOWCASE_BOX.height }}
+		>
+			<div
+				id="holder"
+				class="absolute top-0 left-0 flex items-center justify-center font-body text-primary antialiased"
+				style="width:max-content;min-width:320px;transform-origin:0 0"
+			>
+				<ShowcaseOf name={name} />
+			</div>
+		</TransparencyGrid>
+		<script is:inline define:vars={{ fit }}>
+			// La muestra tiene el tamaño que quiso su autor, y a veces pinta fuera de su caja: se mide la unión de todo lo que
+			// pinta, se agranda o se encoge hasta ocupar una parte del marco y se centra. La misma cuenta que `fitScale`.
+			const stage = document.getElementById("stage");
+			const holder = document.getElementById("holder");
+			function place() {
+				holder.style.transform = "none";
+				const origin = holder.getBoundingClientRect();
+				let l = Infinity;
+				let t = Infinity;
+				let r = -Infinity;
+				let b = -Infinity;
+				for (const el of [holder, ...holder.querySelectorAll("*")]) {
+					const rect = el.getBoundingClientRect();
+					let left = rect.left;
+					let top = rect.top;
+					let right = rect.right;
+					let bottom = rect.bottom;
+					// Lo que corta un ancestro (overflow hidden, auto o clip) no se ve: se mide solo lo que asoma
+					for (let up = el.parentElement; up && up !== holder; up = up.parentElement) {
+						const o = getComputedStyle(up);
+						if (o.overflowX === "visible" && o.overflowY === "visible") continue;
+						const c = up.getBoundingClientRect();
+						left = Math.max(left, c.left);
+						top = Math.max(top, c.top);
+						right = Math.min(right, c.right);
+						bottom = Math.min(bottom, c.bottom);
+					}
+					if (right - left < 2 || bottom - top < 2) continue;
+					l = Math.min(l, left);
+					t = Math.min(t, top);
+					r = Math.max(r, right);
+					b = Math.max(b, bottom);
+				}
+				if (!Number.isFinite(l)) return;
+				const s = Math.min(
+					fit.scale.max,
+					Math.max(fit.scale.min, Math.min((fit.box.width * fit.fill) / (r - l), (fit.box.height * fit.fill) / (b - t))),
+				);
+				const x = fit.box.width / 2 - s * ((l + r) / 2 - origin.left);
+				const y = fit.box.height / 2 - s * ((t + b) / 2 - origin.top);
+				holder.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+				stage.dataset.scale = s.toFixed(3);
+			}
+			Promise.all([document.fonts.ready, new Promise((ok) => addEventListener("load", ok))]).then(() => {
+				place();
+				requestAnimationFrame(() => {
+					place();
+					stage.dataset.ready = "true";
+				});
+			});
+		</script>
+	</body>
+</html>

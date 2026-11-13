@@ -1,11 +1,12 @@
+import { Zap } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import type { IconProp } from "../internal/icon.js";
 import { Badge } from "./Badge.js";
 import { BadgeGroup } from "./BadgeGroup.js";
 import type { CheckIconColor, CheckIconType } from "./CheckIcon.js";
 import { CheckItem } from "./CheckItem.js";
 import { FeaturedIcon } from "./FeaturedIcon.js";
-import type { IconName } from "./Icon.js";
 
 export type PricingCardType =
 	| "icon"
@@ -32,7 +33,7 @@ export interface PricingCardProps {
 	/** Etiqueta junto al plan: «Popular». */
 	badge?: ReactNode;
 	/** Icono del plan en `icon`, `icon-offset` y `primary-icon`. @default "zap" */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** Lo que incluye, una línea por elemento. */
 	features: ReactNode[];
 	/** Encima de la lista: «Funciones» y una línea («Todo lo del plan gratis, y…»). */
@@ -72,7 +73,7 @@ export function PricingCard({
 	period,
 	description,
 	badge,
-	icon = "zap",
+	icon = Zap,
 	features,
 	featuresTitle,
 	featuresDescription,

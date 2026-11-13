@@ -1,16 +1,17 @@
 ---
-// Galería de logos de terceros (`@jotis-me/icons/logos`). La isla recibe nombres y URL de los SVG del paquete, que el
+// Galería de logos de terceros (`@jotis-me/assets/logos`). La isla recibe nombres y URL de los SVG del paquete, que el
 // build copia como ficheros: los logos se cargan como imágenes perezosas, no como código de la isla.
+import { PageHeader } from "@jotis-me/react";
 import IconsNav from "../../components/IconsNav.astro";
 import LogoGallery, { type LogoEntry, type LogoSetName } from "../../components/LogoGallery";
 import Base from "../../layouts/Base.astro";
 
-const urls = import.meta.glob<string>("../../../../../packages/icons/dist/logos/*/*.svg", {
+const urls = import.meta.glob<string>("../../../../../packages/assets/dist/logos/*/*.svg", {
 	query: "?no-inline",
 	import: "default",
 	eager: true,
 });
-const raws = import.meta.glob<string>("../../../../../packages/icons/dist/logos/*/*.svg", {
+const raws = import.meta.glob<string>("../../../../../packages/assets/dist/logos/*/*.svg", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -35,19 +36,18 @@ const count = (set: LogoSetName) => logos.filter((l) => l.set === set).length;
 
 <Base
 	title="Logos"
-	description={`Los ${logos.length} logos de servicios de terceros de @jotis-me/icons/logos: apps, integraciones y redes.`}
+	description={`Los ${logos.length} logos de servicios de terceros de @jotis-me/assets/logos: apps, integraciones y redes.`}
 >
-	<div class="flex flex-col gap-7">
-		<header class="flex max-w-[720px] flex-col gap-3.5">
-			<IconsNav current="logos" />
-			<h1 class="font-display text-display-sm font-semibold tracking-[-0.02em] text-primary lg:text-display-md">Logos</h1>
-			<p class="text-md text-tertiary lg:text-lg">
+	<div class="flex flex-col gap-10">
+		<PageHeader title="Logos" divider={false}>
+			<Fragment slot="description">
 				Los {logos.length} logos de servicios de terceros: {count("app")} de apps, {count("integration")} de
 				integraciones y {count("social")} de redes, estos dos también en gris. Cada uno es un componente suelto de{" "}
-				<code class="font-mono text-md">@jotis-me/icons/logos</code>: tu app solo carga los que importa. Cada marca es de
+				<code class="font-mono text-md">@jotis-me/assets/logos</code>: tu app solo carga los que importa. Cada marca es de
 				su dueño.
-			</p>
-		</header>
+			</Fragment>
+			<IconsNav current="logos" />
+		</PageHeader>
 		<LogoGallery client:load logos={logos} />
 	</div>
 </Base>

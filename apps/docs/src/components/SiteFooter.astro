@@ -2,7 +2,7 @@
 // Pie de la web montado con el `Footer` del paquete (design D5 de docs-site-with-own-components), con los datos reales: la versión de cada paquete sale de su
 // package.json, en lugar de los nombres de paquete y la fecha de tokens inventados del diseño (proposal, «Datos
 // reales»). El icono de Regula sigue la regla de la cabecera: Claro en el tema claro y principal en el oscuro.
-import icons from "@jotis-me/icons/package.json";
+import assets from "@jotis-me/assets/package.json";
 import { AppIcon, Footer } from "@jotis-me/react";
 import react from "@jotis-me/react/package.json";
 import tokens from "@jotis-me/tokens/package.json";
@@ -23,7 +23,7 @@ const suite = [
 const versions = [
 	{ label: "Componentes", pkg: react },
 	{ label: "Tokens", pkg: tokens },
-	{ label: "Iconos", pkg: icons },
+	{ label: "Assets", pkg: assets },
 ];
 const columns = [
 	{ title: "Documentación", links: docs },

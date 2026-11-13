@@ -50,7 +50,8 @@ function plain(t: TokensFile): Token[] {
 
 /**
  * tokens.css: cada token como variable con su nombre de la guía (`--bg-primary`, `--spacing-md`).
- * Claro en `:root`, oscuro en `.dark-mode`, que puede ir en `<html>` o en cualquier ancestro.
+ * Claro en `:root`, oscuro en `.dark-mode`, que puede ir en `<html>` o en cualquier ancestro, y claro otra vez en
+ * `.light-mode`, para un trozo claro dentro de una página oscura (no se anida un `.dark-mode` dentro).
  */
 export function tokensCss(t: TokensFile): string {
 	const light = themed(t).map((x) => `\t--${x.name}: ${x.value.light};`);
@@ -58,7 +59,11 @@ export function tokensCss(t: TokensFile): string {
 		.filter((x) => x.value.dark !== x.value.light)
 		.map((x) => `\t--${x.name}: ${x.value.dark};`);
 	const rest = plain(t).map((x) => `\t--${x.name}: ${x.value};`);
-	return `${HEADER}\n:root {\n${[...light, ...rest].join("\n")}\n}\n\n.dark-mode {\n\tcolor-scheme: dark;\n${dark.join("\n")}\n}\n`;
+	// Los mismos tokens que cambian en oscuro, de vuelta a su valor claro: un trozo claro dentro de una página oscura
+	const back = themed(t)
+		.filter((x) => x.value.dark !== x.value.light)
+		.map((x) => `\t--${x.name}: ${x.value.light};`);
+	return `${HEADER}\n:root {\n${[...light, ...rest].join("\n")}\n}\n\n.dark-mode {\n\tcolor-scheme: dark;\n${dark.join("\n")}\n}\n\n.light-mode {\n\tcolor-scheme: light;\n${back.join("\n")}\n}\n`;
 }
 
 /**
@@ -129,7 +134,7 @@ export function themeCss(t: TokensFile): string {
 	const width = (n: string) => t.width.tokens.find((x) => x.name === n)?.value ?? "";
 
 	return `${HEADER}
-@custom-variant dark (&:where(.dark-mode, .dark-mode *));
+@custom-variant dark (&:where(.dark-mode, .dark-mode *):not(:where(.light-mode, .light-mode *)));
 
 @theme inline {
 \t--color-*: initial;

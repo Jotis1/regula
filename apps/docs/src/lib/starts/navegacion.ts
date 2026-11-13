@@ -7,18 +7,18 @@ const CUENTAS = [
 ];
 
 const NAVEGADOR = [
-	{ icon: "arrow-left", label: "Atrás" },
-	{ icon: "refresh-cw-01", label: "Recargar", shortcut: "⌘R" },
+	{ icon: "ArrowLeft", label: "Atrás" },
+	{ icon: "RefreshCw01", label: "Recargar", shortcut: "⌘R" },
 	{ divider: true },
-	{ icon: "edit-02", label: "Editar página" },
-	{ icon: "star-01", label: "Añadir a favoritos" },
+	{ icon: "Edit02", label: "Editar página" },
+	{ icon: "Star01", label: "Añadir a favoritos" },
 ];
 const EDICION = [
 	{ label: "Cortar", shortcut: "⌘X" },
 	{ label: "Copiar", shortcut: "⌘C" },
 	{ label: "Pegar", shortcut: "⌘V" },
 	{ divider: true },
-	{ icon: "trash-01", label: "Eliminar", danger: true },
+	{ icon: "Trash01", label: "Eliminar", danger: true },
 ];
 
 export const navegacion: Record<string, Start> = {
@@ -30,47 +30,37 @@ export const navegacion: Record<string, Start> = {
 				{ id: "movimientos", label: "Movimientos", count: 12 },
 			],
 		},
-		presets: [
-			{ label: "Ancho completo", props: { fullWidth: true } },
-			{ label: "Vertical", props: { orientation: "vertical" } },
-			{ label: "Botones", props: { type: "button-gray" } },
-		],
+		tweaks: {
+			// Con `href` en todos, las pestañas pasan a ser una navegación de enlaces
+			items: {
+				kind: "content",
+				options: [
+					{
+						label: "Enlaces a anclas",
+						value: [
+							{ id: "resumen", label: "Resumen", href: "#resumen" },
+							{ id: "movimientos", label: "Movimientos", count: 12, href: "#movimientos" },
+						],
+						code: '[{ id: "resumen", label: "Resumen", href: "#resumen" }, { id: "movimientos", label: "Movimientos", count: 12, href: "#movimientos" }]',
+					},
+				],
+			},
+		},
 	},
 	Breadcrumbs: {
 		props: {
 			items: [
-				{ label: "Inicio", href: "#", icon: "home-line" },
+				{ label: "Inicio", href: "#", icon: "HomeLine" },
 				{ label: "Gastos", href: "#" },
 				{ label: "Octubre" },
 			],
 		},
-		presets: [
-			{ label: "Con barra", props: { divider: "slash" } },
-			{ label: "Con línea", props: { type: "text-line" } },
-			{ label: "Con botón", props: { type: "button" } },
-		],
 	},
 	Pagination: {
 		props: { total: 12, defaultPage: 3 },
-		presets: [
-			{ label: "De página", props: { type: "page-default" } },
-			{ label: "Mínima", props: { type: "page-minimal" } },
-			{ label: "Tarjeta", props: { type: "card-default" } },
-			{
-				label: "Tarjeta avanzada",
-				props: { type: "card-advanced", pageSizes: [10, 20, 50], defaultPageSize: 10 },
-			},
-			{ label: "Grupo de botones", props: { type: "card-button-group" } },
-			{ label: "Redonda", props: { type: "page-default", shape: "circle" } },
-		],
 	},
 	PaginationDots: {
 		props: { total: 5, current: 2 },
-		presets: [
-			{ label: "Puntos", props: { variant: "dot" } },
-			{ label: "Líneas", props: { variant: "line" } },
-			{ label: "Con marco", props: { framed: true } },
-		],
 	},
 	Pager: {
 		props: { prev: "Color", next: "Tipografía" },
@@ -112,20 +102,12 @@ export const navegacion: Record<string, Start> = {
 			label: "Opciones",
 			accounts: CUENTAS,
 			items: [
-				{ icon: "edit-02", label: "Editar", shortcut: "⌘E" },
-				{ icon: "copy-01", label: "Duplicar", shortcut: "⌘D" },
+				{ icon: "Edit02", label: "Editar", shortcut: "⌘E" },
+				{ icon: "Copy01", label: "Duplicar", shortcut: "⌘D" },
 				{ divider: true },
-				{ icon: "trash-01", label: "Eliminar", danger: true },
+				{ icon: "Trash01", label: "Eliminar", danger: true },
 			],
 		},
-		presets: [
-			{ label: "Con buscador", props: { searchable: true } },
-			{ label: "Enlace", props: { triggerVariant: "link" } },
-			{ label: "Integraciones", props: { variant: "integrations" } },
-			{ label: "Cuenta con botón", props: { variant: "account-button" } },
-			{ label: "Cuenta con avatar", props: { variant: "account-avatar" } },
-			{ label: "Tarjeta de cuenta", props: { variant: "account-card-md" } },
-		],
 	},
 	ContextMenu: {
 		props: { defaultOpen: true, items: "Navegador" },
@@ -160,13 +142,6 @@ export const navegacion: Record<string, Start> = {
 			],
 		},
 		wide: true,
-		presets: [
-			{ label: "Sencilla", props: { type: "simple" } },
-			{ label: "Dos filas", props: { type: "dual-tier" } },
-			{ label: "Pestañas", props: { type: "tabs" } },
-			{ label: "Centrada", props: { type: "centered" } },
-			{ label: "Subrayada", props: { type: "underline" } },
-		],
 	},
 	CommandMenu: {
 		props: {
@@ -178,27 +153,24 @@ export const navegacion: Record<string, Start> = {
 					label: "Apps",
 					items: [
 						{
-							icon: "currency-euro",
+							icon: "CurrencyEuro",
 							label: "Pecunia",
 							description: "Gastos e ingresos",
 							shortcut: "⌘1",
 						},
-						{ icon: "users-01", label: "Vinculum", description: "Contactos", shortcut: "⌘2" },
+						{ icon: "Users01", label: "Vinculum", description: "Contactos", shortcut: "⌘2" },
 					],
 				},
 				{
 					label: "Acciones",
 					items: [
-						{ icon: "plus", label: "Nuevo gasto" },
-						{ icon: "settings-02", label: "Ajustes" },
+						{ icon: "Plus", label: "Nuevo gasto" },
+						{ icon: "Settings02", label: "Ajustes" },
 					],
 				},
 			],
 		},
 		fill: 380,
-		presets: [
-			{ label: "Sin resultados", props: { groups: [], emptyText: "Nada coincide con tu búsqueda." } },
-		],
 	},
 	TreeView: {
 		props: {
@@ -208,27 +180,22 @@ export const navegacion: Record<string, Start> = {
 				{
 					id: "notas",
 					label: "Notas",
-					icon: "folder",
+					icon: "Folder",
 					children: [
 						{
 							id: "trabajo",
 							label: "Trabajo",
-							icon: "folder",
+							icon: "Folder",
 							children: [
-								{ id: "roadmap", label: "roadmap.md", icon: "file-04", meta: "4 KB" },
-								{ id: "pentest", label: "pentest.md", icon: "file-04", meta: "2 KB" },
+								{ id: "roadmap", label: "roadmap.md", icon: "File04", meta: "4 KB" },
+								{ id: "pentest", label: "pentest.md", icon: "File04", meta: "2 KB" },
 							],
 						},
-						{ id: "leeme", label: "LEEME.md", icon: "file-04", meta: "2 KB" },
+						{ id: "leeme", label: "LEEME.md", icon: "File04", meta: "2 KB" },
 					],
 				},
 			],
 		},
-		presets: [
-			{ label: "Sencillo", props: { type: "default" } },
-			{ label: "Avanzado", props: { type: "advanced" } },
-			{ label: "Mediano", props: { size: "md" } },
-		],
 	},
 	// La marca (el icono de Regula) la pone `src/playground/SidebarNav.tsx`: los nodos no cruzan a la isla.
 	// Con submenú, secciones, pie y cuenta, cada `type` se ve distinto: `dual-tier` y `slim` abren el panel de Panel.
@@ -236,35 +203,35 @@ export const navegacion: Record<string, Start> = {
 		props: {
 			search: true,
 			items: [
-				{ icon: "home-line", label: "Inicio", href: "#" },
+				{ icon: "HomeLine", label: "Inicio", href: "#" },
 				{
-					icon: "bar-chart-01",
+					icon: "BarChart01",
 					label: "Panel",
 					defaultOpen: true,
 					children: [
-						{ icon: "eye", label: "Resumen", href: "#", active: true },
-						{ icon: "bell-01", label: "Avisos", href: "#", badge: 10 },
-						{ icon: "star-01", label: "Guardados", href: "#" },
-						{ icon: "clock", label: "Programados", href: "#" },
+						{ icon: "Eye", label: "Resumen", href: "#", active: true },
+						{ icon: "Bell01", label: "Avisos", href: "#", badge: 10 },
+						{ icon: "Star01", label: "Guardados", href: "#" },
+						{ icon: "Clock", label: "Programados", href: "#" },
 					],
 				},
-				{ icon: "currency-euro", label: "Pecunia", href: "#", badge: 3 },
-				{ icon: "users-01", label: "Equipo", href: "#" },
+				{ icon: "CurrencyEuro", label: "Pecunia", href: "#", badge: 3 },
+				{ icon: "Users01", label: "Equipo", href: "#" },
 			],
 			sections: [
 				{
 					title: "General",
 					items: [
-						{ icon: "home-line", label: "Inicio", href: "#" },
-						{ icon: "bar-chart-01", label: "Panel", href: "#", active: true },
+						{ icon: "HomeLine", label: "Inicio", href: "#" },
+						{ icon: "BarChart01", label: "Panel", href: "#", active: true },
 					],
 				},
 				{
 					title: "Apps",
 					items: [
-						{ icon: "currency-euro", label: "Pecunia", href: "#", badge: 3 },
+						{ icon: "CurrencyEuro", label: "Pecunia", href: "#", badge: 3 },
 						{
-							icon: "folder",
+							icon: "Folder",
 							label: "Carpetas",
 							defaultOpen: true,
 							children: [
@@ -275,9 +242,9 @@ export const navegacion: Record<string, Start> = {
 					],
 				},
 			],
-			footerItems: [{ icon: "settings-02", label: "Ajustes", href: "#" }],
+			footerItems: [{ icon: "Settings02", label: "Ajustes", href: "#" }],
 			account: {
-				items: [{ icon: "user-01", label: "Ver perfil" }],
+				items: [{ icon: "User01", label: "Ver perfil" }],
 				accounts: [
 					{
 						value: "ana",

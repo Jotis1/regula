@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "@untitledui/icons";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { cx } from "../internal/cx.js";
 import { formatMonth } from "../internal/format.js";
@@ -7,7 +8,6 @@ import { defaultStrings } from "../internal/strings.js";
 import { useControllable } from "../internal/use-controllable.js";
 import { Badge, type BadgeColor, COLOR } from "./Badge.js";
 import { Dropdown } from "./Dropdown.js";
-import { Icon } from "./Icon.js";
 
 export interface CalendarEvent {
 	/** El día del evento. En las vistas de semana y día, también su hora de inicio. */
@@ -407,13 +407,13 @@ export function CalendarView({
 				</div>
 				<div className="inline-flex overflow-hidden rounded-lg shadow-[var(--shadow-xs-skeuomorphic),inset_0_0_0_1px_var(--border-primary)]">
 					<button type="button" aria-label={prevLabel} className={NAV} onClick={() => step(-1)}>
-						<Icon name="chevron-left" size={20} />
+						<ChevronLeft size={20} />
 					</button>
 					<button type="button" className={NAV} onClick={() => setShown(today)}>
 						{defaultStrings.today}
 					</button>
 					<button type="button" aria-label={nextLabel} className={NAV} onClick={() => step(1)}>
-						<Icon name="chevron-right" size={20} />
+						<ChevronRight size={20} />
 					</button>
 				</div>
 				{hasSelector ? (

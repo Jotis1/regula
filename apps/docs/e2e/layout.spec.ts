@@ -1,5 +1,5 @@
 // Ancho de la web: la navegación lateral queda fuera del contenedor de la guía (container-max-width-desktop, 1280) y
-// la cabecera, el contenido y el pie miden como mucho 1280, centrados.
+// el contenido y el pie miden como mucho 1280, centrados; la cabecera ocupa toda la ventana.
 import { expect, test } from "@playwright/test";
 
 const CONTAINER = 1280;
@@ -10,23 +10,22 @@ test.describe("ancho del contenedor", () => {
 		await page.goto("/components/button/");
 		const aside = await page.locator("aside").first().boundingBox();
 		expect(aside?.x).toBe(0);
-		// La cabecera es el HeaderNav del paquete: su contenido va en un contenedor de 1280, el primero de la página
 		const rect = (el: Element) => {
 			const r = el.getBoundingClientRect();
 			return { width: r.width, left: r.left, right: r.right };
 		};
-		const header = await page.locator("body > header div.mx-auto").first().evaluate(rect);
+		// La cabecera es el HeaderNav `fullWidth` del paquete: ocupa toda la ventana, con la marca alineada con el lateral
+		const header = await page.locator("body > header").evaluate(rect);
+		expect(header.width).toBe(1920);
 		// El pie es el Footer del paquete: su contenido va también en un contenedor de 1280
 		const footerBox = await page.locator("body > footer div.mx-auto").first().evaluate(rect);
 		const contentBox = await page.locator("[data-container]").first().evaluate(rect);
 		const boxes = [contentBox, footerBox];
-		for (const b of [header, ...boxes]) expect(b.width).toBeLessThanOrEqual(CONTAINER);
-		// El contenido, centrado en lo que deja la barra lateral; cabecera y pie, en la ventana
+		for (const b of boxes) expect(b.width).toBeLessThanOrEqual(CONTAINER);
+		// El contenido, centrado en lo que deja la barra lateral; el pie, en la ventana
 		const [content, footer] = boxes as [(typeof boxes)[0], (typeof boxes)[0]];
-		expect(header.width).toBe(CONTAINER);
 		expect(footer.width).toBe(CONTAINER);
-		expect(header.left).toBeCloseTo((1920 - CONTAINER) / 2, 0);
-		expect(content.left).toBeGreaterThanOrEqual(288); // a la derecha de la barra lateral (w-72)
+		expect(content.left).toBeGreaterThanOrEqual(296); // a la derecha de la barra lateral (296 px)
 	});
 
 	test("a 1280 px no hay desplazamiento horizontal", async ({ page }) => {

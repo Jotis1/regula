@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, ChevronRight } from "@untitledui/icons";
 import { type KeyboardEvent, type MouseEvent, type ReactNode, useCallback, useRef, useState } from "react";
 import {
 	Menu,
@@ -12,13 +13,13 @@ import {
 	SubmenuTrigger,
 } from "react-aria-components";
 import { cx } from "../internal/cx.js";
+import type { IconProp } from "../internal/icon.js";
 import { MENU_PANEL, MenuItemContent, menuItemClasses } from "../internal/menu-item.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon, type IconName } from "./Icon.js";
 
 /** Una acción del menú, o un submenú si lleva `items`. */
 export interface ContextMenuAction {
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	label: ReactNode;
 	/** Atajo de teclado que se muestra a la derecha (solo texto; no lo registra). */
 	shortcut?: string;
@@ -83,7 +84,7 @@ function Mark({ kind, on }: { kind: "multiple" | "single"; on: boolean }) {
 		<span aria-hidden="true" className="inline-flex size-4 flex-none items-center justify-center">
 			{on ? (
 				kind === "multiple" ? (
-					<Icon name="check" size={16} className="text-fg-brand-primary!" />
+					<Check size={16} className="text-fg-brand-primary!" />
 				) : (
 					<span className="size-2 rounded-full bg-fg-success-primary" />
 				)
@@ -160,9 +161,7 @@ function renderItems(items: ContextMenuItem[]): ReactNode[] {
 					icon={item.icon}
 					label={item.label}
 					shortcut={item.items ? undefined : item.shortcut}
-					trailing={
-						item.items ? <Icon name="chevron-right" size={16} className="flex-none" /> : null
-					}
+					trailing={item.items ? <ChevronRight size={16} className="flex-none" /> : null}
 				/>
 			</MenuItem>
 		);

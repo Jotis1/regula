@@ -1,95 +1,44 @@
 ---
-// Navegación lateral (reference/docs-design/DocNav.dc.html), desde el catálogo. Los grupos de componentes son
-// <details>, abiertos en el grupo de la página actual: sin JavaScript se navega igual (design §7). El filtro, con el
-// atajo "/", solo aparece cuando hay JavaScript, que es quien lo hace funcionar.
-import chevron from "@jotis-me/icons/svg/chevron-right.svg?raw";
-import filter from "@jotis-me/icons/svg/filter-lines.svg?raw";
-import { Kbd } from "@jotis-me/react";
-import { docNav } from "../nav";
-import { fold } from "../search/entries";
+// Navegación lateral (reference/docs-design/Main.dc.html y Menu.dc.html) con el `SidebarNav` del paquete: `simple`,
+// con los submenús como <details> (`disclosure="native"`), que se pintan en el servidor y se abren y se cierran sin
+// JavaScript (design D2). En el lateral lleva el árbol de la sección actual; en el menú móvil, los cinco bloques de la
+// web. El filtro es el `search` del componente, que solo se ve cuando hay JavaScript: lo muestra y lo hace funcionar
+// src/lib/docnav.ts.
+import { Kbd, SidebarNav } from "@jotis-me/react";
+import { type NavScope, sidebarTree } from "../nav";
 
 interface Props {
 	/** Ruta de la página actual. */
 	current: string;
-	/** Prefijo de los id: la navegación sale dos veces, en el lateral y en el menú móvil. */
+	/** Distingue esta navegación de la otra de la página (el lateral y el menú móvil): el id de sus datos del filtro. */
 	idPrefix?: string;
+	/** Por defecto, el árbol de la sección en el lateral y los cinco bloques en cualquier otra (el menú móvil). */
+	scope?: NavScope;
 }
-const { current, idPrefix = "docnav" } = Astro.props;
-const filterId = `${idPrefix}-filter`;
-const words = (label: string, keywords?: string) => fold(`${label} ${keywords ?? ""}`);
-const link =
-	"flex min-h-8 items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-tertiary transition-colors duration-100 hover:bg-primary_hover hover:text-secondary_hover focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current=page]:bg-brand-primary_alt aria-[current=page]:font-semibold aria-[current=page]:text-brand-secondary";
+const { current, idPrefix = "docnav", scope = idPrefix === "docnav" ? "section" : "all" } = Astro.props;
+const { items, keywords } = sidebarTree(current, scope);
+// `<` fuera del JSON para que nada cierre la etiqueta <script>
+const keywordsJson = JSON.stringify(keywords).replaceAll("<", "\\u003c");
 ---
 
-<nav aria-label="Documentación" class="flex flex-col gap-5 px-4 pt-6 pb-10" data-docnav>
-	<div class="flex flex-col gap-1.5 px-0.5" data-docnav-filter hidden>
-		<label for={filterId} class="text-xs font-medium text-secondary">Filtrar navegación</label>
-		<div class="flex h-9 items-center gap-2 rounded-lg border border-primary bg-primary px-2.5 text-fg-quaternary shadow-xs focus-within:shadow-focus-ring">
-			<span class="flex size-4 shrink-0 [&>svg]:size-4" aria-hidden="true" set:html={filter} />
-			<input
-				id={filterId}
-				type="search"
-				placeholder="Button, tabla, alerta…"
-				autocomplete="off"
-				aria-keyshortcuts="/"
-				class="min-w-0 grow border-0 bg-transparent text-sm text-primary outline-none placeholder:text-placeholder"
-			/>
-			<Kbd variant="field" className="shrink-0">/</Kbd>
-		</div>
-	</div>
-	{
-		docNav.map((section) => (
-			<div class="flex flex-col gap-0.5" data-docnav-section>
-				<h2 class="mb-1 flex items-center gap-2 px-2.5 text-xs font-semibold text-quaternary">
-					<span>{section.title}</span>
-					{section.count ? <span class="font-medium tabular-nums">{section.count}</span> : null}
-				</h2>
-				{section.items.map((item) => (
-					<a
-						href={item.href}
-						aria-current={current === item.href ? "page" : undefined}
-						data-docnav-link={words(item.label, item.keywords)}
-						class={link}
-					>
-						{item.label}
-					</a>
-				))}
-				{section.groups.map((group) => (
-					<details
-						open={group.items.some((i) => i.href === current)}
-						data-docnav-group
-						class="group"
-					>
-						<summary class="flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-md px-2.5 py-1.5 transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none [&::-webkit-details-marker]:hidden">
-							<span
-								class="flex size-4 shrink-0 text-fg-quaternary transition-transform duration-100 group-open:rotate-90 [&>svg]:size-4"
-								aria-hidden="true"
-								set:html={chevron}
-							/>
-							<span class="grow text-[13px] leading-5 font-semibold text-secondary">{group.label}</span>
-							<span class="text-xs font-medium text-quaternary tabular-nums">{group.items.length}</span>
-						</summary>
-						<div class="flex flex-col gap-0.5 pt-0.5 pl-[22px]">
-							{group.items.map((item) => (
-								<a
-									href={item.href}
-									aria-current={current === item.href ? "page" : undefined}
-									data-docnav-link={words(item.label, item.keywords)}
-									class={link}
-								>
-									{item.label}
-								</a>
-							))}
-						</div>
-					</details>
-				))}
-			</div>
-		))
-	}
-	<p class="px-2.5 text-sm text-tertiary" data-docnav-empty hidden>
+<div
+	data-docnav
+	data-scope={scope}
+	class="[&:not([data-docnav-ready])>nav>*:has(input)]:hidden"
+>
+	<SidebarNav
+		type="simple"
+		disclosure="native"
+		search
+		items={items}
+		labels={{ nav: "Documentación", search: "Filtrar navegación" }}
+		className={scope === "section" ? "h-auto! min-h-full shadow-none!" : "h-auto! w-full! shadow-none!"}
+	/>
+	<p class="px-6 pb-6 text-sm text-tertiary" data-docnav-empty hidden>
 		Nada se llama así. Prueba la búsqueda global con <Kbd variant="field">Ctrl K</Kbd>, que también mira tokens e iconos.
 	</p>
-</nav>
+	<script is:inline type="application/json" id={`${idPrefix}-keywords`} data-docnav-keywords set:html={keywordsJson} />
+</div>
 
 <script>
 	import { initDocNav } from "../lib/docnav";

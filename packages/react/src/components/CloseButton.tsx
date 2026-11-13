@@ -1,7 +1,7 @@
+import { XClose } from "@untitledui/icons";
 import type { ButtonHTMLAttributes } from "react";
 import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export interface CloseButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
 	/** Nombre accesible. Por defecto, "Cerrar". */
@@ -44,7 +44,7 @@ export function CloseButton({
 				className,
 			)}
 		>
-			<Icon name="x-close" size={sizes[size].icon} />
+			<XClose size={sizes[size].icon} />
 		</button>
 	);
 }

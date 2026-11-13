@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
+import { type IconProp, iconSlot } from "../internal/icon.js";
 import {
 	STREAM_EVENTS,
 	STREAM_ROOT,
@@ -8,7 +9,6 @@ import {
 	streamDetail,
 	streamMotion,
 } from "../internal/stream.js";
-import { type IconName, iconSlot } from "./Icon.js";
 
 export interface StreamAlertProps {
 	/**
@@ -34,7 +34,7 @@ export interface StreamAlertProps {
 	/** Sustituye a la etiqueta del tipo ("Nuevo seguidor"…). */
 	label?: ReactNode;
 	/** Sustituye al icono del tipo. */
-	icon?: IconName | ReactNode;
+	icon?: IconProp;
 	/** `enter` entra con fundido y 8px de subida en 250 ms; `exit` sale en 200 ms. Con menos movimiento, solo fundido. */
 	state?: StreamMotion;
 	className?: string;

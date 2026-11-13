@@ -1,10 +1,10 @@
 // Fichas, vistas previas, tokens, fuentes y assets del artefacto (design D6), todo desde el repo.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { apps, iconNames } from "@jotis-me/icons";
+import { apps } from "@jotis-me/react/app-icon";
 import { COMPONENT_GROUPS, catalogComponents, slugOf } from "../../../apps/docs/src/lib/catalog";
 import { CARD_HEIGHTS, DARK_PREVIEWS } from "../../../apps/docs/src/visual/cards";
-import { DOCS, ICONS, REACT, REPO, TOKENS } from "./paths";
+import { ASSETS, DOCS, REACT, REPO, TOKENS } from "./paths";
 
 export const catalog = (): string[] => catalogComponents();
 
@@ -103,7 +103,7 @@ export function tokensJson(ref: string, date: string): { json: string; fonts: Fo
 		paths: {
 			tokens: ["packages/tokens/src/tokens.json"],
 			fonts: ["packages/tokens/dist/fonts"],
-			assets: ["packages/icons/assets", "packages/icons/dist/app-icons", "packages/icons/dist/svg"],
+			assets: ["packages/assets/assets", "packages/assets/dist/app-icons"],
 			docs: ["apps/docs/src/content/foundations", "apps/docs/src/content/components"],
 		},
 		components: componentSources(),
@@ -128,12 +128,12 @@ const svg = (group: string, name: string, data: Buffer | string): Asset => ({
 
 /**
  * Grupos de assets que salen del repo. En el artefacto los SVG se ven con <img>, que no hereda color: los trazos y
- * patrones llevan su tinta de la guía (#171717) y los iconos la de `fg-tertiary` (#525252). Logos no sale del repo:
+ * patrones llevan su tinta de la guía (#171717) y los logos, pagos y cursores la de `fg-tertiary` (#525252). Los iconos de línea, los de archivo y las banderas no van como assets: son de Untitled UI. Logos no sale del repo:
  * se conserva el publicado.
  */
 export function assets(): Asset[] {
 	const out: Asset[] = [];
-	const appIcons = join(ICONS, "dist/app-icons");
+	const appIcons = join(ASSETS, "dist/app-icons");
 	for (const app of Object.keys(apps))
 		for (const variant of ["default", "solid", "light", "mono", "maskable"])
 			out.push(
@@ -143,18 +143,9 @@ export function assets(): Asset[] {
 					readFileSync(join(appIcons, `${app}-${variant}.svg`)),
 				),
 			);
-	const iconsDir = join(ICONS, "dist/svg");
-	for (const name of iconNames)
-		out.push(
-			svg(
-				"Icons",
-				`${name}.svg`,
-				readFileSync(join(iconsDir, `${name}.svg`), "utf8").replace(/currentColor/g, "#525252"),
-			),
-		);
-	// Logos de terceros de @jotis-me/icons/logos, en un grupo aparte del «Logos» publicado (que no sale del repo)
+	// Logos de terceros de @jotis-me/assets/logos, en un grupo aparte del «Logos» publicado (que no sale del repo)
 	for (const set of ["app", "integration", "social"]) {
-		const dir = join(ICONS, "dist/logos", set);
+		const dir = join(ASSETS, "dist/logos", set);
 		for (const f of readdirSync(dir)
 			.filter((x) => x.endsWith(".svg"))
 			.sort())
@@ -166,11 +157,22 @@ export function assets(): Asset[] {
 				),
 			);
 	}
+	// Iconos de pago y cursores, con la tinta de los iconos (los que llevan currentColor)
+	for (const [group, folder] of [
+		["Pagos", "payments"],
+		["Cursores", "cursors"],
+	] as const) {
+		const dir = join(ASSETS, "dist", folder);
+		for (const f of readdirSync(dir)
+			.filter((x) => x.endsWith(".svg"))
+			.sort())
+			out.push(svg(group, f, readFileSync(join(dir, f), "utf8").replace(/currentColor/g, "#525252")));
+	}
 	for (const [group, folder] of [
 		["Hand-drawn", "hand-drawn"],
 		["Patterns", "patterns"],
 	] as const) {
-		const dir = join(ICONS, "assets", folder);
+		const dir = join(ASSETS, "assets", folder);
 		for (const f of readdirSync(dir)
 			.filter((x) => x.endsWith(".svg"))
 			.sort())
@@ -183,8 +185,9 @@ export function assets(): Asset[] {
 export const ASSET_GROUPS = [
 	["Logos", "l"],
 	["App icons", "m"],
-	["Icons", "xs"],
 	["Marcas", "xs"],
+	["Pagos", "xs"],
+	["Cursores", "xs"],
 	["Hand-drawn", "m"],
 	["Patterns", "l"],
 ] as const;

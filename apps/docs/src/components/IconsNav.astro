@@ -1,34 +1,47 @@
 ---
-// Selector entre las galerías de recursos de @jotis-me/icons (iconos, logos, banderas, pagos, archivos y cursores): enlaces con el aspecto de las pestañas
-// `button-minimal`, sin JavaScript. La página actual lleva `aria-current`.
+// Navegación entre los sets de iconos y recursos (de línea, logos, banderas, pagos, archivos y cursores): `Tabs` `underline`
+// con `href`, que se pinta en el servidor como una `<nav>` de enlaces, sin JavaScript. Cada set lleva su recuento,
+// calculado de los paquetes, y el actual va con `aria-current="page"`. En móvil la fila se desplaza en horizontal.
+import { Tabs } from "@jotis-me/react";
+import { buildEntries, countLogos, FILE_GROUP, type IconSet, setTabs } from "../lib/gallery";
+import { FLAGS, ICON_NAMES } from "../lib/untitled";
+
 interface Props {
-	current: "icons" | "logos" | "flags" | "payments" | "files" | "cursors";
+	current: IconSet;
 }
 const { current } = Astro.props;
-const links = [
-	{ id: "icons", label: "Iconos", href: "/icons/" },
-	{ id: "logos", label: "Logos", href: "/icons/logos/" },
-	{ id: "flags", label: "Banderas", href: "/icons/flags/" },
-	{ id: "payments", label: "Pagos", href: "/icons/payments/" },
-	{ id: "files", label: "Archivos", href: "/icons/files/" },
-	{ id: "cursors", label: "Cursores", href: "/icons/cursors/" },
-] as const;
+
+// Los mismos SVG que piden las páginas de cada set: aquí solo se cuentan
+const logos = import.meta.glob<string>("../../../../packages/assets/dist/logos/*/*.svg", {
+	query: "?no-inline",
+	import: "default",
+	eager: true,
+});
+const payments = import.meta.glob<string>("../../../../packages/assets/dist/payments/*.svg", {
+	query: "?no-inline",
+	import: "default",
+	eager: true,
+});
+const cursors = import.meta.glob<string>("../../../../packages/assets/dist/cursors/*.svg", {
+	query: "?no-inline",
+	import: "default",
+	eager: true,
+});
+
+const items = setTabs({
+	icons: ICON_NAMES.length,
+	logos: countLogos(Object.keys(logos)),
+	flags: FLAGS.length,
+	payments: buildEntries("payments", payments).length,
+	files: Object.keys(FILE_GROUP).length,
+	cursors: Object.keys(cursors).length,
+});
 ---
 
-<nav aria-label="Iconos y recursos">
-	<ul class="m-0 inline-flex list-none flex-wrap gap-1 rounded-lg bg-secondary_alt p-1 shadow-[inset_0_0_0_1px_var(--border-secondary)]">
-		{
-			links.map((l) => (
-				<li>
-					<a
-						href={l.href}
-						aria-current={l.id === current ? "page" : undefined}
-						class="inline-flex h-9 items-center rounded-md px-3 text-sm font-semibold text-quaternary no-underline transition-colors duration-100 hover:text-secondary focus-visible:shadow-focus-ring focus-visible:outline-none aria-[current=page]:bg-primary_alt aria-[current=page]:text-secondary aria-[current=page]:shadow-[var(--shadow-sm),inset_0_0_0_1px_var(--border-primary)]"
-					>
-						{l.label}
-					</a>
-				</li>
-			))
-		}
-	</ul>
-</nav>
+<Tabs
+	type="underline"
+	aria-label="Tipo de icono"
+	items={items}
+	value={current}
+	className="-mx-1 -my-1 overflow-x-auto px-1 py-1 [&>ul]:w-max [&>ul]:min-w-full"
+/>

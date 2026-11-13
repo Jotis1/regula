@@ -1,0 +1,83 @@
+---
+// La captura de la card de un componente en /components/ (change adopt-untitled-ui-icons): una imagen WebP por tema, hecha por
+// scripts/capture-showcases.ts de lo más característico del componente (visual/showcases.tsx). Dos <img> con `loading="lazy"`: la del
+// tema que no se ve va con `display: none` y el navegador no la descarga, así que solo viaja la del tema activo y solo
+// cuando la card se acerca a la pantalla. Decorativa: sin nombre, fuera del árbol de accesibilidad y sin foco. Sin su captura,
+// deja el damero vacío (el build no depende de ellas).
+import { Skeleton, TransparencyGrid } from "@jotis-me/react";
+import { DARK_PREVIEWS } from "../visual/cards";
+import { SHOWCASE_IMAGE, showcaseFile } from "../visual/showcase";
+
+interface Props {
+	name: string;
+	/** El nombre en la URL (`button-group`). */
+	slug: string;
+	/** Las de arriba de la página piden ya la captura clara (la del tema por defecto; la oscura espera): una imagen perezosa que es el LCP tarda en empezar a bajar. */
+	eager?: boolean;
+}
+
+const { name, slug, eager = false } = Astro.props;
+const loading = eager ? "eager" : "lazy";
+const priority = eager ? "high" : undefined;
+const files = import.meta.glob<string>("../assets/showcase/*.webp", {
+	query: "?url",
+	import: "default",
+	eager: true,
+});
+const urlOf = (theme: "light" | "dark") => files[`../assets/showcase/${showcaseFile(slug, theme)}`];
+const alwaysDark = DARK_PREVIEWS.has(name);
+// Los de Stream solo tienen la oscura, y la usan en los dos temas
+const light = alwaysDark ? undefined : urlOf("light");
+const dark = urlOf("dark");
+// `relative`: la imagen se pinta encima del `Skeleton` de carga, que va detrás, centrado en el damero
+const img = "relative block h-full w-full object-cover";
+---
+
+<TransparencyGrid
+	aria-hidden="true"
+	inert
+	data-pagefind-ignore
+	data-showcase-card={name}
+	className="pointer-events-none relative aspect-[16/10] overflow-hidden shadow-[inset_0_-1px_0_var(--border-secondary)]"
+>
+	{
+		// Carga (design D8 de redesign-docs-site-v2): un `Skeleton` en el hueco hasta que la captura lo tapa al pintarse.
+		// Quien quiera retirarlo del todo marca la caja con `data-loaded` (src/lib/component-index.ts)
+		dark && (
+			<Skeleton
+				width="60%"
+				height={32}
+				className="absolute top-1/2 left-1/5 -translate-y-1/2 in-data-loaded:hidden"
+			/>
+		)
+	}
+	{
+		light && (
+			<img
+				src={light}
+				alt=""
+				width={SHOWCASE_IMAGE.width}
+				height={SHOWCASE_IMAGE.height}
+				loading={loading}
+				fetchpriority={priority}
+				decoding="async"
+				data-showcase-theme="light"
+				class:list={[img, "dark:hidden"]}
+			/>
+		)
+	}
+	{
+		dark && (
+			<img
+				src={dark}
+				alt=""
+				width={SHOWCASE_IMAGE.width}
+				height={SHOWCASE_IMAGE.height}
+				loading="lazy"
+				decoding="async"
+				data-showcase-theme="dark"
+				class:list={[img, !alwaysDark && "hidden dark:block"]}
+			/>
+		)
+	}
+</TransparencyGrid>

@@ -49,6 +49,7 @@ export interface TagInputProps extends FieldProps {
 /** Campo que convierte lo escrito en etiquetas al pulsar Enter o coma, sin repetidas ni vacías. */
 export function TagInput({
 	label,
+	labelAside,
 	required,
 	hint,
 	error,
@@ -115,6 +116,7 @@ export function TagInput({
 		<FieldShell
 			id={id}
 			label={label}
+			labelAside={labelAside}
 			required={required}
 			hint={hint}
 			error={error}

@@ -1,25 +1,7 @@
 // Composiciones de Modal: los tipos del Figma (`Modal`, `4057:415205`) hechos solo con componentes de Regula. No se
 // exportan del paquete: son ejemplos para copiar. Cada una pinta el modal abierto en su lienzo (`contained`).
 
-import {
-	IconBookOpen01,
-	IconBuilding07,
-	IconCode02,
-	IconCreditCard02,
-	IconCrop01,
-	IconCurrencyDollarCircle,
-	IconEdit05,
-	IconFlag05,
-	IconLayersThree01,
-	IconMarkerPin01,
-	IconMessageChatCircle,
-	IconSave01,
-	IconShield01,
-	IconStars02,
-	IconTag01,
-	IconUserPlus01,
-} from "@jotis-me/icons";
-import { SocialAppleLogoGray, SocialFacebookLogoGray, SocialGoogleLogo } from "@jotis-me/icons/logos";
+import { SocialAppleLogoGray, SocialFacebookLogoGray, SocialGoogleLogo } from "@jotis-me/assets/logos";
 import {
 	Avatar,
 	AvatarGroup,
@@ -31,7 +13,6 @@ import {
 	ContentDivider,
 	CreditCard,
 	FileUpload,
-	Icon,
 	Input,
 	Modal,
 	NumberInput,
@@ -45,6 +26,39 @@ import {
 	Toggle,
 	VerificationCodeInput,
 } from "@jotis-me/react";
+import {
+	Bell01,
+	BookOpen01,
+	Building07,
+	Calendar,
+	CheckCircle,
+	Clock,
+	Code02,
+	Copy01,
+	CreditCard02,
+	Crop01,
+	CurrencyDollarCircle,
+	Edit05,
+	Flag05,
+	Folder,
+	HelpCircle,
+	LayersThree01,
+	Lock01,
+	Mail01,
+	MarkerPin01,
+	MessageChatCircle,
+	Play,
+	Plus,
+	Save01,
+	SearchLg,
+	Shield01,
+	Stars02,
+	Sun,
+	Tag01,
+	Trash01,
+	UserPlus01,
+	Users01,
+} from "@untitledui/icons";
 import type { ReactNode } from "react";
 
 /** El lienzo de cada composición: el modal abierto con su velo, del alto que pide. */
@@ -74,7 +88,7 @@ export function ModalHorizontalExample() {
 			<Modal
 				contained
 				layout="horizontal"
-				icon="check-circle"
+				icon={CheckCircle}
 				color="success"
 				iconVariant="modern"
 				title="Informe publicado"
@@ -99,7 +113,7 @@ export function ModalWarningHorizontalExample() {
 			<Modal
 				contained
 				layout="horizontal"
-				icon={<IconSave01 size={24} />}
+				icon={<Save01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Cambios sin guardar"
@@ -124,7 +138,7 @@ export function ModalDestructiveHorizontalExample() {
 			<Modal
 				contained
 				layout="horizontal"
-				icon="trash-01"
+				icon={Trash01}
 				destructive
 				iconVariant="modern"
 				title="Eliminar el informe"
@@ -148,7 +162,7 @@ export function ModalStackedLeftAlignedExample() {
 		<Lienzo alto={340}>
 			<Modal
 				contained
-				icon="check-circle"
+				icon={CheckCircle}
 				color="success"
 				iconVariant="modern"
 				title="Informe publicado"
@@ -170,7 +184,7 @@ export function ModalWarningStackedLeftAlignedExample() {
 		<Lienzo alto={320}>
 			<Modal
 				contained
-				icon={<IconSave01 size={24} />}
+				icon={<Save01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Cambios sin guardar"
@@ -192,7 +206,7 @@ export function ModalDestructiveStackedLeftAlignedExample() {
 		<Lienzo alto={320}>
 			<Modal
 				contained
-				icon="trash-01"
+				icon={Trash01}
 				destructive
 				iconVariant="modern"
 				title="Eliminar el informe"
@@ -320,7 +334,7 @@ export function ModalCenteredPhotoExample() {
 				description="El informe de octubre ya está publicado. Tu equipo puede verlo y comentarlo."
 				actions={
 					<>
-						<Button hierarchy="secondary" iconLeading="copy-01">
+						<Button hierarchy="secondary" iconLeading={Copy01}>
 							Copiar enlace
 						</Button>
 						<Button>Terminar</Button>
@@ -365,7 +379,7 @@ export function ModalCenteredVideoCarouselExample() {
 				media={
 					<div className="relative flex h-56 items-center justify-center overflow-hidden rounded-xl bg-utility-sky-200">
 						<span className="flex size-14 items-center justify-center rounded-full bg-primary/80 text-fg-secondary">
-							<Icon name="play" size={24} />
+							<Play size={24} />
 						</span>
 					</div>
 				}
@@ -393,7 +407,7 @@ export function ModalCheckboxesExample() {
 		<Lienzo alto={420}>
 			<Modal
 				contained
-				icon="check-circle"
+				icon={CheckCircle}
 				color="gray"
 				iconVariant="modern"
 				title="Informe publicado"
@@ -421,7 +435,7 @@ export function ModalTogglesExample() {
 		<Lienzo alto={440}>
 			<Modal
 				contained
-				icon="check-circle"
+				icon={CheckCircle}
 				color="gray"
 				iconVariant="modern"
 				title="Informe publicado"
@@ -449,7 +463,7 @@ export function ModalLinkFieldExample() {
 		<Lienzo alto={380}>
 			<Modal
 				contained
-				icon="check-circle"
+				icon={CheckCircle}
 				color="gray"
 				iconVariant="modern"
 				title="Informe publicado"
@@ -473,7 +487,7 @@ export function ModalInputFieldExample() {
 		<Lienzo alto={380}>
 			<Modal
 				contained
-				icon="folder"
+				icon={Folder}
 				color="gray"
 				iconVariant="modern"
 				title="Presupuesto creado"
@@ -497,7 +511,7 @@ export function ModalLabelsExample() {
 		<Lienzo alto={380}>
 			<Modal
 				contained
-				icon={<IconTag01 size={24} />}
+				icon={<Tag01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Etiquetas del gasto"
@@ -525,7 +539,7 @@ export function ModalDropdownExample() {
 		<Lienzo alto={380}>
 			<Modal
 				contained
-				icon="check-circle"
+				icon={CheckCircle}
 				color="gray"
 				iconVariant="modern"
 				title="Informe publicado"
@@ -556,7 +570,7 @@ export function ModalEmailInviteExample() {
 		<Lienzo alto={460}>
 			<Modal
 				contained
-				icon={<IconUserPlus01 size={24} />}
+				icon={<UserPlus01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Invita a quien colabore"
@@ -570,9 +584,9 @@ export function ModalEmailInviteExample() {
 				}
 			>
 				<div className="flex flex-col gap-3">
-					<Input label="Correo" type="email" icon="mail-01" placeholder="tu@regula.app" />
-					<Input aria-label="Otro correo" type="email" icon="mail-01" placeholder="tu@regula.app" />
-					<Button hierarchy="link-color" iconLeading="plus" className="self-start">
+					<Input label="Correo" type="email" icon={Mail01} placeholder="tu@regula.app" />
+					<Input aria-label="Otro correo" type="email" icon={Mail01} placeholder="tu@regula.app" />
+					<Button hierarchy="link-color" iconLeading={Plus} className="self-start">
 						Añadir otro
 					</Button>
 				</div>
@@ -591,7 +605,7 @@ export function ModalUserInviteExample() {
 		<Lienzo alto={520}>
 			<Modal
 				contained
-				icon={<IconUserPlus01 size={24} />}
+				icon={<UserPlus01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Compartir con personas"
@@ -639,7 +653,7 @@ export function ModalAccessRequestExample() {
 		<Lienzo alto={380}>
 			<Modal
 				contained
-				icon={<IconUserPlus01 size={24} />}
+				icon={<UserPlus01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Candela pide permiso para editar"
@@ -699,7 +713,7 @@ export function Modal2FaCodeExample() {
 		<Lienzo alto={600}>
 			<Modal
 				contained
-				icon="lock-01"
+				icon={Lock01}
 				color="gray"
 				iconVariant="modern"
 				title="Activa la verificación en dos pasos"
@@ -729,7 +743,7 @@ export function ModalVerificationCodeExample() {
 			<Modal
 				contained
 				align="center"
-				icon="mail-01"
+				icon={Mail01}
 				color="gray"
 				iconVariant="modern"
 				title="Revisa tu correo"
@@ -757,7 +771,7 @@ export function ModalPasswordPromptExample() {
 			<Modal
 				contained
 				align="center"
-				icon={<IconShield01 size={24} />}
+				icon={<Shield01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Escribe tu contraseña"
@@ -771,11 +785,11 @@ export function ModalPasswordPromptExample() {
 				}
 			>
 				<div className="flex flex-col gap-4">
-					<Input label="Correo o usuario" icon="mail-01" defaultValue="ana@regula.app" />
+					<Input label="Correo o usuario" icon={Mail01} defaultValue="ana@regula.app" />
 					<Input
 						label="Contraseña"
 						type="password"
-						icon="lock-01"
+						icon={Lock01}
 						defaultValue="contraseña"
 						revealable
 					/>
@@ -888,7 +902,7 @@ export function ModalPlan01Example() {
 		<Lienzo alto={540}>
 			<Modal
 				contained
-				icon={<IconLayersThree01 size={24} />}
+				icon={<LayersThree01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Cambia de plan"
@@ -954,7 +968,7 @@ export function ModalPlan02Example() {
 			<Modal
 				contained
 				layout="horizontal"
-				icon={<IconLayersThree01 size={24} />}
+				icon={<LayersThree01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Elige un plan"
@@ -962,7 +976,7 @@ export function ModalPlan02Example() {
 				onClose={cerrar}
 				width={600}
 				footerStart={
-					<Button hierarchy="secondary" iconLeading={<IconMessageChatCircle size={20} />}>
+					<Button hierarchy="secondary" iconLeading={<MessageChatCircle size={20} />}>
 						Hablar con ventas
 					</Button>
 				}
@@ -991,7 +1005,7 @@ export function ModalPaymentMethodExample() {
 		<Lienzo alto={560}>
 			<Modal
 				contained
-				icon={<IconCurrencyDollarCircle size={24} />}
+				icon={<CurrencyDollarCircle size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Cambia el método de pago"
@@ -1039,7 +1053,7 @@ export function ModalPaymentDetailsExample() {
 		<Lienzo alto={460}>
 			<Modal
 				contained
-				icon={<IconCreditCard02 size={24} />}
+				icon={<CreditCard02 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Cambia la tarjeta"
@@ -1094,7 +1108,7 @@ export function ModalUserSelectionExample() {
 		<Lienzo alto={440}>
 			<Modal
 				contained
-				icon="users-01"
+				icon={Users01}
 				color="gray"
 				iconVariant="modern"
 				title="Compra plazas"
@@ -1162,7 +1176,7 @@ export function ModalImageCropExample() {
 			<Modal
 				contained
 				layout="horizontal"
-				icon={<IconCrop01 size={24} />}
+				icon={<Crop01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Recorta la imagen de portada"
@@ -1196,7 +1210,7 @@ export function ModalProfileSettingsExample() {
 				onClose={cerrar}
 				width={560}
 				footerStart={
-					<Button hierarchy="link-gray" iconLeading="copy-01">
+					<Button hierarchy="link-gray" iconLeading={Copy01}>
 						Copiar enlace
 					</Button>
 				}
@@ -1234,7 +1248,7 @@ export function ModalDatePickerExample() {
 		<Lienzo alto={440}>
 			<Modal
 				contained
-				icon="calendar"
+				icon={Calendar}
 				color="gray"
 				iconVariant="modern"
 				title="Elige las fechas"
@@ -1276,7 +1290,7 @@ export function ModalBannerAppearanceExample() {
 				onClose={cerrar}
 				width={560}
 				footerStart={
-					<Button hierarchy="link-gray" iconLeading="help-circle">
+					<Button hierarchy="link-gray" iconLeading={HelpCircle}>
 						¿Necesitas ayuda?
 					</Button>
 				}
@@ -1311,7 +1325,7 @@ export function ModalAppearanceSettingsExample() {
 		<Lienzo alto={600}>
 			<Modal
 				contained
-				icon="sun"
+				icon={Sun}
 				color="gray"
 				iconVariant="modern"
 				title="Apariencia"
@@ -1366,7 +1380,7 @@ export function ModalForm01Example() {
 		<Lienzo alto={680}>
 			<Modal
 				contained
-				icon={<IconFlag05 size={24} />}
+				icon={<Flag05 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Añade un ingreso fijo"
@@ -1375,7 +1389,7 @@ export function ModalForm01Example() {
 				width={560}
 				actions={
 					<>
-						<Button hierarchy="secondary" iconLeading={<IconSave01 size={20} />}>
+						<Button hierarchy="secondary" iconLeading={<Save01 size={20} />}>
 							Guardar borrador
 						</Button>
 						<Button>Añadir ingreso</Button>
@@ -1384,7 +1398,7 @@ export function ModalForm01Example() {
 			>
 				<div className="grid grid-cols-2 gap-4">
 					<Input label="Concepto" placeholder="¿De qué es?" className="col-span-2" />
-					<Input label="Empresa" icon="search-lg" placeholder="Busca la empresa" />
+					<Input label="Empresa" icon={SearchLg} placeholder="Busca la empresa" />
 					<Input label="Web" prefix="https://" placeholder="www.ejemplo.com" />
 					<Input label="Importe" placeholder="0,00 €" />
 					<Select
@@ -1408,7 +1422,7 @@ export function ModalForm02Example() {
 			<Modal
 				contained
 				layout="horizontal"
-				icon={<IconBuilding07 size={24} />}
+				icon={<Building07 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Añade tu negocio"
@@ -1462,13 +1476,13 @@ export function ModalCalendarEventExample() {
 				<div className="flex flex-col gap-4 text-sm">
 					<ul className="m-0 flex list-none flex-col gap-2 p-0 text-tertiary">
 						<li className="flex items-center gap-2">
-							<Icon name="calendar" size={16} /> Viernes, 8 de enero
+							<Calendar size={16} /> Viernes, 8 de enero
 						</li>
 						<li className="flex items-center gap-2">
-							<Icon name="clock" size={16} /> 13:30 – 15:30
+							<Clock size={16} /> 13:30 – 15:30
 						</li>
 						<li className="flex items-center gap-2">
-							<Icon name="bell-01" size={16} /> 10 minutos antes
+							<Bell01 size={16} /> 10 minutos antes
 						</li>
 					</ul>
 					<AvatarLabel size="sm" name="Sara Hervás" supporting="Organiza" initials="SH" />
@@ -1485,7 +1499,7 @@ export function ModalCreateEventExample() {
 			<Modal
 				contained
 				layout="horizontal"
-				icon="calendar"
+				icon={Calendar}
 				color="gray"
 				iconVariant="modern"
 				title="Nuevo recordatorio"
@@ -1507,7 +1521,7 @@ export function ModalCreateEventExample() {
 						<Input label="Desde" type="date" defaultValue="2027-01-08" />
 						<Input label="Hasta" type="date" defaultValue="2027-01-14" />
 					</div>
-					<Input label="Lugar" icon={<IconMarkerPin01 size={20} />} placeholder="Añade un lugar" />
+					<Input label="Lugar" icon={<MarkerPin01 size={20} />} placeholder="Añade un lugar" />
 					<Textarea label="Descripción" placeholder="Escribe una descripción" />
 				</div>
 			</Modal>
@@ -1529,7 +1543,7 @@ export function ModalUserSettingsExample() {
 				dividers
 				actions={
 					<>
-						<Button hierarchy="secondary" iconLeading={<IconSave01 size={20} />}>
+						<Button hierarchy="secondary" iconLeading={<Save01 size={20} />}>
 							Guardar borrador
 						</Button>
 						<Button>Publicar cambios</Button>
@@ -1543,7 +1557,7 @@ export function ModalUserSettingsExample() {
 					</div>
 					<Input
 						label="Correo"
-						icon="mail-01"
+						icon={Mail01}
 						defaultValue="sara@regula.app"
 						hint="Verificado el 2 de enero de 2027"
 					/>
@@ -1566,7 +1580,7 @@ export function ModalNewProjectExample() {
 				footerStart={<Button hierarchy="link-gray">Guardar borrador</Button>}
 				actions={
 					<>
-						<Button hierarchy="secondary" iconLeading="calendar">
+						<Button hierarchy="secondary" iconLeading={Calendar}>
 							Programar
 						</Button>
 						<Button>Crear presupuesto</Button>
@@ -1607,7 +1621,7 @@ export function ModalShareProjectExample() {
 		<Lienzo alto={600}>
 			<Modal
 				contained
-				icon={<IconUserPlus01 size={24} />}
+				icon={<UserPlus01 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Comparte este presupuesto"
@@ -1616,7 +1630,7 @@ export function ModalShareProjectExample() {
 				width={480}
 				dividers
 				footerStart={
-					<Button hierarchy="link-gray" iconLeading={<IconCode02 size={20} />}>
+					<Button hierarchy="link-gray" iconLeading={<Code02 size={20} />}>
 						Código para incrustar
 					</Button>
 				}
@@ -1635,7 +1649,7 @@ export function ModalShareProjectExample() {
 					/>
 					<Input
 						aria-label="Buscar personas"
-						icon="search-lg"
+						icon={SearchLg}
 						placeholder="Busca por nombre o correo"
 					/>
 					<ul className="m-0 flex list-none flex-col gap-3 p-0">
@@ -1663,7 +1677,7 @@ export function ModalIntegrationExample() {
 			<Modal
 				contained
 				align="center"
-				icon={<IconStars02 size={24} />}
+				icon={<Stars02 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Conecta Regula con tu banco"
@@ -1672,7 +1686,7 @@ export function ModalIntegrationExample() {
 				width={440}
 				dividers
 				footerStart={
-					<Button hierarchy="secondary" iconLeading={<IconBookOpen01 size={20} />}>
+					<Button hierarchy="secondary" iconLeading={<BookOpen01 size={20} />}>
 						Documentación
 					</Button>
 				}
@@ -1710,7 +1724,7 @@ export function ModalAIAssistantExample() {
 			<Modal
 				contained
 				align="center"
-				icon={<IconStars02 size={24} />}
+				icon={<Stars02 size={24} />}
 				iconVariant="modern"
 				color="gray"
 				title="Hola, Ana. ¿En qué te ayudo?"
@@ -1742,7 +1756,7 @@ export function ModalTextEditorExample() {
 		<Lienzo alto={640}>
 			<Modal
 				contained
-				icon={<IconEdit05 size={24} />}
+				icon={<Edit05 size={24} />}
 				color="gray"
 				iconVariant="modern"
 				title="Edita la nota del mes"
@@ -1750,7 +1764,7 @@ export function ModalTextEditorExample() {
 				onClose={cerrar}
 				width={560}
 				footerStart={
-					<Button hierarchy="link-gray" iconLeading={<IconStars02 size={20} />}>
+					<Button hierarchy="link-gray" iconLeading={<Stars02 size={20} />}>
 						Preguntar a la IA
 					</Button>
 				}

@@ -1,10 +1,11 @@
 "use client";
 
+import { ChevronDown, ChevronUp, Menu01, XClose } from "@untitledui/icons";
 import { type ReactNode, useId, useRef, useState } from "react";
 import { Button as AriaButton, Dialog, DialogTrigger, Popover } from "react-aria-components";
 import { cx } from "../internal/cx.js";
+import { DynIcon } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
-import { Icon } from "./Icon.js";
 
 export type MarketingNavMenu = "dropdown" | "full-width";
 
@@ -193,7 +194,7 @@ function DesktopItem({
 			<>
 				<span className={LINK}>
 					{item.label}
-					<Icon name="chevron-up" size={16} className="text-fg-quaternary" />
+					<ChevronUp size={16} className="text-fg-quaternary" />
 				</span>
 				{/* La vista previa: el panel en línea, bajo el botón o a todo el ancho de la cabecera */}
 				<div className={cx("absolute z-10", full ? "inset-x-0 top-full" : "top-full mt-1")}>
@@ -207,7 +208,7 @@ function DesktopItem({
 		<DialogTrigger isOpen={open} onOpenChange={setOpen}>
 			<AriaButton className={LINK}>
 				{item.label}
-				<Icon name={open ? "chevron-up" : "chevron-down"} size={16} className="text-fg-quaternary" />
+				<DynIcon icon={open ? ChevronUp : ChevronDown} size={16} className="text-fg-quaternary" />
 			</AriaButton>
 			<Popover
 				triggerRef={full ? headerRef : undefined}
@@ -248,7 +249,7 @@ function MobileItem({ item }: { item: MarketingNavItem }) {
 				className={row}
 			>
 				{item.label}
-				<Icon name={open ? "chevron-up" : "chevron-down"} size={20} className="text-fg-quaternary" />
+				<DynIcon icon={open ? ChevronUp : ChevronDown} size={20} className="text-fg-quaternary" />
 			</button>
 			<div
 				id={id}
@@ -322,7 +323,7 @@ export function MarketingNav({
 						aria-label={mobileOpen ? l.closeMenu : l.openMenu}
 						className="inline-flex size-10 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent text-fg-secondary outline-none hover:bg-primary_hover focus-visible:shadow-focus-ring"
 					>
-						<Icon name={mobileOpen ? "x-close" : "menu-01"} size={24} />
+						<DynIcon icon={mobileOpen ? XClose : Menu01} size={24} />
 					</AriaButton>
 					<Popover
 						triggerRef={headerRef}

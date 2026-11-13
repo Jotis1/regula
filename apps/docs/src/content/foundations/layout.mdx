@@ -5,9 +5,42 @@ order: 5
 ---
 
 import Essentials from "../../components/compose/Essentials.astro";
+import { Button, Input } from "@jotis-me/react";
 import Example from "../../components/compose/Example.astro";
+import Pair from "../../components/compose/Pair.astro";
+import Rule from "../../components/compose/Rule.astro";
 
 {/* Texto de la guía (reference/GUIA.md, «Espaciado, radios y layout»), repartido en tarjetas sin reescribirlo */}
+
+## Con ejemplos
+
+El espaciado y los radios, con campos y botones de verdad.
+
+<Pair>
+	<Rule verdict="do" caption="`spacing-xl` (16) entre campos." width={280}>
+		<div class="flex w-full flex-col gap-4">
+			<Input label="Nombre" placeholder="Ada" />
+			<Input label="Correo" placeholder="tu@jotis.me" />
+		</div>
+	</Rule>
+	<Rule verdict="dont" caption="Con 4 px entre campos, la etiqueta de uno se pega al de arriba." width={280}>
+		<div class="flex w-full flex-col gap-1">
+			<Input label="Nombre" placeholder="Ada" />
+			<Input label="Correo" placeholder="tu@jotis.me" />
+		</div>
+	</Rule>
+</Pair>
+
+<Pair>
+	<Rule verdict="do" caption="`radius-lg` (8) en botones, inputs y tooltips.">
+		<Button hierarchy="secondary">Cancelar</Button>
+		<Button>Guardar</Button>
+	</Rule>
+	<Rule verdict="dont" caption="`radius-full` es de pills, avatares y toggles, no de botones.">
+		<Button hierarchy="secondary" className="rounded-full">Cancelar</Button>
+		<Button className="rounded-full">Guardar</Button>
+	</Rule>
+</Pair>
 
 ## Lo esencial
 

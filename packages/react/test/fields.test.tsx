@@ -1,5 +1,6 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { CurrencyEuro, Mail01, SearchLg, User01 } from "@untitledui/icons";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { Input, Select, Textarea } from "../src/index.js";
@@ -81,7 +82,7 @@ describe("Input", () => {
 	});
 
 	it("iconos inicial (20px) y final (16px)", () => {
-		render(<Input label="Importe" icon="search-lg" trailing="currency-euro" />);
+		render(<Input label="Importe" icon={SearchLg} trailing={CurrencyEuro} />);
 		const svgs = controlOf(screen.getByLabelText("Importe")).querySelectorAll("svg");
 		expect(svgs).toHaveLength(2);
 		expect(svgs[0]?.getAttribute("width")).toBe("20");
@@ -116,7 +117,7 @@ describe("Input", () => {
 	it("sin infracciones de axe en claro y oscuro", async () => {
 		await expectAccessibleInThemes(
 			<div>
-				<Input label="Correo" required icon="mail-01" hint="Pista" />
+				<Input label="Correo" required icon={Mail01} hint="Pista" />
 				<Input label="Error" error="Introduce un correo válido." />
 				<Input label="Usuario" disabled defaultValue="jotis" />
 			</div>,
@@ -356,7 +357,7 @@ describe("Select", () => {
 		render(
 			<Select
 				label="Responsable"
-				icon="user-01"
+				icon={User01}
 				defaultValue="olivia"
 				options={[
 					{
@@ -365,7 +366,7 @@ describe("Select", () => {
 						supporting: "@olivia",
 						avatar: {},
 					},
-					{ value: "phoenix", label: "Phoenix Baker", icon: "user-01" },
+					{ value: "phoenix", label: "Phoenix Baker", icon: User01 },
 					{ value: "lana", label: "Lana Steiner", dot: "success", disabled: true },
 				]}
 			/>,
@@ -385,9 +386,7 @@ describe("Select", () => {
 	});
 
 	it("error marcado, pista enlazada, chevron e icono", () => {
-		render(
-			<Select label="Categoría" icon="search-lg" options={["Hogar"]} error="Elige una categoría." />,
-		);
+		render(<Select label="Categoría" icon={SearchLg} options={["Hogar"]} error="Elige una categoría." />);
 		const select = screen.getByRole("button", { name: /Categoría/ });
 		expect(select.closest("[data-invalid]")).not.toBeNull();
 		expect(description(select).trim()).toBe("Elige una categoría.");
