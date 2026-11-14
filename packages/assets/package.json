@@ -1,6 +1,6 @@
 {
 	"name": "@jotis-me/assets",
-	"version": "0.8.0",
+	"version": "0.8.1",
 	"description": "Assets de la suite jotis.me: logos de terceros, iconos de pago, cursores, trazos a mano, patrones e iconos de app (favicon y PWA).",
 	"license": "MIT",
 	"type": "module",
