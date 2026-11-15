@@ -396,8 +396,27 @@ export {
 	type StreamCountdownProps,
 	type StreamCountdownSize,
 } from "./components/StreamCountdown.js";
+export {
+	StreamCounter,
+	type StreamCounterItem,
+	type StreamCounterProps,
+} from "./components/StreamCounter.js";
 export { type StreamEventItem, StreamEvents, type StreamEventsProps } from "./components/StreamEvents.js";
 export { StreamGoal, type StreamGoalLabels, type StreamGoalProps } from "./components/StreamGoal.js";
+export { StreamMeter, type StreamMeterProps } from "./components/StreamMeter.js";
+export {
+	StreamPinnedMessage,
+	type StreamPinnedMessageLabels,
+	type StreamPinnedMessageProps,
+} from "./components/StreamPinnedMessage.js";
+export {
+	StreamPoll,
+	type StreamPollLabels,
+	type StreamPollOption,
+	type StreamPollProps,
+	type StreamPollState,
+	type StreamPollVariant,
+} from "./components/StreamPoll.js";
 export { StreamScene, type StreamSceneProps, type StreamSceneVariant } from "./components/StreamScene.js";
 export {
 	StreamStatus,

@@ -22,6 +22,44 @@ export const stream: Record<string, Start> = {
 	ChatBadge: {
 		props: {},
 	},
+	StreamPoll: {
+		props: {
+			title: "¿Abro la puerta?",
+			seconds: 42,
+			options: [
+				{ id: "si", label: "Sí", votes: 12 },
+				{ id: "no", label: "Ni loco", votes: 30 },
+			],
+			winnerId: "no",
+		},
+		tweaks: {
+			seconds: { kind: "number", min: 0, max: 600, step: 1 },
+			options: { kind: "hidden" },
+			labels: { kind: "hidden" },
+		},
+	},
+	StreamCounter: {
+		props: {
+			items: [
+				{ label: "Muertes", value: 37 },
+				{ label: "Sustos", value: 12 },
+			],
+		},
+	},
+	StreamMeter: {
+		props: { label: "Nivel de miedo", value: 64 },
+		tweaks: { value: { kind: "number", min: 0, max: 100, step: 1 } },
+	},
+	StreamPinnedMessage: {
+		props: {
+			message: {
+				user: "lucia_88",
+				tone: "pink",
+				badges: ["sub"],
+				text: "¿Has mirado detrás del cuadro?",
+			},
+		},
+	},
 	ChatBox: {
 		props: {
 			messages: [

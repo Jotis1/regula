@@ -95,8 +95,9 @@ describe("movimiento", () => {
 describe("tipos de evento", () => {
 	const types = Object.keys(STREAM_EVENTS) as StreamEventType[];
 
-	it("los siete tipos, cada uno con un icono del set y su etiqueta", () => {
-		expect(types).toEqual(["follow", "sub", "resub", "gift", "raid", "bits", "donation"]);
+	it("los ocho tipos, cada uno con un icono del set y su etiqueta", () => {
+		expect(types).toEqual(["follow", "sub", "resub", "gift", "raid", "bits", "donation", "redemption"]);
+		expect(STREAM_EVENTS.redemption.label).toBe("Canje de puntos");
 		for (const t of types) expect(typeof STREAM_EVENTS[t].icon).toBe("function");
 		expect(STREAM_EVENTS.raid.label).toBe("Raid entrante");
 	});
