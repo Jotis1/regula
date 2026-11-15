@@ -140,3 +140,21 @@ test.describe("StreamPinnedMessage", () => {
 		expect((await card.boundingBox())?.width).toBe(width);
 	});
 });
+
+test.describe("StreamPoll en el ejemplo interactivo", () => {
+	test("el estado de la votación y la ganadora se eligen en desplegables", async ({ page }) => {
+		const pg = await example(page, "/components/stream-poll/");
+		const pick = async (prop: string, value: string) => {
+			const el = await control(pg, prop);
+			await el.locator('button:not([aria-label^="Restablecer"])').click();
+			await page.getByRole("listbox").last().getByRole("option", { name: value, exact: true }).click();
+		};
+		await pick("state", "ended");
+		await pick("winnerId", "si");
+		const preview = pg.locator("[data-playground-preview]");
+		await expect(preview).toContainText("Ha ganado Sí");
+		await expect(pg.locator("[data-playground-code]")).toContainText('state="ended"');
+		await pick("state", "locked");
+		await expect(preview).toContainText("Votación cerrada");
+	});
+});

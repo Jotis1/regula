@@ -37,6 +37,9 @@ export const stream: Record<string, Start> = {
 			options: { kind: "hidden" },
 			// `string | number` saldría como número: aquí son los ids de las opciones del ejemplo
 			winnerId: { kind: "choice", values: ["si", "no"] },
+			// `state` es el de la votación (no la entrada y la salida, que aquí van en `motion` y no se mueven)
+			state: { kind: "choice", values: ["active", "locked", "ended"] },
+			motion: { kind: "hidden" },
 			labels: { kind: "hidden" },
 		},
 	},
