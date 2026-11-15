@@ -35,6 +35,8 @@ export const stream: Record<string, Start> = {
 		tweaks: {
 			seconds: { kind: "number", min: 0, max: 600, step: 1 },
 			options: { kind: "hidden" },
+			// `string | number` saldría como número: aquí son los ids de las opciones del ejemplo
+			winnerId: { kind: "choice", values: ["si", "no"] },
 			labels: { kind: "hidden" },
 		},
 	},
