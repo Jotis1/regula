@@ -30,5 +30,5 @@ Comandos: `bunx biome ci .`, `bunx turbo run typecheck test build`, `bun run che
 ## 4. Cierre
 
 - [x] 4.1 Comprobaciones completas en local y `openspec validate add-standards-foundation --strict` sin errores
-- [ ] 4.2 PR con todos sus commits en Conventional Commits y el CI en verde, incluido el job «Commits»
-- [ ] 4.3 El usuario añade «Commits» a las comprobaciones obligatorias del ruleset de `main`. Verificar con el visto bueno del usuario
+- [x] 4.2 PR con todos sus commits en Conventional Commits y el CI en verde, incluido el job «Commits»
+- [x] 4.3 El usuario añade «Commits» a las comprobaciones obligatorias del ruleset de `main`. Verificar con el visto bueno del usuario
