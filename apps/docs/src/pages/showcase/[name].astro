@@ -1,7 +1,7 @@
 ---
 // Página de captura de una card de /components/ (change adopt-untitled-ui-icons): la muestra del componente (visual/showcases.tsx),
 // centrada y ajustada a un marco de 640×400 sobre el damero de transparencia. Fuera de la navegación, del buscador y del
-// mapa del sitio. La fotografía scripts/capture-showcases.ts: tema oscuro con ?tema=oscuro (los de Stream, siempre oscuros).
+// mapa del sitio. La fotografía scripts/capture-showcases.ts: tema oscuro con ?theme=dark (los de Stream, siempre oscuros).
 // Se pinta en el servidor, sin JavaScript de React; un script en línea mide la muestra y la ajusta cuando están las fuentes.
 import "../../styles/global.css";
 import { TransparencyGrid } from "@jotis-me/react";
@@ -27,7 +27,7 @@ const fit = { box: SHOWCASE_BOX, fill: SHOWCASE_FILL, scale: SHOWCASE_SCALE };
 		<meta name="robots" content="noindex" />
 		<title>{name} · captura de la card</title>
 		<script is:inline>
-			if (new URLSearchParams(location.search).get("tema") === "oscuro") document.documentElement.classList.add("dark-mode");
+			if (new URLSearchParams(location.search).get("theme") === "dark") document.documentElement.classList.add("dark-mode");
 		</script>
 	</head>
 	<body class="m-0 bg-primary font-body text-primary antialiased">

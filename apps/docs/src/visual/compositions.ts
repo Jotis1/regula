@@ -1,6 +1,6 @@
 // Composiciones de ejemplo (design D7): cada tipo del Figma de Modal (`4057:415205`) hecho solo con componentes de
 // Regula. Son entradas del registro visual (`composition: true`) con su página /visual/, su captura aprobada y su sitio
-// en /components/<componente>/composiciones/, pero no son componentes del catálogo ni se exportan del paquete.
+// en /components/<componente>/compositions/, pero no son componentes del catálogo ni se exportan del paquete.
 // Módulo sin React: lo leen los scripts de captura y check:js.
 
 export interface Composition {

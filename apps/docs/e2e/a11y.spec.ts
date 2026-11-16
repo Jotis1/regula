@@ -1,4 +1,4 @@
-import { readdirSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
@@ -10,6 +10,8 @@ function pages(dir: string): string[] {
 		const p = join(dir, f);
 		if (statSync(p).isDirectory())
 			return f === "visual" || f === "showcase" || f === "_astro" ? [] : pages(p);
+		// Redirect stubs (the old Spanish routes) are not pages: the browser leaves them while axe runs
+		if (f === "index.html" && readFileSync(p, "utf8").includes('http-equiv="refresh"')) return [];
 		return f === "index.html" ? [`/${relative(dist, dir).split(sep).join("/")}/`.replace("//", "/")] : [];
 	});
 }

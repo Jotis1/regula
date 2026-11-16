@@ -53,7 +53,7 @@ try {
 				viewport: { width: VIEWPORT_WIDTH, height: CARD_HEIGHTS[name] ?? 300 },
 				reducedMotion: "reduce",
 			});
-			await page.goto(`${BASE}/visual/${slugOf(name)}/${theme === "dark" ? "?tema=oscuro" : ""}`);
+			await page.goto(`${BASE}/visual/${slugOf(name)}/${theme === "dark" ? "?theme=dark" : ""}`);
 			await page.evaluate(() => document.fonts.ready);
 			writeFileSync(
 				approvedPath(name, theme, outDir),
