@@ -12,9 +12,13 @@ import {
 	NowPlaying,
 	StreamAlert,
 	StreamCountdown,
+	StreamCounter,
 	type StreamEventItem,
 	StreamEvents,
 	StreamGoal,
+	StreamMeter,
+	StreamPinnedMessage,
+	StreamPoll,
 	StreamScene,
 	StreamStatus,
 	TransparencyGrid,
@@ -120,12 +124,16 @@ const CHAT: ChatMessage[] = [
 		badges: ["bits"],
 		text: "Cien bits para el café, que hace falta.",
 	},
-	{ user: "ElSilencioso", tone: "neutral", text: "Llego tarde pero llego." },
+	{
+		user: "ElSilencioso",
+		tone: "neutral",
+		text: "Llego tarde. El clip del susto está en https://jotis.me/clips.",
+	},
 	{
 		user: "TioBigotes",
 		tone: "sky",
-		badges: ["mod"],
-		text: "Recordad las normas, que luego me toca a mí.",
+		badges: ["mod", "sub", "vip"],
+		text: "Recordad las normas, que luego me toca a mí: nada de spoilers del final, nada de mandar al streamer a la puerta equivocada y nada de gritar antes del susto.",
 	},
 ];
 
@@ -157,6 +165,88 @@ export function CamFrameExample() {
 					<CamFrame ratio="1:1" width={200} name="Mod" />
 				</div>
 			</TransparencyGrid>
+		</div>
+	);
+}
+
+export function StreamPollExample() {
+	return (
+		<div className="flex flex-wrap items-start gap-6 p-2">
+			<StreamPoll
+				width={360}
+				title="¿Abro la puerta?"
+				seconds={42}
+				options={[
+					{ id: "si", label: "Sí", votes: 12 },
+					{ id: "no", label: "Ni loco", votes: 30 },
+				]}
+			/>
+			<StreamPoll
+				width={360}
+				variant="prediction"
+				state="locked"
+				title="¿Muere antes del jefe?"
+				options={[
+					{ id: "si", label: "Sí, seguro", votes: 4200, users: 38 },
+					{ id: "no", label: "Esta vez no", votes: 1850, users: 21 },
+				]}
+			/>
+			<StreamPoll
+				width={360}
+				state="ended"
+				winnerId="no"
+				title="¿Abro la puerta?"
+				options={[
+					{ id: "si", label: "Sí", votes: 18 },
+					{ id: "no", label: "Ni loco", votes: 41 },
+				]}
+			/>
+		</div>
+	);
+}
+
+export function StreamCounterExample() {
+	return (
+		<div className="flex flex-col items-start gap-6 p-2">
+			<StreamCounter
+				items={[
+					{ label: "Muertes", value: 37 },
+					{ label: "Sustos", value: 12 },
+				]}
+			/>
+			<StreamCounter items={[{ label: "Intentos", value: 1284 }]} />
+		</div>
+	);
+}
+
+export function StreamMeterExample() {
+	return (
+		<div className="flex flex-wrap items-start gap-6 p-3">
+			<StreamMeter label="Nivel de miedo" value={64} />
+			<StreamMeter label="Nivel de miedo" value={100} full />
+		</div>
+	);
+}
+
+export function StreamPinnedMessageExample() {
+	return (
+		<div className="flex flex-wrap items-start gap-6 p-2">
+			<StreamPinnedMessage
+				message={{
+					user: "lucia_88",
+					tone: "pink",
+					badges: ["sub"],
+					text: "¿Has mirado detrás del cuadro?",
+				}}
+			/>
+			<StreamPinnedMessage
+				message={{
+					user: "TioBigotes",
+					tone: "sky",
+					badges: ["mod", "vip"],
+					text: "Pista para el puzle: la clave está en el reloj del pasillo, mira https://jotis.me/guia.",
+				}}
+			/>
 		</div>
 	);
 }

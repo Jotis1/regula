@@ -119,9 +119,13 @@ import {
 	Spotlight,
 	StreamAlert,
 	StreamCountdown,
+	StreamCounter,
 	type StreamEventItem,
 	StreamEvents,
 	StreamGoal,
+	StreamMeter,
+	StreamPinnedMessage,
+	StreamPoll,
 	StreamScene,
 	StreamStatus,
 	SubscribeCard,
@@ -1746,6 +1750,41 @@ export const SHOWCASES: Record<string, Showcase> = {
 	},
 	StreamGoal: {
 		render: () => <StreamGoal label="Meta de seguidores" current={1284} goal={2000} />,
+	},
+	StreamPoll: {
+		render: () => (
+			<StreamPoll
+				title="¿Abro la puerta?"
+				seconds={42}
+				options={[
+					{ id: "si", label: "Sí", votes: 12 },
+					{ id: "no", label: "Ni loco", votes: 30 },
+				]}
+			/>
+		),
+	},
+	StreamCounter: {
+		render: () => (
+			<StreamCounter
+				items={[
+					{ label: "Muertes", value: 37 },
+					{ label: "Sustos", value: 12 },
+				]}
+			/>
+		),
+	},
+	StreamMeter: { render: () => <StreamMeter label="Nivel de miedo" value={64} /> },
+	StreamPinnedMessage: {
+		render: () => (
+			<StreamPinnedMessage
+				message={{
+					user: "lucia_88",
+					tone: "pink",
+					badges: ["sub"],
+					text: "¿Has mirado detrás del cuadro?",
+				}}
+			/>
+		),
 	},
 	NowPlaying: {
 		render: () => (

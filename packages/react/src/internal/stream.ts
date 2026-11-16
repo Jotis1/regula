@@ -1,6 +1,15 @@
 // Base común de la familia Stream (Twitch), design §12. Sin "use client": la usan componentes de servidor.
 
-import { CurrencyEuro, RefreshCw01, Star01, Stars02, UserPlus01, Users01, Zap } from "@untitledui/icons";
+import {
+	CurrencyEuro,
+	Gift01,
+	RefreshCw01,
+	Star01,
+	Stars02,
+	UserPlus01,
+	Users01,
+	Zap,
+} from "@untitledui/icons";
 import type { CSSProperties } from "react";
 import { formatCurrency, formatNumber } from "./format.js";
 import type { IconComponent } from "./icon.js";
@@ -31,7 +40,16 @@ export function streamMotion(state: StreamMotion | undefined): string | undefine
 	return undefined;
 }
 
-export type StreamEventType = "follow" | "sub" | "resub" | "gift" | "raid" | "bits" | "donation";
+/** `redemption` es un canje de puntos de canal (ampliación sobre la guía). */
+export type StreamEventType =
+	| "follow"
+	| "sub"
+	| "resub"
+	| "gift"
+	| "raid"
+	| "bits"
+	| "donation"
+	| "redemption";
 
 /** Icono y etiqueta de cada tipo de evento, compartidos por StreamAlert y StreamEvents. */
 export const STREAM_EVENTS: Record<StreamEventType, { icon: IconComponent; label: string }> = {
@@ -42,12 +60,15 @@ export const STREAM_EVENTS: Record<StreamEventType, { icon: IconComponent; label
 	raid: { icon: Users01, label: "Raid entrante" },
 	bits: { icon: Zap, label: "Bits" },
 	donation: { icon: CurrencyEuro, label: "Donación" },
+	redemption: { icon: Gift01, label: "Canje de puntos" },
 };
 
 export interface StreamEventData {
 	amount?: number;
 	months?: number;
 	tier?: number | string;
+	/** Nombre de la recompensa de un canje. Texto plano: lo escribe el canal en Twitch. */
+	reward?: string;
 }
 
 /** Texto por defecto de una alerta, con la voz de la suite (`stDetail` del bundle). */
@@ -69,6 +90,8 @@ export function streamDetail(type: StreamEventType, e: StreamEventData): string 
 			return `${formatNumber(e.amount ?? 0)} bits.`;
 		case "donation":
 			return typeof e.amount === "number" ? formatCurrency(e.amount) : "";
+		case "redemption":
+			return e.reward ? `Ha canjeado ${e.reward}.` : "Ha canjeado una recompensa.";
 	}
 }
 
@@ -79,6 +102,7 @@ export function streamShort(type: StreamEventType, e: StreamEventData): string {
 	else if (type === "resub" && e.months) extra = `${e.months} meses`;
 	else if ((type === "bits" || type === "raid" || type === "gift") && e.amount != null)
 		extra = formatNumber(e.amount);
+	else if (type === "redemption" && e.reward) extra = e.reward;
 	return STREAM_EVENTS[type].label + (extra ? ` · ${extra}` : "");
 }
 

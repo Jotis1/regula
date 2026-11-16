@@ -633,6 +633,24 @@ const usage: Record<string, string> = {
 />`,
 	CamFrame: `<CamFrame ratio="16:9" width={480} live name="Tu canal" role="ella/él" />`,
 	StreamGoal: `<StreamGoal label="Meta de seguidores" current={1284} goal={2000} />`,
+	StreamPoll: `<StreamPoll
+	title="¿Abro la puerta?"
+	seconds={42}
+	options={[
+		{ id: "si", label: "Sí", votes: 12 },
+		{ id: "no", label: "Ni loco", votes: 30 },
+	]}
+/>`,
+	StreamCounter: `<StreamCounter
+	items={[
+		{ label: "Muertes", value: 37 },
+		{ label: "Sustos", value: 12 },
+	]}
+/>`,
+	StreamMeter: `<StreamMeter label="Nivel de miedo" value={64} />`,
+	StreamPinnedMessage: `<StreamPinnedMessage
+	message={{ user: "lucia_88", tone: "pink", badges: ["sub"], text: "¿Has mirado detrás del cuadro?" }}
+/>`,
 	NowPlaying: `<NowPlaying title="Cuatro paredes y un techo" artist="Los Vecinos del Quinto" progress={0.42} />`,
 	StreamCountdown: `<StreamCountdown seconds={600} label="Empezamos en" />`,
 	StreamScene: `<StreamScene variant="brb" seconds={480} countdownLabel="Vuelvo en" />`,

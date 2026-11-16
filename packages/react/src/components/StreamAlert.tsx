@@ -24,6 +24,8 @@ export interface StreamAlertProps {
 	months?: number;
 	/** Nivel de una suscripción. */
 	tier?: number | string;
+	/** Nombre de la recompensa de un canje (`type="redemption"`). Texto plano. */
+	reward?: string;
 	/**
 	 * Mensaje del espectador. Siempre texto plano: llega del público y se pinta tal cual, nunca como HTML
 	 * (por eso es `string` y no un nodo). Modéralo antes.
@@ -47,6 +49,7 @@ export function StreamAlert({
 	amount,
 	months,
 	tier,
+	reward,
 	message,
 	detail,
 	label,
@@ -55,7 +58,7 @@ export function StreamAlert({
 	className,
 }: StreamAlertProps) {
 	const ev = STREAM_EVENTS[type] ?? STREAM_EVENTS.follow;
-	const text = detail ?? streamDetail(type, { amount, months, tier });
+	const text = detail ?? streamDetail(type, { amount, months, tier, reward });
 	return (
 		<div
 			role="status"

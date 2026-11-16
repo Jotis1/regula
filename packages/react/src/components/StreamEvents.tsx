@@ -19,6 +19,8 @@ export interface StreamEventItem {
 	amount?: number;
 	/** Meses de una renovación. */
 	months?: number;
+	/** Nombre de la recompensa de un canje (`type="redemption"`). Texto plano. */
+	reward?: string;
 	/** Sustituye a la línea generada ("Donación · 5,00 €", "Raid entrante · 1.284"). */
 	detail?: ReactNode;
 	/** Hora relativa, como "2 min" o "ahora": se entiende al instante, la absoluta obliga a calcular. */
@@ -51,7 +53,7 @@ export interface StreamEventsProps {
 }
 
 function contentKey(it: StreamEventItem): string {
-	return `${it.type}|${keyText(it.user)}|${it.amount ?? ""}|${it.months ?? ""}`;
+	return `${it.type}|${keyText(it.user)}|${it.amount ?? ""}|${it.months ?? ""}|${it.reward ?? ""}`;
 }
 
 /** Lista de los últimos eventos del canal con icono, usuario, detalle y hora relativa, siempre en oscuro. */

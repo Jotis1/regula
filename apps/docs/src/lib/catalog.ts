@@ -180,7 +180,9 @@ export const COMPONENT_GROUPS: readonly ComponentGroup[] = [
 		label: "Overlay",
 		description: "Lo que va encima del juego.",
 		section: "stream",
-		components: names("CamFrame ChatBox ChatBadge StreamGoal StreamEvents NowPlaying StreamStatus"),
+		components: names(
+			"CamFrame ChatBox ChatBadge StreamGoal StreamEvents NowPlaying StreamStatus StreamPoll StreamCounter StreamMeter StreamPinnedMessage",
+		),
 	},
 	{
 		id: "stream-canal",

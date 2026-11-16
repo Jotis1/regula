@@ -1,28 +1,10 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
+import { ChatLine, type ChatMessage } from "../internal/chat-line.js";
 import { cx } from "../internal/cx.js";
 import { keyText, STREAM_ROOT, stableKeys, streamMotion } from "../internal/stream.js";
 import { defaultStrings } from "../internal/strings.js";
-import { ChatBadge, type ChatBadgeKind } from "./ChatBadge.js";
 
-export type ChatTone = "brand" | "sky" | "emerald" | "pink" | "purple" | "orange" | "indigo" | "neutral";
-
-export interface ChatMessage {
-	user: ReactNode;
-	/**
-	 * Lo que escribe el espectador. Siempre texto plano: llega del público y se pinta tal cual, nunca como HTML
-	 * (por eso es `string` y no un nodo).
-	 */
-	text: string;
-	/**
-	 * Tono del nombre: escala `utility-<tono>-700`.
-	 * @default "neutral"
-	 */
-	tone?: ChatTone;
-	/** Insignias delante del nombre; no más de tres. */
-	badges?: ChatBadgeKind[];
-	/** Clave estable. Sin ella se deriva del usuario y el texto. */
-	id?: string | number;
-}
+export type { ChatMessage, ChatTone } from "../internal/chat-line.js";
 
 export interface ChatBoxProps {
 	/** Del más antiguo al más reciente; no más de 12 visibles. */
@@ -40,22 +22,17 @@ export interface ChatBoxProps {
 	fade?: boolean;
 	/** Solo el último mensaje entra con fundido y 8px de subida. */
 	animate?: boolean;
+	/**
+	 * Hace seleccionables los mensajes (ampliación sobre la guía): cada uno con `id` y sin `selectable: false` pasa a
+	 * ser un botón que llama a `onSelect` con su mensaje. Sin ella, el chat es de solo lectura.
+	 */
+	onSelect?: (message: ChatMessage) => void;
+	/** `id` del mensaje elegido: lleva `aria-pressed`, fondo activo y borde índigo. Solo con `onSelect`. */
+	selectedId?: string | number;
 	/** @default "Chat del directo" */
 	"aria-label"?: string;
 	className?: string;
 }
-
-// Clases enteras: Tailwind solo genera las que ve escritas.
-const TONE: Record<ChatTone, string> = {
-	brand: "text-utility-brand-700",
-	sky: "text-utility-sky-700",
-	emerald: "text-utility-emerald-700",
-	pink: "text-utility-pink-700",
-	purple: "text-utility-purple-700",
-	orange: "text-utility-orange-700",
-	indigo: "text-utility-indigo-700",
-	neutral: "text-utility-neutral-700",
-};
 
 // La máscara solo usa el alfa: negro opaco arriba del 30 %, transparente en el borde.
 const FADE: CSSProperties = {
@@ -74,6 +51,8 @@ export function ChatBox({
 	translucent = false,
 	fade = true,
 	animate = false,
+	onSelect,
+	selectedId,
 	"aria-label": ariaLabel,
 	className,
 }: ChatBoxProps) {
@@ -98,28 +77,45 @@ export function ChatBox({
 			style={size}
 		>
 			<div className="flex h-full flex-col justify-end gap-3 p-4" style={fade ? FADE : undefined}>
-				{messages.map((m, i) => (
-					<div
-						key={keys[i]}
-						className={cx(
-							"text-xl wrap-anywhere text-primary",
-							i === messages.length - 1 && animate && streamMotion("enter"),
-						)}
-					>
-						{m.badges?.length ? (
-							<span className="mr-2 inline-flex gap-1 align-[-4px]">
-								{m.badges.map((b) => (
-									<ChatBadge key={b} kind={b} />
-								))}
-							</span>
-						) : null}
-						<span className={cx("font-semibold", TONE[m.tone ?? "neutral"] ?? TONE.neutral)}>
-							{m.user}
-							<span className="mr-2">:</span>
-						</span>
-						<span className="text-primary">{m.text}</span>
-					</div>
-				))}
+				{messages.map((m, i) => {
+					const row = cx(
+						"text-xl wrap-anywhere text-primary",
+						i === messages.length - 1 && animate && streamMotion("enter"),
+					);
+					if (!onSelect)
+						return (
+							<div key={keys[i]} className={row}>
+								<ChatLine message={m} />
+							</div>
+						);
+					// Con `onSelect`, todas las filas llevan el mismo relleno y borde, para que no bailen entre sí.
+					const pad = "rounded-md border-l-2 px-2 py-1";
+					if (m.id == null || m.selectable === false)
+						return (
+							<div key={keys[i]} className={cx(row, pad, "border-transparent")}>
+								<ChatLine message={m} />
+							</div>
+						);
+					const selected = m.id === selectedId;
+					return (
+						<button
+							key={keys[i]}
+							type="button"
+							aria-pressed={selected}
+							onClick={() => onSelect(m)}
+							className={cx(
+								row,
+								pad,
+								"block w-full cursor-pointer text-left transition-colors duration-100 focus-visible:shadow-focus-ring focus-visible:outline-none",
+								selected
+									? "border-brand bg-active"
+									: "border-transparent hover:bg-primary_hover",
+							)}
+						>
+							<ChatLine message={m} />
+						</button>
+					);
+				})}
 			</div>
 		</div>
 	);

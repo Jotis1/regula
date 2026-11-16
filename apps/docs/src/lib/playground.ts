@@ -264,9 +264,10 @@ export function controlsOf(
 	const controlled = rows.some((r) => r.name === "onChange");
 	for (const row of rows) {
 		const tweak = tweaks[row.name];
-		// Un ajuste de contenido gana a la exclusión: lo controlado de un componente puede ofrecer valores preparados
-		if (!(tweak?.kind === "content") && (EXCLUDED.has(row.name) || (controlled && row.name === "value")))
-			continue;
+		// Un ajuste de contenido o de selector gana a la exclusión: lo controlado de un componente puede ofrecer valores
+		// preparados, y una prop excluida por su nombre puede ser otra cosa (`state` en StreamPoll es el de la votación)
+		const declared = tweak?.kind === "content" || tweak?.kind === "choice";
+		if (!declared && (EXCLUDED.has(row.name) || (controlled && row.name === "value"))) continue;
 		if (tweak?.kind === "hidden") continue;
 		if (!tweak && row.name === "error" && /boolean/.test(row.type)) {
 			controls.push({ kind: "content", prop: "error", options: [ERROR_OPTION] });

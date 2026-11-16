@@ -284,3 +284,44 @@ describe("ChatBadge", () => {
 		);
 	});
 });
+
+describe("Canje de puntos de canal", () => {
+	it("Alerta de canje: icono propio, etiqueta y la recompensa en el texto", () => {
+		render(<StreamAlert type="redemption" user="lucia_88" reward="Elige el próximo susto" />);
+		const alert = screen.getByRole("status");
+		expect(alert.textContent).toContain("Canje de puntos");
+		expect(alert.textContent).toContain("Ha canjeado Elige el próximo susto.");
+		expect(alert.querySelector(":scope > span:first-child svg")).not.toBeNull();
+	});
+
+	it("sin recompensa dice «Ha canjeado una recompensa.»", () => {
+		render(<StreamAlert type="redemption" user="u" />);
+		expect(screen.getByRole("status").textContent).toContain("Ha canjeado una recompensa.");
+	});
+
+	it("la recompensa es texto plano", () => {
+		const { container } = render(<StreamAlert type="redemption" user="u" reward="<b>hola</b>" />);
+		expect(container.querySelector("b")).toBeNull();
+		expect(container.textContent).toContain("Ha canjeado <b>hola</b>.");
+	});
+
+	it("Canje en la lista: «Canje de puntos · Hidratarse»", () => {
+		render(<StreamEvents items={[{ type: "redemption", user: "nachoXL", reward: "Hidratarse" }]} />);
+		expect(screen.getByRole("list").textContent).toContain("Canje de puntos · Hidratarse");
+	});
+
+	it("los textos de los demás tipos no cambian", () => {
+		const html = renderToString(
+			<>
+				<StreamAlert type="follow" user="u" />
+				<StreamAlert type="resub" user="u" months={14} />
+				<StreamAlert type="donation" user="u" amount={5} />
+				<StreamEvents items={[{ type: "bits", user: "u", amount: 500 }]} />
+			</>,
+		);
+		expect(html).toContain("Ya no hay vuelta atrás.");
+		expect(html).toContain("Lleva 14 meses por aquí.");
+		expect(html).toMatch(/5,00\s€/);
+		expect(html).toContain("Bits · 500");
+	});
+});
