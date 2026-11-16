@@ -58,6 +58,7 @@ export const docNav: NavSection[] = [
 		items: [
 			{ label: "Qué es Regula", href: "/" },
 			{ label: "Instalación", href: "/start/install/", keywords: "tailwind next astro" },
+			{ label: "Servidor MCP", href: "/start/mcp/", keywords: "mcp agente ia claude servidor" },
 		],
 		groups: [],
 	},

@@ -6,12 +6,11 @@ import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
 import { encodeTitles, encodeUrls } from "../../lib/gallery";
+import { flagTitles, galleryUrls } from "../../lib/gallery-entries";
 import { FLAGS } from "../../lib/untitled";
 
-const urls = Object.fromEntries(
-	FLAGS.map(({ code }) => [`/icons/svg/flags/${code}.svg`, `/icons/svg/flags/${code}.svg`]),
-);
-const titles = Object.fromEntries(FLAGS.map(({ code, title }) => [code, title]));
+const urls = galleryUrls("flags");
+const titles = flagTitles();
 ---
 
 <Base

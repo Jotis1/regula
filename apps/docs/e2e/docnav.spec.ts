@@ -92,6 +92,7 @@ test("Fundamentos: sus páginas y nada de componentes; Empezar: instalación", a
 	await expect(docnav(page).getByRole("link", { includeHidden: true })).toHaveText([
 		"Qué es Regula",
 		"Instalación",
+		"Servidor MCP",
 	]);
 });
 

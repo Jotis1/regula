@@ -38,7 +38,7 @@ describe("sidebarTree, en el lateral", () => {
 		expect(found).toHaveLength(FOUNDATIONS.length);
 		expect(found.every((i) => i.href && !i.children)).toBe(true);
 		const start = sidebarTree("/start/install/", "section").items;
-		expect(start.map((i) => i.href)).toEqual(["/", "/start/install/"]);
+		expect(start.map((i) => i.href)).toEqual(["/", "/start/install/", "/start/mcp/"]);
 	});
 
 	it("la portada, el historial y la 404 caen en Empezar", () => {
