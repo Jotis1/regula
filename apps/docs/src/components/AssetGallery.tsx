@@ -286,10 +286,10 @@ export default function AssetGallery({ kind, urls, categories, groups, titles, i
 	const noun = c.noun;
 	const searchId = `${c.idPrefix}-search`;
 
-	// `/icons/?icono=calendar`: llega desde la búsqueda (Ctrl+K) con el icono ya filtrado y elegido
+	// `/icons/?icon=calendar`: llega desde la búsqueda (Ctrl+K) con el icono ya filtrado y elegido
 	useEffect(() => {
 		if (kind !== "icons") return;
-		const wanted = new URLSearchParams(location.search).get("icono");
+		const wanted = new URLSearchParams(location.search).get("icon");
 		const hit = wanted ? entries.find((e) => e.name === wanted) : undefined;
 		if (hit) {
 			setQuery(hit.name);

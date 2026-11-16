@@ -60,7 +60,7 @@ try {
 		const themes = DARK_PREVIEWS.has(name) ? (["dark"] as const) : (["light", "dark"] as const);
 		for (const theme of themes) {
 			const page = await context.newPage();
-			await page.goto(`${BASE}/showcase/${slugOf(name)}/${theme === "dark" ? "?tema=oscuro" : ""}`);
+			await page.goto(`${BASE}/showcase/${slugOf(name)}/${theme === "dark" ? "?theme=dark" : ""}`);
 			await page.locator('#stage[data-ready="true"]').waitFor();
 			const png = await page.locator("#stage").screenshot({ animations: "disabled", caret: "hide" });
 			const file = join(outDir, showcaseFile(slugOf(name), theme));

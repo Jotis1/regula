@@ -52,7 +52,7 @@ describe("sidebarTree, en el lateral", () => {
 });
 
 describe("sidebarTree, en el menú", () => {
-	it("lleva los cinco bloques y solo abre el de la página actual", () => {
+	it("lleva los seis bloques y solo abre el de la página actual", () => {
 		const { items } = sidebarTree("/foundations/color/", "all");
 		expect(items.map((i) => [i.label, i.defaultOpen])).toEqual([
 			["Empezar", false],
@@ -60,6 +60,7 @@ describe("sidebarTree, en el menú", () => {
 			["Componentes", false],
 			["Stream", false],
 			["Iconos", false],
+			["Normas", false],
 		]);
 	});
 
@@ -105,8 +106,8 @@ describe("SideNav", () => {
 		expect(html.lateral).toContain('aria-label="Filtrar navegación"');
 	});
 
-	it("el menú lleva los cinco bloques y sus propios ids", () => {
-		expect(html.menu?.match(/<details/g)).toHaveLength(5);
+	it("el menú lleva los seis bloques y sus propios ids", () => {
+		expect(html.menu?.match(/<details/g)).toHaveLength(6);
 		// Los ids del campo los pone React con un prefijo por componente dentro de una misma página (aquí cada
 		// render es una página aparte, así que se comprueba en el e2e); los de SideNav llevan el `idPrefix`
 		expect(html.lateral).toContain('id="docnav-keywords"');

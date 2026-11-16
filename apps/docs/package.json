@@ -1,5 +1,5 @@
 {
-	"name": "docs",
+	"name": "me.jotis.regula.docs",
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
@@ -47,6 +47,7 @@
 		"react-docgen-typescript": "^2.4.0",
 		"react-dom-18": "npm:react-dom@18.3.1",
 		"typescript": "^6",
-		"vitest": "^5"
+		"vitest": "^5",
+		"yaml": "^2.9.1"
 	}
 }

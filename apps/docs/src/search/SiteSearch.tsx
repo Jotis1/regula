@@ -105,12 +105,12 @@ export default function SiteSearch() {
 				type="button"
 				onClick={() => setOpen(true)}
 				aria-keyshortcuts="Control+K Meta+K"
-				// En móvil, botón de icono de 44px (HeaderM.dc.html); desde lg, el campo de 300px
-				className="flex size-11 items-center justify-center gap-2 rounded-lg text-left text-sm text-quaternary transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none lg:h-10 lg:w-[300px] lg:justify-start lg:border lg:border-primary lg:bg-primary lg:pr-2 lg:pl-3 lg:shadow-xs"
+				// Botón de icono de 44px hasta xl (HeaderM.dc.html; con seis secciones, el campo de 300px no cabe a 1024); desde xl, el campo
+				className="flex size-11 items-center justify-center gap-2 rounded-lg text-left text-sm text-quaternary transition-colors duration-100 hover:bg-primary_hover focus-visible:shadow-focus-ring focus-visible:outline-none xl:h-10 xl:w-[300px] xl:justify-start xl:border xl:border-primary xl:bg-primary xl:pr-2 xl:pl-3 xl:shadow-xs"
 			>
 				<SearchLg size={20} className="shrink-0 text-fg-quaternary" />
-				<span className="sr-only min-w-0 grow truncate lg:not-sr-only">Buscar en Regula</span>
-				<Kbd variant="field" className="hidden shrink-0 whitespace-nowrap lg:inline-flex">
+				<span className="sr-only min-w-0 grow truncate xl:not-sr-only">Buscar en Regula</span>
+				<Kbd variant="field" className="hidden shrink-0 whitespace-nowrap xl:inline-flex">
 					{mac ? "⌘ K" : "Ctrl K"}
 				</Kbd>
 			</button>

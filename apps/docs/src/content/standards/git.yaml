@@ -1,0 +1,105 @@
+prefix: GIT
+title: Git
+description: Cómo se escriben los commits y cómo entra el código en la rama principal.
+order: 3
+rules:
+    - id: GIT-001
+      title: Todo commit sigue Conventional Commits
+      level: must
+      appliesTo: all
+      statement: >-
+          Cada commit tiene una cabecera `tipo(ámbito): descripción` de 100 caracteres como máximo y sin punto final.
+          La descripción empieza en minúscula, salvo que su primera palabra sea un identificador del código (`ChatBox`).
+          Tras una línea en blanco puede llevar un cuerpo y un pie. Los tipos son `feat`, `fix`, `docs`, `test`,
+          `refactor`, `perf`, `build`, `ci`, `chore`, `style` y `revert`. Un cambio que rompe lleva `!` tras el tipo o
+          `BREAKING CHANGE:` en el pie.
+      rationale: >-
+          Un formato fijo deja que las herramientas lean el historial: separar arreglos de funciones, avisar de los
+          cambios que rompen y que un agente sepa qué escribir sin preguntar.
+      examples:
+          good:
+              - caption: Cabecera con tipo y ámbito, y un identificador al principio de la descripción
+                lang: text
+                code: "feat(react): ChatBox dice qué hace el clic"
+          bad:
+              - caption: Sin tipo
+                lang: text
+                code: Arreglos en la propuesta
+      verification:
+          kind: ci
+          check: Commits
+
+    - id: GIT-002
+      title: El cuerpo explica el porqué y lista los cambios
+      level: should
+      appliesTo: all
+      statement: >-
+          Si el commit necesita explicación, el cuerpo dice por qué se hace. Cuando hay más de un cambio, los lista, uno
+          por línea.
+      rationale: >-
+          La cabecera dice qué; lo que no se ve en el diff es el motivo, y es lo que alguien necesitará dentro de un año.
+      examples:
+          good:
+              - caption: Una cabecera, el porqué y una lista de cambios
+                lang: text
+                code: |-
+                    fix(docs): el historial pinta las tablas
+
+                    Las tablas del changelog salían como texto con barras porque el parser
+                    no reconocía la sintaxis de tabla.
+
+                    - Añade el bloque de tabla al parser del historial
+                    - Añade el test de la entrada de la 0.8.0
+          bad:
+              - caption: Una cabecera que no dice nada y sin cuerpo
+                lang: text
+                code: "fix(docs): arreglos"
+      verification:
+          kind: review
+          review: Que el cuerpo diga el porqué cuando el diff no lo deja claro.
+
+    - id: GIT-003
+      title: Las ramas se llaman tipo/descripcion
+      level: should
+      appliesTo: all
+      statement: >-
+          Una rama se llama `tipo/descripcion-en-kebab-case`, con el mismo tipo que tendrían sus commits.
+      rationale: >-
+          El nombre de la rama dice de un vistazo qué trae, y deja que las herramientas agrupen por tipo.
+      examples:
+          good:
+              - caption: Tipo, barra y descripción
+                lang: text
+                code: feat/chat-select-affordance
+          bad:
+              - caption: Sin tipo y con mayúsculas
+                lang: text
+                code: Mis_cambios_de_hoy
+      verification:
+          kind: review
+          review: Que la rama de la PR tenga el formato.
+
+    - id: GIT-004
+      title: Todo entra en la rama principal por PR con las comprobaciones en verde
+      level: must
+      appliesTo: all
+      statement: >-
+          Nadie sube a la rama principal directamente. Todo entra por una PR cuyas comprobaciones obligatorias han
+          pasado.
+      rationale: >-
+          Es la única forma de que las comprobaciones de las demás normas protejan la rama principal de verdad.
+      examples:
+          good:
+              - caption: Una rama con su PR
+                lang: bash
+                code: |-
+                    git switch -c fix/changelog-tables
+                    git push -u origin fix/changelog-tables
+                    gh pr create
+          bad:
+              - caption: Subir directamente a la rama principal
+                lang: bash
+                code: git push origin main
+      verification:
+          kind: review
+          review: Que el ruleset de la rama principal exija PR y las comprobaciones obligatorias.

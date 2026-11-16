@@ -1,0 +1,55 @@
+---
+// Index of every standard, grouped by area: ID, title and level, each linking to its anchor in the area page.
+import { getCollection } from "astro:content";
+import { Badge, PageHeader } from "@jotis-me/react";
+import SectionTitle from "../../components/SectionTitle.astro";
+import Base from "../../layouts/Base.astro";
+import { STANDARD_AREAS } from "../../lib/catalog";
+import { hrefOf, LEVEL_LABEL } from "../../lib/standards";
+
+const collection = await getCollection("standards");
+const areas = STANDARD_AREAS.flatMap((a) => {
+	const entry = collection.find((c) => c.id === a.slug);
+	return entry ? [{ slug: a.slug, ...entry.data }] : [];
+});
+const total = areas.reduce((n, a) => n + a.rules.length, 0);
+const levelColor = { must: "brand", should: "warning", may: "gray" } as const;
+---
+
+<Base
+	title="Normas"
+	description="Las normas de desarrollo de la suite jotis.me: nombres, idioma, Git y proceso, con su porqué y cómo se comprueba."
+>
+	<div class="flex flex-col gap-10">
+		<PageHeader
+			title="Normas"
+			description={`Cómo se construye en la suite jotis.me, para personas y para agentes. ${total} normas, cada una con su porqué, un ejemplo que la cumple, otro que no, y cómo se comprueba.`}
+			breadcrumbs={[{ label: "Normas" }]}
+			divider={false}
+		/>
+		<div class="flex flex-col gap-12">
+			{
+				areas.map((area) => (
+					<section aria-labelledby={`area-${area.slug}`} class="flex max-w-[720px] flex-col gap-4">
+						<div id={`area-${area.slug}`}>
+							<SectionTitle title={area.title} description={area.description} />
+						</div>
+						<ul class="m-0 flex list-none flex-col divide-y divide-secondary p-0" data-area={area.slug}>
+							{area.rules.map((rule) => (
+								<li class="flex items-center justify-between gap-4 py-3">
+									<a
+										href={hrefOf(area.slug, rule.id)}
+										class="min-w-0 rounded-sm text-md text-secondary hover:text-primary focus-visible:shadow-focus-ring focus-visible:outline-none"
+									>
+										<span class="font-mono text-sm font-semibold text-primary">{rule.id}</span> {rule.title}
+									</a>
+									<Badge color={levelColor[rule.level]} type="badge">{LEVEL_LABEL[rule.level]}</Badge>
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			}
+		</div>
+	</div>
+</Base>

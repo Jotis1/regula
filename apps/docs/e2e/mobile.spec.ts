@@ -42,16 +42,23 @@ test("el menú atrapa el foco, se cierra con Escape y devuelve el foco al botón
 	await expect(menuButton(page)).toHaveAttribute("aria-expanded", "false");
 });
 
-test("el menú lleva los cinco bloques de la web, plegados salvo el de la página actual", async ({ page }) => {
+test("el menú lleva los seis bloques de la web, plegados salvo el de la página actual", async ({ page }) => {
 	await page.goto("/foundations/color/");
 	await openMenu(page);
 	const nav = menu(page).getByRole("navigation", { name: "Documentación" });
 	const summaries = nav.locator("summary");
-	await expect(summaries).toHaveText(["Empezar", "Fundamentos", "Componentes", "Stream", "Iconos"]);
+	await expect(summaries).toHaveText([
+		"Empezar",
+		"Fundamentos",
+		"Componentes",
+		"Stream",
+		"Iconos",
+		"Normas",
+	]);
 	const block = (label: string) =>
 		nav.locator("details").filter({ has: page.locator("summary", { hasText: label }) });
 	await expect(block("Fundamentos")).toHaveAttribute("open", "");
-	for (const other of ["Empezar", "Componentes", "Stream", "Iconos"])
+	for (const other of ["Empezar", "Componentes", "Stream", "Iconos", "Normas"])
 		await expect(block(other)).not.toHaveAttribute("open", "");
 	await expect(nav.getByRole("link", { name: "Color", exact: true })).toHaveAttribute(
 		"aria-current",

@@ -5,7 +5,7 @@
 // Los componentes se nombran como en su ficha (`name` del frontmatter); un test comprueba que cada uno de la
 // colección está en un solo grupo y que ningún grupo nombra uno que no existe.
 
-export type SectionId = "start" | "foundations" | "components" | "stream" | "icons";
+export type SectionId = "start" | "foundations" | "components" | "stream" | "icons" | "standards";
 
 export interface Section {
 	id: SectionId;
@@ -14,13 +14,28 @@ export interface Section {
 	href: string;
 }
 
-/** Las cinco secciones de la cabecera, en orden. */
+/** Las seis secciones de la cabecera, en orden. */
 export const SECTIONS: readonly Section[] = [
 	{ id: "start", label: "Empezar", href: "/start/install/" },
 	{ id: "foundations", label: "Fundamentos", href: "/foundations/principles/" },
 	{ id: "components", label: "Componentes", href: "/components/" },
 	{ id: "stream", label: "Stream", href: "/foundations/stream/" },
 	{ id: "icons", label: "Iconos", href: "/icons/" },
+	{ id: "standards", label: "Normas", href: "/standards/" },
+];
+
+export interface StandardAreaEntry {
+	/** Last segment of `/standards/<slug>/`; also the name of its YAML file. */
+	slug: string;
+	label: string;
+}
+
+/** The standards areas, in reading order. A test checks they match the files in content/standards. */
+export const STANDARD_AREAS: readonly StandardAreaEntry[] = [
+	{ slug: "naming", label: "Nombres" },
+	{ slug: "language", label: "Idioma" },
+	{ slug: "git", label: "Git" },
+	{ slug: "process", label: "Proceso" },
 ];
 
 export interface Foundation {
@@ -247,6 +262,7 @@ export function sectionOf(pathname: string): SectionId | undefined {
 	if (path === "/foundations/stream/") return "stream";
 	if (path.startsWith("/foundations/")) return "foundations";
 	if (path.startsWith("/icons/")) return "icons";
+	if (path.startsWith("/standards/")) return "standards";
 	const component = path.match(/^\/components\/([^/]+)\//)?.[1];
 	if (component) return groupOf(component)?.section === "stream" ? "stream" : "components";
 	if (path === "/components/") return "components";

@@ -1,0 +1,55 @@
+---
+// Page of one standards area, with the same skeleton as FoundationPage: PageHeader with breadcrumbs, reading column,
+// "En esta página" index on the right and previous/next between areas.
+import { Button, PageHeader, Pager } from "@jotis-me/react";
+import { Edit02 } from "@untitledui/icons";
+import PageToc from "../components/PageToc.astro";
+import { STANDARD_AREAS } from "../lib/catalog";
+import { PAGE_BODY } from "../lib/layout";
+import Base from "./Base.astro";
+
+interface Props {
+	slug: string;
+	title: string;
+	description?: string;
+	/** Sections of the page (one per rule), for the index. */
+	headings: { slug: string; text: string }[];
+	/** Source file, relative to the repository root, for «Proponer un cambio». */
+	source: string;
+}
+const { slug, title, description, headings, source } = Astro.props;
+const edit = `https://github.com/Jotis1/regula/edit/main/${source}`;
+const index = STANDARD_AREAS.findIndex((a) => a.slug === slug);
+const link = (i: number) => {
+	const area = STANDARD_AREAS[i];
+	return area && { label: area.label, href: `/standards/${area.slug}/` };
+};
+const prev = index > 0 ? link(index - 1) : { label: "Todas las normas", href: "/standards/" };
+const next = link(index + 1);
+const crumbs = [{ label: "Normas", href: "/standards/" }, { label: title }];
+---
+
+<Base title={title} description={description}>
+	<div class="flex flex-col gap-10">
+		<PageHeader title={title} description={description} breadcrumbs={crumbs} divider={false} />
+		<div class="flex items-start gap-16">
+			<article class={`${PAGE_BODY} flex flex-col gap-14`}>
+				<slot />
+				<Pager className="not-prose" prev={prev} next={next} />
+			</article>
+			<PageToc items={headings}>
+				<div class="mt-4">
+					<Button hierarchy="link-gray" size="sm" iconLeading={Edit02} href={edit}>
+						Proponer un cambio
+					</Button>
+				</div>
+			</PageToc>
+		</div>
+	</div>
+</Base>
+
+<script>
+	import { initToc } from "../lib/toc";
+
+	initToc();
+</script>

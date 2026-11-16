@@ -1,0 +1,54 @@
+---
+// One standard on its area page: title with its ID as anchor, level and scope as text badges, statement and
+// rationale, a good/bad pair of code examples (ExampleCard, no checkerboard) and how it is verified.
+import { Badge, ExampleCard } from "@jotis-me/react";
+import { inline } from "../lib/inline";
+import { APPLIES_LABEL, anchorOf, LEVEL_LABEL, type StandardRule, VERIFY_LABEL } from "../lib/standards";
+import CodeSnippet from "./CodeSnippetIsland";
+import SectionTitle from "./SectionTitle.astro";
+
+interface Props {
+	rule: StandardRule;
+}
+const { rule } = Astro.props;
+const levelColor = { must: "brand", should: "warning", may: "gray" } as const;
+const sides = [
+	{ verdict: "do", examples: rule.examples.good },
+	{ verdict: "dont", examples: rule.examples.bad },
+] as const;
+const verification = rule.verification;
+---
+
+<section id={anchorOf(rule.id)} aria-labelledby={`${anchorOf(rule.id)}-title`} class="flex flex-col gap-4">
+	<div id={`${anchorOf(rule.id)}-title`} class="not-prose">
+		<SectionTitle title={`${rule.id} · ${rule.title}`} />
+	</div>
+	<div class="not-prose flex flex-wrap items-center gap-2" data-rule-meta>
+		<Badge color={levelColor[rule.level]} type="badge">{LEVEL_LABEL[rule.level]}</Badge>
+		<Badge color="gray" type="badge">{APPLIES_LABEL[rule.appliesTo]}</Badge>
+	</div>
+	<p set:html={inline(rule.statement)} />
+	<p><strong class="font-semibold text-primary">Por qué.</strong> <Fragment set:html={inline(rule.rationale)} /></p>
+	<div class="not-prose flex flex-col gap-4" data-examples>
+		{
+			sides.map(({ verdict, examples }) => (
+				<div class="flex min-w-0 flex-col gap-4">
+					{examples.map((example) => (
+						<ExampleCard verdict={verdict} caption={example.caption} grid={false} minHeight={0}>
+							<div class="w-full min-w-0">
+								<CodeSnippet client:visible code={example.code} language={example.lang} lineNumbers={false} />
+							</div>
+						</ExampleCard>
+					))}
+				</div>
+			))
+		}
+	</div>
+	<p data-verification>
+		<strong class="font-semibold text-primary">Cómo se verifica.</strong>
+		{" "}
+		{VERIFY_LABEL[verification.kind]}:
+		{" "}
+		{verification.kind === "review" ? verification.review : <Fragment set:html={inline(`\`${verification.check}\``)} />}
+	</p>
+</section>

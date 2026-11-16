@@ -29,16 +29,17 @@ test("en claro lleva la variante Claro del icono y en oscuro la principal", asyn
 	await expect(tile(page)).toHaveAttribute("fill", "#4b004f");
 });
 
-test("tiene las cinco secciones en orden", async ({ page }) => {
+test("tiene las seis secciones en orden", async ({ page }) => {
 	await page.goto("/");
 	const links = sections(page).getByRole("link");
-	await expect(links).toHaveText(["Empezar", "Fundamentos", "Componentes", "Stream", "Iconos"]);
+	await expect(links).toHaveText(["Empezar", "Fundamentos", "Componentes", "Stream", "Iconos", "Normas"]);
 	expect(await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual([
 		"/start/install/",
 		"/foundations/principles/",
 		"/components/",
 		"/foundations/stream/",
 		"/icons/",
+		"/standards/",
 	]);
 });
 
@@ -159,4 +160,16 @@ test("el icono de la cabecera lleva la virgulilla, aunque vaya por debajo de 32p
 	await page.goto("/");
 	const logo = header(page).getByRole("link", { name: "Regula, portada" });
 	await expect(logo.locator('svg:visible path[stroke-linecap="round"]')).toHaveCount(1);
+});
+
+test("a 1024px caben las seis secciones y la búsqueda es un botón de icono", async ({ page }) => {
+	await page.setViewportSize({ width: 1024, height: 800 });
+	await page.goto("/");
+	const search = await header(page)
+		.getByRole("button", { name: /Buscar en Regula/ })
+		.boundingBox();
+	expect(search?.width).toBe(44);
+	expect((search?.x ?? 0) + (search?.width ?? 0)).toBeLessThanOrEqual(1024);
+	await expect(sections(page).getByRole("link")).toHaveCount(6);
+	expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1024);
 });

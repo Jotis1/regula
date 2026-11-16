@@ -1,6 +1,6 @@
 ---
 // Página aislada para comparar un componente con la vista previa de la guía. Fuera de la navegación.
-// Tema oscuro con ?tema=oscuro, aplicado antes de pintar; las de `DARK_PREVIEWS` (Stream) van siempre en oscuro.
+// Tema oscuro con ?theme=dark, aplicado antes de pintar; las de `DARK_PREVIEWS` (Stream) van siempre en oscuro.
 import "../../styles/global.css";
 import { DARK_PREVIEWS, slugOf, visualExamples } from "../../visual/registry";
 import VisualExample from "../../visual/VisualExample";
@@ -19,7 +19,7 @@ const alwaysDark = DARK_PREVIEWS.has(name);
 		<meta name="robots" content="noindex" />
 		<title>{name} · comparación visual</title>
 		<script is:inline>
-			if (new URLSearchParams(location.search).get("tema") === "oscuro") document.documentElement.classList.add("dark-mode");
+			if (new URLSearchParams(location.search).get("theme") === "dark") document.documentElement.classList.add("dark-mode");
 		</script>
 	</head>
 	<body class="m-0 bg-primary p-4 font-body text-primary antialiased">

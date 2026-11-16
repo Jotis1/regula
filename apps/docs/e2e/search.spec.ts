@@ -99,7 +99,7 @@ test("encuentra tokens e iconos; un icono abre la galería con él elegido", asy
 		.getByRole("option", { name: /^Calendar\b/ })
 		.first()
 		.click();
-	await expect(page).toHaveURL(/\/icons\/\?icono=Calendar$/);
+	await expect(page).toHaveURL(/\/icons\/\?icon=Calendar$/);
 	await expect(page.locator("#icon-search")).toHaveValue("Calendar");
 	await expect(page.locator('[data-item="Calendar"] button')).toHaveAttribute("aria-pressed", "true");
 });

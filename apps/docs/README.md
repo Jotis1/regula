@@ -49,7 +49,7 @@ bun run capture:showcases --all                # todo el catálogo
 - **Cuándo regenerarlas:** al cambiar el aspecto de un componente o su muestra, y al añadir un componente. No se comparan píxel a píxel (serían frágiles entre sistemas): `test/showcases.test.ts` solo exige que cada componente tenga las suyas y que ninguna pase de 45 kB ni todas juntas de 7 MB.
 - **En el servidor y sin JavaScript de React:** la página de captura no lleva islas. Una capa que se abre va en línea (`defaultOpen`, `contained`, `inline`), ya que un portal no se pinta en el servidor. Lo que un componente hace en un efecto tampoco ocurre: a `StreamScene` y `ChannelBanner` se les pasa una `scale` fija.
 - **La card** (`src/components/ShowcaseImage.astro`): dos `<img loading="lazy">` con su tamaño, una por tema (la del tema que no se ve no se descarga). Es decorativa (`inert`, `aria-hidden`, fuera del buscador) y el enlace de la card la cubre. Sin captura queda el damero vacío; `e2e/components.spec.ts` comprueba que todas cargan.
-- **Mirar el resultado:** abre `/showcase/<slug>/` (y `?tema=oscuro`) en el `preview` para ver la muestra tal como la fotografía el script.
+- **Mirar el resultado:** abre `/showcase/<slug>/` (y `?theme=dark`) en el `preview` para ver la muestra tal como la fotografía el script.
 
 Las capturas aprobadas son solo para la paridad visual: el build no las lee (`test/build-without-approved.test.ts`).
 

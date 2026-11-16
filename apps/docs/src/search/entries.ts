@@ -1,6 +1,6 @@
 // Entradas de la búsqueda de la web y cómo se ordenan. Sin dependencias del navegador: se prueba con Vitest.
 
-export type SearchGroup = "pages" | "components" | "tokens" | "icons" | "text";
+export type SearchGroup = "pages" | "components" | "tokens" | "icons" | "standards" | "text";
 
 export interface SearchEntry {
 	group: SearchGroup;
@@ -17,10 +17,18 @@ export const GROUPS: [SearchGroup, string][] = [
 	["components", "Componentes"],
 	["tokens", "Tokens"],
 	["icons", "Iconos"],
+	["standards", "Normas"],
 	["text", "En el texto"],
 ];
 
-const LIMIT: Record<SearchGroup, number> = { pages: 8, components: 8, tokens: 6, icons: 6, text: 6 };
+const LIMIT: Record<SearchGroup, number> = {
+	pages: 8,
+	components: 8,
+	tokens: 6,
+	icons: 6,
+	standards: 6,
+	text: 6,
+};
 
 /** Minúsculas y sin tildes: "tipografia" encuentra "Tipografía". */
 export const fold = (s: string) =>

@@ -39,7 +39,7 @@ test.describe("paridad visual con las capturas aprobadas", () => {
 				test.skip(!hasApproved(name, theme), `${name} no tiene captura aprobada en ${label[theme]}`);
 				await page.setViewportSize({ width: VIEWPORT_WIDTH, height: CARD_HEIGHTS[name] ?? 300 });
 				await page.emulateMedia({ reducedMotion: "reduce" });
-				await page.goto(`/visual/${slugOf(name)}/${theme === "dark" ? "?tema=oscuro" : ""}`);
+				await page.goto(`/visual/${slugOf(name)}/${theme === "dark" ? "?theme=dark" : ""}`);
 				await page.evaluate(() => document.fonts.ready);
 				const shot = await page.screenshot({ animations: "disabled", caret: "hide" });
 				const result = compare(shot, readApproved(name, theme), results, `${name}-${theme}`);

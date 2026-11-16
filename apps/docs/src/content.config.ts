@@ -1,5 +1,6 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
+import { area } from "./lib/standards";
 
 const foundations = defineCollection({
 	loader: glob({ pattern: "*.{md,mdx}", base: "./src/content/foundations" }),
@@ -26,4 +27,11 @@ const components = defineCollection({
 	}),
 });
 
-export const collections = { foundations, components };
+// One standards area per YAML file; the file name is its URL (`/standards/<area>/`). The schema lives in
+// src/lib/standards.ts so the tests validate with the same one.
+const standards = defineCollection({
+	loader: glob({ pattern: "*.yaml", base: "./src/content/standards" }),
+	schema: area,
+});
+
+export const collections = { foundations, components, standards };

@@ -29,7 +29,7 @@ test.describe("Insignias junto al nombre", () => {
 		page,
 	}) => {
 		await page.setViewportSize({ width: 800, height: 600 });
-		await page.goto("/visual/chat-box/?tema=oscuro");
+		await page.goto("/visual/chat-box/?theme=dark");
 		await page.evaluate(() => document.fonts.ready);
 		// Los dos chats del ejemplo: 420 px y 400 px de ancho
 		const long = page.locator("[role=log] > div > div").filter({ hasText: "nada de gritar" });
@@ -62,7 +62,7 @@ test.describe("Insignias junto al nombre", () => {
 
 test.describe("Enlaces en el chat", () => {
 	test("se marcan subrayados, sin enlace que pulsar", async ({ page }) => {
-		await page.goto("/visual/chat-box/?tema=oscuro");
+		await page.goto("/visual/chat-box/?theme=dark");
 		const link = page.locator("[role=log] span", { hasText: /^https:\/\/jotis\.me\/clips$/ }).first();
 		await expect(link).toBeVisible();
 		await expect(link).toHaveCSS("text-decoration-line", "underline");
@@ -125,7 +125,7 @@ test.describe("Qué hace el clic", () => {
 	test("con ratón, la marca «Destacar» sale al pasar por encima y el texto no se mueve", async ({
 		page,
 	}) => {
-		await page.goto("/visual/chat-box/?tema=oscuro");
+		await page.goto("/visual/chat-box/?theme=dark");
 		await page.evaluate(() => document.fonts.ready);
 		const row = selectable(page).getByRole("button", { name: /^Destacar el mensaje de nachoXL/ });
 		const mark = row.locator("[data-chat-action]");
@@ -144,7 +144,7 @@ test.describe("Qué hace el clic", () => {
 	});
 
 	test("con teclado, la marca sale con el foco", async ({ page }) => {
-		await page.goto("/visual/chat-box/?tema=oscuro");
+		await page.goto("/visual/chat-box/?theme=dark");
 		const rows = selectable(page).getByRole("button");
 		await rows.nth(1).focus();
 		await page.keyboard.press("Shift+Tab");
@@ -159,7 +159,7 @@ test.describe("En táctil", () => {
 	test("sin hover, cada mensaje enseña la chincheta sin texto y el elegido «Destacado»", async ({
 		page,
 	}) => {
-		await page.goto("/visual/chat-box/?tema=oscuro");
+		await page.goto("/visual/chat-box/?theme=dark");
 		expect(await page.evaluate(() => matchMedia("(hover: none)").matches)).toBe(true);
 		const row = selectable(page).getByRole("button", { name: /^Destacar el mensaje de nachoXL/ });
 		const mark = row.locator("[data-chat-action]");
@@ -175,7 +175,7 @@ test.describe("Marca solo en la primera línea", () => {
 	test("un mensaje largo deja sitio a la marca en su primera línea y ocupa todo el ancho en las demás", async ({
 		page,
 	}) => {
-		await page.goto("/visual/chat-box/?tema=oscuro");
+		await page.goto("/visual/chat-box/?theme=dark");
 		await page.evaluate(() => document.fonts.ready);
 		const row = selectable(page).getByRole("button", { name: /^Destacar el mensaje de TioBigotes/ });
 		const m = await row.evaluate((el) => {
@@ -224,7 +224,7 @@ test.describe("Chat seleccionable lleno", () => {
 
 test.describe("StreamPinnedMessage", () => {
 	test("Mensaje de 500 caracteres: como mucho cuatro líneas, sin pasar del ancho", async ({ page }) => {
-		await page.goto("/visual/stream-pinned-message/?tema=oscuro");
+		await page.goto("/visual/stream-pinned-message/?theme=dark");
 		await page.evaluate(() => document.fonts.ready);
 		const card = page.locator("[data-scene], div.rounded-2xl", { hasText: "lucia_88" }).first();
 		const width = (await card.boundingBox())?.width;
