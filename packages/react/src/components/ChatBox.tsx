@@ -125,7 +125,9 @@ export function ChatBox({
 							className={cx(
 								row,
 								pad,
-								"group relative flex w-full cursor-pointer items-start gap-3 overflow-hidden text-left transition-colors duration-100 focus-visible:shadow-focus-ring focus-visible:outline-none",
+								// `shrink-0`: la lista es un flex en columna y, cuando no caben todos, encogería los botones y
+								// cortaría su texto. `flow-root` contiene el float de la marca.
+								"group relative flow-root w-full shrink-0 cursor-pointer overflow-clip text-left transition-colors duration-100 focus-visible:shadow-focus-ring focus-visible:outline-none",
 								// Como las líneas destacadas de CodeSnippet (D2), con el fondo de marca al 15 %: en oscuro bg-brand-primary_alt es
 								// el mismo gris que el chat y no se vería. La raya es un pseudoelemento y no una sombra,
 								// para que el anillo de foco no la tape.
@@ -134,15 +136,14 @@ export function ChatBox({
 									: "hover:bg-secondary_hover",
 							)}
 						>
-							<span className="min-w-0 flex-1">
-								<ChatLine message={m} />
-							</span>
-							{/* Marca de la acción (D1): una línea de alto, siempre ocupa su sitio para que el texto no se mueva. */}
+							{/* Marca de la acción (D1): flota a la derecha con una línea de alto, así que solo la primera línea
+							    del mensaje le deja sitio y las demás ocupan todo el ancho. Siempre ocupa su sitio, para que el
+							    texto no se mueva al aparecer. */}
 							<span
 								aria-hidden="true"
 								data-chat-action=""
 								className={cx(
-									"flex h-[1lh] flex-none items-center transition-opacity duration-100",
+									"float-right ml-3 flex h-[1lh] items-center transition-opacity duration-100",
 									!selected &&
 										"opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100",
 								)}
@@ -164,6 +165,9 @@ export function ChatBox({
 										{selected ? selectedLabel : selectLabel}
 									</span>
 								</span>
+							</span>
+							<span data-chat-text="">
+								<ChatLine message={m} />
 							</span>
 						</button>
 					);

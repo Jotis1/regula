@@ -121,11 +121,7 @@ describe("Chat seleccionable", () => {
 		const [a, b] = screen.getAllByRole("button");
 		expect(b?.getAttribute("aria-pressed")).toBe("true");
 		expect(classes(b)).toEqual(
-			expect.arrayContaining([
-				"bg-brand-primary/15",
-				"before:w-0.5",
-				"before:bg-(--fg-brand-primary)",
-			]),
+			expect.arrayContaining(["bg-brand-primary/15", "before:w-0.5", "before:bg-(--fg-brand-primary)"]),
 		);
 		expect(b?.querySelector("[data-chat-action]")?.textContent).toBe("Destacado");
 		expect(classes(b?.querySelector("[data-chat-action]"))).not.toContain("opacity-0");

@@ -139,10 +139,22 @@ const CHAT: ChatMessage[] = [
 
 // Chat seleccionable, como en un panel de control (clarify-chat-selection): uno elegido y un bot que no se puede elegir.
 const SELECTABLE: ChatMessage[] = [
-	{ id: "s1", user: "nachoXL", tone: "emerald", badges: ["sub"], text: "Cuenta atrás para el primer susto." },
+	{
+		id: "s1",
+		user: "nachoXL",
+		tone: "emerald",
+		badges: ["sub"],
+		text: "Cuenta atrás para el primer susto.",
+	},
 	{ id: "s2", user: "Nightbot", text: "Normas del canal en el panel.", selectable: false },
 	{ id: "s3", user: "lucia_88", tone: "pink", badges: ["sub"], text: "¿Has mirado detrás del cuadro?" },
-	{ id: "s4", user: "TioBigotes", tone: "sky", badges: ["mod"], text: "Sin spoilers del final, por favor." },
+	{
+		id: "s4",
+		user: "TioBigotes",
+		tone: "sky",
+		badges: ["mod"],
+		text: "Sin spoilers del final, por favor. Y nada de mandarle a la puerta equivocada, que luego nos toca a los mods.",
+	},
 ];
 
 export function ChatBoxExample() {
