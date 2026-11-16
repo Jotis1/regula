@@ -9,6 +9,7 @@ import {
 	labelOf,
 	SECTIONS,
 	type SectionId,
+	STANDARD_AREAS,
 	sectionOf,
 	slugOf,
 } from "./lib/catalog";
@@ -26,7 +27,7 @@ export interface NavGroup {
 	items: NavItem[];
 }
 export interface NavSection {
-	id: "start" | "foundations" | "icons" | "components" | "stream";
+	id: "start" | "foundations" | "icons" | "components" | "stream" | "standards";
 	title: string;
 	items: NavItem[];
 	groups: NavGroup[];
@@ -90,6 +91,15 @@ export const docNav: NavSection[] = [
 		items: [{ label: "Guía de Stream", href: "/foundations/stream/", keywords: "twitch obs directo" }],
 		groups: stream,
 		count: countOf(stream),
+	},
+	{
+		id: "standards",
+		title: "Normas",
+		items: [
+			{ label: "Todas las normas", href: "/standards/", keywords: "reglas desarrollo convenciones" },
+			...STANDARD_AREAS.map((a) => ({ label: a.label, href: `/standards/${a.slug}/` })),
+		],
+		groups: [],
 	},
 ];
 

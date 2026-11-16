@@ -3,62 +3,62 @@ title: Nombres
 description: Cómo se llaman los paquetes de la suite, para que se sepa de quién son y dónde viven con solo leer el nombre.
 order: 1
 rules:
-  - id: NOM-001
-    title: Los paquetes privados se llaman como su dominio, al revés
-    level: must
-    appliesTo: all
-    statement: >-
-      El `name` de un paquete privado es el dominio del producto escrito al revés (`me.jotis.regula`). Si el paquete
-      no se despliega con dominio propio, es el nombre de su padre más un segmento (`me.jotis.regula.docs`). Los
-      segmentos van separados por puntos, en minúsculas y con guiones dentro de cada uno.
-    rationale: >-
-      Es la notación de dominio inverso de Java, Android e iOS. Un nombre así no choca con ninguno de npm, dice de
-      quién es el paquete y agrupa solo los que son del mismo producto. Un `docs` o un `example-astro` sueltos no
-      dicen de quién son.
-    examples:
-      good:
-        - caption: La web de Regula y su ejemplo en Astro
-          lang: json
-          code: |-
-            // apps/docs/package.json
-            { "name": "me.jotis.regula.docs", "private": true }
+    - id: NOM-001
+      title: Los paquetes privados se llaman como su dominio, al revés
+      level: must
+      appliesTo: all
+      statement: >-
+          El `name` de un paquete privado es el dominio del producto escrito al revés (`me.jotis.regula`). Si el paquete
+          no se despliega con dominio propio, es el nombre de su padre más un segmento (`me.jotis.regula.docs`). Los
+          segmentos van separados por puntos, en minúsculas y con guiones dentro de cada uno.
+      rationale: >-
+          Es la notación de dominio inverso de Java, Android e iOS. Un nombre así no choca con ninguno de npm, dice de
+          quién es el paquete y agrupa solo los que son del mismo producto. Un `docs` o un `example-astro` sueltos no
+          dicen de quién son.
+      examples:
+          good:
+              - caption: La web de Regula y su ejemplo en Astro
+                lang: json
+                code: |-
+                    // apps/docs/package.json
+                    { "name": "me.jotis.regula.docs", "private": true }
 
-            // examples/astro/package.json
-            { "name": "me.jotis.regula.example.astro", "private": true }
-      bad:
-        - caption: Nombres sueltos, sin dueño
-          lang: json
-          code: |-
-            // apps/docs/package.json
-            { "name": "docs", "private": true }
+                    // examples/astro/package.json
+                    { "name": "me.jotis.regula.example.astro", "private": true }
+          bad:
+              - caption: Nombres sueltos, sin dueño
+                lang: json
+                code: |-
+                    // apps/docs/package.json
+                    { "name": "docs", "private": true }
 
-            // examples/astro/package.json
-            { "name": "example-astro", "private": true }
-    verification:
-      kind: ci
-      check: Nombres de paquete
+                    // examples/astro/package.json
+                    { "name": "example-astro", "private": true }
+      verification:
+          kind: ci
+          check: Nombres de paquete
 
-  - id: NOM-002
-    title: Los paquetes publicados usan el scope de la organización
-    level: must
-    appliesTo: package
-    statement: >-
-      Todo paquete que se publica en npm se llama `@jotis-me/<nombre>`, con el nombre en minúsculas y con guiones.
-    rationale: >-
-      En npm los nombres sin scope se reparten por orden de llegada: cualquiera podría registrar `me.jotis.regula.react`
-      antes que nosotros o publicar uno parecido. El scope `@jotis-me` es un espacio de nombres reservado a la
-      organización, y quien instala sabe de quién es el paquete.
-    examples:
-      good:
-        - caption: Un paquete publicado
-          lang: json
-          code: |-
-            { "name": "@jotis-me/react", "version": "0.10.0" }
-      bad:
-        - caption: Un paquete publicado con nombre en dominio inverso
-          lang: json
-          code: |-
-            { "name": "me.jotis.regula.react", "version": "0.10.0" }
-    verification:
-      kind: ci
-      check: Nombres de paquete
+    - id: NOM-002
+      title: Los paquetes publicados usan el scope de la organización
+      level: must
+      appliesTo: package
+      statement: >-
+          Todo paquete que se publica en npm se llama `@jotis-me/<nombre>`, con el nombre en minúsculas y con guiones.
+      rationale: >-
+          En npm los nombres sin scope se reparten por orden de llegada: cualquiera podría registrar `me.jotis.regula.react`
+          antes que nosotros o publicar uno parecido. El scope `@jotis-me` es un espacio de nombres reservado a la
+          organización, y quien instala sabe de quién es el paquete.
+      examples:
+          good:
+              - caption: Un paquete publicado
+                lang: json
+                code: |-
+                    { "name": "@jotis-me/react", "version": "0.10.0" }
+          bad:
+              - caption: Un paquete publicado con nombre en dominio inverso
+                lang: json
+                code: |-
+                    { "name": "me.jotis.regula.react", "version": "0.10.0" }
+      verification:
+          kind: ci
+          check: Nombres de paquete

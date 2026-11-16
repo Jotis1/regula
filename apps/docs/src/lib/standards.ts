@@ -114,3 +114,23 @@ export function problemsOf(areas: { slug: string; data: unknown }[], ctx: CheckC
 	}
 	return problems;
 }
+
+/**
+ * The public JSON (`/standards.json`): areas ordered by `order`, rules in file order, field names in English and
+ * texts in Spanish. Deterministic: no generation date, so the build output does not change between runs.
+ */
+export function standardsJson(entries: { id: string; data: StandardArea }[], version: string, site: string) {
+	return {
+		version,
+		areas: [...entries]
+			.sort((a, b) => a.data.order - b.data.order)
+			.map(({ id, data }) => ({
+				id,
+				prefix: data.prefix,
+				title: data.title,
+				description: data.description,
+				url: new URL(`/standards/${id}/`, site).href,
+				rules: data.rules.map((r) => ({ ...r, url: new URL(hrefOf(id, r.id), site).href })),
+			})),
+	};
+}

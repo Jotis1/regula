@@ -3,59 +3,59 @@ title: Proceso
 description: Cómo se decide un cambio antes de escribirlo, y cómo se queda registrado.
 order: 4
 rules:
-  - id: PRO-001
-    title: Los cambios no triviales se proponen con OpenSpec antes del código
-    level: must
-    appliesTo: all
-    statement: >-
-      Todo cambio no trivial pasa por OpenSpec (propuesta, specs, diseño y tareas) antes de tocar el código. Son
-      triviales las erratas, los cambios de formato, las subidas de dependencias sin cambios de API y los arreglos
-      de una línea sin cambio de comportamiento.
-    rationale: >-
-      Un agente (o una persona) que programa sin spec decide a su manera lo que no está escrito. Con la spec delante,
-      el cambio se revisa contra lo pedido y no contra lo que parece razonable.
-    examples:
-      good:
-        - caption: Un cambio con su propuesta antes del código
-          lang: bash
-          code: |-
-            /opsx:propose add-chat-select-affordance
-            # revisar la propuesta, el diseño, las specs y las tareas
-            /opsx:apply add-chat-select-affordance
-      bad:
-        - caption: Una prop nueva en un componente, sin ningún cambio de OpenSpec que la describa
-          lang: text
-          code: |-
-            PR #41: feat(react): Button gana la prop `loadingLabel`
-              packages/react/src/components/Button.tsx   +18 -2
-              openspec/changes/                           (sin cambios)
-    verification:
-      kind: review
-      review: Que toda PR con cambio de comportamiento traiga o archive un cambio de OpenSpec.
+    - id: PRO-001
+      title: Los cambios no triviales se proponen con OpenSpec antes del código
+      level: must
+      appliesTo: all
+      statement: >-
+          Todo cambio no trivial pasa por OpenSpec (propuesta, specs, diseño y tareas) antes de tocar el código. Son
+          triviales las erratas, los cambios de formato, las subidas de dependencias sin cambios de API y los arreglos
+          de una línea sin cambio de comportamiento.
+      rationale: >-
+          Un agente (o una persona) que programa sin spec decide a su manera lo que no está escrito. Con la spec delante,
+          el cambio se revisa contra lo pedido y no contra lo que parece razonable.
+      examples:
+          good:
+              - caption: Un cambio con su propuesta antes del código
+                lang: bash
+                code: |-
+                    /opsx:propose add-chat-select-affordance
+                    # revisar la propuesta, el diseño, las specs y las tareas
+                    /opsx:apply add-chat-select-affordance
+          bad:
+              - caption: Una prop nueva en un componente, sin ningún cambio de OpenSpec que la describa
+                lang: text
+                code: |-
+                    PR #41: feat(react): Button gana la prop `loadingLabel`
+                      packages/react/src/components/Button.tsx   +18 -2
+                      openspec/changes/                           (sin cambios)
+      verification:
+          kind: review
+          review: Que toda PR con cambio de comportamiento traiga o archive un cambio de OpenSpec.
 
-  - id: PRO-002
-    title: La spec y el código llegan sincronizados
-    level: must
-    appliesTo: all
-    statement: >-
-      La PR que implementa un cambio deja las specs describiendo lo que hace el código. Si al implementar se decide
-      algo distinto de lo propuesto, se actualiza el artefacto antes de fusionar.
-    rationale: >-
-      Una spec que no coincide con el código es peor que no tener spec: el siguiente agente se fía de ella.
-    examples:
-      good:
-        - caption: Se cambia el diseño y se actualiza el artefacto en la misma PR
-          lang: text
-          code: |-
-            fix(docs): el historial pinta sublistas
-              apps/docs/src/lib/changelog.ts
-              openspec/changes/clarify-chat-selection/design.md   (D6 actualizado)
-      bad:
-        - caption: El código hace otra cosa y la spec sigue diciendo lo anterior
-          lang: text
-          code: |-
-            Spec:   «La marca sale siempre»
-            Código: la marca solo sale al pasar por encima
-    verification:
-      kind: review
-      review: Que lo que dicen las specs del cambio coincida con lo que hace el código de la PR.
+    - id: PRO-002
+      title: La spec y el código llegan sincronizados
+      level: must
+      appliesTo: all
+      statement: >-
+          La PR que implementa un cambio deja las specs describiendo lo que hace el código. Si al implementar se decide
+          algo distinto de lo propuesto, se actualiza el artefacto antes de fusionar.
+      rationale: >-
+          Una spec que no coincide con el código es peor que no tener spec: el siguiente agente se fía de ella.
+      examples:
+          good:
+              - caption: Se cambia el diseño y se actualiza el artefacto en la misma PR
+                lang: text
+                code: |-
+                    fix(docs): el historial pinta sublistas
+                      apps/docs/src/lib/changelog.ts
+                      openspec/changes/clarify-chat-selection/design.md   (D6 actualizado)
+          bad:
+              - caption: El código hace otra cosa y la spec sigue diciendo lo anterior
+                lang: text
+                code: |-
+                    Spec:   «La marca sale siempre»
+                    Código: la marca solo sale al pasar por encima
+      verification:
+          kind: review
+          review: Que lo que dicen las specs del cambio coincida con lo que hace el código de la PR.

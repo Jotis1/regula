@@ -28,7 +28,7 @@ const entries: SearchEntry[] = [
 		description: "Color · Fondo de modal",
 		href: "/foundations/color/",
 	},
-	{ group: "icons", label: "Calendar", href: "/icons/?icono=Calendar" },
+	{ group: "icons", label: "Calendar", href: "/icons/?icon=Calendar" },
 ];
 
 describe("búsqueda de la web", () => {
@@ -45,7 +45,7 @@ describe("búsqueda de la web", () => {
 	it("sin tildes ni mayúsculas", () => {
 		expect(fold("Tipografía")).toBe("tipografia");
 		expect(searchGroups(entries, "TIPOGRAFIA")[0]?.entries[0]?.label).toBe("Tipografía");
-		expect(searchGroups(entries, "cal")[0]?.entries[0]?.href).toBe("/icons/?icono=Calendar");
+		expect(searchGroups(entries, "cal")[0]?.entries[0]?.href).toBe("/icons/?icon=Calendar");
 	});
 
 	it("el texto completo va al final y sin repetir lo ya visible", () => {
@@ -61,6 +61,25 @@ describe("búsqueda de la web", () => {
 		const groups = searchGroups(entries, "modal", text);
 		expect(groups.at(-1)?.label).toBe("En el texto");
 		expect(groups.at(-1)?.entries.map((e) => e.href)).toEqual(["/foundations/content/"]);
+	});
+
+	it("una norma se encuentra por su ID y por lo que dice", () => {
+		const standards: SearchEntry[] = [
+			{
+				group: "standards",
+				label: "NOM-001 · Los paquetes privados se llaman como su dominio, al revés",
+				description: "Normas · Nombres",
+				href: "/standards/naming/#nom-001",
+				keywords: "notación de dominio inverso de Java",
+			},
+		];
+		for (const q of ["NOM-001", "dominio inverso"]) {
+			const groups = searchGroups([...entries, ...standards], q);
+			expect(groups.find((g) => g.group === "standards")?.label, q).toBe("Normas");
+			expect(groups.find((g) => g.group === "standards")?.entries[0]?.href, q).toBe(
+				"/standards/naming/#nom-001",
+			);
+		}
 	});
 
 	it("extracto de Pagefind en texto plano", () => {

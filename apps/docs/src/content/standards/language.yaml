@@ -3,114 +3,114 @@ title: Idioma
 description: Qué va en español y qué va en inglés, para que ni las personas ni los agentes tengan que adivinarlo.
 order: 2
 rules:
-  - id: IDI-001
-    title: El código va en inglés
-    level: must
-    appliesTo: all
-    statement: >-
-      Los identificadores, los nombres de fichero, las claves de datos, los mensajes de error del código y los
-      comentarios van en inglés. Esta norma se aplica al código nuevo y al que se toque desde que se publica; el
-      anterior se adapta en un cambio aparte.
-    rationale: >-
-      Los frameworks, las librerías y las convenciones están en inglés. Mezclar idiomas en el código obliga a
-      cambiar de idioma a mitad de una línea (`obtenerUser`) y dificulta buscar y reutilizar.
-    examples:
-      good:
-        - caption: Un nombre de función en inglés
-          lang: ts
-          code: |-
-            function formatPrice(amount: number) {
-              return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(amount);
-            }
-      bad:
-        - caption: Un nombre de función en español
-          lang: ts
-          code: |-
-            function formatearPrecio(importe: number) {
-              return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(importe);
-            }
-    verification:
-      kind: review
-      review: Que ningún identificador, fichero ni comentario nuevo esté en español.
+    - id: IDI-001
+      title: El código va en inglés
+      level: must
+      appliesTo: all
+      statement: >-
+          Los identificadores, los nombres de fichero, las claves de datos, los mensajes de error del código y los
+          comentarios van en inglés. Esta norma se aplica al código nuevo y al que se toque desde que se publica; el
+          anterior se adapta en un cambio aparte.
+      rationale: >-
+          Los frameworks, las librerías y las convenciones están en inglés. Mezclar idiomas en el código obliga a
+          cambiar de idioma a mitad de una línea (`obtenerUser`) y dificulta buscar y reutilizar.
+      examples:
+          good:
+              - caption: Un nombre de función en inglés
+                lang: ts
+                code: |-
+                    function formatPrice(amount: number) {
+                      return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(amount);
+                    }
+          bad:
+              - caption: Un nombre de función en español
+                lang: ts
+                code: |-
+                    function formatearPrecio(importe: number) {
+                      return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(importe);
+                    }
+      verification:
+          kind: review
+          review: Que ningún identificador, fichero ni comentario nuevo esté en español.
 
-  - id: IDI-002
-    title: La guía y el historial van en español
-    level: must
-    appliesTo: all
-    statement: >-
-      La guía, los mensajes de commit, los títulos y descripciones de PR y los changesets van en español. Los
-      identificadores que aparezcan dentro (`ChatBox`, `onSelect`) se escriben tal cual.
-    rationale: >-
-      Son lo que lee la gente que usa y mantiene la suite, y el changelog público sale de los changesets.
-    examples:
-      good:
-        - caption: Un changeset en español
-          lang: md
-          code: |-
-            ---
-            "@jotis-me/react": minor
-            ---
+    - id: IDI-002
+      title: La guía y el historial van en español
+      level: must
+      appliesTo: all
+      statement: >-
+          La guía, los mensajes de commit, los títulos y descripciones de PR y los changesets van en español. Los
+          identificadores que aparezcan dentro (`ChatBox`, `onSelect`) se escriben tal cual.
+      rationale: >-
+          Son lo que lee la gente que usa y mantiene la suite, y el changelog público sale de los changesets.
+      examples:
+          good:
+              - caption: Un changeset en español
+                lang: md
+                code: |-
+                    ---
+                    "@jotis-me/react": minor
+                    ---
 
-            ChatBox dice qué hace el clic: con `onSelect`, cada mensaje lleva la marca «Destacar».
-      bad:
-        - caption: Un changeset en inglés
-          lang: md
-          code: |-
-            ---
-            "@jotis-me/react": minor
-            ---
+                    ChatBox dice qué hace el clic: con `onSelect`, cada mensaje lleva la marca «Destacar».
+          bad:
+              - caption: Un changeset en inglés
+                lang: md
+                code: |-
+                    ---
+                    "@jotis-me/react": minor
+                    ---
 
-            ChatBox shows what the click does.
-    verification:
-      kind: review
-      review: Que los commits, los títulos de PR y los changesets estén en español.
+                    ChatBox shows what the click does.
+      verification:
+          kind: review
+          review: Que los commits, los títulos de PR y los changesets estén en español.
 
-  - id: IDI-003
-    title: Los comentarios solo explican el porqué
-    level: must
-    appliesTo: all
-    statement: >-
-      Un comentario solo se escribe cuando el código no se explica por sí mismo. Dice por qué se hace así, no qué
-      hace la línea de debajo. Si un nombre mejor evita el comentario, se cambia el nombre.
-    rationale: >-
-      Un comentario que repite el código se queda viejo en cuanto el código cambia, y esconde los pocos que sí
-      hacen falta.
-    examples:
-      good:
-        - caption: Un comentario que explica una decisión que el código no deja ver
-          lang: ts
-          code: |-
-            // Sorted client-side: the API returns events in arrival order, not by start time.
-            const events = response.events.toSorted((a, b) => a.start - b.start);
-      bad:
-        - caption: Un comentario que repite la línea
-          lang: ts
-          code: |-
-            // Sort the events by start time
-            const events = response.events.toSorted((a, b) => a.start - b.start);
-    verification:
-      kind: review
-      review: Que cada comentario nuevo diga un porqué y no repita lo que hace el código.
+    - id: IDI-003
+      title: Los comentarios solo explican el porqué
+      level: must
+      appliesTo: all
+      statement: >-
+          Un comentario solo se escribe cuando el código no se explica por sí mismo. Dice por qué se hace así, no qué
+          hace la línea de debajo. Si un nombre mejor evita el comentario, se cambia el nombre.
+      rationale: >-
+          Un comentario que repite el código se queda viejo en cuanto el código cambia, y esconde los pocos que sí
+          hacen falta.
+      examples:
+          good:
+              - caption: Un comentario que explica una decisión que el código no deja ver
+                lang: ts
+                code: |-
+                    // Sorted client-side: the API returns events in arrival order, not by start time.
+                    const events = response.events.toSorted((a, b) => a.start - b.start);
+          bad:
+              - caption: Un comentario que repite la línea
+                lang: ts
+                code: |-
+                    // Sort the events by start time
+                    const events = response.events.toSorted((a, b) => a.start - b.start);
+      verification:
+          kind: review
+          review: Que cada comentario nuevo diga un porqué y no repita lo que hace el código.
 
-  - id: IDI-004
-    title: Las rutas y los parámetros de URL van en inglés
-    level: must
-    appliesTo: app
-    statement: >-
-      Los segmentos de ruta de las URLs y los nombres y valores de sus parámetros van en inglés, aunque el texto de
-      la página esté en español. Las anclas que salen del título de una sección siguen el texto del título.
-    rationale: >-
-      Una URL es parte de la API de la web: la escriben los programas, los tests y los enlaces externos, y los
-      frameworks los hacen en inglés. Cambiar de idioma rompería los enlaces.
-    examples:
-      good:
-        - caption: Ruta y parámetro en inglés
-          lang: text
-          code: /visual/button/?theme=dark
-      bad:
-        - caption: Parámetro en español
-          lang: text
-          code: /visual/button/?tema=oscuro
-    verification:
-      kind: review
-      review: Que ninguna ruta ni parámetro nuevos de la web estén en español.
+    - id: IDI-004
+      title: Las rutas y los parámetros de URL van en inglés
+      level: must
+      appliesTo: app
+      statement: >-
+          Los segmentos de ruta de las URLs y los nombres y valores de sus parámetros van en inglés, aunque el texto de
+          la página esté en español. Las anclas que salen del título de una sección siguen el texto del título.
+      rationale: >-
+          Una URL es parte de la API de la web: la escriben los programas, los tests y los enlaces externos, y los
+          frameworks los hacen en inglés. Cambiar de idioma rompería los enlaces.
+      examples:
+          good:
+              - caption: Ruta y parámetro en inglés
+                lang: text
+                code: /visual/button/?theme=dark
+          bad:
+              - caption: Parámetro en español
+                lang: text
+                code: /visual/button/?tema=oscuro
+      verification:
+          kind: review
+          review: Que ninguna ruta ni parámetro nuevos de la web estén en español.

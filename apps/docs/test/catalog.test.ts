@@ -88,13 +88,14 @@ describe("catálogo de componentes", () => {
 });
 
 describe("catálogo de secciones y fundamentos", () => {
-	it("la cabecera tiene las cinco secciones, en orden", () => {
+	it("la cabecera tiene las seis secciones, en orden", () => {
 		expect(SECTIONS.map((s) => [s.id, s.label])).toEqual([
 			["start", "Empezar"],
 			["foundations", "Fundamentos"],
 			["components", "Componentes"],
 			["stream", "Stream"],
 			["icons", "Iconos"],
+			["standards", "Normas"],
 		]);
 		expect(SECTIONS.every((s) => s.href.startsWith("/") && s.href.endsWith("/"))).toBe(true);
 	});

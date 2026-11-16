@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import StandardRule from "../../components/StandardRule.astro";
+import StandardsPage from "../../layouts/StandardsPage.astro";
+import { anchorOf } from "../../lib/standards";
+
+export async function getStaticPaths() {
+	const areas = await getCollection("standards");
+	return areas.map((area) => ({ params: { area: area.id }, props: { area } }));
+}
+
+const { area } = Astro.props;
+const { title, description, rules } = area.data;
+---
+
+<StandardsPage
+	slug={area.id}
+	title={title}
+	description={description}
+	headings={rules.map((r) => ({ slug: anchorOf(r.id), text: r.id }))}
+	source={`apps/docs/${area.filePath}`}
+>
+	{rules.map((rule) => <StandardRule rule={rule} />)}
+</StandardsPage>

@@ -6,6 +6,7 @@ import { colors, radius, shadows, spacing, type } from "@jotis-me/tokens";
 import type { APIRoute } from "astro";
 import { COMPONENT_KEYWORDS, groupOf, labelOf, slugOf } from "../lib/catalog";
 import { kebab } from "../lib/gallery";
+import { hrefOf } from "../lib/standards";
 import { colorGroups, radiusRows, shadowRows, spacingRows } from "../lib/tokens";
 import { ICON_NAMES } from "../lib/untitled";
 import { nav } from "../nav";
@@ -14,6 +15,7 @@ import type { SearchEntry } from "../search/entries";
 export const GET: APIRoute = async () => {
 	const components = await getCollection("components");
 	const foundations = await getCollection("foundations");
+	const standards = await getCollection("standards");
 	// Como en el diseño (Search.dc.html), la descripción de un componente es su grupo del catálogo
 	const groupLabel = (name: string) => {
 		const group = groupOf(name);
@@ -74,11 +76,21 @@ export const GET: APIRoute = async () => {
 			href: "/foundations/states/",
 			keywords: row.name,
 		})),
+		// Each rule is findable by its ID or by what it says
+		...standards.flatMap((area) =>
+			area.data.rules.map((rule) => ({
+				group: "standards" as const,
+				label: `${rule.id} · ${rule.title}`,
+				description: `Normas · ${area.data.title}`,
+				href: hrefOf(area.id, rule.id),
+				keywords: `${rule.statement} ${rule.rationale}`,
+			})),
+		),
 		...ICON_NAMES.map((name) => ({
 			group: "icons" as const,
 			label: name,
 			description: "Icono de Untitled UI",
-			href: `/icons/?icono=${name}`,
+			href: `/icons/?icon=${name}`,
 			keywords: kebab(name),
 		})),
 	];
