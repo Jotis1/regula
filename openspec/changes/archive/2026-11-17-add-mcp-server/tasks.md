@@ -64,8 +64,8 @@ Comandos: `bunx biome ci .`, `bunx turbo run build typecheck test`, `bun run --c
   - `check:js`;
   - los e2e afectados;
   - `openspec validate add-mcp-server --strict`.
-- [ ] 5.2 PR con Conventional Commits en español y el CI en verde
-- [ ] 5.3 Tras fusionar, comprobar a mano en producción con Claude Code: `initialize`, `tools/list` y una llamada por herramienta. Dejar el resultado en la PR. Verificar con el visto bueno del usuario
+- [x] 5.2 PR con Conventional Commits en español y el CI en verde
+- [x] 5.3 Tras fusionar, comprobar a mano en producción con Claude Code: `initialize`, `tools/list` y una llamada por herramienta. Dejar el resultado en la PR. Verificar con el visto bueno del usuario
 
 ## Workflow follow-up
 
