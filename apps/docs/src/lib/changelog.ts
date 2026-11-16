@@ -35,8 +35,11 @@ const compare = (a: string, b: string) => {
 
 /**
  * Las versiones de un CHANGELOG de Changesets (`## 0.2.0`, `### Minor Changes`, `- abc1234: texto`). Se descartan las
- * líneas "Updated dependencies": en un grupo `fixed` solo repiten la versión.
+ * líneas "Updated dependencies" y las que solo nombran un paquete con su versión (`- @jotis-me/tokens@0.9.0`): en un
+ * grupo `fixed` solo repiten la versión.
  */
+const DEPENDENCY_BUMP = /^@[\w.-]+\/[\w.-]+@\d+\.\d+\.\d+(-[\w.]+)?$/;
+
 export function parseChangelog(markdown: string): { pkg: string; versions: ChangelogVersion[] } {
 	const pkg = markdown.match(/^# (.+)$/m)?.[1]?.trim() ?? "";
 	const versions: ChangelogVersion[] = [];
@@ -50,7 +53,9 @@ export function parseChangelog(markdown: string): { pkg: string; versions: Chang
 				?.map((l) => l.replace(/^ {2}/, ""))
 				.join("\n")
 				.trim();
-			if (kind && text && !text.startsWith("Updated dependencies"))
+			// Una subida de dependencias puede nombrar varios paquetes, uno por línea
+			const bump = text?.split("\n").every((l) => DEPENDENCY_BUMP.test(l.trim().replace(/^- /, "")));
+			if (kind && text && !text.startsWith("Updated dependencies") && !bump)
 				entries.push({ pkgs: [pkg], kind, text });
 			current = undefined;
 		};
@@ -90,33 +95,88 @@ export function mergeChangelogs(markdowns: string[]): ChangelogVersion[] {
 		.sort((a, b) => compare(a.version, b.version));
 }
 
-export type ChangeBlock = { type: "p"; text: string } | { type: "ul"; items: string[] };
+/** Un elemento de lista, con sus sublistas si las lleva. */
+export interface ChangeItem {
+	text: string;
+	items?: ChangeItem[];
+}
+
+export type ChangeBlock =
+	| { type: "p"; text: string }
+	| { type: "ul"; items: ChangeItem[] }
+	| { type: "table"; head: string[]; rows: string[][] };
+
+// Una fila de tabla de Markdown: `| a | b |`. La de separación (`| --- | :-: |`) no lleva texto.
+const cells = (line: string) =>
+	line
+		.trim()
+		.replace(/^\||\|$/g, "")
+		.split("|")
+		.map((c) => c.trim());
+const isSeparator = (row: string[]) => row.every((c) => /^:?-+:?$/.test(c));
 
 /**
  * Parte el texto de una entrada en párrafos y listas. Una línea en blanco cierra el bloque; las líneas que empiezan por
- * `- ` son los elementos de una lista (aunque vayan pegadas al párrafo que las introduce) y una línea sin guion que
- * sigue a un elemento continúa ese elemento.
+ * `- ` son los elementos de una lista (aunque vayan pegadas al párrafo que las introduce), y con más sangría que el
+ * elemento de encima van en su sublista, a cualquier profundidad. Una línea sin guion que sigue a un elemento continúa
+ * ese elemento. El texto se queda en Markdown: lo de dentro (`código`, **negrita**) lo pinta `inline`.
  */
 export function changeBlocks(text: string): ChangeBlock[] {
 	const blocks: ChangeBlock[] = [];
-	// El bloque abierto: el último que se añadió, hasta que una línea en blanco lo cierre
-	let open = false;
+	// La lista abierta, como pila de niveles: la sangría de sus elementos y la lista donde van
+	let stack: { indent: number; items: ChangeItem[] }[] = [];
+	let para: { type: "p"; text: string } | undefined;
+	let table: { type: "table"; head: string[]; rows: string[][] } | undefined;
+	const close = () => {
+		stack = [];
+		para = undefined;
+		table = undefined;
+	};
 	for (const line of text.split("\n")) {
 		if (!line.trim()) {
-			open = false;
+			close();
 			continue;
 		}
-		const item = line.match(/^- (.*)$/)?.[1];
-		const last = open ? blocks.at(-1) : undefined;
-		if (item !== undefined) {
-			if (last?.type === "ul") last.items.push(item);
-			else blocks.push({ type: "ul", items: [item] });
-			open = true;
-		} else if (last?.type === "ul") last.items[last.items.length - 1] += ` ${line.trim()}`;
-		else if (last?.type === "p") last.text += ` ${line.trim()}`;
+		// Tablas: la primera fila es la cabecera y la de guiones se salta
+		if (line.trim().startsWith("|")) {
+			const row = cells(line);
+			if (!table) {
+				close();
+				table = { type: "table", head: row, rows: [] };
+				blocks.push(table);
+			} else if (!isSeparator(row)) table.rows.push(row);
+			continue;
+		}
+		table = undefined;
+		const m = line.match(/^( *)- (.*)$/);
+		if (m) {
+			const indent = m[1]?.length ?? 0;
+			const item: ChangeItem = { text: m[2] ?? "" };
+			para = undefined;
+			while (stack.length > 1 && indent < (stack.at(-1)?.indent ?? 0)) stack.pop();
+			const top = stack.at(-1);
+			if (!top) {
+				const ul: ChangeBlock = { type: "ul", items: [item] };
+				blocks.push(ul);
+				stack = [{ indent, items: ul.items }];
+			} else if (indent > top.indent) {
+				// Sublista del último elemento del nivel de arriba
+				const parent = top.items.at(-1) as ChangeItem;
+				parent.items = [item];
+				stack.push({ indent, items: parent.items });
+			} else top.items.push(item);
+			continue;
+		}
+		const last = stack.at(-1)?.items.at(-1);
+		if (last) {
+			// Continúa el elemento más profundo abierto; si ya tiene sublista, su último elemento
+			let deepest = last;
+			while (deepest.items?.length) deepest = deepest.items.at(-1) as ChangeItem;
+			deepest.text += ` ${line.trim()}`;
+		} else if (para) para.text += ` ${line.trim()}`;
 		else {
-			blocks.push({ type: "p", text: line.trim() });
-			open = true;
+			para = { type: "p", text: line.trim() };
+			blocks.push(para);
 		}
 	}
 	return blocks;

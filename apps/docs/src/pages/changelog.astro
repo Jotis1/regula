@@ -3,10 +3,12 @@
 // paquetes en `fixed` comparten versión, así que cada una aparece una vez. Sin versiones publicadas, un estado vacío.
 import { EmptyState, PageHeader } from "@jotis-me/react";
 import { Clock } from "@untitledui/icons";
-import InlineCode from "../components/InlineCode.astro";
+import ChangeList from "../components/ChangeList.astro";
+import ChangeTable from "../components/ChangeTable.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import Base from "../layouts/Base.astro";
 import { type ChangeKind, changeBlocks, mergeChangelogs } from "../lib/changelog";
+import { inline } from "../lib/inline";
 
 // Fuera del grafo de la web si no existen: `glob` devuelve `{}` y la página enseña el estado vacío
 const files = import.meta.glob<string>("../../../../packages/*/CHANGELOG.md", {
@@ -59,17 +61,11 @@ const short = (pkgs: string[]) =>
 											<li class="flex flex-col gap-2 text-md text-secondary">
 												{changeBlocks(e.text).map((b) =>
 													b.type === "p" ? (
-														<p>
-															<InlineCode text={b.text} />
-														</p>
+														<p set:html={inline(b.text)} />
+													) : b.type === "ul" ? (
+														<ChangeList items={b.items} />
 													) : (
-														<ul class="flex list-disc flex-col gap-1.5 pl-5 marker:text-quaternary">
-															{b.items.map((item) => (
-																<li>
-																	<InlineCode text={item} />
-																</li>
-															))}
-														</ul>
+														<ChangeTable head={b.head} rows={b.rows} />
 													),
 												)}
 												{short(e.pkgs) && <span class="font-mono text-xs text-quaternary">{short(e.pkgs)}</span>}

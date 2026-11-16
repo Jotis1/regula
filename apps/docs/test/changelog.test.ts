@@ -103,10 +103,65 @@ describe("bloques de una entrada: párrafos y listas", () => {
 			{ type: "p", text: "Formularios del Figma, fase 1. Cuatro componentes nuevos:" },
 			{
 				type: "ul",
-				items: ["`NumberInput`: campo numérico.", "`TagInput`: convierte lo escrito en etiquetas."],
+				items: [
+					{ text: "`NumberInput`: campo numérico." },
+					{ text: "`TagInput`: convierte lo escrito en etiquetas." },
+				],
 			},
 			{ type: "p", text: "Y variantes nuevas, sin cambiar lo que ya había:" },
-			{ type: "ul", items: ["`Input`: `prefix` y desplegables.", '`Toggle`: `variant="slim"`.'] },
+			{
+				type: "ul",
+				items: [
+					{ text: "`Input`: `prefix` y desplegables." },
+					{ text: '`Toggle`: `variant="slim"`.' },
+				],
+			},
+		]);
+	});
+
+	it("la entrada de la 0.9.0: lista que empieza en la primera línea, con sublistas y sin guiones sueltos", () => {
+		const v090 = [
+			"# @jotis-me/react",
+			"",
+			"## 0.9.0",
+			"",
+			"### Minor Changes",
+			"",
+			"- 29991d8: - Cuatro piezas de Stream:",
+			"  - `StreamPoll`: encuesta.",
+			"  - `ChatBox`:",
+			"    - `onSelect` y `selectedId`.",
+			"    - Los enlaces se ven",
+			"      subrayados.",
+			"  - **Arreglo:** el resto.",
+			"",
+		].join("\n");
+		const text = parseChangelog(v090).versions[0]?.entries[0]?.text ?? "";
+		expect(changeBlocks(text)).toEqual([
+			{
+				type: "ul",
+				items: [
+					{ text: "Cuatro piezas de Stream:" },
+					{ text: "`StreamPoll`: encuesta." },
+					{
+						text: "`ChatBox`:",
+						items: [
+							{ text: "`onSelect` y `selectedId`." },
+							{ text: "Los enlaces se ven subrayados." },
+						],
+					},
+					{ text: "**Arreglo:** el resto." },
+				],
+			},
+		]);
+	});
+
+	it("tres niveles y vuelta al primero", () => {
+		expect(changeBlocks("- a\n  - b\n    - c\n- d")).toEqual([
+			{
+				type: "ul",
+				items: [{ text: "a", items: [{ text: "b", items: [{ text: "c" }] }] }, { text: "d" }],
+			},
 		]);
 	});
 
@@ -114,6 +169,58 @@ describe("bloques de una entrada: párrafos y listas", () => {
 		expect(changeBlocks("Uno.\n\nDos,\ncontinúa.")).toEqual([
 			{ type: "p", text: "Uno." },
 			{ type: "p", text: "Dos, continúa." },
+		]);
+	});
+});
+
+describe("inline en el historial", () => {
+	it("una negrita con código dentro se pinta como negrita, y los asteriscos del código no cuentan", async () => {
+		const { inline } = await import("../src/lib/inline");
+		const html = inline("**Cambio que rompe: `Select`.** Y `a**b**c` sigue igual.");
+		expect(html).toMatch(/^<strong[^>]*>Cambio que rompe: <code[^>]*>Select<\/code>\.<\/strong>/);
+		expect(html).toContain(">a**b**c</code>");
+	});
+});
+
+describe("subidas de dependencias", () => {
+	it("una línea que solo nombra un paquete con su versión no es una entrada", () => {
+		const md = "# @jotis-me/react\n\n## 0.9.0\n\n### Patch Changes\n\n- @jotis-me/tokens@0.9.0\n";
+		expect(parseChangelog(md).versions[0]?.entries).toEqual([]);
+		expect(mergeChangelogs([md])).toEqual([]);
+	});
+
+	it("tampoco una que nombra varios, uno por línea", () => {
+		const md = [
+			"# @jotis-me/react",
+			"",
+			"## 0.4.0",
+			"",
+			"### Patch Changes",
+			"",
+			"- cee0e19: Un arreglo de verdad.",
+			"- @jotis-me/icons@0.4.0",
+			"  - @jotis-me/tokens@0.4.0",
+			"",
+		].join("\n");
+		expect(parseChangelog(md).versions[0]?.entries.map((e) => e.text)).toEqual(["Un arreglo de verdad."]);
+	});
+});
+
+describe("tablas en una entrada", () => {
+	it("la cabecera, sin la fila de guiones, y cada fila con sus celdas", () => {
+		const text =
+			"**Cómo migrar**\n\n| Antes (`0.7`) | Ahora |\n| --- | :-: |\n| `a` | `b` |\n| c | d |\n\nDespués.";
+		expect(changeBlocks(text)).toEqual([
+			{ type: "p", text: "**Cómo migrar**" },
+			{
+				type: "table",
+				head: ["Antes (`0.7`)", "Ahora"],
+				rows: [
+					["`a`", "`b`"],
+					["c", "d"],
+				],
+			},
+			{ type: "p", text: "Después." },
 		]);
 	});
 });

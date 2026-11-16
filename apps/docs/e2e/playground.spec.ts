@@ -471,9 +471,13 @@ test("Button: el texto entre las etiquetas se escribe en su campo", async ({ pag
 test("Skeleton: escribir un número en width cambia el ancho y el código", async ({ page }) => {
 	const pg = await example(page, "/components/skeleton/");
 	const width = pg.locator('[data-pg-control="number"]').filter({ hasText: "width" }).locator("input");
-	await width.fill("220");
-	await width.blur();
-	await expect(code(pg)).toContainText("width={220}");
+	// El campo numérico puede seguir sin hidratar aunque la isla ya lo esté, y entonces lo escrito se pierde (fallaba
+	// 1 de cada 20 veces, también en main): se repite hasta que el código lo recoge.
+	await expect(async () => {
+		await width.fill("220");
+		await width.blur();
+		await expect(code(pg)).toContainText("width={220}", { timeout: 1000 });
+	}).toPass({ timeout: 10_000 });
 });
 
 test("Prop incompatible: en Button, «iconOnly» desactiva los controles que no aplican, con su motivo en la pista", async ({

@@ -257,14 +257,24 @@ export function CodeSnippet({
 				tabIndex={0}
 				className={`m-0 flex-1 overflow-auto p-5 ${onExpand ? "pr-20" : "pr-14"} font-mono text-code-sm text-primary [tab-size:2] focus-visible:shadow-[inset_0_0_0_2px_var(--focus-ring)] focus-visible:outline-none`}
 			>
-				<code>
+				{/* Con líneas destacadas, el código mide lo que su línea más larga (y como poco el bloque), para que el
+				    destacado llegue hasta el final aunque el bloque se desplace en horizontal. */}
+				<code className={marked.size === 0 ? undefined : "block w-max min-w-full"}>
 					{marked.size === 0
 						? highlight(lines.join("\n"))
 						: highlightLines(lines.join("\n")).map((nodes, i) => (
 								// biome-ignore lint/suspicious/noArrayIndexKey: una entrada por línea
 								<Fragment key={i}>
 									{marked.has(i + 1) ? (
-										<span className="-mx-5 inline-block min-h-5 min-w-[calc(100%+2.5rem)] bg-brand-primary_alt px-5 align-top shadow-[inset_2px_0_0_var(--fg-brand-primary)]">
+										<span
+											className={cx(
+												// Cubre el relleno del bloque a los dos lados: 20px a la izquierda y el de los botones a la derecha
+												"-ml-5 inline-block min-h-5 bg-brand-primary_alt pl-5 align-top shadow-[inset_2px_0_0_var(--fg-brand-primary)]",
+												onExpand
+													? "-mr-20 min-w-[calc(100%+6.25rem)] pr-20"
+													: "-mr-14 min-w-[calc(100%+4.75rem)] pr-14",
+											)}
+										>
 											{marked.has(i) ? null : (
 												<span className="sr-only">
 													{defaultStrings.highlightedLine}

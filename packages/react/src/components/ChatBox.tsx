@@ -1,3 +1,4 @@
+import { Pin01 } from "@untitledui/icons";
 import type { CSSProperties } from "react";
 import { ChatLine, type ChatMessage } from "../internal/chat-line.js";
 import { cx } from "../internal/cx.js";
@@ -5,6 +6,13 @@ import { keyText, STREAM_ROOT, stableKeys, streamMotion } from "../internal/stre
 import { defaultStrings } from "../internal/strings.js";
 
 export type { ChatMessage, ChatTone } from "../internal/chat-line.js";
+
+export interface ChatBoxLabels {
+	/** La acción de elegir un mensaje: va en su marca y al principio de su nombre accesible. @default "Destacar" */
+	select: string;
+	/** La marca del elegido. @default "Destacado" */
+	selected: string;
+}
 
 export interface ChatBoxProps {
 	/** Del más antiguo al más reciente; no más de 12 visibles. */
@@ -24,11 +32,17 @@ export interface ChatBoxProps {
 	animate?: boolean;
 	/**
 	 * Hace seleccionables los mensajes (ampliación sobre la guía): cada uno con `id` y sin `selectable: false` pasa a
-	 * ser un botón que llama a `onSelect` con su mensaje. Sin ella, el chat es de solo lectura.
+	 * ser un botón que llama a `onSelect` con su mensaje, con una marca a la derecha que dice qué hace («Destacar»).
+	 * Sin ella, el chat es de solo lectura.
 	 */
 	onSelect?: (message: ChatMessage) => void;
-	/** `id` del mensaje elegido: lleva `aria-pressed`, fondo activo y borde índigo. Solo con `onSelect`. */
+	/**
+	 * `id` del mensaje elegido: lleva `aria-pressed`, el fondo y la raya de las líneas destacadas de CodeSnippet y la
+	 * marca «Destacado». Solo con `onSelect`.
+	 */
 	selectedId?: string | number;
+	/** Textos de la marca y del nombre accesible de cada mensaje. Solo con `onSelect`. */
+	labels?: Partial<ChatBoxLabels>;
 	/** @default "Chat del directo" */
 	"aria-label"?: string;
 	className?: string;
@@ -53,9 +67,12 @@ export function ChatBox({
 	animate = false,
 	onSelect,
 	selectedId,
+	labels,
 	"aria-label": ariaLabel,
 	className,
 }: ChatBoxProps) {
+	const selectLabel = labels?.select ?? defaultStrings.chatSelect;
+	const selectedLabel = labels?.selected ?? defaultStrings.chatSelected;
 	const keys = stableKeys(messages, contentKey);
 	const size: CSSProperties = {};
 	if (width != null) size.width = width;
@@ -88,11 +105,11 @@ export function ChatBox({
 								<ChatLine message={m} />
 							</div>
 						);
-					// Con `onSelect`, todas las filas llevan el mismo relleno y borde, para que no bailen entre sí.
-					const pad = "rounded-md border-l-2 px-2 py-1";
+					// Con `onSelect`, todas las filas llevan el mismo relleno, para que no bailen entre sí.
+					const pad = "rounded-md px-2 py-1";
 					if (m.id == null || m.selectable === false)
 						return (
-							<div key={keys[i]} className={cx(row, pad, "border-transparent")}>
+							<div key={keys[i]} className={cx(row, pad)}>
 								<ChatLine message={m} />
 							</div>
 						);
@@ -102,17 +119,56 @@ export function ChatBox({
 							key={keys[i]}
 							type="button"
 							aria-pressed={selected}
+							// El nombre empieza por la acción (design D3 de clarify-chat-selection); el estado va en aria-pressed.
+							aria-label={defaultStrings.chatSelectName(selectLabel, keyText(m.user), m.text)}
 							onClick={() => onSelect(m)}
 							className={cx(
 								row,
 								pad,
-								"block w-full cursor-pointer text-left transition-colors duration-100 focus-visible:shadow-focus-ring focus-visible:outline-none",
+								// `shrink-0`: la lista es un flex en columna y, cuando no caben todos, encogería los botones y
+								// cortaría su texto. `flow-root` contiene el float de la marca.
+								"group relative flow-root w-full shrink-0 cursor-pointer overflow-clip text-left transition-colors duration-100 focus-visible:shadow-focus-ring focus-visible:outline-none",
+								// Como las líneas destacadas de CodeSnippet (D2), con el fondo de marca al 15 %: en oscuro bg-brand-primary_alt es
+								// el mismo gris que el chat y no se vería. La raya es un pseudoelemento y no una sombra,
+								// para que el anillo de foco no la tape.
 								selected
-									? "border-brand bg-active"
-									: "border-transparent hover:bg-primary_hover",
+									? "bg-brand-primary/15 before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-(--fg-brand-primary)"
+									: "hover:bg-secondary_hover",
 							)}
 						>
-							<ChatLine message={m} />
+							{/* Marca de la acción (D1): flota a la derecha con una línea de alto, así que solo la primera línea
+							    del mensaje le deja sitio y las demás ocupan todo el ancho. Siempre ocupa su sitio, para que el
+							    texto no se mueva al aparecer. */}
+							<span
+								aria-hidden="true"
+								data-chat-action=""
+								className={cx(
+									"float-right ml-3 flex h-[1lh] items-center transition-opacity duration-100",
+									!selected &&
+										"opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100",
+								)}
+							>
+								<span
+									className={cx(
+										"inline-flex items-center gap-1.5 text-sm font-medium",
+										selected ? "text-brand-secondary" : "text-tertiary",
+									)}
+								>
+									<Pin01
+										size={16}
+										className={cx(
+											"flex-none",
+											selected ? "text-fg-brand-primary" : "text-fg-quaternary",
+										)}
+									/>
+									<span className={cx(!selected && "[@media(hover:none)]:hidden")}>
+										{selected ? selectedLabel : selectLabel}
+									</span>
+								</span>
+							</span>
+							<span data-chat-text="">
+								<ChatLine message={m} />
+							</span>
 						</button>
 					);
 				})}

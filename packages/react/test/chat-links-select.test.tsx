@@ -116,20 +116,68 @@ describe("Chat seleccionable", () => {
 		expect(onSelect).toHaveBeenCalledWith(chat[1]);
 	});
 
-	it("Elegido a la vista: aria-pressed, fondo activo y borde índigo", () => {
+	it("Elegido a la vista: aria-pressed, el destacado de CodeSnippet y la marca «Destacado»", () => {
 		render(<ChatBox messages={chat} onSelect={() => {}} selectedId="b" />);
 		const [a, b] = screen.getAllByRole("button");
 		expect(b?.getAttribute("aria-pressed")).toBe("true");
-		expect(classes(b)).toEqual(expect.arrayContaining(["bg-active", "border-brand"]));
+		expect(classes(b)).toEqual(
+			expect.arrayContaining(["bg-brand-primary/15", "before:w-0.5", "before:bg-(--fg-brand-primary)"]),
+		);
+		expect(b?.querySelector("[data-chat-action]")?.textContent).toBe("Destacado");
+		expect(classes(b?.querySelector("[data-chat-action]"))).not.toContain("opacity-0");
 		expect(a?.getAttribute("aria-pressed")).toBe("false");
-		expect(classes(a)).not.toContain("bg-active");
+		expect(classes(a)).not.toContain("bg-brand-primary/15");
 	});
 
-	it("Mensaje no seleccionable: ni con selectable false ni sin id", () => {
-		render(<ChatBox messages={chat} onSelect={() => {}} />);
+	it("Qué hace el clic: los demás llevan «Destacar», oculta hasta el hover o el foco", () => {
+		render(<ChatBox messages={chat} onSelect={() => {}} selectedId="b" />);
+		const mark = screen.getAllByRole("button")[0]?.querySelector("[data-chat-action]");
+		expect(mark?.getAttribute("aria-hidden")).toBe("true");
+		expect(mark?.textContent).toBe("Destacar");
+		expect(mark?.querySelector("svg")).not.toBeNull();
+		expect(classes(mark)).toEqual(
+			expect.arrayContaining([
+				"opacity-0",
+				"group-hover:opacity-100",
+				"group-focus-visible:opacity-100",
+				"[@media(hover:none)]:opacity-100",
+			]),
+		);
+		// En táctil, solo la chincheta
+		expect(classes(mark?.querySelector("svg + span"))).toContain("[@media(hover:none)]:hidden");
+	});
+
+	it("Nombre del botón: empieza por la acción y dice de quién es", () => {
+		render(<ChatBox messages={chat} onSelect={() => {}} selectedId="b" />);
+		const b = screen.getByRole("button", {
+			name: "Destacar el mensaje de lucia_88: ¿Has mirado detrás del cuadro?",
+		});
+		expect(b.getAttribute("aria-pressed")).toBe("true");
+		render(<ChatBox messages={[{ id: "x", user: <b>nodo</b>, text: "hola" }]} onSelect={() => {}} />);
+		expect(screen.getByRole("button", { name: "Destacar el mensaje: hola" })).toBeTruthy();
+	});
+
+	it("Otros textos: labels cambia la marca y el nombre", () => {
+		render(
+			<ChatBox
+				messages={chat}
+				onSelect={() => {}}
+				selectedId="a"
+				labels={{ select: "Responder", selected: "Respondiendo" }}
+			/>,
+		);
+		const b = screen.getByRole("button", { name: /^Responder el mensaje de lucia_88/ });
+		expect(b.querySelector("[data-chat-action]")?.textContent).toBe("Responder");
+		const a = screen.getByRole("button", { name: /^Responder el mensaje de TioBigotes/ });
+		expect(a.querySelector("[data-chat-action]")?.textContent).toBe("Respondiendo");
+	});
+
+	it("Mensaje no seleccionable: ni con selectable false ni sin id, y sin marca", () => {
+		const { container } = render(<ChatBox messages={chat} onSelect={() => {}} />);
 		expect(screen.getAllByRole("button")).toHaveLength(2);
 		expect(screen.queryByRole("button", { name: /Nightbot/ })).toBeNull();
 		expect(screen.queryByRole("button", { name: /sin_id/ })).toBeNull();
+		expect(container.querySelectorAll("[data-chat-action]")).toHaveLength(2);
 	});
 
 	it("Con teclado: Tab y Enter", async () => {
@@ -147,6 +195,7 @@ describe("Chat seleccionable", () => {
 		const html = renderToString(<ChatBox messages={chat} selectedId="b" />);
 		expect(html).not.toContain("<button");
 		expect(html).not.toContain("aria-pressed");
+		expect(html).not.toContain("data-chat-action");
 	});
 
 	it("es accesible en los dos temas con onSelect", async () => {

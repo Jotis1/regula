@@ -1,0 +1,35 @@
+---
+// Tabla de una entrada del historial (la de migración de la 0.8.0, por ejemplo), con el estilo de las tablas de la
+// web (`.prose`). Si no cabe, se desplaza dentro de su caja, que se puede enfocar para moverla con el teclado.
+import { inline } from "../lib/inline";
+
+interface Props {
+	head: string[];
+	rows: string[][];
+}
+const { head, rows } = Astro.props;
+---
+
+<div
+	role="region"
+	aria-label={`Tabla: ${head.join(", ")}`}
+	tabindex="0"
+	class="prose overflow-x-auto rounded-xl focus-visible:shadow-focus-ring focus-visible:outline-none"
+>
+	<table class="!my-0">
+		<thead>
+			<tr>{head.map((h) => <th set:html={inline(h)} />)}</tr>
+		</thead>
+		<tbody>
+			{
+				rows.map((row) => (
+					<tr>
+						{head.map((_, i) => (
+							<td set:html={inline(row[i] ?? "")} />
+						))}
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>

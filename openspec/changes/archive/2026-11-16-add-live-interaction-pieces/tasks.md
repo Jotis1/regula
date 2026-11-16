@@ -39,11 +39,11 @@ Comandos: `bun run --cwd packages/react test`, `bunx biome ci .`, `bunx turbo ru
 ## 4. Web y artefacto
 
 - [x] 4.1 Ficha, página y ejemplo interactivo de las cuatro piezas (design D10), con sus fragmentos de Next.js y de Astro
-- [ ] 4.2 Capturas en oscuro de las cuatro, de la página y de la card, y regresión visual del resto del catálogo sin cambios. Verificar con el visto bueno del usuario en el PR
+- [x] 4.2 Capturas en oscuro de las cuatro, de la página y de la card, y regresión visual del resto del catálogo sin cambios. Verificar con el visto bueno del usuario en el PR
 - [x] 4.3 Regenerar el artefacto y comprobar que trae las cuatro fichas
 
 ## 5. Cierre
 
 - [x] 5.1 Changeset `minor` (0.9.0)
 - [x] 5.2 Comprobaciones completas: tests del paquete, `biome ci`, `typecheck build`, `check:size`, `check:js` y e2e de la web. `openspec validate add-live-interaction-pieces --strict` sin errores
-- [ ] 5.3 Publicar 0.9.0 en npm y comprobarlo con `npm view @jotis-me/react version`
+- [x] 5.3 Publicar 0.9.0 en npm y comprobarlo con `npm view @jotis-me/react version`
