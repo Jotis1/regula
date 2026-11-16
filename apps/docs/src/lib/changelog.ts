@@ -90,33 +90,63 @@ export function mergeChangelogs(markdowns: string[]): ChangelogVersion[] {
 		.sort((a, b) => compare(a.version, b.version));
 }
 
-export type ChangeBlock = { type: "p"; text: string } | { type: "ul"; items: string[] };
+/** Un elemento de lista, con sus sublistas si las lleva. */
+export interface ChangeItem {
+	text: string;
+	items?: ChangeItem[];
+}
+
+export type ChangeBlock = { type: "p"; text: string } | { type: "ul"; items: ChangeItem[] };
 
 /**
  * Parte el texto de una entrada en párrafos y listas. Una línea en blanco cierra el bloque; las líneas que empiezan por
- * `- ` son los elementos de una lista (aunque vayan pegadas al párrafo que las introduce) y una línea sin guion que
- * sigue a un elemento continúa ese elemento.
+ * `- ` son los elementos de una lista (aunque vayan pegadas al párrafo que las introduce), y con más sangría que el
+ * elemento de encima van en su sublista, a cualquier profundidad. Una línea sin guion que sigue a un elemento continúa
+ * ese elemento. El texto se queda en Markdown: lo de dentro (`código`, **negrita**) lo pinta `inline`.
  */
 export function changeBlocks(text: string): ChangeBlock[] {
 	const blocks: ChangeBlock[] = [];
-	// El bloque abierto: el último que se añadió, hasta que una línea en blanco lo cierre
-	let open = false;
+	// La lista abierta, como pila de niveles: la sangría de sus elementos y la lista donde van
+	let stack: { indent: number; items: ChangeItem[] }[] = [];
+	let para: { type: "p"; text: string } | undefined;
+	const close = () => {
+		stack = [];
+		para = undefined;
+	};
 	for (const line of text.split("\n")) {
 		if (!line.trim()) {
-			open = false;
+			close();
 			continue;
 		}
-		const item = line.match(/^- (.*)$/)?.[1];
-		const last = open ? blocks.at(-1) : undefined;
-		if (item !== undefined) {
-			if (last?.type === "ul") last.items.push(item);
-			else blocks.push({ type: "ul", items: [item] });
-			open = true;
-		} else if (last?.type === "ul") last.items[last.items.length - 1] += ` ${line.trim()}`;
-		else if (last?.type === "p") last.text += ` ${line.trim()}`;
+		const m = line.match(/^( *)- (.*)$/);
+		if (m) {
+			const indent = m[1]?.length ?? 0;
+			const item: ChangeItem = { text: m[2] ?? "" };
+			para = undefined;
+			while (stack.length > 1 && indent < (stack.at(-1)?.indent ?? 0)) stack.pop();
+			const top = stack.at(-1);
+			if (!top) {
+				const ul: ChangeBlock = { type: "ul", items: [item] };
+				blocks.push(ul);
+				stack = [{ indent, items: ul.items }];
+			} else if (indent > top.indent) {
+				// Sublista del último elemento del nivel de arriba
+				const parent = top.items.at(-1) as ChangeItem;
+				parent.items = [item];
+				stack.push({ indent, items: parent.items });
+			} else top.items.push(item);
+			continue;
+		}
+		const last = stack.at(-1)?.items.at(-1);
+		if (last) {
+			// Continúa el elemento más profundo abierto; si ya tiene sublista, su último elemento
+			let deepest = last;
+			while (deepest.items?.length) deepest = deepest.items.at(-1) as ChangeItem;
+			deepest.text += ` ${line.trim()}`;
+		} else if (para) para.text += ` ${line.trim()}`;
 		else {
-			blocks.push({ type: "p", text: line.trim() });
-			open = true;
+			para = { type: "p", text: line.trim() };
+			blocks.push(para);
 		}
 	}
 	return blocks;

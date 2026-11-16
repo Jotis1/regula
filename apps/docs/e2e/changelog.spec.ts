@@ -17,3 +17,20 @@ test("la entrada de la 0.4.0 pinta sus dos listas como <ul>/<li> y no deja guion
 		.evaluateAll((ps) => ps.filter((p) => /(^|\s)- /.test(p.textContent ?? "")).length);
 	expect(loose).toBe(0);
 });
+
+test("la 0.9.0 pinta su sublista, sin guiones ni asteriscos sueltos", async ({ page }) => {
+	await page.goto("/changelog/");
+	const version = page.locator('[data-version="0.9.0"]');
+	// La lista de `ChatBox` va dentro de su elemento
+	const chatbox = version.locator("li", { hasText: /^ChatBox:/ });
+	await expect(chatbox.locator(":scope > ul > li")).toHaveCount(3);
+	const text = (await version.textContent()) ?? "";
+	expect(text).not.toMatch(/(^|\s)- /);
+	expect(text).not.toContain("**");
+});
+
+test("la negrita del historial se pinta como negrita", async ({ page }) => {
+	await page.goto("/changelog/");
+	await expect(page.locator("main strong").first()).toBeVisible();
+	expect((await page.locator("main").textContent()) ?? "").not.toContain("**");
+});

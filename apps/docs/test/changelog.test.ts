@@ -103,10 +103,65 @@ describe("bloques de una entrada: párrafos y listas", () => {
 			{ type: "p", text: "Formularios del Figma, fase 1. Cuatro componentes nuevos:" },
 			{
 				type: "ul",
-				items: ["`NumberInput`: campo numérico.", "`TagInput`: convierte lo escrito en etiquetas."],
+				items: [
+					{ text: "`NumberInput`: campo numérico." },
+					{ text: "`TagInput`: convierte lo escrito en etiquetas." },
+				],
 			},
 			{ type: "p", text: "Y variantes nuevas, sin cambiar lo que ya había:" },
-			{ type: "ul", items: ["`Input`: `prefix` y desplegables.", '`Toggle`: `variant="slim"`.'] },
+			{
+				type: "ul",
+				items: [
+					{ text: "`Input`: `prefix` y desplegables." },
+					{ text: '`Toggle`: `variant="slim"`.' },
+				],
+			},
+		]);
+	});
+
+	it("la entrada de la 0.9.0: lista que empieza en la primera línea, con sublistas y sin guiones sueltos", () => {
+		const v090 = [
+			"# @jotis-me/react",
+			"",
+			"## 0.9.0",
+			"",
+			"### Minor Changes",
+			"",
+			"- 29991d8: - Cuatro piezas de Stream:",
+			"  - `StreamPoll`: encuesta.",
+			"  - `ChatBox`:",
+			"    - `onSelect` y `selectedId`.",
+			"    - Los enlaces se ven",
+			"      subrayados.",
+			"  - **Arreglo:** el resto.",
+			"",
+		].join("\n");
+		const text = parseChangelog(v090).versions[0]?.entries[0]?.text ?? "";
+		expect(changeBlocks(text)).toEqual([
+			{
+				type: "ul",
+				items: [
+					{ text: "Cuatro piezas de Stream:" },
+					{ text: "`StreamPoll`: encuesta." },
+					{
+						text: "`ChatBox`:",
+						items: [
+							{ text: "`onSelect` y `selectedId`." },
+							{ text: "Los enlaces se ven subrayados." },
+						],
+					},
+					{ text: "**Arreglo:** el resto." },
+				],
+			},
+		]);
+	});
+
+	it("tres niveles y vuelta al primero", () => {
+		expect(changeBlocks("- a\n  - b\n    - c\n- d")).toEqual([
+			{
+				type: "ul",
+				items: [{ text: "a", items: [{ text: "b", items: [{ text: "c" }] }] }, { text: "d" }],
+			},
 		]);
 	});
 
@@ -115,5 +170,14 @@ describe("bloques de una entrada: párrafos y listas", () => {
 			{ type: "p", text: "Uno." },
 			{ type: "p", text: "Dos, continúa." },
 		]);
+	});
+});
+
+describe("inline en el historial", () => {
+	it("una negrita con código dentro se pinta como negrita, y los asteriscos del código no cuentan", async () => {
+		const { inline } = await import("../src/lib/inline");
+		const html = inline("**Cambio que rompe: `Select`.** Y `a**b**c` sigue igual.");
+		expect(html).toMatch(/^<strong[^>]*>Cambio que rompe: <code[^>]*>Select<\/code>\.<\/strong>/);
+		expect(html).toContain(">a**b**c</code>");
 	});
 });

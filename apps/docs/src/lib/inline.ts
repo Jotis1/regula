@@ -16,10 +16,17 @@ const strong = (s: string) =>
 
 /** `text-primary` → <code>text-primary</code> y **así** → <strong>así</strong>, con el resto escapado. */
 export function inline(text: string): string {
-	return text
+	// El código se aparta con una marca y se devuelve al final, para que una **negrita con `código` dentro** también
+	// se pinte y los asteriscos de dentro del código no cuenten.
+	const codes: string[] = [];
+	const marked = text
 		.split("`")
-		.map((part, i) =>
-			i % 2 ? `<code class="${CODE}">${escapeHtml(part)}</code>` : strong(escapeHtml(part)),
-		)
+		.map((part, i) => {
+			if (!(i % 2)) return escapeHtml(part);
+			codes.push(`<code class="${CODE}">${escapeHtml(part)}</code>`);
+			// Una marca de uso privado de Unicode, que no sale en ningún texto de la guía
+			return `${codes.length - 1}`;
+		})
 		.join("");
+	return strong(marked).replace(/(\d+)/g, (_, n: string) => codes[Number(n)] ?? "");
 }

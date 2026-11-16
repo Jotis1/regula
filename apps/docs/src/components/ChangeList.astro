@@ -1,0 +1,23 @@
+---
+// Lista de una entrada del historial, con sus sublistas a cualquier profundidad. El texto pasa por `inline`:
+// `código` y **negrita** como en el resto de la web, y todo lo demás escapado.
+import type { ChangeItem } from "../lib/changelog";
+import { inline } from "../lib/inline";
+
+interface Props {
+	items: ChangeItem[];
+	nested?: boolean;
+}
+const { items, nested = false } = Astro.props;
+---
+
+<ul class:list={["flex list-disc flex-col gap-1.5 pl-5 marker:text-quaternary", nested && "mt-1.5"]}>
+	{
+		items.map((item) => (
+			<li>
+				<span set:html={inline(item.text)} />
+				{item.items?.length ? <Astro.self items={item.items} nested /> : null}
+			</li>
+		))
+	}
+</ul>
