@@ -1,5 +1,17 @@
 # @jotis-me/react
 
+## 0.10.0
+
+### Minor Changes
+
+- 6d9f2ca: `ChatBox` seleccionable dice qué hace el clic. Con `onSelect`, cada mensaje lleva a la derecha la chincheta con «Destacar»: con ratón sale al pasar por encima o con el foco, y en táctil se ve siempre la chincheta sola. El elegido lleva la raya de las líneas destacadas de `CodeSnippet` sobre un fondo de marca, y la marca «Destacado». El nombre accesible de cada mensaje empieza por la acción («Destacar el mensaje de lucia_88: …»). Los textos se cambian con la prop nueva `labels` (`select` y `selected`). Sin `onSelect`, `ChatBox` no cambia.
+
+  Arreglos: `ChatBox` con `onSelect` ya no recorta los mensajes cuando no caben todos (en una ventana deslizante, al rotar la primera vez), y la marca solo quita sitio a la primera línea de cada mensaje. En `CodeSnippet`, el fondo de una línea destacada llega hasta el final aunque la línea no quepa en el bloque y se desplace.
+
+### Patch Changes
+
+- @jotis-me/tokens@0.10.0
+
 ## 0.9.0
 
 ### Minor Changes
