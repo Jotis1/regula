@@ -181,3 +181,27 @@ describe("inline en el historial", () => {
 		expect(html).toContain(">a**b**c</code>");
 	});
 });
+
+describe("subidas de dependencias", () => {
+	it("una línea que solo nombra un paquete con su versión no es una entrada", () => {
+		const md = "# @jotis-me/react\n\n## 0.9.0\n\n### Patch Changes\n\n- @jotis-me/tokens@0.9.0\n";
+		expect(parseChangelog(md).versions[0]?.entries).toEqual([]);
+		expect(mergeChangelogs([md])).toEqual([]);
+	});
+
+	it("tampoco una que nombra varios, uno por línea", () => {
+		const md = [
+			"# @jotis-me/react",
+			"",
+			"## 0.4.0",
+			"",
+			"### Patch Changes",
+			"",
+			"- cee0e19: Un arreglo de verdad.",
+			"- @jotis-me/icons@0.4.0",
+			"  - @jotis-me/tokens@0.4.0",
+			"",
+		].join("\n");
+		expect(parseChangelog(md).versions[0]?.entries.map((e) => e.text)).toEqual(["Un arreglo de verdad."]);
+	});
+});

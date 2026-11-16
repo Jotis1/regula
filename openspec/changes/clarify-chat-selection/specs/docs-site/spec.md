@@ -18,3 +18,7 @@ La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, g
 #### Scenario: Negrita con código
 - **WHEN** una entrada dice «**Cambio que rompe: `Select`.**»
 - **THEN** se pinta en negrita, con `Select` como código, y sin asteriscos
+
+#### Scenario: Subidas de dependencias
+- **WHEN** el CHANGELOG de `@jotis-me/react` anota `- @jotis-me/tokens@0.9.0` en «Patch Changes»
+- **THEN** `/changelog/` no lo enseña como un arreglo

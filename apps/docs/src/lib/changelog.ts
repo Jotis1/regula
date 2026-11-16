@@ -35,8 +35,11 @@ const compare = (a: string, b: string) => {
 
 /**
  * Las versiones de un CHANGELOG de Changesets (`## 0.2.0`, `### Minor Changes`, `- abc1234: texto`). Se descartan las
- * líneas "Updated dependencies": en un grupo `fixed` solo repiten la versión.
+ * líneas "Updated dependencies" y las que solo nombran un paquete con su versión (`- @jotis-me/tokens@0.9.0`): en un
+ * grupo `fixed` solo repiten la versión.
  */
+const DEPENDENCY_BUMP = /^@[\w.-]+\/[\w.-]+@\d+\.\d+\.\d+(-[\w.]+)?$/;
+
 export function parseChangelog(markdown: string): { pkg: string; versions: ChangelogVersion[] } {
 	const pkg = markdown.match(/^# (.+)$/m)?.[1]?.trim() ?? "";
 	const versions: ChangelogVersion[] = [];
@@ -50,7 +53,9 @@ export function parseChangelog(markdown: string): { pkg: string; versions: Chang
 				?.map((l) => l.replace(/^ {2}/, ""))
 				.join("\n")
 				.trim();
-			if (kind && text && !text.startsWith("Updated dependencies"))
+			// Una subida de dependencias puede nombrar varios paquetes, uno por línea
+			const bump = text?.split("\n").every((l) => DEPENDENCY_BUMP.test(l.trim().replace(/^- /, "")));
+			if (kind && text && !text.startsWith("Updated dependencies") && !bump)
 				entries.push({ pkgs: [pkg], kind, text });
 			current = undefined;
 		};

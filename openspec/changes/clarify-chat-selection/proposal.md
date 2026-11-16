@@ -17,7 +17,7 @@ En el Mando de Scaena, el chat es seleccionable: pulsar un mensaje lo destaca en
 - **Arreglos que salen a la vez:**
   - `ChatBox` con `onSelect` recortaba los mensajes por dentro cuando no cabían todos (en la ventana deslizante, en cuanto rotaba la primera vez). La marca solo quita sitio a la primera línea de cada mensaje, no a todas.
   - En `CodeSnippet`, el fondo de una línea destacada no llegaba al final si la línea no cabía en el bloque: se quedaba corto al desplazarse.
-  - En `/changelog/`, las sublistas salían con los guiones del Markdown, una entrada que empezaba por una lista dejaba un guion suelto, y la negrita con código dentro salía con sus asteriscos.
+  - En `/changelog/`, las sublistas salían con los guiones del Markdown, una entrada que empezaba por una lista dejaba un guion suelto, la negrita con código dentro salía con sus asteriscos, y las subidas de dependencias (`@jotis-me/tokens@0.9.0`) salían como arreglos.
 - Fuera de alcance: acciones de moderación (borrar, banear) en `ChatBox`.
 
 ## Capabilities

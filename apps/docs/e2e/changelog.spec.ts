@@ -34,3 +34,8 @@ test("la negrita del historial se pinta como negrita", async ({ page }) => {
 	await expect(page.locator("main strong").first()).toBeVisible();
 	expect((await page.locator("main").textContent()) ?? "").not.toContain("**");
 });
+
+test("las subidas de dependencias no salen como arreglos", async ({ page }) => {
+	await page.goto("/changelog/");
+	await expect(page.locator("main")).not.toContainText(/@jotis-me\/\w+@\d+\.\d+\.\d+/);
+});
