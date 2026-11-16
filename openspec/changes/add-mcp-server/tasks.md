@@ -58,7 +58,7 @@ Comandos: `bunx biome ci .`, `bunx turbo run build typecheck test`, `bun run --c
 
 ## 5. Entrega
 
-- [ ] 5.1 Comprobaciones locales en verde:
+- [x] 5.1 Comprobaciones locales en verde:
   - `bunx biome ci .`;
   - `bunx turbo run build typecheck test`;
   - `check:js`;

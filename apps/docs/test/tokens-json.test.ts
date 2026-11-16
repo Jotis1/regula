@@ -23,7 +23,7 @@ describe("tokensJson", () => {
 			light: expect.stringMatching(/^#/),
 			dark: expect.stringMatching(/^#/),
 		});
-		expect(token?.usage.length).toBeGreaterThan(0);
+		expect(token?.usage).toEqual(expect.stringMatching(/\S/));
 	});
 
 	it("spacing-none trae un valor único", () => {
