@@ -4,8 +4,8 @@ Comandos: `bun run --cwd packages/react test`, `bunx biome ci .`, `bunx turbo ru
 
 ## 1. `ChatBox`
 
-- [ ] 1.1 Textos en `strings.ts`: `chatSelect`, `chatSelected` y `chatSelectName` (design D3 y D4)
-- [ ] 1.2 Marca de la acción, aspecto del elegido, nombre accesible y `labels` en `ChatBox` (design D1–D4). Tests: «Elegido a la vista», «Nombre del botón», «Otros textos», «Mensaje no seleccionable» sin marca, «Sin onSelect» con el HTML igual que en 0.9.0, y axe sin errores en los dos temas
+- [x] 1.1 Textos en `strings.ts`: `chatSelect`, `chatSelected` y `chatSelectName` (design D3 y D4)
+- [x] 1.2 Marca de la acción, aspecto del elegido, nombre accesible y `labels` en `ChatBox` (design D1–D4). Tests: «Elegido a la vista», «Nombre del botón», «Otros textos», «Mensaje no seleccionable» sin marca, «Sin onSelect» sin botones ni marca, y axe sin errores en los dos temas
 
 ## 2. Web y artefacto
 

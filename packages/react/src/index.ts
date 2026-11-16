@@ -123,7 +123,13 @@ export {
 	type ChartMarkerType,
 } from "./components/ChartMarker.js";
 export { ChatBadge, type ChatBadgeKind, type ChatBadgeProps } from "./components/ChatBadge.js";
-export { ChatBox, type ChatBoxProps, type ChatMessage, type ChatTone } from "./components/ChatBox.js";
+export {
+	ChatBox,
+	type ChatBoxLabels,
+	type ChatBoxProps,
+	type ChatMessage,
+	type ChatTone,
+} from "./components/ChatBox.js";
 export { Checkbox, type CheckboxProps } from "./components/Checkbox.js";
 export {
 	CheckIcon,

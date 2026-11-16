@@ -148,6 +148,11 @@ export const defaultStrings = {
 	onAir: "en emisión",
 	latestEvents: "Últimos eventos",
 	streamChat: "Chat del directo",
+	chatSelect: "Destacar",
+	chatSelected: "Destacado",
+	// «Destacar el mensaje de lucia_88: ¿Has mirado detrás del cuadro?»; sin nombre en texto, sin «de …».
+	chatSelectName: (action: string, user: string, text: string) =>
+		user ? `${action} el mensaje de ${user}: ${text}` : `${action} el mensaje: ${text}`,
 	goal: "Meta",
 	goalDone: "Meta conseguida. Toca poner otra.",
 	goalRemaining: (missing: string) => `Faltan ${missing} para la meta.`,
