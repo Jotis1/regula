@@ -1,7 +1,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Historial de cambios
-La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build. El texto de cada entrada SHALL pintarse con su formato: párrafos, listas a cualquier profundidad (también las que van dentro de una entrada o empiezan en su primera línea), negrita, también con código dentro, y código en línea. MUST NOT quedar a la vista guiones ni asteriscos del Markdown.
+La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build. El texto de cada entrada SHALL pintarse con su formato: párrafos, listas a cualquier profundidad (también las que van dentro de una entrada o empiezan en su primera línea), tablas, negrita, también con código dentro, y código en línea. MUST NOT quedar a la vista guiones, barras ni asteriscos del Markdown.
 
 #### Scenario: Versión publicada
 - **WHEN** se publica una versión con una entrada en el CHANGELOG
@@ -22,3 +22,7 @@ La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, g
 #### Scenario: Subidas de dependencias
 - **WHEN** el CHANGELOG de `@jotis-me/react` anota `- @jotis-me/tokens@0.9.0` en «Patch Changes»
 - **THEN** `/changelog/` no lo enseña como un arreglo
+
+#### Scenario: Tabla
+- **WHEN** se mira la entrada de la 0.8.0, con su tabla «Antes (`0.7`)» y «Ahora»
+- **THEN** se pinta como una tabla con su cabecera y una fila por cambio, y si no cabe se desplaza dentro de su caja, no la página

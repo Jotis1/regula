@@ -4,6 +4,7 @@
 import { EmptyState, PageHeader } from "@jotis-me/react";
 import { Clock } from "@untitledui/icons";
 import ChangeList from "../components/ChangeList.astro";
+import ChangeTable from "../components/ChangeTable.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import Base from "../layouts/Base.astro";
 import { type ChangeKind, changeBlocks, mergeChangelogs } from "../lib/changelog";
@@ -59,7 +60,13 @@ const short = (pkgs: string[]) =>
 										.map((e) => (
 											<li class="flex flex-col gap-2 text-md text-secondary">
 												{changeBlocks(e.text).map((b) =>
-													b.type === "p" ? <p set:html={inline(b.text)} /> : <ChangeList items={b.items} />,
+													b.type === "p" ? (
+														<p set:html={inline(b.text)} />
+													) : b.type === "ul" ? (
+														<ChangeList items={b.items} />
+													) : (
+														<ChangeTable head={b.head} rows={b.rows} />
+													),
 												)}
 												{short(e.pkgs) && <span class="font-mono text-xs text-quaternary">{short(e.pkgs)}</span>}
 											</li>

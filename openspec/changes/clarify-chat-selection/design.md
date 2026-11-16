@@ -54,6 +54,7 @@
 ### D6. `/changelog/`
 
 - `changeBlocks` lleva las listas como árbol, por la sangría de cada `- `, a cualquier profundidad. Una entrada que empieza por una lista ya no deja el guion en un párrafo.
+- Las tablas (`| a | b |`) son otro bloque: la primera fila es la cabecera y la de guiones se salta. Se pintan con el estilo de las tablas de la web (`.prose`), en una caja que se desplaza si no caben, como la de props.
 - Las entradas que solo nombran paquetes con su versión (`- @jotis-me/tokens@0.9.0`, una por línea) son subidas de dependencias del grupo `fixed` y no salen, como ya pasaba con «Updated dependencies».
 - El texto pasa por `inline` (el de las piezas de composición), que pinta `código` y **negrita**. `inline` aparta el código antes de buscar la negrita, para que una negrita con código dentro se pinte y los asteriscos de dentro del código no cuenten.
 

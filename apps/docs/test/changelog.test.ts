@@ -205,3 +205,22 @@ describe("subidas de dependencias", () => {
 		expect(parseChangelog(md).versions[0]?.entries.map((e) => e.text)).toEqual(["Un arreglo de verdad."]);
 	});
 });
+
+describe("tablas en una entrada", () => {
+	it("la cabecera, sin la fila de guiones, y cada fila con sus celdas", () => {
+		const text =
+			"**Cómo migrar**\n\n| Antes (`0.7`) | Ahora |\n| --- | :-: |\n| `a` | `b` |\n| c | d |\n\nDespués.";
+		expect(changeBlocks(text)).toEqual([
+			{ type: "p", text: "**Cómo migrar**" },
+			{
+				type: "table",
+				head: ["Antes (`0.7`)", "Ahora"],
+				rows: [
+					["`a`", "`b`"],
+					["c", "d"],
+				],
+			},
+			{ type: "p", text: "Después." },
+		]);
+	});
+});

@@ -101,7 +101,19 @@ export interface ChangeItem {
 	items?: ChangeItem[];
 }
 
-export type ChangeBlock = { type: "p"; text: string } | { type: "ul"; items: ChangeItem[] };
+export type ChangeBlock =
+	| { type: "p"; text: string }
+	| { type: "ul"; items: ChangeItem[] }
+	| { type: "table"; head: string[]; rows: string[][] };
+
+// Una fila de tabla de Markdown: `| a | b |`. La de separación (`| --- | :-: |`) no lleva texto.
+const cells = (line: string) =>
+	line
+		.trim()
+		.replace(/^\||\|$/g, "")
+		.split("|")
+		.map((c) => c.trim());
+const isSeparator = (row: string[]) => row.every((c) => /^:?-+:?$/.test(c));
 
 /**
  * Parte el texto de una entrada en párrafos y listas. Una línea en blanco cierra el bloque; las líneas que empiezan por
@@ -114,15 +126,28 @@ export function changeBlocks(text: string): ChangeBlock[] {
 	// La lista abierta, como pila de niveles: la sangría de sus elementos y la lista donde van
 	let stack: { indent: number; items: ChangeItem[] }[] = [];
 	let para: { type: "p"; text: string } | undefined;
+	let table: { type: "table"; head: string[]; rows: string[][] } | undefined;
 	const close = () => {
 		stack = [];
 		para = undefined;
+		table = undefined;
 	};
 	for (const line of text.split("\n")) {
 		if (!line.trim()) {
 			close();
 			continue;
 		}
+		// Tablas: la primera fila es la cabecera y la de guiones se salta
+		if (line.trim().startsWith("|")) {
+			const row = cells(line);
+			if (!table) {
+				close();
+				table = { type: "table", head: row, rows: [] };
+				blocks.push(table);
+			} else if (!isSeparator(row)) table.rows.push(row);
+			continue;
+		}
+		table = undefined;
 		const m = line.match(/^( *)- (.*)$/);
 		if (m) {
 			const indent = m[1]?.length ?? 0;
