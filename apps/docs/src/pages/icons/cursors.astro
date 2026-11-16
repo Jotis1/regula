@@ -5,14 +5,11 @@ import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
-import { buildEntries, CURSOR_CATEGORIES, encodeUrls, groupOptions } from "../../lib/gallery";
+import { CURSOR_CATEGORIES, encodeUrls, groupOptions } from "../../lib/gallery";
+import { galleryEntries, galleryUrls } from "../../lib/gallery-entries";
 
-const urls = import.meta.glob<string>("../../../../../packages/assets/dist/cursors/*.svg", {
-	query: "?no-inline",
-	import: "default",
-	eager: true,
-});
-const entries = buildEntries("cursors", urls);
+const urls = galleryUrls("cursors");
+const entries = galleryEntries("cursors");
 const groups = groupOptions(entries, CURSOR_CATEGORIES);
 ---
 

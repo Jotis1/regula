@@ -5,17 +5,11 @@ import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
-import { buildEntries, encodeUrls, FILE_CATEGORIES, FILE_GROUP, groupOptions } from "../../lib/gallery";
+import { encodeUrls, FILE_CATEGORIES, groupOptions } from "../../lib/gallery";
+import { galleryEntries, galleryUrls } from "../../lib/gallery-entries";
 
-const urls = Object.fromEntries(
-	Object.keys(FILE_GROUP).flatMap((type) =>
-		["", "-gray", "-solid"].map((s) => [
-			`/icons/svg/files/${type}${s}.svg`,
-			`/icons/svg/files/${type}${s}.svg`,
-		]),
-	),
-);
-const entries = buildEntries("files", urls);
+const urls = galleryUrls("files");
+const entries = galleryEntries("files");
 const groups = groupOptions(entries, FILE_CATEGORIES);
 ---
 

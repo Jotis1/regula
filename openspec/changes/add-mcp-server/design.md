@@ -44,7 +44,9 @@ El adaptador puede cambiar dos cosas de las que depende el CI:
 - dónde queda la salida estática, ya que puede escribir en `.vercel/output/static`;
 - si `astro preview` sigue funcionando, porque `@astrojs/vercel` no tiene preview.
 
-La primera tarea es una prueba con criterios claros: tras `bun run build` siguen funcionando pagefind, `check:js`, Lighthouse y `astro preview` sobre las páginas. Si algo se rompe, el plan B es registrar el adaptador y la ruta `/mcp` solo cuando `process.env.VERCEL` existe, con una integración propia que llama a `injectRoute`. En local y en CI el build sigue siendo estático como hoy, y el servidor se prueba por su manejador (D4). Las dos variantes cumplen las specs.
+La primera tarea fue esa prueba, y con el adaptador siempre activo se rompen dos cosas: la web estática pasa a `dist/client` (pagefind, `check:js`, Lighthouse y `astro preview` dejan de encontrarla) y en Windows el empaquetado de la función falla con `EPERM` al crear enlaces simbólicos. **Variante elegida: el plan B.** `astro.config.mjs` registra el adaptador y una integración propia que llama a `injectRoute({ pattern: "/mcp", entrypoint: "./src/mcp/route.ts", prerender: false })` solo cuando existe `process.env.VERCEL`. En local y en CI el build es estático como hoy, y el servidor se prueba por su manejador (D4 y D6).
+
+En Vercel el adaptador deja la web en `.vercel/output/static`, así que el índice de pagefind lo construye `scripts/search-index.ts`, que elige esa carpeta o `dist` según el entorno. El build con `VERCEL=1` en Windows llega a generar `_render.func` y solo falla en el enlace simbólico; lo confirma la preview de Vercel, que corre en Linux.
 
 ### D3. SDK oficial, sin sesión, sobre Request/Response
 

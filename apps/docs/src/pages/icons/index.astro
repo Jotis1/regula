@@ -5,26 +5,15 @@
 import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
-import categoriesByName from "../../data/icon-categories.json";
 import Base from "../../layouts/Base.astro";
-import {
-	buildEntries,
-	encodeCategories,
-	encodeUrls,
-	groupOptions,
-	ICON_CATEGORIES,
-	pascal,
-} from "../../lib/gallery";
+import { encodeCategories, encodeUrls, groupOptions, ICON_CATEGORIES } from "../../lib/gallery";
+import { galleryEntries, galleryUrls, iconCategories } from "../../lib/gallery-entries";
 import { ICON_NAMES } from "../../lib/untitled";
 
-const urls = Object.fromEntries(
-	ICON_NAMES.map((n) => [`/icons/svg/icons/${n}.svg`, `/icons/svg/icons/${n}.svg`]),
-);
+const urls = galleryUrls("icons");
 // Las categorías del Figma van por nombre con guiones; los iconos de Untitled UI, por nombre de componente
-const categories = Object.fromEntries(
-	Object.entries(categoriesByName as Record<string, string[]>).map(([k, names]) => [k, names.map(pascal)]),
-);
-const entries = buildEntries("icons", urls, categories);
+const categories = iconCategories();
+const entries = galleryEntries("icons");
 const groups = groupOptions(entries, ICON_CATEGORIES);
 const total = ICON_NAMES.length;
 ---

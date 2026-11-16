@@ -5,14 +5,11 @@ import { PageHeader } from "@jotis-me/react";
 import AssetGallery from "../../components/AssetGallery";
 import IconsNav from "../../components/IconsNav.astro";
 import Base from "../../layouts/Base.astro";
-import { buildEntries, encodeUrls } from "../../lib/gallery";
+import { encodeUrls } from "../../lib/gallery";
+import { galleryEntries, galleryUrls } from "../../lib/gallery-entries";
 
-const urls = import.meta.glob<string>("../../../../../packages/assets/dist/payments/*.svg", {
-	query: "?no-inline",
-	import: "default",
-	eager: true,
-});
-const entries = buildEntries("payments", urls);
+const urls = galleryUrls("payments");
+const entries = galleryEntries("payments");
 ---
 
 <Base

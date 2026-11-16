@@ -4,21 +4,21 @@ Comandos: `bunx biome ci .`, `bunx turbo run build typecheck test`, `bun run --c
 
 ## 1. Adaptador y build
 
-- [ ] 1.1 Probar `@astrojs/vercel` con una ruta `/mcp` de prueba (`prerender = false`) según D2. Después de `bun run build`, comprobar estas cuatro cosas:
+- [x] 1.1 Probar `@astrojs/vercel` con una ruta `/mcp` de prueba (`prerender = false`) según D2. Después de `bun run build`, comprobar estas cuatro cosas:
   - pagefind indexa las páginas;
   - `check:js` pasa;
   - `astro preview` sirve la web en el 4321 y pasan `header.spec.ts` y `search.spec.ts`;
   - la salida tiene `/mcp` como función.
 
   Anotar en `design.md` qué variante queda: el adaptador siempre o el plan B con `process.env.VERCEL`.
-- [ ] 1.2 Dejar la variante elegida en `astro.config.mjs`. Ajustar las rutas de `dist` en pagefind, `check:js`, `lighthouserc.json` y `playwright.config.ts` si el adaptador las movió. Verificar con el build completo y con `check:js`
+- [x] 1.2 Dejar la variante elegida en `astro.config.mjs`. Ajustar las rutas de `dist` en pagefind, `check:js`, `lighthouserc.json` y `playwright.config.ts` si el adaptador las movió. Verificar con el build completo y con `check:js`
 
 ## 2. JSON públicos
 
-- [ ] 2.1 `componentsJson` en `src/lib/`: grupo, descripción, guía (cuerpo de la ficha), props de `propsOf`, `interactive`, `astroNote`, fragmentos de `snippetsOf`, `url` y `version`. Endpoint `/components.json`. Test: `Button` trae `hierarchy` con sus cinco valores y los dos fragmentos; están los 130 componentes
-- [ ] 2.2 `tokensJson`: las categorías de `@jotis-me/tokens` aplanadas en `{ name, category, value, usage }`, con `value` por tema cuando lo trae la fuente. Endpoint `/tokens.json`. Test: `text-secondary` trae `light` y `dark`; `spacing-none` trae un valor único
-- [ ] 2.3 Sacar el montaje de las entradas de cada galería de las páginas de `icons/` a `src/lib/gallery-entries.ts` (D1). Las páginas pasan a usarlo sin cambiar su HTML; verificar con los e2e de iconos
-- [ ] 2.4 `iconsJson` con cada entrada, su galería, sus variantes, su `import` y su `url`. Endpoint `/icons.json`. Test: `SearchLg` trae `import { SearchLg } from "@untitledui/icons"` y la bandera `es` tiene el título de España. Medir el tamaño y anotarlo en la PR
+- [x] 2.1 `componentsJson` en `src/lib/`: grupo, descripción, guía (cuerpo de la ficha), props de `propsOf`, `interactive`, `astroNote`, fragmentos de `snippetsOf`, `url` y `version`. Endpoint `/components.json`. Test: `Button` trae `hierarchy` con sus cinco valores y los dos fragmentos; están los 130 componentes
+- [x] 2.2 `tokensJson`: las categorías de `@jotis-me/tokens` aplanadas en `{ name, category, value, usage }`, con `value` por tema cuando lo trae la fuente. Endpoint `/tokens.json`. Test: `text-secondary` trae `light` y `dark`; `spacing-none` trae un valor único
+- [x] 2.3 Sacar el montaje de las entradas de cada galería de las páginas de `icons/` a `src/lib/gallery-entries.ts` (D1). Las páginas pasan a usarlo sin cambiar su HTML; verificar con los e2e de iconos
+- [x] 2.4 `iconsJson` con cada entrada, su galería, sus variantes, su `import` y su `url`. Endpoint `/icons.json`. Test: `SearchLg` trae `import { SearchLg } from "@untitledui/icons"` y la bandera `es` tiene el título de España. Medir el tamaño y anotarlo en la PR
 
 ## 3. Servidor MCP
 
