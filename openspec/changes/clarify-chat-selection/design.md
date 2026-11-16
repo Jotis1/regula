@@ -22,7 +22,8 @@
 - **Con ratón:** está oculta (`opacity-0`) y aparece al pasar por encima o con el foco (`group-hover` y `group-focus-visible`), con un fundido de 100 ms como el fondo.
 - **En táctil:** con `@media (hover: none)` se ve siempre, pero solo la chincheta en `fg-quaternary`. El texto queda fuera para no robar ancho al mensaje.
 - **El elegido:** la lleva siempre, con la chincheta en `fg-brand-primary` y el texto `labels.selected` en `text-brand-secondary`, también en táctil.
-- **Sitio:** la fila pasa a `flex` con el mensaje en `min-w-0 flex-1` y la marca en `flex-none`, en una caja de una línea de alto (`h-[1lh]`), así que queda centrada con la primera línea a cualquier tamaño de texto. Siempre ocupa su sitio, aunque esté oculta, para que el texto no baile al pasar por encima.
+- **Sitio:** la marca va antes del mensaje y flota a la derecha (`float-right`) en una caja de una línea de alto (`h-[1lh]`), así que queda centrada con la primera línea a cualquier tamaño de texto. Al flotar, solo la primera línea del mensaje le deja sitio y las demás ocupan todo el ancho. El botón es `flow-root` para contener el float. La marca siempre ocupa su sitio, aunque esté oculta, para que el texto no baile al pasar por encima.
+- **Sin recortes:** la lista es un flex en columna anclado abajo. Los botones llevan `shrink-0`: con `overflow` distinto de `visible`, un elemento flex puede encogerse por debajo de su contenido, y en la ventana deslizante, en cuanto no cabían todos, se cortaba el texto de cada mensaje. La raya del elegido se recorta con `overflow-clip`, que no cambia eso.
 - *Alternativa*: un tooltip «Destacar». Se rechaza porque no sale en táctil y tarda en salir.
 
 ### D2. El elegido, como en `CodeSnippet`
@@ -43,6 +44,17 @@
 ### D4. `labels`
 
 - `labels?: Partial<ChatBoxLabels>`, con `select` («Destacar») y `selected` («Destacado»). `select` también entra en el nombre accesible.
+
+### D5. `CodeSnippet`: el destacado, de borde a borde
+
+- Con líneas destacadas, `<code>` pasa a `block w-max min-w-full`: mide lo que su línea más larga y, como poco, el bloque.
+- Cada línea destacada cubre su ancho más los rellenos del bloque a los dos lados: `-ml-5 pl-5` y, a la derecha, el de los botones (`-mr-14 pr-14`, o `-mr-20 pr-20` con `onExpand`). Así el fondo llega al borde del área que se desplaza aunque la línea no quepa.
+- Sin líneas destacadas no cambia nada.
+
+### D6. `/changelog/`
+
+- `changeBlocks` lleva las listas como árbol, por la sangría de cada `- `, a cualquier profundidad. Una entrada que empieza por una lista ya no deja el guion en un párrafo.
+- El texto pasa por `inline` (el de las piezas de composición), que pinta `código` y **negrita**. `inline` aparta el código antes de buscar la negrita, para que una negrita con código dentro se pinte y los asteriscos de dentro del código no cuenten.
 
 ## Risks / Trade-offs
 

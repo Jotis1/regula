@@ -38,3 +38,22 @@
 #### Scenario: Sin onSelect
 - **WHEN** se pinta `ChatBox` sin `onSelect`
 - **THEN** no hay ningún botón ni marca, y los mensajes se pintan como en el resto del chat
+
+#### Scenario: Chat lleno
+- **WHEN** un `ChatBox` con `onSelect` tiene más mensajes de los que caben
+- **THEN** los de arriba se salen por arriba, enteros, y ningún mensaje se recorta por dentro
+
+#### Scenario: Marca en la primera línea
+- **WHEN** un mensaje seleccionable ocupa varias líneas
+- **THEN** solo su primera línea deja sitio a la marca, y las demás ocupan todo el ancho
+
+### Requirement: Líneas destacadas en el código
+`CodeSnippet` SHALL admitir `highlight`, en el código o en cada pestaña: una lista de números de línea, desde 1, que se pintan con fondo y raya de marca y que se anuncian como destacadas a los lectores de pantalla. El fondo SHALL cubrir todo el ancho que se desplaza, de borde a borde del bloque, aunque la línea destacada u otra línea sea más larga que el bloque.
+
+#### Scenario: Líneas cambiadas
+- **WHEN** se pinta `CodeSnippet` con un código de seis líneas y `highlight={[4, 5]}`
+- **THEN** las líneas 4 y 5 llevan el fondo y la raya, y un lector oye una vez que están destacadas
+
+#### Scenario: Línea destacada más larga que el bloque
+- **WHEN** una línea destacada no cabe en el bloque y se desplaza hasta el final
+- **THEN** el fondo destacado llega hasta el borde derecho del área desplazada, sin dejar texto ni relleno fuera

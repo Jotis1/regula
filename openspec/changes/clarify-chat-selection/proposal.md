@@ -14,6 +14,10 @@ En el Mando de Scaena, el chat es seleccionable: pulsar un mensaje lo destaca en
 - **Nombre accesible con la acción:** cada botón se llama «Destacar el mensaje de lucia_88: ¿Has mirado detrás del cuadro?», así que un lector de pantalla dice qué hace antes de leer el mensaje.
 - **Textos editables:** `labels` (`select` y `selected`, «Destacar» y «Destacado» por defecto), para quien use la selección para otra cosa.
 - Sin `onSelect`, `ChatBox` no cambia: el chat del overlay se ve igual.
+- **Arreglos que salen a la vez:**
+  - `ChatBox` con `onSelect` recortaba los mensajes por dentro cuando no cabían todos (en la ventana deslizante, en cuanto rotaba la primera vez). La marca solo quita sitio a la primera línea de cada mensaje, no a todas.
+  - En `CodeSnippet`, el fondo de una línea destacada no llegaba al final si la línea no cabía en el bloque: se quedaba corto al desplazarse.
+  - En `/changelog/`, las sublistas salían con los guiones del Markdown, una entrada que empezaba por una lista dejaba un guion suelto, y la negrita con código dentro salía con sus asteriscos.
 - Fuera de alcance: acciones de moderación (borrar, banear) en `ChatBox`.
 
 ## Capabilities
@@ -24,7 +28,8 @@ Ninguna.
 
 ### Modified Capabilities
 
-- `component-library`: el requisito «Chat seleccionable» de `ChatBox` dice qué hace el clic y cómo se ve el elegido.
+- `component-library`: el requisito «Chat seleccionable» de `ChatBox` dice qué hace el clic y cómo se ve el elegido, y «Líneas destacadas en el código» pide que el fondo cubra todo el ancho desplazado.
+- `docs-site`: «Historial de cambios» pinta sublistas y negrita con código.
 
 ## Impact
 
