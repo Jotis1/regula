@@ -23,6 +23,10 @@ La portada, las páginas de iconos y la 404 no SHALL llevar navegación lateral.
 - **WHEN** se abre la página de color
 - **THEN** la navegación lateral enseña las páginas de Fundamentos, con Color como actual, y no enseña los grupos de componentes
 
+#### Scenario: Cabecera a 1024 px
+- **WHEN** se abre cualquier página a 1024 px de ancho
+- **THEN** las seis secciones caben, la búsqueda es un botón de icono de 44 px a la vista y la página no se desplaza en horizontal
+
 #### Scenario: Buscar una norma
 - **WHEN** el usuario pulsa Ctrl+K y escribe "NOM-001" o "dominio inverso"
 - **THEN** aparece la norma de los paquetes privados, y Enter lleva a su área con la norma a la vista
@@ -39,7 +43,7 @@ Las rutas antiguas `/components/<componente>/composiciones/` SHALL redirigir a l
 
 #### Scenario: Composiciones de Modal
 - **WHEN** se abre `/components/modal/composiciones/`
-- **THEN** la web redirige a `/components/modal/compositions/`, que enseña las 51 composiciones
+- **THEN** la web redirige a `/components/modal/compositions`, que enseña las 51 composiciones
 
 #### Scenario: Icono desde la búsqueda
 - **WHEN** el usuario busca un icono con Ctrl+K y pulsa Enter

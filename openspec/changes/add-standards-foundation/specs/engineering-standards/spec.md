@@ -61,7 +61,7 @@ El área de nombres SHALL fijar dos normas de nivel DEBE:
 
 #### Scenario: Paquete publicado
 - **WHEN** se mira el ejemplo que no cumple la norma de los paquetes publicados
-- **THEN** enseña un paquete publicado con nombre en dominio inverso, y la norma explica que npm no admite ese nombre como scope
+- **THEN** enseña un paquete publicado con nombre en dominio inverso, y la norma explica que sin scope cualquiera podría registrar ese nombre en npm
 
 ### Requirement: Idioma del código y de los textos
 El área de idioma SHALL fijar, con nivel DEBE:

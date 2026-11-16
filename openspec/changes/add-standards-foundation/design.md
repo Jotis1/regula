@@ -31,7 +31,7 @@ Estado de los nombres y los commits:
 Las normas viven en `apps/docs/src/content/standards/<area>.yaml`: un fichero por área, con los datos del área y su lista `rules`. Se cargan con el `glob` loader y se validan con un esquema Zod en `content.config.ts`. Los campos van en inglés:
 
 ```yaml
-id: naming          # slug de la URL
+# naming.yaml: el nombre del fichero es el slug de la URL (`/standards/naming/`)
 prefix: NOM
 title: Nombres
 description: …
@@ -66,28 +66,28 @@ YAML se lee bien en un diff y lo escribe bien un agente.
   - la sección `standards` (`Normas`, `/standards/`), al final de `SECTIONS`. Las normas no son de diseño, así que no van entre Fundamentos y Componentes;
   - `STANDARD_AREAS` (slug y etiqueta, en orden).
 - Un test comprueba que `STANDARD_AREAS` y la colección tienen las mismas áreas, igual que se hace hoy con los grupos de componentes. `nav.ts` añade la sección con el índice y las áreas.
-- Las páginas son `src/pages/standards/index.astro` y `src/pages/standards/[area].astro`, con el mismo esqueleto que `FoundationPage`: `PageHeader`, `SectionHeader` y el índice de la página. Si `FoundationPage` se puede generalizar sin romper fundamentos, se reutiliza; si no, se hace `StandardsPage` con las mismas piezas.
+- Las páginas son `src/pages/standards/index.astro` y `src/pages/standards/[area].astro`. El área usa `layouts/StandardsPage.astro`, con las mismas piezas que `FoundationPage` (`PageHeader`, índice de la página, `Pager`); no se generalizó `FoundationPage` para no tocar los fundamentos. Cada norma se pinta con `components/StandardRule.astro`.
 - **En la página de un área**, cada norma es una sección `h2` con `id` igual a su ID en minúsculas. Lleva:
   - un `Badge` con el nivel en texto: «Debe» en color de marca, «Debería» en aviso y «Puede» en gris;
   - otro `Badge` con a qué se aplica;
   - el enunciado y el porqué;
-  - un `Pair` con dos `Rule` («Esto sí» y «Esto no»);
+  - dos `ExampleCard` sin damero («Esto sí» y «Esto no»), una sobre otra: las líneas de código de los ejemplos no caben en dos columnas;
   - una línea «Cómo se verifica».
 - **En el índice**, cada área es una lista de normas con ID, título y nivel.
 
-### D3. Código de los ejemplos sin isla
+### D3. Código de los ejemplos con la isla de `CodeSnippet`
 
-Los ejemplos van dentro de una `Rule`, que es inerte, así que no hacen falta ni el botón de copiar ni las pestañas. El `CodeSnippet` se pinta en el servidor, sin `client:*`, y las páginas de normas no cargan su JS. Si el `CodeSnippet` pintado en el servidor no trae el resaltado, se usa `compose/Code.astro` (isla) y se mide con `check:js` contra el límite por defecto (192 kB).
+Se probó pintar el `CodeSnippet` en el servidor dentro de un bloque `inert` (como las `Rule` de los fundamentos). No sirve: el código largo se recorta sin poder desplazarlo y el botón de copiar no funciona. Los ejemplos usan `CodeSnippetIsland` con `client:visible`, sin números de línea. Las páginas de normas quedan dentro del límite por defecto de `js-budget.json` (192 kB), medido con `check:js`.
 
 ### D4. `/standards.json`
 
 Es un endpoint estático, `src/pages/standards.json.ts`, que lee la colección y devuelve:
 
 ```
-{ version, areas: [{ id, prefix, title, description, rules: [...] }] }
+{ version, areas: [{ id, prefix, title, description, url, rules: [{ …campos de la norma, url }] }] }
 ```
 
-Las áreas van ordenadas por `order` y las normas, en el orden del fichero. `version` es la de `@jotis-me/react`, la misma que enseña el pie. No lleva fecha de generación, para que el build sea determinista. El MCP leerá la misma colección, no este JSON. El JSON es para quien no use MCP.
+Las áreas van ordenadas por `order` y las normas, en el orden del fichero. `version` es la de `@jotis-me/react`, la misma que enseña el pie. `url` es la dirección absoluta del área y de la norma (con su ancla). No lleva fecha de generación, para que el build sea determinista. El MCP leerá la misma colección, no este JSON. El JSON es para quien no use MCP.
 
 ### D5. Búsqueda
 
@@ -146,11 +146,15 @@ Así una norma no puede decir que se comprueba algo que no existe.
   - los e2e;
   - los scripts de captura.
 
-  La ruta antigua redirige con `redirects` de `astro.config`, que en un sitio estático genera una página de redirección por ruta. Las rutas salen de las mismas composiciones que generan las páginas.
+  La ruta antigua redirige con `redirects` de `astro.config` (`/components/[slug]/composiciones` → `/components/[slug]/compositions`), que en un sitio estático genera una página de redirección por ruta con composiciones. Astro no admite una barra final en el destino de una redirección dinámica, así que se llega a `/components/modal/compositions` y el hosting la normaliza. Las páginas de redirección no son páginas: el recorrido de `a11y.spec.ts` las salta.
 - `?icono=` pasa a `?icon=` en `AssetGallery` y en el índice de búsqueda.
 - `?tema=oscuro` pasa a `?theme=dark` en `/visual/[name]` y `/showcase/[name]`, en `capture-approved.ts`, en `capture-showcases.ts` y en los e2e.
 - Los parámetros antiguos no se mantienen. Los de `/visual/` y `/showcase/` solo los usan los tests y las capturas. El de la galería solo lo genera la búsqueda, que cambia a la vez.
 - El ancla `#composiciones` de la ficha es un título de la página y sigue el texto («Composiciones»). Las anclas de grupo de `/components/` (`#acciones`) también siguen su título.
+
+### D11. La búsqueda de la cabecera, en icono hasta `xl`
+
+Con seis secciones, el campo de búsqueda de 300 px ya no cabía a 1024 px: se cortaba por la derecha. `SiteSearch` pasa a ser el botón de icono de 44 px hasta `xl` (1280 px) y el campo completo desde `xl`. Es un cambio de las clases de `SiteSearch.tsx`, no del paquete.
 
 ### Normas iniciales
 
