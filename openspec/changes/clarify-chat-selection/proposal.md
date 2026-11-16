@@ -10,7 +10,7 @@ En el Mando de Scaena, el chat es seleccionable: pulsar un mensaje lo destaca en
   - Con ratón, sale al pasar por encima o con el foco.
   - En pantallas táctiles, que no tienen hover, se ve siempre la chincheta sola, discreta.
   - El elegido la lleva siempre, con «Destacado».
-- **El elegido se destaca como en `CodeSnippet`:** fondo `bg-brand-primary_alt` y raya de 2px en `fg-brand-primary` a la izquierda, en lugar de `bg-active` y `border-brand`.
+- **El elegido se destaca como en `CodeSnippet`:** raya de 2px en `fg-brand-primary` a la izquierda sobre un fondo de marca, en lugar de `bg-active` y `border-brand`.
 - **Nombre accesible con la acción:** cada botón se llama «Destacar el mensaje de lucia_88: ¿Has mirado detrás del cuadro?», así que un lector de pantalla dice qué hace antes de leer el mensaje.
 - **Textos editables:** `labels` (`select` y `selected`, «Destacar» y «Destacado» por defecto), para quien use la selección para otra cosa.
 - Sin `onSelect`, `ChatBox` no cambia: el chat del overlay se ve igual.

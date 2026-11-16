@@ -1,7 +1,7 @@
 ## MODIFIED Requirements
 
 ### Requirement: Chat seleccionable
-`ChatBox` SHALL admitir `onSelect` y `selectedId`. Con `onSelect`, cada mensaje con `id` y sin `selectable: false` SHALL ser un botón que llama a `onSelect` con su mensaje, y el elegido SHALL marcarse con `aria-pressed` y a la vista, con el fondo y la raya de las líneas destacadas de `CodeSnippet`. Cada botón SHALL decir qué hace: con ratón, al pasar por encima o con el foco, una marca con la chincheta y «Destacar»; en táctil, la chincheta siempre; y el elegido, siempre, con «Destacado». Su nombre accesible SHALL empezar por la acción y decir de quién es el mensaje. Los textos SHALL poder cambiarse con `labels`. Sin `onSelect`, `ChatBox` MUST NOT tener botones.
+`ChatBox` SHALL admitir `onSelect` y `selectedId`. Con `onSelect`, cada mensaje con `id` y sin `selectable: false` SHALL ser un botón que llama a `onSelect` con su mensaje, y el elegido SHALL marcarse con `aria-pressed` y a la vista, con la raya de las líneas destacadas de `CodeSnippet` sobre un fondo de marca. Cada botón SHALL decir qué hace: con ratón, al pasar por encima o con el foco, una marca con la chincheta y «Destacar»; en táctil, la chincheta siempre; y el elegido, siempre, con «Destacado». Su nombre accesible SHALL empezar por la acción y decir de quién es el mensaje. Los textos SHALL poder cambiarse con `labels`. Sin `onSelect`, `ChatBox` MUST NOT tener botones.
 
 #### Scenario: Elegir un mensaje
 - **WHEN** en un `ChatBox` con `onSelect` se pulsa el mensaje de «lucia_88»
@@ -9,7 +9,7 @@
 
 #### Scenario: Elegido a la vista
 - **WHEN** `selectedId` es el de un mensaje
-- **THEN** ese mensaje lleva `aria-pressed="true"`, fondo `bg-brand-primary_alt`, la raya de 2px en `fg-brand-primary` y la marca «Destacado», y los demás `aria-pressed="false"`
+- **THEN** ese mensaje lleva `aria-pressed="true"`, fondo de marca, la raya de 2px en `fg-brand-primary` y la marca «Destacado», y los demás `aria-pressed="false"`
 
 #### Scenario: Qué hace el clic
 - **WHEN** con ratón se pasa por encima de un mensaje seleccionable

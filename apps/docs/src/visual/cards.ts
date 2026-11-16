@@ -48,7 +48,7 @@ export const CARD_HEIGHTS: Record<string, number> = {
 	RadarChart: 720,
 	ChartMarker: 620,
 	ChatBadge: 190,
-	ChatBox: 500,
+	ChatBox: 820,
 	Checkbox: 170,
 	CloseButton: 160,
 	ButtonUtility: 170,

@@ -27,8 +27,11 @@
 
 ### D2. El elegido, como en `CodeSnippet`
 
-- Fondo `bg-brand-primary_alt` y la raya con `shadow-[inset_2px_0_0_var(--fg-brand-primary)]`, igual que las líneas de `CodeSnippet`.
-- Las filas dejan `border-l-2`: la raya es una sombra interior y no ocupa sitio, así que las filas siguen alineadas entre sí.
+- La raya de 2px en `fg-brand-primary` de las líneas de `CodeSnippet`, sobre un fondo de marca.
+- **El fondo es `bg-brand-primary` al 15 %, no `bg-brand-primary_alt`.** Las piezas de stream van siempre en oscuro, y ahí `bg-brand-primary_alt` es `#171717`, el mismo gris que el fondo del chat (`bg-primary_alt`): solo se vería la raya. Al 15 %, la marca tiñe la fila como `bg-brand-primary_alt` tiñe las líneas de `CodeSnippet` en claro.
+- **La raya va en un pseudoelemento** (`before:`), no en una sombra como en `CodeSnippet`, porque el anillo de foco también es una sombra y la taparía.
+- **Al pasar por encima** de los demás, el fondo pasa a `bg-secondary_hover`: `bg-primary_hover` también es `#171717` en oscuro y no se veía.
+- Las filas dejan `border-l-2`: la raya es un pseudoelemento y no ocupa sitio, así que las filas siguen alineadas entre sí.
 - Al pasar por encima del elegido, el fondo no cambia.
 
 ### D3. Nombre accesible

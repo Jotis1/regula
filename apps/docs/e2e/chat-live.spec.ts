@@ -118,6 +118,55 @@ test.describe("Chat seleccionable en la ficha", () => {
 	});
 });
 
+// Qué hace el clic en el chat seleccionable (clarify-chat-selection, D1): el ejemplo visual lleva uno con «lucia_88» elegido.
+const selectable = (page: Page) => page.getByRole("log", { name: "Chat del panel de control" });
+
+test.describe("Qué hace el clic", () => {
+	test("con ratón, la marca «Destacar» sale al pasar por encima y el texto no se mueve", async ({ page }) => {
+		await page.goto("/visual/chat-box/?tema=oscuro");
+		await page.evaluate(() => document.fonts.ready);
+		const row = selectable(page).getByRole("button", { name: /^Destacar el mensaje de nachoXL/ });
+		const mark = row.locator("[data-chat-action]");
+		await expect(mark).toHaveText("Destacar");
+		await expect(mark).toHaveCSS("opacity", "0");
+		const text = row.locator("span.min-w-0");
+		const before = await text.boundingBox();
+		await row.hover();
+		await expect(mark).toHaveCSS("opacity", "1");
+		expect(await text.boundingBox()).toEqual(before);
+		// El elegido lleva «Destacado» siempre
+		const chosen = selectable(page).getByRole("button", { name: /^Destacar el mensaje de lucia_88/ });
+		await expect(chosen).toHaveAttribute("aria-pressed", "true");
+		await expect(chosen.locator("[data-chat-action]")).toHaveText("Destacado");
+		await expect(chosen.locator("[data-chat-action]")).toHaveCSS("opacity", "1");
+	});
+
+	test("con teclado, la marca sale con el foco", async ({ page }) => {
+		await page.goto("/visual/chat-box/?tema=oscuro");
+		const rows = selectable(page).getByRole("button");
+		await rows.nth(1).focus();
+		await page.keyboard.press("Shift+Tab");
+		const row = rows.first();
+		await expect(row).toBeFocused();
+		await expect(row.locator("[data-chat-action]")).toHaveCSS("opacity", "1");
+	});
+});
+
+test.describe("En táctil", () => {
+	test.use({ hasTouch: true, isMobile: true });
+	test("sin hover, cada mensaje enseña la chincheta sin texto y el elegido «Destacado»", async ({ page }) => {
+		await page.goto("/visual/chat-box/?tema=oscuro");
+		expect(await page.evaluate(() => matchMedia("(hover: none)").matches)).toBe(true);
+		const row = selectable(page).getByRole("button", { name: /^Destacar el mensaje de nachoXL/ });
+		const mark = row.locator("[data-chat-action]");
+		await expect(mark).toHaveCSS("opacity", "1");
+		await expect(mark.locator("svg")).toBeVisible();
+		await expect(mark.getByText("Destacar")).toBeHidden();
+		const chosen = selectable(page).getByRole("button", { name: /^Destacar el mensaje de lucia_88/ });
+		await expect(chosen.locator("[data-chat-action]").getByText("Destacado")).toBeVisible();
+	});
+});
+
 test.describe("StreamPinnedMessage", () => {
 	test("Mensaje de 500 caracteres: como mucho cuatro líneas, sin pasar del ancho", async ({ page }) => {
 		await page.goto("/visual/stream-pinned-message/?tema=oscuro");

@@ -126,11 +126,12 @@ export function ChatBox({
 								row,
 								pad,
 								"group relative flex w-full cursor-pointer items-start gap-3 overflow-hidden text-left transition-colors duration-100 focus-visible:shadow-focus-ring focus-visible:outline-none",
-								// Como las líneas destacadas de CodeSnippet (D2). La raya es un pseudoelemento y no una sombra,
+								// Como las líneas destacadas de CodeSnippet (D2), con el fondo de marca al 15 %: en oscuro bg-brand-primary_alt es
+								// el mismo gris que el chat y no se vería. La raya es un pseudoelemento y no una sombra,
 								// para que el anillo de foco no la tape.
 								selected
-									? "bg-brand-primary_alt before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-(--fg-brand-primary)"
-									: "hover:bg-primary_hover",
+									? "bg-brand-primary/15 before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-(--fg-brand-primary)"
+									: "hover:bg-secondary_hover",
 							)}
 						>
 							<span className="min-w-0 flex-1">

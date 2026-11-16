@@ -122,7 +122,7 @@ describe("Chat seleccionable", () => {
 		expect(b?.getAttribute("aria-pressed")).toBe("true");
 		expect(classes(b)).toEqual(
 			expect.arrayContaining([
-				"bg-brand-primary_alt",
+				"bg-brand-primary/15",
 				"before:w-0.5",
 				"before:bg-(--fg-brand-primary)",
 			]),
@@ -130,7 +130,7 @@ describe("Chat seleccionable", () => {
 		expect(b?.querySelector("[data-chat-action]")?.textContent).toBe("Destacado");
 		expect(classes(b?.querySelector("[data-chat-action]"))).not.toContain("opacity-0");
 		expect(a?.getAttribute("aria-pressed")).toBe("false");
-		expect(classes(a)).not.toContain("bg-brand-primary_alt");
+		expect(classes(a)).not.toContain("bg-brand-primary/15");
 	});
 
 	it("Qué hace el clic: los demás llevan «Destacar», oculta hasta el hover o el foco", () => {

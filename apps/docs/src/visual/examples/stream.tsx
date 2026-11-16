@@ -137,20 +137,39 @@ const CHAT: ChatMessage[] = [
 	},
 ];
 
+// Chat seleccionable, como en un panel de control (clarify-chat-selection): uno elegido y un bot que no se puede elegir.
+const SELECTABLE: ChatMessage[] = [
+	{ id: "s1", user: "nachoXL", tone: "emerald", badges: ["sub"], text: "Cuenta atrás para el primer susto." },
+	{ id: "s2", user: "Nightbot", text: "Normas del canal en el panel.", selectable: false },
+	{ id: "s3", user: "lucia_88", tone: "pink", badges: ["sub"], text: "¿Has mirado detrás del cuadro?" },
+	{ id: "s4", user: "TioBigotes", tone: "sky", badges: ["mod"], text: "Sin spoilers del final, por favor." },
+];
+
 export function ChatBoxExample() {
 	return (
-		<div className="flex items-start gap-6 p-2">
-			<ChatBox messages={CHAT} height={440} animate />
-			{/* Fondo de juego de mentira, para ver la transparencia (como la vista previa) */}
-			<div
-				className="rounded-2xl bg-secondary p-5"
-				style={{
-					backgroundImage:
-						"repeating-linear-gradient(135deg, var(--bg-tertiary) 0 12px, var(--bg-quaternary) 12px 24px)",
-				}}
-			>
-				<ChatBox messages={CHAT} height={400} width={400} translucent />
+		<div className="flex flex-col gap-6 p-2">
+			<div className="flex items-start gap-6">
+				<ChatBox messages={CHAT} height={440} animate />
+				{/* Fondo de juego de mentira, para ver la transparencia (como la vista previa) */}
+				<div
+					className="rounded-2xl bg-secondary p-5"
+					style={{
+						backgroundImage:
+							"repeating-linear-gradient(135deg, var(--bg-tertiary) 0 12px, var(--bg-quaternary) 12px 24px)",
+					}}
+				>
+					<ChatBox messages={CHAT} height={400} width={400} translucent />
+				</div>
 			</div>
+			<ChatBox
+				messages={SELECTABLE}
+				width={600}
+				height={280}
+				fade={false}
+				onSelect={() => {}}
+				selectedId="s3"
+				aria-label="Chat del panel de control"
+			/>
 		</div>
 	);
 }
