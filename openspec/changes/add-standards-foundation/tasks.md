@@ -4,9 +4,9 @@ Comandos: `bunx biome ci .`, `bunx turbo run typecheck test build`, `bun run che
 
 ## 1. Fuente de normas
 
-- [ ] 1.1 Colección `standards` en `content.config.ts` con el esquema Zod de D1: campos, formato del ID, al menos un ejemplo `good` y otro `bad`, y `check` o `review` según `kind`
-- [ ] 1.2 `naming.yaml`, `language.yaml`, `git.yaml` y `process.yaml` con las doce normas de la tabla del diseño, con sus ejemplos y su verificación. Los ejemplos tienen que cubrir los escenarios de la spec `engineering-standards`: `me.jotis.regula.docs`, un nombre publicado en dominio inverso, la función con nombre en español, `?tema=oscuro` frente a `?theme=dark`, el comentario que sobra, el commit con varios cambios, `feat(react): ChatBox dice qué hace el clic`, `Arreglos en la propuesta`, `feat/chat-select-affordance` y la PR sin cambio de OpenSpec
-- [ ] 1.3 `STANDARD_AREAS` en `catalog.ts` y sección `standards` al final de `SECTIONS` (D2)
+- [x] 1.1 Colección `standards` en `content.config.ts` con el esquema Zod de D1: campos, formato del ID, al menos un ejemplo `good` y otro `bad`, y `check` o `review` según `kind`
+- [x] 1.2 `naming.yaml`, `language.yaml`, `git.yaml` y `process.yaml` con las doce normas de la tabla del diseño, con sus ejemplos y su verificación. Los ejemplos tienen que cubrir los escenarios de la spec `engineering-standards`: `me.jotis.regula.docs`, un nombre publicado en dominio inverso, la función con nombre en español, `?tema=oscuro` frente a `?theme=dark`, el comentario que sobra, el commit con varios cambios, `feat(react): ChatBox dice qué hace el clic`, `Arreglos en la propuesta`, `feat/chat-select-affordance` y la PR sin cambio de OpenSpec
+- [x] 1.3 `STANDARD_AREAS` en `catalog.ts` y sección `standards` al final de `SECTIONS` (D2)
 - [ ] 1.4 Tests de Vitest de la colección: IDs únicos, prefijo igual al del área, áreas iguales a las de `STANDARD_AREAS`, y cada `check` existe en `ci.yml`, en `biome.json` o como fichero de test (D9). Comprobar que fallan con un ID repetido, con un `check` inexistente y con un ejemplo `bad` que falta
 
 ## 2. Web
