@@ -55,8 +55,8 @@ jobs:
               uses: changesets/action@v1
               with:
                   version: bun run version-packages
-                  title: "Versión de los paquetes"
-                  commit: "Versión de los paquetes"
+                  title: "chore(release): versión de los paquetes"
+                  commit: "chore(release): versión de los paquetes"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             # Sin changesets pendientes (se acaba de fusionar el PR de versión): se publica lo que no esté en npm.
