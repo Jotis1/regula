@@ -43,6 +43,12 @@ describe("componentsJson", () => {
 		expect(button?.guide).toContain("**Cuándo.**");
 	});
 
+	it("los grupos van en el orden de la web y nombran componentes que existen", () => {
+		expect(json.groups[0]).toMatchObject({ id: "acciones", label: "Acciones" });
+		const names = new Set(json.components.map((c) => c.name));
+		for (const g of json.groups) for (const n of g.components) expect(names.has(n), n).toBe(true);
+	});
+
 	it("cada componente está en un grupo y lleva fragmentos", () => {
 		for (const c of json.components) {
 			expect(c.group, `${c.name} sin grupo`).not.toBeNull();

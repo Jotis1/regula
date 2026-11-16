@@ -22,8 +22,8 @@ Comandos: `bunx biome ci .`, `bunx turbo run build typecheck test`, `bun run --c
 
 ## 3. Servidor MCP
 
-- [ ] 3.1 Dependencia `@modelcontextprotocol/sdk` con versión fijada. Crear `src/mcp/data.ts` con `RegulaData` y `loadData(origin)`, que guarda los datos en memoria (D4 y D5)
-- [ ] 3.2 Crear `src/mcp/tools.ts` con siete herramientas puras:
+- [x] 3.1 Dependencia `@modelcontextprotocol/sdk` con versión fijada. Crear `src/mcp/data.ts` con `RegulaData` y `loadData(origin)`, que guarda los datos en memoria (D4 y D5)
+- [x] 3.2 Crear `src/mcp/tools.ts` con siete herramientas puras:
   - `list_standards` y `get_standard`;
   - `list_components` y `get_component`;
   - `search_tokens`;
@@ -37,12 +37,12 @@ Comandos: `bunx biome ci .`, `bunx turbo run build typecheck test`, `bun run --c
   - en los errores, dar sugerencias por parecido.
 
   Tests unitarios con los escenarios de la spec `mcp-server`: `git-001`, `NOM-999`, `button`, `Botón`, `text-secondary`, `search-lg`, `españa` con `flags` y `dominio inverso`
-- [ ] 3.3 Crear `src/mcp/server.ts`:
+- [x] 3.3 Crear `src/mcp/server.ts`:
   - `createServer(data)` con `McpServer`, nombre `regula`, la versión de la web, esquemas Zod y `readOnlyHint` en todas las herramientas;
   - `handle(request, load)` con el transporte sin sesión de D3. Un `GET` o un `DELETE` devuelven 405 con el enlace a `/start/mcp/`;
   - un array exportado con las herramientas, para la página.
-- [ ] 3.4 Crear `src/pages/mcp.ts`, que llama a `handle`. Si el plan B de D2 está activo, la ruta se inyecta desde la integración
-- [ ] 3.5 Crear `test/mcp.test.ts` con `Client` del SDK contra `handle` (D6), usando un `fetch` falso. Cubrir `initialize` (nombre y versión), `tools/list` (siete herramientas, todas de solo lectura), una llamada con éxito y otra con error por herramienta, la llamada sin `query` y el `GET` con 405
+- [x] 3.4 Crear `src/mcp/route.ts`, que llama a `handle` y se inyecta como `/mcp` desde la integración de `astro.config.mjs` cuando existe `VERCEL` (D2). Verificar: el build con `VERCEL=1` genera `_render.func` (en Windows solo falla el enlace simbólico) y la preview de Vercel responde a `initialize`
+- [x] 3.5 Crear `test/mcp.test.ts` con `Client` del SDK contra `handle` (D6), usando un `fetch` falso. Cubrir `initialize` (nombre y versión), `tools/list` (siete herramientas, todas de solo lectura), una llamada con éxito y otra con error por herramienta, la llamada sin `query` y el `GET` con 405
 
 ## 4. Guía
 

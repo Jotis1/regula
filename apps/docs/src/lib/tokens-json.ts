@@ -9,7 +9,8 @@ export interface FlatToken {
 	category: string;
 	value: TokenValue | { fontSize: string; lineHeight: string; fontWeight: number; letterSpacing: string };
 	font?: string;
-	usage: string;
+	/** What it is for; `null` when the source does not say (some type styles). */
+	usage: string | null;
 }
 
 interface SimpleCategory {
@@ -29,7 +30,7 @@ export interface TokensSource {
 				lineHeight: string;
 				fontWeight: number;
 				letterSpacing: string;
-				usage: string;
+				usage?: string;
 			}[];
 		}[];
 	};
@@ -50,7 +51,13 @@ export function tokensJson(source: TokensSource, version: string) {
 		if (category === "type") {
 			for (const group of source.type.groups)
 				for (const { name, usage, ...value } of group.styles)
-					tokens.push({ name, category, value, font: source.type.families[group.family], usage });
+					tokens.push({
+						name,
+						category,
+						value,
+						font: source.type.families[group.family],
+						usage: usage ?? null,
+					});
 			continue;
 		}
 		for (const t of source[category].tokens)

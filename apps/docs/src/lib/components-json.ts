@@ -53,5 +53,13 @@ export function componentsJson(
 			};
 		})
 		.sort((a, b) => a.name.localeCompare(b.name, "en"));
-	return { version, components };
+	// Groups in the order of the site, so a client can list them as the guide does
+	const groups = COMPONENT_GROUPS.map(({ id, label, description, section, components }) => ({
+		id,
+		label,
+		description,
+		section,
+		components: [...components],
+	}));
+	return { version, groups, components };
 }
