@@ -175,11 +175,15 @@ La portada, las páginas de iconos y la 404 no SHALL llevar navegación lateral.
 - **THEN** aparece la norma de los paquetes privados, y Enter lleva a su área con la norma a la vista
 
 ### Requirement: Publicación en regula.jotis.me
-La web SHALL servirse como sitio estático en `https://regula.jotis.me` con HTTPS, y SHALL indicar en el pie la versión de los paquetes que documenta, con un enlace al historial de cambios.
+La web SHALL servirse en `https://regula.jotis.me` con HTTPS. Todas sus páginas SHALL prerenderizarse en el build; solo `/mcp` SHALL correr en servidor. La web SHALL indicar en el pie la versión de los paquetes que documenta, con un enlace al historial de cambios.
 
 #### Scenario: Versión documentada
 - **WHEN** se publica una versión nueva de los paquetes
 - **THEN** tras el despliegue el pie de la web muestra ese número de versión
+
+#### Scenario: Solo el MCP en servidor
+- **WHEN** se construye la web
+- **THEN** todas las páginas y los JSON salen como ficheros estáticos y `/mcp` es la única ruta en servidor
 
 ### Requirement: Rendimiento y accesibilidad de la web
 Las páginas de la web SHALL pasar axe sin violaciones serias o críticas y SHALL obtener al menos 90 en Lighthouse en rendimiento y accesibilidad en móvil, sin excepciones.
@@ -535,3 +539,14 @@ Cada norma SHALL tener un ancla con su ID en minúsculas (`/standards/naming/#no
 #### Scenario: Enlace a una norma
 - **WHEN** se abre `/standards/git/#git-001`
 - **THEN** la página baja hasta la norma de Conventional Commits, que muestra su nivel, a qué se aplica, el porqué, los ejemplos y cómo se verifica
+
+### Requirement: Página del MCP
+La sección Empezar SHALL tener una página `/start/mcp/` que explica:
+- la URL del servidor y que es solo de consulta;
+- cómo conectarlo desde Claude Code (`claude mcp add --transport http regula https://regula.jotis.me/mcp`) y desde un cliente genérico por configuración JSON;
+- qué herramientas hay y qué devuelve cada una;
+- los JSON públicos que lo alimentan.
+
+#### Scenario: Conectar desde la guía
+- **WHEN** se abre `/start/mcp/`
+- **THEN** aparece el comando de Claude Code en un `CodeSnippet` que se puede copiar y la lista de herramientas, y la navegación lateral marca la página dentro de Empezar
