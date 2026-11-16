@@ -46,15 +46,15 @@ Comandos: `bunx biome ci .`, `bunx turbo run build typecheck test`, `bun run --c
 
 ## 4. Guía
 
-- [ ] 4.1 Página `src/pages/start/mcp.mdx` (D7). Debe tener:
+- [x] 4.1 Página `src/pages/start/mcp.mdx` (D7). Debe tener:
   - la URL;
   - el aviso de que es solo de consulta;
   - un `CodeSnippet` con `claude mcp add --transport http regula https://regula.jotis.me/mcp`;
   - la configuración JSON genérica;
   - la tabla de herramientas, que sale del array de `server.ts`;
   - los cuatro JSON.
-- [ ] 4.2 Añadir la entrada «MCP» en Empezar de `nav.ts`, detrás de Instalación, con palabras clave para la búsqueda (`mcp agente ia claude`). Actualizar los tests de `sidenav` si cuentan las entradas
-- [ ] 4.3 e2e del escenario «Conectar desde la guía», con el comando copiable y la página marcada en la navegación, y axe en los dos temas para `/start/mcp/`
+- [x] 4.2 Añadir la entrada «Servidor MCP» en Empezar de `nav.ts`, detrás de Instalación, con palabras clave para la búsqueda (`mcp agente ia claude`). Actualizar los tests de `sidenav` si cuentan las entradas
+- [x] 4.3 e2e del escenario «Conectar desde la guía», con el comando copiable y la página marcada en la navegación (`e2e/mcp.spec.ts`), y axe en los dos temas para `/start/mcp/`, que ya cubre el recorrido de `a11y.spec.ts`
 
 ## 5. Entrega
 

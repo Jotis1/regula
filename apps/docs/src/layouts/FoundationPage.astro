@@ -28,13 +28,15 @@ const path = [
 	{ slug: "install", label: "Instalación", href: "/start/install/" },
 	...FOUNDATIONS.map((f) => ({ ...f, href: `/foundations/${f.slug}/` })),
 ];
+// El MCP es un apartado de Empezar, no un paso del recorrido: vuelve a la instalación y no tiene siguiente
+const aside = slug === "mcp";
 const index = path.findIndex((p) => p.slug === slug);
-const prev = index > 0 ? path[index - 1] : undefined;
-const next = index > 0 && index < path.length - 1 ? path[index + 1] : undefined;
+const prev = aside ? path[1] : index > 0 ? path[index - 1] : undefined;
+const next = !aside && index > 0 && index < path.length - 1 ? path[index + 1] : undefined;
 const crumbs =
 	slug === "stream"
 		? [{ label: "Stream", href: "/foundations/stream/" }, { label: title }]
-		: slug === "install"
+		: slug === "install" || slug === "mcp"
 			? [{ label: "Empezar", href: "/" }, { label: title }]
 			: [{ label: "Fundamentos", href: "/foundations/principles/" }, { label: title }];
 ---
