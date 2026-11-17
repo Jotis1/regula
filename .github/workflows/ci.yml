@@ -63,7 +63,7 @@ jobs:
                   bun-version-file: package.json
             - run: bun install --frozen-lockfile
             - name: Biome
-              run: bunx biome ci .
+              run: bunx biome ci --error-on-warnings .
             - name: Nada lee reference/ (congelada)
               run: bun run check:reference
             # NAM-001 y NAM-002: los paquetes privados en dominio inverso y los publicados bajo @jotis-me
