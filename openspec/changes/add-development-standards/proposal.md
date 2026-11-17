@@ -25,6 +25,15 @@ Este cambio es el 3 de la hoja de ruta, «normas de desarrollo». Escribe las no
     - Turbo;
     - `engines.node`;
     - Dependabot semanal y agrupado.
+  - **Estructura** (`STR`), para que cualquier proyecto de la suite se navegue igual:
+    - el monorepo en `apps/`, `packages/`, `examples/` y `scripts/`;
+    - cada workspace con `src/`, `test/`, `e2e/` y `scripts/`, sin tests dentro de `src/`;
+    - las apps de Next en `src/app/`, como las de Astro en `src/`;
+    - en el `src/` de una app, solo las carpetas del framework, las compartidas por tipo (`components/`, `hooks/`, `lib/`, `styles/`, `data/`) y `features/<nombre>/`;
+    - lo que usa una sola funcionalidad vive en su carpeta, y lo que usan dos o más sube a la compartida;
+    - en un paquete, las entradas en la raíz de `src/` y lo privado en `src/internal/`;
+    - ni builds ni cachés en Git;
+    - un componente por archivo, con el nombre de su export.
   - **Código** (`COD`):
     - el tsconfig con `strict`, `noUncheckedIndexedAccess`, `erasableSyntaxOnly`, `noImplicitOverride`, `noImplicitReturns`, `noFallthroughCasesInSwitch` y `verbatimModuleSyntax`;
     - `typecheck` en todos los workspaces;
@@ -57,7 +66,7 @@ Este cambio es el 3 de la hoja de ruta, «normas de desarrollo». Escribe las no
   - los commits y las ramas que generan los bots (Dependabot) quedan fuera de la norma del idioma. Siguen cumpliendo Conventional Commits;
   - una norma nueva de tipografía, `LNG-005`: ni el punto medio («·») ni las rayas («—» y «–») en ningún texto del repo ni en los commits. En su lugar va el guión simple («-»).
 - **Formato:** la norma del bloque de Biome dice de forma explícita la sangría (tabuladores de ancho 4), el largo de línea, las comillas y el punto y coma.
-- **Orden de las áreas:** Nombres, Idioma, Stack, Código, Documentación, Versiones, Git, CI y Proceso.
+- **Orden de las áreas:** Nombres, Idioma, Stack, Estructura, Código, Documentación, Versiones, Git, CI y Proceso.
 - **Regula las cumple:**
   - un script nuevo, `check:dev` (paso «Normas de desarrollo»), y otro de changesets (paso «Changesets»);
   - `biome ci --error-on-warnings` y el bloque de Biome, con las excepciones de cada framework;

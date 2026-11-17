@@ -67,7 +67,7 @@ El área de idioma SHALL fijar, con nivel DEBE y para todos los proyectos, una n
 - **THEN** la norma se cumple
 
 ### Requirement: Prefijos en inglés
-El prefijo de cada área SHALL ser de tres letras y en inglés: `NAM` (nombres), `LNG` (idioma), `STK` (stack), `COD` (código), `DOC` (documentación), `VER` (versiones), `GIT`, `INT` (CI) y `PRO` (proceso). Las normas `NOM-001`, `NOM-002` e `IDI-001` a `IDI-004` SHALL pasar a `NAM-001`, `NAM-002` y `LNG-001` a `LNG-004`, sin alias.
+El prefijo de cada área SHALL ser de tres letras y en inglés: `NAM` (nombres), `LNG` (idioma), `STK` (stack), `STR` (estructura), `COD` (código), `DOC` (documentación), `VER` (versiones), `GIT`, `INT` (CI) y `PRO` (proceso). Las normas `NOM-001`, `NOM-002` e `IDI-001` a `IDI-004` SHALL pasar a `NAM-001`, `NAM-002` y `LNG-001` a `LNG-004`, sin alias.
 
 #### Scenario: ID antiguo
 - **WHEN** se llama a `get_standard` con `NOM-001`
@@ -81,11 +81,11 @@ Ninguna norma SHALL obligar a algo que contradiga una convención de Next.js o d
 - **THEN** cumple la norma de los exports con nombre y Biome no avisa
 
 ### Requirement: Orden de las áreas
-Las áreas de normas SHALL leerse en este orden en la navegación, en la página índice y en `/standards.json`: Nombres, Idioma, Stack, Código, Documentación, Versiones, Git, CI y Proceso. Cambiar el orden SHALL NOT cambiar la URL de un área.
+Las áreas de normas SHALL leerse en este orden en la navegación, en la página índice y en `/standards.json`: Nombres, Idioma, Stack, Estructura, Código, Documentación, Versiones, Git, CI y Proceso. Cambiar el orden SHALL NOT cambiar la URL de un área.
 
 #### Scenario: Áreas en el JSON
 - **WHEN** un programa descarga `/standards.json`
-- **THEN** las áreas llegan con los ids `naming`, `language`, `stack`, `code`, `documentation`, `versioning`, `git`, `ci` y `process`, en ese orden
+- **THEN** las áreas llegan con los ids `naming`, `language`, `stack`, `structure`, `code`, `documentation`, `versioning`, `git`, `ci` y `process`, en ese orden
 
 ### Requirement: Área de nombres: archivos
 El área de nombres SHALL fijar, con nivel DEBE y para todos los proyectos, que los archivos de componentes (`.tsx` y `.astro`) se llaman en PascalCase o en kebab-case, y el resto, en kebab-case. Las rutas de los frameworks (`page.tsx`, `[slug].astro`, `[...slug].astro`) SHALL cumplirla tal como las pide cada framework.
@@ -278,3 +278,54 @@ La norma de la coherencia de rangos SHALL listar como excepción `typescript` en
 #### Scenario: TypeScript en una app de Astro
 - **WHEN** se abre la norma de la coherencia
 - **THEN** lista como excepción `typescript` en los workspaces con `@astrojs/check`, `next` o `dts-bundle-generator`, y dice que esas herramientas usan TypeScript 6
+
+### Requirement: Área de estructura: el monorepo
+El área de estructura SHALL tener el prefijo `STR` y fijar, con nivel DEBE, que un monorepo reparte sus workspaces en `apps/` (lo que se despliega), `packages/` (lo que se publica o se comparte), `examples/` y `scripts/`, con la configuración de las herramientas en la raíz.
+
+#### Scenario: Workspace suelto
+- **WHEN** se mira el ejemplo que no cumple la norma del monorepo
+- **THEN** enseña un workspace `web/` en la raíz, y el que la cumple, `apps/web/`
+
+### Requirement: Área de estructura: un workspace
+El área de estructura SHALL fijar, con nivel DEBE y para todos los proyectos, que cada workspace (o la raíz de un repo de una sola app) tiene `src/` para lo que se publica o se despliega, `test/` para los tests unitarios, `e2e/` para los de navegador y `scripts/` para lo que no se publica, con su configuración en su raíz. Dentro de `src/` SHALL NOT haber tests.
+
+#### Scenario: Test dentro de src
+- **WHEN** se mira el ejemplo que no cumple la norma de los workspaces
+- **THEN** enseña `src/components/Button.test.tsx`, y el que la cumple, `test/button.test.tsx`
+
+### Requirement: Área de estructura: carpetas de una app
+El área de estructura SHALL fijar, con nivel DEBE y para las apps:
+- que el código va en `src/`: en Next, `src/app/`; en Astro, sus carpetas de siempre (`src/pages/`, `src/layouts/`, `src/content/`, `src/assets/`);
+- que en el `src/` de una app solo hay carpetas del framework, carpetas compartidas por tipo (`components/`, `hooks/`, `lib/`, `styles/`, `data/`) y `features/`.
+
+#### Scenario: Next en la raíz
+- **WHEN** se mira el ejemplo que no cumple la norma de las apps
+- **THEN** enseña una app de Next con `app/` en la raíz, y el que la cumple, la misma con `src/app/`
+
+### Requirement: Área de estructura: funcionalidades
+El área de estructura SHALL fijar, con nivel DEBE y para las apps, que cada funcionalidad con código propio tiene su carpeta `src/features/<nombre>/`, organizada por dentro con las mismas carpetas por tipo. Lo que usa una sola funcionalidad SHALL vivir en su carpeta; lo que usan dos o más SHALL subir a la carpeta compartida, y una funcionalidad SHALL NOT importar de otra.
+
+#### Scenario: Helper compartido
+- **WHEN** un helper de `src/features/search/lib/` pasa a usarse también desde `src/features/mcp/`
+- **THEN** la norma pide moverlo a `src/lib/`, y no importarlo de `features/search/`
+
+### Requirement: Área de estructura: paquetes
+El área de estructura SHALL fijar, con nivel DEBE y para los paquetes, que cada entrada de `exports` tiene su archivo o carpeta en la raíz de `src/`, y que lo que no se exporta va en `src/internal/`.
+
+#### Scenario: Helper interno en la raíz
+- **WHEN** se mira el ejemplo que no cumple la norma de los paquetes
+- **THEN** enseña `src/logo.tsx`, que no es una entrada, y el que la cumple, `src/internal/logo.tsx`
+
+### Requirement: Área de estructura: componentes
+El área de estructura SHALL fijar, con nivel DEBERÍA y para todos los proyectos, que cada componente tiene su archivo, con el nombre de su export (`Button.tsx` exporta `Button`).
+
+#### Scenario: Dos componentes en un archivo
+- **WHEN** se mira el ejemplo que no cumple la norma de los componentes
+- **THEN** enseña `Buttons.tsx` con `Button` y `IconButton`, y el que la cumple, un archivo para cada uno
+
+### Requirement: Área de estructura: builds y cachés
+El área de estructura SHALL fijar, con nivel DEBE y para todos los proyectos, que ni la salida del build ni las cachés (`dist/`, `.astro/`, `.next/`, `.turbo/`, `*.tsbuildinfo`) están en Git.
+
+#### Scenario: Caché en Git
+- **WHEN** se mira el ejemplo que no cumple la norma de las cachés
+- **THEN** enseña `tsconfig.tsbuildinfo` en Git, y el que la cumple, la línea `*.tsbuildinfo` del `.gitignore`

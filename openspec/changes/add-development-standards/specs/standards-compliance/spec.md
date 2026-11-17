@@ -150,3 +150,32 @@ Regula SHALL tener `.github/dependabot.yml` según la norma de Dependabot. Sus P
 #### Scenario: Primera PR agrupada
 - **WHEN** Dependabot abre la PR semanal de versiones menores de Bun
 - **THEN** su commit empieza por `build(deps):` y el job «Commits» pasa
+
+### Requirement: Estructura comprobada
+El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si:
+- un glob de `workspaces` de la raíz no empieza por `apps/`, `packages/`, `examples/` o `scripts/`;
+- hay un `*.test.*` o un `*.spec.*` dentro de un `src/`;
+- una app de Next no tiene `src/app/`, o tiene `app/` en su raíz;
+- el `src/` de una app tiene una carpeta fuera de las del framework, las compartidas y `features/`.
+
+#### Scenario: Carpeta suelta en src
+- **WHEN** una PR añade `apps/docs/src/search/`
+- **THEN** el paso falla, nombra la carpeta y la norma, y dice que va en `src/features/search/` o en una carpeta compartida
+
+### Requirement: Cachés fuera de Git comprobadas
+El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si Git sigue un archivo de build o de caché (`dist/`, `.astro/`, `.next/`, `.turbo/`, `*.tsbuildinfo`).
+
+#### Scenario: tsbuildinfo en Git
+- **WHEN** Git sigue `examples/next/tsconfig.tsbuildinfo`
+- **THEN** el paso falla y nombra el archivo y la norma de las cachés
+
+### Requirement: Regula cumple la estructura
+Regula SHALL cumplir el área de estructura:
+- el ejemplo de Next con `src/app/`;
+- las funcionalidades de la web (`mcp`, `playground`, `search`, `visual`) en `src/features/`;
+- el `logo.tsx` interno de `@jotis-me/assets` en `src/internal/`;
+- `*.tsbuildinfo` en el `.gitignore` y fuera de Git.
+
+#### Scenario: Repo actual
+- **WHEN** corre el paso «Normas de desarrollo» en la rama principal
+- **THEN** no informa de ninguna carpeta ni archivo fuera de su sitio

@@ -55,12 +55,13 @@ Estado de Regula medido el 2026-11-17 con `biome lint --only=<regla>`, `tsc` y b
 | `naming.yaml` | `naming` | Nombres | `NAM` (antes `NOM`) | 1 |
 | `language.yaml` | `language` | Idioma | `LNG` (antes `IDI`) | 2 |
 | `stack.yaml` | `stack` | Stack y herramientas | `STK` | 3 |
-| `code.yaml` | `code` | Código | `COD` | 4 |
-| `documentation.yaml` | `documentation` | Documentación | `DOC` | 5 |
-| `versioning.yaml` | `versioning` | Versiones y dependencias | `VER` | 6 |
-| `git.yaml` | `git` | Git | `GIT` | 7 |
-| `ci.yaml` | `ci` | CI | `INT` | 8 |
-| `process.yaml` | `process` | Proceso | `PRO` | 9 |
+| `structure.yaml` | `structure` | Estructura | `STR` | 4 |
+| `code.yaml` | `code` | Código | `COD` | 5 |
+| `documentation.yaml` | `documentation` | Documentación | `DOC` | 6 |
+| `versioning.yaml` | `versioning` | Versiones y dependencias | `VER` | 7 |
+| `git.yaml` | `git` | Git | `GIT` | 8 |
+| `ci.yaml` | `ci` | CI | `INT` | 9 |
+| `process.yaml` | `process` | Proceso | `PRO` | 10 |
 
 `GIT`, `INT` (*integration*) y `PRO` (*process*) ya valen en inglés y no cambian. El renombrado no deja alias, como decidió el usuario. Un ID antiguo da el error de norma que no existe. Se hace ahora porque solo los usa Regula, y después de la 1.0 ya no se podría. Versiones y dependencias van en un solo área, porque las dos tratan lo que el paquete promete a quien lo instala.
 
@@ -88,6 +89,14 @@ Todas son de nivel `must`, salvo `STK-006` y `VER-008`, que son `should`. Las de
 | STK-005 | all | build, typecheck y test con `turbo run` | ci |
 | STK-006 | app | `engines.node` en las apps con `vercel.json` | ci |
 | STK-007 | all | Dependabot semanal, agrupado, con `build(deps)` | ci |
+| STR-001 | all | El monorepo en `apps/`, `packages/`, `examples/` y `scripts/` | ci |
+| STR-002 | all | Cada workspace con `src/`, `test/`, `e2e/` y `scripts/`; sin tests en `src/` | ci |
+| STR-003 | app | El código de la app en `src/`: Next en `src/app/`, Astro en sus carpetas | ci |
+| STR-004 | app | En `src/`, solo carpetas del framework, las compartidas por tipo y `features/` | ci |
+| STR-005 | app | Lo de una sola funcionalidad en `src/features/<nombre>/`; lo de dos o más, en la compartida; una funcionalidad no importa de otra | review |
+| STR-006 | package | Las entradas de `exports` en la raíz de `src/` y lo privado en `src/internal/` | review |
+| STR-007 | all | Un componente por archivo, con el nombre de su export (`should`) | review |
+| STR-008 | all | Ni builds ni cachés en Git | ci |
 | COD-001 | all | Los siete flags del tsconfig (D5) | ci |
 | COD-002 | all | `typecheck` en cada workspace con TS | ci |
 | COD-003 | all | Sin `any` | biome `noExplicitAny` |
@@ -302,6 +311,36 @@ Lo pidió el usuario tras la implementación: ni «·» ni rayas, y el guión si
 - **Cómo se sustituye:** « · », « — » y « – » pasan a « - »; un «–» entre números o horas, a «-» sin espacios; las líneas de adorno de los comentarios, hechas de rayas, pasan a `--- Piezas ---`.
 - **KISS y lo nativo (`COD-014` y `COD-015`):** también los pidió el usuario tras la implementación. Son de revisión: ninguna regla de Biome mide si algo está demasiado complicado o si había un elemento nativo. Para no chocar con los frameworks, `COD-015` cuenta como nativos los componentes que da cada framework, y Regula sigue usando sus propios componentes de `@jotis-me/react`: la norma aplica a lo que esos componentes pintan por dentro y al código de las apps.
 - **Formato:** `biome.json` ya tenía `indentStyle: "tab"` e `indentWidth: 4`, y `check:dev` ya los comprobaba. Solo cambia el enunciado de `STK-004`, que ahora los nombra en vez de decir «el formato de la suite».
+
+### D12. Estructura (`STR`)
+
+También la pidió el usuario tras la implementación, para que cualquier proyecto de la suite se navegue igual. Es un área nueva, entre Stack y Código (`order` 4; las de detrás suben uno). Decisiones del usuario:
+- **Dentro de `src/`:** por tipo y por funcionalidad. No hay un estándar único (React, Next y Astro no lo imponen), pero es lo más extendido: lo compartido en carpetas por tipo y cada funcionalidad en `src/features/<nombre>/`, como en *bulletproof-react*.
+- **Cuándo va en `features/`:** lo que usa una sola funcionalidad va en su carpeta. Si lo usan dos o más, sube a la compartida.
+- **Tests:** en `test/` y `e2e/`, aparte, como ya están en todos los workspaces.
+- **Next:** en `src/app/`, para que todas las apps tengan el código en `src/`.
+
+Qué comprueba `check:dev`:
+- **STR-001:** cada glob de `workspaces` empieza por `apps/`, `packages/`, `examples/` o `scripts/`.
+- **STR-002:** ningún archivo `src/**/*.{test,spec}.*` en Git.
+- **STR-003:** una app con `next` tiene `src/app/` y no tiene `app/` en su raíz.
+- **STR-004:** las carpetas de primer nivel del `src/` de una app están en esta lista:
+  - las del framework: `app` en Next; `pages`, `layouts`, `content` y `assets` en Astro;
+  - las compartidas: `components`, `hooks`, `lib`, `styles` y `data`;
+  - `features`.
+
+  Los archivos sueltos de `src/` (`content.config.ts`, `env.d.ts`, `middleware.ts`) se permiten.
+- **STR-008:** ningún archivo en Git bajo `dist/`, `.astro/`, `.next/` o `.turbo/`, ni ningún `*.tsbuildinfo`.
+
+`STR-005`, `STR-006` y `STR-007` son de revisión. Que una funcionalidad no importe de otra se podría medir. Se deja en revisión de momento, porque hoy solo hay dos casos y se arreglan al mover las carpetas.
+
+Cómo se pone Regula al día:
+- **`examples/next/app/`** pasa a `src/app/`. El `include` del tsconfig ya cubre `**/*.tsx`, y Next encuentra `src/app` solo.
+- **La web:** `src/mcp/`, `src/playground/`, `src/search/` y `src/visual/` pasan a `src/features/`, con sus imports. También cambian las rutas que los nombran: `astro.config.mjs`, `js-budget.json`, los scripts de capturas, `e2e/visual/compare.ts` y los tests.
+- **Las dos importaciones cruzadas:** `fold` (de `search/entries`, que usa `mcp/rank.ts`) pasa a `src/lib/`. `PantallaGastos` (un ejemplo de `visual` que usa `playground/CompareSlider.tsx`) pasa a `src/components/`.
+- **Lo compartido que solo usa una funcionalidad:** se mira qué archivos de `src/components/` y `src/lib/` importa una sola funcionalidad, y se mueven a ella. Los que usan las páginas o los layouts se quedan.
+- **`packages/assets/src/logo.tsx`** pasa a `src/internal/`, con el generador que escribe sus imports. Lleva un changeset `patch`.
+- **`examples/next/tsconfig.tsbuildinfo`:** sale de Git, y `*.tsbuildinfo` entra en el `.gitignore`.
 
 ## Risks / Trade-offs
 
