@@ -13,7 +13,9 @@ export interface SlideoutProps {
 	 * @default true
 	 */
 	open?: boolean;
+	/** The headline. */
 	title: ReactNode;
+	/** Supporting text under the title. */
 	description?: ReactNode;
 	/** Contenido: detalle o formulario. Se desplaza si no cabe. */
 	children?: ReactNode;

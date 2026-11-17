@@ -16,6 +16,7 @@ export interface ModalProps {
 	open?: boolean;
 	/** Pregunta o tarea. El botón de confirmar repite su verbo ("Eliminar", no "Aceptar"). */
 	title: ReactNode;
+	/** Supporting text under the title. */
 	description?: ReactNode;
 	/** Icono destacado sobre el título (`FeaturedIcon` de 48px). */
 	icon?: IconProp;

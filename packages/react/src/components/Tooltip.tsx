@@ -22,6 +22,7 @@ import { cx } from "../internal/cx.js";
 type FocusableChild = ReactElement<DOMAttributes<Element>, string>;
 
 export interface TooltipProps {
+	/** The text of the tooltip. */
 	title: ReactNode;
 	/** Segunda línea, en `tooltip-supporting-text`. */
 	text?: ReactNode;
