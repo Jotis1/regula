@@ -32,7 +32,7 @@ jobs:
         outputs:
             code: ${{ steps.detect.outputs.code }}
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
               with:
                   fetch-depth: 0
             - uses: oven-sh/setup-bun@v2
@@ -57,7 +57,7 @@ jobs:
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - uses: oven-sh/setup-bun@v2
               with:
                   bun-version-file: package.json
@@ -103,7 +103,7 @@ jobs:
         if: github.event_name == 'pull_request'
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
               with:
                   fetch-depth: 0
             - uses: oven-sh/setup-bun@v2
@@ -131,7 +131,7 @@ jobs:
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - uses: oven-sh/setup-bun@v2
               with:
                   bun-version-file: package.json
@@ -149,7 +149,7 @@ jobs:
               working-directory: apps/docs
             - name: Resultados si algo falla
               if: failure()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: resultados-e2e-${{ matrix.shard }}
                   path: apps/docs/test-results/
@@ -164,7 +164,7 @@ jobs:
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - uses: oven-sh/setup-bun@v2
               with:
                   bun-version-file: package.json
@@ -204,7 +204,7 @@ jobs:
               run: bun run scripts/lighthouse-summary.ts
             - name: Resultados si algo falla
               if: failure()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: resultados-navegador
                   # `.lighthouseci` es una carpeta oculta: sin esto, upload-artifact la deja fuera.
@@ -225,7 +225,7 @@ jobs:
         if: always() && github.event_name != 'workflow_dispatch'
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - uses: oven-sh/setup-bun@v2
               with:
                   bun-version-file: package.json
@@ -244,7 +244,7 @@ jobs:
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
             TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - uses: oven-sh/setup-bun@v2
               with:
                   bun-version-file: package.json
@@ -261,7 +261,7 @@ jobs:
                   COMPONENTES: ${{ inputs.componentes }}
               # Sin comillas a propósito: un argumento por nombre. El script rechaza los que no están en el catálogo.
               run: bun run scripts/capture-approved.ts $COMPONENTES --out capturas
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7
               with:
                   name: capturas-aprobadas
                   path: apps/docs/capturas/
