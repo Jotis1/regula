@@ -47,7 +47,7 @@ El servidor SHALL tener:
 - `list_components`: los componentes con su grupo y su descripción, con un filtro opcional por grupo;
 - `get_component`: la ficha de un componente por su nombre, sin distinguir mayúsculas.
 
-La ficha SHALL traer la descripción, la guía de uso, las props (nombre, tipo, si es obligatoria, valor por defecto y descripción), si necesita `client:*` en Astro y los fragmentos de Next y de Astro.
+La ficha SHALL traer la descripción, la guía de uso, las props (nombre, tipo, si es obligatoria, valor por defecto y descripción), los atributos nativos que reenvía (requisito «Atributos nativos de la ficha»), si necesita `client:*` en Astro y los fragmentos de Next y de Astro.
 
 #### Scenario: Props de Button
 - **WHEN** se llama a `get_component` con `button`
@@ -56,6 +56,25 @@ La ficha SHALL traer la descripción, la guía de uso, las props (nombre, tipo, 
 #### Scenario: Componente que no existe
 - **WHEN** se llama a `get_component` con `Botón`
 - **THEN** devuelve un error de herramienta con los nombres más parecidos
+
+### Requirement: Atributos nativos de la ficha
+Cada entrada de los atributos nativos de la ficha SHALL nombrar un elemento HTML al que el componente puede reenviarlos y los atributos propios de ese elemento que acepta su tipo. Los globales de HTML, `aria-*` y los eventos no SHALL listarse: se dan por incluidos. Si el tipo solo hereda los globales, la entrada SHALL tener el elemento sin determinar y ningún atributo; si no hereda nada, la lista SHALL ir vacía.
+
+#### Scenario: Atributos nativos de Button
+- **WHEN** se llama a `get_component` con `button`
+- **THEN** los atributos nativos traen una entrada `button` con `type` y otra `a` con `target`, y ninguna lista `className`, `onClick` ni `aria-label`
+
+#### Scenario: Atributos nativos de Input
+- **WHEN** se llama a `get_component` con `Input`
+- **THEN** los atributos nativos traen una entrada `input` con `placeholder` y `autoComplete`
+
+#### Scenario: Solo atributos globales
+- **WHEN** se llama a `get_component` con `TransparencyGrid`
+- **THEN** los atributos nativos traen una sola entrada, sin elemento y sin atributos
+
+#### Scenario: Componente sin atributos nativos
+- **WHEN** se llama a `get_component` con `Avatar`
+- **THEN** los atributos nativos son una lista vacía
 
 ### Requirement: Herramienta de tokens
 El servidor SHALL tener `search_tokens`, que busca tokens por texto en su nombre, o en su uso, con un filtro opcional por categoría (`color`, `type`, `spacing`, `radius`, `width`, `shadow`, `blur`, las de `@jotis-me/tokens`). Cada token SHALL traer su nombre, su categoría, su uso y su valor, por tema cuando cambia entre temas.
@@ -91,7 +110,7 @@ Cada herramienta SHALL validar sus parámetros y responder con un error de herra
 
 ### Requirement: Datos públicos en JSON
 La web SHALL publicar en el build, desde las mismas fuentes que sus páginas:
-- `/components.json`: cada componente con su grupo, su ficha y sus props;
+- `/components.json`: cada componente con su grupo, su ficha, sus props y sus atributos nativos reenviados;
 - `/tokens.json`: los tokens con sus valores por tema;
 - `/icons.json`: las entradas de cada galería con su import.
 
@@ -100,6 +119,10 @@ Los nombres de campo SHALL ir en inglés. Cada JSON SHALL llevar la versión de 
 #### Scenario: Mismo dato en la web y en el MCP
 - **WHEN** cambia la descripción de `Button` en su ficha y se despliega
 - **THEN** la página de `Button`, `/components.json` y `get_component` devuelven la descripción nueva
+
+#### Scenario: Mismos atributos en la web y en el JSON
+- **WHEN** se compara la línea de atributos reenviados de la página de un componente con su entrada en `/components.json`
+- **THEN** nombran los mismos elementos y los mismos atributos
 
 ### Requirement: Servidor comprobado
 Los tests SHALL ejercitar el servidor MCP con un cliente MCP real contra el manejador de `/mcp`: `initialize`, `tools/list` y al menos una llamada con éxito y una con error por cada herramienta. Tras desplegar, SHALL comprobarse a mano que un cliente se conecta a la URL pública.
