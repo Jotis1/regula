@@ -74,6 +74,24 @@ describe("colección de normas", () => {
 		expect(problemsOf(copy, ctx).join("\n")).toContain("examples.bad");
 	});
 
+	it("acepta excepciones de framework y las lleva al JSON", () => {
+		const copy = clone() as unknown as { slug: string; data: StandardArea }[];
+		const first = copy[0]!.data.rules[0]!;
+		first.exceptions = [{ where: "`app/**/page.tsx`", why: "Next imports it by its default export." }];
+		expect(problemsOf(copy, ctx)).toEqual([]);
+		const entries = copy.map((a) => ({ id: a.slug, data: a.data }));
+		const rule = standardsJson(entries, "9.9.9", "https://regula.jotis.me/")
+			.areas.flatMap((a) => a.rules)
+			.find((r) => r.id === first.id);
+		expect(rule?.exceptions).toEqual(first.exceptions);
+	});
+
+	it("falla con una excepción sin motivo", () => {
+		const copy = clone() as unknown as { slug: string; data: StandardArea }[];
+		copy[0]!.data.rules[0]!.exceptions = [{ where: "`page.tsx`", why: "" }];
+		expect(problemsOf(copy, ctx).join("\n")).toContain("exceptions");
+	});
+
 	it("falla con una norma de revisión sin decir qué se revisa", () => {
 		const copy = clone();
 		copy[0].data.rules[0].verification = { kind: "review" };

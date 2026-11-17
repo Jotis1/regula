@@ -23,6 +23,8 @@ export const rule = z.object({
 	rationale: z.string(),
 	examples: z.object({ good: z.array(example).min(1), bad: z.array(example).min(1) }),
 	verification,
+	/** What a framework convention forces the rule to allow: where it applies and why. */
+	exceptions: z.array(z.object({ where: z.string().min(1), why: z.string().min(1) })).optional(),
 });
 
 export const area = z.object({

@@ -29,6 +29,22 @@ const verification = rule.verification;
 	</div>
 	<p set:html={inline(rule.statement)} />
 	<p><strong class="font-semibold text-primary">Por qué.</strong> <Fragment set:html={inline(rule.rationale)} /></p>
+	{
+		rule.exceptions?.length ? (
+			<div data-exceptions>
+				<p>
+					<strong class="font-semibold text-primary">Excepciones.</strong> Lo que pide el framework:
+				</p>
+				<ul>
+					{rule.exceptions.map((e) => (
+						<li>
+							<Fragment set:html={inline(e.where)} /> — <Fragment set:html={inline(e.why)} />
+						</li>
+					))}
+				</ul>
+			</div>
+		) : null
+	}
 	<div class="not-prose flex flex-col gap-4" data-examples>
 		{
 			sides.map(({ verdict, examples }) => (
