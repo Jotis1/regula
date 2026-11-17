@@ -37,5 +37,9 @@
 	"patchedDependencies": {
 		"@untitledui/country-flags@0.0.17": "patches/@untitledui%2Fcountry-flags@0.0.17.patch",
 		"@untitledui/file-icons@0.0.9": "patches/@untitledui%2Ffile-icons@0.0.9.patch"
+	},
+	"overrides": {
+		"@emnapi/core": "1.11.3",
+		"@emnapi/runtime": "1.11.3"
 	}
 }
