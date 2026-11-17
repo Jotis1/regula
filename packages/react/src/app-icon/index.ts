@@ -34,6 +34,7 @@ export const apps = data.apps as Record<
 >;
 export type AppName = keyof typeof apps;
 
+/** The hue palettes an app icon can use, by name, each with its seven shades (50 to 950). */
 export const hues = data.hues as Record<
 	AppIconHue,
 	Record<"50" | "200" | "300" | "500" | "600" | "800" | "950", string>

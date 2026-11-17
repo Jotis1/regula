@@ -1,4 +1,5 @@
 // Fuente: salió una vez de la guía `9fe2` (bundle.js) con el antiguo scripts/extract.ts. Se edita a mano.
+/** Raw app-icon data: glyph geometry, the suite's apps and the hue palettes. Read it through `./index.js`. */
 export const appicon = {
 	geo: {
 		radius: 0.225,

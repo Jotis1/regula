@@ -92,6 +92,7 @@ export function alertBody({
 	);
 }
 
+/** Classes shared by `Alert` and `Notification`: the box, the gap between icon and text, and the surface. */
 export const ALERT_BASE = "relative flex gap-4 p-4 font-body bg-primary_alt";
 
 /**

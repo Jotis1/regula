@@ -181,6 +181,7 @@ export interface FontFile {
 	unicodeRange?: string;
 }
 
+/** `fonts.css`: one `@font-face` per font file, with `font-display: swap` and its `unicode-range` when it has one. */
 export function fontsCss(fonts: FontFile[]): string {
 	const faces = fonts.map(
 		(f) => `@font-face {
@@ -210,42 +211,62 @@ export function indexJs(t: TokensFile): string {
 		type: t.type,
 	};
 	return `${HEADER}
+/** Color tokens by name, each with its light and dark value and what it is for. */
 export const colors = ${JSON.stringify(data.colors, null, "\t")};
+/** Shadow tokens by name, each with its light and dark value. */
 export const shadows = ${JSON.stringify(data.shadows, null, "\t")};
+/** Spacing tokens by name, each with its value. */
 export const spacing = ${JSON.stringify(data.spacing, null, "\t")};
+/** Border radius tokens by name, each with its value. */
 export const radius = ${JSON.stringify(data.radius, null, "\t")};
+/** Border width tokens by name, each with its value. */
 export const width = ${JSON.stringify(data.width, null, "\t")};
+/** Blur tokens by name, each with its value. */
 export const blur = ${JSON.stringify(data.blur, null, "\t")};
+/** Typography: the font files, the font family of each role and the text styles by group. */
 export const type = ${JSON.stringify(data.type, null, "\t")};
+/** The color tokens. Same object as \`colors\`, kept for the name most people look for. */
 export const tokens = colors;
+/** The chart series colors, in the order they are used. */
 export const seriesColors = ["utility-brand-600", "utility-brand-400", "utility-brand-200", "utility-sky-500", "utility-pink-500", "utility-neutral-400"];
 `;
 }
 
+/** Type declarations of the module `indexJs` writes: a union of token names per group and the shape of each token. */
 export function indexDts(t: TokensFile): string {
 	const union = (names: string[]) => names.map((n) => JSON.stringify(n)).join(" | ");
 	const colorNames = t.color.tokens.map((x) => x.name);
 	const shadowNames = t.shadow.tokens.map((x) => x.name);
 	const g = (name: string, list: Token[]) =>
-		`export type ${name}Name = ${union(list.map((x) => x.name))};\nexport declare const ${name.toLowerCase()}: Record<${name}Name, PlainToken>;`;
+		`/** Names of the ${name.toLowerCase()} tokens. */\nexport type ${name}Name = ${union(list.map((x) => x.name))};\n/** ${name} tokens by name, each with its value. */\nexport declare const ${name.toLowerCase()}: Record<${name}Name, PlainToken>;`;
 	return `${HEADER}
+/** A token with one value per theme. */
 export interface ThemedToken { light: string; dark: string; usage: string; }
+/** A token with the same value in both themes. */
 export interface PlainToken { value: string; usage: string; }
+/** Names of the color tokens. */
 export type ColorName = ${union(colorNames)};
+/** Names of the shadow tokens. */
 export type ShadowName = ${union(shadowNames)};
+/** Color tokens by name, each with its light and dark value and what it is for. */
 export declare const colors: Record<ColorName, ThemedToken>;
+/** The color tokens. Same object as \`colors\`, kept for the name most people look for. */
 export declare const tokens: Record<ColorName, ThemedToken>;
+/** Shadow tokens by name, each with its light and dark value. */
 export declare const shadows: Record<ShadowName, ThemedToken>;
 ${g("Spacing", t.spacing.tokens)}
 ${g("Radius", t.radius.tokens)}
 ${g("Width", t.width.tokens)}
 ${g("Blur", t.blur.tokens)}
+/** One text style: size, line height, weight and, when it has one, letter spacing. */
 export interface TypeStyle { name: string; fontSize: string; lineHeight: string; fontWeight: number; letterSpacing?: string; usage?: string; }
+/** Typography: the font files, the font family of each role and the text styles by group. */
 export declare const type: {
 \tfonts: { family: string; file: string; weight: string; style: string }[];
 \tfamilies: Record<"display" | "body" | "mono", string>;
 \tgroups: { name: string; family: string; styles: TypeStyle[] }[];
 };
+/** The chart series colors, in the order they are used. */
 export declare const seriesColors: readonly ColorName[];
 `;
 }
