@@ -31,6 +31,7 @@ interface Base {
 	 * @default "md"
 	 */
 	size?: BadgeGroupSize;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -46,6 +47,7 @@ export type BadgeGroupProps = Base & (AsStatic | AsButton | AsLink);
 interface Palette {
 	/** Contenedor del `pill`: fondo, texto, filo y el fondo al pasar por encima. */
 	pill: string;
+	/** Background of the `pill` while the pointer is over it. */
 	hover: string;
 	/** Badge de dentro del `pill`. */
 	badge: string;

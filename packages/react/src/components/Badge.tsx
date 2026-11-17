@@ -30,11 +30,14 @@ interface BadgeBase {
 	onRemove?: () => void;
 	/** Nombre accesible de la X. Por defecto, "Quitar". */
 	removeLabel?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
 interface BadgeWithText extends BadgeBase {
+	/** Not allowed with text: for an icon-only badge use the `iconOnly` variant. */
 	iconOnly?: undefined;
+	/** Not allowed with text: the text goes in `children`. */
 	label?: undefined;
 	/** Una o dos palabras: el estado no puede depender solo del color. */
 	children: ReactNode;
@@ -45,6 +48,7 @@ interface BadgeIconOnly extends BadgeBase {
 	iconOnly: NonNullable<IconProp>;
 	/** Lo que significa el icono, para lectores de pantalla. Obligatorio: no hay texto visible. */
 	label: string;
+	/** Not allowed on an icon-only badge: its name goes in `label`. */
 	children?: undefined;
 }
 

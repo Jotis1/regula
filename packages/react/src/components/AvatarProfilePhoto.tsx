@@ -21,6 +21,7 @@ export interface AvatarProfilePhotoProps {
 	verified?: boolean;
 	/** Texto para lectores del sello. @default "Verificado" */
 	verifiedLabel?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

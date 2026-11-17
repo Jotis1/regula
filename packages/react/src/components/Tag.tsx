@@ -24,17 +24,21 @@ export interface TagProps {
 	checkable?: boolean;
 	/** Marcado, si lo controlas tú. Sin `checked`, el tag guarda su estado (`defaultChecked`). */
 	checked?: boolean;
+	/** Whether the tag starts checked (uncontrolled). */
 	defaultChecked?: boolean;
 	/** Avisa al marcar o desmarcar. */
 	onCheckedChange?: (checked: boolean) => void;
 	/** `name` y `value` de la casilla, para enviarla en un formulario. */
 	name?: string;
+	/** Value of the checkbox when the form is sent. */
 	value?: string;
 	/** Muestra una X para quitarlo. */
 	onRemove?: () => void;
 	/** Nombre accesible de la X. Por defecto, "Quitar" seguido del texto. */
 	removeLabel?: string;
+	/** The text of the tag. */
 	children: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

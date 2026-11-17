@@ -19,6 +19,7 @@ export interface CheckIconProps {
 	 * @default "md"
 	 */
 	size?: CheckIconSize;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

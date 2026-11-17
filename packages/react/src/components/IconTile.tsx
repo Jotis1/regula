@@ -19,6 +19,7 @@ export interface IconTileProps {
 	 * @default 24
 	 */
 	size?: IconTileSize;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

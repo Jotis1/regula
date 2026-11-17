@@ -24,6 +24,7 @@ export interface RatingProps {
 	size?: RatingSize;
 	/** Texto para lectores. @default «4,5 de 5» */
 	label?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

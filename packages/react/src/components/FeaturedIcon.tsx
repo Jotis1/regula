@@ -19,6 +19,7 @@ export interface FeaturedIconProps {
 	 * marco, con sombra · `outline` anillos concéntricos (Figma `Featured icon`, `1102:5338`).
 	 */
 	variant?: FeaturedIconVariant;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -19,6 +19,7 @@ export interface RatingBadgeProps {
 	stars?: boolean;
 	/** Texto para lectores de las estrellas. @default «5 de 5» */
 	ratingLabel?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

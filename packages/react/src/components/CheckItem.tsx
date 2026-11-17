@@ -19,6 +19,7 @@ export interface CheckItemProps {
 	size?: CheckItemSize;
 	/** Elemento que pinta: `li` dentro de una lista (`<ul>`), o `div` suelto. @default "li" */
 	as?: "li" | "div";
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

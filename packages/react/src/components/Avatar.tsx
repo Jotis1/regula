@@ -13,6 +13,7 @@ export interface AvatarProps {
 	src?: string;
 	/** Texto alternativo de la foto, o nombre accesible de las iniciales. */
 	alt?: string;
+	/** Letters shown when there is no image (up to two). */
 	initials?: string;
 	/** Diámetro: `xs` 24 · `sm` 32 · `md` 40 · `lg` 48 · `xl` 56 · `2xl` 64. */
 	size?: AvatarSize;
@@ -40,6 +41,7 @@ export interface AvatarProps {
 	 * empresa sin `badgeLabel` es decorativo.
 	 */
 	badgeLabel?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
