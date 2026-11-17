@@ -23,11 +23,34 @@ permissions:
     contents: read
 
 jobs:
+    # INT-002: ¿hay que comprobar código? `code=false` solo si todo lo cambiado está en las rutas que ninguna
+    # comprobación lee (scripts/ci-changes.ts). Los jobs de código se saltan entonces y el job «CI» lo da por bueno.
+    changes:
+        name: Cambios
+        if: github.event_name != 'workflow_dispatch'
+        runs-on: ubuntu-latest
+        outputs:
+            code: ${{ steps.detect.outputs.code }}
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version-file: package.json
+            - name: ¿Cambia código?
+              id: detect
+              run: bun run scripts/ci-changes.ts "$BASE" "$HEAD"
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+                  HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
     # Comprobaciones sin navegador: formato y lint, tipos, tests unitarios (con axe en jsdom), build, colores,
     # exports y tipos publicados, tamaño por componente y paquetes sin `workspace:`.
     checks:
         name: Comprobaciones
-        if: github.event_name != 'workflow_dispatch'
+        needs: changes
+        if: github.event_name != 'workflow_dispatch' && needs.changes.outputs.code == 'true'
         runs-on: ubuntu-latest
         # INT-006: caché remota de Turbo del equipo de Vercel. Sin el secreto (PR desde forks), Turbo construye en local
         env:
@@ -46,6 +69,9 @@ jobs:
             # NOM-001 y NOM-002: los paquetes privados en dominio inverso y los publicados bajo @jotis-me
             - name: Nombres de paquete
               run: bun run check:names
+            # INT-001, INT-003, INT-005, INT-006 e INT-008, sobre este mismo workflow y los vercel.json de las apps
+            - name: Normas de CI
+              run: bun run check:ci
             - name: Tipos, tests y build
               run: bunx turbo run build typecheck test
             # El generador del artefacto (design D6) no necesita red: se ejecuta en un espacio de red vacío, como el
@@ -91,7 +117,8 @@ jobs:
     # suavizado del texto cambia entre sistemas y en Linux superaría el umbral del 2 %.
     browser:
         name: Navegador (web, ejemplos y Lighthouse)
-        if: github.event_name != 'workflow_dispatch'
+        needs: changes
+        if: github.event_name != 'workflow_dispatch' && needs.changes.outputs.code == 'true'
         runs-on: windows-latest
         env:
             TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -152,6 +179,24 @@ jobs:
                       examples/*/test-results/
                       scripts/artifact/test-results/
                   retention-days: 7
+
+    # INT-003: el único check obligatorio del ruleset. GitHub da por bueno un job saltado aunque se saltara porque falló
+    # otro del que depende, así que este lee el resultado de cada uno (scripts/ci-gate.ts). Los argumentos son los jobs
+    # que tienen que correr siempre que hay código.
+    gate:
+        name: CI
+        needs: [changes, checks, commits, browser]
+        if: always() && github.event_name != 'workflow_dispatch'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version-file: package.json
+            - name: Resultado de cada job
+              run: bun run scripts/ci-gate.ts checks browser
+              env:
+                  NEEDS: ${{ toJSON(needs) }}
 
     # Capturas aprobadas (design D4), a mano desde Actions: en Windows, como el job de navegador, para que el render
     # sea el mismo. Las PNG salen como artifact del run; se revisan y se meten en el PR, que es donde se aprueban.
