@@ -7,7 +7,7 @@ import { parse } from "yaml";
 import { type ComponentEntry, componentsJson } from "../src/lib/components-json";
 import { galleryEntries } from "../src/lib/gallery-entries";
 import { GALLERIES, iconsJson } from "../src/lib/icons-json";
-import { propsOf } from "../src/lib/props";
+import { nativeOf, propsOf } from "../src/lib/props";
 import { snippetsOf } from "../src/lib/snippets";
 import { standardsJson } from "../src/lib/standards";
 import { type TokensSource, tokensJson } from "../src/lib/tokens-json";
@@ -42,6 +42,11 @@ export const data: RegulaData = {
 		{
 			propsOf: (e) =>
 				propsOf(
+					join(root, e.data.source ?? `packages/react/src/components/${e.data.name}.tsx`),
+					e.data.name,
+				),
+			nativeOf: (e) =>
+				nativeOf(
 					join(root, e.data.source ?? `packages/react/src/components/${e.data.name}.tsx`),
 					e.data.name,
 				),

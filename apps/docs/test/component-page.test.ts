@@ -102,6 +102,35 @@ describe("plantilla de página de componente", () => {
 		expect(props).toBeGreaterThan(table);
 	});
 
+	it("dice a qué elementos reenvía sus atributos, bajo la tabla y antes del párrafo «Props.»", async () => {
+		const withNative = await render("Ejemplo", {
+			native: [
+				{ element: "button", attributes: ["disabled", "type"] },
+				{ element: "a", attributes: ["target"] },
+			],
+		});
+		const lines = [...withNative.matchAll(/<p data-native-element="([^"]+)"[^>]*>(.*?)<\/p>/gs)];
+		expect(lines.map((m) => m[1])).toEqual(["button", "a"]);
+		expect(lines[0]?.[2]).toMatch(/Reenvía al <code>&lt;button&gt;<\/code> sus atributos:/);
+		expect(lines[0]?.[2]).toMatch(
+			/<code>disabled<\/code>, <code>type<\/code>, además de los globales de HTML/,
+		);
+		expect(lines[0]?.[2]).toContain("<code>aria-*</code>");
+		expect(lines[1]?.[2]).toContain("<code>target</code>");
+		const [table, native, props] = order(withNative, "</table>", "data-native-props", "Acepta además");
+		expect(native).toBeGreaterThan(table as number);
+		expect(props).toBeGreaterThan(native as number);
+	});
+
+	it("con solo los globales lo dice sin listar atributos, y sin atributos no pinta la línea", async () => {
+		const onlyGlobal = await render("Ejemplo", { native: [{ element: null, attributes: [] }] });
+		expect(onlyGlobal).toMatch(
+			/data-native-element="global"[^>]*>Reenvía los atributos globales de HTML/,
+		);
+		expect(html).not.toContain("data-native-props");
+		expect(html).not.toContain("Reenvía");
+	});
+
 	it("muestra el código para Next.js y para Astro en el CodeSnippet de @jotis-me/react, resaltado", () => {
 		const code = html.slice(html.indexOf("data-code-tabs"));
 		expect(code.match(/role="tab"/g)).toHaveLength(2);
