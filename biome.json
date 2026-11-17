@@ -30,6 +30,13 @@
 		"enabled": true,
 		"rules": {
 			"preset": "recommended",
+			"suspicious": {
+				"noExplicitAny": "error",
+				"noTsIgnore": "error"
+			},
+			"style": {
+				"noEnum": "error"
+			},
 			"a11y": {
 				"useValidAriaRole": {
 					"level": "error",
