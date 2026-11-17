@@ -59,7 +59,7 @@ Comandos:
   - props opcionales y `readonly`.
 
   Script `check:dev` y paso «Normas de desarrollo» en «Comprobaciones», detrás de «Normas de CI». Comprobar que `bun run check:dev` pasa en el repo
-- [ ] 5.2 `scripts/check-changesets.ts` y su test (D7), con estos casos:
+- [x] 5.2 `scripts/check-changesets.ts` y su test (D7), con estos casos:
   - un componente cambiado sin changeset;
   - una PR solo de tests;
   - un changeset vacío;
