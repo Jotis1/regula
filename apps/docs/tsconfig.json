@@ -3,7 +3,12 @@
 	"compilerOptions": {
 		"jsx": "react-jsx",
 		"jsxImportSource": "react",
-		"noUncheckedIndexedAccess": true
+		"noUncheckedIndexedAccess": true,
+		"erasableSyntaxOnly": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"verbatimModuleSyntax": true
 	},
 	"include": [".astro/types.d.ts", "**/*"],
 	"exclude": ["dist"]
