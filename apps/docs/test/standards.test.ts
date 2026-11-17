@@ -31,7 +31,9 @@ const ctx: CheckContext = {
 
 type Mutable = {
 	slug: string;
-	data: { rules: { id: string; examples: { bad: unknown[] }; verification: unknown }[] };
+	data: {
+		rules: { id: string; examples: { bad: unknown[] }; verification: unknown; exceptions?: unknown }[];
+	};
 }[];
 const clone = () => structuredClone(areas) as unknown as Mutable;
 
@@ -75,20 +77,20 @@ describe("colección de normas", () => {
 	});
 
 	it("acepta excepciones de framework y las lleva al JSON", () => {
-		const copy = clone() as unknown as { slug: string; data: StandardArea }[];
-		const first = copy[0]!.data.rules[0]!;
-		first.exceptions = [{ where: "`app/**/page.tsx`", why: "Next imports it by its default export." }];
+		const copy = clone();
+		const exceptions = [{ where: "`app/**/page.tsx`", why: "Next imports it by its default export." }];
+		copy[0].data.rules[0].exceptions = exceptions;
 		expect(problemsOf(copy, ctx)).toEqual([]);
-		const entries = copy.map((a) => ({ id: a.slug, data: a.data }));
+		const entries = copy.map((a) => ({ id: a.slug, data: a.data as unknown as StandardArea }));
 		const rule = standardsJson(entries, "9.9.9", "https://regula.jotis.me/")
 			.areas.flatMap((a) => a.rules)
-			.find((r) => r.id === first.id);
-		expect(rule?.exceptions).toEqual(first.exceptions);
+			.find((r) => r.id === copy[0].data.rules[0].id);
+		expect(rule?.exceptions).toEqual(exceptions);
 	});
 
 	it("falla con una excepción sin motivo", () => {
-		const copy = clone() as unknown as { slug: string; data: StandardArea }[];
-		copy[0]!.data.rules[0]!.exceptions = [{ where: "`page.tsx`", why: "" }];
+		const copy = clone();
+		copy[0].data.rules[0].exceptions = [{ where: "`page.tsx`", why: "" }];
 		expect(problemsOf(copy, ctx).join("\n")).toContain("exceptions");
 	});
 
