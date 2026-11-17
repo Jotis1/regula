@@ -5,7 +5,7 @@ import { TOOLS } from "./tools";
 
 export const TOOL_GUIDE: Record<string, string> = {
 	list_standards:
-		"Las áreas de normas con el ID, el título y el nivel de cada una. Se puede filtrar por área (`naming`, `language`, `git`, `process`).",
+		"Las áreas de normas con el ID, el título y el nivel de cada una. Se puede filtrar por área (`naming`, `language`, `stack`, `code`, `documentation`, `versioning`, `git`, `ci` o `process`).",
 	get_standard:
 		"Una norma completa por su ID (`GIT-001`): nivel, a qué se aplica, enunciado, porqué, ejemplos y cómo se verifica.",
 	list_components:
