@@ -30,14 +30,20 @@ export interface MessageReaction {
 }
 
 export interface MessageAction {
+	/** Icon of the action. */
 	icon: IconProp;
+	/** Accessible name of the action. */
 	label: string;
+	/** Called when the action is pressed. */
 	onClick?: () => void;
 }
 
 export interface MessageLink {
+	/** Where the link preview goes. */
 	url: string;
+	/** Title of the link preview. */
 	title?: ReactNode;
+	/** Description of the link preview. */
 	description?: ReactNode;
 	/** Imagen de la vista previa (`link-preview`): una URL o un nodo. */
 	image?: string | ReactNode;
@@ -54,18 +60,23 @@ export interface MessageMedia {
 	poster?: string;
 	/** Nombre y tamaño bajo la imagen, como en los enviados del Figma. */
 	name?: ReactNode;
+	/** Size shown under the image, as text (`2.4 MB`). */
 	size?: ReactNode;
 }
 
 export interface MessageFile {
+	/** The file name. */
 	name: ReactNode;
+	/** Size of the file, as text (`2.4 MB`). */
 	size?: ReactNode;
 	/** Icono del tipo, como `<FileIcon type="jpg" />` de `@untitledui/file-icons`. */
 	icon?: ReactNode;
+	/** Where the file can be downloaded. */
 	href?: string;
 }
 
 export interface MessageAudio {
+	/** URL of the audio file. */
 	src?: string;
 	/** Duración escrita, como «00:28». */
 	duration: string;
@@ -74,15 +85,25 @@ export interface MessageAudio {
 export type MessageStatus = "unread" | "read" | "failed";
 
 export interface MessageLabels {
+	/** Text for assistive technology: the message has not been read. */
 	unread: string;
+	/** Text for assistive technology: the message has been read. */
 	read: string;
+	/** Text for assistive technology: the message failed to send. */
 	failed: string;
+	/** Accessible name and tooltip of the button that sends a failed message again. */
 	retry: string;
+	/** Accessible name of the list of reactions. */
 	reactions: string;
+	/** Accessible name of a reaction: its `label` and how many people used it (`count`). */
 	reaction: (label: string, count: number) => string;
+	/** Accessible name of the list of actions. */
 	actions: string;
+	/** Accessible name of the play button of an audio message. */
 	play: string;
+	/** Accessible name of the pause button of an audio message. */
 	pause: string;
+	/** Accessible name of the audio message. */
 	audio: string;
 }
 
@@ -104,6 +125,7 @@ export interface MessageProps {
 	author?: ReactNode;
 	/** Avatar del recibido (32px). Por defecto, las dos primeras letras del autor. */
 	avatar?: AvatarProps;
+	/** When the message was sent, as text. */
 	time?: ReactNode;
 	/** Enviado por el usuario: a la derecha, sin avatar, burbuja `bg-primary` con la esquina superior derecha recta. */
 	sent?: boolean;
@@ -122,12 +144,17 @@ export interface MessageProps {
 	type?: MessageType;
 	/** El texto al que responde (`reply`), en una cita encima del mensaje. */
 	reply?: ReactNode;
+	/** A file attached to the message. */
 	file?: MessageFile;
+	/** An audio clip attached to the message. */
 	audio?: MessageAudio;
+	/** An image or video attached to the message. */
 	media?: MessageMedia;
+	/** A link preview attached to the message. */
 	link?: MessageLink;
 	/** Reacciones bajo el mensaje, cada una con su contador. Con `onReact`, son botones. */
 	reactions?: MessageReaction[];
+	/** Called with the emoji the user reacted with. */
 	onReact?: (emoji: string) => void;
 	/** Estado de un mensaje enviado: enviado sin leer, leído o fallido. */
 	status?: MessageStatus;
@@ -135,7 +162,9 @@ export interface MessageProps {
 	onRetry?: () => void;
 	/** Panel de acciones bajo la burbuja (editar, copiar, regenerar…), en una barra oscura. */
 	actions?: MessageAction[];
+	/** Texts for assistive technology, to translate. */
 	labels?: Partial<MessageLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

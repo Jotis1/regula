@@ -29,6 +29,7 @@ export interface CompareSliderProps {
 	 * @default 50
 	 */
 	defaultValue?: number;
+	/** Called with the position of the divider, from 0 to 100, as it moves. */
 	onChange?: (value: number) => void;
 	/**
 	 * Alto de la caja, en px.
@@ -37,6 +38,7 @@ export interface CompareSliderProps {
 	height?: number;
 	/** Nombre del control para lectores de pantalla: qué se compara. */
 	label: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -22,7 +22,9 @@ export interface CarouselLabels {
 	carousel: string;
 	/** Descripción del rol de cada diapositiva («diapositiva»). */
 	slide: string;
+	/** Accessible name of the previous button. */
 	previous: string;
+	/** Accessible name of the next button. */
 	next: string;
 	/** Nombre de cada diapositiva: «2 de 5». */
 	slideOf: (n: number, total: number) => string;
@@ -44,13 +46,16 @@ export interface CarouselProps {
 	index?: number;
 	/** Diapositiva inicial, desde 0. */
 	defaultIndex?: number;
+	/** Called with the index of the slide that is now showing. */
 	onChange?: (index: number) => void;
 	/**
 	 * Flechas del Figma (`_Testimonial carousel arrow`): `button-chevron` (la de siempre) y `button-arrow` en un círculo,
 	 * o `arrow` sola y larga, sin círculo. Sin ella, la de siempre.
 	 */
 	arrowStyle?: CarouselArrowStyle;
+	/** Texts for assistive technology, to translate. */
 	labels?: Partial<CarouselLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 	/**
 	 * `slides` pasa de una en una con flechas y puntos. `strip` es una fila que se desplaza en horizontal con el dedo

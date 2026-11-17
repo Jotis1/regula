@@ -19,6 +19,7 @@ export interface MessageInputProps {
 	sendLabel?: string;
 	/** Nombre accesible del botón de adjuntar. */
 	attachLabel?: string;
+	/** Disables the control. */
 	disabled?: boolean;
 	/**
 	 * Tipo del Figma (`Message action`, `9206:602532`). Sin él, la caja de siempre. `minimal`: una línea con el botón
@@ -36,7 +37,9 @@ export interface MessageInputProps {
 	toolbar?: ReactNode;
 	/** Textos de los botones nuevos. */
 	labels?: Partial<{ voice: string; emoji: string; shortcuts: string }>;
+	/** Accessible name of the field. */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

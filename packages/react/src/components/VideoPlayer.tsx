@@ -6,11 +6,17 @@ import { cx } from "../internal/cx.js";
 import { DynIcon } from "../internal/icon.js";
 
 export interface VideoPlayerLabels {
+	/** Accessible name of the play button. */
 	play: string;
+	/** Accessible name of the pause button. */
 	pause: string;
+	/** Accessible name of the progress slider. */
 	seek: string;
+	/** Accessible name of the button that mutes the sound. */
 	mute: string;
+	/** Accessible name of the button that turns the sound on. */
 	unmute: string;
+	/** Accessible name of the full screen button. */
 	fullscreen: string;
 	/** Texto de la posición para lectores de pantalla: "1:05 de 4:12". */
 	position: (current: string, total: string) => string;
@@ -40,7 +46,9 @@ export interface VideoPlayerProps {
 	size?: VideoPlayerSize;
 	/** Textos de los controles (ampliación sobre la guía). */
 	labels?: Partial<VideoPlayerLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** Inline styles, merged with the component's own. */
 	style?: CSSProperties;
 }
 
