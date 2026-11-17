@@ -78,12 +78,12 @@ Turbo firma los artefactos solo si se activa `remoteCache.signature`. No se acti
 `apps/docs/vercel.json`:
 
 ```json
-{ "ignoreCommand": "npx -y turbo@2.11.10 query affected --packages me.jotis.regula.docs --base \"$VERCEL_GIT_PREVIOUS_SHA\" --exit-code" }
+{ "ignoreCommand": "npx -y turbo@2.11.10 query affected --packages me.jotis.regula.docs --base \"$VERCEL_GIT_PREVIOUS_SHA\" --exit-code || exit 1" }
 ```
 
-- Sale 0 (no construir) si la web no está afectada, 1 (construir) si lo está y 2 (construir) si falla. Las tres van en el sentido que espera Vercel.
+- Turbo sale con 0 si la web no está afectada, con 1 si lo está y con 2 si no puede comparar. Vercel solo entiende 0 (no construir) y 1 (construir): con cualquier otro código marca el despliegue como fallido. Pasó en la primera preview de la #42. Por eso `|| exit 1` convierte el 2 en «construye», y `check:ci` lo exige.
 - El paso corre antes de `install`, así que fija la versión de `turbo` en el propio comando. `check:ci` comprueba que coincide con la del `package.json` raíz.
-- Sin `VERCEL_GIT_PREVIOUS_SHA` (primer despliegue de una rama) o con un clon demasiado corto, Turbo da todo por afectado y construye. Es el lado seguro.
+- Sin `VERCEL_GIT_PREVIOUS_SHA` (primer despliegue de una rama), Turbo falla con `ambiguous argument ''` y, con el `|| exit 1`, Vercel construye. Con un clon demasiado corto, Turbo da todo por afectado y también construye. Es el lado seguro.
 - La prueba de la #41 da `//` como afectado, pero no `me.jotis.regula.docs`: con `--packages me.jotis.regula.docs` sale 0.
 
 **Alternativa descartada:** «Skip unaffected projects» de Vercel. Trata como global todo cambio fuera de los workspaces y construiría con `openspec/`.

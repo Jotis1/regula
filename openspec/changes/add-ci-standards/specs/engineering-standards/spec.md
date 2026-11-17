@@ -41,7 +41,7 @@ El área de CI SHALL fijar:
 
 #### Scenario: Despliegue condicionado
 - **WHEN** se mira el ejemplo que cumple la norma de los despliegues
-- **THEN** enseña un `vercel.json` con `ignoreCommand` que llama a `turbo query affected --packages` con el nombre de la app y `--exit-code`
+- **THEN** enseña un `vercel.json` con `ignoreCommand` que llama a `turbo query affected --packages` con el nombre de la app y `--exit-code`, terminado en `|| exit 1`
 
 ### Requirement: Área de CI: tiempos
 El área de CI SHALL fijar, con nivel DEBERÍA y para todos los proyectos:
