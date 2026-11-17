@@ -32,8 +32,8 @@ export interface EmptyStateProps {
 	/** La siguiente acción: normalmente un `Button` secundario y uno primario. */
 	actions?: ReactNode;
 	/**
-	 * Cabecera: `icon` (por defecto) - `illustration` · `file` (icono de archivo sobre rejilla) - `folder` -
-	 * `folder-glass` (carpeta translúcida) - `users-radius` (avatares en círculos) - `users-row` · `integrations`.
+	 * Cabecera: `icon` (por defecto) - `illustration` - `file` (icono de archivo sobre rejilla) - `folder` -
+	 * `folder-glass` (carpeta translúcida) - `users-radius` (avatares en círculos) - `users-row` - `integrations`.
 	 * @default "icon"
 	 */
 	media?: EmptyStateMedia;

@@ -42,7 +42,7 @@ export interface FooterColumn {
 export interface FooterProps {
 	/** Los tipos del Figma: dieciséis grandes y cuatro pequeños. @default "large-01" */
 	type?: FooterType;
-	/** `default` sobre `bg-primary` · `brand` sobre `bg-brand-section`. @default "default" */
+	/** `default` sobre `bg-primary` - `brand` sobre `bg-brand-section`. @default "default" */
 	theme?: "default" | "brand";
 	/** La marca (normalmente un enlace a la portada). */
 	brand?: ReactNode;
