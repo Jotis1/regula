@@ -322,7 +322,7 @@ La web SHALL tener en `/components/` un índice de todos los componentes del cat
 - **THEN** antes de las cards hay un enlace por cada uno de los 16 grupos, con su frase y su recuento, que lleva al grupo
 
 ### Requirement: Historial de cambios
-La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build. El texto de cada entrada SHALL pintarse con su formato: párrafos, listas (también las que van dentro de una entrada) y código en línea.
+La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, generado de sus CHANGELOG en el build. El texto de cada entrada SHALL pintarse con su formato: párrafos, listas a cualquier profundidad (también las que van dentro de una entrada o empiezan en su primera línea), tablas, negrita, también con código dentro, y código en línea. MUST NOT quedar a la vista guiones, barras ni asteriscos del Markdown.
 
 #### Scenario: Versión publicada
 - **WHEN** se publica una versión con una entrada en el CHANGELOG
@@ -331,6 +331,22 @@ La web SHALL tener en `/changelog/` el historial de versiones de los paquetes, g
 #### Scenario: Entrada con listas
 - **WHEN** se abre `/changelog/` y se mira la entrada de la 0.4.0, que lista los componentes nuevos y después las variantes
 - **THEN** cada lista se pinta como una lista con un elemento por línea, sin los guiones del Markdown, y el texto de entre las dos listas como un párrafo
+
+#### Scenario: Sublistas
+- **WHEN** se mira la entrada de la 0.9.0, cuyo elemento `ChatBox` lleva su propia lista
+- **THEN** esa lista se pinta dentro de su elemento, sin guiones sueltos
+
+#### Scenario: Negrita con código
+- **WHEN** una entrada dice «**Cambio que rompe: `Select`.**»
+- **THEN** se pinta en negrita, con `Select` como código, y sin asteriscos
+
+#### Scenario: Subidas de dependencias
+- **WHEN** el CHANGELOG de `@jotis-me/react` anota `- @jotis-me/tokens@0.9.0` en «Patch Changes»
+- **THEN** `/changelog/` no lo enseña como un arreglo
+
+#### Scenario: Tabla
+- **WHEN** se mira la entrada de la 0.8.0, con su tabla «Antes (`0.7`)» y «Ahora»
+- **THEN** se pinta como una tabla con su cabecera y una fila por cambio, y si no cabe se desplaza dentro de su caja, no la página
 
 ### Requirement: Lienzos a tamaño real
 Los componentes de tamaño fijo (`StreamScene` y `ChannelBanner`) SHALL tener una página `/components/<slug>/full/` que los muestra a su tamaño de Twitch, sin escalar, enlazada desde su página.
