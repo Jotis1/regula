@@ -70,7 +70,7 @@ jobs:
             - name: Diagnóstico de npm (trusted publishing)
               if: steps.changesets.outputs.hasChangesets == 'false'
               run: |
-                  echo "node $(node --version) · npm $(npm --version) · npm en $(command -v npm)"
+                  echo "node $(node --version) - npm $(npm --version) - npm en $(command -v npm)"
                   for v in GITHUB_ACTIONS ACTIONS_ID_TOKEN_REQUEST_URL ACTIONS_ID_TOKEN_REQUEST_TOKEN; do
                       if [ -n "${!v}" ]; then echo "$v: presente"; else echo "$v: AUSENTE"; fi
                   done
