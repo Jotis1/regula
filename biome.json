@@ -27,6 +27,7 @@
 		"indentWidth": 4,
 		"lineWidth": 110
 	},
+	"markdown": { "formatter": { "enabled": false } },
 	"linter": {
 		"enabled": true,
 		"rules": {
