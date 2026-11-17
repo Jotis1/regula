@@ -37,6 +37,7 @@
 			"style": {
 				"noEnum": "error",
 				"noNonNullAssertion": "error",
+				"noDefaultExport": "error",
 				"useImportType": "error"
 			},
 			"a11y": {
@@ -68,6 +69,19 @@
 		}
 	},
 	"overrides": [
+		{
+			"includes": [
+				"**/app/**/{page,layout,template,loading,error,global-error,not-found,default,opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{ts,tsx}",
+				"**/*.config.{ts,mts,js,mjs}"
+			],
+			"linter": {
+				"rules": {
+					"style": {
+						"noDefaultExport": "off"
+					}
+				}
+			}
+		},
 		{
 			"includes": ["**/*.astro"],
 			"linter": {
