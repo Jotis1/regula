@@ -26,7 +26,7 @@ export function componentReadme(name: string): string {
 export function groupLabel(name: string): string {
 	const group = COMPONENT_GROUPS.find((g) => g.components.includes(name));
 	if (!group) throw new Error(`${name} no está en ningún grupo del catálogo`);
-	return group.section === "stream" ? `Stream · ${group.label}` : group.label;
+	return group.section === "stream" ? `Stream - ${group.label}` : group.label;
 }
 
 /**

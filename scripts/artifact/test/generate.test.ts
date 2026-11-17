@@ -114,7 +114,7 @@ describe("catálogo", () => {
 		expect(button.split("\n")[0]).toBe('<!-- @dsCard group="Acciones" height=220 -->');
 		expect(button).toContain('window.Jotis.previews["Button"]');
 		expect(text("components/StreamAlert/preview.html").split("\n")[0]).toMatch(
-			/group="Stream · Alertas"/,
+			/group="Stream - Alertas"/,
 		);
 		expect(text("components/StreamAlert/preview.html")).toContain('setAttribute("data-theme", "dark")');
 		expect(button).not.toContain("data-theme");
@@ -217,7 +217,7 @@ describe("índice", () => {
 			namespace: "Jotis",
 			editing: "code",
 		});
-		expect(i.lastChange).toMatchObject({ at: DATE, via: `GitHub · Jotis1/regula@${COMMIT.slice(0, 7)}` });
+		expect(i.lastChange).toMatchObject({ at: DATE, via: `GitHub - Jotis1/regula@${COMMIT.slice(0, 7)}` });
 		expect(i.libraries.map((l: { file: string }) => l.file)).toEqual([
 			"components/lib/react.production.min.js",
 			"components/lib/react-dom.production.min.js",

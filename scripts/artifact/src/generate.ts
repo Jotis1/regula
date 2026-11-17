@@ -227,7 +227,7 @@ function buildIndex(opts: Options, generated: Asset[], short: string) {
 	index.lastChange = {
 		by: "Jotis",
 		at: opts.date,
-		via: `GitHub · ${REPO}@${short}`,
+		via: `GitHub - ${REPO}@${short}`,
 		note: `Generado desde el repo (${REPO}@${short}) con bun run artifact:build.`,
 	};
 	if (published && uploads.length)
