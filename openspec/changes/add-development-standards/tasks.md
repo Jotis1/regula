@@ -11,7 +11,7 @@ Comandos:
 
 ## 1. Prefijos en inglés y excepciones
 
-- [ ] 1.1 Añadir el campo `exceptions` al esquema de `standards.ts` (D2). La página del área lo pinta bajo el enunciado, y `/standards.json` y `get_standard` lo devuelven. Comprobar con un test del esquema y con el build
+- [x] 1.1 Añadir el campo `exceptions` al esquema de `standards.ts` (D2). La página del área lo pinta bajo el enunciado, y `/standards.json` y `get_standard` lo devuelven. Comprobar con un test del esquema y con el build
 - [ ] 1.2 Renombrar `NOM-00x` a `NAM-00x` e `IDI-00x` a `LNG-00x`, con los prefijos de los dos YAML. Cambiar también sus referencias:
   - `ci.yml`, `astro.config.mjs`, `standards.ts`, `mcp/tools.ts` y `check-package-names.ts`;
   - los tests y e2e de normas, MCP y búsqueda.
