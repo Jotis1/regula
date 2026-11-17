@@ -165,7 +165,7 @@ import {
 	Zap,
 } from "@untitledui/icons";
 import type { CSSProperties, ReactNode } from "react";
-import { PantallaGastos } from "./examples/compare-slider";
+import { ExpensesScreen } from "../components/ExpensesScreen";
 
 export interface Showcase {
 	/** La muestra del componente: lo más característico, en una sola forma y quieta. Se centra y se ajusta al marco de la captura. */
@@ -1547,8 +1547,8 @@ export const SHOWCASES: Record<string, Showcase> = {
 			<div style={box(440)}>
 				<CompareSlider
 					label="Tema de la pantalla"
-					before={<PantallaGastos mode="dark" />}
-					after={<PantallaGastos mode="light" />}
+					before={<ExpensesScreen mode="dark" />}
+					after={<ExpensesScreen mode="light" />}
 					beforeLabel="Oscuro"
 					afterLabel="Claro"
 					defaultValue={45}

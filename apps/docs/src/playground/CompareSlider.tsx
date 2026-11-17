@@ -1,7 +1,8 @@
 // CompareSlider en el ejemplo interactivo (un fichero por componente: design D4): las dos capas son nodos, que se eligen
 // entre pantallas preparadas.
+
+import { ExpensesScreen } from "../components/ExpensesScreen";
 import type { Tweak } from "../lib/playground";
-import { PantallaGastos } from "../visual/examples/compare-slider";
 
 export { CompareSlider as Component } from "@jotis-me/react";
 
@@ -11,12 +12,12 @@ export const tweaks: Record<string, Tweak> = {
 		options: [
 			{
 				label: "Pantalla oscura",
-				value: <PantallaGastos mode="dark" />,
+				value: <ExpensesScreen mode="dark" />,
 				code: '<Pantalla tema="oscuro" />',
 			},
 			{
 				label: "Pantalla clara",
-				value: <PantallaGastos mode="light" />,
+				value: <ExpensesScreen mode="light" />,
 				code: '<Pantalla tema="claro" />',
 			},
 		],
@@ -26,12 +27,12 @@ export const tweaks: Record<string, Tweak> = {
 		options: [
 			{
 				label: "Pantalla clara",
-				value: <PantallaGastos mode="light" />,
+				value: <ExpensesScreen mode="light" />,
 				code: '<Pantalla tema="claro" />',
 			},
 			{
 				label: "Pantalla oscura",
-				value: <PantallaGastos mode="dark" />,
+				value: <ExpensesScreen mode="dark" />,
 				code: '<Pantalla tema="oscuro" />',
 			},
 		],
