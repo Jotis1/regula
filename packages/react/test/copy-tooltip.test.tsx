@@ -123,7 +123,7 @@ describe("CopyTooltip", () => {
 		});
 		at(10);
 		await press("Copiar");
-		expect(bubble().style.transform).toBe("translate(-50%, 0)");
+		expect(bubble().style.transform).toBe("translate(-50%)");
 		expect(bubble().style.top).toBe("56px"); // el borde de abajo (46) más el hueco de 10
 		expect(bubble().firstElementChild?.className).toContain("after:bottom-full");
 	});

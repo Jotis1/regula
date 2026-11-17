@@ -81,7 +81,7 @@ describe("ChatBox", () => {
 	it("desvanecido arriba por defecto; `fade={false}` lo quita", () => {
 		const { container, rerender } = render(<ChatBox messages={msgs} />);
 		const list = () => container.querySelector("[role=log] > div") as HTMLElement;
-		expect(list().style.maskImage).toContain("transparent 0, black 30%");
+		expect(list().style.maskImage).toContain("transparent 0px, black 30%");
 		rerender(<ChatBox messages={msgs} fade={false} />);
 		expect(list().style.maskImage).toBe("");
 	});

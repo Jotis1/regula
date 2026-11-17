@@ -78,20 +78,20 @@ describe("Carousel", () => {
 		await userEvent.keyboard("{ArrowLeft}");
 		expect(shift()).toBe("translateX(-100%)");
 		await userEvent.keyboard("{ArrowLeft}{ArrowLeft}");
-		expect(shift()).toBe("translateX(-0%)");
+		expect(shift()).toBe("translateX(0%)");
 	});
 
 	it("deslizar con el puntero: a la izquierda, la siguiente; a la derecha, la anterior; umbral de 48px", () => {
 		render(<Carousel aria-label="Fotos" slides={slides} />);
 		const viewport = track().parentElement as HTMLElement;
 		swipe(viewport, 200, 160); // 40px: no llega
-		expect(shift()).toBe("translateX(-0%)");
+		expect(shift()).toBe("translateX(0%)");
 		swipe(viewport, 200, 140); // 60px a la izquierda
 		expect(shift()).toBe("translateX(-100%)");
 		swipe(viewport, 100, 200); // a la derecha
-		expect(shift()).toBe("translateX(-0%)");
+		expect(shift()).toBe("translateX(0%)");
 		swipe(viewport, 100, 200); // ya en la primera: no da la vuelta
-		expect(shift()).toBe("translateX(-0%)");
+		expect(shift()).toBe("translateX(0%)");
 	});
 
 	it("la transición se quita con movimiento reducido", () => {
