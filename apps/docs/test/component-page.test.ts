@@ -98,7 +98,7 @@ describe("plantilla de página de componente", () => {
 		expect(html).toContain("Jerarquía visual del ejemplo.");
 		expect(html).toMatch(/<code>label<\/code>\s*<span[^>]*>obligatoria<\/span>/);
 		expect(html).toMatch(/<code>40<\/code>/);
-		const [table, props] = order(html, "</table>", "Acepta además");
+		const [table = -1, props = -1] = order(html, "</table>", "Acepta además");
 		expect(props).toBeGreaterThan(table);
 	});
 

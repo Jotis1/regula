@@ -78,7 +78,7 @@ describe("sidebarTree, en el menú", () => {
 });
 
 describe("SideNav", () => {
-	let html: Record<string, string> = {};
+	let html: Record<"lateral" | "menu", string> = { lateral: "", menu: "" };
 	beforeAll(async () => {
 		const renderers = await loadRenderers([getContainerRenderer()]);
 		const container = await AstroContainer.create({ renderers });

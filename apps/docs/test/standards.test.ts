@@ -36,6 +36,12 @@ type Mutable = {
 	};
 }[];
 const clone = () => structuredClone(areas) as unknown as Mutable;
+/** The first rule of the area at `index`; the tests mutate it to break one thing at a time. */
+function ruleOf(copy: Mutable, index: number) {
+	const rule = copy[index]?.data.rules[0];
+	if (!rule) throw new Error(`Area ${index} has no rules`);
+	return rule;
+}
 
 describe("colección de normas", () => {
 	it("las áreas del catálogo son los ficheros de content/standards", () => {
@@ -54,49 +60,49 @@ describe("colección de normas", () => {
 
 	it("falla con un ID repetido", () => {
 		const copy = clone();
-		copy[1].data.rules[0].id = copy[0].data.rules[0].id;
+		ruleOf(copy, 1).id = ruleOf(copy, 0).id;
 		expect(problemsOf(copy, ctx).join("\n")).toContain("repeated");
 	});
 
 	it("falla con un ID que no lleva el prefijo de su área", () => {
 		const copy = clone();
-		copy[0].data.rules[0].id = "ZZZ-001";
+		ruleOf(copy, 0).id = "ZZZ-001";
 		expect(problemsOf(copy, ctx).join("\n")).toContain("does not start with the prefix");
 	});
 
 	it("falla con un `check` de CI que no existe", () => {
 		const copy = clone();
-		copy[0].data.rules[0].verification = { kind: "ci", check: "Un paso que no existe" };
+		ruleOf(copy, 0).verification = { kind: "ci", check: "Un paso que no existe" };
 		expect(problemsOf(copy, ctx).join("\n")).toContain("no job or step named");
 	});
 
 	it("falla sin el ejemplo que no la cumple", () => {
 		const copy = clone();
-		copy[0].data.rules[0].examples.bad = [];
+		ruleOf(copy, 0).examples.bad = [];
 		expect(problemsOf(copy, ctx).join("\n")).toContain("examples.bad");
 	});
 
 	it("acepta excepciones de framework y las lleva al JSON", () => {
 		const copy = clone();
 		const exceptions = [{ where: "`app/**/page.tsx`", why: "Next imports it by its default export." }];
-		copy[0].data.rules[0].exceptions = exceptions;
+		ruleOf(copy, 0).exceptions = exceptions;
 		expect(problemsOf(copy, ctx)).toEqual([]);
 		const entries = copy.map((a) => ({ id: a.slug, data: a.data as unknown as StandardArea }));
 		const rule = standardsJson(entries, "9.9.9", "https://regula.jotis.me/")
 			.areas.flatMap((a) => a.rules)
-			.find((r) => r.id === copy[0].data.rules[0].id);
+			.find((r) => r.id === ruleOf(copy, 0).id);
 		expect(rule?.exceptions).toEqual(exceptions);
 	});
 
 	it("falla con una excepción sin motivo", () => {
 		const copy = clone();
-		copy[0].data.rules[0].exceptions = [{ where: "`page.tsx`", why: "" }];
+		ruleOf(copy, 0).exceptions = [{ where: "`page.tsx`", why: "" }];
 		expect(problemsOf(copy, ctx).join("\n")).toContain("exceptions");
 	});
 
 	it("falla con una norma de revisión sin decir qué se revisa", () => {
 		const copy = clone();
-		copy[0].data.rules[0].verification = { kind: "review" };
+		ruleOf(copy, 0).verification = { kind: "review" };
 		expect(problemsOf(copy, ctx)).not.toEqual([]);
 	});
 });

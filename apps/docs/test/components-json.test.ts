@@ -14,7 +14,7 @@ const entries: ComponentEntry[] = readdirSync(dir)
 	.filter((f) => f.endsWith(".md"))
 	.map((f) => {
 		const raw = readFileSync(join(dir, f), "utf8");
-		const [, front, body] = raw.split(/^---\s*$/m);
+		const [, front = "", body = ""] = raw.split(/^---\s*$/m);
 		return { id: f.replace(/\.md$/, ""), data: parse(front), body };
 	});
 
