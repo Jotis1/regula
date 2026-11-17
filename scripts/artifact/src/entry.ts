@@ -1,6 +1,7 @@
 // Entrada del bundle del artefacto: @jotis-me/react tal cual, más los ejemplos del
 // registro de la web en `previews`, que montan las vistas previas. Se compila como un único script clásico (IIFE).
-// @ts-nocheck: el registro trae los ejemplos .tsx de la web, que se comprueban con los tipos de la web.
+// Sin comprobación de tipos aquí (el tsconfig lo excluye): el registro trae los ejemplos .tsx de la web, que se
+// comprueban con los tipos de la web.
 // biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as lib from "@jotis-me/react";
 import { COMPOSITIONS } from "../../../apps/docs/src/visual/compositions";
