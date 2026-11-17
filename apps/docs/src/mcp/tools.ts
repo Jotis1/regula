@@ -129,7 +129,7 @@ const getComponent = defineTool({
 	name: "get_component",
 	title: "Get a component",
 	description:
-		"Get the full card of a Regula component by name (e.g. `Button`, case-insensitive): description, usage guide, props (name, type, required, default, description), whether it needs `client:*` in Astro, and the Next.js and Astro snippets.",
+		"Get the full card of a Regula component by name (e.g. `Button`, case-insensitive): description, usage guide, props (name, type, required, default, description), the native attributes it forwards (`native`: one entry per HTML element, with that element's own attributes; the global HTML attributes, `aria-*` and events are implied), whether it needs `client:*` in Astro, and the Next.js and Astro snippets.",
 	inputSchema: { name: queryParam("Component name such as `Button`.") },
 	run: ({ components }, { name }) => {
 		const wanted = fold(name);

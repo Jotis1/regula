@@ -1,0 +1,37 @@
+---
+// Los atributos nativos que reenvía el componente, bajo su tabla de props (spec docs-site, «Página por componente»):
+// una línea por elemento. Los globales de HTML, `aria-*` y los eventos se dan por incluidos y no se listan.
+import type { NativeTarget } from "../lib/props";
+
+interface Props {
+	native: NativeTarget[];
+}
+const { native } = Astro.props;
+---
+
+{
+	native.length > 0 && (
+		<div data-native-props class="flex flex-col gap-2">
+			{native.map((t) => (
+				<p data-native-element={t.element ?? "global"} class="m-0 text-sm text-tertiary">
+					{t.element ? (
+						<>
+							Reenvía al <code>{`<${t.element}>`}</code> sus atributos:{" "}
+							{t.attributes.map((a, i) => (
+								<>
+									<code>{a}</code>
+									{i < t.attributes.length - 1 ? ", " : ""}
+								</>
+							))}
+							, además de los globales de HTML, <code>aria-*</code> y los eventos.
+						</>
+					) : (
+						<>
+							Reenvía los atributos globales de HTML, <code>aria-*</code> y los eventos.
+						</>
+					)}
+				</p>
+			))}
+		</div>
+	)
+}

@@ -85,6 +85,13 @@ describe("componentes", () => {
 		expect(json.url).toBe("https://regula.jotis.me/components/button/");
 	});
 
+	it("get_component button trae los atributos nativos de button y a", () => {
+		const { json } = call("get_component", { name: "button" });
+		expect(json.native.map((t: { element: string }) => t.element)).toEqual(["button", "a"]);
+		expect(json.native[0].attributes).toContain("type");
+		expect(json.native[1].attributes).toContain("target");
+	});
+
 	it("get_component con Botón da error con los nombres más parecidos", () => {
 		const r = call("get_component", { name: "Botón" });
 		expect(r.isError).toBe(true);

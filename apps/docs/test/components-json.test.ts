@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { type ComponentEntry, componentsJson } from "../src/lib/components-json";
-import { propsOf } from "../src/lib/props";
+import { nativeOf, propsOf } from "../src/lib/props";
 import { snippetsOf } from "../src/lib/snippets";
 
 const dir = join(import.meta.dirname, "../src/content/components");
@@ -21,6 +21,11 @@ const entries: ComponentEntry[] = readdirSync(dir)
 const deps = {
 	propsOf: (e: ComponentEntry) =>
 		propsOf(join(root, e.data.source ?? `packages/react/src/components/${e.data.name}.tsx`), e.data.name),
+	nativeOf: (e: ComponentEntry) =>
+		nativeOf(
+			join(root, e.data.source ?? `packages/react/src/components/${e.data.name}.tsx`),
+			e.data.name,
+		),
 	snippetsOf,
 };
 const json = componentsJson(entries, deps, "1.2.3", "https://regula.jotis.me/");
@@ -41,6 +46,13 @@ describe("componentsJson", () => {
 		expect(button?.snippets.next).toContain('import { Button } from "@jotis-me/react"');
 		expect(button?.snippets.astro).toContain("---");
 		expect(button?.guide).toContain("**Cuándo.**");
+	});
+
+	it("Button trae native con button y a, y Avatar trae []", () => {
+		const button = json.components.find((c) => c.name === "Button");
+		expect(button?.native.map((t) => t.element)).toEqual(["button", "a"]);
+		expect(button?.native[0]?.attributes).toContain("disabled");
+		expect(json.components.find((c) => c.name === "Avatar")?.native).toEqual([]);
 	});
 
 	it("los grupos van en el orden de la web y nombran componentes que existen", () => {

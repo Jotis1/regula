@@ -11,6 +11,7 @@ import { ArrowRight, Copy01, InfoCircle, Moon01, Play } from "@untitledui/icons"
 import CardSections from "../components/CardSections.astro";
 import CodeSnippet from "../components/CodeSnippetIsland";
 import InlineCode from "../components/InlineCode.astro";
+import NativeProps from "../components/NativeProps.astro";
 import PageToc from "../components/PageToc.astro";
 import Playground from "../components/Playground";
 import PropsTable from "../components/PropsTable.astro";
@@ -23,7 +24,7 @@ import { compositionCode } from "../lib/composition-code";
 import { inline } from "../lib/inline";
 import { PAGE_SECTIONS } from "../lib/layout";
 import { type Playground as PlaygroundData, STARTS } from "../lib/playground";
-import type { PropRow } from "../lib/props";
+import type { NativeTarget, PropRow } from "../lib/props";
 import { COMPOSITION_FILES, compositionsOf, INLINE_COMPOSITIONS } from "../visual/compositions";
 import VisualExample from "../visual/VisualExample";
 import Base from "./Base.astro";
@@ -34,6 +35,8 @@ interface Props {
 	/** La ficha de la guía repartida por etiqueta (`splitCard`). */
 	card: SplitCard;
 	props: PropRow[];
+	/** Atributos nativos que reenvía, uno por elemento; sin ellos, la página no dice nada. */
+	native?: NativeTarget[];
 	/** Uso en Next.js: el componente tal cual. */
 	next: string;
 	/** Uso en Astro: con la directiva `client:*` si es interactivo. */
@@ -53,6 +56,7 @@ const {
 	description,
 	card,
 	props,
+	native = [],
 	next,
 	astro,
 	interactive = false,
@@ -202,6 +206,7 @@ const toc = [
 				<SectionTitle id="props" title="Props" />
 				<!-- Desde `lg`, la tabla en su caja; por debajo, una lista plegable, una prop por fila -->
 				<PropsTable rows={props} label={label} />
+				<NativeProps native={native} />
 				{card.props && <p class="m-0 text-sm text-tertiary" set:html={inline(card.props.raw)} />}
 			</section>
 

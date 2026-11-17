@@ -4,7 +4,7 @@ import { join } from "node:path";
 import react from "@jotis-me/react/package.json";
 import type { APIRoute } from "astro";
 import { type ComponentEntry, componentsJson } from "../lib/components-json";
-import { propsOf } from "../lib/props";
+import { nativeOf, propsOf } from "../lib/props";
 import { snippetsOf } from "../lib/snippets";
 
 export const GET: APIRoute = async ({ site }) => {
@@ -16,7 +16,11 @@ export const GET: APIRoute = async ({ site }) => {
 	return Response.json(
 		componentsJson(
 			entries,
-			{ propsOf: (e) => propsOf(sourceOf(e), e.data.name), snippetsOf },
+			{
+				propsOf: (e) => propsOf(sourceOf(e), e.data.name),
+				nativeOf: (e) => nativeOf(sourceOf(e), e.data.name),
+				snippetsOf,
+			},
 			react.version,
 			(site as URL).href,
 		),

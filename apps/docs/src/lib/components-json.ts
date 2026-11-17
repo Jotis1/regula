@@ -1,8 +1,9 @@
 // The public JSON `/components.json` (spec mcp-server, «Datos públicos en JSON»): every component with its group,
-// its card, its props and its Next and Astro snippets. It receives `propsOf` and `snippetsOf` so a test can run it
+// its card, its props, the native attributes it forwards and its Next and Astro snippets. It receives `propsOf`,
+// `nativeOf` and `snippetsOf` so a test can run it
 // without reading the source files; the endpoint passes the real ones.
 import { COMPONENT_GROUPS } from "./catalog";
-import type { PropRow } from "./props";
+import type { NativeTarget, PropRow } from "./props";
 
 export interface ComponentEntry {
 	/** File name without extension: the last segment of `/components/<slug>/`. */
@@ -20,6 +21,7 @@ export interface ComponentEntry {
 
 export interface ComponentDeps {
 	propsOf: (entry: ComponentEntry) => PropRow[];
+	nativeOf: (entry: ComponentEntry) => NativeTarget[];
 	snippetsOf: (name: string, interactive: boolean) => { next: string; astro: string };
 }
 
@@ -48,6 +50,7 @@ export function componentsJson(
 				interactive,
 				astroNote: astroNote ?? null,
 				props: deps.propsOf(entry),
+				native: deps.nativeOf(entry),
 				snippets: { next, astro },
 				url: new URL(`/components/${entry.id}/`, site).href,
 			};
