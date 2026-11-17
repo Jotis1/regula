@@ -16,6 +16,7 @@ export interface SpinnerProps {
 	variant?: SpinnerVariant;
 	/** Texto bajo el círculo. Por defecto, "Cargando…"; `false` lo deja solo para lectores de pantalla. */
 	label?: ReactNode | false;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -16,14 +16,18 @@ export interface BannerEmail {
 	buttonLabel?: string;
 	/** Texto bajo el campo, como "Puedes darte de baja cuando quieras." */
 	hint?: ReactNode;
+	/** Called with the address when the form is submitted. */
 	onSubmit?: (value: string) => void;
 }
 
 export interface BannerProps {
+	/** The headline. */
 	title: ReactNode;
+	/** Supporting text under the title. */
 	description?: ReactNode;
 	/** Icono destacado de 48px: `modern` en el tema por defecto y `light` en `brand`. */
 	icon?: IconProp;
+	/** Buttons shown next to the text. */
 	actions?: ReactNode;
 	/** Campo de correo de 360px con botón, para captar suscripciones. */
 	email?: BannerEmail;
@@ -49,6 +53,7 @@ export interface BannerProps {
 	closeLabel?: string;
 	/** Nombre de la región. Por defecto, el título si es texto, o "Aviso". */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

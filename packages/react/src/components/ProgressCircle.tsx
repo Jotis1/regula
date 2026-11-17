@@ -24,6 +24,7 @@ export interface ProgressCircleProps {
 	valueText?: string;
 	/** Nombre de la barra si no hay `label` o no es texto. */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

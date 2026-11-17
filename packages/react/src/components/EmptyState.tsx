@@ -52,6 +52,7 @@ export interface EmptyStateProps {
 	 * @default "sm"
 	 */
 	size?: EmptyStateSize;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

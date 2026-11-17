@@ -11,6 +11,7 @@ export interface SkeletonProps {
 	circle?: boolean;
 	/** N líneas de texto de 12px; la última al 60 %. */
 	lines?: number;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -16,6 +16,7 @@ export type ProgressStepsSize = "sm" | "md";
 export type ProgressStepsOrientation = "horizontal" | "vertical";
 
 export interface ProgressStep {
+	/** The name of the step. */
 	title: ReactNode;
 	/** Texto de apoyo bajo el título. */
 	description?: ReactNode;
@@ -24,14 +25,18 @@ export interface ProgressStep {
 }
 
 export interface ProgressStepsLabels {
+	/** Text for a step that is done. */
 	complete: string;
+	/** Text for the step that is in progress. */
 	current: string;
+	/** Text for a step that has not started. */
 	pending: string;
 	/** «Paso 3 de 4», en los tipos mínimos. */
 	stepOf: (n: number, total: number) => string;
 }
 
 export interface ProgressStepsProps {
+	/** The steps, in order. */
 	steps: ProgressStep[];
 	/** Índice del paso actual, desde 0. Los anteriores están completos y los siguientes pendientes. */
 	current: number;
@@ -74,6 +79,7 @@ export interface ProgressStepsProps {
 	children?: (current: number) => ReactNode;
 	/** Nombre de la lista («Pasos del alta»). */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
