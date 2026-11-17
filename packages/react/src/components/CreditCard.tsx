@@ -38,7 +38,9 @@ export interface CreditCardProps {
 	 * "Tarjeta Pecunia terminada en 4821, titular Administrador, caduca 06/29".
 	 */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** Inline styles, merged with the component's own. */
 	style?: CSSProperties;
 }
 

@@ -24,6 +24,7 @@ export interface ExampleCardProps {
 	 * @default "sm"
 	 */
 	grid?: TransparencyGridSize | false;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

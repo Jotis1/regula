@@ -34,7 +34,9 @@ export interface BackgroundPatternProps {
 	height?: number;
 	/** Reparto de las casillas en `grid-check` y de los puntos en `tech-grid`. @default 7 */
 	seed?: number;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** Inline styles, merged with the component's own. */
 	style?: CSSProperties;
 }
 

@@ -21,7 +21,9 @@ export interface BrowserFrameProps {
 	height?: number | string;
 	/** La pantalla: componentes reales, no capturas, para que cambien con el tema. */
 	children?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** Inline styles, merged with the component's own. */
 	style?: CSSProperties;
 }
 

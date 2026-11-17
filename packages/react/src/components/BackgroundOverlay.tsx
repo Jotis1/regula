@@ -12,6 +12,7 @@ export interface BackgroundOverlayProps {
 	 * @default true
 	 */
 	blur?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
