@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import "./globals.css";
 
-export const metadata = { title: "Ejemplo Next · jotis.me" };
+export const metadata = { title: "Ejemplo Next - jotis.me" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
