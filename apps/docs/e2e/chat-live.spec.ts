@@ -1,4 +1,4 @@
-// ChatBox y StreamPinnedMessage en el navegador (add-live-interaction-pieces, D3 y D7–D9): insignias junto al nombre,
+// ChatBox y StreamPinnedMessage en el navegador (add-live-interaction-pieces, D3 y D7-D9): insignias junto al nombre,
 // enlaces marcados, el ejemplo animado que recibe mensajes, el chat seleccionable y el corte a cuatro líneas.
 import { expect, type Locator, type Page, test } from "@playwright/test";
 

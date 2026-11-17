@@ -80,7 +80,7 @@ const Dibujo = ({ tono, alto = 160 }: { tono: string; alto?: number }) => (
 );
 const EQUIPO = [{ initials: "AM" }, { initials: "LR" }, { initials: "PG" }];
 
-/* ——— Confirmaciones ——— */
+/* --- Confirmaciones --- */
 
 export function ModalHorizontalExample() {
 	return (
@@ -223,7 +223,7 @@ export function ModalDestructiveStackedLeftAlignedExample() {
 	);
 }
 
-/* ——— Equipo ——— */
+/* --- Equipo --- */
 
 export function ModalStackedWithTeamExample() {
 	return (
@@ -321,7 +321,7 @@ export function ModalStackedWithTeamAndInvitesExample() {
 	);
 }
 
-/* ——— Imagen y carrusel ——— */
+/* --- Imagen y carrusel --- */
 
 export function ModalCenteredPhotoExample() {
 	return (
@@ -400,7 +400,7 @@ export function ModalCenteredVideoCarouselExample() {
 	);
 }
 
-/* ——— Campos ——— */
+/* --- Campos --- */
 
 export function ModalCheckboxesExample() {
 	return (
@@ -678,7 +678,7 @@ export function ModalAccessRequestExample() {
 	);
 }
 
-/* ——— Seguridad ——— */
+/* --- Seguridad --- */
 
 /** Un código QR de mentira, dibujado con cuadros fijos. */
 function Qr() {
@@ -799,7 +799,7 @@ export function ModalPasswordPromptExample() {
 	);
 }
 
-/* ——— Entrar ——— */
+/* --- Entrar --- */
 
 const marca = (
 	<span className="flex size-10 items-center justify-center rounded-lg bg-brand-solid font-display text-lg font-semibold text-primary_on-brand">
@@ -895,7 +895,7 @@ export function ModalSignUp02Example() {
 	);
 }
 
-/* ——— Planes y pagos ——— */
+/* --- Planes y pagos --- */
 
 export function ModalPlan01Example() {
 	return (
@@ -1139,7 +1139,7 @@ export function ModalUserSelectionExample() {
 	);
 }
 
-/* ——— Archivos e imagen ——— */
+/* --- Archivos e imagen --- */
 
 export function ModalFileUploadExample() {
 	return (
@@ -1241,7 +1241,7 @@ export function ModalProfileSettingsExample() {
 	);
 }
 
-/* ——— Formularios y ajustes ——— */
+/* --- Formularios y ajustes --- */
 
 export function ModalDatePickerExample() {
 	return (
@@ -1462,7 +1462,7 @@ export function ModalCalendarEventExample() {
 				iconVariant="modern"
 				color="gray"
 				title="Invitación: revisión de cuentas"
-				description="Sara Hervás · viernes, 8 de enero"
+				description="Sara Hervás - viernes, 8 de enero"
 				dividers
 				width={400}
 				footerStart={<Button hierarchy="link-gray">Quizá</Button>}
@@ -1479,7 +1479,7 @@ export function ModalCalendarEventExample() {
 							<Calendar size={16} /> Viernes, 8 de enero
 						</li>
 						<li className="flex items-center gap-2">
-							<Clock size={16} /> 13:30 – 15:30
+							<Clock size={16} /> 13:30-15:30
 						</li>
 						<li className="flex items-center gap-2">
 							<Bell01 size={16} /> 10 minutos antes
@@ -1529,7 +1529,7 @@ export function ModalCreateEventExample() {
 	);
 }
 
-/* ——— Equipo y proyectos ——— */
+/* --- Equipo y proyectos --- */
 
 export function ModalUserSettingsExample() {
 	return (
@@ -1716,7 +1716,7 @@ export function ModalIntegrationExample() {
 	);
 }
 
-/* ——— Asistente, editor y mensajes ——— */
+/* --- Asistente, editor y mensajes --- */
 
 export function ModalAIAssistantExample() {
 	return (

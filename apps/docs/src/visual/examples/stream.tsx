@@ -323,7 +323,7 @@ export function StreamSceneExample() {
 			<StreamScene variant="starting" seconds={300} countdownLabel="Para empezar" />
 			<StreamScene variant="brb" seconds={480} countdownLabel="Vuelvo en" />
 			<StreamScene variant="ending" next="Próximo directo: jueves, 20:00" />
-			<StreamScene variant="offline" next="Lunes, miércoles y viernes · 20:00" />
+			<StreamScene variant="offline" next="Lunes, miércoles y viernes - 20:00" />
 		</div>
 	);
 }

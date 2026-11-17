@@ -32,7 +32,7 @@ test("StreamScene: insignias, ejemplos en oscuro, nota del tema con enlace a tam
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto("/components/stream-scene/");
 	const header = page.locator("main header").first();
-	await expect(header.getByText("Stream · Escenas")).toBeVisible();
+	await expect(header.getByText("Stream - Escenas")).toBeVisible();
 	await expect(header.getByText("Siempre en oscuro")).toBeVisible();
 	const crumbs = page.getByRole("navigation", { name: /migas/i });
 	await expect(crumbs.getByRole("link", { name: "Stream" })).toHaveAttribute(

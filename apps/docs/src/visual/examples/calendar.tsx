@@ -58,9 +58,7 @@ export function CalendarViewExample() {
 				aside={
 					<div className="flex flex-col gap-3 p-6 font-body">
 						<h4 className="m-0 text-md font-semibold text-primary">Demo del producto</h4>
-						<p className="m-0 text-sm text-tertiary">
-							Viernes, 8 de enero de 2027 · 13:30 – 15:30
-						</p>
+						<p className="m-0 text-sm text-tertiary">Viernes, 8 de enero de 2027 - 13:30-15:30</p>
 						<div className="flex items-center gap-2 text-sm text-tertiary">
 							<Avatar initials="OR" size="sm" />
 							<span>6 invitados</span>

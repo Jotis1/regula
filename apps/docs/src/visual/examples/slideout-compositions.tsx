@@ -83,7 +83,7 @@ const iniciales = (nombre: string) =>
 		.map((p) => p[0])
 		.join("");
 
-/* ——— Básicos ——— */
+/* --- Básicos --- */
 
 export function SlideoutPlaceholderExample() {
 	return (
@@ -157,8 +157,8 @@ export function SlideoutUserProfileExample() {
 				</ul>
 				<Seccion titulo="Experiencia">
 					{[
-						["Fundadora", "Estudio Capas", "2020 – hoy"],
-						["Diseñadora", "Panadería Rey", "2018 – 2020"],
+						["Fundadora", "Estudio Capas", "2020 - hoy"],
+						["Diseñadora", "Panadería Rey", "2018-2020"],
 					].map(([cargo, sitio, fechas]) => (
 						<div key={cargo} className="flex gap-3">
 							<Avatar size="md" initials={sitio?.slice(0, 1)} />
@@ -286,7 +286,7 @@ export function SlideoutMessageChatExample() {
 	);
 }
 
-/* ——— Pagos y planes ——— */
+/* --- Pagos y planes --- */
 
 const contactoFacturas = (
 	<>
@@ -390,19 +390,19 @@ export function SlideoutPlanExample() {
 					options={[
 						{
 							value: "basico",
-							label: "Básico · 10 €/mes",
+							label: "Básico - 10 €/mes",
 							hint: "Hasta 10 cuentas, 20 GB de documentos y todas las funciones.",
 							icon: <LayersTwo01 size={16} />,
 						},
 						{
 							value: "negocio",
-							label: "Negocio · 20 €/mes",
+							label: "Negocio - 20 €/mes",
 							hint: "Hasta 20 cuentas, 40 GB de documentos y todas las funciones.",
 							icon: <LayersTwo01 size={16} />,
 						},
 						{
 							value: "empresa",
-							label: "Empresa · 40 €/mes",
+							label: "Empresa - 40 €/mes",
 							hint: "Cuentas y documentos sin límite, y todas las funciones.",
 							icon: <Zap size={16} />,
 						},
@@ -413,7 +413,7 @@ export function SlideoutPlanExample() {
 	);
 }
 
-/* ——— Equipo y filtros ——— */
+/* --- Equipo y filtros --- */
 
 const guardarFiltro = <Button hierarchy="link-color">Guardar filtro</Button>;
 
@@ -626,7 +626,7 @@ export function SlideoutProjectDetailsExample() {
 	);
 }
 
-/* ——— Archivos ——— */
+/* --- Archivos --- */
 
 export function SlideoutFileUploadExample() {
 	return (
@@ -657,7 +657,7 @@ export function SlideoutFileUploadExample() {
 	);
 }
 
-/* ——— Avisos ——— */
+/* --- Avisos --- */
 
 const guardar = (
 	<>
@@ -830,7 +830,7 @@ export function SlideoutNotificationsExample() {
 	);
 }
 
-/* ——— Compras ——— */
+/* --- Compras --- */
 
 export function SlideoutOrderSummaryExample() {
 	return (
@@ -847,8 +847,8 @@ export function SlideoutOrderSummaryExample() {
 					label="Envío"
 					defaultValue="urgente"
 					options={[
-						{ value: "urgente", label: "Urgente · +3,99 €" },
-						{ value: "normal", label: "Normal · gratis" },
+						{ value: "urgente", label: "Urgente - +3,99 €" },
+						{ value: "normal", label: "Normal - gratis" },
 					]}
 				/>
 				<div className="flex items-end gap-3">
@@ -873,7 +873,7 @@ export function SlideoutOrderSummaryExample() {
 	);
 }
 
-/* ——— Calendario y ajustes ——— */
+/* --- Calendario y ajustes --- */
 
 const fecha = (
 	<span className="flex flex-col items-center rounded-lg bg-primary px-3 py-1 text-xs font-semibold text-tertiary shadow-[inset_0_0_0_1px_var(--border-secondary)]">
@@ -908,7 +908,7 @@ export function SlideoutCalendarEventExample() {
 							<Calendar size={16} /> Viernes, 10 de enero de 2027
 						</li>
 						<li className="flex items-center gap-2">
-							<Clock size={16} /> 13:30 – 15:30
+							<Clock size={16} /> 13:30-15:30
 						</li>
 						<li className="flex items-center gap-2">
 							<Bell01 size={16} /> 10 minutos antes
@@ -918,7 +918,7 @@ export function SlideoutCalendarEventExample() {
 				<Seccion titulo="Organiza">
 					<AvatarLabel size="md" name="Sara Hervás" supporting="sara@regula.app" initials="SH" />
 				</Seccion>
-				<Seccion titulo="Invitados" texto="6 invitados · 5 sí · 1 pendiente">
+				<Seccion titulo="Invitados" texto="6 invitados - 5 sí - 1 pendiente">
 					<AvatarGroup
 						size="md"
 						items={[
@@ -985,8 +985,8 @@ export function SlideoutUserSettingsExample() {
 					defaultValue="es"
 					hint="Según tu dirección IP."
 					options={[
-						{ value: "es", label: "España · UTC/GMT +1" },
-						{ value: "pt", label: "Portugal · UTC/GMT +0" },
+						{ value: "es", label: "España - UTC/GMT +1" },
+						{ value: "pt", label: "Portugal - UTC/GMT +0" },
 					]}
 				/>
 			</Slideout>
@@ -994,7 +994,7 @@ export function SlideoutUserSettingsExample() {
 	);
 }
 
-/* ——— Asistente ——— */
+/* --- Asistente --- */
 
 const preguntar = (
 	<MessageInput
@@ -1055,7 +1055,7 @@ export function SlideoutAIAssistantMessageExample() {
 					</Message>
 					<Message
 						avatar={ia}
-						footer={<span className="text-sm text-tertiary">Cancelar · Sí, cámbialo</span>}
+						footer={<span className="text-sm text-tertiary">Cancelar - Sí, cámbialo</span>}
 					>
 						¿Cambio el calendario y aviso a Sara?
 					</Message>
@@ -1067,7 +1067,7 @@ export function SlideoutAIAssistantMessageExample() {
 	);
 }
 
-/* ——— Proyectos ——— */
+/* --- Proyectos --- */
 
 export function SlideoutShareProjectExample() {
 	return (

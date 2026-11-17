@@ -6,7 +6,7 @@ interactive: true
 astroNote: "`onClose` es una función y abrirlo necesita estado: envuélvelo en un `.tsx` con el botón que lo abre y úsalo con `client:load`."
 ---
 
-**Props.** `open`, `title`, `description`, `children`, `actions` (botones del pie, a la derecha), `onClose`, `width` (400 por defecto), `side` (`right` por defecto · `left` · `bottom`: de qué lado sale; con `left` el filo con la página pasa al lado contrario; con `bottom` es una hoja a todo el ancho y `width` no se aplica), `contained`, `icon` (icono destacado `modern` junto al título) y `footerStart` (a la izquierda del pie: «Guardar filtro», «Código para incrustar»).
+**Props.** `open`, `title`, `description`, `children`, `actions` (botones del pie, a la derecha), `onClose`, `width` (400 por defecto), `side` (`right` por defecto - `left` · `bottom`: de qué lado sale; con `left` el filo con la página pasa al lado contrario; con `bottom` es una hoja a todo el ancho y `width` no se aplica), `contained`, `icon` (icono destacado `modern` junto al título) y `footerStart` (a la izquierda del pie: «Guardar filtro», «Código para incrustar»).
 
 **Composiciones.** Los 23 tipos del Figma (`Slide out menu`, `1240:137582`), montados con componentes de Regula y con su código, están en su página de composiciones.
 

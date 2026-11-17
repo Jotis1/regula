@@ -298,7 +298,7 @@ export function controlsOf(
 			tweak?.kind === "icon" ||
 			(!tweak &&
 				ICON_PROP.test(row.name) &&
-				!/^"[^"]*"( · "[^"]*")*$/.test(row.type) &&
+				!/^"[^"]*"( - "[^"]*")*$/.test(row.type) &&
 				row.type !== "boolean")
 		) {
 			controls.push({ kind: "icon", prop: row.name });
@@ -320,8 +320,8 @@ export function controlsOf(
 			});
 			continue;
 		}
-		// Uniones de literales: textos, `false`, `true` o números (`false | "right" | "bottom"`, `4 · 6`)
-		const parts = row.type.split(/ [|·] /);
+		// Uniones de literales: textos, `false`, `true` o números (`false | "right" | "bottom"`, `4 - 6`)
+		const parts = row.type.split(/ [|-] /);
 		const literal = (p: string) => /^"[^"]*"$/.test(p) || /^(false|true|\d+(\.\d+)?)$/.test(p);
 		if (!tweak && isText(row, startProps[row.name])) {
 			if (!controls.some((c) => c.prop === row.name)) controls.push({ kind: "text", prop: row.name });

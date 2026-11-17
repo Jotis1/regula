@@ -37,7 +37,7 @@ export const fold = (s: string) =>
 		.replace(/\p{Diacritic}/gu, "")
 		.toLowerCase();
 
-/** 0 igual · 1 empieza por · 2 contiene (en la etiqueta) · 3 en la descripción o palabras clave · -1 nada. */
+/** 0 igual - 1 empieza por - 2 contiene (en la etiqueta) - 3 en la descripción o palabras clave - -1 nada. */
 function score(entry: SearchEntry, needle: string): number {
 	const label = fold(entry.label);
 	if (label === needle) return 0;

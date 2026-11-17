@@ -6,7 +6,7 @@ interactive: true
 astroNote: "`onFiles` es una función y no cruza de Astro a una isla: envuélvelo en un `.tsx` y úsalo con `client:load`."
 ---
 
-**Props.** `accept`, `multiple`, `hint` (formatos y tamaño máximo), `onFiles(files)`, `files` [{`name`, `size` (bytes), `progress` 0–100, `status` (`complete` · `error`), `error`, `icon`}], `onRemove(index)`, `disabled`, `progressStyle` (`bar` · `fill`), `fileIcon(file)`.
+**Props.** `accept`, `multiple`, `hint` (formatos y tamaño máximo), `onFiles(files)`, `files` [{`name`, `size` (bytes), `progress` 0-100, `status` (`complete` · `error`), `error`, `icon`}], `onRemove(index)`, `disabled`, `progressStyle` (`bar` · `fill`), `fileIcon(file)`.
 
 **Progreso e iconos.** Los del Figma (`File upload`, `1175:101149`). `progressStyle="fill"` llena el fondo del archivo hasta su porcentaje (`bg-secondary`) y pone el porcentaje junto al tamaño, sin barra; el relleno es la barra de progreso para lectores de pantalla. El icono de cada archivo puede ser el de su tipo: `icon` en el archivo o `fileIcon(file)` para todos, con `FileIcon` de `@untitledui/file-icons` (`<FileIcon type="pdf" />`, `<FileIcon type="mp4" />`…). El paquete no los importa. Con error se sigue pintando el aviso.
 

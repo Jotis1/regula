@@ -51,7 +51,7 @@ rules:
                 code: |-
                     interface BadgeProps {
                       /**
-                       * Size: `sm` 12 px · `md` 14 px · `lg` 14 px with more room.
+                       * Size: `sm` 12 px - `md` 14 px - `lg` 14 px with more room.
                        * @default "md"
                        */
                       size?: BadgeSize;

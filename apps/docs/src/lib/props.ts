@@ -93,7 +93,7 @@ export function propsOf(file: string, name: string): PropRow[] {
 				p.type.name === "enum" ? (p.type.value as { value: string }[] | undefined) : undefined;
 			return {
 				name: p.name,
-				type: values ? values.map((v) => v.value).join(" · ") : p.type.name,
+				type: values ? values.map((v) => v.value).join(" - ") : p.type.name,
 				required: p.required,
 				defaultValue: p.defaultValue?.value === undefined ? undefined : String(p.defaultValue.value),
 				description: p.description,

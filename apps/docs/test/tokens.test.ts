@@ -37,7 +37,7 @@ describe("tablas de tokens", () => {
 		const titles = colorGroups(colors).map((g) => g.title);
 		expect(titles.slice(0, 6)).toEqual(["Texto", "Fondos", "Bordes", "Iconos", "Foco", "Transparencias"]);
 		expect(titles.at(-1)).toBe("Componentes");
-		expect(titles).toContain("Utility · brand");
+		expect(titles).toContain("Utility - brand");
 	});
 
 	it("da la utilidad de Tailwind de cada token", () => {

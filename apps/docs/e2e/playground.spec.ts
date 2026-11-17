@@ -405,7 +405,7 @@ test("las props: tabla desde `lg` y, por debajo, una lista plegable con el tipo 
 	await expect(list.locator("> li")).toHaveCount(rows);
 	const size = list.locator('> li[data-prop="size"]');
 	await expect(size.locator("summary")).toContainText("size");
-	await expect(size.locator("summary")).toContainText('"sm" · "md" · "lg"');
+	await expect(size.locator("summary")).toContainText('"sm" - "md" - "lg"');
 	// Plegada: la descripción y el valor por defecto van dentro
 	await expect(size.getByText("Por defecto:")).toBeHidden();
 	await size.locator("summary").click();

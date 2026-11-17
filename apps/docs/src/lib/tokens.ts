@@ -52,7 +52,7 @@ export function colorGroups(colors: Record<string, ThemedToken>): ColorGroup[] {
 		const row = { name, utility: utilityFor(name), light: t.light, dark: t.dark, usage: t.usage };
 		const group = GROUPS.find(([, test]) => test(name))?.[0];
 		if (group) push(group, row);
-		else if (name.startsWith("utility-")) push(`Utility · ${name.split("-")[1]}`, row);
+		else if (name.startsWith("utility-")) push(`Utility - ${name.split("-")[1]}`, row);
 		else push("Componentes", row);
 	}
 	const order = [...GROUPS.map(([t]) => t)];
@@ -139,7 +139,7 @@ export interface ExplorerFamily {
 /**
  * Los colores del explorador, por familia y en el orden del paquete. El contraste de texto e iconos se mide contra
  * bg-primary de cada tema, salvo los `_on-brand`, que van sobre las secciones de marca (su nota de uso lo dice:
- * «sobre bg-brand-section»): medirlos contra blanco daría un «1:1 · bajo» engañoso.
+ * «sobre bg-brand-section»): medirlos contra blanco daría un «1:1 - bajo» engañoso.
  */
 export function explorerFamilies(colors: Record<string, ThemedToken>): ExplorerFamily[] {
 	const groundOf = (name: string) => colors[name.includes("_on-brand") ? "bg-brand-section" : "bg-primary"];

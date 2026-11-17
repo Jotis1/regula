@@ -21,7 +21,7 @@ const verification = rule.verification;
 
 <section id={anchorOf(rule.id)} aria-labelledby={`${anchorOf(rule.id)}-title`} class="flex flex-col gap-4">
 	<div id={`${anchorOf(rule.id)}-title`} class="not-prose">
-		<SectionTitle title={`${rule.id} · ${rule.title}`} />
+		<SectionTitle title={`${rule.id} - ${rule.title}`} />
 	</div>
 	<div class="not-prose flex flex-wrap items-center gap-2" data-rule-meta>
 		<Badge color={levelColor[rule.level]} type="badge">{LEVEL_LABEL[rule.level]}</Badge>
@@ -38,7 +38,7 @@ const verification = rule.verification;
 				<ul>
 					{rule.exceptions.map((e) => (
 						<li>
-							<Fragment set:html={inline(e.where)} /> — <Fragment set:html={inline(e.why)} />
+							<Fragment set:html={inline(e.where)} /> - <Fragment set:html={inline(e.why)} />
 						</li>
 					))}
 				</ul>

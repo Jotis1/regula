@@ -42,7 +42,7 @@ describe("componentsJson", () => {
 		expect(button?.group?.label).toBe("Acciones");
 		expect(button?.url).toBe("https://regula.jotis.me/components/button/");
 		const hierarchy = button?.props.find((p) => p.name === "hierarchy");
-		expect(hierarchy?.type).toBe('"primary" · "secondary" · "tertiary" · "link-color" · "link-gray"');
+		expect(hierarchy?.type).toBe('"primary" - "secondary" - "tertiary" - "link-color" - "link-gray"');
 		expect(button?.snippets.next).toContain('import { Button } from "@jotis-me/react"');
 		expect(button?.snippets.astro).toContain("---");
 		expect(button?.guide).toContain("**Cuándo.**");

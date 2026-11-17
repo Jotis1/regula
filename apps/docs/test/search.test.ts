@@ -25,7 +25,7 @@ const entries: SearchEntry[] = [
 	{
 		group: "tokens",
 		label: "bg-overlay",
-		description: "Color · Fondo de modal",
+		description: "Color - Fondo de modal",
 		href: "/foundations/color/",
 	},
 	{ group: "icons", label: "Calendar", href: "/icons/?icon=Calendar" },
@@ -67,8 +67,8 @@ describe("búsqueda de la web", () => {
 		const standards: SearchEntry[] = [
 			{
 				group: "standards",
-				label: "NAM-001 · Los paquetes privados se llaman como su dominio, al revés",
-				description: "Normas · Nombres",
+				label: "NAM-001 - Los paquetes privados se llaman como su dominio, al revés",
+				description: "Normas - Nombres",
 				href: "/standards/naming/#nam-001",
 				keywords: "notación de dominio inverso de Java",
 			},

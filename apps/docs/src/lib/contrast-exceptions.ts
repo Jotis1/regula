@@ -30,5 +30,5 @@ export const CONTRAST_EXCEPTIONS: readonly ContrastException[] = [
 /** Contraste de una excepción en un tema, como `2,9:1` (o `—` si el valor no es un color que se pueda medir). */
 export function exceptionRatio(e: ContrastException, theme: "light" | "dark"): string {
 	const r = contrast(colors[e.name][theme], e.on === "white" ? "#ffffff" : colors["bg-primary"][theme]);
-	return r === undefined ? "—" : ratio(r);
+	return r === undefined ? "-" : ratio(r);
 }

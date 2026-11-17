@@ -55,7 +55,7 @@ const COLUMNS: TableColumn<Row>[] = [
 								<span
 									key={theme}
 									data-ratio={theme}
-									className="not-last:after:content-['_·_']"
+									className="not-last:after:content-['_-_']"
 								>
 									{rate.label} en {label}
 									{rate.low ? " (bajo)" : ""}

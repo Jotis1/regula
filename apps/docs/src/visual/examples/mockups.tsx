@@ -59,7 +59,7 @@ export function BackgroundPatternExample() {
 						</div>
 					</div>
 					<p className="m-0 font-body text-sm text-tertiary" style={{ marginTop: 8 }}>
-						<code>{pattern}</code> · {mask} · {size}
+						<code>{pattern}</code> - {mask} - {size}
 					</p>
 				</div>
 			))}

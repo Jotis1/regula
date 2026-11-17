@@ -6,7 +6,7 @@ interactive: true
 astroNote: "Envuelve un contenido y se pinta en el servidor: no necesita JavaScript. Para activarlo y desactivarlo con el estado de la página, úsalo en una isla con `client:load`."
 ---
 
-**Props.** `active` (activa el anillo y la nota), `note` (nodo opcional: lo que quieres decir de la zona), `notePlacement` (`bottom` por defecto · `top` · `left` · `right`: el lado del contenido en el que sale) y `children` (la zona que se señala).
+**Props.** `active` (activa el anillo y la nota), `note` (nodo opcional: lo que quieres decir de la zona), `notePlacement` (`bottom` por defecto - `top` · `left` · `right`: el lado del contenido en el que sale) y `children` (la zona que se señala).
 
 **Cuándo.** Para llamar la atención sobre una zona concreta tras un cambio: un botón que acaba de pasar a gris, un campo nuevo, el resultado de una acción. Una zona a la vez; la nota, una frase corta.
 

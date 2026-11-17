@@ -498,7 +498,7 @@ export function FooterExample() {
 				))}
 			</div>
 			<figure className="m-0 flex flex-col gap-2">
-				<figcaption className="text-sm font-medium text-tertiary">large-01 · marca</figcaption>
+				<figcaption className="text-sm font-medium text-tertiary">large-01 - marca</figcaption>
 				<ScaledPreview width={1280} box={[768, 280]} className="rounded-lg">
 					<Pie type="large-01" theme="brand" />
 				</ScaledPreview>

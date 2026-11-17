@@ -19,7 +19,7 @@ export interface Comparison {
 
 /**
  * Proporción de píxeles distintos entre dos PNG. `threshold` es la tolerancia de color por píxel
- * de pixelmatch (0–1); el antialiasing no cuenta. Si cambia el tamaño, la comparación falla entera.
+ * de pixelmatch (0-1); el antialiasing no cuenta. Si cambia el tamaño, la comparación falla entera.
  */
 export function compare(actual: Buffer, expected: Buffer, outDir?: string, label = "diff"): Comparison {
 	const a = PNG.sync.read(actual);

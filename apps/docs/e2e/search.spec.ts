@@ -56,7 +56,7 @@ test("cada componente lleva su grupo del catálogo como descripción", async ({ 
 	await search.fill("streamalert");
 	await expect(
 		page.getByRole("group", { name: "Componentes" }).getByRole("option", { name: /^Stream alert/ }),
-	).toContainText("Stream · Alertas");
+	).toContainText("Stream - Alertas");
 });
 
 test("sin resultados, sugiere buscar por lo que hace", async ({ page }) => {

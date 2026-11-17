@@ -55,7 +55,7 @@ const hasSidebar = sidebar ?? !(noindex || sectionOf(current) === "icons");
 		<link rel="preload" href={geist} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={geistMono} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={bricolage} as="font" type="font/woff2" crossorigin />
-		<title>{title === "Regula" ? "Regula · jotis.me" : `${title} · Regula`}</title>
+		<title>{title === "Regula" ? "Regula - jotis.me" : `${title} - Regula`}</title>
 		<meta name="description" content={description} />
 		{noindex && <meta name="robots" content="noindex" />}
 		<slot name="head" />

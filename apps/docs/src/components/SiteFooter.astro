@@ -50,7 +50,7 @@ const columns = [
 		{
 			versions.map((v, i) => (
 				<>
-					{i > 0 && <span aria-hidden="true" class="mx-2">·</span>}
+					{i > 0 && <span aria-hidden="true" class="mx-2">-</span>}
 					{v.label} <span class="font-mono">{v.pkg.name} {v.pkg.version}</span>
 				</>
 			))
