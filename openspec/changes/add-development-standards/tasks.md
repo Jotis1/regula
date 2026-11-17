@@ -110,7 +110,7 @@ Comandos:
 
 ## 7. Cierre
 
-- [ ] 7.1 Abrir la PR y comprobar que en el CI pasan «Normas de desarrollo», «Changesets» y «Biome» con `--error-on-warnings`. Probar también con una rama que cambia `packages/react/src/` sin changeset: «Changesets» tiene que fallar y nombrar `@jotis-me/react`. Cerrarla sin fusionar
+- [x] 7.1 Abrir la PR y comprobar que en el CI pasan «Normas de desarrollo», «Changesets» y «Biome» con `--error-on-warnings`. Probar también con una rama que cambia `packages/react/src/` sin changeset: «Changesets» tiene que fallar y nombrar `@jotis-me/react`. Cerrarla sin fusionar
 - [ ] 7.2 Pasar los comandos de arrancar, actualizar la memoria del proyecto (los prefijos nuevos, las áreas, `check:dev`, «Changesets» y Dependabot) y fusionar
 
 ## Workflow follow-up
