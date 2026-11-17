@@ -39,24 +39,33 @@ El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, 
 
 ### Requirement: Normas de documentación comprobadas
 El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si en un paquete publicado, fuera de los `*.generated.*` y de `internal/`:
-- un export público o una prop de un componente no lleva JSDoc;
+- un export público, o una propiedad de una interfaz o de un tipo objeto de nivel superior, no lleva JSDoc;
 - un `@deprecated` no dice qué usar.
-
-También SHALL fallar si un paquete publicado no tiene README o no enlaza a `https://regula.jotis.me`, o si el README de la raíz no tiene los comandos de instalar, arrancar, construir y probar.
 
 #### Scenario: Prop sin documentar
 - **WHEN** una PR añade a `Button` una prop sin JSDoc
 - **THEN** el paso falla y nombra el archivo, la prop y la norma
 
+### Requirement: READMEs comprobados
+El paso «Normas de desarrollo» SHALL fallar si un paquete publicado no tiene README o no enlaza a `https://regula.jotis.me`, o si el README de la raíz no tiene, en sus bloques de código, los comandos de instalar, arrancar, construir y probar.
+
+#### Scenario: README de la raíz sin comandos
+- **WHEN** el README de la raíz solo tiene `bun install`
+- **THEN** el paso falla y dice que faltan los comandos de arrancar, construir y probar
+
 ### Requirement: Normas de dependencias comprobadas
 El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si:
 - un paquete publicado tiene un framework compartido en `dependencies`, una dependencia 0.x con rango o no declara `sideEffects`;
-- una dependencia tiene rangos distintos en dos workspaces;
+- una dependencia tiene rangos distintos en dos workspaces, salvo `typescript` en los workspaces con `@astrojs/check` o con `next`;
 - un job del CI instala sin `--frozen-lockfile`.
 
 #### Scenario: Rango distinto
 - **WHEN** una PR sube `react` a `^19.4.0` solo en un ejemplo
 - **THEN** el paso falla y nombra los dos `package.json` y la norma de la coherencia
+
+#### Scenario: TypeScript 6 en una app de Astro
+- **WHEN** la web de Astro usa `typescript` `^6` y la raíz `^7`
+- **THEN** el paso pasa, porque `astro check` necesita TypeScript 6
 
 ### Requirement: Changesets comprobados en las PR
 En cada PR, el paso «Changesets» SHALL fallar si la PR cambia lo que publica un paquete y no trae un changeset que lo nombre ni uno vacío. Cuenta como publicado:

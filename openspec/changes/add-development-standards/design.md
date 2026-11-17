@@ -36,7 +36,7 @@ Estado de Regula medido el 2026-11-17 con `biome lint --only=<regla>`, `tsc` y b
 ## Goals / Non-Goals
 
 **Goals:**
-- 38 normas nuevas, una en Nombres y el resto en cuatro áreas nuevas, más los prefijos en inglés. Todo con el esquema y la calidad de ejemplos de las normas de CI.
+- 37 normas nuevas, una en Nombres (`NAM-003`) y 36 en cuatro áreas nuevas, más los prefijos en inglés. Todo con el esquema y la calidad de ejemplos de las normas de CI.
 - Ninguna norma choca con una convención de Next o Astro, y los ejemplos lo demuestran.
 - Toda norma automática tiene su comprobación en verde en Regula el día que se publica.
 
@@ -123,6 +123,8 @@ Todas son de nivel `must`, salvo `STK-006` y `VER-008`, que son `should`. Las de
 `VER-008` no se aplica a `devDependencies`, porque el lockfile ya fija lo que se instala en el repo. Por eso `^0.18.5` de `@arethetypeswrong/cli` cumple.
 
 `VER-010` compara `dependencies` y `devDependencies`. Las `peerDependencies` quedan fuera, porque expresan el rango que se admite y no lo que se instala.
+
+`VER-010` tiene una excepción de framework (D2): `typescript` en los workspaces con `@astrojs/check` o con `next`. `astro check` y `next build` comprueban los tipos con la API de TypeScript 6, que TypeScript 7 (el de la raíz) no tiene. El artefacto no la necesita: comprueba sus tipos con TypeScript 7 sin errores, así que pasa a `^7.0.2`. La excepción se descubrió al escribir `check:dev`, que encontró el conflicto en el repo real.
 
 ### D4. El bloque de Biome y sus excepciones de framework
 
@@ -214,11 +216,13 @@ Sigue el patrón de `check-ci.ts`: funciones puras que reciben el contenido y de
 - **Supresiones:** recorre los `.ts`, `.tsx`, `.astro`, `.mjs` y `.js` de `git ls-files`. Un `@ts-expect-error` necesita texto detrás, y un `biome-ignore`, texto detrás de `:`. `@ts-ignore` y `@ts-nocheck` fallan siempre.
 - **JSDoc:** se aplica a `packages/*/src` de los publicados, salvo `internal/` y `*.generated.*`. Es una heurística de líneas, porque la API JS de TypeScript 7 no es estable y Biome formatea el código, así que la forma de las líneas es predecible:
   - un export (`export (async )?(function|const|class)`) necesita que su línea anterior no vacía cierre un `/** … */`;
-  - una prop (un miembro de una `interface` exportada o cuyo nombre acaba en `Props`) también;
+  - una prop (cualquier miembro de una `interface` o de un `type` objeto declarado en el nivel superior, exportado o no) también: `ButtonBase` no se exporta y sus props llegan a la ficha a través de `ButtonProps`. Una línea `//` entre el JSDoc y el miembro no lo rompe;
   - un `@deprecated` necesita texto en su misma línea;
   - los `export { … } from` no cuentan.
 - **README:** los de paquete necesitan `https://regula.jotis.me`. El de la raíz necesita, en sus bloques de código, una línea con `install` y otras con `dev`, `build` y `test`.
-- **Dependencias:** recorre los `package.json` de los workspaces y aplica `VER-007`, `VER-008`, `VER-010` y `VER-011`.
+- **Dependencias:** recorre los `package.json` de los workspaces y aplica `VER-007`, `VER-008`, `VER-010` (con su excepción de `typescript`) y `VER-011`.
+- **Supresiones:** solo cuenta una directiva que abre un comentario (`// @ts-ignore`, `{/* @ts-expect-error … */}`). Las mismas palabras dentro de una cadena o de una frase no cuentan, así que los tests del propio script no se marcan a sí mismos.
+- **Biome:** una regla en `"warn"` se busca en todo `biome.json`, salvo dentro de un array: `allow: ["error", "warn"]` de `noConsole` son valores de la opción, no un nivel.
 - **CI y Dependabot:** lee `.github/workflows/*.yml` y `.github/dependabot.yml` con `Bun.YAML.parse`, como `check-ci`. Comprueba:
   - que todo `bun install` lleva `--frozen-lockfile`;
   - que todo `setup-bun` usa `bun-version-file`;
@@ -262,11 +266,16 @@ Las versiones mayores llegan en PR sueltas, porque cada una puede romper algo y 
 - **`import * as`:** los 17 casos recorren un módulo, así que llevan `biome-ignore lint/performance/noNamespaceImport: <motivo>`. Si un caso no recorre el módulo, pasa a imports con nombre.
 - **Nombres de archivo:** se renombran los que no cumplan con los overrides de D4, y sus imports con ellos. Hay que medirlo con la regla ya configurada, porque los 165 avisos de hoy salen de la configuración por defecto.
 - **`console`:** nada que cambiar, porque los 75 casos están en `scripts/`.
-- **`noReExportAll`:** los 4 `export *` pasan a exports con nombre.
+- **`noReExportAll`:** los 4 `export *` reexportaban ~500 componentes generados de `@jotis-me/assets`, así que no se podían escribir a mano. Decidido con el usuario: `scripts/generate.ts` escribe también las entradas `logos.ts`, `payments.ts` y `cursors.ts`, con un `export { … } from` por módulo y un nombre por línea. Son código generado y Biome las ignora (`!packages/assets/src/{logos,payments,cursors}.ts`), como a `*.generated.*`. La API no cambia: 344, 113 y 51 exports en `dist`, como antes.
+- **`@ts-nocheck`:** `check:dev` encontró uno en `scripts/artifact/src/entry.ts`. Sobraba, porque el tsconfig del artefacto ya excluye ese archivo; se quitó.
+- **`useFilenamingConvention`:** con la configuración de D4, el repo solo incumplía en 2 archivos, ambos `InlineCTA.tsx` (los 165 avisos de antes salían de la configuración por defecto). Se resolvió con `strictCase: false`, que admite las siglas, en lugar de renombrar el archivo y separarlo del nombre del componente publicado.
 - **TypeScript:** los errores de los flags nuevos se arreglan con comprobaciones reales, no con `!` (que ahora prohíbe `COD-004`). No hay umbral para parar: el usuario acepta el trabajo que salga.
 - **`typecheck`:** `examples/astro` gana `astro check` y `@astrojs/check`, y `examples/next` gana `tsc --noEmit`.
 - **`NodeNext`:** `packages/tokens/tsconfig.json` pasa a `NodeNext`.
-- **JSDoc:** los 14 exports y todas las props se documentan, en inglés (LNG-001). Los exports de `tokens/src/generate.ts` se documentan si forman parte de lo publicado. Si son internos del build, el archivo pasa a `src/internal/` o a `scripts/`.
+- **JSDoc:** se documentan, en inglés (LNG-001), 538 props de `@jotis-me/react` (la medición real; el «unas 300» de antes era una estimación a ojo) y los exports que faltaban.
+  - `tokens/src/generate.ts` es código del build, no se publica: pasa a `scripts/generate.ts`. Lo publicado de `tokens` son los `index.js` e `index.d.ts` que genera, así que su JSDoc va en las plantillas del generador.
+  - El resultado llega a la ficha de la guía y al MCP (`get_component`), que ya leían los comentarios en español: durante un tiempo, la tabla de props mezcla descripciones nuevas en inglés con las anteriores en español, hasta la migración de idioma.
+  - Las descripciones de los 119 archivos se escribieron comprobando el código de cada componente cuando el nombre no bastaba (rangos, qué texto sustituye cada etiqueta, qué parte de la interfaz es), y salen en commits por grupo de componentes del catálogo.
 - **README:** el de la raíz gana los comandos de arrancar la web y de probar.
 - **Changesets:** los cambios en paquetes publicados llevan changesets `patch`.
 

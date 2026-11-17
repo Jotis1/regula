@@ -72,7 +72,7 @@ Comandos:
 
 ## 6. Normas
 
-- [x] 6.1 Los `order` de D1, las cuatro entradas nuevas de `STANDARD_AREAS` y los YAML `stack.yaml`, `code.yaml`, `documentation.yaml` y `versioning.yaml`, más `NAM-003` en `naming.yaml`: las 38 normas de D3. Cada una lleva:
+- [x] 6.1 Los `order` de D1, las cuatro entradas nuevas de `STANDARD_AREAS` y los YAML `stack.yaml`, `code.yaml`, `documentation.yaml` y `versioning.yaml`, más `NAM-003` en `naming.yaml`: las 37 normas de D3. Cada una lleva:
   - enunciado, porqué, un ejemplo que la cumple y otro que no, y su verificación;
   - sus `exceptions` cuando las tenga. Las de `COD-009`, `COD-013` y `NAM-003` coinciden con los `overrides` de D4, y `COD-012` lleva la del código que recorre un módulo.
 

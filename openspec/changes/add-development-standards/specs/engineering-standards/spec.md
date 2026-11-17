@@ -236,3 +236,10 @@ El área de versiones SHALL fijar:
 #### Scenario: Rangos distintos
 - **WHEN** se mira el ejemplo que no cumple la norma de la coherencia
 - **THEN** enseña `react` con `^19.3.1` en la web y `^19.2.0` en un ejemplo
+
+### Requirement: Excepción de TypeScript en la coherencia de rangos
+La norma de la coherencia de rangos SHALL listar como excepción `typescript` en los workspaces con `@astrojs/check` o con `next`, porque `astro check` y `next build` comprueban los tipos con la API de TypeScript 6.
+
+#### Scenario: TypeScript en una app de Astro
+- **WHEN** se abre la norma de la coherencia
+- **THEN** lista como excepción `typescript` en los workspaces con `@astrojs/check` o con `next`, y dice que sus herramientas usan TypeScript 6
