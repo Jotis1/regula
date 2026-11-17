@@ -44,3 +44,5 @@ Hoy una PR que solo toca `openspec/` tarda unos 50 minutos en poder fusionarse: 
   - un token de Vercel como secreto `TURBO_TOKEN` y la variable `TURBO_TEAM`;
   - el cambio del ruleset de `main`.
 - Tiempos esperados: una PR sin código pasa de ~50 min a ~2. Una PR con código baja de ~30 min a ~10–12, sobre todo por los shards y la caché.
+
+Prueba del CI (tarea 5.1): esta línea solo existe en una PR de prueba que se cerrará sin fusionar.
