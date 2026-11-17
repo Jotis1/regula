@@ -124,7 +124,7 @@ Todas son de nivel `must`, salvo `STK-006` y `VER-008`, que son `should`. Las de
 
 `VER-010` compara `dependencies` y `devDependencies`. Las `peerDependencies` quedan fuera, porque expresan el rango que se admite y no lo que se instala.
 
-`VER-010` tiene una excepción de framework (D2): `typescript` en los workspaces con `@astrojs/check` o con `next`. `astro check` y `next build` comprueban los tipos con la API de TypeScript 6, que TypeScript 7 (el de la raíz) no tiene. El artefacto no la necesita: comprueba sus tipos con TypeScript 7 sin errores, así que pasa a `^7.0.2`. La excepción se descubrió al escribir `check:dev`, que encontró el conflicto en el repo real.
+`VER-010` tiene una excepción de herramienta (D2): `typescript` en los workspaces con `@astrojs/check`, `next` o `dts-bundle-generator`. Las tres leen la API de JavaScript de TypeScript 6, que TypeScript 7 (el de la raíz) no tiene: `astro check` y `next build` para comprobar los tipos, y el generador del artefacto (`withTypeScript6` en `scripts/artifact/src/types.ts`) para unir los `.d.ts`. La excepción se descubrió al escribir `check:dev`, que encontró el conflicto en el repo real. Se probó subir el artefacto a `^7.0.2` porque su `tsc --noEmit` pasaba, pero sus tests fallaron, así que se revirtió: hay que pasar los tests del workspace, no solo su typecheck.
 
 ### D4. El bloque de Biome y sus excepciones de framework
 

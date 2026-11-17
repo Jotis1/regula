@@ -56,7 +56,7 @@ El paso «Normas de desarrollo» SHALL fallar si un paquete publicado no tiene R
 ### Requirement: Normas de dependencias comprobadas
 El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si:
 - un paquete publicado tiene un framework compartido en `dependencies`, una dependencia 0.x con rango o no declara `sideEffects`;
-- una dependencia tiene rangos distintos en dos workspaces, salvo `typescript` en los workspaces con `@astrojs/check` o con `next`;
+- una dependencia tiene rangos distintos en dos workspaces, salvo `typescript` en los workspaces con `@astrojs/check`, `next` o `dts-bundle-generator`;
 - un job del CI instala sin `--frozen-lockfile`.
 
 #### Scenario: Rango distinto
