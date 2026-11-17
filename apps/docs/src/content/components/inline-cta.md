@@ -9,7 +9,6 @@ astroNote: "Descartarla con `onClick` necesita una función: envuélvela en un `
 **Props.** `title`, `description`, `actions`, `icon` o `image` (+ `imageAlt`), `type`, y los datos de cada tipo: `onSubmit`, `emailLabel`, `emailPlaceholder` y `submitLabel` (`email`), `plan` (`change-plan`), `features` (`upgrade-plan`), `payment` (`payment-method`) y `file` (`receipt`). Tarjeta `radius-xl` con borde y `shadow-xs`.
 
 **Tipos.** Los siete del Figma (`Inline CTA`, `1255:131915`), plantillas sobre las mismas props. Sin `type`, la tarjeta de siempre.
-
 - `image` y `actions`: título, texto y botones, con la imagen a la izquierda o sin ella.
 - `email`: el campo de correo con su etiqueta y el botón «Suscribirse»; el botón o Enter avisan con `onSubmit(correo)`.
 - `change-plan`: tarjeta interior con el icono, el nombre, el precio y la descripción del plan, y los botones dentro.

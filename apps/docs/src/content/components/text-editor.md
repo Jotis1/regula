@@ -9,7 +9,6 @@ astroNote: "`onChange` es una función y no cruza de Astro a una isla: envuélve
 **Props.** `label`, `defaultValue` (HTML), `onChange(html)`, `placeholder`, `maxLength` (muestra los caracteres restantes) o `hint`, `minHeight`, `disabled`, `toolbar`, `size` y `onGenerate`.
 
 **Barras (`toolbar`).** Sin la prop, la barra de siempre (negrita, cursiva, subrayado, lista, enlace y las tres alineaciones). Con ella, la del Figma:
-
 - `simple`: negrita, cursiva, subrayado, color del texto, alinear a la izquierda, centrar y lista.
 - `advanced`: lo anterior más los selectores de tipo y tamaño de letra, enlace, imagen y, si pasas `onGenerate`, el botón de generar (sin la función no se pinta: un botón sin acción no sirve).
 - `floating`: sin barra sobre el área; al seleccionar texto sale una tarjeta sobre la selección con los botones de `simple` en `sm` y de `advanced` (sin selectores) en `md`. Escape la cierra y devuelve el foco al área.

@@ -15,7 +15,6 @@ astroNote: "`onClose` es una función y el cierre automático necesita JavaScrip
 **Accesibilidad.** Como `Alert`: `status`, o `alert` si es un error. Con acciones no se cierra sola, porque el usuario necesita tiempo para elegir.
 
 **Imagen, avatar y progreso.** Los tipos del Figma además de los de icono:
-
 - `image`: URL o nodo, decorativa. A la izquierda y de 160px de ancho cuando el aviso mide 448px o más; arriba, de 160px de alto, en uno más estrecho (container query).
 - `avatar` (props de `Avatar`) en el sitio del icono, con `time` junto al título: un mensaje de alguien.
 - `progress` (0 a 100): barra con el porcentaje bajo el texto, anunciada como `progressbar` con el título por nombre (o `progressLabel`). Sin `icon`, lleva `upload-cloud-02` en un cuadro `modern`.
