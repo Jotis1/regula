@@ -17,7 +17,8 @@
 			"!openspec",
 			"!.claude",
 			"!.changeset/*.md",
-			"!**/*.generated.*"
+			"!**/*.generated.*",
+			"!packages/assets/src/{logos,payments,cursors}.ts"
 		]
 	},
 	"formatter": {
