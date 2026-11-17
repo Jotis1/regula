@@ -17,9 +17,12 @@ Los iconos de línea, los de archivo y las banderas son los de [Untitled UI](htt
 Requiere [Bun](https://bun.sh).
 
 ```sh
-bun install
-bunx turbo run build
-bunx biome check .
+bun install                  # instala las dependencias de todos los workspaces
+bun run build                # construye los paquetes y la web (la web necesita los paquetes construidos)
+bun run --cwd apps/docs dev  # arranca la web (por defecto en http://localhost:4321)
+bun run test                 # pasa los tests de todos los workspaces
+bun run typecheck            # comprueba los tipos de todos los workspaces
+bun run lint                 # Biome: lint y formato
 ```
 
 | Carpeta      | Contenido                                                                           |
