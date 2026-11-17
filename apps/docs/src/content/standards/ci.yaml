@@ -132,19 +132,20 @@ rules:
       appliesTo: app
       statement: >-
           El proyecto de Vercel de cada app tiene un `ignoreCommand` en su `vercel.json` que ejecuta
-          `turbo@<versión> query affected --packages <app> --base "$VERCEL_GIT_PREVIOUS_SHA" --exit-code`, con la
-          misma versión de `turbo` que la raíz. No se usa `turbo-ignore`, que está obsoleto.
+          `turbo@<versión> query affected --packages <app> --base "$VERCEL_GIT_PREVIOUS_SHA" --exit-code || exit 1`,
+          con la misma versión de `turbo` que la raíz. No se usa `turbo-ignore`, que está obsoleto.
       rationale: >-
           Desplegar sin cambios gasta builds y puede publicar algo distinto de lo que había. `turbo query affected`
-          sabe de qué paquetes depende la app; ante la duda, sale con error y Vercel construye. La versión va fijada
-          porque Vercel ejecuta el comando antes de instalar.
+          sabe de qué paquetes depende la app. Ante la duda (una rama nueva, sin commit anterior) sale con 2, y Vercel solo
+          entiende 0 (no construir) y 1 (construir): cualquier otro código falla el despliegue, así que `|| exit 1`
+          lo convierte en «construye». La versión va fijada porque Vercel ejecuta el comando antes de instalar.
       examples:
           good:
               - caption: vercel.json de la app
                 lang: json
                 code: |-
                     {
-                        "ignoreCommand": "npx -y turbo@2.11.10 query affected --packages me.jotis.regula.docs --base \"$VERCEL_GIT_PREVIOUS_SHA\" --exit-code"
+                        "ignoreCommand": "npx -y turbo@2.11.10 query affected --packages me.jotis.regula.docs --base \"$VERCEL_GIT_PREVIOUS_SHA\" --exit-code || exit 1"
                     }
           bad:
               - caption: La herramienta obsoleta y sin versión
