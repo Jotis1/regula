@@ -26,7 +26,7 @@ Comandos:
 - [x] 2.1 `--error-on-warnings` en el paso «Biome» de `ci.yml`. Comprobar `bunx biome ci --error-on-warnings .` en local
 - [x] 2.2 `noExplicitAny`, `noTsIgnore` y `noEnum` en `error`. Quitar los dos `as any` y sus `biome-ignore` de `SocialButton` (D9), con un changeset `patch` de `@jotis-me/react`. Comprobar con Biome y con los tests de `SocialButton`
 - [x] 2.3 `noNonNullAssertion` y `useImportType` en `error`. Ver si `useImportType` da falsos positivos en `.astro` y, si los da, apagarla allí y anotarlo para la excepción de `COD-010` (D4). Comprobar con Biome
-- [ ] 2.4 `noDefaultExport` en `error`, con el override de Next y de los configs de D4. Antes, comprobar si `includes` acepta llaves. Pasar a exports con nombre las 154 islas de la web y `examples/astro/src/components/Periodo.tsx`, con sus imports. Comprobar:
+- [x] 2.4 `noDefaultExport` en `error`, con el override de Next y de los configs de D4. Antes, comprobar si `includes` acepta llaves. Pasar a exports con nombre las 154 islas de la web y `examples/astro/src/components/Periodo.tsx`, con sus imports. Comprobar:
   - con Biome;
   - con `bun run --cwd apps/docs typecheck` y el build;
   - que `examples/next/app/*` no da ningún diagnóstico;
