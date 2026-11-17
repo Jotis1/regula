@@ -7,6 +7,7 @@ import net from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import tls from "node:tls";
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as react from "@jotis-me/react";
 import { catalogComponents, slugOf } from "../../../apps/docs/src/lib/catalog";
 import { componentReadme } from "../src/content";

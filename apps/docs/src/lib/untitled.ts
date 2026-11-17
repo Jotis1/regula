@@ -2,7 +2,9 @@
 // banderas y de tipos de archivo, calculada de los propios paquetes en el build. Solo se importa desde páginas y
 // endpoints de Astro (el servidor): las islas reciben los nombres ya calculados, nunca estos módulos, que cargan los
 // 1.181 iconos.
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as flags from "@untitledui/country-flags";
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as lineIcons from "@untitledui/icons";
 import { type ComponentType, createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";

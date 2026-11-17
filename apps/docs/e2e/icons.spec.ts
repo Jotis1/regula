@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Page, test } from "@playwright/test";
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as lineIcons from "@untitledui/icons";
 
 // Los iconos de línea son los de @untitledui/icons: el recuento sale del propio paquete

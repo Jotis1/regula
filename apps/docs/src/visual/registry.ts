@@ -20,6 +20,7 @@ import {
 	RadarChartExample,
 } from "./examples/charts";
 import { ColorPickerDropdownExample, ColorPickerExample } from "./examples/color";
+// biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as colorPickerCompositions from "./examples/color-picker-compositions";
 import { CompareSliderExample } from "./examples/compare-slider";
 import { ActivityFeedExample, CodeSnippetExample, MetricCardExample } from "./examples/data";
@@ -105,6 +106,7 @@ import {
 	TransparencyGridExample,
 	VideoPlayerExample,
 } from "./examples/mockups";
+// biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as modalCompositions from "./examples/modal-compositions";
 import {
 	CommandMenuExample,
@@ -129,6 +131,7 @@ import {
 } from "./examples/overlays";
 import { BreadcrumbsExample, PaginationExample } from "./examples/paging";
 import { SidebarNavExample } from "./examples/sidebar";
+// biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as slideoutCompositions from "./examples/slideout-compositions";
 import { AppStoreBadgeExample, SocialButtonExample, SocialButtonGroupExample } from "./examples/social";
 import { SpotlightExample } from "./examples/spotlight";

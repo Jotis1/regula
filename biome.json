@@ -40,6 +40,9 @@
 				"noDefaultExport": "error",
 				"useImportType": "error"
 			},
+			"performance": {
+				"noNamespaceImport": "error"
+			},
 			"a11y": {
 				"useValidAriaRole": {
 					"level": "error",

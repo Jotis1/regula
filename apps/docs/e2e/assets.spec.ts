@@ -1,6 +1,7 @@
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Page, test } from "@playwright/test";
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as flags from "@untitledui/country-flags";
 
 // Las galerías de banderas, pagos, archivos y cursores son la misma isla (`AssetGallery`) que la de iconos.

@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+// biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as react from "@jotis-me/react";
 import { describe, expect, it } from "vitest";
 import { catalogComponents } from "../src/lib/catalog";

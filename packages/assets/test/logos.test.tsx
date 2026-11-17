@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterAll, describe, expect, it } from "vitest";
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as logos from "../src/logos.js";
 
 const pkg = join(import.meta.dirname, "..");
