@@ -59,3 +59,35 @@ rules:
       verification:
           kind: review
           review: Que lo que dicen las specs del cambio coincida con lo que hace el código de la PR.
+
+    - id: PRO-003
+      title: Lo que no tiene norma se decide con un orden y se anota
+      level: must
+      appliesTo: all
+      statement: >-
+          Que no haya norma no permite ni prohíbe nada por sí solo. Se decide en este orden: lo que busca la norma más
+          cercana; la convención oficial del framework o de la herramienta; lo que ya hace el repo; y, si queda empate,
+          lo más simple (COD-014). La PR dice qué caso no tenía norma, qué se decidió y por qué. La segunda vez que
+          aparece el mismo caso, o la primera si afecta a más de un proyecto, se propone la norma con OpenSpec.
+      rationale: >-
+          Ninguna guía lo cubre todo. Sin un orden, cada persona o agente inventa una regla distinta, o aplica una que
+          no existe como si existiera. Anotar el caso deja ver los huecos, y proponer la norma cuando se repite evita
+          que una costumbre acabe siendo norma sin que nadie la haya decidido.
+      examples:
+          good:
+              - caption: La PR nombra el hueco, la decisión y su porqué
+                lang: md
+                code: |-
+                    **Sin norma:** dónde van los workers de la app.
+                    **Decisión:** `src/features/sync/workers/`, como la carpeta por tipo de una funcionalidad (lo
+                    que busca STR-005), porque solo los usa la sincronización.
+          bad:
+              - caption: Una regla inventada, aplicada como si existiera
+                lang: md
+                code: |-
+                    Muevo los workers a `src/workers/`, que es lo que dice la norma.
+      verification:
+          kind: review
+          review: >-
+              Que cada decisión sin norma esté anotada en la PR con su porqué, y que un caso que ya salió antes traiga
+              su propuesta de norma.
