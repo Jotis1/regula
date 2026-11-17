@@ -1,8 +1,8 @@
 // Agrupa los tokens de @jotis-me/tokens para las páginas de fundamentos.
 // Todo sale del paquete: un token nuevo aparece en su grupo sin tocar la web.
 
-import { fold } from "../search/entries";
 import { contrast, MIN, ratio } from "./contrast";
+import { fold } from "./fold";
 
 export interface ThemedToken {
 	light: string;

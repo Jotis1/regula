@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { fold, plain, type SearchEntry, searchGroups } from "../src/search/entries";
+import { fold } from "../src/lib/fold";
+import { plain, type SearchEntry, searchGroups } from "../src/search/entries";
 
 const entries: SearchEntry[] = [
 	{ group: "pages", label: "Tipografía", href: "/foundations/typography/" },

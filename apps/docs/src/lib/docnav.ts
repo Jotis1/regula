@@ -1,7 +1,7 @@
 // Filtro de la navegación lateral (SideNav.astro), en el navegador. Se activa sobre cada `[data-docnav]`: la del
 // lateral al cargar y la del menú móvil al abrirse, que hasta entonces no está en la página. El campo es el `search`
 // del `SidebarNav`, que la CSS esconde hasta que esto marca la navegación como lista.
-import { fold } from "../search/entries";
+import { fold } from "./fold";
 
 /** Texto extra por el que se encuentra cada enlace (`href` a texto sin tildes), de la etiqueta JSON de SideNav. */
 function readKeywords(root: HTMLElement): Record<string, string> {

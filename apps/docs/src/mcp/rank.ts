@@ -1,6 +1,6 @@
 // Text search for the tools. Same normalisation and order as the site's search (src/search/entries.ts): no case, no
 // accents, and the best match first: equal, starts with, contains in the name, contains elsewhere.
-import { fold } from "../search/entries";
+import { fold } from "../lib/fold";
 
 export { fold };
 

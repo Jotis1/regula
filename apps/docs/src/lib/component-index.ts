@@ -2,7 +2,7 @@
 // filtra las cards que ya pintó el servidor, el desplegable lleva al ancla de un grupo y cada captura quita su
 // `Skeleton` al cargar. Sin isla: el `Select` del paquete se monta sobre su HTML del servidor la primera vez que se
 // usa (`group-select.tsx`, import dinámico), así que no pesa al cargar la página.
-import { fold } from "../search/entries";
+import { fold } from "./fold";
 
 /** Lo que se busca en una card: su nombre como se lee y como se escribe en el código, su descripción y sus palabras clave. */
 export function searchText(label: string, slug: string, description: string, keywords = ""): string {

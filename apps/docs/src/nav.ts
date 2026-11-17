@@ -13,7 +13,7 @@ import {
 	sectionOf,
 	slugOf,
 } from "./lib/catalog";
-import { fold } from "./search/entries";
+import { fold } from "./lib/fold";
 
 export interface NavItem {
 	label: string;

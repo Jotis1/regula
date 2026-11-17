@@ -1,4 +1,5 @@
 // Entradas de la búsqueda de la web y cómo se ordenan. Sin dependencias del navegador: se prueba con Vitest.
+import { fold } from "../lib/fold";
 
 export type SearchGroup = "pages" | "components" | "tokens" | "icons" | "standards" | "text";
 
@@ -29,13 +30,6 @@ const LIMIT: Record<SearchGroup, number> = {
 	standards: 6,
 	text: 6,
 };
-
-/** Minúsculas y sin tildes: "tipografia" encuentra "Tipografía". */
-export const fold = (s: string) =>
-	s
-		.normalize("NFD")
-		.replace(/\p{Diacritic}/gu, "")
-		.toLowerCase();
 
 /** 0 igual - 1 empieza por - 2 contiene (en la etiqueta) - 3 en la descripción o palabras clave - -1 nada. */
 function score(entry: SearchEntry, needle: string): number {
