@@ -3,7 +3,8 @@
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
-			"outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+			"env": ["VERCEL"],
+			"outputs": ["dist/**", ".vercel/output/**", ".next/**", "!.next/cache/**"]
 		},
 		"typecheck": {
 			"dependsOn": ["build"]
