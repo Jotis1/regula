@@ -17,6 +17,7 @@
 		"lint": "biome check .",
 		"check:reference": "bun run scripts/check-reference.ts",
 		"check:names": "bun test scripts/check-package-names.test.ts && bun run scripts/check-package-names.ts",
+		"check:ci": "bun test scripts/ci-changes.test.ts scripts/ci-gate.test.ts scripts/check-ci.test.ts && bun run scripts/check-ci.ts",
 		"artifact:build": "bun run --cwd scripts/artifact artifact:build",
 		"format": "biome format --write .",
 		"ci": "biome ci . && turbo run typecheck test build",
