@@ -102,9 +102,10 @@ rules:
       statement: >-
           `biome.json` añade a lo que genera `biome init` el bloque de la guía: el preset `recommended`, las reglas de las
           normas de código (`noExplicitAny`, `noTsIgnore`, `noConsole`, `noEnum`, `noNonNullAssertion`, `noDefaultExport`,
-          `useImportType`, `useFilenamingConvention`, `noReExportAll` y `noNamespaceImport`), el formato de la suite, los
-          imports ordenados y el `.gitignore` como lista de ignorados. Una regla está en `error` o en `off`, nunca en `warn`,
-          y el CI ejecuta `biome ci --error-on-warnings .`.
+          `useImportType`, `useFilenamingConvention`, `noReExportAll` y `noNamespaceImport`), el formato de la suite
+          (sangría con tabuladores de ancho 4, líneas de hasta 110, comillas dobles y punto y coma), los imports ordenados
+          y el `.gitignore` como lista de ignorados. Una regla está en `error` o en `off`, nunca en `warn`, y el CI ejecuta
+          `biome ci --error-on-warnings .`.
       rationale: >-
           `biome ci` termina en verde con avisos, así que una regla en `warn` no obliga a nada: alguien la ve, la ignora y
           acaba habiendo cientos. Con `error` o `off` se decide si una regla vale o no, y el CI lo cumple.
