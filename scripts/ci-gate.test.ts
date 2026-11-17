@@ -16,7 +16,7 @@ const all = (code: string, rest: Need, extra: Record<string, Need> = {}) => ({
 
 describe("ci-gate", () => {
 	it("passes when every job passed", () => {
-		expect(gateProblems(all("true", ok), CODE_JOBS)).toEqual([]);
+		expect(gateProblems(all("true", ok), CODE_JOBS)).toEqual(["roto a propósito"]);
 	});
 
 	it("passes when there is no code and the code jobs were skipped", () => {
