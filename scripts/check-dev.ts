@@ -1,6 +1,6 @@
-// Checks the development standards that a machine can see (STK, COD, DOC and VER areas) against the repo: workspaces,
-// tsconfigs, Biome, the CI workflows, Dependabot, READMEs and the source of the published packages. What cannot be
-// seen from here is checked in review.
+// Checks the development standards that a machine can see (STK, COD, DOC and VER areas, and the typography of
+// LNG-005) against the repo: workspaces, tsconfigs, Biome, the CI workflows, Dependabot, READMEs, the source of the
+// published packages and every text file. What cannot be seen from here is checked in review.
 // Usage: bun run scripts/check-dev.ts   (exits 1 and lists every problem with its file and rule)
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -49,6 +49,8 @@ export interface Repo {
 	workspaces: Workspace[];
 	/** Every `.ts`, `.tsx`, `.astro`, `.mjs` and `.js` file tracked by Git. */
 	sources: SourceFile[];
+	/** Every text file tracked by Git that LNG-005 applies to. */
+	texts: SourceFile[];
 }
 
 export const TS_FLAGS = [
@@ -385,8 +387,53 @@ export function dependencyProblems(repo: Repo): string[] {
 	return out;
 }
 
+// ── LNG-005 ────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+// Built from code points so that this file does not break the rule it checks.
+const DASHES: Record<string, string> = {
+	[String.fromCodePoint(0xb7)]: "a middle dot",
+	[String.fromCodePoint(0x2014)]: "an em dash",
+	[String.fromCodePoint(0x2013)]: "an en dash",
+};
+const DASH = `[${Object.keys(DASHES).join("")}]`;
+const FORBIDDEN = new RegExp(DASH);
+/** A lone mention of the character, which is how a text names it: `«·»` or the character between backticks. */
+const MENTION = new RegExp(`«[ ]?${DASH}[ ]?»|\`[ ]?${DASH}[ ]?\``, "g");
+const TEXT_FILE = /\.(md|mdx|ya?ml|jsonc?|tsx?|mts|astro|mjs|cjs|js|css|html|svg|txt)$/;
+/** History, frozen copies, files written by outside tools and generated output stay as they are. */
+const OUT_OF_TYPOGRAPHY =
+	/^(reference\/|openspec\/changes\/archive\/|\.claude\/|packages\/assets\/assets\/)|(^|\/)CHANGELOG\.md$|\.generated\./;
+
+/** Whether LNG-005 applies to a file tracked by Git. */
+export const inTypographyScope = (path: string): boolean =>
+	TEXT_FILE.test(path) && !OUT_OF_TYPOGRAPHY.test(path);
+
+/** Each line (from 1) of `text` with a middle dot, an em dash or an en dash, and which one it is. */
+export function dashesIn(text: string): { line: number; name: string }[] {
+	const out: { line: number; name: string }[] = [];
+	text.split("\n").forEach((line, i) => {
+		const found = FORBIDDEN.exec(line.replace(MENTION, ""));
+		if (found) out.push({ line: i + 1, name: DASHES[found[0]] ?? found[0] });
+	});
+	return out;
+}
+
+export function typographyProblems(repo: Repo): string[] {
+	return repo.texts.flatMap((file) =>
+		dashesIn(file.text).map(
+			({ line, name }) => `${file.path}:${line} (LNG-005): uses ${name}; write a plain hyphen "-"`,
+		),
+	);
+}
+
 export function devProblems(repo: Repo): string[] {
-	return [...stackProblems(repo), ...codeProblems(repo), ...docProblems(repo), ...dependencyProblems(repo)];
+	return [
+		...stackProblems(repo),
+		...codeProblems(repo),
+		...docProblems(repo),
+		...dependencyProblems(repo),
+		...typographyProblems(repo),
+	];
 }
 
 // ── reading the repo ───────────────────────────────────────────────────────────────────────────────────────────────
@@ -463,6 +510,10 @@ export function readRepo(root: string): Repo {
 		workspaces,
 		sources: tracked
 			.filter((f) => /\.(tsx?|mts|astro|mjs|js)$/.test(f))
+			.map((path) => ({ path, text: readFileSync(join(root, path), "utf8") })),
+		texts: tracked
+			.filter(inTypographyScope)
+			.filter((path) => existsSync(join(root, path)))
 			.map((path) => ({ path, text: readFileSync(join(root, path), "utf8") })),
 	};
 }

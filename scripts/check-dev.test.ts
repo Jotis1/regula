@@ -4,11 +4,13 @@ import {
 	dependencyProblems,
 	devProblems,
 	docProblems,
+	inTypographyScope,
 	jsdocProblems,
 	type Repo,
 	stackProblems,
 	suppressionProblems,
 	TS_FLAGS,
+	typographyProblems,
 	type Workspace,
 } from "./check-dev";
 
@@ -114,6 +116,7 @@ const good = (): Repo => ({
 		"# Repo\n\n```sh\nbun install\nbun run build\nbun run --cwd apps/site dev\nbun run test\n```\n",
 	workspaces: [lib(), site()],
 	sources: [],
+	texts: [],
 });
 
 const withWorkspace = (repo: Repo, dir: string, change: (w: Workspace) => void): Repo => {
@@ -182,7 +185,9 @@ describe("check-dev", () => {
 		it("rejects an indent with spaces or of another width (STK-004)", () => {
 			const spaces = good();
 			(spaces.biome.formatter as Record<string, unknown>).indentStyle = "space";
-			expect(stackProblems(spaces).join("\n")).toMatch(/biome\.json \(STK-004\).*`formatter\.indentStyle`/);
+			expect(stackProblems(spaces).join("\n")).toMatch(
+				/biome\.json \(STK-004\).*`formatter\.indentStyle`/,
+			);
 
 			const width = good();
 			(width.biome.formatter as Record<string, unknown>).indentWidth = 2;
@@ -363,6 +368,52 @@ describe("check-dev", () => {
 			expect(problems).toHaveLength(3);
 			expect(problems.join("\n")).toContain("start (dev)");
 			expect(problems.join("\n")).toContain("test");
+		});
+	});
+
+	describe("typography (LNG-005)", () => {
+		// Built from code points: this file follows the rule it tests.
+		const DOT = String.fromCodePoint(0xb7);
+		const EM = String.fromCodePoint(0x2014);
+		const EN = String.fromCodePoint(0x2013);
+		const withText = (path: string, text: string): Repo => ({ ...good(), texts: [{ path, text }] });
+
+		it("rejects an em dash in a comment and a middle dot in Markdown, with file and line", () => {
+			const comment = typographyProblems(
+				withText("src/menu.ts", `const a = 1;\n// Close it ${EM} on Escape`),
+			);
+			expect(comment).toEqual(['src/menu.ts:2 (LNG-005): uses an em dash; write a plain hyphen "-"']);
+			const md = typographyProblems(withText("docs/a.md", `Alto: \`sm\` 36 ${DOT} \`md\` 40`));
+			expect(md.join("\n")).toContain("docs/a.md:1 (LNG-005): uses a middle dot");
+			expect(typographyProblems(withText("a.md", `0${EN}100`))).toHaveLength(1);
+		});
+
+		it("allows a lone mention of the character, which is how a text names it", () => {
+			expect(typographyProblems(withText("a.md", `No se usa «${DOT}» ni \`${EM}\`.`))).toEqual([]);
+			expect(typographyProblems(withText("a.md", `« ${EN} »`))).toEqual([]);
+			expect(typographyProblems(withText("a.md", `\`a ${DOT} b\``))).toHaveLength(1);
+		});
+
+		it("leaves history, frozen copies, outside tools and generated files out of scope", () => {
+			for (const path of [
+				"reference/GUIA.md",
+				"openspec/changes/archive/2026-11-01-x/proposal.md",
+				"packages/react/CHANGELOG.md",
+				".claude/commands/opsx/apply.md",
+				"packages/assets/assets/logos/a.svg",
+				"src/icons.generated.ts",
+				"bun.lock",
+				"public/photo.png",
+			])
+				expect(inTypographyScope(path)).toBe(false);
+			for (const path of [
+				"README.md",
+				"openspec/specs/a/spec.md",
+				".changeset/a.md",
+				"src/A.tsx",
+				"x.yaml",
+			])
+				expect(inTypographyScope(path)).toBe(true);
 		});
 	});
 
