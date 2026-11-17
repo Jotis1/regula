@@ -6,6 +6,7 @@ export interface ChartLegendProps {
 	series: { name?: string; color?: string }[];
 	/** En columna (como junto a `PieChart`) en lugar de en fila. */
 	vertical?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

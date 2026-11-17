@@ -4,7 +4,9 @@ import { cx } from "../internal/cx.js";
 import { ChartLegend } from "./ChartLegend.js";
 
 export interface PieChartSlice {
+	/** The name of the slice, shown in the legend. */
 	name: string;
+	/** The size of the slice. The chart works out the percentage. */
 	value: number;
 	/** Sin `color`, la paleta de series en orden. */
 	color?: string;
@@ -31,6 +33,7 @@ export interface PieChartProps {
 	legend?: boolean;
 	/** Qué cuenta la gráfica, para lectores de pantalla. @default "Gráfica circular" */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

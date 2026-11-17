@@ -44,6 +44,7 @@ export interface LineChartProps {
 	marker?: ChartMarkerAt;
 	/** Qué cuenta la gráfica, para lectores de pantalla. @default "Gráfica de líneas" */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -24,6 +24,7 @@ export interface ChartMarkerProps {
 	 * @default true
 	 */
 	tooltip?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

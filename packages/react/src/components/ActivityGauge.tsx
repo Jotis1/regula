@@ -8,6 +8,7 @@ export type ActivityGaugeSize = "xs" | "sm" | "md" | "lg";
 export interface ActivityGaugeRing {
 	/** Nombre en la leyenda y en la tabla para lectores. */
 	name: string;
+	/** How much of the ring is filled, up to `max`. */
 	value: number;
 	/** El total del anillo. @default 100 */
 	max?: number;
@@ -36,6 +37,7 @@ export interface ActivityGaugeProps {
 	format?: (value: number, max: number) => string;
 	/** Qué cuenta la gráfica, para lectores de pantalla. @default "Gráfica de actividad" */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
