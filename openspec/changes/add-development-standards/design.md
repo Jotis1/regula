@@ -290,6 +290,16 @@ Cada pieza va en su propio commit (GIT-005). El orden es:
 
 Así ningún commit publica una norma automática sin su comprobación en verde, y `problemsOf` pasa en todos.
 
+### D11. Tipografía (`LNG-005`) y formato
+
+Lo pidió el usuario tras la implementación: ni «·» ni rayas, y el guión simple en su lugar. Se incluye la semirraya («–») con la raya («—»), porque sustituye a lo mismo y se confunde con ella a simple vista.
+
+- **Qué se comprueba:** `check:dev` lee cada archivo de texto que sigue Git (`.md`, `.mdx`, `.yaml`, `.json`, `.ts`, `.tsx`, `.astro`, `.css`, `.html`, `.svg`…). Quedan fuera `reference/`, `openspec/changes/archive/`, los `CHANGELOG.md`, `.claude/`, `bun.lock`, los `*.generated.*` y los SVG de `packages/assets/assets`. Las citas sueltas del carácter (`«·»` o entre comillas invertidas) se quitan antes de buscar, para poder nombrarlo.
+- **El ejemplo malo de la norma** tiene que enseñar el carácter. En el YAML va como cadena con escapes (`"Donación · 5,00 €"`): la página y el JSON lo muestran tal cual y el archivo no lo contiene.
+- **Los commits:** un script nuevo, `scripts/check-commit-typography.ts`, lee `git log base..head` y es el paso «Tipografía» del job «Commits». Salta los commits cuyo autor es un bot (`[bot]` en el nombre o en el correo), porque Dependabot copia las notas de versión de cada dependencia.
+- **Cómo se sustituye:** « · », « — » y « – » pasan a « - »; un «–» entre números o horas, a «-» sin espacios; las líneas de adorno de los comentarios, hechas de rayas, pasan a `--- Piezas ---`.
+- **Formato:** `biome.json` ya tenía `indentStyle: "tab"` e `indentWidth: 4`, y `check:dev` ya los comprobaba. Solo cambia el enunciado de `STK-004`, que ahora los nombra en vez de decir «el formato de la suite».
+
 ## Risks / Trade-offs
 
 - **[El trabajo es grande: ~155 exports, ~300 props, renombrados de archivos y los errores de cuatro flags]** → Va en muchos commits pequeños, uno por regla, así que la PR se revisa por partes. Si alguna parte se alarga demasiado, se puede partir en otra PR sin romper el orden de D10.

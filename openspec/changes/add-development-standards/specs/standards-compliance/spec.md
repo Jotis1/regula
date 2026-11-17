@@ -26,6 +26,34 @@ El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, 
 - **WHEN** una PR pone `noEnum` en `warn`
 - **THEN** el paso falla y nombra `biome.json` y la norma de los niveles
 
+#### Scenario: Sangría con espacios
+- **WHEN** una PR pone `"indentStyle": "space"` en `biome.json`
+- **THEN** el paso falla y nombra `biome.json` y la norma del bloque
+
+### Requirement: Tipografía comprobada
+El paso «Normas de desarrollo» SHALL fallar si un archivo de texto que sigue Git, fuera de lo que `LNG-005` deja fuera, tiene un «·», un «—» o un «–» que no sea una cita suelta del carácter. El mensaje SHALL nombrar el archivo, la línea y `LNG-005`.
+
+En cada PR, el paso «Tipografía» del job «Commits» SHALL fallar si un commit de la PR, salvo los de un bot, lleva alguno de esos caracteres en el título o en el cuerpo, y SHALL nombrar el commit.
+
+#### Scenario: Raya en un comentario
+- **WHEN** una PR añade `// Close the menu — on Escape` a un componente
+- **THEN** «Normas de desarrollo» falla y nombra el archivo, la línea y `LNG-005`
+
+#### Scenario: Punto medio en un commit
+- **WHEN** una PR trae el commit `fix(react): Badge · alto de 22`
+- **THEN** «Tipografía» falla y nombra el commit
+
+#### Scenario: Commit de Dependabot con notas de versión
+- **WHEN** Dependabot sube una dependencia y el cuerpo de su commit copia unas notas de versión con «—»
+- **THEN** «Tipografía» pasa
+
+### Requirement: Regula cumple la tipografía
+Los textos de Regula SHALL cumplir `LNG-005`: la guía, los comentarios, el JSDoc, los tests, las especificaciones de OpenSpec que no están archivadas y los textos que pintan los componentes. Los textos de `@jotis-me/react` que cambian de separador SHALL llevar un changeset `patch`.
+
+#### Scenario: Repo actual
+- **WHEN** corre el paso «Normas de desarrollo» en la rama principal
+- **THEN** no informa de ningún «·», «—» ni «–»
+
 ### Requirement: Normas de código comprobadas
 El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si:
 - el tsconfig de un workspace, ya resuelto con sus `extends`, no tiene alguno de los flags del área de código;

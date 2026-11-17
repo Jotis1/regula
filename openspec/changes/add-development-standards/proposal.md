@@ -51,7 +51,10 @@ Este cambio es el 3 de la hoja de ruta, «normas de desarrollo». Escribe las no
     - `workspace:` para las internas;
     - la misma versión en todo el monorepo;
     - `sideEffects` declarado.
-- **Idioma:** los commits y las ramas que generan los bots (Dependabot) quedan fuera de la norma del idioma. Siguen cumpliendo Conventional Commits.
+- **Idioma:**
+  - los commits y las ramas que generan los bots (Dependabot) quedan fuera de la norma del idioma. Siguen cumpliendo Conventional Commits;
+  - una norma nueva de tipografía, `LNG-005`: ni el punto medio («·») ni las rayas («—» y «–») en ningún texto del repo ni en los commits. En su lugar va el guión simple («-»).
+- **Formato:** la norma del bloque de Biome dice de forma explícita la sangría (tabuladores de ancho 4), el largo de línea, las comillas y el punto y coma.
 - **Orden de las áreas:** Nombres, Idioma, Stack, Código, Documentación, Versiones, Git, CI y Proceso.
 - **Regula las cumple:**
   - un script nuevo, `check:dev` (paso «Normas de desarrollo»), y otro de changesets (paso «Changesets»);
@@ -72,13 +75,14 @@ Este cambio es el 3 de la hoja de ruta, «normas de desarrollo». Escribe las no
 - `engineering-standards`:
   - prefijos en inglés y el campo de excepciones;
   - compatibilidad con los frameworks y orden de las áreas;
-  - la norma de nombres de archivo y la excepción de los bots en el idioma;
+  - la norma de nombres de archivo, la excepción de los bots en el idioma y la norma de tipografía;
   - las cuatro áreas nuevas.
 - `standards-compliance`:
   - `check:dev` y la comprobación de changesets;
   - Biome sin avisos;
   - los tsconfig y `typecheck`, y los ejemplos como prueba de compatibilidad;
   - los exports documentados;
+  - la tipografía de los archivos y de los commits;
   - Dependabot.
 - `docs-site`: el escenario de buscar una norma usa `NAM-001`.
 - `mcp-server`: los escenarios que nombran `NOM-001` y `NOM-999` pasan a `NAM-*`.
@@ -97,8 +101,9 @@ Este cambio es el 3 de la hoja de ruta, «normas de desarrollo». Escribe las no
   - los `as any` y los `import * as`;
   - los nombres de archivo;
   - el JSDoc de exports y props;
-  - el README raíz.
-- **Paquetes publicados:** la API no cambia. El JSDoc y los arreglos internos llevan changesets `patch`.
+  - el README raíz;
+  - los «·», «—» y «–» de la guía, de los comentarios, del JSDoc, de los tests y de los textos de los componentes.
+- **Paquetes publicados:** la API no cambia. El JSDoc y los arreglos internos llevan changesets `patch`. Algunos textos que pintan los componentes cambian de separador (`10:00-11:00`, `Donación - 5,00 €`), también con un `patch`.
 - **Fuera de alcance:**
   - traducir los comentarios y el JSDoc en español que ya existen (va en la migración de idioma);
   - Knip;

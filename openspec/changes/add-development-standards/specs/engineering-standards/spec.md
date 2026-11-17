@@ -52,6 +52,20 @@ Las normas de idioma SHALL aplicarse al código nuevo y al que se toque desde su
 
 ## ADDED Requirements
 
+### Requirement: Área de idioma: tipografía
+El área de idioma SHALL fijar, con nivel DEBE y para todos los proyectos, una norma `LNG-005`: ningún texto del repo (la guía, los comentarios, el JSDoc, los textos de la interfaz, los tests, los changesets) ni ningún mensaje de commit usa el punto medio («·») ni las rayas («—» y «–»). En su lugar SHALL ir el guión simple («-»): con espacios como separador (`Donación - 5,00 €`) y sin espacios en los rangos (`0-100`, `10:00-11:00`).
+
+#### Scenario: Separador de un evento
+- **WHEN** se mira el ejemplo que no cumple la norma de tipografía
+- **THEN** enseña un texto de evento con «·» como separador y un comentario con «—», y el que la cumple, los mismos textos con «-»
+
+### Requirement: Excepciones de la tipografía
+`LNG-005` SHALL permitir citar el carácter suelto entre comillas latinas o en código (`«·»`), para poder nombrarlo. Quedan fuera los commits de los bots, el historial (`CHANGELOG.md`, los cambios archivados de OpenSpec), lo congelado (`reference/`) y lo que genera una herramienta de fuera (`.claude/`).
+
+#### Scenario: Nombrar el carácter
+- **WHEN** el enunciado de la norma escribe «·» para decir qué carácter no se usa
+- **THEN** la norma se cumple
+
 ### Requirement: Prefijos en inglés
 El prefijo de cada área SHALL ser de tres letras y en inglés: `NAM` (nombres), `LNG` (idioma), `STK` (stack), `COD` (código), `DOC` (documentación), `VER` (versiones), `GIT`, `INT` (CI) y `PRO` (proceso). Las normas `NOM-001`, `NOM-002` e `IDI-001` a `IDI-004` SHALL pasar a `NAM-001`, `NAM-002` y `LNG-001` a `LNG-004`, sin alias.
 
@@ -103,6 +117,13 @@ El área de stack SHALL fijar, con nivel DEBE y para todos los proyectos:
 #### Scenario: Bloque de Biome
 - **WHEN** se mira el ejemplo que cumple la norma de `biome.json`
 - **THEN** enseña el bloque completo, con los `overrides` de Next y de Astro, listo para copiar sobre lo que genera `biome init`
+
+### Requirement: Área de stack: formato
+La norma del bloque de Biome SHALL nombrar el formato de la suite: sangría con tabuladores de ancho 4, líneas de hasta 110, comillas dobles y punto y coma.
+
+#### Scenario: Sangría
+- **WHEN** se lee el enunciado de la norma del bloque de Biome
+- **THEN** dice que la sangría es con tabuladores de ancho 4, y el bloque de ejemplo lleva `"indentStyle": "tab"` e `"indentWidth": 4`
 
 ### Requirement: Área de stack: Turbo y Node
 El área de stack SHALL fijar:
