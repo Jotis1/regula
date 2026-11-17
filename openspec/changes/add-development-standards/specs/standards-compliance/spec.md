@@ -16,17 +16,19 @@ El paso «Normas de desarrollo» del CI SHALL fallar, nombrando el archivo y la 
 
 ### Requirement: Configuración del stack comprobada
 El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si:
-- a `biome.json` le falta alguna pieza del bloque de la guía;
+- a `biome.json` le falta alguna pieza del bloque de la guía, o tiene alguna regla en `warn`;
+- el paso «Biome» no usa `--error-on-warnings`;
 - un script `build`, `typecheck` o `test` de la raíz no usa `turbo run`;
-- una app con `vercel.json` no tiene `engines.node`.
+- una app con `vercel.json` no tiene `engines.node`;
+- falta `.github/dependabot.yml`, o no revisa cada semana `bun` y `github-actions` con el prefijo `build`.
 
-#### Scenario: Regla del bloque quitada
-- **WHEN** una PR quita `noEnum` de `biome.json`
-- **THEN** el paso falla y nombra `biome.json` y la norma del bloque de Biome
+#### Scenario: Regla en warn
+- **WHEN** una PR pone `noEnum` en `warn`
+- **THEN** el paso falla y nombra `biome.json` y la norma de los niveles
 
 ### Requirement: Normas de código comprobadas
 El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si:
-- el tsconfig de un workspace, ya resuelto con sus `extends`, no tiene `strict` y `noUncheckedIndexedAccess`;
+- el tsconfig de un workspace, ya resuelto con sus `extends`, no tiene alguno de los flags del área de código;
 - un workspace con tsconfig no tiene script `typecheck`;
 - el código tiene un `@ts-ignore`, un `@ts-nocheck`, o un `@ts-expect-error` o `biome-ignore` sin motivo;
 - un paquete publicado no compila con `NodeNext`.
@@ -35,22 +37,32 @@ El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, 
 - **WHEN** una PR añade un ejemplo con tsconfig y sin script `typecheck`
 - **THEN** el paso falla y nombra el `package.json` y la norma de `typecheck`
 
-### Requirement: Normas de documentación y dependencias comprobadas
+### Requirement: Normas de documentación comprobadas
+El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si en un paquete publicado, fuera de los `*.generated.*` y de `internal/`:
+- un export público o una prop de un componente no lleva JSDoc;
+- un `@deprecated` no dice qué usar.
+
+También SHALL fallar si un paquete publicado no tiene README o no enlaza a `https://regula.jotis.me`, o si el README de la raíz no tiene los comandos de instalar, arrancar, construir y probar.
+
+#### Scenario: Prop sin documentar
+- **WHEN** una PR añade a `Button` una prop sin JSDoc
+- **THEN** el paso falla y nombra el archivo, la prop y la norma
+
+### Requirement: Normas de dependencias comprobadas
 El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, si:
-- un export público de un paquete publicado no lleva JSDoc, salvo en los ficheros `*.generated.*` y en `internal/`;
-- un paquete publicado no tiene README, o su README no enlaza a `https://regula.jotis.me`;
-- un paquete publicado tiene un framework compartido en `dependencies` o una dependencia 0.x con rango;
+- un paquete publicado tiene un framework compartido en `dependencies`, una dependencia 0.x con rango o no declara `sideEffects`;
+- una dependencia tiene rangos distintos en dos workspaces;
 - un job del CI instala sin `--frozen-lockfile`.
 
-#### Scenario: Export sin documentar
-- **WHEN** una PR añade a `@jotis-me/react` un componente exportado sin JSDoc
-- **THEN** el paso falla y nombra el archivo, el export y la norma del JSDoc
+#### Scenario: Rango distinto
+- **WHEN** una PR sube `react` a `^19.4.0` solo en un ejemplo
+- **THEN** el paso falla y nombra los dos `package.json` y la norma de la coherencia
 
 ### Requirement: Changesets comprobados en las PR
-En cada PR, el paso «Changesets» SHALL fallar si la PR cambia lo que publica un paquete publicado y no trae un changeset que lo nombre ni un changeset vacío. Cuenta como lo que se publica:
+En cada PR, el paso «Changesets» SHALL fallar si la PR cambia lo que publica un paquete y no trae un changeset que lo nombre ni uno vacío. Cuenta como publicado:
 - `src/`;
 - lo que lista `files`, salvo la salida del build;
-- el `package.json`.
+- el `package.json`, salvo `devDependencies` y `scripts`.
 
 El PR de versión de changesets SHALL quedar fuera.
 
@@ -62,12 +74,16 @@ El PR de versión de changesets SHALL quedar fuera.
 - **WHEN** una PR solo cambia `packages/react/test/`
 - **THEN** el paso pasa sin changeset
 
-#### Scenario: Changeset vacío
-- **WHEN** una PR cambia el `package.json` de `@jotis-me/tokens` y trae un changeset vacío
-- **THEN** el paso pasa
+#### Scenario: Dependabot sube una devDependency
+- **WHEN** una PR de Dependabot solo cambia `devDependencies` de `@jotis-me/react` y `bun.lock`
+- **THEN** el paso pasa sin changeset
+
+#### Scenario: Dependabot sube una dependencia publicada
+- **WHEN** una PR de Dependabot sube `clsx` en las `dependencies` de `@jotis-me/react`
+- **THEN** el paso falla hasta que alguien añade un changeset a la PR
 
 ### Requirement: Regula cumple el área de código
-Todos los workspaces de Regula SHALL tener `strict` y `noUncheckedIndexedAccess`, un script `typecheck` y su `typecheck` en verde en el CI. Incluye la web, los dos ejemplos y el artefacto. `biome.json` SHALL declarar `noExplicitAny`, `noTsIgnore` y `noEnum` como `error`, y `biome ci .` SHALL pasar sin supresiones de `noExplicitAny`. Los tres paquetes publicados SHALL compilar con `NodeNext`.
+Todos los workspaces de Regula SHALL tener los flags del área de código, un script `typecheck` y su `typecheck` en verde en el CI: la web, los dos ejemplos, el artefacto y los paquetes. `biome ci --error-on-warnings .` SHALL pasar con el bloque de la guía. Las únicas supresiones de `noNamespaceImport` SHALL ser las del código que recorre todos los exports de un módulo.
 
 #### Scenario: Ejemplos en el typecheck
 - **WHEN** corre `turbo run typecheck` en el CI
@@ -77,9 +93,23 @@ Todos los workspaces de Regula SHALL tener `strict` y `noUncheckedIndexedAccess`
 - **WHEN** una PR añade `as any` en un componente
 - **THEN** el paso «Biome» falla
 
+### Requirement: Ejemplos como prueba de los frameworks
+Los ejemplos de Next y de Astro SHALL pasar Biome, `typecheck` y «Normas de desarrollo» con el mismo bloque de configuración que se publica en la guía, sin supresiones propias. Si una regla nueva choca con una convención de alguno de los dos frameworks, su excepción SHALL añadirse a la norma y al bloque antes de publicarla.
+
+#### Scenario: Layout de Next
+- **WHEN** corre Biome sobre `examples/next/app/layout.tsx`, con su `export default`
+- **THEN** no hay ningún diagnóstico
+
 ### Requirement: Exports de Regula documentados
-Cada export público de `@jotis-me/tokens`, `@jotis-me/assets` y `@jotis-me/react` SHALL llevar JSDoc. Los ficheros generados de `@jotis-me/assets` quedan fuera, porque su generador está documentado.
+Cada export público y cada prop de `@jotis-me/tokens`, `@jotis-me/assets` y `@jotis-me/react` SHALL llevar JSDoc. Los ficheros generados de `@jotis-me/assets` quedan fuera, porque su generador está documentado.
 
 #### Scenario: Repo actual
 - **WHEN** corre el paso «Normas de desarrollo» en la rama principal
-- **THEN** no informa de ningún export sin JSDoc
+- **THEN** no informa de ningún export ni prop sin JSDoc
+
+### Requirement: Dependabot en Regula
+Regula SHALL tener `.github/dependabot.yml` según la norma de Dependabot. Sus PR SHALL pasar «Commits» y la puerta «CI» sin cambios manuales, salvo el changeset cuando suben una dependencia publicada.
+
+#### Scenario: Primera PR agrupada
+- **WHEN** Dependabot abre la PR semanal de versiones menores de Bun
+- **THEN** su commit empieza por `build(deps):` y el job «Commits» pasa

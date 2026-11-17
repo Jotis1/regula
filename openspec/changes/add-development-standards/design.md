@@ -2,90 +2,133 @@
 
 ## Context
 
-Las normas viven en `apps/docs/src/content/standards/*.yaml`, una por área, con el esquema de `apps/docs/src/lib/standards.ts`. `problemsOf` comprueba que cada verificación automática existe de verdad: `ci` busca un job o un paso con ese nombre en `ci.yml`, `biome` busca el texto en `biome.json` y `test` busca el archivo. La página, `/standards.json` y el MCP salen de la fuente sin más trabajo. Hoy hay cinco áreas: NOM (1), IDI (2), GIT (3), INT (4) y PRO (5).
+Las normas viven en `apps/docs/src/content/standards/*.yaml`, un archivo por área, con el esquema de `apps/docs/src/lib/standards.ts`. `problemsOf` comprueba que cada verificación automática existe de verdad:
+- `ci` busca un job o un paso con ese nombre en `ci.yml`;
+- `biome` busca el texto en `biome.json`;
+- `test` busca el archivo.
 
-Estado de Regula frente a las normas nuevas, medido el 2026-11-17:
+La página, `/standards.json` y el MCP salen de la fuente sin más trabajo.
 
-- **Biome.** Usa `recommended`, pero `noExplicitAny` y `noEnum` están en `warn` por defecto y `biome ci` no falla con avisos. Ninguna de las dos reglas aparece en `biome.json`, así que una norma `biome` que las nombre no pasaría `problemsOf`. Hay dos `as any` en `packages/react/src/components/SocialButton.tsx`, suprimidos con `biome-ignore`. No hay ningún `enum`.
-- **tsconfig.** Los paquetes y el artefacto ya tienen `noUncheckedIndexedAccess`. La web y el ejemplo Astro extienden `astro/tsconfigs/strict`, que no lo trae, y el ejemplo Next tiene el tsconfig que genera Next. Con el flag, `tsc` da 22 errores en los `.ts` de la web; los `.astro` no se han medido. `tsc --showConfig -p` resuelve los `extends` con TypeScript 7.
-- **typecheck.** Los dos ejemplos no tienen script `typecheck`. El ejemplo Astro no depende de `@astrojs/check`.
-- **Módulos.** `react` y `assets` compilan con `NodeNext`, pero `tokens` usa el `Bundler` de la base. Su `src/` no tiene imports relativos.
-- **JSDoc.** En `src/`, fuera de `internal/` y de los `*.generated.*`, quedan 14 exports sin JSDoc: 11 en `tokens/src/generate.ts`, 2 en `react/src/app-icon` y 1 en `react/src/components`. Los generados de `assets` suman unos 500.
-- **Changesets.** `changeset status --since` (v3.0.3) marca un paquete como cambiado con cualquier archivo de su carpeta, tests incluidos. La v3 no trae `changedFilePatterns`.
-- **Ya cubiertos.** Hay pasos que cubren normas nuevas: «publint y arethetypeswrong» (ESM y tipos), «Paquetes sin workspace:» (dependencias internas) y `bun install --frozen-lockfile` en todos los jobs. Los README de los tres paquetes existen.
+Estado de Regula medido el 2026-11-17 con `biome lint --only=<regla>`, `tsc` y búsquedas en el repo:
+
+| Práctica | Estado hoy |
+| --- | --- |
+| `biome ci .` | 0 avisos y 4 `info` (`noUselessFragments`). Añadir `--error-on-warnings` no cuesta nada |
+| `noExplicitAny` y `noEnum` | En `warn` por defecto. 2 `as any` suprimidos en `SocialButton` y ningún `enum` |
+| `noNonNullAssertion`, `useImportType` | 0 casos |
+| `noDefaultExport` | 171 casos: 13 configs, 3 archivos de `examples/next/app`, 154 islas de la web y `examples/astro/src/components/Periodo.tsx` |
+| `noReExportAll` | 4 casos |
+| `noNamespaceImport` | 17 casos. Todos recorren un módulo entero (galerías de iconos, banderas, logos, pagos, cursores; tests que recorren `@jotis-me/react`; composiciones de ejemplos) |
+| `noConsole` | 75 casos, todos en `scripts/` |
+| `useFilenamingConvention` | 165 `info` con la configuración por defecto, todos archivos en PascalCase (`.astro` y `.tsx` cuyo nombre no coincide con un export) |
+| `noUncheckedIndexedAccess` | Lo tienen los paquetes y el artefacto. Faltan la web (22 errores solo en los `.ts`) y los ejemplos |
+| `typecheck` | Falta en los dos ejemplos. El de Astro no depende de `@astrojs/check` |
+| `NodeNext` | Lo usan `react` y `assets`. `tokens` usa `Bundler`, aunque su `src/` no tiene imports relativos |
+| JSDoc de exports | 14 sin JSDoc fuera de `internal/` y de `*.generated.*` |
+| JSDoc de props | Unas 300 sin JSDoc en `@jotis-me/react`, a ojo |
+| README de la raíz | Tiene instalar, construir y Biome. Le faltan arrancar y probar |
+| Changesets | `changeset status --since` (v3.0.3) da por cambiado un paquete con cualquier archivo de su carpeta, y la v3 no trae `changedFilePatterns` |
+| Dependabot | No hay `.github/dependabot.yml` |
+| IDs antiguos | `NOM-`/`IDI-` aparecen en `ci.yml`, `astro.config.mjs`, `standards.ts`, `mcp/tools.ts`, `check-package-names.ts`, los tests y e2e de normas, MCP y búsqueda, y las specs `docs-site`, `mcp-server` y `engineering-standards` |
+
+`tsc --showConfig -p` resuelve los `extends` con TypeScript 7, presets de Astro incluidos.
 
 ## Goals / Non-Goals
 
 **Goals:**
-- 26 normas nuevas en cuatro áreas, con el mismo esquema y la misma calidad de ejemplos que las de CI.
-- Toda norma automática con su comprobación en verde en Regula el día que se publica.
-- Una sola comprobación nueva para casi todo (`check:dev`), siguiendo el patrón de `check:names` y `check:ci`.
+- 38 normas nuevas, una en Nombres y el resto en cuatro áreas nuevas, más los prefijos en inglés. Todo con el esquema y la calidad de ejemplos de las normas de CI.
+- Ninguna norma choca con una convención de Next o Astro, y los ejemplos lo demuestran.
+- Toda norma automática tiene su comprobación en verde en Regula el día que se publica.
 
 **Non-Goals:**
-- Traducir al inglés los comentarios o el JSDoc existentes (eso va en la migración de idioma).
-- Pedir JSDoc a los tipos exportados. La norma cubre componentes, funciones, constantes y clases; las props van como DEBERÍA.
-- Un paquete de configuración compartida. La guía da el bloque para copiar, como se decidió el 2026-11-16.
-- Hooks de Git locales.
+- Traducir los comentarios y el JSDoc que ya existen en español.
+- Knip, `useBlockStatements`, `noBarrelFile`, `exactOptionalPropertyTypes`, `isolatedDeclarations`, `@example` obligatorio y `api-extractor`. Se debatieron y se descartaron.
+- Auditoría de dependencias y *provenance*, que van en el cambio de calidad y seguridad.
+- Un paquete de configuración compartida: la guía da el bloque para copiar.
 
 ## Decisions
 
-### D1. Cuatro áreas, slugs en inglés y prefijos en español
+### D1. Áreas y prefijos
 
-| Archivo | Slug y URL | Título | Prefijo | `order` |
+| Archivo | Slug | Título | Prefijo | `order` |
 | --- | --- | --- | --- | --- |
-| `stack.yaml` | `stack` | Stack y herramientas | `HER` | 3 |
+| `naming.yaml` | `naming` | Nombres | `NAM` (antes `NOM`) | 1 |
+| `language.yaml` | `language` | Idioma | `LNG` (antes `IDI`) | 2 |
+| `stack.yaml` | `stack` | Stack y herramientas | `STK` | 3 |
 | `code.yaml` | `code` | Código | `COD` | 4 |
 | `documentation.yaml` | `documentation` | Documentación | `DOC` | 5 |
 | `versioning.yaml` | `versioning` | Versiones y dependencias | `VER` | 6 |
+| `git.yaml` | `git` | Git | `GIT` | 7 |
+| `ci.yaml` | `ci` | CI | `INT` | 8 |
+| `process.yaml` | `process` | Proceso | `PRO` | 9 |
 
-Git pasa a `order: 7`, CI a 8 y Proceso a 9. `STANDARD_AREAS` sigue el mismo orden. Los slugs van en inglés por IDI (URLs en inglés), y los prefijos en español, como `NOM` o `INT`.
+`GIT`, `INT` (*integration*) y `PRO` (*process*) ya valen en inglés y no cambian. El renombrado no deja alias, como decidió el usuario. Un ID antiguo da el error de norma que no existe. Se hace ahora porque solo los usa Regula, y después de la 1.0 ya no se podría. Versiones y dependencias van en un solo área, porque las dos tratan lo que el paquete promete a quien lo instala.
 
-Se descartó un área por tema pedido (tests, versionado, dependencias…). Versionado y dependencias van juntas porque las dos tratan lo que el paquete promete a quien lo instala, y la navegación ya tiene nueve entradas.
+### D2. Campo `exceptions`
 
-### D2. Las normas
+`rule` gana un campo opcional:
 
-`appliesTo`: `all`, `app` o `package`. Nivel: DEBE (`must`) o DEBERÍA (`should`). La verificación `ci` apunta al paso «Normas de desarrollo» salvo que se indique otro.
+```ts
+exceptions: z.array(z.object({ where: z.string(), why: z.string() })).optional()
+```
 
-| ID | Nivel | Aplica | Norma | Verificación |
-| --- | --- | --- | --- | --- |
-| HER-001 | must | app | Next.js o Astro | ci |
-| HER-002 | must | all | Bun: `packageManager` exacto, solo `bun.lock`, CI con `bun-version-file` | ci |
-| HER-003 | must | all | Biome para lint y formato, sin ESLint ni Prettier, `biome ci .` en el CI | ci |
-| HER-004 | must | all | `biome.json` con el bloque de la guía (D3) | ci |
-| HER-005 | must | all | build, typecheck y test con `turbo run` | ci |
-| HER-006 | should | app | `engines.node` en las apps con `vercel.json` | ci |
-| COD-001 | must | all | `strict` y `noUncheckedIndexedAccess` | ci |
-| COD-002 | must | all | `typecheck` en cada workspace con TS, ejecutado en el CI | ci |
-| COD-003 | must | all | Sin `any` | biome `noExplicitAny` |
-| COD-004 | must | all | Sin `@ts-ignore` ni `@ts-nocheck`; supresiones con motivo | ci |
-| COD-005 | must | package | ESM con `exports` y tipos correctos | ci «publint y arethetypeswrong» |
-| COD-006 | must | package | `NodeNext` e imports relativos con `.js` | ci |
-| COD-007 | must | all | Uniones de literales, no `enum` | biome `noEnum` |
-| COD-008 | should | all | Exports con nombre; `default` solo donde lo pide el framework | review |
-| DOC-001 | must | package | JSDoc en todo export público | ci |
-| DOC-002 | should | package | JSDoc y `@default` en las props | review |
-| DOC-003 | must | package | README con instalación, uso y enlace a la guía | ci |
-| DOC-004 | should | all | README de la raíz con instalar, arrancar, construir y probar | review |
-| VER-001 | must | package | SemVer y la lista de lo que rompe | review |
-| VER-002 | must | package | Changeset en toda PR que cambia lo publicado | ci «Changesets» |
-| VER-003 | should | package | Changeset para quien usa el paquete; migración si rompe | review |
-| VER-004 | must | package | Prerreleases en modo pre, nunca bajo `latest` | review |
-| VER-005 | must | all | Lockfile en el repo y `--frozen-lockfile` en el CI | ci |
-| VER-006 | must | package | Frameworks compartidos en `peerDependencies` | ci |
-| VER-007 | should | package | Dependencias 0.x fijadas en `dependencies` y `peerDependencies` | ci |
-| VER-008 | must | package | Dependencias internas con `workspace:` y paquete sin `workspace:` | ci «Paquetes sin workspace:» |
+La página de cada área pinta las excepciones como una lista bajo el enunciado, y `/standards.json` y `get_standard` las devuelven tal cual. Cuando una norma `biome` tiene excepciones, sus `where` coinciden con los `overrides` del bloque de D4. Un test lo comprueba para `COD-009`, `COD-013` y `NAM-003`.
 
-`COD-004` va por `check:dev` y no por Biome: Biome tiene `noTsIgnore`, pero no ve `@ts-nocheck` ni el motivo de un `@ts-expect-error`. `noTsIgnore` se activa igualmente en `biome.json`, como parte del bloque de `HER-004`.
+### D3. Las normas
 
-`COD-008` y `DOC-002` se quedan en revisión. La web tiene muchos `export default` en islas de React, y las props sin JSDoc (`className`) son demasiadas para meterlas en este cambio. Las dos se pueden endurecer más adelante sin cambiar el ID.
+Todas son de nivel `must`, salvo `STK-006` y `VER-008`, que son `should`. Las de verificación `ci` apuntan al paso «Normas de desarrollo», salvo que la tabla diga otro.
 
-El porqué de `VER-007` cuenta que la norma no aplica a `devDependencies`, porque el lockfile ya fija lo que se instala en el repo. Por eso `^0.18.5` de `@arethetypeswrong/cli` cumple.
+| ID | Aplica | Norma | Verificación |
+| --- | --- | --- | --- |
+| NAM-003 | all | Archivos: componentes en PascalCase o kebab-case, el resto en kebab-case | biome `useFilenamingConvention` |
+| STK-001 | app | Next.js o Astro | ci |
+| STK-002 | all | Bun: `packageManager` exacto, solo `bun.lock`, CI con `bun-version-file` | ci |
+| STK-003 | all | Biome, sin ESLint ni Prettier | ci |
+| STK-004 | all | El bloque de `biome.json`, con las reglas en `error` u `off`, y `biome ci --error-on-warnings` | ci |
+| STK-005 | all | build, typecheck y test con `turbo run` | ci |
+| STK-006 | app | `engines.node` en las apps con `vercel.json` | ci |
+| STK-007 | all | Dependabot semanal, agrupado, con `build(deps)` | ci |
+| COD-001 | all | Los siete flags del tsconfig (D5) | ci |
+| COD-002 | all | `typecheck` en cada workspace con TS | ci |
+| COD-003 | all | Sin `any` | biome `noExplicitAny` |
+| COD-004 | all | Sin `!` | biome `noNonNullAssertion` |
+| COD-005 | all | Sin `@ts-ignore` ni `@ts-nocheck`, y supresiones con motivo | ci |
+| COD-006 | package | ESM con `exports` y tipos correctos | ci «publint y arethetypeswrong» |
+| COD-007 | package | `NodeNext` | ci |
+| COD-008 | all | Sin `enum` | biome `noEnum` |
+| COD-009 | all | Exports con nombre | biome `noDefaultExport` |
+| COD-010 | all | `import type` | biome `useImportType` |
+| COD-011 | all | Sin `export *` | biome `noReExportAll` |
+| COD-012 | all | Sin `import * as`, salvo al recorrer el módulo | biome `noNamespaceImport` |
+| COD-013 | all | Sin `console.log` ni `console.debug` fuera de scripts, tests y configs | biome `noConsole` |
+| DOC-001 | package | JSDoc en los exports | ci |
+| DOC-002 | package | JSDoc en las props, con `@default` | ci |
+| DOC-003 | package | `@deprecated` con sustituto | ci |
+| DOC-004 | package | README del paquete | ci |
+| DOC-005 | all | README de la raíz con instalar, arrancar, construir y probar | ci |
+| VER-001 | package | SemVer y lo que rompe | review |
+| VER-002 | package | Changeset en toda PR que cambia lo publicado | ci «Changesets» |
+| VER-003 | package | Changeset escrito para quien usa el paquete, y migración si rompe | review |
+| VER-004 | package | Prerreleases en modo pre, nunca bajo `latest` | review |
+| VER-005 | package | `@deprecated` en una menor antes de quitar en la mayor | review |
+| VER-006 | all | Lockfile en el repo y `--frozen-lockfile` | ci |
+| VER-007 | package | Frameworks en `peerDependencies` | ci |
+| VER-008 | package | Dependencias 0.x fijadas | ci |
+| VER-009 | package | Internas con `workspace:` y sin `workspace:` al publicar | ci «Paquetes sin workspace:» |
+| VER-010 | all | El mismo rango en todo el monorepo | ci |
+| VER-011 | package | `sideEffects` declarado | ci |
 
-### D3. El bloque de Biome
+`COD-005` va por `check:dev`: Biome no ve `@ts-nocheck` ni el motivo de un `@ts-expect-error`. `noTsIgnore` se activa igualmente, dentro del bloque.
 
-Es lo que se añade sobre `biome init`, y lo que comprueba `HER-004`:
+`VER-008` no se aplica a `devDependencies`, porque el lockfile ya fija lo que se instala en el repo. Por eso `^0.18.5` de `@arethetypeswrong/cli` cumple.
 
-```json
+`VER-010` compara `dependencies` y `devDependencies`. Las `peerDependencies` quedan fuera, porque expresan el rango que se admite y no lo que se instala.
+
+### D4. El bloque de Biome y sus excepciones de framework
+
+El bloque es lo que se añade sobre `biome init`, y lo que comprueba `STK-004`. Los `overrides` son las excepciones de D2:
+
+```jsonc
 {
 	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
 	"formatter": { "enabled": true, "indentStyle": "tab", "indentWidth": 4, "lineWidth": 110 },
@@ -93,62 +136,164 @@ Es lo que se añade sobre `biome init`, y lo que comprueba `HER-004`:
 		"enabled": true,
 		"rules": {
 			"preset": "recommended",
-			"suspicious": { "noExplicitAny": "error", "noTsIgnore": "error" },
-			"style": { "noEnum": "error" }
+			"suspicious": {
+				"noExplicitAny": "error",
+				"noTsIgnore": "error",
+				"noConsole": { "level": "error", "options": { "allow": ["error", "warn"] } }
+			},
+			"style": {
+				"noEnum": "error",
+				"noNonNullAssertion": "error",
+				"noDefaultExport": "error",
+				"useImportType": "error",
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": { "requireAscii": true, "filenameCases": ["kebab-case"] }
+				}
+			},
+			"performance": { "noReExportAll": "error", "noNamespaceImport": "error" }
 		}
 	},
 	"assist": { "actions": { "source": { "organizeImports": "on" } } },
-	"javascript": { "formatter": { "quoteStyle": "double", "semicolons": "always" } }
+	"javascript": { "formatter": { "quoteStyle": "double", "semicolons": "always" } },
+	"overrides": [
+		{
+			// Next importa estos archivos por su export por defecto, y los configs se cargan igual
+			"includes": [
+				"**/app/**/page.tsx", "**/app/**/layout.tsx", "**/app/**/template.tsx",
+				"**/app/**/loading.tsx", "**/app/**/error.tsx", "**/app/**/global-error.tsx",
+				"**/app/**/not-found.tsx", "**/app/**/default.tsx",
+				"**/app/**/opengraph-image.tsx", "**/app/**/icon.tsx",
+				"**/app/**/sitemap.ts", "**/app/**/robots.ts", "**/app/**/manifest.ts",
+				"**/*.config.ts", "**/*.config.mts", "**/*.config.mjs", "**/*.config.js"
+			],
+			"linter": { "rules": { "style": { "noDefaultExport": "off" } } }
+		},
+		{
+			// Componentes: PascalCase o kebab-case (rutas de Next y páginas de Astro, como page.tsx o [slug].astro)
+			"includes": ["**/*.tsx", "**/*.astro"],
+			"linter": { "rules": { "style": { "useFilenamingConvention": {
+				"level": "error",
+				"options": { "requireAscii": true, "filenameCases": ["PascalCase", "kebab-case"] }
+			} } } }
+		},
+		{
+			// En los scripts y los tests la consola es la salida del programa
+			"includes": ["**/scripts/**", "**/test/**", "**/e2e/**", "**/*.config.*"],
+			"linter": { "rules": { "suspicious": { "noConsole": "off" } } }
+		}
+	]
 }
 ```
 
-`check:dev` lee `biome.json` como JSON y compara clave a clave; cualquier otra clave es libre. Las normas `biome` (`COD-003` y `COD-007`) nombran `noExplicitAny` y `noEnum`, que entonces aparecen en `biome.json` y pasan `problemsOf`.
+Hay que comprobar tres cosas al implementar:
+- si Biome 2.6 acepta llaves (`{page,layout}`) en `includes`. Si las acepta, se acorta la lista; si no, se queda como está;
+- que `useFilenamingConvention` acepta los segmentos dinámicos (`[slug]`, `[...slug]`, `[[...slug]]`) y los nombres con puntos (`astro.config.mjs`, `button.test.tsx`);
+- que `useImportType` no da falsos positivos en el frontmatter de `.astro`. Si los da, se apaga en `**/*.astro`, como ya pasa con `noUnusedImports`, y esa excepción se añade a `COD-010`.
 
-### D4. `scripts/check-dev.ts`
+`check:dev` lee `biome.json` como JSON. Falla si falta una clave del bloque, si alguna regla vale `"warn"` o `{ "level": "warn" }`, en cualquier parte del archivo, o si el paso «Biome» de `ci.yml` no lleva `--error-on-warnings`. Las demás claves son libres. Así `problemsOf` encuentra en `biome.json` los nombres de las reglas de las normas `biome`.
 
-Sigue el patrón de `check-ci.ts`: funciones puras que reciben el contenido de los archivos y devuelven problemas (`{ file, rule, message }`), un `main` que lee el repo y sale con 1 si hay alguno, y un test con fixtures por cada punto del requisito «Normas de desarrollo comprobadas». Script `check:dev` en la raíz: `bun test scripts/check-dev.test.ts && bun run scripts/check-dev.ts`. Paso «Normas de desarrollo» en «Comprobaciones», detrás de «Normas de CI».
+Las excepciones de Regula que no son de framework (`.astro` con `noUnusedImports`, carpetas ignoradas) siguen en `biome.json`, fuera del bloque.
 
-- **Workspaces.** Salen de `workspaces` del `package.json` raíz. Las apps son las de `apps/*` y `examples/*`, y los paquetes publicados, los que no son `private`.
-- **tsconfig.** `bunx tsc --showConfig -p <dir>` por cada workspace con `tsconfig.json`, para leer el resultado con los `extends` resueltos (presets de Astro y de Next incluidos). Es más lento que leer el JSON, pero no hay que reimplementar la resolución de `extends` desde `node_modules`. Para la parte de `NodeNext` se miran `module` y `moduleResolution` del mismo resultado.
-- **Supresiones.** Recorre los `.ts`, `.tsx` y `.astro` con `git ls-files`, que respeta el `.gitignore` y deja fuera `dist`, `.astro` y `.next`. Un `@ts-expect-error` necesita texto después, y un `biome-ignore`, texto después de `:`.
-- **JSDoc.** En `packages/*/src` de los paquetes publicados, salvo `internal/` y `*.generated.*`, busca líneas `export (async )?(function|const|class)` cuya línea anterior no vacía no cierre un comentario `/** … */`. Es una heurística de líneas, no un análisis con el compilador. La API JS de TypeScript 7 no es estable, y el código de Regula lo formatea Biome, así que la forma de las líneas es predecible. Los `export { … } from` no cuentan, porque reexportan algo que ya lleva su JSDoc donde se define.
-- **CI.** Lee `.github/workflows/*.yml` con `Bun.YAML.parse`, como `check-ci`. Comprueba que cada `bun install` lleva `--frozen-lockfile` y que cada `setup-bun` usa `bun-version-file: package.json`.
+### D5. Flags del tsconfig
 
-### D5. `scripts/check-changesets.ts` en lugar de `changeset status`
+`strict`, `noUncheckedIndexedAccess`, `erasableSyntaxOnly`, `noImplicitOverride`, `noImplicitReturns`, `noFallthroughCasesInSwitch` y `verbatimModuleSyntax`. En Regula:
+- **Paquetes:** se añaden en `tsconfig.base.json`.
+- **Web y ejemplo Astro:** en su tsconfig, sobre `astro/tsconfigs/strict`.
+- **Ejemplo Next:** en su tsconfig. Next solo añade claves a ese archivo, no las quita.
+- **Artefacto:** en el suyo, que no extiende la base.
 
-`changeset status --since` falla en una PR que solo toca tests, y la v3 no deja configurar qué archivos cuentan. El script propio hace esto:
-1. Lista los archivos cambiados con `git diff --name-only <base>...<head>`, con las mismas variables de la PR que usa `ci-changes.ts`.
-2. Por cada paquete publicado, mira si alguno cae en `src/`, en una entrada de `files` que no sea `dist`, o en el `package.json`.
-3. Lee los `.changeset/*.md` añadidos en la PR. Un frontmatter que nombra el paquete lo cubre, y uno vacío (`---\n---`) los cubre todos.
+`erasableSyntaxOnly` también prohíbe `namespace` y las *parameter properties*. Ninguna se usa hoy, y encaja con el *type stripping* de Node y de Bun. Se descartaron `exactOptionalPropertyTypes`, que choca con los tipos de React y react-aria, e `isolatedDeclarations`, que pide tipar a mano el retorno de todos los exports.
+
+### D6. `scripts/check-dev.ts`
+
+Sigue el patrón de `check-ci.ts`: funciones puras que reciben el contenido y devuelven `{ file, rule, message }`, un `main` que lee el repo y sale con 1 si hay problemas, y un test con un fixture por cada punto de los requisitos «… comprobadas». Script `check:dev`: `bun test scripts/check-dev.test.ts && bun run scripts/check-dev.ts`. Paso «Normas de desarrollo» en «Comprobaciones», detrás de «Normas de CI».
+
+- **Workspaces:** salen de `workspaces` del `package.json` raíz. Son apps los de `apps/*` y `examples/*`, y paquetes publicados los que no son `private`.
+- **tsconfig:** `bunx tsc --showConfig -p <dir>` por cada workspace con `tsconfig.json`. Del mismo resultado salen los flags de D5 y el `module` y el `moduleResolution` de `COD-007`.
+- **Supresiones:** recorre los `.ts`, `.tsx`, `.astro`, `.mjs` y `.js` de `git ls-files`. Un `@ts-expect-error` necesita texto detrás, y un `biome-ignore`, texto detrás de `:`. `@ts-ignore` y `@ts-nocheck` fallan siempre.
+- **JSDoc:** se aplica a `packages/*/src` de los publicados, salvo `internal/` y `*.generated.*`. Es una heurística de líneas, porque la API JS de TypeScript 7 no es estable y Biome formatea el código, así que la forma de las líneas es predecible:
+  - un export (`export (async )?(function|const|class)`) necesita que su línea anterior no vacía cierre un `/** … */`;
+  - una prop (un miembro de una `interface` exportada o cuyo nombre acaba en `Props`) también;
+  - un `@deprecated` necesita texto en su misma línea;
+  - los `export { … } from` no cuentan.
+- **README:** los de paquete necesitan `https://regula.jotis.me`. El de la raíz necesita, en sus bloques de código, una línea con `install` y otras con `dev`, `build` y `test`.
+- **Dependencias:** recorre los `package.json` de los workspaces y aplica `VER-007`, `VER-008`, `VER-010` y `VER-011`.
+- **CI y Dependabot:** lee `.github/workflows/*.yml` y `.github/dependabot.yml` con `Bun.YAML.parse`, como `check-ci`. Comprueba:
+  - que todo `bun install` lleva `--frozen-lockfile`;
+  - que todo `setup-bun` usa `bun-version-file`;
+  - que Dependabot tiene los ecosistemas `bun` y `github-actions`, `weekly`, un grupo de `minor`/`patch` y el prefijo `build`.
+
+### D7. `scripts/check-changesets.ts`
+
+Se hace un script propio porque `changeset status --since` falla en una PR que solo toca tests, y la v3 no deja elegir qué archivos cuentan. Funciona así:
+1. Lista los archivos cambiados con `git diff --name-only <base>...<head>`, con las mismas variables de la PR que `ci-changes.ts`.
+2. Por cada paquete publicado, mira si cambia `src/`, una entrada de `files` que no sea `dist`, o el `package.json`. Del `package.json` compara el JSON de la base con el de la PR, sin `devDependencies` ni `scripts`, así que una subida de Dependabot solo de desarrollo no pide changeset.
+3. Lee los `.changeset/*.md` añadidos en la PR. Un frontmatter que nombra el paquete lo cubre, y uno vacío los cubre todos.
 4. Sale con 1 y nombra los paquetes sin cubrir.
 
-Va como paso «Changesets» en el job «Commits», que ya es solo de PR y tiene `fetch-depth: 0`. Así no hace falta un job nuevo ni tocar los `needs` de la puerta. La rama `changeset-release/main` sale temprano con 0, porque el PR de versión borra los changesets a propósito. Test `scripts/check-changesets.test.ts` con los tres escenarios de la spec y el de la rama de versión.
+Va como paso «Changesets» en el job «Commits», que ya es solo de PR y tiene `fetch-depth: 0`, así que no hace falta tocar los `needs` de la puerta. La rama `changeset-release/main` sale con 0.
 
-### D6. Cómo se pone Regula al día
+### D8. Dependabot
 
-- **`biome.json`.** Se añade el bloque de D3. Se quitan los dos `as any` de `SocialButton`: se tipa `rest` según la rama, el enlace o el botón, y si no hay forma limpia, con un `as ButtonProps` estrecho. Esto toca código publicado, así que lleva un changeset `patch` de `@jotis-me/react`.
-- **tsconfig.**
-  - Se añade `noUncheckedIndexedAccess` a `apps/docs`, `examples/astro` y `examples/next`.
-  - Se arreglan los errores con comprobaciones reales (`if (!x) …`, `?.`), no con `!`. Solo se acepta `!` donde un test o el propio código garantizan el índice, y con un comentario.
-  - `packages/tokens/tsconfig.json` pasa a `NodeNext` como `react` y `assets`.
-- **typecheck.** `examples/astro` gana `"typecheck": "astro check"` y `@astrojs/check` en `devDependencies`, y `examples/next` gana `"typecheck": "tsc --noEmit"`. Turbo ya ejecuta `typecheck` en todos los workspaces que lo tienen.
-- **JSDoc.** Se documentan los 14 exports. Los de `tokens/src/generate.ts` se documentan si forman parte de lo que se publica. Si son internos del build, el archivo pasa a `scripts/` o a `src/internal/`, lo que encaje mejor con `tsconfig.build.json`. El JSDoc nuevo va en inglés (IDI-001), aunque el de al lado siga en español hasta la migración.
+```yaml
+version: 2
+updates:
+    - package-ecosystem: bun
+      directory: /
+      schedule: { interval: weekly }
+      groups:
+          minor-patch: { update-types: [minor, patch] }
+      commit-message: { prefix: build, include: scope }
+    - package-ecosystem: github-actions
+      directory: /
+      schedule: { interval: weekly }
+      groups:
+          minor-patch: { update-types: [minor, patch] }
+      commit-message: { prefix: build, include: scope }
+```
 
-### D7. Orden de los commits
+Las versiones mayores llegan en PR sueltas, porque cada una puede romper algo y necesita su propia revisión. Los commits salen como `build(deps): …` y `build(deps-dev): …`: cumplen GIT-001, y la excepción de idioma del bot queda en `LNG-001`. Las PR de Dependabot no reciben `TURBO_TOKEN`, y el CI construye sin caché remota (INT-006). Si una PR sube una dependencia publicada, «Changesets» falla hasta que alguien le añade el changeset. Es lo que pide `VER-002`: quien instala el paquete recibe una dependencia nueva.
 
-Primero van los arreglos del código, cada uno con su tipo (`fix`, `build`, `docs`…). Después, las comprobaciones con sus pasos de CI. Al final, las normas en YAML. Así ningún commit publica una norma automática cuya comprobación no exista o esté en rojo, y `problemsOf` pasa en cada commit (GIT-005).
+### D9. Cómo se pone Regula al día
+
+- **IDs:** se cambian `NOM-`/`IDI-` en los YAML, en las referencias de la tabla de contexto y en las specs vivas, a través de las deltas de este cambio. Los cambios archivados no se tocan.
+- **Exports por defecto:** las 154 islas de la web y `Periodo.tsx` pasan a exports con nombre, y sus imports en `.astro` y `.mdx` cambian con ellos. Los 13 configs y los 3 archivos de Next quedan cubiertos por el override.
+- **`import * as`:** los 17 casos recorren un módulo, así que llevan `biome-ignore lint/performance/noNamespaceImport: <motivo>`. Si un caso no recorre el módulo, pasa a imports con nombre.
+- **Nombres de archivo:** se renombran los que no cumplan con los overrides de D4, y sus imports con ellos. Hay que medirlo con la regla ya configurada, porque los 165 avisos de hoy salen de la configuración por defecto.
+- **`console`:** nada que cambiar, porque los 75 casos están en `scripts/`.
+- **`noReExportAll`:** los 4 `export *` pasan a exports con nombre.
+- **TypeScript:** los errores de los flags nuevos se arreglan con comprobaciones reales, no con `!` (que ahora prohíbe `COD-004`). No hay umbral para parar: el usuario acepta el trabajo que salga.
+- **`typecheck`:** `examples/astro` gana `astro check` y `@astrojs/check`, y `examples/next` gana `tsc --noEmit`.
+- **`NodeNext`:** `packages/tokens/tsconfig.json` pasa a `NodeNext`.
+- **JSDoc:** los 14 exports y todas las props se documentan, en inglés (LNG-001). Los exports de `tokens/src/generate.ts` se documentan si forman parte de lo publicado. Si son internos del build, el archivo pasa a `src/internal/` o a `scripts/`.
+- **README:** el de la raíz gana los comandos de arrancar la web y de probar.
+- **Changesets:** los cambios en paquetes publicados llevan changesets `patch`.
+
+### D10. Orden de los commits
+
+Cada pieza va en su propio commit (GIT-005). El orden es:
+1. El renombrado de prefijos con el campo `exceptions`.
+2. Los arreglos, de uno en uno por regla o por flag. Cada regla de Biome entra en `biome.json` en el mismo commit que deja el repo limpio para ella.
+3. Dependabot.
+4. `check:dev` y «Changesets».
+5. Las normas nuevas en YAML.
+
+Así ningún commit publica una norma automática sin su comprobación en verde, y `problemsOf` pasa en todos.
 
 ## Risks / Trade-offs
 
-- **[Los `.astro` de la web pueden traer muchos más errores de `noUncheckedIndexedAccess`]** → La tarea mide primero con `astro check`. Si pasan de unos 60, se para y se pregunta antes de seguir, en lugar de llenar el código de `!`.
-- **[La heurística del JSDoc puede dar falsos positivos con exports de varias líneas o decoradores]** → El test cubre `export const x = …` de varias líneas, `export async function` y un export precedido de un comentario `//`, que no cuenta como JSDoc. Si aparece un caso real que no encaja, se amplía la heurística; no se añade una lista de excepciones.
-- **[`tsc --showConfig` por workspace hace más lento el paso]** → Son ocho workspaces y cada llamada tarda menos de un segundo con TypeScript 7.
-- **[Cambiar los `order` mueve Git, CI y Proceso en la navegación]** → Las URLs y los IDs no cambian, y los tests y e2e que fijan el orden se actualizan en el mismo commit.
-- **[Un changeset vacío puede usarse para saltarse la norma]** → Es una decisión explícita y visible en la PR, y `VER-002` dice cuándo vale: cuando lo que se cambia no altera lo que recibe quien instala el paquete.
+- **[El trabajo es grande: ~155 exports, ~300 props, renombrados de archivos y los errores de cuatro flags]** → Va en muchos commits pequeños, uno por regla, así que la PR se revisa por partes. Si alguna parte se alarga demasiado, se puede partir en otra PR sin romper el orden de D10.
+- **[Renombrar archivos o exports de la web rompe imports]** → `astro check`, los tests y los e2e lo detectan. Cada renombrado va con su build.
+- **[La heurística del JSDoc puede fallar con formas raras]** → El test cubre exports de varias líneas, `export async function`, comentarios `//` (que no cuentan), `export { … } from` y props opcionales y de solo lectura. Si aparece un caso real que no encaja, se amplía la heurística. No se añade una lista de excepciones.
+- **[El soporte de Dependabot para Bun con workspaces, o para el `bun.lock` de texto]** → Se comprueba en la primera PR de Dependabot. Si no actualiza los workspaces, se pasa a `directories` con cada carpeta. Si no puede con el lockfile, se para y se avisa al usuario.
+- **[El cuerpo de los commits de Dependabot puede superar `footer-max-line-length`]** → Se mira en la primera PR. Si falla, se desactiva esa regla en `.commitlintrc.json`, como ya está `body-max-line-length`.
+- **[Dependabot puede subir una dependencia en un solo workspace y romper `VER-010`]** → En una PR agrupada suele subirla en todos. Si no, la PR falla en «Normas de desarrollo» y se arregla a mano. Es lo que tiene que pasar.
+- **[El renombrado sin alias rompe enlaces externos a `#nom-001`]** → Solo los usa Regula, y el usuario lo aceptó.
 
 ## Migration Plan
 
-Las normas solo añaden comprobaciones al CI de Regula. Las PR abiertas que cambien paquetes publicados sin changeset fallarán en «Changesets» tras el rebase, y se arreglan con `bun run changeset`. No hay cambios en el ruleset, porque los pasos nuevos van dentro de jobs que ya exige la puerta «CI».
+Las PR abiertas al fusionar tendrán que rebasar. Las que cambien paquetes publicados sin changeset fallarán en «Changesets» y se arreglan con `bun run changeset`. El ruleset no cambia, porque los pasos nuevos van dentro de jobs que ya exige la puerta «CI». Dependabot empieza a abrir PR la semana siguiente a la fusión.
 
 ## Open Questions
 
