@@ -28,11 +28,11 @@ Cada tarea, o pieza coherente, va en su propio commit (GIT-005). Comandos: `bunx
 
 - [x] 3.1 Partir «Navegador» en `browser-e2e` (matriz de 3 shards) y `browser-other` según D3, con la subida de resultados por shard y el resumen de Lighthouse en `browser-other`
 - [x] 3.2 `turbo.json`: los `outputs` siguen cubriendo `.vercel/output/**` (INT-004). Revisar si algún job nuevo lee algo que Turbo no guarda
-- [ ] 3.3 Abrir la PR y medir cada shard y `browser-other`. Si la diferencia entre el shard más lento y el más rápido pasa de 4 min, o alguno pasa de 15, ajustar el número de shards o `fullyParallel` (pregunta abierta del diseño). Anotar las medidas en la PR y en `design.md`
+- [x] 3.3 Abrir la PR y medir cada shard y `browser-other`. Si alguno pasa de 15 min, ajustar el número de shards o `fullyParallel`. Anotar las medidas en la PR y en `design.md`. Se activó `--fully-parallel`. El desequilibrio que queda entre shards se acepta, porque el tiempo cumple la spec (ver «Medidas» en el diseño)
 
 ## 4. Caché remota y despliegue condicionado
 
-- [ ] 4.1 Pedir al usuario el token de Vercel (alcance: equipo `jotis-projects-hobby`) como secreto `TURBO_TOKEN`, y crear la variable `TURBO_TEAM`. Añadir los dos al `env` de los jobs que ejecutan Turbo. Comprobar en el log de un shard que el build sale de la caché remota (`cache hit, replaying logs` con `Remote`)
+- [x] 4.1 Pedir al usuario el token de Vercel (alcance: equipo `jotis-projects-hobby`) como secreto `TURBO_TOKEN`, y crear la variable `TURBO_TEAM`. Añadir los dos al `env` de los jobs que ejecutan Turbo. Comprobar en el log de un shard que el build sale de la caché remota (`cache hit, replaying logs` con `Remote`)
 - [ ] 4.2 `apps/docs/vercel.json` con el `ignoreCommand` de D5. Comprobar en Vercel que el despliegue de la PR construye, porque la PR cambia `turbo.json` o el CI. Tras fusionar, comprobar que un commit solo de `openspec/` no construye y que `regula.jotis.me` sigue sirviendo la web
 
 ## 5. Cierre

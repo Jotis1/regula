@@ -118,6 +118,21 @@ En `git.yaml`, **GIT-005 Commits atómicos** (DEBE, todos, revisión): que cada 
 - **El token de Vercel en GitHub** da acceso al equipo → token propio, solo con alcance al equipo, y documentado en el README de CI.
 - **Shards desequilibrados** → medirlo en la tarea 3.3 y ajustar.
 
+## Medidas (tarea 3.3)
+
+PR #42, con caché remota:
+
+| Job | Por archivo | Por test (`--fully-parallel`) |
+|---|---|---|
+| e2e shard 1 / 2 / 3 (solo el paso de Playwright) | 885 / 303 / 219 s | 475 / 273 / 149 s |
+| Navegador (web 1/3), job entero | 18 min 35 s | 9 min 33 s |
+| Navegador (ejemplos, artefacto y Lighthouse) | 8 min 51 s | 7 min 20 s |
+| Comprobaciones | 4 min 36 s | 3 min 17 s |
+
+- Con la caché remota, el build de los shards baja de ~2 min a 5–7 s.
+- El job más lento queda en 9 min 33 s, frente a 30 min antes, y cumple el límite de 15 de la spec.
+- Los shards siguen desequilibrados (475 frente a 149 s). Playwright reparte los tests en tramos seguidos, y los más lentos, sobre todo los de paridad visual, caen juntos en el primero. Se acepta así.
+
 ## Open Questions
 
-- ¿Tres shards o cuatro? Se decide con la medida de la tarea 3.3.
+- Repartir mejor los e2e (más shards, o la paridad visual en un shard propio). Queda para un cambio futuro: el tiempo ya cumple la spec.
