@@ -47,7 +47,7 @@ Comandos:
 - [x] 4.1 JSDoc, en inglés, en los 14 exports sin documentar. Para `tokens/src/generate.ts`, decidir según D9. Changeset `patch` en los paquetes que cambien. Comprobar con `typecheck` y `build`
 - [x] 4.2 JSDoc en todas las props de `@jotis-me/react`, con `@default` donde haya valor por defecto, y en las de `@jotis-me/assets` que no estén generadas. Va en varios commits, por grupos de componentes, con un changeset `patch`. Comprobar con `typecheck`, y con la ficha de un componente en `get_component`: la descripción de la prop sale del JSDoc
 - [x] 4.3 README de la raíz con los comandos de arrancar la web y de probar. Comprobar que ejecutar los comandos tal como están escritos funciona
-- [ ] 4.4 `.github/dependabot.yml` de D8. Comprobar que el YAML es válido con `Bun.YAML.parse`. Tras fusionar, comprobar con la primera PR de Dependabot los riesgos de D8: los workspaces, el lockfile, `footer-max-line-length` y «Changesets»
+- [x] 4.4 `.github/dependabot.yml` de D8. Comprobar que el YAML es válido con `Bun.YAML.parse`. La comprobación con la primera PR de Dependabot solo se puede hacer tras fusionar: está en el «Workflow follow-up»
 
 ## 5. Comprobaciones
 
@@ -96,4 +96,4 @@ Comandos:
 ## Workflow follow-up
 
 - Archivar con `/opsx:archive` en una PR aparte, solo de `openspec/`.
-- Revisar la primera PR de Dependabot (tarea 4.4).
+- Revisar la primera PR de Dependabot, tras fusionar (riesgos de D8): que actualiza los workspaces y el `bun.lock`, que `footer-max-line-length` no rechaza su commit y que «Changesets» pide el changeset cuando sube una dependencia publicada.
