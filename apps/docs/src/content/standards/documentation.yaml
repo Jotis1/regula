@@ -1,7 +1,7 @@
 prefix: DOC
 title: Documentación
 description: Qué se documenta en el código y en los README, y dónde, para que nadie tenga que adivinar lo que ofrece un paquete.
-order: 5
+order: 6
 rules:
     - id: DOC-001
       title: Todo export público lleva JSDoc

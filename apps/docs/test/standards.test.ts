@@ -117,6 +117,7 @@ describe("/standards.json", () => {
 			"naming",
 			"language",
 			"stack",
+			"structure",
 			"code",
 			"documentation",
 			"versioning",

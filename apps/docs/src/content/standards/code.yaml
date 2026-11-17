@@ -1,7 +1,7 @@
 prefix: COD
 title: Código
 description: Cómo se escribe TypeScript en la suite, qué avisa el compilador y qué reglas cuida Biome.
-order: 4
+order: 5
 rules:
     - id: COD-001
       title: El tsconfig lleva los siete flags

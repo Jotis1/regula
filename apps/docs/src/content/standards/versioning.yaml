@@ -1,7 +1,7 @@
 prefix: VER
 title: Versiones y dependencias
 description: Qué promete un paquete a quien lo instala, cómo se versiona y cómo se declaran sus dependencias.
-order: 6
+order: 7
 rules:
     - id: VER-001
       title: Los paquetes siguen SemVer

@@ -32,6 +32,7 @@ describe("normas", () => {
 			"naming",
 			"language",
 			"stack",
+			"structure",
 			"code",
 			"documentation",
 			"versioning",
@@ -79,6 +80,21 @@ describe("normas", () => {
 		expect(json).toMatchObject({ id: "LNG-005", area: "language" });
 		expect(json.verification).toEqual({ kind: "ci", check: "Normas de desarrollo" });
 		expect(JSON.stringify(json.examples.bad)).toContain(String.fromCodePoint(0xb7));
+	});
+
+	it("list_standards filtra por el área de estructura y trae sus ocho normas", () => {
+		const { json } = call("list_standards", { area: "structure" });
+		expect(json.areas[0].id).toBe("structure");
+		expect(json.areas[0].rules.map((r: { id: string }) => r.id)).toEqual([
+			"STR-001",
+			"STR-002",
+			"STR-003",
+			"STR-004",
+			"STR-005",
+			"STR-006",
+			"STR-007",
+			"STR-008",
+		]);
 	});
 
 	it("list_standards con un área que no existe da error con las que hay", () => {

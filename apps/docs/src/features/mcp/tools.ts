@@ -56,7 +56,7 @@ const listStandards = defineTool({
 	name: "list_standards",
 	title: "List standards",
 	description:
-		"List the development standards of the jotis.me suite, grouped by area, with each rule's ID, title and level (Debe, Debería, Puede). Optionally filter by area id (naming, language, stack, code, documentation, versioning, git, ci, process).",
+		"List the development standards of the jotis.me suite, grouped by area, with each rule's ID, title and level (Debe, Debería, Puede). Optionally filter by area id (naming, language, stack, structure, code, documentation, versioning, git, ci, process).",
 	inputSchema: { area: z.string().trim().min(1).optional().describe("Area id, e.g. `git`.") },
 	run: ({ standards }, { area }) => {
 		const wanted = area ? fold(area) : undefined;
