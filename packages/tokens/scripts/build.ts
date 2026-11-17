@@ -10,7 +10,7 @@ import {
 	type TokensFile,
 	themeCss,
 	tokensCss,
-} from "../src/generate.ts";
+} from "./generate.ts";
 
 const root = join(import.meta.dirname, "..");
 const dist = join(root, "dist");

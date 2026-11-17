@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { colors } from "../dist/index.js";
-import { type TokensFile, tokensCss } from "../src/generate.ts";
+import { type TokensFile, tokensCss } from "../scripts/generate.ts";
 
 const read = (p: string) => JSON.parse(readFileSync(join(import.meta.dirname, p), "utf8"));
 const es: TokensFile = read("../src/tokens.json");

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 import { compile } from "@tailwindcss/node";
-import { type TokensFile, themeCss, tokensCss } from "../src/generate.ts";
+import { type TokensFile, themeCss, tokensCss } from "../scripts/generate.ts";
 
 const tokens: TokensFile = JSON.parse(readFileSync(join(import.meta.dirname, "../src/tokens.json"), "utf8"));
 
