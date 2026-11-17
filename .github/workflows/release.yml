@@ -52,7 +52,7 @@ jobs:
             # propio ~/.npmrc con NPM_TOKEN (vacío sin token), y eso estorbaría a trusted publishing.
             - name: PR de versión
               id: changesets
-              uses: changesets/action@v1
+              uses: changesets/action@v2
               with:
                   version: bun run version-packages
                   title: "chore(release): versión de los paquetes"
