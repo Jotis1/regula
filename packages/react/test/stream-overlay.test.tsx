@@ -151,11 +151,11 @@ describe("StreamEvents", () => {
 		const rows = screen.getAllByRole("listitem").map((li) => li.textContent?.replace(/ /g, " "));
 		expect(rows).toEqual([
 			"lucia_pixelNuevo seguidorahora",
-			"Marta_en_DirectoDonación · 5,00 €2 min",
-			"TioBigotesRaid entrante · 1.2849 min",
-			"nachoXLSuscripción renovada · 14 meses12 min",
-			"ElSilenciosoSuscripciones regaladas · 520 min",
-			"Pixel_PandaBits · 50031 min",
+			"Marta_en_DirectoDonación - 5,00 €2 min",
+			"TioBigotesRaid entrante - 1.2849 min",
+			"nachoXLSuscripción renovada - 14 meses12 min",
+			"ElSilenciosoSuscripciones regaladas - 520 min",
+			"Pixel_PandaBits - 50031 min",
 			"xNivel 3",
 		]);
 	});
@@ -305,9 +305,9 @@ describe("Canje de puntos de canal", () => {
 		expect(container.textContent).toContain("Ha canjeado <b>hola</b>.");
 	});
 
-	it("Canje en la lista: «Canje de puntos · Hidratarse»", () => {
+	it("Canje en la lista: «Canje de puntos - Hidratarse»", () => {
 		render(<StreamEvents items={[{ type: "redemption", user: "nachoXL", reward: "Hidratarse" }]} />);
-		expect(screen.getByRole("list").textContent).toContain("Canje de puntos · Hidratarse");
+		expect(screen.getByRole("list").textContent).toContain("Canje de puntos - Hidratarse");
 	});
 
 	it("los textos de los demás tipos no cambian", () => {
@@ -322,6 +322,6 @@ describe("Canje de puntos de canal", () => {
 		expect(html).toContain("Ya no hay vuelta atrás.");
 		expect(html).toContain("Lleva 14 meses por aquí.");
 		expect(html).toMatch(/5,00\s€/);
-		expect(html).toContain("Bits · 500");
+		expect(html).toContain("Bits - 500");
 	});
 });

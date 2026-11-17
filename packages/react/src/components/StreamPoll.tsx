@@ -153,7 +153,7 @@ export function StreamPoll({
 								</span>
 								<span className={cx(TABULAR, "flex-none text-sm text-tertiary")}>
 									<b className="font-semibold text-primary">{`${pct} %`}</b>
-									{` · ${prediction ? t.points(cifra) : t.votes(cifra)}`}
+									{` - ${prediction ? t.points(cifra) : t.votes(cifra)}`}
 								</span>
 							</div>
 							<div

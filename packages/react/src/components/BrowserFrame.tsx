@@ -4,7 +4,7 @@ import { cx } from "../internal/cx.js";
 
 export interface BrowserFrameProps {
 	/**
-	 * `safari` semáforo, navegación, dirección y acciones · `minimal` semáforo gris y dirección · `minimal-color` como
+	 * `safari` semáforo, navegación, dirección y acciones - `minimal` semáforo gris y dirección - `minimal-color` como
 	 * `minimal` con el semáforo en color (Figma `Browser toolbar`, `7333:23578`).
 	 * @default "safari"
 	 */

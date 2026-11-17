@@ -179,7 +179,7 @@ export interface TableProps<R = Record<string, unknown>> {
 	/** Pie, por ejemplo una `Pagination`. */
 	footer?: ReactNode;
 	/**
-	 * Alto de fila: `md` 72px · `sm` 56px.
+	 * Alto de fila: `md` 72px - `sm` 56px.
 	 * @default "md"
 	 */
 	size?: "sm" | "md";
@@ -346,7 +346,7 @@ function ClassicTable<R>({
 	);
 }
 
-/* ——— Celdas ——— */
+/* --- Celdas --- */
 
 function Stars({ value, label }: { value: number; label: string }) {
 	return (

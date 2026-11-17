@@ -28,7 +28,7 @@ export interface TagInputProps extends FieldProps {
 	 */
 	placement?: "inside" | "outside";
 	/**
-	 * Alto: `sm` 36 · `md` 40 · `lg` 44, mientras las etiquetas quepan en una línea.
+	 * Alto: `sm` 36 - `md` 40 - `lg` 44, mientras las etiquetas quepan en una línea.
 	 * @default "md"
 	 */
 	size?: FieldSize;

@@ -57,7 +57,7 @@ export interface TabsProps {
 	 */
 	type?: TabsType;
 	/**
-	 * Alto: `sm` 36 · `md` 44.
+	 * Alto: `sm` 36 - `md` 44.
 	 * @default "sm"
 	 */
 	size?: TabsSize;

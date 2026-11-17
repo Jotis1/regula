@@ -26,7 +26,7 @@ export const TABULAR = "font-body tabular-nums";
 export type StreamMotion = "enter" | "exit";
 
 /**
- * Entrada y salida, la excepción acotada a "sin animaciones decorativas" (guía, Stream · Movimiento).
+ * Entrada y salida, la excepción acotada a "sin animaciones decorativas" (guía, Stream - Movimiento).
  * Entra en 250 ms con fundido y 8px de subida; sale en 200 ms subiendo 8px. Con `prefers-reduced-motion`,
  * solo fundido. Sin keyframes: la entrada es una transición desde `@starting-style` (variante `starting:`), así
  * que se ve al montar el elemento; la salida, una transición al cambiar `state` a `exit`. Curvas del bundle.
@@ -95,7 +95,7 @@ export function streamDetail(type: StreamEventType, e: StreamEventData): string 
 	}
 }
 
-/** Línea corta de un evento en una lista: "Donación · 5,00 €", "Raid entrante · 1.284" (`stShort`). */
+/** Línea corta de un evento en una lista: "Donación - 5,00 €", "Raid entrante - 1.284" (`stShort`). */
 export function streamShort(type: StreamEventType, e: StreamEventData): string {
 	let extra = "";
 	if (type === "donation" && typeof e.amount === "number") extra = formatCurrency(e.amount);
@@ -103,7 +103,7 @@ export function streamShort(type: StreamEventType, e: StreamEventData): string {
 	else if ((type === "bits" || type === "raid" || type === "gift") && e.amount != null)
 		extra = formatNumber(e.amount);
 	else if (type === "redemption" && e.reward) extra = e.reward;
-	return STREAM_EVENTS[type].label + (extra ? ` · ${extra}` : "");
+	return STREAM_EVENTS[type].label + (extra ? ` - ${extra}` : "");
 }
 
 /**

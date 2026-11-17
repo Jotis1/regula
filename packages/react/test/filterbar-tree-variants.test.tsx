@@ -78,7 +78,7 @@ describe("FilterBar: los ocho tipos", () => {
 			<FilterBar
 				type={type}
 				segments={segments}
-				dates={<button type="button">1 ene – 7 ene</button>}
+				dates={<button type="button">1 ene - 7 ene</button>}
 				extra={<button type="button">Hoy</button>}
 				fields={[{ label: "Estado", control: <select aria-label="Estado" /> }]}
 				conditions={[{ field: "estado", operator: "es", value: "Activo" }]}

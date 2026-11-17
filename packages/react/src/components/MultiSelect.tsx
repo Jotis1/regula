@@ -62,7 +62,7 @@ export interface MultiSelectProps extends FieldProps {
 	/** Apoyo tras el resumen, en `text-tertiary` (p. ej. "16 usuarios"). */
 	summarySupporting?: (selected: Option[]) => ReactNode;
 	/**
-	 * Alto del campo: `sm` 36 · `md` 40 · `lg` 44.
+	 * Alto del campo: `sm` 36 - `md` 40 - `lg` 44.
 	 * @default "md"
 	 */
 	size?: FieldSize;

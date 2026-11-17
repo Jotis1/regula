@@ -12,7 +12,7 @@ export interface SubscribeCardProps {
 	/** Supporting text under the title. */
 	description?: ReactNode;
 	/**
-	 * `default` con el avión de papel · `line` con el sobre y una raya de marca arriba.
+	 * `default` con el avión de papel - `line` con el sobre y una raya de marca arriba.
 	 * @default "default"
 	 */
 	type?: "default" | "line";

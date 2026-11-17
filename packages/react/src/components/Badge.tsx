@@ -12,9 +12,9 @@ export type BadgeSize = "sm" | "md" | "lg";
 interface BadgeBase {
 	/** Escala utility: fondo `-50`, borde `-200`, texto `-700`, punto `-500`. */
 	color?: BadgeColor;
-	/** `pill` redonda · `badge` con `radius-md` · `modern` blanca con sombra. */
+	/** `pill` redonda - `badge` con `radius-md` · `modern` blanca con sombra. */
 	type?: BadgeType;
-	/** Alto: `sm` 22 · `md` 24 · `lg` 28. */
+	/** Alto: `sm` 22 - `md` 24 - `lg` 28. */
 	size?: BadgeSize;
 	/** Punto de color antes del texto. */
 	dot?: boolean;

@@ -62,7 +62,7 @@ describe("CalendarView: vista de semana", () => {
 	it("un evento de 10:00 a 11:30 ocupa hora y media en la columna de su día", () => {
 		render(<CalendarView today={TODAY} view="week" events={events} />);
 		const friday = column(/8 de enero/);
-		const evt = block(within(friday), "Olivia x Riley, 10:00–11:30");
+		const evt = block(within(friday), "Olivia x Riley, 10:00-11:30");
 		// 96 px por hora: arranca a las 10:00 (960) y mide 144 menos 4 de separación
 		expect(px(evt, "top")).toBe("962px");
 		expect(px(evt, "height")).toBe("140px");
@@ -90,8 +90,8 @@ describe("CalendarView: vista de semana", () => {
 		render(<CalendarView today={TODAY} view="week" events={events} />);
 		expect(screen.getByRole("button", { name: /viernes, 8 de enero, hoy/ })).toBeTruthy();
 		const wed = column(/6 de enero/);
-		const deep = block(within(wed), "Deep work, 09:00–11:00");
-		const long = block(within(wed), "Reunión larga, 09:30–10:30");
+		const deep = block(within(wed), "Deep work, 09:00-11:00");
+		const long = block(within(wed), "Reunión larga, 09:30-10:30");
 		expect(px(deep, "width")).toBe("calc(50% - 4px)");
 		expect(px(deep, "left")).toBe("calc(0% + 2px)");
 		expect(px(long, "left")).toBe("calc(50% + 2px)");
@@ -102,10 +102,10 @@ describe("CalendarView: vista de semana", () => {
 	it("el título y el rango de la semana siguen a la navegación", async () => {
 		render(<CalendarView today={TODAY} view="week" events={events} />);
 		expect(screen.getByRole("heading", { level: 3 }).textContent).toBe("Enero 2027");
-		expect(screen.getByText("4 ene 2027 – 10 ene 2027")).toBeTruthy();
+		expect(screen.getByText("4 ene 2027 - 10 ene 2027")).toBeTruthy();
 		expect(screen.getByText("Semana 1")).toBeTruthy();
 		await userEvent.click(screen.getByRole("button", { name: "Semana anterior" }));
-		expect(screen.getByText("28 dic 2026 – 3 ene 2027")).toBeTruthy();
+		expect(screen.getByText("28 dic 2026 - 3 ene 2027")).toBeTruthy();
 		expect(screen.getByRole("heading", { level: 3 }).textContent).toBe("Enero 2027");
 	});
 
@@ -142,7 +142,7 @@ describe("CalendarView: vista de semana", () => {
 	it("con onSelectEvent los eventos son botones y avisan del evento", async () => {
 		const onSelectEvent = vi.fn();
 		render(<CalendarView today={TODAY} view="week" events={events} onSelectEvent={onSelectEvent} />);
-		await userEvent.click(screen.getByRole("button", { name: "Monday standup, 09:00–09:30" }));
+		await userEvent.click(screen.getByRole("button", { name: "Monday standup, 09:00-09:30" }));
 		expect(onSelectEvent).toHaveBeenCalledWith(events[1]);
 	});
 });
@@ -186,7 +186,7 @@ describe("CalendarView: tramo de horas", () => {
 	it("con hours solo se pintan esas horas y los eventos se colocan desde la primera", () => {
 		render(<CalendarView today={TODAY} view="week" hours={[8, 18]} events={events} />);
 		// Las 09:00 quedan a una hora del arranque: 96 + 2
-		const evt = block(within(column(/4 de enero/)), "Monday standup, 09:00–09:30");
+		const evt = block(within(column(/4 de enero/)), "Monday standup, 09:00-09:30");
 		expect(px(evt, "top")).toBe("98px");
 		// La línea de las 14:20 queda a 6 h 20 min del arranque: 608 px
 		expect(px(screen.getByRole("separator"), "top")).toBe("608px");

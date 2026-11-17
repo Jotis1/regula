@@ -37,7 +37,7 @@ describe("DatePicker", () => {
 				defaultValue={{ start: new Date(2026, 9, 6), end: new Date(2026, 9, 17) }}
 			/>,
 		);
-		expect(screen.getByRole("button").textContent).toBe("6 oct 2026 – 17 oct 2026");
+		expect(screen.getByRole("button").textContent).toBe("6 oct 2026 - 17 oct 2026");
 	});
 
 	it("mes en castellano, semana desde el lunes y punto en el día de hoy", () => {

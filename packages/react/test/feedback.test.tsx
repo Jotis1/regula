@@ -179,7 +179,7 @@ describe("ProgressBar", () => {
 		expect(screen.getByRole("progressbar", { name: "Sin texto" }).parentElement?.textContent).toBe("");
 	});
 
-	it("limita el valor a 0–100 y deja ver un mínimo del 3 %", () => {
+	it("limita el valor a 0-100 y deja ver un mínimo del 3 %", () => {
 		render(
 			<>
 				<ProgressBar value={140} aria-label="Alto" />

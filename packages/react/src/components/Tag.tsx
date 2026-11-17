@@ -7,7 +7,7 @@ import { defaultStrings } from "../internal/strings.js";
 export type TagSize = "sm" | "md" | "lg";
 
 export interface TagProps {
-	/** Alto: `sm` 24 · `md` 24 con texto de 14 · `lg` 28. */
+	/** Alto: `sm` 24 - `md` 24 con texto de 14 - `lg` 28. */
 	size?: TagSize;
 	/** Contador tras el texto. */
 	count?: number;

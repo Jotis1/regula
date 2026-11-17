@@ -93,7 +93,7 @@ describe("LineChart", () => {
 		const { container } = render(<LineChart labels={labels} series={three} format={euros} />);
 		const ticks = [...container.querySelectorAll('text[text-anchor="end"]')].map((t) => t.textContent);
 		expect(ticks).toEqual(["0 €", "375 €", "750 €", "1.125 €", "1.500 €"]);
-		expect(container.querySelector("circle title")?.textContent).toBe("Gastos · Ago: 1.240 €");
+		expect(container.querySelector("circle title")?.textContent).toBe("Gastos - Ago: 1.240 €");
 	});
 
 	it("área solo bajo la primera serie, y se puede quitar", () => {
@@ -118,7 +118,7 @@ describe("BarChart", () => {
 		expect(rects.map((r) => r.getAttribute("rx"))).toEqual(["0", "0", "4"]);
 		expect(new Set(rects.map((r) => r.getAttribute("x"))).size).toBe(1);
 		expect(Number(rects[0]?.getAttribute("width"))).toBeLessThanOrEqual(32);
-		expect(rects[0]?.querySelector("title")?.textContent).toBe("Gastos · Ago: 1.240 €");
+		expect(rects[0]?.querySelector("title")?.textContent).toBe("Gastos - Ago: 1.240 €");
 		expect(screen.getByRole("list")).toBeTruthy();
 	});
 

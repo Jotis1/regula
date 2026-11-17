@@ -161,7 +161,7 @@ function EventBlock({
 	onSelect?: (e: CalendarEvent) => void;
 }) {
 	const { event, start, end, lane, lanes } = placed;
-	const label = `${event.title}, ${clock(start)}–${clock(end)}`;
+	const label = `${event.title}, ${clock(start)}-${clock(end)}`;
 	const height = ((end - start) / 60) * HOUR - 4;
 	const body = (
 		<>
@@ -361,7 +361,7 @@ export function CalendarView({
 			: formatMonth(shown);
 	const auto =
 		view === "week"
-			? `${shortDate(days[0] as Date)} – ${shortDate(days[6] as Date)}`
+			? `${shortDate(days[0] as Date)} - ${shortDate(days[6] as Date)}`
 			: view === "day"
 				? new Intl.DateTimeFormat("es-ES", { weekday: "long" })
 						.format(shown)

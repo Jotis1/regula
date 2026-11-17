@@ -17,12 +17,12 @@ interface SocialButtonBase {
 	 */
 	logo: ReactNode;
 	/**
-	 * `brand` fondo de la marca · `color` blanco con el logo en color · `gray` blanco con el logo en gris.
+	 * `brand` fondo de la marca - `color` blanco con el logo en color - `gray` blanco con el logo en gris.
 	 * @default "brand"
 	 */
 	theme?: SocialButtonTheme;
 	/**
-	 * Alto: `md` 40 (logo 16) · `lg` 44 (logo 20).
+	 * Alto: `md` 40 (logo 16) - `lg` 44 (logo 20).
 	 * @default "md"
 	 */
 	size?: SocialButtonSize;

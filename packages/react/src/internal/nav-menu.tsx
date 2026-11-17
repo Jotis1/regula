@@ -12,7 +12,7 @@ export interface NavMenuItemProps {
 	/** Icono de 24 en el color de la marca: un nombre del núcleo o un nodo. */
 	icon?: IconProp;
 	/**
-	 * `plain` el icono suelto · `boxed` dentro de una caja de 40 con borde (los menús de cuatro columnas del Figma).
+	 * `plain` el icono suelto - `boxed` dentro de una caja de 40 con borde (los menús de cuatro columnas del Figma).
 	 * @default "plain"
 	 */
 	iconStyle?: "plain" | "boxed";
@@ -107,7 +107,7 @@ export interface NavMenuCardProps {
 	/** Acciones bajo el texto: «Descartar», «Ver vídeo»… */
 	actions?: ReactNode;
 	/**
-	 * `vertical` la imagen arriba (la tarjeta destacada) · `horizontal` la imagen a la izquierda (entradas y vídeos).
+	 * `vertical` la imagen arriba (la tarjeta destacada) - `horizontal` la imagen a la izquierda (entradas y vídeos).
 	 * @default "vertical"
 	 */
 	layout?: "vertical" | "horizontal";

@@ -47,8 +47,8 @@ export interface HeaderNavMobile {
 
 export interface HeaderNavProps {
 	/**
-	 * `simple` (una fila) · `dual-tier` (una segunda fila con las subsecciones y el buscador) · `tabs` (la segunda fila,
-	 * como pestañas) · `centered` (la navegación al centro y la segunda fila centrada) · `underline` (una fila, con la
+	 * `simple` (una fila) - `dual-tier` (una segunda fila con las subsecciones y el buscador) - `tabs` (la segunda fila,
+	 * como pestañas) - `centered` (la navegación al centro y la segunda fila centrada) - `underline` (una fila, con la
 	 * sección actual subrayada en vez de resaltada, como la cabecera de una web de documentación).
 	 * @default "simple"
 	 */

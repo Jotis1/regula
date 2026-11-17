@@ -23,7 +23,7 @@ export interface StreamEventItem {
 	months?: number;
 	/** Nombre de la recompensa de un canje (`type="redemption"`). Texto plano. */
 	reward?: string;
-	/** Sustituye a la línea generada ("Donación · 5,00 €", "Raid entrante · 1.284"). */
+	/** Sustituye a la línea generada ("Donación - 5,00 €", "Raid entrante - 1.284"). */
 	detail?: ReactNode;
 	/** Hora relativa, como "2 min" o "ahora": se entiende al instante, la absoluta obliga a calcular. */
 	time?: ReactNode;

@@ -17,7 +17,7 @@ interface Base {
 	 */
 	color?: BadgeGroupColor;
 	/**
-	 * `pill` del color, redonda · `modern` blanca con sombra y un punto de color.
+	 * `pill` del color, redonda - `modern` blanca con sombra y un punto de color.
 	 * @default "pill"
 	 */
 	type?: BadgeGroupType;
@@ -27,7 +27,7 @@ interface Base {
 	 */
 	badgePosition?: "leading" | "trailing";
 	/**
-	 * `md` texto de 12 · `lg` texto de 14.
+	 * `md` texto de 12 - `lg` texto de 14.
 	 * @default "md"
 	 */
 	size?: BadgeGroupSize;

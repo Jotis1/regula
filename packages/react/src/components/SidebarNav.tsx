@@ -68,8 +68,8 @@ export type SidebarNavAccount = Omit<DropdownProps, "variant" | "trigger" | "tri
 
 export interface SidebarNavProps {
 	/**
-	 * `simple` (por defecto) · `dual-tier` (segundo panel con el submenú del elemento elegido) · `slim` (solo iconos con
-	 * tooltip y el submenú en un segundo panel) · `sections-dividers` (grupos separados por rayas) ·
+	 * `simple` (por defecto) - `dual-tier` (segundo panel con el submenú del elemento elegido) - `slim` (solo iconos con
+	 * tooltip y el submenú en un segundo panel) - `sections-dividers` (grupos separados por rayas) -
 	 * `sections-subheadings` (grupos con subtítulo).
 	 * @default "simple"
 	 */

@@ -6,10 +6,10 @@ export type SpinnerSize = "sm" | "md" | "lg" | "xl";
 export type SpinnerVariant = "line-simple" | "line-spinner" | "dot-circle";
 
 export interface SpinnerProps {
-	/** Diámetro: `sm` 32 · `md` 48 · `lg` 56 · `xl` 64. */
+	/** Diámetro: `sm` 32 - `md` 48 - `lg` 56 - `xl` 64. */
 	size?: SpinnerSize;
 	/**
-	 * `line-simple` arco de un cuarto sobre su pista · `line-spinner` arco largo sin pista · `dot-circle` dieciséis
+	 * `line-simple` arco de un cuarto sobre su pista - `line-spinner` arco largo sin pista - `dot-circle` dieciséis
 	 * puntos que se desvanecen.
 	 * @default "line-simple"
 	 */

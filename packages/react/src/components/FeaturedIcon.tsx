@@ -11,12 +11,12 @@ export interface FeaturedIconProps {
 	icon?: IconProp;
 	/** Tiene que coincidir con el significado del contenedor: un modal de borrado lleva `error`. */
 	color?: StatusColor;
-	/** Lado: `sm` 32 · `md` 40 · `lg` 48 · `xl` 56. */
+	/** Lado: `sm` 32 - `md` 40 - `lg` 48 - `xl` 56. */
 	size?: FeaturedIconSize;
 	/**
-	 * `light` círculo tintado · `gradient` círculo sólido con dos anillos tintados alrededor · `dark` cuadrado del color
-	 * sólido con el icono en blanco · `modern` cuadrado blanco esqueumórfico · `modern-neue` cuadrado blanco dentro de un
-	 * marco, con sombra · `outline` anillos concéntricos (Figma `Featured icon`, `1102:5338`).
+	 * `light` círculo tintado - `gradient` círculo sólido con dos anillos tintados alrededor - `dark` cuadrado del color
+	 * sólido con el icono en blanco - `modern` cuadrado blanco esqueumórfico - `modern-neue` cuadrado blanco dentro de un
+	 * marco, con sombra - `outline` anillos concéntricos (Figma `Featured icon`, `1102:5338`).
 	 */
 	variant?: FeaturedIconVariant;
 	/** Extra classes, merged with the component's own. */

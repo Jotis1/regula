@@ -6,7 +6,7 @@ import { FileUpload, Slider, type UploadFile } from "../src/index.js";
 import { expectAccessibleInThemes } from "./helpers.js";
 
 describe("Slider", () => {
-	it("valor 50 por defecto en 0–100, con nombre accesible", () => {
+	it("valor 50 por defecto en 0-100, con nombre accesible", () => {
 		render(<Slider aria-label="Presupuesto" />);
 		const input = screen.getByRole("slider", { name: "Presupuesto" }) as HTMLInputElement;
 		expect(input.value).toBe("50");

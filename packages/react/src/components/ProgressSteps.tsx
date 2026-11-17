@@ -41,14 +41,14 @@ export interface ProgressStepsProps {
 	/** Índice del paso actual, desde 0. Los anteriores están completos y los siguientes pendientes. */
 	current: number;
 	/**
-	 * Tipo: `icons-centered` (marcadores unidos con el texto debajo, centrado) · `icons-text` (marcador a la izquierda y
-	 * texto a la derecha, siempre en columna) · `text-line` (una raya sobre cada texto) · `minimal` (solo los marcadores,
-	 * con «Paso 3 de 4») · `minimal-connected` (solo los marcadores, unidos por líneas).
+	 * Tipo: `icons-centered` (marcadores unidos con el texto debajo, centrado) - `icons-text` (marcador a la izquierda y
+	 * texto a la derecha, siempre en columna) - `text-line` (una raya sobre cada texto) - `minimal` (solo los marcadores,
+	 * con «Paso 3 de 4») - `minimal-connected` (solo los marcadores, unidos por líneas).
 	 * @default "icons-centered"
 	 */
 	type?: ProgressStepsType;
 	/**
-	 * Marcador: `check` (punto, anillo y check de marca) · `number` (su número; los completos, un check verde) ·
+	 * Marcador: `check` (punto, anillo y check de marca) - `number` (su número; los completos, un check verde) -
 	 * `featured` (el `icon` de cada paso en un cuadrado).
 	 * @default "check"
 	 */

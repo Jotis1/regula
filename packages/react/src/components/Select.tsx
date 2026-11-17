@@ -15,7 +15,7 @@ interface SelectBaseProps extends FieldProps {
 	/** Lo que dice el campo sin nada elegido. Sin él, parte con la primera opción elegida. */
 	placeholder?: string;
 	/**
-	 * Alto: `sm` 36 · `md` 40 · `lg` 44.
+	 * Alto: `sm` 36 - `md` 40 - `lg` 44.
 	 * @default "md"
 	 */
 	size?: FieldSize;

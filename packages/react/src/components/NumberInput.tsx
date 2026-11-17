@@ -37,7 +37,7 @@ export interface NumberInputProps extends FieldProps {
 	 */
 	orientation?: "horizontal" | "vertical";
 	/**
-	 * Alto: `sm` 36 · `md` 40 · `lg` 44.
+	 * Alto: `sm` 36 - `md` 40 - `lg` 44.
 	 * @default "md"
 	 */
 	size?: FieldSize;

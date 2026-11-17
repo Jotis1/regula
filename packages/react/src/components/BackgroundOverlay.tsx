@@ -2,7 +2,7 @@ import { cx } from "../internal/cx.js";
 
 export interface BackgroundOverlayProps {
 	/**
-	 * `default` velo `bg-overlay` al 70 % · `gradient` el mismo velo, del 35 % arriba al 70 % abajo · `transparent` sin
+	 * `default` velo `bg-overlay` al 70 % - `gradient` el mismo velo, del 35 % arriba al 70 % abajo - `transparent` sin
 	 * velo, solo el desenfoque.
 	 * @default "default"
 	 */

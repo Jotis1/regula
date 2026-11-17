@@ -20,7 +20,7 @@ export interface ActivityGaugeProps {
 	/** Hasta tres anillos, de fuera adentro. */
 	data: ActivityGaugeRing[];
 	/**
-	 * Lado: `xs` 160 · `sm` 200 · `md` 240 · `lg` 280.
+	 * Lado: `xs` 160 - `sm` 200 - `md` 240 - `lg` 280.
 	 * @default "md"
 	 */
 	size?: ActivityGaugeSize;

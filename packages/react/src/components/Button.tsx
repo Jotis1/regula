@@ -19,7 +19,7 @@ interface ButtonBase {
 	 */
 	hierarchy?: ButtonHierarchy;
 	/**
-	 * Alto: `xs` 32 · `sm` 36 · `md` 40 · `lg` 44 · `xl` 48.
+	 * Alto: `xs` 32 - `sm` 36 - `md` 40 - `lg` 44 - `xl` 48.
 	 * @default "md"
 	 */
 	size?: ButtonSize;

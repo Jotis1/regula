@@ -112,7 +112,7 @@ export interface InputProps
 	/** Nombre del botón del calendario de `type="datetime-local"`. Por defecto, «Elegir fecha». */
 	pickerLabel?: string;
 	/**
-	 * Alto: `sm` 36 · `md` 40 · `lg` 44. En `md` y `lg` el valor va a 16px para que iOS no haga zoom.
+	 * Alto: `sm` 36 - `md` 40 - `lg` 44. En `md` y `lg` el valor va a 16px para que iOS no haga zoom.
 	 * @default "md"
 	 */
 	size?: FieldSize;

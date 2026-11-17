@@ -436,7 +436,7 @@ function LegacyColorPicker({
 	);
 }
 
-/* ——— Piezas ——— */
+/* --- Piezas --- */
 
 function Dot({ hex, alpha = 1, size = "size-4" }: { hex: string; alpha?: number; size?: string }) {
 	return (
@@ -810,7 +810,7 @@ function Header({ title, aside }: { title: ReactNode; aside?: ReactNode }) {
 	);
 }
 
-/* ——— Degradado ——— */
+/* --- Degradado --- */
 
 const gradientCss = (stops: GradientStop[], kind: "linear" | "radial", angle: number) => {
 	const list = [...stops]
@@ -1017,7 +1017,7 @@ function GradientEditor({
 	);
 }
 
-/* ——— Imagen ——— */
+/* --- Imagen --- */
 
 function ImageEditor({
 	t,
@@ -1159,7 +1159,7 @@ function ImageEditor({
 	);
 }
 
-/* ——— El selector con tipos ——— */
+/* --- El selector con tipos --- */
 
 function FullColorPicker({
 	type = "solid",

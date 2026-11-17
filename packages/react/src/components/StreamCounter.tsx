@@ -27,7 +27,7 @@ const MAX_ITEMS = SLOTS.length;
 
 const safe = (n: number) => (Number.isInteger(n) && n >= 0 ? n : 0);
 
-/** Contadores del directo («Muertes 37 · Sustos 12») en una fila, siempre en oscuro. */
+/** Contadores del directo («Muertes 37 - Sustos 12») en una fila, siempre en oscuro. */
 export function StreamCounter({ items, width, state, className }: StreamCounterProps) {
 	return (
 		<dl

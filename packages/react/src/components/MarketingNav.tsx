@@ -69,7 +69,7 @@ export interface MarketingNavProps {
 	/** Acciones a la derecha («Entrar», «Empezar»). En móvil van al pie del menú, a todo el ancho. */
 	actions?: ReactNode;
 	/**
-	 * `dropdown` el panel bajo su botón · `full-width` el panel a todo el ancho de la cabecera.
+	 * `dropdown` el panel bajo su botón - `full-width` el panel a todo el ancho de la cabecera.
 	 * @default "dropdown"
 	 */
 	menu?: MarketingNavMenu;

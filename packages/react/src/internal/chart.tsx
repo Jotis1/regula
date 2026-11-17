@@ -130,9 +130,9 @@ export function Axes({
 	);
 }
 
-/** "Gastos · Oct: 1.284 €" para el `<title>` de cada punto o barra. */
+/** "Gastos - Oct: 1.284 €" para el `<title>` de cada punto o barra. */
 export const pointTitle = (name: string | undefined, label: string, value: string | number) =>
-	`${name ? `${name} · ` : ""}${label}: ${value}`;
+	`${name ? `${name} - ` : ""}${label}: ${value}`;
 
 /**
  * Los datos de una gráfica en una tabla solo para lectores de pantalla: la gráfica es una imagen con nombre y aquí van

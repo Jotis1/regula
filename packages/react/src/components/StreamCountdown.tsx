@@ -16,7 +16,7 @@ export interface StreamCountdownProps {
 	/** Detiene la cuenta. */
 	paused?: boolean;
 	/**
-	 * `md` 36px · `lg` 60px · `xl` 96px, o un número en px.
+	 * `md` 36px - `lg` 60px - `xl` 96px, o un número en px.
 	 * @default "lg"
 	 */
 	size?: StreamCountdownSize | number;

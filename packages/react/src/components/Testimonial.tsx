@@ -16,9 +16,9 @@ export interface TestimonialProps {
 	rating?: number;
 	/** La foto del fondo (un nodo; si es decorativa, con \`alt=""\`). */
 	image?: ReactNode;
-	/** \`floating\` el panel separado de los bordes y con radio · \`full-width\` a todo el ancho. @default "floating" */
+	/** \`floating\` el panel separado de los bordes y con radio - \`full-width\` a todo el ancho. @default "floating" */
 	type?: "floating" | "full-width";
-	/** \`sm\` texto y estrellas pequeños · \`md\` la cita grande. @default "md" */
+	/** \`sm\` texto y estrellas pequeños - \`md\` la cita grande. @default "md" */
 	size?: "sm" | "md";
 	/** Con ellas, las flechas para pasar de testimonio (en un carrusel propio). */
 	onPrevious?: () => void;

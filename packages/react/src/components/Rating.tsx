@@ -18,7 +18,7 @@ export interface RatingProps {
 	 */
 	color?: RatingColor;
 	/**
-	 * Lado de cada estrella: `sm` 16 · `md` 20 · `lg` 24.
+	 * Lado de cada estrella: `sm` 16 - `md` 20 - `lg` 24.
 	 * @default "md"
 	 */
 	size?: RatingSize;

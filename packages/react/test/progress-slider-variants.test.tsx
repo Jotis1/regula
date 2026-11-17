@@ -62,7 +62,7 @@ describe("ProgressBar: etiqueta flotante", () => {
 		expect(screen.getByRole("progressbar").getAttribute("aria-valuenow")).toBe("72");
 	});
 
-	it("acota el valor a 0–100 y deja un mínimo visible", () => {
+	it("acota el valor a 0-100 y deja un mínimo visible", () => {
 		const { container } = render(<ProgressBar value={-5} label="top-floating" />);
 		expect((container.querySelector("[aria-hidden=true]") as HTMLElement).textContent).toBe("0%");
 		expect((container.querySelector("[style]") as HTMLElement).style.width).toBe("3%");
