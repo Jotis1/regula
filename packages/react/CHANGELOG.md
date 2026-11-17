@@ -1,5 +1,17 @@
 # @jotis-me/react
 
+## 0.10.1
+
+### Patch Changes
+
+- 0a279e8: Los tokens (`colors`, `spacing`, `type`…) y sus tipos llevan una descripción en el editor, y `hues` y `ALERT_BASE` también. No cambia su uso.
+- 8d63bd0: Todas las props de los componentes llevan una descripción en el editor y en la ficha de la guía. Las nuevas están en inglés y las anteriores siguen en español hasta que se traduzcan. No cambia ningún tipo.
+- f9e5695: Los textos que pintan los componentes usan el guión simple como separador: el rango de `CalendarView` y de `DatePicker` (`6 oct 2026 - 17 oct 2026`, `10:00-11:30`), la línea corta de los eventos del directo (`Donación - 5,00 €`), el recuento de `StreamPoll` y el título de los puntos de las gráficas. El `DatePicker` sin fecha muestra «-». El JSDoc de las props también separa los valores con «-».
+- 0faaf63: `SocialButton` pasa las props de botón o de enlace a `Button` sin conversiones de tipo. No cambia su uso.
+- Updated dependencies [0a279e8]
+- Updated dependencies [1f7a046]
+  - @jotis-me/tokens@0.10.1
+
 ## 0.10.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # @jotis-me/tokens
 
+## 0.10.1
+
+### Patch Changes
+
+- 0a279e8: Los tokens (`colors`, `spacing`, `type`…) y sus tipos llevan una descripción en el editor, y `hues` y `ALERT_BASE` también. No cambia su uso.
+- 1f7a046: La descripción de uso del espaciado de icono a texto dice `xs-md` con el guión simple.
+
 ## 0.10.0
 
 No changes in this release.

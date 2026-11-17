@@ -1,5 +1,11 @@
 # @jotis-me/icons
 
+## 0.10.1
+
+### Patch Changes
+
+- 2670017: Las entradas `logos`, `payments` y `cursors` exportan cada nombre uno a uno, en lugar de `export *`. No cambia lo que se puede importar.
+
 ## 0.10.0
 
 No changes in this release.
