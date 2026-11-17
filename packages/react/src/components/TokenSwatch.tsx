@@ -26,6 +26,7 @@ export interface TokenSwatchProps {
 	onCopy?: (utility: string, ok: boolean) => void;
 	/** Nombres accesibles de las dos muestras. Por defecto, «Tema claro» y «Tema oscuro». */
 	labels?: { light?: string; dark?: string };
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

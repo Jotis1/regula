@@ -115,9 +115,9 @@ describe("tipos de evento", () => {
 	});
 
 	it("línea corta de la lista de eventos", () => {
-		expect(streamShort("donation", { amount: 5 })).toBe("Donación · 5,00 €");
-		expect(streamShort("raid", { amount: 1284 })).toBe("Raid entrante · 1.284");
-		expect(streamShort("resub", { months: 14 })).toBe("Suscripción renovada · 14 meses");
+		expect(streamShort("donation", { amount: 5 })).toBe("Donación - 5,00 €");
+		expect(streamShort("raid", { amount: 1284 })).toBe("Raid entrante - 1.284");
+		expect(streamShort("resub", { months: 14 })).toBe("Suscripción renovada - 14 meses");
 		expect(streamShort("follow", {})).toBe("Nuevo seguidor");
 	});
 });

@@ -26,6 +26,7 @@ export interface HelpIconProps {
 	label?: string;
 	/** Fuerza el tooltip visible (vistas previas y capturas). */
 	open?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

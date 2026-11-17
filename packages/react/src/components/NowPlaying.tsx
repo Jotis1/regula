@@ -14,17 +14,21 @@ export interface NowPlayingLabels {
 }
 
 export interface NowPlayingProps {
+	/** The title of the track. */
 	title: ReactNode;
+	/** The artist. */
 	artist?: ReactNode;
 	/** URL de la carátula; sin ella, icono de volumen. */
 	cover?: string;
 	/** De 0 a 1. Sin él no hay barra. Avanza cuando llega un valor nuevo: no se anima por su cuenta. */
 	progress?: number;
+	/** Shows the track as paused. */
 	paused?: boolean;
 	/** @default 360 */
 	width?: number | string;
 	/** Sustituye los textos (ampliación sobre la guía). */
 	labels?: Partial<NowPlayingLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

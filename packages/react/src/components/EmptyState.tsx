@@ -32,8 +32,8 @@ export interface EmptyStateProps {
 	/** La siguiente acción: normalmente un `Button` secundario y uno primario. */
 	actions?: ReactNode;
 	/**
-	 * Cabecera: `icon` (por defecto) · `illustration` · `file` (icono de archivo sobre rejilla) · `folder` ·
-	 * `folder-glass` (carpeta translúcida) · `users-radius` (avatares en círculos) · `users-row` · `integrations`.
+	 * Cabecera: `icon` (por defecto) - `illustration` - `file` (icono de archivo sobre rejilla) - `folder` -
+	 * `folder-glass` (carpeta translúcida) - `users-radius` (avatares en círculos) - `users-row` - `integrations`.
 	 * @default "icon"
 	 */
 	media?: EmptyStateMedia;
@@ -48,10 +48,11 @@ export interface EmptyStateProps {
 	 */
 	items?: ReactNode[];
 	/**
-	 * `sm` título de 16 · `md` de 18 · `lg` de 20, y la cabecera a su escala.
+	 * `sm` título de 16 - `md` de 18 - `lg` de 20, y la cabecera a su escala.
 	 * @default "sm"
 	 */
 	size?: EmptyStateSize;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

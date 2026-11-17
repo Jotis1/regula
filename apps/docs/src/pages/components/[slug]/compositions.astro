@@ -4,17 +4,17 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { Breadcrumbs } from "@jotis-me/react";
-import CodeSnippet from "../../../components/CodeSnippetIsland";
-import Base from "../../../layouts/Base.astro";
-import { groupOf, labelOf, SECTIONS, slugOf } from "../../../lib/catalog";
-import { compositionCode } from "../../../lib/composition-code";
+import { CodeSnippetIsland as CodeSnippet } from "../../../components/CodeSnippetIsland";
 import {
 	COMPOSITION_FILES,
 	COMPOSITIONS,
 	compositionsOf,
 	INLINE_COMPOSITIONS,
-} from "../../../visual/compositions";
-import VisualExample from "../../../visual/VisualExample";
+} from "../../../features/visual/compositions";
+import { VisualExample } from "../../../features/visual/VisualExample";
+import Base from "../../../layouts/Base.astro";
+import { groupOf, labelOf, SECTIONS, slugOf } from "../../../lib/catalog";
+import { compositionCode } from "../../../lib/composition-code";
 
 export function getStaticPaths() {
 	// Las que tienen pocas van en la página del componente (ComponentPage)
@@ -31,7 +31,7 @@ const label = labelOf(name);
 const list = compositionsOf(name);
 // El build corre en apps/docs: el código sale del fichero de ejemplos
 const source = readFileSync(
-	join(process.cwd(), "src/visual/examples", `${COMPOSITION_FILES[name]}.tsx`),
+	join(process.cwd(), "src/features/visual/examples", `${COMPOSITION_FILES[name]}.tsx`),
 	"utf8",
 );
 const group = groupOf(name);

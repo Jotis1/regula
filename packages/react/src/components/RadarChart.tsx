@@ -23,6 +23,7 @@ export interface RadarChartProps {
 	format?: (v: number) => string;
 	/** Qué cuenta la gráfica, para lectores de pantalla. @default "Gráfica de radar" */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

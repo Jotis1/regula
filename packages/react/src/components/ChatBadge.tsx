@@ -15,6 +15,7 @@ export interface ChatBadgeProps {
 	size?: number;
 	/** Sustituye al texto accesible y al del `title` ("Streamer", "Moderador", "VIP", "Suscriptor", "Bits"). */
 	title?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

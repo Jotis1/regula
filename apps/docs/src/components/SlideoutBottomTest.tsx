@@ -3,7 +3,7 @@
 import { Button, Slideout } from "@jotis-me/react";
 import { useState } from "react";
 
-export default function SlideoutBottomTest() {
+export function SlideoutBottomTest() {
 	const [open, setOpen] = useState(false);
 	return (
 		<>

@@ -13,7 +13,7 @@ export interface AvatarProfilePhotoProps {
 	/** Una o dos letras, en Bricolage Grotesque. */
 	initials?: string;
 	/**
-	 * Lado: `sm` 72 · `md` 96 · `lg` 160, con su filo blanco y su sombra.
+	 * Lado: `sm` 72 - `md` 96 - `lg` 160, con su filo blanco y su sombra.
 	 * @default "md"
 	 */
 	size?: AvatarProfilePhotoSize;
@@ -21,6 +21,7 @@ export interface AvatarProfilePhotoProps {
 	verified?: boolean;
 	/** Texto para lectores del sello. @default "Verificado" */
 	verifiedLabel?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

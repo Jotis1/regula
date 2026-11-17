@@ -52,20 +52,20 @@ import {
 } from "../lib/playground-inspector";
 import type { PropRow } from "../lib/props";
 
-/** Lo que exporta el fichero de un componente (src/playground/): el componente y, si los tiene, sus ajustes de cliente. */
+/** Lo que exporta el fichero de un componente (src/features/playground/): el componente y, si los tiene, sus ajustes de cliente. */
 interface PlaygroundModule {
-	default: ComponentType<Record<string, unknown>>;
+	Component: ComponentType<Record<string, unknown>>;
 	tweaks?: Record<string, Tweak>;
 }
 
 // Un fichero por componente: cada página carga solo el suyo (design D4). El servidor espera a la carga y pinta lo mismo.
-const modules = import.meta.glob<PlaygroundModule>("../playground/*.tsx");
+const modules = import.meta.glob<PlaygroundModule>("../features/playground/*.tsx");
 const cache = new Map<string, Promise<PlaygroundModule>>();
 function load(name: string): Promise<PlaygroundModule> {
 	let promise = cache.get(name);
 	if (!promise) {
-		const loader = modules[`../playground/${name}.tsx`];
-		promise = loader ? loader() : Promise.reject(new Error(`Falta src/playground/${name}.tsx`));
+		const loader = modules[`../features/playground/${name}.tsx`];
+		promise = loader ? loader() : Promise.reject(new Error(`Falta src/features/playground/${name}.tsx`));
 		cache.set(name, promise);
 	}
 	return promise;
@@ -73,7 +73,7 @@ function load(name: string): Promise<PlaygroundModule> {
 
 const FRAME = "overflow-clip rounded-xl border border-secondary bg-primary";
 
-export default function Playground({ playground, rows }: { playground: Data; rows: PropRow[] }) {
+export function Playground({ playground, rows }: { playground: Data; rows: PropRow[] }) {
 	return (
 		<Suspense
 			fallback={
@@ -94,7 +94,7 @@ export default function Playground({ playground, rows }: { playground: Data; row
 const propName = (prop: string) => <span className="font-mono text-[13px] text-primary">{prop}</span>;
 
 function Loaded({ playground: data, rows }: { playground: Data; rows: PropRow[] }) {
-	const { default: Component, tweaks } = use(load(data.name));
+	const { Component, tweaks } = use(load(data.name));
 	// Los ajustes de cliente (contenido preparado, con nodos) no cruzan de Astro: los controles se rehacen con ellos
 	const playground = tweaks
 		? {

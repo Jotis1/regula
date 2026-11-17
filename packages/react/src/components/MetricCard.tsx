@@ -20,6 +20,7 @@ export type MetricCardIconStyle = "featured" | "featured-inline" | "modern" | "m
 export type MetricCardChartStyle = "sparkline" | "area" | "line" | "header";
 
 export interface MetricCardProps {
+	/** What the metric measures. */
 	label: ReactNode;
 	/** La cifra, en Bricolage Grotesque 36/44 semibold. */
 	value: ReactNode;
@@ -54,6 +55,7 @@ export interface MetricCardProps {
 	changeBadge?: boolean;
 	/** Pie bajo una raya: un enlace «Ver informe» o un botón con ajustes. */
 	footer?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

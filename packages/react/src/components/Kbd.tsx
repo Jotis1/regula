@@ -10,7 +10,9 @@ export interface KbdProps {
 	 * @default "menu"
 	 */
 	variant?: KbdVariant;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** The key or keys, as text. */
 	children: ReactNode;
 }
 

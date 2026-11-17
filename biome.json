@@ -17,7 +17,8 @@
 			"!openspec",
 			"!.claude",
 			"!.changeset/*.md",
-			"!**/*.generated.*"
+			"!**/*.generated.*",
+			"!packages/assets/src/{logos,payments,cursors}.ts"
 		]
 	},
 	"formatter": {
@@ -30,6 +31,28 @@
 		"enabled": true,
 		"rules": {
 			"preset": "recommended",
+			"suspicious": {
+				"noExplicitAny": "error",
+				"noTsIgnore": "error",
+				"noConsole": {
+					"level": "error",
+					"options": { "allow": ["error", "warn"] }
+				}
+			},
+			"style": {
+				"noEnum": "error",
+				"noNonNullAssertion": "error",
+				"noDefaultExport": "error",
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": { "requireAscii": true, "filenameCases": ["kebab-case"] }
+				},
+				"useImportType": "error"
+			},
+			"performance": {
+				"noNamespaceImport": "error",
+				"noReExportAll": "error"
+			},
 			"a11y": {
 				"useValidAriaRole": {
 					"level": "error",
@@ -59,6 +82,46 @@
 		}
 	},
 	"overrides": [
+		{
+			"includes": ["**/*.tsx", "**/*.astro"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useFilenamingConvention": {
+							"level": "error",
+							"options": {
+								"requireAscii": true,
+								"strictCase": false,
+								"filenameCases": ["PascalCase", "kebab-case"]
+							}
+						}
+					}
+				}
+			}
+		},
+		{
+			"includes": ["**/scripts/**", "**/test/**", "**/e2e/**", "**/*.config.{ts,mts,js,mjs}"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noConsole": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": [
+				"**/app/**/{page,layout,template,loading,error,global-error,not-found,default,opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{ts,tsx}",
+				"**/*.config.{ts,mts,js,mjs}"
+			],
+			"linter": {
+				"rules": {
+					"style": {
+						"noDefaultExport": "off"
+					}
+				}
+			}
+		},
 		{
 			"includes": ["**/*.astro"],
 			"linter": {

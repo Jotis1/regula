@@ -8,7 +8,7 @@ astroNote: "Sin `onChange` es solo un indicador y funciona sin JavaScript. Con `
 
 **Cuándo usarlo.** Para decir en qué diapositiva o paso de una serie corta estás: un carrusel, una presentación de bienvenida, una galería. Para recorrer páginas de una tabla o una lista, `Pagination`.
 
-**Props.** `total`, `current` (desde 1), `onChange(página)`, `variant` (`dot` · `line`), `size` (`md` · `lg`), `framed`, `labels` (`pageOf` y `goTo`) y `aria-label`.
+**Props.** `total`, `current` (desde 1), `onChange(página)`, `variant` (`dot` - `line`), `size` (`md` - `lg`), `framed`, `labels` (`pageOf` y `goTo`) y `aria-label`.
 
 **Visual.** Cada marca va en `bg-quaternary` y la actual en `bg-brand-solid`. En `dot`, el punto mide 8px (`md`, a 12px del siguiente) o 10px (`lg`, a 16px); en `line`, la raya mide 44px de largo y 8 o 10 de alto. Con `framed` van sobre una píldora `bg-primary` con 8px (`md`) o 12px (`lg`) de relleno, para ponerlas encima de una imagen.
 

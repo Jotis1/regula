@@ -30,7 +30,9 @@ export interface AppIconProps {
 	tilde?: boolean;
 	/** Nombre accesible. Por defecto, el de la app. */
 	label?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** Inline styles, merged with the component's own. */
 	style?: CSSProperties;
 }
 

@@ -5,7 +5,7 @@ description: "Preguntas frecuentes que se abren y se cierran: icono a la izquier
 interactive: true
 ---
 
-**Props.** `items` [{`id`?, `title`, `content`}], `expanded`/`defaultExpanded`/`onExpandedChange` (los `id` abiertos), `single` (solo una abierta), `iconPosition` (`right` · `left`), `divider` y `headingLevel` (3).
+**Props.** `items` [{`id`?, `title`, `content`}], `expanded`/`defaultExpanded`/`onExpandedChange` (los `id` abiertos), `single` (solo una abierta), `iconPosition` (`right` - `left`), `divider` y `headingLevel` (3).
 
 **Visual.** La del Figma (`_FAQ item`, `1358:191490`): pregunta en `text-lg` seminegrita, el icono de más y menos en un círculo de 24 en `fg-quaternary`, la respuesta en `text-md` `text-tertiary` alineada con el texto; sin divisor, 32 entre preguntas; con él, una raya `border-secondary` y 24 arriba y abajo.
 

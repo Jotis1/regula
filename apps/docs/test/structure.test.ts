@@ -16,7 +16,7 @@ const PIECES: { file: string; uses: string }[] = [
 	{ file: "components/SiteFooter.astro", uses: "Footer" },
 	{ file: "components/MobileMenu.tsx", uses: "Slideout" },
 	{ file: "components/ThemeMenu.tsx", uses: "Dropdown" },
-	{ file: "search/SiteSearch.tsx", uses: "CommandMenu" },
+	{ file: "features/search/SiteSearch.tsx", uses: "CommandMenu" },
 	{ file: "pages/index.astro", uses: "LinkCard" },
 ];
 
@@ -41,7 +41,7 @@ const HAND_MADE: Record<string, { tag: string; why: string }[]> = {
 		{ tag: "button", why: "disparador de la búsqueda con aspecto de campo (NOTAS 3.4)" },
 	],
 	"components/ThemeMenu.tsx": [],
-	"search/SiteSearch.tsx": [
+	"features/search/SiteSearch.tsx": [
 		{ tag: "button", why: "disparador de la búsqueda con aspecto de campo (NOTAS 3.4)" },
 	],
 	// Desde `redesign-docs-site-v2` la búsqueda de la portada es un `Input` de solo lectura y el mapa, `LinkCard`

@@ -1,9 +1,9 @@
-prefix: NOM
+prefix: NAM
 title: Nombres
 description: Cómo se llaman los paquetes de la suite, para que se sepa de quién son y dónde viven con solo leer el nombre.
 order: 1
 rules:
-    - id: NOM-001
+    - id: NAM-001
       title: Los paquetes privados se llaman como su dominio, al revés
       level: must
       appliesTo: all
@@ -38,7 +38,7 @@ rules:
           kind: ci
           check: Nombres de paquete
 
-    - id: NOM-002
+    - id: NAM-002
       title: Los paquetes publicados usan el scope de la organización
       level: must
       appliesTo: package
@@ -62,3 +62,37 @@ rules:
       verification:
           kind: ci
           check: Nombres de paquete
+
+    - id: NAM-003
+      title: Los archivos se llaman en kebab-case, y los componentes pueden ir en PascalCase
+      level: must
+      appliesTo: all
+      statement: >-
+          Los nombres de archivo van en kebab-case (`format-date.ts`, `button.test.tsx`) y solo en ASCII. Los archivos de
+          componente (`.tsx` y `.astro`) pueden ir también en PascalCase, con el nombre del componente (`DatePicker.tsx`,
+          `InlineCTA.tsx`: las siglas se admiten). Las rutas de Next y de Astro cumplen tal como las pide cada framework.
+      rationale: >-
+          Un solo criterio evita que la misma carpeta mezcle `formatDate.ts`, `format_date.ts` y `FormatDate.ts`, y que
+          un sistema que no distingue mayúsculas, como el de Windows, trate dos nombres como uno. El PascalCase de un
+          componente deja ver al abrir la carpeta cuál es el componente.
+      examples:
+          good:
+              - caption: Una utilidad en kebab-case junto a su componente
+                lang: text
+                code: |-
+                    format-date.ts
+                    DatePicker.tsx
+                    date-picker.test.tsx
+          bad:
+              - caption: Una utilidad en camelCase
+                lang: text
+                code: |-
+                    formatDate.ts
+      exceptions:
+          - where: "`**/*.tsx` y `**/*.astro`"
+            why: Un componente puede ir en PascalCase porque así se llama su export, y las siglas (`InlineCTA`) se admiten.
+          - where: Las rutas dinámicas de Next y de Astro (`[slug].astro`, `[...slug].astro`, `[[...slug]]`)
+            why: Los frameworks las nombran con corchetes y puntos suspensivos, y así las reconocen.
+      verification:
+          kind: biome
+          check: useFilenamingConvention

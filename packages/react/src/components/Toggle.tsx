@@ -19,8 +19,11 @@ export interface ToggleProps {
 	"aria-label"?: string;
 	/** Id del elemento que nombra el interruptor. */
 	"aria-labelledby"?: string;
+	/** Whether it is on (controlled). */
 	checked?: boolean;
+	/** Whether it starts on (uncontrolled). */
 	defaultChecked?: boolean;
+	/** Called with the new state when the user flips it. */
 	onChange?: (checked: boolean) => void;
 	/**
 	 * Pista de 36×20 (`sm`) o 44×24 (`md`).
@@ -32,9 +35,11 @@ export interface ToggleProps {
 	 * @default "default"
 	 */
 	variant?: "default" | "slim";
+	/** Disables the control. */
 	disabled?: boolean;
 	/** Nombre del campo al enviar el formulario. */
 	name?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

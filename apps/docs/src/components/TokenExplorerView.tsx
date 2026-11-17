@@ -55,7 +55,7 @@ const COLUMNS: TableColumn<Row>[] = [
 								<span
 									key={theme}
 									data-ratio={theme}
-									className="not-last:after:content-['_·_']"
+									className="not-last:after:content-['_-_']"
 								>
 									{rate.label} en {label}
 									{rate.low ? " (bajo)" : ""}
@@ -69,7 +69,7 @@ const COLUMNS: TableColumn<Row>[] = [
 	},
 ];
 
-export default function TokenExplorerView({ families }: { families: ExplorerFamily[] }) {
+export function TokenExplorerView({ families }: { families: ExplorerFamily[] }) {
 	const first = families[0]?.id;
 	return (
 		<div className="not-prose my-4 flex flex-col gap-5" data-tokens="">

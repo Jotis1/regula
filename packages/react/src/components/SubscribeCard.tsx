@@ -9,9 +9,10 @@ import { FeaturedIcon } from "./FeaturedIcon.js";
 export interface SubscribeCardProps {
 	/** @default "Boletín semanal" */
 	title?: ReactNode;
+	/** Supporting text under the title. */
 	description?: ReactNode;
 	/**
-	 * `default` con el avión de papel · `line` con el sobre y una raya de marca arriba.
+	 * `default` con el avión de papel - `line` con el sobre y una raya de marca arriba.
 	 * @default "default"
 	 */
 	type?: "default" | "line";
@@ -23,6 +24,7 @@ export interface SubscribeCardProps {
 	buttonLabel?: string;
 	/** Bajo el campo: «Lee nuestra política de privacidad», con su enlace. */
 	privacy?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

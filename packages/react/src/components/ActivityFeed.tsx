@@ -27,9 +27,11 @@ export type ActivitySupporting =
 	  };
 
 export interface ActivityItem {
+	/** Who did it. Shown in bold before the action. */
 	author: ReactNode;
 	/** Por defecto, las dos primeras letras del autor. */
 	avatar?: AvatarProps;
+	/** When it happened, as text (`2 hours ago`). */
 	time?: ReactNode;
 	/** Nombre de usuario bajo el autor (`@lana`), en el tipo `messages`. */
 	handle?: ReactNode;
@@ -50,6 +52,7 @@ export interface ActivityItem {
 export type ActivityDivider = "line" | "divider" | "connector" | "none";
 
 export interface ActivityFeedProps {
+	/** The events, newest first. */
 	items: ActivityItem[];
 	/**
 	 * Cómo se separan los elementos: `line` y `divider` con una línea entre ellos, `connector` con una línea
@@ -69,6 +72,7 @@ export interface ActivityFeedProps {
 	 * @default "md"
 	 */
 	size?: "sm" | "md";
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

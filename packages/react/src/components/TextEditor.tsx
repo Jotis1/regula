@@ -22,23 +22,41 @@ import { defaultStrings } from "../internal/strings.js";
 import { Tooltip } from "./Tooltip.js";
 
 export interface TextEditorLabels {
+	/** Accessible name of the toolbar. */
 	toolbar: string;
+	/** Accessible name of the bold button. */
 	bold: string;
+	/** Accessible name of the italic button. */
 	italic: string;
+	/** Accessible name of the underline button. */
 	underline: string;
+	/** Accessible name of the bulleted list button. */
 	list: string;
+	/** Accessible name of the link button. */
 	link: string;
+	/** Question asked when the user adds a link. */
 	linkPrompt: string;
+	/** Accessible name of the align left button. */
 	alignLeft: string;
+	/** Accessible name of the align center button. */
 	alignCenter: string;
+	/** Accessible name of the align right button. */
 	alignRight: string;
+	/** Text of the counter: `n` characters are left. */
 	charactersLeft: (n: number) => string;
+	/** Accessible name of the image button. */
 	image: string;
+	/** Question asked when the user adds an image. */
 	imagePrompt: string;
+	/** Accessible name of the generate button. */
 	generate: string;
+	/** Accessible name of the text color button and its panel. */
 	textColor: string;
+	/** Name of the field for a custom color. */
 	customColor: string;
+	/** Accessible name of the font selector. */
 	font: string;
+	/** Accessible name of the font size selector. */
 	fontSize: string;
 }
 
@@ -77,10 +95,13 @@ export interface TextEditorProps {
 	size?: "sm" | "md";
 	/** Botón de generar texto de la barra `advanced` y de la flotante `md`. Sin él, no se pinta. */
 	onGenerate?: () => void;
+	/** Disables the control. */
 	disabled?: boolean;
 	/** Textos sustituibles. */
 	labels?: Partial<TextEditorLabels>;
+	/** Id of the control, for a `<label htmlFor>` to point at it. */
 	id?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

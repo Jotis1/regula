@@ -114,7 +114,7 @@ function invalidValue(c: Control | undefined, value: unknown): string | undefine
 		: "no es un valor preparado";
 }
 
-type PlaygroundModule = { default: Parameters<typeof createElement>[0]; tweaks?: Record<string, Tweak> };
+type PlaygroundModule = { Component: Parameters<typeof createElement>[0]; tweaks?: Record<string, Tweak> };
 const built = new Map<string, { pg: Playground; rows: PropRow[]; mod: PlaygroundModule }>();
 /** El ejemplo de un componente como lo arma la isla: los controles de su tabla con los ajustes del punto de partida y de su módulo. */
 async function playgroundFor(name: string) {
@@ -122,7 +122,7 @@ async function playgroundFor(name: string) {
 	if (!b) {
 		const rows = rowsOf(name);
 		const start = STARTS[name] as Start;
-		const mod = (await import(`../src/playground/${name}.tsx`)) as PlaygroundModule;
+		const mod = (await import(`../src/features/playground/${name}.tsx`)) as PlaygroundModule;
 		const controls = controlsOf(rows, { ...start.tweaks, ...mod.tweaks }, start.props, start.children);
 		const pg: Playground = {
 			name,
@@ -233,7 +233,7 @@ describe("configuración del ejemplo interactivo", () => {
 				try {
 					renderToStaticMarkup(
 						createElement(
-							mod.default,
+							mod.Component,
 							resolveIcons(propsFor(pg, state)) as object,
 							pg.start.children,
 						),

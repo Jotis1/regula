@@ -18,12 +18,13 @@ export interface RatingProps {
 	 */
 	color?: RatingColor;
 	/**
-	 * Lado de cada estrella: `sm` 16 · `md` 20 · `lg` 24.
+	 * Lado de cada estrella: `sm` 16 - `md` 20 - `lg` 24.
 	 * @default "md"
 	 */
 	size?: RatingSize;
 	/** Texto para lectores. @default «4,5 de 5» */
 	label?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

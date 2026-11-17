@@ -10,6 +10,7 @@ export interface ProgressBarProps {
 	label?: "right" | "bottom" | "top-floating" | "bottom-floating" | false;
 	/** Qué progresa: "Presupuesto usado", "Subida". */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

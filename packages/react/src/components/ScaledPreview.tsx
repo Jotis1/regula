@@ -16,7 +16,9 @@ export interface ScaledPreviewProps {
 	 * `contentHeight`).
 	 */
 	scale?: number;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** What is shown, scaled down. */
 	children: ReactNode;
 }
 

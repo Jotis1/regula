@@ -9,7 +9,7 @@ export interface AvatarLabelProps extends AvatarProps {
 	supporting?: ReactNode;
 	/**
 	 * Tamaño del avatar y del texto, como el Figma (Avatar label group, 82:2793): `sm` avatar de 32 con nombre
-	 * `text-sm` y apoyo `text-xs` · `md` avatar de 40 con `text-sm` · `lg` avatar de 48 con `text-md`. El resto de
+	 * `text-sm` y apoyo `text-xs` - `md` avatar de 40 con `text-sm` - `lg` avatar de 48 con `text-md`. El resto de
 	 * tamaños de `Avatar` llevan el texto de `md`.
 	 * @default "md"
 	 */

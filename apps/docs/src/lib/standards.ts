@@ -15,7 +15,7 @@ const verification = z.discriminatedUnion("kind", [
 ]);
 
 export const rule = z.object({
-	id: z.string().regex(/^[A-Z]{3}-\d{3}$/, "ID must look like NOM-001"),
+	id: z.string().regex(/^[A-Z]{3}-\d{3}$/, "ID must look like NAM-001"),
 	title: z.string(),
 	level: z.enum(["must", "should", "may"]),
 	appliesTo: z.enum(["all", "app", "package"]),
@@ -23,6 +23,8 @@ export const rule = z.object({
 	rationale: z.string(),
 	examples: z.object({ good: z.array(example).min(1), bad: z.array(example).min(1) }),
 	verification,
+	/** What a framework convention forces the rule to allow: where it applies and why. */
+	exceptions: z.array(z.object({ where: z.string().min(1), why: z.string().min(1) })).optional(),
 });
 
 export const area = z.object({
@@ -56,10 +58,10 @@ export const VERIFY_LABEL: Record<StandardRule["verification"]["kind"], string> 
 	review: "Revisión",
 };
 
-/** `NOM-001` → `nom-001`: the anchor of a rule inside its area page. */
+/** `NAM-001` → `nam-001`: the anchor of a rule inside its area page. */
 export const anchorOf = (id: string) => id.toLowerCase();
 
-/** Where a rule lives: `/standards/<area>/#nom-001`. */
+/** Where a rule lives: `/standards/<area>/#nam-001`. */
 export const hrefOf = (areaId: string, id: string) => `/standards/${areaId}/#${anchorOf(id)}`;
 
 /** One sentence on how a rule is verified, for the page and the JSON consumers. */

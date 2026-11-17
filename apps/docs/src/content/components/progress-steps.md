@@ -8,7 +8,7 @@ astroNote: "Con `onChange` necesita una función: envuélvelo en un `.tsx` y ús
 
 **Cuándo usarlo.** Un proceso de varios pasos con orden fijo: un alta, un asistente de configuración, un pago. Para un avance continuo de un solo valor, `ProgressBar` o `ProgressCircle`; para cambiar entre paneles, `Tabs`.
 
-**Props.** `steps` (`{ title, description?, icon? }[]`), `current` (índice del actual, desde 0; los anteriores están completos), `type`, `marker`, `size` (`sm` · `md`), `orientation` (`horizontal` · `vertical`), `labels` (el estado para lectores y «Paso n de N»), `onChange` (`(index: number) => void`, hace los pasos pulsables), `children` (`(current: number) => ReactNode`, el contenido del paso actual), `aria-label` y `className`.
+**Props.** `steps` (`{ title, description?, icon? }[]`), `current` (índice del actual, desde 0; los anteriores están completos), `type`, `marker`, `size` (`sm` - `md`), `orientation` (`horizontal` - `vertical`), `labels` (el estado para lectores y «Paso n de N»), `onChange` (`(index: number) => void`, hace los pasos pulsables), `children` (`(current: number) => ReactNode`, el contenido del paso actual), `aria-label` y `className`.
 
 **Tipos.** `icons-centered`: marcadores unidos por una línea de 2px, con título y apoyo centrados debajo (`text-xs` en `sm`, `text-sm` en `md`). `icons-text`: marcador a la izquierda y texto a la derecha, siempre en columna, con la línea vertical entre marcadores (`text-sm` en `sm`, `text-md` en `md`). `text-line`: una raya de 4px sobre el texto de cada paso, de marca hasta el actual y en `bg-quaternary` después. `minimal`: solo los marcadores, con «Paso 3 de 4» a la izquierda. `minimal-connected`: solo los marcadores, unidos por líneas cortas; el «Paso 3 de 4» queda para lectores.
 

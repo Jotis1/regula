@@ -7,10 +7,10 @@ const SCENES: { variant: StreamSceneVariant; seconds?: number; countdownLabel?: 
 	{ variant: "starting", seconds: 300, countdownLabel: "Para empezar" },
 	{ variant: "brb", seconds: 480, countdownLabel: "Vuelvo en" },
 	{ variant: "ending", next: "Próximo directo: jueves, 20:00" },
-	{ variant: "offline", next: "Lunes, miércoles y viernes · 20:00" },
+	{ variant: "offline", next: "Lunes, miércoles y viernes - 20:00" },
 ];
 
-export default function StreamSceneWideTest() {
+export function StreamSceneWideTest() {
 	return (
 		<div className="flex flex-col">
 			{SCENES.map((scene) => (

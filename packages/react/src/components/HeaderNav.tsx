@@ -12,7 +12,9 @@ import { Slideout } from "./Slideout.js";
 export type HeaderNavType = "simple" | "dual-tier" | "tabs" | "centered" | "underline";
 
 export interface HeaderNavItem {
+	/** The text of the link. */
 	label: ReactNode;
+	/** Where the link goes. */
 	href: string;
 	/** Página o sección actual: `aria-current="page"`. */
 	current?: boolean;
@@ -45,8 +47,8 @@ export interface HeaderNavMobile {
 
 export interface HeaderNavProps {
 	/**
-	 * `simple` (una fila) · `dual-tier` (una segunda fila con las subsecciones y el buscador) · `tabs` (la segunda fila,
-	 * como pestañas) · `centered` (la navegación al centro y la segunda fila centrada) · `underline` (una fila, con la
+	 * `simple` (una fila) - `dual-tier` (una segunda fila con las subsecciones y el buscador) - `tabs` (la segunda fila,
+	 * como pestañas) - `centered` (la navegación al centro y la segunda fila centrada) - `underline` (una fila, con la
 	 * sección actual subrayada en vez de resaltada, como la cabecera de una web de documentación).
 	 * @default "simple"
 	 */
@@ -79,7 +81,9 @@ export interface HeaderNavProps {
 	 * marca deba alinearse con una navegación lateral.
 	 */
 	fullWidth?: boolean;
+	/** Texts for assistive technology, to translate. */
 	labels?: Partial<HeaderNavLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -4,9 +4,9 @@
 import { CopyTooltip, type CopyTooltipProps } from "@jotis-me/react";
 import { lazy, Suspense, useState } from "react";
 
-const CopyError = lazy(() => import("./CopyError"));
+const CopyError = lazy(() => import("./CopyError").then((m) => ({ default: m.CopyError })));
 
-export default function CopyTooltipIsland(props: CopyTooltipProps) {
+export function CopyTooltipIsland(props: CopyTooltipProps) {
 	const [failed, setFailed] = useState(false);
 	return (
 		<>

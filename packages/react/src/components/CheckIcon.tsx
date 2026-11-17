@@ -7,7 +7,7 @@ export type CheckIconSize = "sm" | "md" | "lg" | "xl";
 
 export interface CheckIconProps {
 	/**
-	 * `default` círculo tintado con el check · `line` círculo de contorno con el check · `filled` círculo sólido con el
+	 * `default` círculo tintado con el check - `line` círculo de contorno con el check - `filled` círculo sólido con el
 	 * check en blanco (Figma `Check icon`, `1254:137887`).
 	 * @default "default"
 	 */
@@ -15,10 +15,11 @@ export interface CheckIconProps {
 	/** @default "brand" */
 	color?: CheckIconColor;
 	/**
-	 * Lado: `sm` 20 · `md` 24 · `lg` 28 · `xl` 32.
+	 * Lado: `sm` 20 - `md` 24 - `lg` 28 - `xl` 32.
 	 * @default "md"
 	 */
 	size?: CheckIconSize;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

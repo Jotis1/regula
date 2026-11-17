@@ -3,7 +3,7 @@
 // build copia como ficheros: los logos se cargan como imágenes perezosas, no como código de la isla.
 import { PageHeader } from "@jotis-me/react";
 import IconsNav from "../../components/IconsNav.astro";
-import LogoGallery, { type LogoEntry, type LogoSetName } from "../../components/LogoGallery";
+import { type LogoEntry, LogoGallery, type LogoSetName } from "../../components/LogoGallery";
 import Base from "../../layouts/Base.astro";
 
 const urls = import.meta.glob<string>("../../../../../packages/assets/dist/logos/*/*.svg", {

@@ -6,7 +6,7 @@ export interface SocialButtonGroupProps {
 	/** Los `SocialButton`: con texto en columna, con `iconOnly` en fila. */
 	children: ReactNode;
 	/**
-	 * `column` botones a todo el ancho, uno debajo de otro · `row` botones de solo logo, del mismo ancho.
+	 * `column` botones a todo el ancho, uno debajo de otro - `row` botones de solo logo, del mismo ancho.
 	 * @default "column"
 	 */
 	layout?: "column" | "row";
@@ -17,6 +17,7 @@ export interface SocialButtonGroupProps {
 	size?: SocialButtonSize;
 	/** Nombre del grupo para lectores («Entrar con»). */
 	label?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

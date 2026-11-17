@@ -44,6 +44,7 @@ export interface BarChartProps {
 	marker?: ChartMarkerAt;
 	/** Qué cuenta la gráfica, para lectores de pantalla. @default "Gráfica de barras" */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -1,7 +1,7 @@
 // Guide page of the MCP server (spec docs-site, «Página del MCP»). Axe runs on it in both themes through the crawl of
 // a11y.spec.ts, which covers every built page.
 import { expect, test } from "@playwright/test";
-import { TOOLS } from "../src/mcp/tools";
+import { TOOLS } from "../src/features/mcp/tools";
 
 test.use({ viewport: { width: 1440, height: 900 } });
 

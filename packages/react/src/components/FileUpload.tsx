@@ -9,11 +9,13 @@ import { FeaturedIcon } from "./FeaturedIcon.js";
 import { ProgressBar } from "./ProgressBar.js";
 
 export interface UploadFile {
+	/** The file name. */
 	name: string;
 	/** Tamaño en bytes. */
 	size?: number;
 	/** De 0 a 100. */
 	progress?: number;
+	/** `complete` or `error`. Without it, the file is still uploading. */
 	status?: "complete" | "error";
 	/** Mensaje si `status` es `error`. */
 	error?: string;
@@ -25,18 +27,26 @@ export interface UploadFile {
 }
 
 export interface FileUploadLabels {
+	/** Text of the upload link. */
 	upload: string;
+	/** Text after the link, inviting to drag files. */
 	orDrag: string;
+	/** Text of a finished upload. */
 	complete: string;
+	/** Text of an upload in progress. */
 	uploading: string;
+	/** Text of an upload that failed. */
 	failed: string;
+	/** Accessible name of the button that removes the file called `name`. */
 	remove: (name: string) => string;
+	/** Accessible name of the progress bar of the file called `name`. */
 	progress: (name: string) => string;
 }
 
 export interface FileUploadProps {
 	/** Formatos aceptados, como en `<input type="file">`: `.csv,.md`, `image/*`. */
 	accept?: string;
+	/** Allows choosing more than one file. */
 	multiple?: boolean;
 	/** Formatos y tamaño máximo. Dilo siempre antes de que el usuario lo intente. */
 	hint?: ReactNode;
@@ -44,7 +54,9 @@ export interface FileUploadProps {
 	onFiles?: (files: File[]) => void;
 	/** Archivos en curso, con el progreso que gestionas tú. */
 	files?: UploadFile[];
+	/** Called with the index of the file the user removed. */
 	onRemove?: (index: number) => void;
+	/** Disables the control. */
 	disabled?: boolean;
 	/**
 	 * Cómo se ve el progreso: `bar` (una barra bajo el nombre, el de siempre) o `fill` (el fondo del elemento se va
@@ -59,7 +71,9 @@ export interface FileUploadProps {
 	fileIcon?: (file: UploadFile) => ReactNode;
 	/** Textos sustituibles. */
 	labels?: Partial<FileUploadLabels>;
+	/** Id of the control, for a `<label htmlFor>` to point at it. */
 	id?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

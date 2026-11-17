@@ -8,8 +8,11 @@ import { type IconProp, iconSlot } from "../internal/icon.js";
 import { Avatar, type AvatarProps } from "./Avatar.js";
 
 export interface RadioGroupOption {
+	/** Identifies the option in `value`. */
 	value: string;
+	/** The text of the option. */
 	label: ReactNode;
+	/** Supporting text under the label. */
 	hint?: ReactNode;
 	/** Solo en tarjetas: apoyo en línea tras la etiqueta, en `text-tertiary` (p. ej. "10 €/mes"). */
 	supporting?: ReactNode;
@@ -31,8 +34,11 @@ export interface RadioGroupOption {
 export interface RadioGroupProps {
 	/** Hasta cinco opciones; con más, `Select`. */
 	options: RadioGroupOption[];
+	/** Selected option (controlled). */
 	value?: string;
+	/** Option selected at the start (uncontrolled). */
 	defaultValue?: string;
+	/** Called with the value of the option that was chosen. */
 	onChange?: (value: string) => void;
 	/**
 	 * Círculos de 16px (`sm`) o 20px (`md`).
@@ -55,6 +61,7 @@ export interface RadioGroupProps {
 	indicator?: "radio" | "checkbox";
 	/** Qué se elige, si no hay una etiqueta visible. */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

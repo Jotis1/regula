@@ -27,14 +27,18 @@ import { useControllable } from "../internal/use-controllable.js";
 import { Button } from "./Button.js";
 
 export interface DateRange {
+	/** First day of the range, or `null` if none is chosen. */
 	start: Date | null;
+	/** Last day of the range, or `null` if none is chosen. */
 	end?: Date | null;
 	/** Hora elegida («10:30») con `times`. En `onApply`, `start` ya lleva esa hora. */
 	time?: string;
 }
 
 export interface DatePickerPreset {
+	/** The text of the shortcut, such as `Last 7 days`. */
 	label: string;
+	/** First day of the range the shortcut picks. */
 	start: Date;
 	/** Sin `end`, el preset es un solo día. */
 	end?: Date;
@@ -49,9 +53,13 @@ export interface DatePickerLabels {
 	dialog: string;
 	/** Nombre accesible de la cuadrícula del mes. */
 	calendar: string;
+	/** Accessible name of the previous month button. */
 	previousMonth: string;
+	/** Accessible name of the next month button. */
 	nextMonth: string;
+	/** Text of the cancel button. */
 	cancel: string;
+	/** Text of the apply button. */
 	apply: string;
 	/** Nombre de la lista de horas (`times`). */
 	times: string;
@@ -70,6 +78,7 @@ export interface DatePickerProps {
 	placeholder?: string;
 	/** Abre o cierra el panel desde fuera. */
 	open?: boolean;
+	/** Whether the panel starts open. */
 	defaultOpen?: boolean;
 	/**
 	 * Horas disponibles («09:00», «09:30»…): una lista junto al calendario para elegir la hora del día elegido. Con ella,
@@ -88,6 +97,7 @@ export interface DatePickerProps {
 	today?: Date;
 	/** Textos sustituibles. */
 	labels?: Partial<DatePickerLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -255,7 +265,7 @@ export function DatePicker({
 
 	const dateBox = (d: Date | null, time?: string | null) => (
 		<span className="min-w-26 rounded-lg px-3 py-2 text-sm text-primary shadow-[var(--shadow-xs),inset_0_0_0_1px_var(--border-primary)]">
-			{d ? (time ? `${formatDate(d)}, ${time}` : formatDate(d)) : "—"}
+			{d ? (time ? `${formatDate(d)}, ${time}` : formatDate(d)) : "-"}
 		</span>
 	);
 
@@ -349,7 +359,7 @@ export function DatePicker({
 						{dateBox(draft.start, draft.time)}
 						{range ? (
 							<>
-								<span className="text-quaternary">–</span>
+								<span className="text-quaternary">-</span>
 								{dateBox(draft.end)}
 							</>
 						) : null}
@@ -376,7 +386,7 @@ export function DatePicker({
 
 	const label = applied.start
 		? range && applied.end
-			? `${formatDate(applied.start)} – ${formatDate(applied.end)}`
+			? `${formatDate(applied.start)} - ${formatDate(applied.end)}`
 			: applied.time
 				? `${formatDate(applied.start)}, ${applied.time}`
 				: formatDate(applied.start)

@@ -8,7 +8,7 @@ export interface ProgressCircleProps {
 	/** De 0 a 100. Fuera de ese rango se recorta. */
 	value: number;
 	/**
-	 * Diámetro: `xxs` 64 · `xs` 160 · `sm` 200 · `md` 240 · `lg` 280. El semicírculo tiene el mismo ancho y algo más de la
+	 * Diámetro: `xxs` 64 - `xs` 160 - `sm` 200 - `md` 240 - `lg` 280. El semicírculo tiene el mismo ancho y algo más de la
 	 * mitad de alto.
 	 * @default "md"
 	 */
@@ -24,6 +24,7 @@ export interface ProgressCircleProps {
 	valueText?: string;
 	/** Nombre de la barra si no hay `label` o no es texto. */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

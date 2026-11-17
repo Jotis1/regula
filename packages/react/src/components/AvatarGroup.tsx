@@ -16,6 +16,7 @@ export interface AvatarGroupProps {
 	 * @default "Añadir persona"
 	 */
 	addLabel?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

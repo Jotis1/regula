@@ -16,8 +16,8 @@ export type ColorPickerDropdownTrigger =
 
 export interface ColorPickerDropdownProps {
 	/**
-	 * El disparador del Figma: `swatch-sm` (muestra de 20) · `swatch-md` (28) · `swatch-button` (botón con muestra y
-	 * texto) · `swatch-button-link` (lo mismo, sin borde) · `hex-input` (campo con muestra, hex y opacidad) · `select`
+	 * El disparador del Figma: `swatch-sm` (muestra de 20) - `swatch-md` (28) - `swatch-button` (botón con muestra y
+	 * texto) - `swatch-button-link` (lo mismo, sin borde) - `hex-input` (campo con muestra, hex y opacidad) - `select`
 	 * (campo con etiqueta y el hex).
 	 * @default "swatch-button"
 	 */
@@ -41,7 +41,9 @@ export interface ColorPickerDropdownProps {
 	>;
 	/** Abierto (controlado). */
 	isOpen?: boolean;
+	/** Called with `true` or `false` when the panel opens or closes. */
 	onOpenChange?: (open: boolean) => void;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

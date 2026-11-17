@@ -2,10 +2,14 @@
 // y pagos y cursores de @jotis-me/assets. Las entradas salen de los paquetes: un recurso que el paquete quite, rompe aquí.
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
+// biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as cursors from "@jotis-me/assets/cursors";
+// biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as payments from "@jotis-me/assets/payments";
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as flags from "@untitledui/country-flags";
 import { FileIcon } from "@untitledui/file-icons";
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as lineIcons from "@untitledui/icons";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";

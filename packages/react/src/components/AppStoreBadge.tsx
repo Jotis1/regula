@@ -15,7 +15,7 @@ export interface AppStoreBadgeProps extends Omit<AnchorHTMLAttributes<HTMLAnchor
 	 */
 	logo: ReactNode;
 	/**
-	 * Alto: `md` 40 · `lg` 44; el ancho sigue la proporción del dibujo.
+	 * Alto: `md` 40 - `lg` 44; el ancho sigue la proporción del dibujo.
 	 * @default "md"
 	 */
 	size?: AppStoreBadgeSize;

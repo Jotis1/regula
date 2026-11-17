@@ -8,9 +8,9 @@ import { resolve } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import { chromium } from "@playwright/test";
 import { APPROVED_DIR, approvedPath, VIEWPORT_WIDTH } from "../e2e/visual/compare.ts";
+import { COMPOSITIONS } from "../src/features/visual/compositions.ts";
+import { CARD_HEIGHTS, slugOf } from "../src/features/visual/registry.ts";
 import { catalogComponents } from "../src/lib/catalog.ts";
-import { COMPOSITIONS } from "../src/visual/compositions.ts";
-import { CARD_HEIGHTS, slugOf } from "../src/visual/registry.ts";
 
 const BASE = "http://localhost:4321";
 const args = process.argv.slice(2);

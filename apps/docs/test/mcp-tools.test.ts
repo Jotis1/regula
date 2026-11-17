@@ -1,6 +1,6 @@
 // The MCP tools (spec mcp-server): each scenario of the spec, run on the pure functions.
 import { describe, expect, it } from "vitest";
-import { TOOLS } from "../src/mcp/tools";
+import { TOOLS } from "../src/features/mcp/tools";
 import { data } from "./mcp-fixture";
 
 function call(name: string, args: Record<string, unknown> = {}) {
@@ -31,17 +31,70 @@ describe("normas", () => {
 		expect(json.areas.map((a: { id: string }) => a.id)).toEqual([
 			"naming",
 			"language",
+			"stack",
+			"structure",
+			"code",
+			"documentation",
+			"versioning",
 			"git",
 			"ci",
 			"process",
 		]);
-		expect(json.areas[0].rules[0]).toMatchObject({ id: "NOM-001", level: "must" });
+		expect(json.areas[0].rules[0]).toMatchObject({ id: "NAM-001", level: "must" });
 	});
 
 	it("list_standards filtra por área", () => {
 		const { json } = call("list_standards", { area: "git" });
 		expect(json.areas).toHaveLength(1);
 		expect(json.areas[0].id).toBe("git");
+	});
+
+	it("list_standards filtra por el área de código y trae sus trece normas", () => {
+		const { json } = call("list_standards", { area: "code" });
+		expect(json.areas).toHaveLength(1);
+		expect(json.areas[0].id).toBe("code");
+		expect(json.areas[0].rules).toHaveLength(15);
+	});
+
+	it("get_standard devuelve las excepciones de COD-009: los archivos especiales de Next", () => {
+		const { json } = call("get_standard", { id: "COD-009" });
+		expect(json).toMatchObject({ id: "COD-009", level: "must", area: "code" });
+		expect(json.verification).toEqual({ kind: "biome", check: "noDefaultExport" });
+		expect(json.exceptions.map((e: { where: string }) => e.where).join(" ")).toContain("page,layout");
+	});
+
+	it("get_standard lee VER-002: el changeset de toda PR que cambia lo publicado", () => {
+		const { json } = call("get_standard", { id: "VER-002" });
+		expect(json).toMatchObject({
+			id: "VER-002",
+			level: "must",
+			appliesTo: "package",
+			area: "versioning",
+		});
+		expect(json.verification).toEqual({ kind: "ci", check: "Changesets" });
+		expect(json.url).toBe("https://regula.jotis.me/standards/versioning/#ver-002");
+	});
+
+	it("get_standard lee LNG-005: el ejemplo malo enseña el punto medio aunque el YAML lo escriba escapado", () => {
+		const { json } = call("get_standard", { id: "LNG-005" });
+		expect(json).toMatchObject({ id: "LNG-005", area: "language" });
+		expect(json.verification).toEqual({ kind: "ci", check: "Normas de desarrollo" });
+		expect(JSON.stringify(json.examples.bad)).toContain(String.fromCodePoint(0xb7));
+	});
+
+	it("list_standards filtra por el área de estructura y trae sus ocho normas", () => {
+		const { json } = call("list_standards", { area: "structure" });
+		expect(json.areas[0].id).toBe("structure");
+		expect(json.areas[0].rules.map((r: { id: string }) => r.id)).toEqual([
+			"STR-001",
+			"STR-002",
+			"STR-003",
+			"STR-004",
+			"STR-005",
+			"STR-006",
+			"STR-007",
+			"STR-008",
+		]);
 	});
 
 	it("list_standards con un área que no existe da error con las que hay", () => {
@@ -65,12 +118,22 @@ describe("normas", () => {
 	});
 
 	it("get_standard trae la URL de su página con el ancla", () => {
-		const { json } = call("get_standard", { id: "NOM-001" });
-		expect(json.url).toBe("https://regula.jotis.me/standards/naming/#nom-001");
+		const { json } = call("get_standard", { id: "NAM-001" });
+		expect(json.url).toBe("https://regula.jotis.me/standards/naming/#nam-001");
 	});
 
-	it("get_standard con NOM-999 dice que no existe y sugiere list_standards", () => {
-		const r = call("get_standard", { id: "NOM-999" });
+	it("get_standard con el ID antiguo NOM-001 dice que no existe (sin alias)", () => {
+		const r = call("get_standard", { id: "NOM-001" });
+		expect(r.isError).toBe(true);
+	});
+
+	it("get_standard devuelve las excepciones de LNG-002", () => {
+		const { json } = call("get_standard", { id: "LNG-002" });
+		expect(json.exceptions[0].where).toContain("Dependabot");
+	});
+
+	it("get_standard con NAM-999 dice que no existe y sugiere list_standards", () => {
+		const r = call("get_standard", { id: "NAM-999" });
 		expect(r.isError).toBe(true);
 		expect(r.text).toContain("list_standards");
 	});
@@ -149,9 +212,9 @@ describe("iconos", () => {
 });
 
 describe("búsqueda global", () => {
-	it("«dominio inverso» trae NOM-001 y dice que su detalle sale de get_standard", () => {
+	it("«dominio inverso» trae NAM-001 y dice que su detalle sale de get_standard", () => {
 		const { json } = call("search", { query: "dominio inverso" });
-		expect(json.standards[0]).toMatchObject({ id: "NOM-001", detail: "get_standard" });
+		expect(json.standards[0]).toMatchObject({ id: "NAM-001", detail: "get_standard" });
 	});
 
 	it("agrupa por tipo y limita cada grupo", () => {

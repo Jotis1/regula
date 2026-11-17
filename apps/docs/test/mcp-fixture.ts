@@ -4,6 +4,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import source from "@jotis-me/tokens/tokens.json";
 import { parse } from "yaml";
+import type { RegulaData } from "../src/features/mcp/data";
 import { type ComponentEntry, componentsJson } from "../src/lib/components-json";
 import { galleryEntries } from "../src/lib/gallery-entries";
 import { GALLERIES, iconsJson } from "../src/lib/icons-json";
@@ -11,7 +12,6 @@ import { nativeOf, propsOf } from "../src/lib/props";
 import { snippetsOf } from "../src/lib/snippets";
 import { standardsJson } from "../src/lib/standards";
 import { type TokensSource, tokensJson } from "../src/lib/tokens-json";
-import type { RegulaData } from "../src/mcp/data";
 
 const root = join(import.meta.dirname, "../../..");
 const content = join(import.meta.dirname, "../src/content");

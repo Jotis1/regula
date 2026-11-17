@@ -5,7 +5,7 @@ description: "Tarjeta que enseña un uso bueno o malo: el espécimen sobre el da
 interactive: false
 ---
 
-**Props.** `verdict` (`do` · `dont` · `instead` · `better`), `caption`, `minHeight` (168 por defecto), `grid` (`sm` · `md` · `false`), `className`, el espécimen en `children`.
+**Props.** `verdict` (`do` - `dont` - `instead` - `better`), `caption`, `minHeight` (168 por defecto), `grid` (`sm` - `md` - `false`), `className`, el espécimen en `children`.
 
 **Cuándo.** Para documentar un criterio con un ejemplo a la vista: «Esto sí» y «Esto no» en pareja, o «En lugar de» y «Mejor» para proponer un cambio. El texto de `caption` dice el porqué en una frase.
 

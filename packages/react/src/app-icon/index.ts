@@ -22,8 +22,11 @@ export type AppIconVariant = "default" | "solid" | "light" | "mono";
 export type AppIconShape = "rounded" | "square";
 
 export interface AppInfo {
+	/** The app's name. */
 	name: string;
+	/** The letters drawn on its icon. */
 	letters: string;
+	/** The hue palette of its icon. */
 	hue: AppIconHue;
 }
 
@@ -34,6 +37,7 @@ export const apps = data.apps as Record<
 >;
 export type AppName = keyof typeof apps;
 
+/** The hue palettes an app icon can use, by name, each with its seven shades (50 to 950). */
 export const hues = data.hues as Record<
 	AppIconHue,
 	Record<"50" | "200" | "300" | "500" | "600" | "800" | "950", string>
@@ -96,28 +100,43 @@ export function validateApps(
 }
 
 export interface AppIconOptions {
+	/** A suite app: it supplies the letters and the hue. */
 	app?: AppName;
+	/** The letters to draw. Overrides the app's. */
 	letters?: string;
+	/** The hue palette. Overrides the app's. */
 	hue?: AppIconHue;
+	/** Which variant to draw. By default it depends on `size`. */
 	variant?: AppIconVariant;
 	/** Tamaño en px: decide la variante por defecto y si se dibuja la virgulilla. */
 	size?: number;
+	/** The silhouette of the icon. By default it depends on `size`. */
 	shape?: AppIconShape;
+	/** Whether the tilde mark is drawn. By default it depends on `size`. */
 	tilde?: boolean;
+	/** Accessible name of the icon. */
 	label?: string;
 }
 
 export interface AppIconPart {
+	/** The SVG path data. */
 	d: string;
+	/** The fill color. */
 	fill: string;
+	/** The stroke color. Without it, the path has no stroke. */
 	stroke?: string;
+	/** The stroke width. */
 	strokeWidth?: number;
+	/** The shape at the ends of the stroke. */
 	strokeLinecap?: "round";
+	/** Keeps the stroke width constant when the icon is scaled. */
 	vectorEffect?: "non-scaling-stroke";
 }
 
 export interface AppIconGeometry {
+	/** Accessible name of the drawing. */
 	label: string;
+	/** The paths that make up the drawing, in paint order. */
 	parts: AppIconPart[];
 }
 

@@ -45,6 +45,7 @@ export interface ChatBoxProps {
 	labels?: Partial<ChatBoxLabels>;
 	/** @default "Chat del directo" */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

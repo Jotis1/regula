@@ -32,6 +32,7 @@ export interface CardHeaderProps {
 	menuLabel?: string;
 	/** Avatar de 48px a la izquierda, para fichas de persona (props de `Avatar`). */
 	avatar?: AvatarProps;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

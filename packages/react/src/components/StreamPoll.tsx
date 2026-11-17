@@ -9,6 +9,7 @@ export type StreamPollVariant = "poll" | "prediction";
 export type StreamPollState = "active" | "locked" | "ended";
 
 export interface StreamPollOption {
+	/** Identifies the option. */
 	id: string | number;
 	/** Texto de la opción. Texto plano: lo escribe el canal en Twitch. */
 	label: string;
@@ -35,13 +36,16 @@ export interface StreamPollLabels {
 	winnerMark: string;
 	/** Recibe la cifra ya formateada. */
 	votes: (n: string) => string;
+	/** Text of a count of points: `n` is the count, already formatted. */
 	points: (n: string) => string;
+	/** Text of a count of people: `n` is the count, already formatted. */
 	people: (n: string) => string;
 }
 
 export interface StreamPollProps {
 	/** @default "poll" */
 	variant?: StreamPollVariant;
+	/** The question. */
 	title: ReactNode;
 	/** De 2 a 10; las que pasen de 10 no se pintan. */
 	options: StreamPollOption[];
@@ -56,6 +60,7 @@ export interface StreamPollProps {
 	state?: StreamPollState;
 	/** Opción ganadora, con `state="ended"`. */
 	winnerId?: string | number;
+	/** Texts of the poll, to translate. */
 	labels?: Partial<StreamPollLabels>;
 	/** @default 420 */
 	width?: number | string;
@@ -63,6 +68,7 @@ export interface StreamPollProps {
 	 * Entrada y salida (`enter` / `exit`), como `state` en el resto de la familia: aquí `state` es el de la votación.
 	 */
 	motion?: StreamMotion;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -147,7 +153,7 @@ export function StreamPoll({
 								</span>
 								<span className={cx(TABULAR, "flex-none text-sm text-tertiary")}>
 									<b className="font-semibold text-primary">{`${pct} %`}</b>
-									{` · ${prediction ? t.points(cifra) : t.votes(cifra)}`}
+									{` - ${prediction ? t.points(cifra) : t.votes(cifra)}`}
 								</span>
 							</div>
 							<div

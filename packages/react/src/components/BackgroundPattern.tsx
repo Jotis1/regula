@@ -12,8 +12,8 @@ export type BackgroundPatternMask =
 
 export interface BackgroundPatternProps {
 	/**
-	 * `grid` rejilla · `grid-dot` puntos cada 32px · `grid-check` rejilla con casillas · `tech-grid` matriz de puntos
-	 * de 12px (8px en `sm`) que aparecen y se apagan al azar, como una pantalla de datos · `circles` y `squares`
+	 * `grid` rejilla - `grid-dot` puntos cada 32px - `grid-check` rejilla con casillas - `tech-grid` matriz de puntos
+	 * de 12px (8px en `sm`) que aparecen y se apagan al azar, como una pantalla de datos - `circles` y `squares`
 	 * concéntricos.
 	 * @default "grid"
 	 */
@@ -34,7 +34,9 @@ export interface BackgroundPatternProps {
 	height?: number;
 	/** Reparto de las casillas en `grid-check` y de los puntos en `tech-grid`. @default 7 */
 	seed?: number;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** Inline styles, merged with the component's own. */
 	style?: CSSProperties;
 }
 

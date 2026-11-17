@@ -5,13 +5,13 @@ export type ScreenMockupSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 export interface ScreenMockupProps extends ScreenContent {
 	/**
-	 * `3-2`: pantalla 3:2 con filo oscuro (Figma `Screen mockup 3:2`, `1293:158480`) · `modern`: marco claro de tres
+	 * `3-2`: pantalla 3:2 con filo oscuro (Figma `Screen mockup 3:2`, `1293:158480`) - `modern`: marco claro de tres
 	 * capas con esquinas grandes (Figma `Modern screen mockup`, `8268:120483`).
 	 * @default "3-2"
 	 */
 	variant?: "3-2" | "modern";
 	/**
-	 * Ancho máximo de `3-2`: `xs` 342 · `sm` 480 · `md` 640 · `lg` 768 · `xl` 1024 · `2xl` 1216. Se encoge con el
+	 * Ancho máximo de `3-2`: `xs` 342 - `sm` 480 - `md` 640 - `lg` 768 - `xl` 1024 - `2xl` 1216. Se encoge con el
 	 * contenedor.
 	 * @default "md"
 	 */

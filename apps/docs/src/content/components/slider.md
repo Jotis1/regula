@@ -6,7 +6,7 @@ interactive: true
 astroNote: "`onChange` es una función y no cruza de Astro a una isla: envuélvelo en un `.tsx` y úsalo con `client:load`."
 ---
 
-**Props.** `min`, `max`, `step`, `value` / `defaultValue`, `onChange(n)`, `aria-label`, `label` (`bottom` · `top-floating`), `formatValue(n)` y `range`. Pista `bg-quaternary`, relleno `fg-brand-primary`, mando `slider-handle-bg` con borde `slider-handle-border` y `shadow-md`.
+**Props.** `min`, `max`, `step`, `value` / `defaultValue`, `onChange(n)`, `aria-label`, `label` (`bottom` - `top-floating`), `formatValue(n)` y `range`. Pista `bg-quaternary`, relleno `fg-brand-primary`, mando `slider-handle-bg` con borde `slider-handle-border` y `shadow-md`.
 
 **Teclado.** Flechas, Inicio y Fin.
 

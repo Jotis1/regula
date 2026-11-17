@@ -47,7 +47,7 @@ function details(jsonPath: string): string {
 		.slice(0, 4)
 		.map((a) => `${a.title}: ${Math.round(a.details?.overallSavingsMs ?? 0)} ms`);
 	return `
-${metrics.join(" · ")}${
+${metrics.join(" - ")}${
 	savings.length
 		? `
 Ahorros: ${savings.join("; ")}`

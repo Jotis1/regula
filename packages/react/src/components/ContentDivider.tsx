@@ -7,7 +7,7 @@ export interface ContentDividerProps {
 	/** El texto como título (`text-md` semibold en `text-primary`) en lugar de `text-sm` en `text-tertiary`. */
 	heading?: boolean;
 	/**
-	 * `single` una línea · `dual` dos líneas · `fill` banda en `bg-secondary`.
+	 * `single` una línea - `dual` dos líneas - `fill` banda en `bg-secondary`.
 	 * @default "single"
 	 */
 	variant?: "single" | "dual" | "fill";
@@ -19,6 +19,7 @@ export interface ContentDividerProps {
 	 * `actions`.
 	 */
 	actions?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

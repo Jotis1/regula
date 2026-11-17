@@ -16,6 +16,7 @@ export type ProgressStepsSize = "sm" | "md";
 export type ProgressStepsOrientation = "horizontal" | "vertical";
 
 export interface ProgressStep {
+	/** The name of the step. */
 	title: ReactNode;
 	/** Texto de apoyo bajo el título. */
 	description?: ReactNode;
@@ -24,26 +25,30 @@ export interface ProgressStep {
 }
 
 export interface ProgressStepsLabels {
+	/** Text for a step that is done. */
 	complete: string;
+	/** Text for the step that is in progress. */
 	current: string;
+	/** Text for a step that has not started. */
 	pending: string;
 	/** «Paso 3 de 4», en los tipos mínimos. */
 	stepOf: (n: number, total: number) => string;
 }
 
 export interface ProgressStepsProps {
+	/** The steps, in order. */
 	steps: ProgressStep[];
 	/** Índice del paso actual, desde 0. Los anteriores están completos y los siguientes pendientes. */
 	current: number;
 	/**
-	 * Tipo: `icons-centered` (marcadores unidos con el texto debajo, centrado) · `icons-text` (marcador a la izquierda y
-	 * texto a la derecha, siempre en columna) · `text-line` (una raya sobre cada texto) · `minimal` (solo los marcadores,
-	 * con «Paso 3 de 4») · `minimal-connected` (solo los marcadores, unidos por líneas).
+	 * Tipo: `icons-centered` (marcadores unidos con el texto debajo, centrado) - `icons-text` (marcador a la izquierda y
+	 * texto a la derecha, siempre en columna) - `text-line` (una raya sobre cada texto) - `minimal` (solo los marcadores,
+	 * con «Paso 3 de 4») - `minimal-connected` (solo los marcadores, unidos por líneas).
 	 * @default "icons-centered"
 	 */
 	type?: ProgressStepsType;
 	/**
-	 * Marcador: `check` (punto, anillo y check de marca) · `number` (su número; los completos, un check verde) ·
+	 * Marcador: `check` (punto, anillo y check de marca) - `number` (su número; los completos, un check verde) -
 	 * `featured` (el `icon` de cada paso en un cuadrado).
 	 * @default "check"
 	 */
@@ -74,6 +79,7 @@ export interface ProgressStepsProps {
 	children?: (current: number) => ReactNode;
 	/** Nombre de la lista («Pasos del alta»). */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

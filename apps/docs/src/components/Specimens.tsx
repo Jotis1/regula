@@ -2,6 +2,7 @@
 // (`examples` en src/lib/starts/). Se pinta siempre en el servidor, sin `client:*`: por eso puede importar el paquete
 // entero sin que pese en la página. Va `inert`: enseña cómo queda, no hace nada, y así sus botones no suman paradas de
 // tabulador ni sus avisos se anuncian.
+// biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as Regula from "@jotis-me/react";
 import { type ComponentType, createElement, type ReactNode } from "react";
 import type { ExampleSide, Specimen } from "../lib/playground";
@@ -35,7 +36,7 @@ interface Props {
 	side: ExampleSide;
 }
 
-export default function Specimens({ name, side }: Props) {
+export function Specimens({ name, side }: Props) {
 	const { specimens, width, frame } = side;
 	return (
 		<div

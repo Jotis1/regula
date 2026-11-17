@@ -90,7 +90,7 @@ function PecuniaScreen({ mode }: { mode: "light" | "dark" }) {
 	);
 }
 
-export default function ThemeCompare() {
+export function ThemeCompare() {
 	const [at, setAt] = useState(55);
 	const buttons = (
 		<>

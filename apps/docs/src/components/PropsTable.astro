@@ -41,7 +41,7 @@ const { rows, label } = Astro.props;
 						<td>
 							<code class="whitespace-normal!">{p.type}</code>
 						</td>
-						<td>{p.defaultValue === undefined ? <span class="text-quaternary">—</span> : <code>{p.defaultValue}</code>}</td>
+						<td>{p.defaultValue === undefined ? <span class="text-quaternary">-</span> : <code>{p.defaultValue}</code>}</td>
 						<td><InlineCode text={p.description} /></td>
 					</tr>
 				))

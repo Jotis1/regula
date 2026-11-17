@@ -3,6 +3,6 @@
 import { Button } from "@jotis-me/react";
 import { Plus } from "@untitledui/icons";
 
-export default function OversizedIcon({ label }: { label: string }) {
+export function OversizedIcon({ label }: { label: string }) {
 	return <Button iconLeading={<Plus size={28} aria-hidden="true" />}>{label}</Button>;
 }

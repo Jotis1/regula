@@ -5,7 +5,7 @@ description: "Card cuyo enlace cubre toda su superficie, con una vista previa op
 interactive: false
 ---
 
-**Props.** `href`, `title`, `description`, `preview`, `as` (`div` · `li`) y `className`.
+**Props.** `href`, `title`, `description`, `preview`, `as` (`div` - `li`) y `className`.
 
 **Cuándo.** Para listas de destinos que se eligen mirando: los componentes, las plantillas, los proyectos. Una sola acción, la de abrir el destino, y una muestra que ayuda a reconocerlo. Si la card tiene varias acciones, no es una `LinkCard`.
 

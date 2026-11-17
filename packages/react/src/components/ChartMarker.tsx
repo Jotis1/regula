@@ -10,7 +10,7 @@ export interface ChartMarkerProps {
 	/** Segunda línea de la burbuja (la fecha); `minimal` no la lleva. */
 	label?: ReactNode;
 	/**
-	 * `line` punto hueco y línea que se desvanece · `dash` punto lleno y línea de puntos · `minimal` línea lisa sin punto
+	 * `line` punto hueco y línea que se desvanece - `dash` punto lleno y línea de puntos - `minimal` línea lisa sin punto
 	 * y burbuja solo con el valor.
 	 * @default "line"
 	 */
@@ -24,6 +24,7 @@ export interface ChartMarkerProps {
 	 * @default true
 	 */
 	tooltip?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -2,7 +2,7 @@
 // nodos React, así que no se pueden armar en un `.astro`.
 import { Carousel } from "@jotis-me/react";
 
-export default function CarouselStripTest() {
+export function CarouselStripTest() {
 	return (
 		<Carousel
 			type="strip"

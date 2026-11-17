@@ -6,6 +6,7 @@ import { Rating } from "./Rating.js";
 export interface TestimonialProps {
 	/** La cita, sin comillas: las pone el componente. */
 	quote?: ReactNode;
+	/** Who gave the testimonial. */
 	name: ReactNode;
 	/** Cargo y empresa: «Diseñadora, Capas». */
 	role?: ReactNode;
@@ -15,14 +16,17 @@ export interface TestimonialProps {
 	rating?: number;
 	/** La foto del fondo (un nodo; si es decorativa, con \`alt=""\`). */
 	image?: ReactNode;
-	/** \`floating\` el panel separado de los bordes y con radio · \`full-width\` a todo el ancho. @default "floating" */
+	/** \`floating\` el panel separado de los bordes y con radio - \`full-width\` a todo el ancho. @default "floating" */
 	type?: "floating" | "full-width";
-	/** \`sm\` texto y estrellas pequeños · \`md\` la cita grande. @default "md" */
+	/** \`sm\` texto y estrellas pequeños - \`md\` la cita grande. @default "md" */
 	size?: "sm" | "md";
 	/** Con ellas, las flechas para pasar de testimonio (en un carrusel propio). */
 	onPrevious?: () => void;
+	/** Called when the next arrow is pressed. */
 	onNext?: () => void;
+	/** Accessible names of the arrows, to translate. */
 	labels?: { previous?: string; next?: string };
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

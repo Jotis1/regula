@@ -3,6 +3,6 @@
 // de cada página. Esta isla lo importa por nombre y el bundler solo se lleva lo que usa.
 import { CodeSnippet, type CodeSnippetProps } from "@jotis-me/react";
 
-export default function CodeSnippetIsland(props: CodeSnippetProps) {
+export function CodeSnippetIsland(props: CodeSnippetProps) {
 	return <CodeSnippet {...props} />;
 }

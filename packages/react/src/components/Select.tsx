@@ -15,28 +15,36 @@ interface SelectBaseProps extends FieldProps {
 	/** Lo que dice el campo sin nada elegido. Sin él, parte con la primera opción elegida. */
 	placeholder?: string;
 	/**
-	 * Alto: `sm` 36 · `md` 40 · `lg` 44.
+	 * Alto: `sm` 36 - `md` 40 - `lg` 44.
 	 * @default "md"
 	 */
 	size?: FieldSize;
 	/** Icono inicial, 20px en `fg-quaternary`. */
 	icon?: IconProp;
+	/** Disables the control. */
 	disabled?: boolean;
 	/** Nombre del campo al enviar el formulario. */
 	name?: string;
+	/** Id of the `<form>` the control belongs to. */
 	form?: string;
+	/** Hint for the browser's autofill. */
 	autoComplete?: string;
 	/** Nombre accesible si no hay `label` visible. */
 	"aria-label"?: string;
 	/** Abierto de inicio, para vistas previas. */
 	defaultOpen?: boolean;
+	/** Id of the control, for a `<label htmlFor>` to point at it. */
 	id?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
 export interface SingleSelectProps extends SelectBaseProps {
+	/** `default`: pick one option. */
 	type?: "default";
+	/** Selected option (controlled). */
 	value?: string;
+	/** Option selected at the start (uncontrolled). */
 	defaultValue?: string;
 	/** Recibe el valor de la opción elegida (no el evento). */
 	onChange?: (value: string) => void;
@@ -52,7 +60,9 @@ export interface SingleSelectProps extends SelectBaseProps {
 export interface TagsSelectProps extends SelectBaseProps {
 	/** Varias opciones elegidas, que el campo enseña como etiquetas. Con buscador dentro de la lista. */
 	type: "tags";
+	/** Selected options (controlled). */
 	value?: string[];
+	/** Options selected at the start (uncontrolled). */
 	defaultValue?: string[];
 	/** Recibe los valores elegidos. */
 	onChange?: (values: string[]) => void;

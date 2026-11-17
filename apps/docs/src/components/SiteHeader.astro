@@ -7,11 +7,11 @@
 // derecha van una vez por versión; la búsqueda solo responde en la que se ve. El icono va en la variante Claro en
 // el tema claro, como pide la guía dentro de una interfaz clara, y en la principal en el oscuro (design §9).
 import { AppIcon, HeaderNav } from "@jotis-me/react";
+import { SiteSearch } from "../features/search/SiteSearch";
 import { SECTIONS, sectionOf } from "../lib/catalog";
-import SiteSearch from "../search/SiteSearch";
-import MobileMenu from "./MobileMenu";
+import { MobileMenu } from "./MobileMenu";
 import SideNav from "./SideNav.astro";
-import ThemeMenu from "./ThemeMenu";
+import { ThemeMenu } from "./ThemeMenu";
 
 const current = sectionOf(Astro.url.pathname);
 const items = SECTIONS.map((s) => ({ label: s.label, href: s.href, current: current === s.id }));

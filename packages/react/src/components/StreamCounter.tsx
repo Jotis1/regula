@@ -4,6 +4,7 @@ import { formatNumber } from "../internal/format.js";
 import { STREAM_ROOT, type StreamMotion, streamMotion, TABULAR } from "../internal/stream.js";
 
 export interface StreamCounterItem {
+	/** What the counter measures. */
 	label: ReactNode;
 	/** Entero de 0 o más; cualquier otro valor se pinta como 0. */
 	value: number;
@@ -16,6 +17,7 @@ export interface StreamCounterProps {
 	width?: number | string;
 	/** Entrada y salida de la tarjeta: `enter` en 250 ms, `exit` en 200 ms. Con menos movimiento, solo fundido. */
 	state?: StreamMotion;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -25,7 +27,7 @@ const MAX_ITEMS = SLOTS.length;
 
 const safe = (n: number) => (Number.isInteger(n) && n >= 0 ? n : 0);
 
-/** Contadores del directo («Muertes 37 · Sustos 12») en una fila, siempre en oscuro. */
+/** Contadores del directo («Muertes 37 - Sustos 12») en una fila, siempre en oscuro. */
 export function StreamCounter({ items, width, state, className }: StreamCounterProps) {
 	return (
 		<dl

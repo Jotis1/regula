@@ -12,6 +12,7 @@ export interface CamFrameProps {
 	width?: number | string;
 	/** Añade el punto verde y la palabra "En directo": nunca solo el color. */
 	live?: boolean;
+	/** The streamer's name, shown on the frame. */
 	name?: ReactNode;
 	/** Pronombres o cargo, junto al nombre. */
 	role?: ReactNode;
@@ -19,7 +20,9 @@ export interface CamFrameProps {
 	children?: ReactNode;
 	/** Sustituye a "En directo" (ampliación sobre la guía). */
 	liveLabel?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
+	/** Inline styles, merged with the component's own. */
 	style?: CSSProperties;
 }
 

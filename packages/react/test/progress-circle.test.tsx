@@ -33,7 +33,7 @@ describe("ProgressCircle", () => {
 		expect(a?.getAttribute("transform")).toBe("rotate(-90 120 120)");
 	});
 
-	it("los valores fuera de 0–100 se recortan y el 0 no deja un punto", () => {
+	it("los valores fuera de 0-100 se recortan y el 0 no deja un punto", () => {
 		const { container, rerender } = render(<ProgressCircle value={140} aria-label="x" />);
 		expect(arc(container)?.getAttribute("stroke-dasharray")).toBe("100 100");
 		expect(screen.getByRole("progressbar").getAttribute("aria-valuenow")).toBe("100");

@@ -5,7 +5,7 @@ description: "Baldosa con un icono y su nombre, para elegirlo de una rejilla de 
 interactive: true
 ---
 
-**Props.** `icon` (componente de `@untitledui/icons` o nodo), `label` (el nombre), `selected`, `onSelect`, `href`, `size` (`16` · `20` · `24`), `className`.
+**Props.** `icon` (componente de `@untitledui/icons` o nodo), `label` (el nombre), `selected`, `onSelect`, `href`, `size` (`16` - `20` - `24`), `className`.
 
 **Cuándo.** En una rejilla de iconos donde se elige uno (un selector de iconos, el catálogo de la web). Con `onSelect` es un botón; con `href`, un enlace a la página del icono.
 

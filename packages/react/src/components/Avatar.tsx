@@ -13,8 +13,9 @@ export interface AvatarProps {
 	src?: string;
 	/** Texto alternativo de la foto, o nombre accesible de las iniciales. */
 	alt?: string;
+	/** Letters shown when there is no image (up to two). */
 	initials?: string;
-	/** Diámetro: `xs` 24 · `sm` 32 · `md` 40 · `lg` 48 · `xl` 56 · `2xl` 64. */
+	/** Diámetro: `xs` 24 - `sm` 32 - `md` 40 - `lg` 48 - `xl` 56 - `2xl` 64. */
 	size?: AvatarSize;
 	/** Punto de estado abajo a la derecha. */
 	status?: AvatarStatus;
@@ -24,7 +25,7 @@ export interface AvatarProps {
 	ring?: boolean;
 	/**
 	 * Insignia en la esquina, en el sitio del punto de estado (si pasas las dos, se pinta la insignia):
-	 * `verified` sello azul con tick · `count` número sobre rojo (`count`) · `company` logo de la empresa
+	 * `verified` sello azul con tick - `count` número sobre rojo (`count`) - `company` logo de la empresa
 	 * (`company`). Mide 10 a 20px según `size` y sobresale 2px.
 	 */
 	badge?: AvatarBadge;
@@ -40,6 +41,7 @@ export interface AvatarProps {
 	 * empresa sin `badgeLabel` es decorativo.
 	 */
 	badgeLabel?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

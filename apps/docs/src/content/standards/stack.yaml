@@ -1,0 +1,276 @@
+prefix: STK
+title: Stack y herramientas
+description: Con qué se construye un proyecto de la suite y cómo se configura, para que todos arranquen igual.
+order: 3
+rules:
+    - id: STK-001
+      title: Las apps se construyen con Next.js o con Astro
+      level: must
+      appliesTo: app
+      statement: >-
+          Una app de la suite usa Next.js o Astro como framework. Si es de contenido o de documentación, Astro; si es una
+          aplicación con mucho estado en el cliente, Next.js. No hay un tercer framework.
+      rationale: >-
+          Los paquetes `@jotis-me/*` se prueban contra los dos y los ejemplos de Regula son uno de cada. Con un solo par
+          de frameworks, cualquier persona o agente que llegue a un proyecto sabe dónde está cada cosa.
+      examples:
+          good:
+              - caption: Una app de Astro con la isla de React
+                lang: json
+                code: |-
+                    {
+                      "name": "me.jotis.vinculum",
+                      "dependencies": { "astro": "^7", "@astrojs/react": "^7.1.2", "react": "^19.3.1" }
+                    }
+          bad:
+              - caption: Una app con otro empaquetador y otro enrutador
+                lang: json
+                code: |-
+                    {
+                      "name": "me.jotis.vinculum",
+                      "dependencies": { "vite": "^7", "react-router": "^7", "react": "^19.3.1" }
+                    }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STK-002
+      title: Bun es el gestor de paquetes y el runtime de los scripts
+      level: must
+      appliesTo: all
+      statement: >-
+          Las dependencias se instalan con Bun y los scripts del repo se ejecutan con Bun. `packageManager` fija la versión
+          exacta (`bun@1.4.3`), el único lockfile es `bun.lock` y el CI instala la versión que dice `packageManager` con
+          `bun-version-file: package.json`.
+      rationale: >-
+          Cada gestor resuelve las versiones a su manera: con dos lockfiles, el repo instala una cosa en local y otra en el
+          CI. Fijar la versión de Bun en un solo sitio evita que el CI y los equipos vayan cada uno por su lado.
+      examples:
+          good:
+              - caption: La versión exacta en el package.json y el CI que la lee
+                lang: yaml
+                code: |-
+                    # package.json: "packageManager": "bun@1.4.3"
+                    - uses: oven-sh/setup-bun@v2
+                      with:
+                          bun-version-file: package.json
+          bad:
+              - caption: Un rango de versiones y dos lockfiles
+                lang: text
+                code: |-
+                    "packageManager": "bun@^1.4"
+
+                    bun.lock
+                    package-lock.json
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STK-003
+      title: Biome hace el lint y el formato, sin ESLint ni Prettier
+      level: must
+      appliesTo: all
+      statement: >-
+          Un solo programa lee y formatea el código: Biome. El proyecto no depende de ESLint ni de Prettier y no tiene sus
+          archivos de configuración.
+      rationale: >-
+          Dos herramientas se pisan: una formatea de una manera, la otra avisa de otra, y cada una pide su propia
+          configuración. Biome hace las dos cosas, es más rápido y deja una sola fuente de reglas.
+      examples:
+          good:
+              - caption: Solo Biome
+                lang: json
+                code: |-
+                    "devDependencies": { "@biomejs/biome": "^2.6.4" }
+          bad:
+              - caption: Biome junto a ESLint y Prettier
+                lang: json
+                code: |-
+                    "devDependencies": {
+                      "@biomejs/biome": "^2.6.4",
+                      "eslint": "^9",
+                      "prettier": "^3"
+                    }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STK-004
+      title: biome.json lleva el bloque de la guía, sin reglas en warn
+      level: must
+      appliesTo: all
+      statement: >-
+          `biome.json` añade a lo que genera `biome init` el bloque de la guía: el preset `recommended`, las reglas de las
+          normas de código (`noExplicitAny`, `noTsIgnore`, `noConsole`, `noEnum`, `noNonNullAssertion`, `noDefaultExport`,
+          `useImportType`, `useFilenamingConvention`, `noReExportAll` y `noNamespaceImport`), el formato de la suite
+          (sangría con tabuladores de ancho 4, líneas de hasta 110, comillas dobles y punto y coma), los imports ordenados
+          y el `.gitignore` como lista de ignorados. Una regla está en `error` o en `off`, nunca en `warn`, y el CI ejecuta
+          `biome ci --error-on-warnings .`.
+      rationale: >-
+          `biome ci` termina en verde con avisos, así que una regla en `warn` no obliga a nada: alguien la ve, la ignora y
+          acaba habiendo cientos. Con `error` o `off` se decide si una regla vale o no, y el CI lo cumple.
+      examples:
+          good:
+              - caption: El bloque completo, con sus excepciones de framework
+                lang: json
+                code: |-
+                    {
+                      "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+                      "formatter": { "indentStyle": "tab", "indentWidth": 4, "lineWidth": 110 },
+                      "linter": {
+                        "rules": {
+                          "preset": "recommended",
+                          "suspicious": {
+                            "noExplicitAny": "error",
+                            "noTsIgnore": "error",
+                            "noConsole": { "level": "error", "options": { "allow": ["error", "warn"] } }
+                          },
+                          "style": {
+                            "noEnum": "error",
+                            "noNonNullAssertion": "error",
+                            "noDefaultExport": "error",
+                            "useImportType": "error",
+                            "useFilenamingConvention": {
+                              "level": "error",
+                              "options": { "requireAscii": true, "filenameCases": ["kebab-case"] }
+                            }
+                          },
+                          "performance": { "noReExportAll": "error", "noNamespaceImport": "error" }
+                        }
+                      },
+                      "assist": { "actions": { "source": { "organizeImports": "on" } } },
+                      "javascript": { "formatter": { "quoteStyle": "double", "semicolons": "always" } },
+                      "overrides": [
+                        {
+                          "includes": [
+                            "**/app/**/{page,layout,template,loading,error,global-error,not-found,default,opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{ts,tsx}",
+                            "**/*.config.{ts,mts,js,mjs}"
+                          ],
+                          "linter": { "rules": { "style": { "noDefaultExport": "off" } } }
+                        },
+                        {
+                          "includes": ["**/*.tsx", "**/*.astro"],
+                          "linter": {
+                            "rules": {
+                              "style": {
+                                "useFilenamingConvention": {
+                                  "level": "error",
+                                  "options": { "requireAscii": true, "strictCase": false, "filenameCases": ["PascalCase", "kebab-case"] }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "includes": ["**/scripts/**", "**/test/**", "**/e2e/**", "**/*.config.{ts,mts,js,mjs}"],
+                          "linter": { "rules": { "suspicious": { "noConsole": "off" } } }
+                        }
+                      ]
+                    }
+              - caption: El paso del CI
+                lang: yaml
+                code: |-
+                    - name: Biome
+                      run: bunx biome ci --error-on-warnings .
+          bad:
+              - caption: Una regla en warn
+                lang: json
+                code: |-
+                    "suspicious": { "noExplicitAny": "warn" }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STK-005
+      title: build, typecheck y test se ejecutan con Turbo
+      level: must
+      appliesTo: all
+      statement: >-
+          Las tareas que recorren todos los workspaces (`build`, `typecheck` y `test`) las ejecuta Turbo, y los scripts de
+          la raíz con esos nombres llaman a `turbo run`.
+      rationale: >-
+          Turbo sabe qué depende de qué, ejecuta en paralelo y guarda en caché lo que no ha cambiado, también en el CI.
+          Un script que recorre los workspaces a mano pierde todo eso y se salta el orden de dependencias.
+      examples:
+          good:
+              - caption: Los scripts de la raíz
+                lang: json
+                code: |-
+                    "scripts": {
+                      "build": "turbo run build",
+                      "typecheck": "turbo run typecheck",
+                      "test": "turbo run test"
+                    }
+          bad:
+              - caption: Un test que no pasa por Turbo
+                lang: json
+                code: |-
+                    "scripts": { "test": "bun test" }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STK-006
+      title: Las apps declaran la versión de Node con la que se despliegan
+      level: should
+      appliesTo: app
+      statement: >-
+          Una app desplegada en Vercel declara en `engines.node` la versión mayor de Node con la que se despliega (`24.x`).
+      rationale: >-
+          Sin ella, la plataforma elige la versión por defecto y un cambio suyo puede romper un despliegue que en local
+          funcionaba. Con `engines.node`, el entorno de ejecución es el que se probó.
+      examples:
+          good:
+              - caption: La versión mayor, como en la web de Regula
+                lang: json
+                code: |-
+                    "engines": { "node": "24.x" }
+          bad:
+              - caption: Una app con vercel.json y sin la versión
+                lang: json
+                code: |-
+                    {
+                      "name": "me.jotis.vinculum",
+                      "scripts": { "build": "astro build" }
+                    }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STK-007
+      title: Dependabot revisa las dependencias cada semana
+      level: must
+      appliesTo: all
+      statement: >-
+          `.github/dependabot.yml` vigila las dependencias de Bun y las acciones de GitHub cada semana. Las versiones menores
+          y los parches van agrupados en una PR por ecosistema, las mayores llegan sueltas y los commits llevan el prefijo
+          `build` con el ámbito `deps`.
+      rationale: >-
+          Las dependencias que nadie actualiza acumulan avisos de seguridad y saltos de versión grandes. Una PR semanal y
+          agrupada se revisa en minutos; las mayores van aparte porque cada una puede romper algo.
+      examples:
+          good:
+              - caption: Un ecosistema, semanal y agrupado
+                lang: yaml
+                code: |-
+                    version: 2
+                    updates:
+                      - package-ecosystem: bun
+                        directory: /
+                        schedule: { interval: weekly }
+                        groups:
+                          minor-patch: { update-types: [minor, patch] }
+                        commit-message: { prefix: build, include: scope }
+          bad:
+              - caption: Cada día, sin agrupar y con otro prefijo
+                lang: yaml
+                code: |-
+                    version: 2
+                    updates:
+                      - package-ecosystem: bun
+                        directory: /
+                        schedule: { interval: daily }
+                        commit-message: { prefix: chore }
+      verification:
+          kind: ci
+          check: Normas de desarrollo

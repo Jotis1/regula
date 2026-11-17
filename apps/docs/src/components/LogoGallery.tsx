@@ -129,7 +129,7 @@ function chosenOf(logo: LogoEntry, svg: string | null): Chosen {
 	};
 }
 
-export default function LogoGallery({ logos }: { logos: LogoEntry[] }) {
+export function LogoGallery({ logos }: { logos: LogoEntry[] }) {
 	const [query, setQuery] = useState("");
 	const [filter, setFilter] = useState<Filter>("all");
 	const [selected, setSelected] = useState(

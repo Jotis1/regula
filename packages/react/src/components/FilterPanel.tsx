@@ -18,12 +18,15 @@ import { isComplete } from "./FilterMenu.js";
 export interface FilterPanelProps {
 	/** Los campos por los que se filtra; con `options`, su valor se elige en una lista con casillas. */
 	fields: FilterField[];
+	/** The ways a field can be compared, each with its value and its text. */
 	operators: { value: string; label: string }[];
 	/** Los filtros de partida (los aplicados). @default [] */
 	defaultValue?: FilterRule[];
 	/** Recibe los filtros completos al pulsar «Aplicar filtros», o `[]` con «Limpiar todo». */
 	onApply?: (rules: FilterRule[]) => void;
+	/** Texts for the panel, to translate. */
 	labels?: Partial<FilterLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

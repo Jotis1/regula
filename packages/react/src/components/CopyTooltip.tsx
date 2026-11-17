@@ -34,11 +34,13 @@ export interface CopyTooltipProps {
 }
 
 interface Placed {
+	/** Whether the bubble has been measured and positioned. */
 	ok: boolean;
 	/** Centro horizontal del elemento pulsado. */
 	x: number;
 	/** Borde de la burbuja que toca al elemento: su arriba (burbuja debajo) o su abajo (burbuja encima). */
 	y: number;
+	/** Whether the bubble sits below the element instead of above it. */
 	below: boolean;
 	/** Cuánto se ha movido la burbuja para no salirse de la ventana: la flecha sigue apuntando al elemento. */
 	shift: number;

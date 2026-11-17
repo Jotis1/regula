@@ -37,6 +37,7 @@ const TRIGGER = (
 		hierarchy="secondary"
 		iconTrailing={ChevronDown}
 		iconLeading={
+			// biome-ignore lint/complexity/noUselessFragments: IconProp takes one element, so the mapped icons need a wrapper
 			<>
 				{THEME_OPTIONS.map((o) => {
 					const Icon = ICONS[o.value];
@@ -55,7 +56,7 @@ const TRIGGER = (
 	</Button>
 );
 
-export default function ThemeMenu() {
+export function ThemeMenu() {
 	// Hasta hidratar no se sabe lo elegido (lo dice la CSS); el menú solo se abre ya hidratado
 	const [choice, setChoice] = useState<ThemeChoice>("sistema");
 

@@ -27,9 +27,11 @@ export interface StreamStatusProps {
 	viewers?: number;
 	/** Tiempo en emisión como texto ("2:14:05"); solo en `live`. */
 	uptime?: string;
+	/** The game or category being streamed. */
 	category?: ReactNode;
 	/** Sustituye los textos (ampliación sobre la guía). */
 	labels?: Partial<StreamStatusLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -18,6 +18,7 @@ export interface LinkCardProps {
 	 * @default "div"
 	 */
 	as?: "div" | "li";
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -5,7 +5,7 @@ description: "Foto de perfil grande, con filo blanco y sombra, para cabeceras de
 interactive: false
 ---
 
-**Props.** `src` (foto), `alt` (nombre de la persona), `initials`, `size` (`sm` 72 · `md` 96, por defecto · `lg` 160), `verified` (sello azul de verificado) y `verifiedLabel`.
+**Props.** `src` (foto), `alt` (nombre de la persona), `initials`, `size` (`sm` 72 - `md` 96, por defecto - `lg` 160), `verified` (sello azul de verificado) y `verifiedLabel`.
 
 **Visual.** La del Figma (`Avatar profile photo`, `1217:108477`): un aro `bg-primary` con filo `border-secondary_alt` y, dentro, el círculo con la foto, las iniciales en Bricolage Grotesque (`display-xs`, `display-md` y `display-xl` según el tamaño) sobre `bg-tertiary` o el icono de usuario, con la sombra `shadow-2xl`. El sello es el mismo de `Avatar`.
 

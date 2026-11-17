@@ -32,7 +32,7 @@ async function streamTransitions(page: Page) {
 			el.remove();
 			return { entering, leaving, end };
 		},
-		[streamMotion("enter") ?? "", streamMotion("exit") ?? ""],
+		[streamMotion("enter") ?? "", streamMotion("exit") ?? ""] satisfies [string, string],
 	);
 }
 

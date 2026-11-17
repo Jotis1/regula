@@ -1,0 +1,238 @@
+prefix: STR
+title: Estructura
+description: Dónde va cada cosa en un repo de la suite, para que cualquier proyecto se navegue igual.
+order: 4
+rules:
+    - id: STR-001
+      title: El monorepo se reparte en apps, packages, examples y scripts
+      level: must
+      appliesTo: all
+      statement: >-
+          Cada workspace de un monorepo vive en una de cuatro carpetas: `apps/` (lo que se despliega), `packages/` (lo
+          que se publica o se comparte), `examples/` (ejemplos de uso) y `scripts/` (las herramientas del repo). La
+          configuración de las herramientas (`biome.json`, `turbo.json`, `tsconfig.base.json`) va en la raíz.
+      rationale: >-
+          Con cuatro carpetas fijas se sabe qué es cada workspace por su ruta, sin abrirlo: lo de `apps/` se despliega y
+          lo de `packages/` se versiona.
+      examples:
+          good:
+              - caption: Los workspaces en sus cuatro carpetas
+                lang: json
+                code: |-
+                    { "workspaces": ["apps/*", "packages/*", "examples/*", "scripts/artifact"] }
+          bad:
+              - caption: Una app suelta en la raíz
+                lang: json
+                code: |-
+                    { "workspaces": ["packages/*", "web"] }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STR-002
+      title: Cada workspace tiene src, test, e2e y scripts, sin tests en src
+      level: must
+      appliesTo: all
+      statement: >-
+          Un workspace, o la raíz de un repo de una sola app, guarda en `src/` lo que se publica o se despliega, en
+          `test/` los tests unitarios, en `e2e/` los de navegador y en `scripts/` lo que no se publica (generadores,
+          capturas, mediciones). Su configuración va en su raíz. Dentro de `src/` no hay tests.
+      rationale: >-
+          Así `src/` es exactamente lo que llega a quien usa el paquete o la app, y los tests se encuentran siempre en
+          el mismo sitio, sean del proyecto que sean.
+      examples:
+          good:
+              - caption: El test junto a src, no dentro
+                lang: text
+                code: |-
+                    packages/react/src/components/Button.tsx
+                    packages/react/test/button.test.tsx
+                    packages/react/e2e/button.spec.ts
+          bad:
+              - caption: El test dentro de src
+                lang: text
+                code: |-
+                    packages/react/src/components/Button.tsx
+                    packages/react/src/components/Button.test.tsx
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STR-003
+      title: El código de una app va en src
+      level: must
+      appliesTo: app
+      statement: >-
+          Una app de Next tiene sus rutas en `src/app/`, que Next admite de serie. Una de Astro usa sus carpetas de
+          siempre: `src/pages/`, `src/layouts/`, `src/content/` y `src/assets/`. Los archivos estáticos van en
+          `public/`, en la raíz de la app.
+      rationale: >-
+          Con el código en `src/` y la configuración fuera, una app de Next y una de Astro se recorren igual.
+      examples:
+          good:
+              - caption: Next con src/app
+                lang: text
+                code: |-
+                    apps/shop/next.config.ts
+                    apps/shop/public/favicon.svg
+                    apps/shop/src/app/layout.tsx
+                    apps/shop/src/app/page.tsx
+          bad:
+              - caption: Next con app en la raíz, junto a la configuración
+                lang: text
+                code: |-
+                    apps/shop/next.config.ts
+                    apps/shop/app/layout.tsx
+                    apps/shop/app/page.tsx
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STR-004
+      title: En el src de una app solo hay carpetas del framework, compartidas por tipo y features
+      level: must
+      appliesTo: app
+      statement: >-
+          Las carpetas de primer nivel de `src/` son de tres clases: las del framework (`app/` en Next; `pages/`,
+          `layouts/`, `content/` y `assets/` en Astro), las compartidas por tipo (`components/`, `hooks/`, `lib/`,
+          `styles/` y `data/`) y `features/`, con una carpeta por funcionalidad. Los archivos sueltos que pide el
+          framework (`content.config.ts`, `middleware.ts`) también van en la raíz de `src/`.
+      rationale: >-
+          Es la mezcla más extendida: ni React, ni Next, ni Astro imponen una, y la que usan proyectos como
+          bulletproof-react separa lo compartido de lo propio de cada funcionalidad. Con la lista cerrada, una carpeta
+          nueva en `src/` es una decisión que se ve en la revisión.
+      examples:
+          good:
+              - caption: Lo compartido por tipo y cada funcionalidad en features
+                lang: text
+                code: |-
+                    src/pages/
+                    src/layouts/
+                    src/components/
+                    src/lib/
+                    src/features/search/
+                    src/features/mcp/
+          bad:
+              - caption: Una funcionalidad suelta entre las carpetas por tipo
+                lang: text
+                code: |-
+                    src/components/
+                    src/lib/
+                    src/search/
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: STR-005
+      title: Lo de una sola funcionalidad vive en su carpeta
+      level: must
+      appliesTo: app
+      statement: >-
+          Cada funcionalidad con código propio tiene su carpeta `src/features/<nombre>/`, organizada por dentro con las
+          mismas carpetas por tipo (`components/`, `lib/`…). Lo que usa una sola funcionalidad va en su carpeta; lo que
+          usan dos o más sube a la carpeta compartida. Una funcionalidad no importa de otra.
+      rationale: >-
+          Borrar o cambiar una funcionalidad no debería romper otra. Si dos la comparten, el código compartido está en
+          un sitio que lo dice.
+      examples:
+          good:
+              - caption: Un helper que usan dos funcionalidades, en lib
+                lang: ts
+                code: |-
+                    // src/features/mcp/rank.ts
+                    import { fold } from "../../lib/fold";
+          bad:
+              - caption: Una funcionalidad que importa de otra
+                lang: ts
+                code: |-
+                    // src/features/mcp/rank.ts
+                    import { fold } from "../search/entries";
+      verification:
+          kind: review
+          review: >-
+              Que lo nuevo de una sola funcionalidad esté en su carpeta, que lo que pasa a usarse en dos suba a la
+              compartida y que ninguna funcionalidad importe de otra.
+
+    - id: STR-006
+      title: Las entradas de un paquete en la raíz de src, lo privado en internal
+      level: must
+      appliesTo: package
+      statement: >-
+          Cada entrada de `exports` tiene su archivo o su carpeta en la raíz de `src/` (`src/index.ts`,
+          `src/app-icon/`), junto a los módulos que esas entradas reexportan. Lo que ningún export alcanza va en
+          `src/internal/`.
+      rationale: >-
+          Con la raíz de `src/` se ve la API del paquete. Lo que está en `internal/` se puede cambiar sin avisar a
+          nadie, y DOC-001 no le pide JSDoc.
+      examples:
+          good:
+              - caption: Las entradas en la raíz y lo privado en internal
+                lang: text
+                code: |-
+                    src/index.ts
+                    src/app-icon/index.ts
+                    src/components/Button.tsx
+                    src/internal/strings.ts
+          bad:
+              - caption: Un helper privado mezclado con las entradas
+                lang: text
+                code: |-
+                    src/index.ts
+                    src/format-price.ts
+      verification:
+          kind: review
+          review: Que la raíz de `src/` tenga solo entradas y lo que reexportan, y que lo nuevo privado vaya en `internal/`.
+
+    - id: STR-007
+      title: Un componente por archivo, con el nombre de su export
+      level: should
+      appliesTo: all
+      statement: >-
+          Cada componente tiene su archivo, y el archivo se llama como el componente que exporta: `Button.tsx`
+          exporta `Button`. Las piezas privadas que solo usa ese componente pueden ir en el mismo archivo.
+      rationale: >-
+          Buscar un componente es buscar su archivo, sin abrir nada. Es DEBERÍA porque hay excepciones razonables,
+          como un componente con dos variantes pequeñas que no se usan por separado.
+      examples:
+          good:
+              - caption: Un archivo para cada uno
+                lang: text
+                code: |-
+                    src/components/Button.tsx
+                    src/components/IconButton.tsx
+          bad:
+              - caption: Dos componentes públicos en un archivo con otro nombre
+                lang: text
+                code: |-
+                    src/components/Buttons.tsx   (Button e IconButton)
+      verification:
+          kind: review
+          review: Que cada componente nuevo esté en su archivo y que el nombre del archivo sea el de su export.
+
+    - id: STR-008
+      title: Ni builds ni cachés en Git
+      level: must
+      appliesTo: all
+      statement: >-
+          La salida del build y las cachés de las herramientas (`dist/`, `.astro/`, `.next/`, `.turbo/`,
+          `*.tsbuildinfo`) están en el `.gitignore` y fuera de Git.
+      rationale: >-
+          Cambian en cada build, llenan las PR de ruido y pueden dejar el repo con una versión vieja de algo generado.
+      examples:
+          good:
+              - caption: Las cachés en el .gitignore
+                lang: text
+                code: |-
+                    dist/
+                    .astro/
+                    .next/
+                    .turbo/
+                    *.tsbuildinfo
+          bad:
+              - caption: La caché de tsc en Git
+                lang: text
+                code: |-
+                    examples/next/tsconfig.tsbuildinfo
+      verification:
+          kind: ci
+          check: Normas de desarrollo

@@ -32,6 +32,7 @@ export interface SectionHeaderProps {
 	buttonGroup?: ReactNode;
 	/** Menú de la sección a la derecha del todo, como un `Button` de tres puntos o un `Dropdown`. */
 	menu?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

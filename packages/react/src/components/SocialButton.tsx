@@ -17,12 +17,12 @@ interface SocialButtonBase {
 	 */
 	logo: ReactNode;
 	/**
-	 * `brand` fondo de la marca · `color` blanco con el logo en color · `gray` blanco con el logo en gris.
+	 * `brand` fondo de la marca - `color` blanco con el logo en color - `gray` blanco con el logo en gris.
 	 * @default "brand"
 	 */
 	theme?: SocialButtonTheme;
 	/**
-	 * Alto: `md` 40 (logo 16) · `lg` 44 (logo 20).
+	 * Alto: `md` 40 (logo 16) - `lg` 44 (logo 20).
 	 * @default "md"
 	 */
 	size?: SocialButtonSize;
@@ -30,6 +30,7 @@ interface SocialButtonBase {
 	iconOnly?: boolean;
 	/** Texto en lugar del de por defecto («Entrar con Google»); con `iconOnly`, el nombre para lectores. */
 	children?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -92,11 +93,9 @@ export function SocialButton({
 	);
 	const common = { hierarchy: brand ? "primary" : "secondary", size, className: classes } as const;
 	return iconOnly ? (
-		// biome-ignore lint/suspicious/noExplicitAny: las props de botón o de enlace pasan tal cual a Button
-		<Button {...(rest as any)} {...common} iconOnly={mark} label={text} />
+		<Button {...rest} {...common} iconOnly={mark} label={text} />
 	) : (
-		// biome-ignore lint/suspicious/noExplicitAny: las props de botón o de enlace pasan tal cual a Button
-		<Button {...(rest as any)} {...common} iconLeading={mark}>
+		<Button {...rest} {...common} iconLeading={mark}>
 			{text}
 		</Button>
 	);

@@ -83,7 +83,7 @@ export const webDeMarketing: Record<string, Start> = {
 			department: "Diseño",
 			location: "Remoto, España",
 			employment: "Jornada completa",
-			salary: "40.000–50.000 €",
+			salary: "40.000-50.000 €",
 		},
 	},
 	Accordion: {

@@ -9,7 +9,7 @@ import favicon32 from "@jotis-me/assets/app-icons/regula-favicon-32.png?no-inlin
 import bricolage from "@jotis-me/tokens/fonts/BricolageGrotesque-Variable-latin.woff2?url";
 import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
 import geistMono from "@jotis-me/tokens/fonts/GeistMono-Variable.woff2?url";
-import CopyTooltip from "../components/CopyTooltipIsland";
+import { CopyTooltipIsland as CopyTooltip } from "../components/CopyTooltipIsland";
 import SideNav from "../components/SideNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
@@ -55,7 +55,7 @@ const hasSidebar = sidebar ?? !(noindex || sectionOf(current) === "icons");
 		<link rel="preload" href={geist} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={geistMono} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={bricolage} as="font" type="font/woff2" crossorigin />
-		<title>{title === "Regula" ? "Regula · jotis.me" : `${title} · Regula`}</title>
+		<title>{title === "Regula" ? "Regula - jotis.me" : `${title} - Regula`}</title>
 		<meta name="description" content={description} />
 		{noindex && <meta name="robots" content="noindex" />}
 		<slot name="head" />

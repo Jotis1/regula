@@ -15,12 +15,12 @@ interface Base {
 	/** Nombre accesible y texto del tooltip. Obligatorio: el botón no lleva texto visible. */
 	label: string;
 	/**
-	 * `secondary` con borde y sombra · `tertiary` sin fondo hasta pasar por encima.
+	 * `secondary` con borde y sombra - `tertiary` sin fondo hasta pasar por encima.
 	 * @default "secondary"
 	 */
 	hierarchy?: ButtonUtilityHierarchy;
 	/**
-	 * `xs` icono de 16 · `sm` icono de 20, los dos con 6px de relleno.
+	 * `xs` icono de 16 - `sm` icono de 20, los dos con 6px de relleno.
 	 * @default "sm"
 	 */
 	size?: ButtonUtilitySize;
@@ -36,6 +36,7 @@ interface Base {
 	tooltipPlacement?: BubbleSide;
 	/** Fuerza el tooltip visible (vistas previas y capturas). */
 	tooltipOpen?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

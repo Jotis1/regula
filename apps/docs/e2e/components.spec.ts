@@ -319,7 +319,7 @@ test("/components/ lista todos los componentes del catálogo, cada uno enlazado 
 // El índice (redesign-docs-site-v2, design D5 y D8): mapa de grupos, buscador, desplegable de grupo y estados
 const visibleCards = (page: Page) => page.locator("[data-group] > li:visible > a");
 
-test("/components/ · Mapa de grupos: antes de las cards hay un enlace por cada uno de los 16 grupos, con su frase y su recuento", async ({
+test("/components/ - Mapa de grupos: antes de las cards hay un enlace por cada uno de los 16 grupos, con su frase y su recuento", async ({
 	page,
 }) => {
 	await page.goto("/components/");
@@ -347,7 +347,7 @@ test("/components/ · Mapa de grupos: antes de las cards hay un enlace por cada 
 	await expect(page.locator("#graficas")).toBeInViewport();
 });
 
-test("/components/ · Buscar por lo que hace: «fecha» deja DatePicker y CalendarView y anuncia cuántos quedan", async ({
+test("/components/ - Buscar por lo que hace: «fecha» deja DatePicker y CalendarView y anuncia cuántos quedan", async ({
 	page,
 }) => {
 	await page.goto("/components/");
@@ -381,7 +381,7 @@ test("/components/ · Buscar por lo que hace: «fecha» deja DatePicker y Calend
 	await expect(status).toBeEmpty();
 });
 
-test("/components/ · Sin resultados en el índice: «botonn» enseña un estado vacío que lo nombra y «Limpiar búsqueda»", async ({
+test("/components/ - Sin resultados en el índice: «botonn» enseña un estado vacío que lo nombra y «Limpiar búsqueda»", async ({
 	page,
 }) => {
 	await page.goto("/components/");
@@ -442,7 +442,7 @@ test("/components/: con teclado y sin haberlo tocado antes, Enter abre el desple
 	await expect(page).toHaveURL(/#acciones$/);
 });
 
-test("/components/ · carga: cada captura lleva un Skeleton en su hueco hasta que carga su imagen", async ({
+test("/components/ - carga: cada captura lleva un Skeleton en su hueco hasta que carga su imagen", async ({
 	page,
 }) => {
 	// Las capturas no llegan hasta que se suelta la espera

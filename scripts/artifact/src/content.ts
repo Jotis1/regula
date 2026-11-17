@@ -2,8 +2,8 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { apps } from "@jotis-me/react/app-icon";
+import { CARD_HEIGHTS, DARK_PREVIEWS } from "../../../apps/docs/src/features/visual/cards";
 import { COMPONENT_GROUPS, catalogComponents, slugOf } from "../../../apps/docs/src/lib/catalog";
-import { CARD_HEIGHTS, DARK_PREVIEWS } from "../../../apps/docs/src/visual/cards";
 import { ASSETS, DOCS, REACT, REPO, TOKENS } from "./paths";
 
 export const catalog = (): string[] => catalogComponents();
@@ -26,7 +26,7 @@ export function componentReadme(name: string): string {
 export function groupLabel(name: string): string {
 	const group = COMPONENT_GROUPS.find((g) => g.components.includes(name));
 	if (!group) throw new Error(`${name} no está en ningún grupo del catálogo`);
-	return group.section === "stream" ? `Stream · ${group.label}` : group.label;
+	return group.section === "stream" ? `Stream - ${group.label}` : group.label;
 }
 
 /**

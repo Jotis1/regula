@@ -51,7 +51,7 @@ La ficha SHALL traer la descripción, la guía de uso, las props (nombre, tipo, 
 
 #### Scenario: Props de Button
 - **WHEN** se llama a `get_component` con `button`
-- **THEN** devuelve la ficha de `Button` con la prop `hierarchy` y sus valores `primary · secondary · tertiary · link-color · link-gray`, y los dos fragmentos de código
+- **THEN** devuelve la ficha de `Button` con la prop `hierarchy` y sus valores `primary - secondary - tertiary - link-color - link-gray`, y los dos fragmentos de código
 
 #### Scenario: Componente que no existe
 - **WHEN** se llama a `get_component` con `Botón`

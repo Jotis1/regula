@@ -5,7 +5,7 @@ import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 
 /** Ancho de captura: el mismo para las capturas aprobadas y para las páginas de comparación (se define con las alturas). */
-export { VIEWPORT_WIDTH } from "../../src/visual/cards";
+export { VIEWPORT_WIDTH } from "../../src/features/visual/cards";
 /** Capturas aprobadas, una por componente y tema (design D4: los 74 originales salieron de la guía). */
 export const APPROVED_DIR = join(import.meta.dirname, "approved");
 export const approvedPath = (name: string, theme: "light" | "dark", dir = APPROVED_DIR) =>
@@ -19,7 +19,7 @@ export interface Comparison {
 
 /**
  * Proporción de píxeles distintos entre dos PNG. `threshold` es la tolerancia de color por píxel
- * de pixelmatch (0–1); el antialiasing no cuenta. Si cambia el tamaño, la comparación falla entera.
+ * de pixelmatch (0-1); el antialiasing no cuenta. Si cambia el tamaño, la comparación falla entera.
  */
 export function compare(actual: Buffer, expected: Buffer, outDir?: string, label = "diff"): Comparison {
 	const a = PNG.sync.read(actual);

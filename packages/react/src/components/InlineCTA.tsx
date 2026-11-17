@@ -16,6 +16,7 @@ export type InlineCTAType =
 	| "receipt";
 
 export interface InlineCTAPlan {
+	/** The plan name. */
 	name: ReactNode;
 	/** Icono del plan, en un `FeaturedIcon` pequeño. */
 	icon?: IconProp;
@@ -23,11 +24,14 @@ export interface InlineCTAPlan {
 	price: ReactNode;
 	/** Tras el precio, como «al mes». */
 	period?: ReactNode;
+	/** A short line about the plan. */
 	description?: ReactNode;
 }
 
 export interface InlineCTAFeature {
+	/** The feature name. */
 	title: ReactNode;
+	/** A short line about the feature. */
 	description?: ReactNode;
 }
 
@@ -43,6 +47,7 @@ export interface InlineCTAPayment {
 }
 
 export interface InlineCTAFile {
+	/** The file name. */
 	name: ReactNode;
 	/** Tamaño ya escrito, como «200 KB». */
 	size?: ReactNode;
@@ -86,6 +91,7 @@ export interface InlineCTAProps {
 	payment?: InlineCTAPayment;
 	/** El archivo de `receipt`. */
 	file?: InlineCTAFile;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

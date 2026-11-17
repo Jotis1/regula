@@ -2,7 +2,7 @@
 // familia en su `section` y cada token dos veces (fila de `Table` en escritorio, tarjeta por debajo de `lg`); esto solo
 // esconde lo que no toca: elige la familia, filtra por nombre, valor o uso, anuncia el recuento y hace que la utilidad
 // de `TokenSwatch` se copie con el `CopyTooltip` de la página. Sin islas: 241 tokens no se hidratan.
-import { fold } from "../search/entries";
+import { fold } from "./fold";
 
 /** El recuento que se anuncia: «23 tokens de Texto», «1 de 23 tokens de Texto con «placeholder»». */
 export function tokenStatus(shown: number, total: number, family: string, term: string): string {

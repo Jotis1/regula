@@ -8,7 +8,9 @@ import { DynIcon } from "../internal/icon.js";
 import { defaultStrings } from "../internal/strings.js";
 
 export interface CodeSnippetTab {
+	/** The text of the tab. */
 	label: string;
+	/** The code shown while the tab is selected. */
 	code: string;
 	/** Líneas de esta pestaña que se destacan (desde 1). Mandan sobre el `highlight` del bloque. */
 	highlight?: number[];
@@ -45,6 +47,7 @@ export interface CodeSnippetProps {
 	maxHeight?: number;
 	/** Con él, aparece el botón de ampliar junto al de copiar y se llama al pulsarlo. Qué amplía lo decide quien lo usa. */
 	onExpand?: () => void;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

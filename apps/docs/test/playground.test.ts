@@ -145,7 +145,7 @@ describe("playground", () => {
 
 	it("un ajuste hidden quita el control y uno de content lo crea aunque el tipo no dé selector", () => {
 		const rows: PropRow[] = [
-			{ name: "size", type: '"sm" · "md"', required: false, description: "" },
+			{ name: "size", type: '"sm" - "md"', required: false, description: "" },
 			{ name: "avatar", type: "ReactNode", required: false, description: "" },
 		];
 		const options: ContentOption[] = [{ label: "Iniciales", value: "AD", code: '"AD"' }];
@@ -269,7 +269,7 @@ describe("playground", () => {
 
 	it("un selector con false o números convierte el texto al valor y no escribe el valor por defecto", () => {
 		const rows: PropRow[] = [
-			{ name: "digits", type: "4 · 6", required: false, defaultValue: "6", description: "" },
+			{ name: "digits", type: "4 - 6", required: false, defaultValue: "6", description: "" },
 			{
 				name: "legend",
 				type: 'false | "bottom" | "right"',

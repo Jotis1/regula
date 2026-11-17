@@ -20,7 +20,9 @@ export type TabsOrientation = "horizontal" | "vertical";
 export type TabsSize = "sm" | "md";
 
 export interface TabItem {
+	/** Identifies the tab in `value` and in `onChange`. */
 	id: string;
+	/** The text of the tab. */
 	label: ReactNode;
 	/** Contador junto a la etiqueta (por ejemplo, elementos sin leer). */
 	count?: number;
@@ -33,11 +35,13 @@ export interface TabItem {
 }
 
 export interface TabsProps {
+	/** The tabs, in order. */
 	items: TabItem[];
 	/** Pestaña activa (controlado). */
 	value?: string;
 	/** Pestaña activa al principio (no controlado). Si falta, la primera. */
 	defaultValue?: string;
+	/** Called with the id of the tab that was chosen. */
 	onChange?: (id: string) => void;
 	/**
 	 * `horizontal` o `vertical`: apila las pestañas y se recorre con ↑ y ↓. En vertical, por debajo del ancho de escritorio
@@ -53,7 +57,7 @@ export interface TabsProps {
 	 */
 	type?: TabsType;
 	/**
-	 * Alto: `sm` 36 · `md` 44.
+	 * Alto: `sm` 36 - `md` 44.
 	 * @default "sm"
 	 */
 	size?: TabsSize;
@@ -70,6 +74,7 @@ export interface TabsProps {
 	 * pestaña; si no, el componente es solo la lista y tú pintas el contenido.
 	 */
 	children?: (id: string) => ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

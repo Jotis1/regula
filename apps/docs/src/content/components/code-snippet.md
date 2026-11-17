@@ -6,7 +6,7 @@ interactive: true
 astroNote: "Sin directiva se ve el código; las pestañas y el botón de copiar necesitan `client:load`."
 ---
 
-**Props.** `code` + `language`, o `tabs` [{`label`, `code`}], `lineNumbers` (por defecto sí en `horizontal`, no en `vertical`), `highlight` (números de línea, desde 1; también en cada pestaña), `variant` (`horizontal` · `vertical`), `maxHeight` (px) y `onExpand`.
+**Props.** `code` + `language`, o `tabs` [{`label`, `code`}], `lineNumbers` (por defecto sí en `horizontal`, no en `vertical`), `highlight` (números de línea, desde 1; también en cada pestaña), `variant` (`horizontal` - `vertical`), `maxHeight` (px) y `onExpand`.
 
 **Variantes.** `horizontal` es la tarjeta con la columna de números a la izquierda. `vertical` es una tarjeta gris (`bg-secondary_alt`, `radius-3xl`) que enmarca el código en otra blanca con sombra grande; con `tabs`, estas pasan a una cabecera de texto con el botón de copiar (uno solo, que copia la pestaña activa). Con `maxHeight`, si el código no cabe se recorta con un degradado y «Ver más» lo despliega (`aria-expanded`); «Ver menos» lo recoge. Con `onExpand` sale el botón de ampliar junto al de copiar: qué amplía (un modal, una página) lo decide quien lo usa.
 

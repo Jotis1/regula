@@ -1,0 +1,25 @@
+# STK-007: cada semana, las versiones menores y los parches en una sola PR por ecosistema. Las mayores llegan sueltas,
+# porque cada una puede romper algo y necesita su revisión. Los commits salen como `build(deps): …` (GIT-001).
+version: 2
+updates:
+    - package-ecosystem: bun
+      directory: /
+      schedule:
+          interval: weekly
+      groups:
+          minor-patch:
+              update-types: [minor, patch]
+      commit-message:
+          prefix: build
+          include: scope
+
+    - package-ecosystem: github-actions
+      directory: /
+      schedule:
+          interval: weekly
+      groups:
+          minor-patch:
+              update-types: [minor, patch]
+      commit-message:
+          prefix: build
+          include: scope

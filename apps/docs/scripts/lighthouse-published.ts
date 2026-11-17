@@ -76,7 +76,7 @@ try {
 				transferred.push(requests.reduce((n, r) => n + (r.transferSize ?? 0), 0));
 				const c = lhr?.configSettings;
 				applied = c
-					? `${c.formFactor}, ${c.screenEmulation.width}×${c.screenEmulation.height}, ${c.throttlingMethod} (RTT ${c.throttling.rttMs} ms, ${c.throttling.throughputKbps} kbps, CPU ×${c.throttling.cpuSlowdownMultiplier})${lhr?.runWarnings.length ? ` · avisos: ${lhr.runWarnings.join("; ")}` : ""}`
+					? `${c.formFactor}, ${c.screenEmulation.width}×${c.screenEmulation.height}, ${c.throttlingMethod} (RTT ${c.throttling.rttMs} ms, ${c.throttling.throughputKbps} kbps, CPU ×${c.throttling.cpuSlowdownMultiplier})${lhr?.runWarnings.length ? ` - avisos: ${lhr.runWarnings.join("; ")}` : ""}`
 					: "sin informe";
 				perf.push(Math.round((categories?.performance?.score ?? 0) * 100));
 				a11y.push(Math.round((categories?.accessibility?.score ?? 0) * 100));
@@ -88,7 +88,7 @@ try {
 			const ok = themeKept && p >= MIN && a >= MIN;
 			if (!ok) failed++;
 			const secs = (v: number) => `${(v / 1000).toFixed(1)} s`;
-			const text = `rendimiento ${p}, accesibilidad ${a} (pasadas: ${perf.map((v, i) => `${v}/${a11y[i]}`).join(" ")}) · FCP ${secs(median(fcp))}, LCP ${secs(median(lcp))}, ${Math.round(median(transferred) / 1024)} KB transferidos · ${applied}${themeKept ? "" : " · el tema no se conservó: medida no válida"}`;
+			const text = `rendimiento ${p}, accesibilidad ${a} (pasadas: ${perf.map((v, i) => `${v}/${a11y[i]}`).join(" ")}) - FCP ${secs(median(fcp))}, LCP ${secs(median(lcp))}, ${Math.round(median(transferred) / 1024)} KB transferidos - ${applied}${themeKept ? "" : " - el tema no se conservó: medida no válida"}`;
 			console.log(`::${ok ? "notice" : "error"} title=Lighthouse ${path} (${theme})::${text}`);
 		}
 		await page.close();

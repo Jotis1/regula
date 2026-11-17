@@ -34,6 +34,6 @@ export function buildTypes(): string {
 			},
 		);
 		if (!dts) throw new Error("dts-bundle-generator no devolvió tipos");
-		return `// Jotis.me — window.Jotis: los tipos de @jotis-me/react (generado desde el repo; documentación).\n${dts}`;
+		return `// Jotis.me - window.Jotis: los tipos de @jotis-me/react (generado desde el repo; documentación).\n${dts}`;
 	});
 }

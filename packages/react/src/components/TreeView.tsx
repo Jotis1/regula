@@ -15,12 +15,15 @@ import { DynIcon, type IconProp, iconSlot } from "../internal/icon.js";
 import { useControllable } from "../internal/use-controllable.js";
 
 export interface TreeItem {
+	/** Identifies the item in the selection and in the expanded list. */
 	id: string;
+	/** The text of the item. */
 	label: ReactNode;
 	/** Icono de 16px. Por defecto, `folder` si tiene hijos y `file-04` si no. También un nodo, como un `Avatar` `xs`. */
 	icon?: IconProp;
 	/** Dato a la derecha, como el tamaño del archivo. */
 	meta?: ReactNode;
+	/** The items nested under this one. */
 	children?: TreeItem[];
 	/** Texto para la búsqueda por teclado si `label` no es texto. */
 	textValue?: string;
@@ -57,6 +60,7 @@ export interface TreeViewProps {
 	onCheckedChange?: (ids: string[]) => void;
 	/** Nombre del árbol para lectores de pantalla. */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

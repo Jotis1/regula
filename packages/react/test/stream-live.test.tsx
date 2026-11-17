@@ -1,4 +1,4 @@
-// Stream: StreamPoll, StreamCounter, StreamPinnedMessage y StreamMeter (add-live-interaction-pieces, D1–D4).
+// Stream: StreamPoll, StreamCounter, StreamPinnedMessage y StreamMeter (add-live-interaction-pieces, D1-D4).
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, within } from "@testing-library/react";
@@ -52,8 +52,8 @@ describe("StreamPoll", () => {
 		expect(timer.getAttribute("aria-live")).toBe("off");
 		const [si, no] = screen.getAllByRole("listitem");
 		expect(text(si)).toContain("Sí");
-		expect(text(si)).toContain("29 % · 12 votos");
-		expect(text(no)).toContain("71 % · 30 votos");
+		expect(text(si)).toContain("29 % - 12 votos");
+		expect(text(no)).toContain("71 % - 30 votos");
 	});
 
 	it("el tiempo va en m:ss y no baja de 0; sin seconds, no se ve", () => {

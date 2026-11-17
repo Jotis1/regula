@@ -39,20 +39,29 @@ export type TableCellType =
 export type TableCellText = ReactNode | { title: ReactNode; subtitle?: ReactNode };
 /** `avatar`: avatar, nombre y subtítulo (correo, usuario). */
 export interface TableCellAvatar {
+	/** The person's name. */
 	name: ReactNode;
+	/** Text under the name, such as an email. */
 	subtitle?: ReactNode;
+	/** Props of the avatar shown before the name. */
 	avatar?: AvatarProps;
 }
 /** `file`: icono del tipo (`FileIcon` de `@untitledui/file-icons`), nombre y tamaño. */
 export interface TableCellFile {
+	/** The file name. */
 	name: ReactNode;
+	/** Size of the file, as text (`2.4 MB`). */
 	size?: ReactNode;
+	/** Icon of the file type. */
 	icon?: ReactNode;
 }
 /** `payment`: logo de la tarjeta (`@jotis-me/assets/payments`), «Visa terminada en 1234» y caducidad. */
 export interface TableCellPayment {
+	/** Logo of the payment method. */
 	logo?: ReactNode;
+	/** The payment method, such as `Visa ending in 4242`. */
 	label: ReactNode;
+	/** Text under the label, such as the expiry date. */
 	detail?: ReactNode;
 }
 /** `badge`: una insignia. */
@@ -61,28 +70,38 @@ export type TableCellBadge =
 	| { label: ReactNode; color?: BadgeColor; dot?: boolean; icon?: IconProp };
 /** `badges`: varias insignias; con más de `max`, «+N». */
 export interface TableCellBadges {
+	/** The text of each badge. */
 	labels: string[];
+	/** Color of the badges. */
 	color?: BadgeColor;
 	/** @default 3 */
 	max?: number;
 }
 /** `trend`: el valor y su cambio, en verde con flecha arriba o en rojo con flecha abajo. */
 export interface TableCellTrend {
+	/** The current value. */
 	value: ReactNode;
+	/** How much it changed, as text (`12%`). */
 	change: ReactNode;
+	/** Whether it went `up` or `down`. */
 	direction: "up" | "down";
 }
 /** `avatar-group`: un texto («10 usuarios») y el grupo; con más de `max`, «+N». */
 export interface TableCellAvatarGroup {
+	/** Text shown after the avatars, such as `+3`. */
 	label?: ReactNode;
+	/** Props of each avatar in the group. */
 	avatars: AvatarProps[];
 	/** @default 5 */
 	max?: number;
 }
 /** `select`: un desplegable nativo, con el punto de color de la opción elegida. */
 export interface TableCellSelect {
+	/** Selected option. */
 	value: string;
+	/** The options to choose from, each with its value, its text and, optionally, a colored dot. */
 	options: { value: string; label: string; dot?: BadgeColor }[];
+	/** Called with the value of the option that was chosen. */
 	onChange?: (value: string) => void;
 	/** Nombre accesible del desplegable. */
 	label: string;
@@ -119,7 +138,9 @@ export interface TableColumn<R = Record<string, unknown>> {
 
 export type TableSortDirection = "ascending" | "descending";
 export interface TableSort {
+	/** The `key` of the column that is sorted. */
 	key: string;
+	/** Whether the column is sorted in ascending or descending order. */
 	direction: TableSortDirection;
 }
 
@@ -130,7 +151,9 @@ export interface TableLabels {
 	selectRow: (index: number) => string;
 	/** Nombre del botón de ordenar. */
 	sortBy: (column: string) => string;
+	/** Accessible name of a rating cell: the value out of five. */
 	rating: (value: number) => string;
+	/** Accessible name of the row actions button. */
 	menu: string;
 }
 
@@ -156,7 +179,7 @@ export interface TableProps<R = Record<string, unknown>> {
 	/** Pie, por ejemplo una `Pagination`. */
 	footer?: ReactNode;
 	/**
-	 * Alto de fila: `md` 72px · `sm` 56px.
+	 * Alto de fila: `md` 72px - `sm` 56px.
 	 * @default "md"
 	 */
 	size?: "sm" | "md";
@@ -323,7 +346,7 @@ function ClassicTable<R>({
 	);
 }
 
-/* ——— Celdas ——— */
+/* --- Celdas --- */
 
 function Stars({ value, label }: { value: number; label: string }) {
 	return (

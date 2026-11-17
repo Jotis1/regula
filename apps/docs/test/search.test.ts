@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { fold, plain, type SearchEntry, searchGroups } from "../src/search/entries";
+import { plain, type SearchEntry, searchGroups } from "../src/features/search/entries";
+import { fold } from "../src/lib/fold";
 
 const entries: SearchEntry[] = [
 	{ group: "pages", label: "Tipografía", href: "/foundations/typography/" },
@@ -25,7 +26,7 @@ const entries: SearchEntry[] = [
 	{
 		group: "tokens",
 		label: "bg-overlay",
-		description: "Color · Fondo de modal",
+		description: "Color - Fondo de modal",
 		href: "/foundations/color/",
 	},
 	{ group: "icons", label: "Calendar", href: "/icons/?icon=Calendar" },
@@ -67,17 +68,17 @@ describe("búsqueda de la web", () => {
 		const standards: SearchEntry[] = [
 			{
 				group: "standards",
-				label: "NOM-001 · Los paquetes privados se llaman como su dominio, al revés",
-				description: "Normas · Nombres",
-				href: "/standards/naming/#nom-001",
+				label: "NAM-001 - Los paquetes privados se llaman como su dominio, al revés",
+				description: "Normas - Nombres",
+				href: "/standards/naming/#nam-001",
 				keywords: "notación de dominio inverso de Java",
 			},
 		];
-		for (const q of ["NOM-001", "dominio inverso"]) {
+		for (const q of ["NAM-001", "dominio inverso"]) {
 			const groups = searchGroups([...entries, ...standards], q);
 			expect(groups.find((g) => g.group === "standards")?.label, q).toBe("Normas");
 			expect(groups.find((g) => g.group === "standards")?.entries[0]?.href, q).toBe(
-				"/standards/naming/#nom-001",
+				"/standards/naming/#nam-001",
 			);
 		}
 	});

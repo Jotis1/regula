@@ -11,7 +11,9 @@ import { FeaturedIcon } from "./FeaturedIcon.js";
 import { Kbd } from "./Kbd.js";
 
 export interface CommandItem {
+	/** Icon shown before the label. */
 	icon?: IconProp;
+	/** The text of the command. */
 	label: string;
 	/** Texto de apoyo tras la etiqueta, en `text-tertiary`. */
 	description?: string;
@@ -19,11 +21,14 @@ export interface CommandItem {
 	shortcut?: string;
 	/** Palabras extra para el filtro, separadas por espacios. */
 	keywords?: string;
+	/** Called when the command is chosen. */
 	onSelect?: () => void;
 }
 
 export interface CommandGroup {
+	/** Heading of the group. */
 	label: string;
+	/** The commands in the group. */
 	items: CommandItem[];
 }
 
@@ -36,7 +41,9 @@ export interface CommandMenuLabels {
 	noResults: string;
 	/** Pie: "↑ ↓ moverse", "↵ abrir", "esc cerrar". */
 	move: string;
+	/** Accessible name of the button that opens the menu. */
 	open: string;
+	/** Accessible name of the button that closes the menu. */
 	close: string;
 }
 

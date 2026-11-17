@@ -56,7 +56,9 @@ async function playgroundFor(name: string): Promise<Playground> {
 			name,
 		);
 		const start = STARTS[name] as Start;
-		const mod = (await import(`../src/playground/${name}.tsx`)) as { tweaks?: Record<string, Tweak> };
+		const mod = (await import(`../src/features/playground/${name}.tsx`)) as {
+			tweaks?: Record<string, Tweak>;
+		};
 		pg = {
 			name,
 			start,

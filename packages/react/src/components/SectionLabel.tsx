@@ -17,7 +17,7 @@ export interface SectionLabelProps {
 	/** Acciones bajo el texto, normalmente `Button` `link-gray` y `link-color` de tamaño `sm`. */
 	actions?: ReactNode;
 	/**
-	 * `sm` título y apoyo de 14 · `md` de 16.
+	 * `sm` título y apoyo de 14 - `md` de 16.
 	 * @default "sm"
 	 */
 	size?: SectionLabelSize;
@@ -26,6 +26,7 @@ export interface SectionLabelProps {
 	 * @default "h3"
 	 */
 	as?: "h2" | "h3" | "h4";
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

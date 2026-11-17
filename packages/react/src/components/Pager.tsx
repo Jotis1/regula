@@ -3,6 +3,7 @@ import { cx } from "../internal/cx.js";
 import { defaultStrings } from "../internal/strings.js";
 
 export interface PagerLink {
+	/** Where the link goes. */
 	href: string;
 	/** El nombre de la página a la que lleva. */
 	label: string;
@@ -27,6 +28,7 @@ export interface PagerProps {
 	 * @default "Anterior y siguiente"
 	 */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

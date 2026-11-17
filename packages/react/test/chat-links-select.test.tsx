@@ -1,4 +1,4 @@
-// ChatBox: enlaces, insignias junto al nombre y mensajes seleccionables (add-live-interaction-pieces, D6–D8).
+// ChatBox: enlaces, insignias junto al nombre y mensajes seleccionables (add-live-interaction-pieces, D6-D8).
 import { fireEvent, render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";

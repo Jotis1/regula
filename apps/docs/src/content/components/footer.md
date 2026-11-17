@@ -5,7 +5,7 @@ description: "Pie de una web de marketing: los veinte tipos del Figma, en el tem
 interactive: false
 ---
 
-**Props.** `type` (`large-01` a `large-16` y `small-01` a `small-04`), `theme` (`default` · `brand`), y las piezas, que cada tipo coloca en su sitio: `brand`, `description`, `extra` (una valoración, avatares), `columns` [{`title`, `links` [{`label`, `href`, `badge`?}]}], `links` (una fila), `cta` {`title`, `description`, `actions`}, `aside` (las insignias de la app, una suscripción), `copyright`, `legal` y `social`.
+**Props.** `type` (`large-01` a `large-16` y `small-01` a `small-04`), `theme` (`default` - `brand`), y las piezas, que cada tipo coloca en su sitio: `brand`, `description`, `extra` (una valoración, avatares), `columns` [{`title`, `links` [{`label`, `href`, `badge`?}]}], `links` (una fila), `cta` {`title`, `description`, `actions`}, `aside` (las insignias de la app, una suscripción), `copyright`, `legal` y `social`.
 
 **Tipos.** Los del Figma (`Footer`, `1517:334473`): columnas con la marca abajo (`large-01`), marca al lado y banda de pie (`02`), columnas fuertes con la app (`03`) o con la suscripción (`04`), boletín arriba (`05`) o en banda (`06`, `12`), fila de enlaces con la app (`07`) o la suscripción (`08`), llamada centrada (`09`, `11`, `13`) o a los lados (`10`), lema en el pie (`14`), centrados (`15`, `16`) y cuatro de una línea (`small-01` a `04`). Lo que un tipo no usa no se pinta.
 

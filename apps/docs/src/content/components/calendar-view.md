@@ -22,7 +22,7 @@ astroNote: "Sin directiva pinta el mes sin JavaScript. Cambiar de mes y `onSelec
 **Móvil.** Por debajo de 576 px de ancho del propio calendario (no de la ventana), la semana pasa a una tira con los siete días y la columna del día elegido; pulsar un día cambia de columna.
 
 
-**Accesibilidad.** Las vistas de semana y día son una lista por día (con su fecha como nombre) con un elemento por evento, nombrado «título, 10:00–11:30»; la línea de hora actual es un separador con la hora. La vista de mes es una tabla de verdad: cabeceras Lu…Do y una fila por semana (en la guía era una rejilla sin filas, que no es ARIA válido). Cada día lleva su fecha completa para lectores de pantalla ("jueves, 29 de octubre, hoy"). Con `onSelectDate`, el número de cada día es un botón (teclado) y la celda entera responde al clic. Al cambiar de mes se anuncia el nuevo.
+**Accesibilidad.** Las vistas de semana y día son una lista por día (con su fecha como nombre) con un elemento por evento, nombrado «título, 10:00-11:30»; la línea de hora actual es un separador con la hora. La vista de mes es una tabla de verdad: cabeceras Lu…Do y una fila por semana (en la guía era una rejilla sin filas, que no es ARIA válido). Cada día lleva su fecha completa para lectores de pantalla ("jueves, 29 de octubre, hoy"). Con `onSelectDate`, el número de cada día es un botón (teclado) y la celda entera responde al clic. Al cambiar de mes se anuncia el nuevo.
 
 **Detalles.** El "hoy" sale de la prop `today` (por defecto, la fecha actual); fíjala si el servidor y el navegador pueden estar en días distintos.
 

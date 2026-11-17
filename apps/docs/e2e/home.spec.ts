@@ -4,6 +4,7 @@ import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { colors } from "@jotis-me/tokens";
 import { expect, type Locator, type Page, test } from "@playwright/test";
+// biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as lineIcons from "@untitledui/icons";
 import { STORY, thousands } from "../src/components/home/story";
 import { COMPONENT_GROUPS, FOUNDATIONS } from "../src/lib/catalog";

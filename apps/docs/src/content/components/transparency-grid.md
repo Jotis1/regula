@@ -5,7 +5,7 @@ description: "Fondo de damero que indica transparencia, para poner detrás de lo
 interactive: false
 ---
 
-**Props.** `size` (`sm` · `md`), `className`, `children` y los atributos de un `div` (`style`, `aria-hidden`, `data-*`…).
+**Props.** `size` (`sm` - `md`), `className`, `children` y los atributos de un `div` (`style`, `aria-hidden`, `data-*`…).
 
 **Cuándo.** Detrás de algo con partes transparentes, para que se vea que lo están: el marco de una cámara, una escena con fondo transparente, la vista previa de un componente. No es un fondo decorativo para una página: para eso, `BackgroundPattern`.
 

@@ -56,56 +56,102 @@ export interface GradientStop {
 }
 
 export interface ColorImageAdjustments {
+	/** Exposure, from -100 to 100. */
 	exposure: number;
+	/** Contrast, from -100 to 100. */
 	contrast: number;
+	/** Saturation, from -100 to 100. */
 	saturation: number;
+	/** Temperature, from -100 to 100. */
 	temperature: number;
+	/** Tint, from -100 to 100. */
 	tint: number;
+	/** Highlights, from -100 to 100. */
 	highlights: number;
+	/** Shadows, from -100 to 100. */
 	shadows: number;
 }
 
 export type ColorImageFill = "fill" | "fit" | "crop" | "tile";
 
 export interface ColorPickerLabels {
+	/** Name of the solid color tab. */
 	solid: string;
+	/** Name of the gradient tab. */
 	gradient: string;
+	/** Name of the image tab. */
 	image: string;
+	/** Accessible name of the tab list. */
 	tabs: string;
+	/** Accessible name of the list of saved colors. */
 	saved: string;
+	/** Text and accessible name of the buttons that add a color or a gradient stop. */
 	add: string;
+	/** Name of the opacity field. */
 	opacity: string;
+	/** Accessible name of the eyedropper button. */
 	eyedropper: string;
+	/** Accessible name of the color model selector. */
 	model: string;
+	/** Name of the red channel. */
 	red: string;
+	/** Name of the green channel. */
 	green: string;
+	/** Name of the blue channel. */
 	blue: string;
+	/** Name of the saturation channel. */
 	saturation: string;
+	/** Name of the lightness channel. */
 	lightness: string;
+	/** Name of the brightness channel. */
 	brightness: string;
+	/** Name of the CSS color field. */
 	css: string;
+	/** Heading of the gradient stops. */
 	stops: string;
+	/** Name of the linear gradient. */
 	linear: string;
+	/** Name of the radial gradient. */
 	radial: string;
+	/** Accessible name of the gradient type selector. */
 	gradientKind: string;
+	/** Accessible name of the button that reverses the stops. */
 	reverse: string;
+	/** Name of stop number `n`. */
 	stop: (n: number) => string;
+	/** Name of the position field of stop number `n`. */
 	stopPosition: (n: number) => string;
+	/** Name of the color field of stop number `n`. */
 	stopColor: (n: number) => string;
+	/** Name of the opacity field of stop number `n`. */
 	stopOpacity: (n: number) => string;
+	/** Accessible name of the button that removes stop number `n`. */
 	removeStop: (n: number) => string;
+	/** Text of the upload link. */
 	upload: string;
+	/** Hint shown next to the upload link. */
 	dragAndDrop: string;
+	/** Accessible name of the image fill selector. */
 	fill: string;
+	/** Name of each way to fit the image (`fill`, `fit`, `crop`, `tile`). */
 	fills: Record<ColorImageFill, string>;
+	/** Accessible name of the button that resets the image adjustments. */
 	resetImage: string;
+	/** Name of each image adjustment. */
 	adjustments: Record<keyof ColorImageAdjustments, string>;
+	/** Title of the brand colors panel. */
 	brand: string;
+	/** Title of the gray colors panel. */
 	gray: string;
+	/** Text next to the custom hex field. */
 	custom: string;
+	/** Text of the link to the documentation. */
 	docs: string;
+	/** Text of the button that resets the color. */
 	reset: string;
+	/** Accessible name of the color grid. */
 	palette: string;
+	/** Accessible name of the close button. */
 	close: string;
 }
 
@@ -176,6 +222,7 @@ export interface ColorPickerProps {
 	model?: ColorModel;
 	/** @default "hex" */
 	defaultModel?: ColorModel;
+	/** Called with the new model when the user switches between hex, RGB, CSS, HSL and HSB. */
 	onModelChange?: (model: ColorModel) => void;
 	/** Colores guardados, en hex. En `brand` y `gray`, por defecto los de la paleta de Tailwind. */
 	swatches?: string[];
@@ -205,6 +252,7 @@ export interface ColorPickerProps {
 	hueLabel?: string;
 	/** Textos sustituibles de los tipos nuevos. */
 	labels?: Partial<ColorPickerLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -388,7 +436,7 @@ function LegacyColorPicker({
 	);
 }
 
-/* ——— Piezas ——— */
+/* --- Piezas --- */
 
 function Dot({ hex, alpha = 1, size = "size-4" }: { hex: string; alpha?: number; size?: string }) {
 	return (
@@ -762,7 +810,7 @@ function Header({ title, aside }: { title: ReactNode; aside?: ReactNode }) {
 	);
 }
 
-/* ——— Degradado ——— */
+/* --- Degradado --- */
 
 const gradientCss = (stops: GradientStop[], kind: "linear" | "radial", angle: number) => {
 	const list = [...stops]
@@ -969,7 +1017,7 @@ function GradientEditor({
 	);
 }
 
-/* ——— Imagen ——— */
+/* --- Imagen --- */
 
 function ImageEditor({
 	t,
@@ -1111,7 +1159,7 @@ function ImageEditor({
 	);
 }
 
-/* ——— El selector con tipos ——— */
+/* --- El selector con tipos --- */
 
 function FullColorPicker({
 	type = "solid",

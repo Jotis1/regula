@@ -5,7 +5,7 @@ description: "Testimonio sobre una foto: la cita, las estrellas y la persona en 
 interactive: false
 ---
 
-**Props.** `quote` (sin comillas), `name`, `role`, `company`, `rating` (estrellas, de 0 a 5), `image` (la foto del fondo), `type` (`floating` · `full-width`), `size` (`md` · `sm`), `onPrevious`/`onNext` (las flechas) y `labels`.
+**Props.** `quote` (sin comillas), `name`, `role`, `company`, `rating` (estrellas, de 0 a 5), `image` (la foto del fondo), `type` (`floating` - `full-width`), `size` (`md` - `sm`), `onPrevious`/`onNext` (las flechas) y `labels`.
 
 **Visual.** La del Figma (`_Quote image bottom panel`, `1376:1163`): el panel abajo, con radio 16 y separado del borde (`floating`) o a todo el ancho, con la cita en Bricolage (`display-xs` en `md`, `text-lg` en `sm`), las estrellas blancas (`Rating color="white"`), el nombre, el cargo y la empresa, y las flechas en círculo. El cristal es `bg-overlay/60` con desenfoque: el del Figma, blanco translúcido, no da contraste al texto blanco sobre una foto clara.
 

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { type TokensFile, tokensCss } from "../src/generate.ts";
+import { type TokensFile, tokensCss } from "../scripts/generate.ts";
 
 const tokens: TokensFile = JSON.parse(readFileSync(join(import.meta.dirname, "../src/tokens.json"), "utf8"));
 const css = tokensCss(tokens);

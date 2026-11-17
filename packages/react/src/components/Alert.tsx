@@ -13,7 +13,9 @@ export interface AlertProps {
 	 * @default "gray"
 	 */
 	color?: StatusColor;
+	/** The headline. */
 	title: ReactNode;
+	/** Supporting text under the title. */
 	description?: ReactNode;
 	/** Botones `link-gray` + `link-color`. */
 	actions?: ReactNode;
@@ -28,6 +30,7 @@ export interface AlertProps {
 	 * @default "floating"
 	 */
 	variant?: "floating" | "full";
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -41,8 +44,11 @@ const ICON: Record<StatusColor, IconComponent> = {
 
 /** Piezas que solo usa `Notification`: lo que va en el sitio del icono, la hora junto al título y lo que va bajo el texto. */
 export interface AlertBodyExtras {
+	/** Content shown in the place of the icon, such as an avatar. */
 	lead?: ReactNode;
+	/** When it happened, shown next to the title. */
 	time?: ReactNode;
+	/** Extra content under the description, such as a thumbnail or a link. */
 	extra?: ReactNode;
 }
 
@@ -92,6 +98,7 @@ export function alertBody({
 	);
 }
 
+/** Classes shared by `Alert` and `Notification`: the box, the gap between icon and text, and the surface. */
 export const ALERT_BASE = "relative flex gap-4 p-4 font-body bg-primary_alt";
 
 /**

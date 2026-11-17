@@ -4,7 +4,7 @@
 import { Badge, ExampleCard } from "@jotis-me/react";
 import { inline } from "../lib/inline";
 import { APPLIES_LABEL, anchorOf, LEVEL_LABEL, type StandardRule, VERIFY_LABEL } from "../lib/standards";
-import CodeSnippet from "./CodeSnippetIsland";
+import { CodeSnippetIsland as CodeSnippet } from "./CodeSnippetIsland";
 import SectionTitle from "./SectionTitle.astro";
 
 interface Props {
@@ -21,7 +21,7 @@ const verification = rule.verification;
 
 <section id={anchorOf(rule.id)} aria-labelledby={`${anchorOf(rule.id)}-title`} class="flex flex-col gap-4">
 	<div id={`${anchorOf(rule.id)}-title`} class="not-prose">
-		<SectionTitle title={`${rule.id} · ${rule.title}`} />
+		<SectionTitle title={`${rule.id} - ${rule.title}`} />
 	</div>
 	<div class="not-prose flex flex-wrap items-center gap-2" data-rule-meta>
 		<Badge color={levelColor[rule.level]} type="badge">{LEVEL_LABEL[rule.level]}</Badge>
@@ -29,6 +29,22 @@ const verification = rule.verification;
 	</div>
 	<p set:html={inline(rule.statement)} />
 	<p><strong class="font-semibold text-primary">Por qué.</strong> <Fragment set:html={inline(rule.rationale)} /></p>
+	{
+		rule.exceptions?.length ? (
+			<div data-exceptions>
+				<p>
+					<strong class="font-semibold text-primary">Excepciones.</strong>
+				</p>
+				<ul>
+					{rule.exceptions.map((e) => (
+						<li>
+							<Fragment set:html={inline(e.where)} /> - <Fragment set:html={inline(e.why)} />
+						</li>
+					))}
+				</ul>
+			</div>
+		) : null
+	}
 	<div class="not-prose flex flex-col gap-4" data-examples>
 		{
 			sides.map(({ verdict, examples }) => (

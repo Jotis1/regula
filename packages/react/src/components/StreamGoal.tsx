@@ -14,7 +14,9 @@ export interface StreamGoalLabels {
 export interface StreamGoalProps {
 	/** Nombre de la meta; también nombra la barra. */
 	label: ReactNode;
+	/** How much has been reached. */
 	current: number;
+	/** The target to reach. */
 	goal: number;
 	/** Se añade a las cifras ("subs", "€"). */
 	unit?: string;
@@ -22,6 +24,7 @@ export interface StreamGoalProps {
 	width?: number | string;
 	/** Sustituye los textos del pie (ampliación sobre la guía). */
 	labels?: Partial<StreamGoalLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

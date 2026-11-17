@@ -1,7 +1,7 @@
 prefix: GIT
 title: Git
 description: Cómo se escriben los commits y cómo entra el código en la rama principal.
-order: 3
+order: 8
 rules:
     - id: GIT-001
       title: Todo commit sigue Conventional Commits

@@ -8,7 +8,7 @@ const canvases: Record<string, ComponentType<Record<string, unknown>>> = {
 	ChannelBanner: ChannelBanner as ComponentType<Record<string, unknown>>,
 };
 
-export default function FullCanvas({ name, props }: { name: string; props: Record<string, unknown> }) {
+export function FullCanvas({ name, props }: { name: string; props: Record<string, unknown> }) {
 	const Canvas = canvases[name];
 	return Canvas ? <Canvas {...props} scale={1} /> : null;
 }

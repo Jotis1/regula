@@ -8,6 +8,7 @@ dist/
 .vercel/
 .turbo/
 out/
+*.tsbuildinfo
 *.tgz
 
 # Tests

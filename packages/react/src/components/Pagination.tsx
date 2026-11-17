@@ -65,6 +65,7 @@ export interface PaginationProps {
 	 * @default 1
 	 */
 	defaultPage?: number;
+	/** Called with the page the user chose (from 1). */
 	onChange?: (n: number) => void;
 	/**
 	 * Los diez del Figma. `page-default` lleva Anterior y Siguiente como texto; `page-minimal` (el de siempre) como botones;
@@ -91,9 +92,11 @@ export interface PaginationProps {
 	pageSize?: number;
 	/** Tamaño de página al principio (no controlado). Por defecto, el primero de `pageSizes`. */
 	defaultPageSize?: number;
+	/** Called with the new number of rows per page. */
 	onPageSizeChange?: (n: number) => void;
 	/** Textos que trae el componente, para sustituirlos. */
 	labels?: Partial<PaginationLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -110,10 +113,15 @@ const MOBILE_ICON = "max-md:px-2!";
 const HIDE_MOBILE = "max-md:hidden";
 
 interface Ctx {
+	/** The page that is showing, from 1. */
 	current: number;
+	/** How many pages there are. */
 	pages: number;
+	/** Goes to a page. */
 	go: (n: number) => void;
+	/** The texts of the control. */
 	text: PaginationLabels;
+	/** How the control looks. */
 	shape: PaginationShape;
 }
 
