@@ -38,7 +38,7 @@ Comandos:
 ## 3. TypeScript
 
 - [x] 3.1 `noUncheckedIndexedAccess` en `apps/docs`, `examples/astro` y `examples/next`. Corregir los errores con comprobaciones reales, sin `!` (D9). Comprobar con el `typecheck` de cada uno
-- [ ] 3.2 `erasableSyntaxOnly`, `noImplicitOverride`, `noImplicitReturns`, `noFallthroughCasesInSwitch` y `verbatimModuleSyntax` en todos los tsconfig (D5), y corregir lo que salga. Comprobar con `bunx turbo run typecheck`
+- [x] 3.2 `erasableSyntaxOnly`, `noImplicitOverride`, `noImplicitReturns`, `noFallthroughCasesInSwitch` y `verbatimModuleSyntax` en todos los tsconfig (D5), y corregir lo que salga. Comprobar con `bunx turbo run typecheck`
 - [ ] 3.3 Scripts `typecheck` en los ejemplos: `astro check`, con `@astrojs/check` en `devDependencies`, y `tsc --noEmit`. Comprobar que `bunx turbo run typecheck` incluye los dos y pasa
 - [ ] 3.4 `packages/tokens/tsconfig.json` con `NodeNext`. Comprobar con `typecheck`, `build`, `check:package` y `scripts/pack.ts`
 
