@@ -31,6 +31,7 @@ export interface PageHeaderProps {
 	centered?: boolean;
 	/** En pantallas estrechas, un enlace «Volver» en lugar de las migas. */
 	back?: { href: string; label?: string };
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

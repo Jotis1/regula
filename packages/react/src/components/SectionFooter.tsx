@@ -9,6 +9,7 @@ export interface SectionFooterProps {
 	actions?: ReactNode;
 	/** Añade el padding de tarjeta (24px a los lados, 16px abajo). */
 	card?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -21,6 +21,7 @@ export interface DisclosureProps {
 	 * @default true
 	 */
 	divider?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 	/** El contenido que se muestra al abrir. */
 	children?: ReactNode;

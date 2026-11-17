@@ -19,6 +19,7 @@ export interface ContentDividerProps {
 	 * `actions`.
 	 */
 	actions?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

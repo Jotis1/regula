@@ -26,6 +26,7 @@ export interface SectionLabelProps {
 	 * @default "h3"
 	 */
 	as?: "h2" | "h3" | "h4";
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
