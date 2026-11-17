@@ -1,3 +1,3 @@
 // Select en el ejemplo interactivo: un fichero por componente para que cada página cargue solo el suyo (design D4).
 export { Select as Component } from "@jotis-me/react";
-export { labelAsideTweaks as tweaks } from "../../lib/label-aside";
+export { labelAsideTweaks as tweaks } from "./lib/label-aside";

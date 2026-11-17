@@ -1,6 +1,6 @@
 // Valor preparado de `labelAside` para el ejemplo interactivo de los campos y de Toggle: un nodo, que no cruza de Astro.
 import { Badge, Button } from "@jotis-me/react";
-import type { Tweak } from "./playground";
+import type { Tweak } from "../../../lib/playground";
 
 export const labelAsideTweaks: Record<string, Tweak> = {
 	labelAside: {
