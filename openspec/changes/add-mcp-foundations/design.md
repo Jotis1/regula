@@ -119,6 +119,48 @@ Alternativa descartada: un parser de JS (`acorn`) para leer el literal sin evalu
 - **`test/mcp.test.ts`:** el cliente real lista las dos herramientas y llama a cada una con éxito y con error.
 - **`mcp-fixture.ts`:** suma `/foundations.json`.
 
+### D7. La versión del contrato (`contract.ts`)
+
+Decisión del usuario: el contrato del MCP y de los JSON tiene versión propia, arranca en 1.0.0 con lo que ya está en producción, y entra en este cambio porque es el primero que lo toca.
+
+Un solo módulo, `src/features/mcp/contract.ts`, con tres cosas:
+
+```ts
+export const API_VERSION = "1.1.0";
+/** The tools of this version, in the order of `tools/list`. A test compares them with `TOOLS`. */
+export const CONTRACT_TOOLS = ["list_standards", "get_standard", "list_foundations", "get_foundation", ...] as const;
+/** Newest first: what each version added, deprecated or removed, in Spanish (it is shown on /start/mcp/). */
+export const API_HISTORY = [
+	{ version: "1.1.0", date: "2026-11-…", changes: ["Añade list_foundations, get_foundation y /foundations.json."] },
+	{ version: "1.0.0", date: "2026-11-16", changes: ["Siete herramientas y cuatro JSON: …"] },
+];
+```
+
+Lo usan estas piezas:
+- **El servidor:** `createServer` se anuncia con `API_VERSION` en vez de la versión de `@jotis-me/react`. Esa sigue en el campo `version` de cada JSON y en el texto de `/start/mcp/`.
+- **Los cinco JSON:** cada uno añade `apiVersion: API_VERSION` junto a su `version`. Es un campo nuevo, así que no rompe a quien ya los lee.
+- **`/start/mcp/`:** pinta `API_HISTORY` como una lista, con la versión, la fecha y los cambios.
+
+Y lo comprueban tres tests:
+- `TOOLS.map((t) => t.name)` es igual a `CONTRACT_TOOLS`. Si una PR añade o quita una herramienta, tiene que editar también `contract.ts`, y quien revisa ve si la versión sube como pide SemVer.
+- `API_HISTORY[0].version === API_VERSION`.
+- Las versiones del historial bajan de una a otra y son SemVer válido.
+
+Un test no puede saber si un cambio de parámetros es compatible. Eso queda en revisión: lo pide `VER-012`, que es una norma de revisión.
+
+
+Alternativas descartadas:
+- **Una huella del contrato** (un hash de los nombres y los esquemas de las herramientas) que obligue a cambiar la versión. Detecta más, pero falla con cada retoque de descripción y es más código del que pide KISS.
+- **Rutas por versión** (`/mcp/v1`). Fuera de alcance: ver la propuesta.
+
+### D8. Las normas `VER-012` y `VER-013`
+
+Van en `versioning.yaml`, con `appliesTo: app` y verificación en revisión:
+- **`VER-012`:** su ejemplo bueno es el `serverInfo` con la versión del contrato y un JSON con `apiVersion`; el malo, un MCP que se anuncia con la versión del paquete de componentes.
+- **`VER-013`:** su ejemplo bueno es una herramienta con `Deprecated: use search` en una menor; el malo, un campo renombrado de un despliegue a otro.
+
+Las dos citan `VER-001` y `VER-005`, que piden lo mismo para los paquetes.
+
 ## Risks / Trade-offs
 
 - **[`satteri` es 0.x y Astro lo actualiza]** → Se fija en la versión de Astro. VER-010 hace que una subida de Astro que lo cambie se note en «Normas de desarrollo», que pide el mismo rango en todo el monorepo. Si el mdast cambia de forma, fallan los tests de D6.

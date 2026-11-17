@@ -21,15 +21,21 @@ Va después de que se fusione `add-development-standards` (PR #47): la rama se r
 - [ ] 2.3 El grupo `foundations` en `search`, una entrada por sección. Comprobar con `search` y `semánticos` en `test/mcp-tools.test.ts`
 - [ ] 2.4 El test del servidor con un cliente MCP real: `tools/list` trae las dos herramientas, y cada una tiene una llamada con éxito y otra con error. Comprobar con `bun run --cwd apps/docs test`
 
-## 3. Cierre
+## 3. Versión del contrato
 
-- [ ] 3.1 Comprobar, en la vista previa de Vercel de la PR:
+- [ ] 3.1 `src/features/mcp/contract.ts` con `API_VERSION` (`1.1.0`), `CONTRACT_TOOLS` y `API_HISTORY` (D7). El servidor se anuncia con `API_VERSION`, y los cinco JSON llevan `apiVersion`. Comprobar con los tres tests de D7 y con `initialize` en `test/mcp.test.ts`, que recibe `1.1.0`
+- [ ] 3.2 El historial del contrato en `/start/mcp/`. Comprobar con el build y con un e2e que encuentra `1.1.0` y `1.0.0` en la página
+- [ ] 3.3 `VER-012` y `VER-013` en `versioning.yaml` (D8). Comprobar con los tests de normas y del MCP (`list_standards` del área `versioning` trae trece normas)
+
+## 4. Cierre
+
+- [ ] 4.1 Comprobar, en la vista previa de Vercel de la PR:
   - `/start/mcp/` lista las dos herramientas;
   - `/foundations.json` responde;
   - un cliente MCP llama a `get_foundation` con `color` contra `/mcp`.
 
   Pasan `bunx biome ci --error-on-warnings .`, `bun run check:dev` y `bunx turbo run build typecheck test`
-- [ ] 3.2 Abrir la PR, con el CI en verde, y fusionarla tras la revisión del usuario
+- [ ] 4.2 Abrir la PR, con el CI en verde, y fusionarla tras la revisión del usuario
 
 ## Workflow follow-up
 

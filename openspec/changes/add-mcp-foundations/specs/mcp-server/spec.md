@@ -50,6 +50,31 @@ Si una página de fundamentos usa un componente del que no se sabe si aporta tex
 - **WHEN** una PR añade a un fundamento un componente nuevo que no está ni entre los que aportan texto ni entre las demos
 - **THEN** los tests fallan y nombran el componente y el archivo
 
+### Requirement: Versión del contrato
+El contrato del MCP (sus herramientas, sus parámetros y la forma de sus resultados) y el de los JSON públicos SHALL tener una versión SemVer propia, distinta de la de los paquetes. Añadir una herramienta, un parámetro opcional o un campo SHALL subir la menor. Quitar o renombrar una herramienta, un parámetro o un campo, o cambiar lo que significa, SHALL subir la mayor. El contrato arranca en `1.0.0` con lo que había antes de este cambio, y este cambio lo deja en `1.1.0`.
+
+#### Scenario: Herramientas nuevas
+- **WHEN** se despliega este cambio, con `list_foundations`, `get_foundation` y `/foundations.json`
+- **THEN** el MCP anuncia `1.1.0` y cada JSON lleva `"apiVersion": "1.1.0"`
+
+#### Scenario: Herramientas cambiadas sin subir la versión
+- **WHEN** una PR añade o quita una herramienta del MCP y no cambia la versión del contrato
+- **THEN** los tests fallan y dicen que hay que subir la versión
+
+### Requirement: Deprecación en el contrato
+Lo que se vaya a quitar del contrato SHALL marcarse antes como deprecado, con `Deprecated: use <lo que lo sustituye>` en su descripción, y SHALL seguir funcionando al menos durante una versión menor. Solo SHALL quitarse en la siguiente mayor.
+
+#### Scenario: Herramienta que se va a quitar
+- **WHEN** se decide quitar `search_icons` en favor de `search`
+- **THEN** una menor marca `search_icons` como deprecada y sigue respondiendo, y la mayor siguiente la quita
+
+### Requirement: Historial del contrato
+`/start/mcp/` SHALL enseñar el historial del contrato: cada versión con su fecha y lo que añadió, deprecó o quitó. La versión más reciente del historial SHALL ser la que anuncia el servidor.
+
+#### Scenario: Historial al día
+- **WHEN** se abre `/start/mcp/` tras desplegar este cambio
+- **THEN** el historial trae `1.1.0` (los fundamentos) y `1.0.0` (las siete herramientas y los cuatro JSON de partida)
+
 ## MODIFIED Requirements
 
 ### Requirement: Búsqueda global
@@ -70,7 +95,7 @@ La web SHALL publicar en el build, desde las mismas fuentes que sus páginas:
 - `/icons.json`: las entradas de cada galería con su import;
 - `/foundations.json`: los fundamentos de diseño con sus secciones (requisito «Fundamentos en JSON»).
 
-Los nombres de campo SHALL ir en inglés. Cada JSON SHALL llevar la versión de Regula que lo publica. El MCP SHALL responder con estos datos y con `/standards.json`, sin otra fuente.
+Los nombres de campo SHALL ir en inglés. Cada JSON SHALL llevar la versión de Regula que documenta (`version`) y la del contrato (`apiVersion`, requisito «Versión del contrato»). El MCP SHALL responder con estos datos y con `/standards.json`, sin otra fuente.
 
 #### Scenario: Mismo dato en la web y en el MCP
 - **WHEN** cambia la descripción de `Button` en su ficha y se despliega
@@ -85,11 +110,11 @@ Los nombres de campo SHALL ir en inglés. Cada JSON SHALL llevar la versión de 
 - **THEN** la página, `/foundations.json` y `get_foundation` devuelven el párrafo nuevo
 
 ### Requirement: Servidor MCP remoto
-Regula SHALL servir un servidor MCP en `https://regula.jotis.me/mcp` por Streamable HTTP, sin sesión y sin autenticación. El servidor SHALL ser solo de consulta: ninguna herramienta SHALL escribir, borrar ni llamar a servicios externos. SHALL anunciarse con el nombre `regula` y la versión de `@jotis-me/react` que documenta la web.
+Regula SHALL servir un servidor MCP en `https://regula.jotis.me/mcp` por Streamable HTTP, sin sesión y sin autenticación. El servidor SHALL ser solo de consulta: ninguna herramienta SHALL escribir, borrar ni llamar a servicios externos. SHALL anunciarse con el nombre `regula` y la versión del contrato (requisito «Versión del contrato»).
 
 #### Scenario: Conectar un cliente
 - **WHEN** un cliente MCP envía `initialize` a `https://regula.jotis.me/mcp`
-- **THEN** recibe el nombre `regula`, la versión documentada y la capacidad de herramientas, sin pedir credenciales
+- **THEN** recibe el nombre `regula`, la versión del contrato (`1.1.0`) y la capacidad de herramientas, sin pedir credenciales
 
 #### Scenario: Listar herramientas
 - **WHEN** el cliente pide `tools/list`
