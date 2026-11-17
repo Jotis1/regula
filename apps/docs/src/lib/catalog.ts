@@ -35,6 +35,7 @@ export const STANDARD_AREAS: readonly StandardAreaEntry[] = [
 	{ slug: "naming", label: "Nombres" },
 	{ slug: "language", label: "Idioma" },
 	{ slug: "git", label: "Git" },
+	{ slug: "ci", label: "CI" },
 	{ slug: "process", label: "Proceso" },
 ];
 

@@ -28,7 +28,13 @@ describe("estructura", () => {
 describe("normas", () => {
 	it("list_standards trae las áreas con sus normas", () => {
 		const { json } = call("list_standards");
-		expect(json.areas.map((a: { id: string }) => a.id)).toEqual(["naming", "language", "git", "process"]);
+		expect(json.areas.map((a: { id: string }) => a.id)).toEqual([
+			"naming",
+			"language",
+			"git",
+			"ci",
+			"process",
+		]);
 		expect(json.areas[0].rules[0]).toMatchObject({ id: "NOM-001", level: "must" });
 	});
 
@@ -49,6 +55,13 @@ describe("normas", () => {
 		expect(json).toMatchObject({ id: "GIT-001", level: "must", area: "git" });
 		for (const field of ["appliesTo", "statement", "rationale", "examples", "verification", "url"])
 			expect(json, field).toHaveProperty(field);
+	});
+
+	it("get_standard lee INT-003, el job puerta del área de CI", () => {
+		const { json } = call("get_standard", { id: "INT-003" });
+		expect(json).toMatchObject({ id: "INT-003", level: "must", area: "ci" });
+		expect(json.verification).toEqual({ kind: "ci", check: "Normas de CI" });
+		expect(json.url).toBe("https://regula.jotis.me/standards/ci/#int-003");
 	});
 
 	it("get_standard trae la URL de su página con el ancla", () => {
