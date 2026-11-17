@@ -143,7 +143,9 @@ jobs:
               run: bunx playwright install chromium firefox webkit
               working-directory: apps/docs
             - name: Web (funcional, axe y paridad visual)
-              run: bunx playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+              # Por test y no por archivo: repartidos por archivo, uno de los shards tardaba 885 s y los otros 303 y 219.
+              # Ningún e2e comparte estado entre tests (sin describe.serial ni beforeAll), así que pueden ir por separado.
+              run: bunx playwright test --fully-parallel --shard=${{ matrix.shard }}/${{ strategy.job-total }}
               working-directory: apps/docs
             - name: Resultados si algo falla
               if: failure()
