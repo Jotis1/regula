@@ -1,0 +1,4 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"ignoreCommand": "npx -y turbo@2.11.10 query affected --packages me.jotis.regula.docs --base \"$VERCEL_GIT_PREVIOUS_SHA\" --exit-code"
+}
