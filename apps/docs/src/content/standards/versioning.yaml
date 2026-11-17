@@ -286,8 +286,8 @@ rules:
                   // examples/next/package.json
                   "react": "^19.2.0"
       exceptions:
-          - where: "`typescript` en los workspaces con `@astrojs/check` o con `next`"
-            why: "`astro check` y `next build` comprueban los tipos con la API de TypeScript 6, que TypeScript 7 no tiene."
+          - where: "`typescript` en los workspaces con `@astrojs/check`, `next` o `dts-bundle-generator`"
+            why: "Estas herramientas leen la API de JavaScript de TypeScript 6, que TypeScript 7 no tiene."
       verification:
           kind: ci
           check: Normas de desarrollo
