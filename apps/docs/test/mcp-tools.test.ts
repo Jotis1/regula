@@ -74,6 +74,13 @@ describe("normas", () => {
 		expect(json.url).toBe("https://regula.jotis.me/standards/versioning/#ver-002");
 	});
 
+	it("get_standard lee LNG-005: el ejemplo malo enseña el punto medio aunque el YAML lo escriba escapado", () => {
+		const { json } = call("get_standard", { id: "LNG-005" });
+		expect(json).toMatchObject({ id: "LNG-005", area: "language" });
+		expect(json.verification).toEqual({ kind: "ci", check: "Normas de desarrollo" });
+		expect(JSON.stringify(json.examples.bad)).toContain(String.fromCodePoint(0xb7));
+	});
+
 	it("list_standards con un área que no existe da error con las que hay", () => {
 		const r = call("list_standards", { area: "seo" });
 		expect(r.isError).toBe(true);

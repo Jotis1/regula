@@ -118,3 +118,40 @@ rules:
       verification:
           kind: review
           review: Que ninguna ruta ni parámetro nuevos de la web estén en español.
+
+    - id: LNG-005
+      title: Ni punto medio ni rayas, el guión simple
+      level: must
+      appliesTo: all
+      statement: >-
+          Ningún texto del repo (la guía, los comentarios, el JSDoc, los textos de la interfaz, los tests, los changesets)
+          ni ningún mensaje de commit usa el punto medio («·») ni las rayas («—» y «–»). En su lugar va el guión simple:
+          con espacios cuando separa (`Donación - 5,00 €`) y sin espacios en los rangos (`0-100`, `10:00-11:30`).
+      rationale: >-
+          Son caracteres que no están en el teclado: cada persona o agente los escribe a su manera, o los mezcla con el
+          guión, y el mismo separador sale de tres formas en la misma página. Con un solo carácter, los textos se buscan,
+          se comparan en los tests y se escriben igual en todas partes.
+      examples:
+          good:
+              - caption: Un separador en un texto de la interfaz y un comentario con el guión simple
+                lang: ts
+                code: |-
+                    // Short line for a list: the label, and the amount when there is one
+                    const short = extra ? `${label} - ${extra}` : label;
+          bad:
+              - caption: El mismo texto con punto medio y el comentario con raya
+                lang: ts
+                code: "// Short line for a list \u2014 the label, and the amount when there is one\nconst short = extra ? `${label} \u00B7 ${extra}` : label;"
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+      exceptions:
+          - where: Citar el carácter suelto, entre comillas latinas o en código (`«·»`)
+            why: >-
+                Es la única forma de nombrarlo, como hace esta norma.
+          - where: Commits de un bot (Dependabot)
+            why: >-
+                Copian las notas de versión de cada dependencia, que escribe otro proyecto.
+          - where: "`CHANGELOG.md`, `openspec/changes/archive/`, `reference/` y `.claude/`"
+            why: >-
+                Son historial, una copia congelada o archivos que genera una herramienta de fuera. No se reescriben.
