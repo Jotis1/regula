@@ -88,7 +88,7 @@ Comandos:
 
   Comprobar con `bun run --cwd apps/docs test`
 - [x] 6.3 `STK-004` nombra el formato: tabuladores de ancho 4, líneas de 110, comillas dobles y punto y coma (D11). Un test de `check:dev` con `"indentStyle": "space"`. Comprobar con `bun run check:dev`
-- [ ] 6.4 Tipografía (D11):
+- [x] 6.4 Tipografía (D11):
   - la comprobación de archivos en `check:dev`, con tests: una raya en un comentario, un punto medio en un `.md`, una cita suelta permitida y un archivo de `reference/` que no cuenta;
   - `scripts/check-commit-typography.ts`, con tests (un commit con «·», uno limpio y uno de Dependabot) y el paso «Tipografía» en el job «Commits»;
   - la norma `LNG-005` en `language.yaml`, con su ejemplo malo en escapes;
