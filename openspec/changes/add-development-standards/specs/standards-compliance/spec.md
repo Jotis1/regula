@@ -134,7 +134,7 @@ Todos los workspaces de Regula SHALL tener los flags del área de código, un sc
 Los ejemplos de Next y de Astro SHALL pasar Biome, `typecheck` y «Normas de desarrollo» con el mismo bloque de configuración que se publica en la guía, sin supresiones propias. Si una regla nueva choca con una convención de alguno de los dos frameworks, su excepción SHALL añadirse a la norma y al bloque antes de publicarla.
 
 #### Scenario: Layout de Next
-- **WHEN** corre Biome sobre `examples/next/app/layout.tsx`, con su `export default`
+- **WHEN** corre Biome sobre `examples/next/src/app/layout.tsx`, con su `export default`
 - **THEN** no hay ningún diagnóstico
 
 ### Requirement: Exports de Regula documentados
