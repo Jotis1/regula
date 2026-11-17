@@ -35,7 +35,9 @@
 				"noTsIgnore": "error"
 			},
 			"style": {
-				"noEnum": "error"
+				"noEnum": "error",
+				"noNonNullAssertion": "error",
+				"useImportType": "error"
 			},
 			"a11y": {
 				"useValidAriaRole": {
