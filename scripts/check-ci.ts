@@ -110,6 +110,11 @@ export function ciProblems({ workflowPath, workflow, turboVersion, vercel }: CiI
 			problems.push(
 				`${path} (INT-005): \`ignoreCommand\` pins a turbo other than ${turboVersion}, the root one`,
 			);
+		// Vercel only knows 0 (skip) and 1 (build): turbo's 2 for "could not compare" fails the deployment
+		else if (!/\|\|\s*exit 1\s*$/.test(command))
+			problems.push(
+				`${path} (INT-005): \`ignoreCommand\` must end in \`|| exit 1\`, so an error builds instead of failing`,
+			);
 	}
 	return problems;
 }

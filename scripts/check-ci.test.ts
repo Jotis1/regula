@@ -4,7 +4,7 @@ import { type CiInput, ciProblems, readCi, type Workflow } from "./check-ci";
 
 const PATH = ".github/workflows/ci.yml";
 const IGNORE =
-	'npx -y turbo@2.11.10 query affected --packages me.jotis.regula.docs --base "$VERCEL_GIT_PREVIOUS_SHA" --exit-code';
+	'npx -y turbo@2.11.10 query affected --packages me.jotis.regula.docs --base "$VERCEL_GIT_PREVIOUS_SHA" --exit-code || exit 1';
 
 /** A workflow that follows every rule; each test breaks one thing. */
 const good = (): Workflow => ({
@@ -110,6 +110,17 @@ describe("check-ci", () => {
 				]),
 			),
 		).toEqual([expect.stringContaining("pins a turbo other than 2.11.10")]);
+		// Without the mapping, turbo's exit 2 (no base on a new branch) fails the deployment
+		expect(
+			ciProblems(
+				input(good(), [
+					{
+						path: "apps/docs/vercel.json",
+						config: { ignoreCommand: IGNORE.replace(" || exit 1", "") },
+					},
+				]),
+			),
+		).toEqual([expect.stringContaining("must end in `|| exit 1`")]);
 	});
 
 	it("reads the root turbo version and the apps of the repository", () => {
