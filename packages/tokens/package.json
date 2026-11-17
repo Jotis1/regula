@@ -43,10 +43,10 @@
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.5",
 		"@fontsource-variable/bricolage-grotesque": "^5.3.0",
-		"@playwright/test": "^1.64.1",
-		"@tailwindcss/node": "^4.3.3",
+		"@playwright/test": "~1.64.1",
+		"@tailwindcss/node": "^4.3.5",
 		"@types/node": "^26.6.6",
-		"geist": "^1.8.2",
+		"geist": "^1.9.2",
 		"publint": "^0.3.25",
 		"tailwindcss": "^4.3.3",
 		"vitest": "^5"

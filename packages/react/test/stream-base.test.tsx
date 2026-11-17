@@ -43,7 +43,8 @@ describe("raíz y cifras", () => {
 	});
 
 	it("las cifras de reloj van en Geist con números tabulares", async () => {
-		const out = await css(TABULAR.split(" "));
+		// Tailwind 4.3.5 writes the empty fallback as `var(--x, )`; older versions, as `var(--x,)`. Both are the same CSS.
+		const out = (await css(TABULAR.split(" "))).replaceAll(", )", ",)");
 		expect(out).toContain(
 			"font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,)",
 		);
