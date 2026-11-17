@@ -113,7 +113,17 @@ describe("/standards.json", () => {
 
 	it("lleva la versión y las áreas por `order`", () => {
 		expect(json.version).toBe("9.9.9");
-		expect(json.areas.map((a) => a.id)).toEqual(["naming", "language", "git", "ci", "process"]);
+		expect(json.areas.map((a) => a.id)).toEqual([
+			"naming",
+			"language",
+			"stack",
+			"code",
+			"documentation",
+			"versioning",
+			"git",
+			"ci",
+			"process",
+		]);
 	});
 
 	it("cada norma trae todos sus campos y su URL", () => {

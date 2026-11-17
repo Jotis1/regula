@@ -31,6 +31,10 @@ describe("normas", () => {
 		expect(json.areas.map((a: { id: string }) => a.id)).toEqual([
 			"naming",
 			"language",
+			"stack",
+			"code",
+			"documentation",
+			"versioning",
 			"git",
 			"ci",
 			"process",

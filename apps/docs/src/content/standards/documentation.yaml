@@ -1,0 +1,160 @@
+prefix: DOC
+title: Documentación
+description: Qué se documenta en el código y en los README, y dónde, para que nadie tenga que adivinar lo que ofrece un paquete.
+order: 5
+rules:
+    - id: DOC-001
+      title: Todo export público lleva JSDoc
+      level: must
+      appliesTo: package
+      statement: >-
+          Cada componente, función, constante o clase que exporta un paquete publicado lleva un comentario JSDoc que dice
+          para qué sirve. El código generado queda fuera si su generador está documentado. El comentario sigue la norma de
+          los comentarios del área de idioma (LNG-003): dice el porqué y no repite el nombre.
+      rationale: >-
+          El JSDoc es lo que enseña el editor al pasar el ratón sobre el nombre, antes de abrir la guía. Un export sin él
+          obliga a leer el código para saber qué hace.
+      examples:
+          good:
+              - caption: Un componente con su descripción
+                lang: tsx
+                code: |-
+                  /** A one-line status label: a color, some text and, optionally, an icon. */
+                  export function Badge({ children, color = "gray" }: BadgeProps) {
+                    return <span className={cx(BASE, COLORS[color])}>{children}</span>;
+                  }
+          bad:
+              - caption: El mismo export sin comentario
+                lang: tsx
+                code: |-
+                  export function Badge({ children, color = "gray" }: BadgeProps) {
+                    return <span className={cx(BASE, COLORS[color])}>{children}</span>;
+                  }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: DOC-002
+      title: Cada prop lleva JSDoc, con su valor por defecto
+      level: must
+      appliesTo: package
+      statement: >-
+          Cada propiedad de una interfaz o de un tipo objeto de un paquete publicado lleva JSDoc, y `@default` cuando tiene
+          valor por defecto. La ficha del componente en la guía y las herramientas del MCP leen estas descripciones.
+      rationale: >-
+          La tabla de props de la web sale de aquí: una prop sin descripción es una fila vacía para quien la consulta, ya
+          sea una persona o un agente. El valor por defecto evita abrir el código para saber qué pasa si no se pasa.
+      examples:
+          good:
+              - caption: Una prop con su descripción y su valor por defecto
+                lang: ts
+                code: |-
+                  interface BadgeProps {
+                    /**
+                     * Size: `sm` 12 px · `md` 14 px · `lg` 14 px with more room.
+                     * @default "md"
+                     */
+                    size?: BadgeSize;
+                  }
+          bad:
+              - caption: Una prop sin comentario
+                lang: ts
+                code: |-
+                  interface BadgeProps {
+                    size?: BadgeSize;
+                  }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: DOC-003
+      title: Un @deprecated dice qué usar en su lugar
+      level: must
+      appliesTo: package
+      statement: >-
+          Todo `@deprecated` explica qué se usa ahora. Sigue lo que dice VER-005: se
+          marca en una versión menor y se quita en la siguiente mayor.
+      rationale: >-
+          Un aviso de que algo está obsoleto sin una salida deja a quien lo lee igual que antes, pero con un tachón en el
+          editor. Decir qué usar convierte el aviso en una migración.
+      examples:
+          good:
+              - caption: El sustituto, en la misma línea
+                lang: ts
+                code: |-
+                  /** @deprecated Use `hierarchy` instead. */
+                  variant?: ButtonHierarchy;
+          bad:
+              - caption: Obsoleto, sin más
+                lang: ts
+                code: |-
+                  /** @deprecated */
+                  variant?: ButtonHierarchy;
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: DOC-004
+      title: Cada paquete publicado tiene su README
+      level: must
+      appliesTo: package
+      statement: >-
+          El README de un paquete publicado dice cómo instalarlo, trae un uso mínimo y enlaza a la guía
+          (`https://regula.jotis.me`).
+      rationale: >-
+          Es la primera página que ve quien llega por npm. Con instalación, un ejemplo y el enlace a la guía, no hace falta
+          buscar el resto fuera.
+      examples:
+          good:
+              - caption: Instalación, uso y enlace
+                lang: md
+                code: |-
+                  # @jotis-me/react
+
+                  Los componentes de la suite jotis.me para Next.js y Astro.
+
+                  ```sh
+                  bun add @jotis-me/react
+                  ```
+
+                  ```tsx
+                  import { Button } from "@jotis-me/react";
+                  ```
+
+                  Guía: https://regula.jotis.me
+          bad:
+              - caption: Un README que solo tiene el nombre
+                lang: md
+                code: |-
+                  # @jotis-me/react
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: DOC-005
+      title: El README de la raíz dice cómo arrancar el proyecto
+      level: must
+      appliesTo: all
+      statement: >-
+          El README de la raíz tiene, en sus bloques de código, los comandos para instalar, arrancar, construir y probar el
+          proyecto. Los comandos funcionan tal como están escritos.
+      rationale: >-
+          Quien llega a un repo, persona o agente, empieza por aquí. Un README sin los comandos obliga a adivinarlos
+          mirando los `package.json`, y uno con comandos que ya no funcionan es peor que ninguno.
+      examples:
+          good:
+              - caption: Los cuatro comandos, cada uno con su comentario
+                lang: sh
+                code: |-
+                  bun install                  # instala las dependencias
+                  bun run build                # construye los paquetes y la web
+                  bun run --cwd apps/docs dev  # arranca la web
+                  bun run test                 # pasa los tests
+          bad:
+              - caption: Solo la instalación
+                lang: sh
+                code: |-
+                  bun install
+      verification:
+          kind: ci
+          check: Normas de desarrollo

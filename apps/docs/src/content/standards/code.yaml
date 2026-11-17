@@ -1,0 +1,401 @@
+prefix: COD
+title: Código
+description: Cómo se escribe TypeScript en la suite, qué avisa el compilador y qué reglas cuida Biome.
+order: 4
+rules:
+    - id: COD-001
+      title: El tsconfig lleva los siete flags
+      level: must
+      appliesTo: all
+      statement: >-
+          Cada `tsconfig.json`, sobre el que genera el framework, tiene `strict`, `noUncheckedIndexedAccess`,
+          `erasableSyntaxOnly`, `noImplicitOverride`, `noImplicitReturns`, `noFallthroughCasesInSwitch` y
+          `verbatimModuleSyntax`. La comprobación mira la configuración ya resuelta con sus `extends`, así que no importa si
+          un flag viene del preset de Astro o de la base del monorepo.
+      rationale: >-
+          `noUncheckedIndexedAccess` tipa `items[0]` como `T | undefined`: sin él, el compilador da por hecho que el
+          elemento existe. `erasableSyntaxOnly` deja fuera lo que no se borra sin más (`enum`, `namespace`), que es lo que
+          Node y Bun admiten sin compilar. `noImplicitOverride`, `noImplicitReturns` y `noFallthroughCasesInSwitch`
+          atrapan errores baratos, y `verbatimModuleSyntax` obliga a separar los tipos de los valores.
+      examples:
+          good:
+              - caption: Los flags sobre el tsconfig del framework
+                lang: json
+                code: |-
+                    {
+                      "extends": "astro/tsconfigs/strict",
+                      "compilerOptions": {
+                        "noUncheckedIndexedAccess": true,
+                        "erasableSyntaxOnly": true,
+                        "noImplicitOverride": true,
+                        "noImplicitReturns": true,
+                        "noFallthroughCasesInSwitch": true,
+                        "verbatimModuleSyntax": true
+                      }
+                    }
+          bad:
+              - caption: Un índice que el tipo da por seguro
+                lang: ts
+                code: |-
+                  // Sin noUncheckedIndexedAccess, `first` es `Item` aunque la lista esté vacía
+                  const first = items[0];
+                  console.error(first.name);
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: COD-002
+      title: Cada workspace con TypeScript tiene su typecheck
+      level: must
+      appliesTo: all
+      statement: >-
+          Un workspace con `tsconfig.json` tiene un script `typecheck` y el CI lo ejecuta. En Astro es `astro check`, que
+          también mira los `.astro`; en el resto, `tsc --noEmit`.
+      rationale: >-
+          Algunos empaquetadores no comprueban los tipos al construir (`astro build` no lo hace) y los ejemplos son lo que
+          copia quien empieza un proyecto. Sin un `typecheck` propio, un error de tipos llega a producción sin que nadie
+          lo vea.
+      examples:
+          good:
+              - caption: Astro con su comprobación
+                lang: json
+                code: |-
+                    "scripts": { "typecheck": "astro check" }
+          bad:
+              - caption: Un workspace con tsconfig y sin script
+                lang: json
+                code: |-
+                    "scripts": { "dev": "astro dev", "build": "astro build" }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: COD-003
+      title: No se escribe any
+      level: must
+      appliesTo: all
+      statement: >-
+          Lo que no se conoce es `unknown` y se estrecha antes de usarlo. No hay `any` ni conversiones (`as any`) para
+          callar al compilador.
+      rationale: >-
+          `any` apaga el tipado donde se escribe y en todo lo que toca después. Con `unknown`, el compilador obliga a
+          comprobar lo que llega de fuera antes de usarlo.
+      examples:
+          good:
+              - caption: Un valor desconocido que se estrecha
+                lang: ts
+                code: |-
+                  function nameOf(value: unknown): string {
+                    return typeof value === "object" && value !== null && "name" in value ? String(value.name) : "";
+                  }
+          bad:
+              - caption: any para llegar a la propiedad
+                lang: ts
+                code: |-
+                  function nameOf(value: any): string {
+                    return value.name;
+                  }
+      verification:
+          kind: biome
+          check: noExplicitAny
+
+    - id: COD-004
+      title: No se usa la aserción no nula
+      level: must
+      appliesTo: all
+      statement: >-
+          No se escribe `valor!`. Si el valor puede faltar, el código decide qué hacer: devolver, lanzar un error con un
+          mensaje claro o usar un valor por defecto.
+      rationale: >-
+          `!` dice al compilador que se calle sin comprobar nada. Con `noUncheckedIndexedAccess` activo sería la salida
+          fácil, y justo lo que esa opción quiere evitar.
+      examples:
+          good:
+              - caption: Se decide qué pasa si no hay elemento
+                lang: ts
+                code: |-
+                  const first = items[0];
+                  if (!first) throw new Error("The list has no items");
+                  console.error(first.name);
+          bad:
+              - caption: Una aserción que calla al compilador
+                lang: ts
+                code: |-
+                  console.error(items[0]!.name);
+      verification:
+          kind: biome
+          check: noNonNullAssertion
+
+    - id: COD-005
+      title: Las supresiones dicen por qué
+      level: must
+      appliesTo: all
+      statement: >-
+          No se usa `@ts-ignore` ni `@ts-nocheck`. Un `@ts-expect-error` o un `biome-ignore` lleva el motivo a continuación
+          (en el `biome-ignore`, tras los dos puntos de la regla). Quien quiera suprimir un aviso lo hace con la menor
+          extensión posible: una línea, no un archivo.
+      rationale: >-
+          `@ts-ignore` sigue callando cuando el error desaparece, y `@ts-nocheck` apaga todo un archivo. `@ts-expect-error`
+          falla si deja de hacer falta, y el motivo es lo que alguien necesitará dentro de un año para decidir si se puede
+          quitar.
+      examples:
+          good:
+              - caption: Un test de tipos con su motivo
+                lang: ts
+                code: |-
+                  // @ts-expect-error: a button with only an icon needs a label
+                  render(<Button iconOnly={Plus} />);
+          bad:
+              - caption: Una supresión que no dice nada y que no avisa al dejar de hacer falta
+                lang: ts
+                code: |-
+                  // @ts-ignore
+                  render(<Button iconOnly={Plus} />);
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: COD-006
+      title: Los paquetes publicados son ESM, con exports y tipos correctos
+      level: must
+      appliesTo: package
+      statement: >-
+          Un paquete publicado es solo ESM (`"type": "module"`), declara `exports` y cada entrada lleva sus tipos. Lo que
+          publica tiene que poder importarse tanto desde Node como desde un empaquetador.
+      rationale: >-
+          Un `exports` mal puesto hace que el editor no encuentre los tipos o que Node no resuelva la entrada, y esos
+          fallos solo se ven al instalar el paquete. `publint` y `arethetypeswrong` los encuentran antes de publicar.
+      examples:
+          good:
+              - caption: Una entrada con sus tipos
+                lang: json
+                code: |-
+                  {
+                    "type": "module",
+                    "exports": {
+                      ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+                    }
+                  }
+          bad:
+              - caption: Sin exports ni tipos para quien importa
+                lang: json
+                code: |-
+                  { "main": "./dist/index.js" }
+      verification:
+          kind: ci
+          check: publint y arethetypeswrong
+
+    - id: COD-007
+      title: Los paquetes publicados compilan con NodeNext
+      level: must
+      appliesTo: package
+      statement: >-
+          El tsconfig de un paquete publicado usa `module` y `moduleResolution` en `NodeNext`, así que los imports relativos
+          llevan la extensión `.js`.
+      rationale: >-
+          Un import sin extensión funciona con el empaquetador del proyecto y falla en Node, donde se instala el paquete.
+          Con `NodeNext`, el compilador lo marca al escribirlo, no cuando alguien lo importa.
+      examples:
+          good:
+              - caption: El import con su extensión
+                lang: ts
+                code: |-
+                  import { cx } from "./cx.js";
+          bad:
+              - caption: El import sin extensión
+                lang: ts
+                code: |-
+                  import { cx } from "./cx";
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: COD-008
+      title: Los conjuntos de valores son uniones de literales, no enum
+      level: must
+      appliesTo: all
+      statement: >-
+          Un conjunto cerrado de valores se escribe como unión de literales (`"sm" | "md" | "lg"`), no como `enum`.
+      rationale: >-
+          Un `enum` genera código en tiempo de ejecución y no se puede borrar sin más, lo que `erasableSyntaxOnly` no
+          admite. Una unión de literales no pesa nada, se compara con texto y se serializa tal cual.
+      examples:
+          good:
+              - caption: Una unión de literales
+                lang: ts
+                code: |-
+                  type ButtonSize = "sm" | "md" | "lg";
+          bad:
+              - caption: Un enum
+                lang: ts
+                code: |-
+                  enum ButtonSize {
+                    Small,
+                    Medium,
+                    Large,
+                  }
+      verification:
+          kind: biome
+          check: noEnum
+
+    - id: COD-009
+      title: Los módulos exportan con nombre
+      level: must
+      appliesTo: all
+      statement: >-
+          Un módulo exporta con nombre. `export default` solo donde el framework o la herramienta lo exige: los archivos
+          especiales de Next (`page`, `layout`, `loading`, `error`, `not-found`…) y los archivos de configuración.
+      rationale: >-
+          Un export por defecto se importa con el nombre que cada uno quiera, así que el mismo componente acaba con tres
+          nombres. Con exports con nombre, el editor autocompleta, renombrar funciona y buscar un uso encuentra todos.
+      examples:
+          good:
+              - caption: Una isla con su nombre
+                lang: tsx
+                code: |-
+                  // SiteSearch.tsx
+                  export function SiteSearch() {
+                    return <input type="search" />;
+                  }
+
+                  // page.astro
+                  import { SiteSearch } from "../search/SiteSearch";
+              - caption: La página de Next, que el framework importa por su export por defecto
+                lang: tsx
+                code: |-
+                  // app/page.tsx
+                  export default function Page() {
+                    return <main />;
+                  }
+          bad:
+              - caption: Un componente con export por defecto
+                lang: tsx
+                code: |-
+                  // SiteSearch.tsx
+                  export default function SiteSearch() {
+                    return <input type="search" />;
+                  }
+      exceptions:
+          - where: "`**/app/**/{page,layout,template,loading,error,global-error,not-found,default,opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{ts,tsx}`"
+            why: Next.js importa estos archivos por su export por defecto.
+          - where: "`**/*.config.{ts,mts,js,mjs}`"
+            why: Las herramientas (Astro, Vitest, Playwright, PostCSS…) cargan su configuración por el export por defecto.
+      verification:
+          kind: biome
+          check: noDefaultExport
+
+    - id: COD-010
+      title: Lo que solo es un tipo se importa con import type
+      level: must
+      appliesTo: all
+      statement: >-
+          Un import que solo trae tipos se escribe `import type { Props } from "…"`, o `import { type Props, render } from
+          "…"` si lleva también valores.
+      rationale: >-
+          Deja claro qué desaparece al compilar y evita que un empaquetador cargue un módulo solo para sus tipos. Con
+          `verbatimModuleSyntax`, además, el compilador lo exige.
+      examples:
+          good:
+              - caption: El tipo, marcado
+                lang: ts
+                code: |-
+                  import { type ButtonProps, Button } from "@jotis-me/react";
+          bad:
+              - caption: Un tipo importado como si fuera un valor
+                lang: ts
+                code: |-
+                  import { ButtonProps, Button } from "@jotis-me/react";
+      verification:
+          kind: biome
+          check: useImportType
+
+    - id: COD-011
+      title: No se reexporta con export *
+      level: must
+      appliesTo: all
+      statement: >-
+          Un módulo que reexporta lo hace nombre a nombre (`export { Button } from "./Button.js"`), no con `export *`.
+          Cuando la lista sale de un generador, es el generador quien escribe los nombres.
+      rationale: >-
+          Con `export *`, lo público no se ve en el archivo: un nombre que aparece o desaparece no sale en el diff, y
+          nadie puede saber qué ofrece el módulo sin abrir todos los demás.
+      examples:
+          good:
+              - caption: Cada nombre, uno por línea
+                lang: ts
+                code: |-
+                  export { Button, type ButtonProps } from "./Button.js";
+                  export { Badge, type BadgeProps } from "./Badge.js";
+          bad:
+              - caption: Todo lo que haya
+                lang: ts
+                code: |-
+                  export * from "./Button.js";
+      verification:
+          kind: biome
+          check: noReExportAll
+
+    - id: COD-012
+      title: No se importa con import * as, salvo al recorrer un módulo
+      level: must
+      appliesTo: all
+      statement: >-
+          Se importa por nombre. Solo se usa `import * as` cuando el código necesita todos los exports del módulo (recorrerlos
+          o buscar uno por su nombre), y lleva un `biome-ignore` con el motivo.
+      rationale: >-
+          Un import de espacio de nombres puede impedir que el empaquetador quite lo que no se usa. Si el código usa
+          unos pocos nombres, los importa; si de verdad recorre el módulo, lo dice.
+      examples:
+          good:
+              - caption: Por nombre
+                lang: ts
+                code: |-
+                  import { Button, Badge } from "@jotis-me/react";
+              - caption: Un catálogo que recorre todos los iconos
+                lang: ts
+                code: |-
+                  // biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
+                  import * as lineIcons from "@untitledui/icons";
+
+                  export const ICON_NAMES = Object.keys(lineIcons);
+          bad:
+              - caption: El módulo entero para usar dos nombres
+                lang: ts
+                code: |-
+                  import * as ui from "@jotis-me/react";
+
+                  const pair = [ui.Button, ui.Badge];
+      exceptions:
+          - where: El código que recorre todos los exports de un módulo, o los busca por nombre
+            why: Necesita el módulo entero. La supresión de Biome lleva el motivo.
+      verification:
+          kind: biome
+          check: noNamespaceImport
+
+    - id: COD-013
+      title: No hay console.log en el código de src
+      level: must
+      appliesTo: all
+      statement: >-
+          El código de `src/` no escribe en la consola salvo `console.error` y `console.warn`. Scripts, tests, e2e y
+          archivos de configuración quedan fuera: ahí la consola es la salida del programa.
+      rationale: >-
+          Un `console.log` olvidado acaba en producción y en la consola de quien usa el paquete. `error` y `warn` sí
+          avisan de algo que alguien tiene que ver.
+      examples:
+          good:
+              - caption: Un aviso que merece verse
+                lang: ts
+                code: |-
+                  console.warn("The `value` prop is deprecated; use `defaultValue`");
+          bad:
+              - caption: Un log de depuración
+                lang: ts
+                code: |-
+                  console.log("items", items);
+      exceptions:
+          - where: "`**/scripts/**`, `**/test/**`, `**/e2e/**` y `**/*.config.{ts,mts,js,mjs}`"
+            why: "Son programas y pruebas: la consola es su salida."
+      verification:
+          kind: biome
+          check: noConsole

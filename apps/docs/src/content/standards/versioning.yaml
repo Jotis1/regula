@@ -1,0 +1,318 @@
+prefix: VER
+title: Versiones y dependencias
+description: Qué promete un paquete a quien lo instala, cómo se versiona y cómo se declaran sus dependencias.
+order: 6
+rules:
+    - id: VER-001
+      title: Los paquetes siguen SemVer
+      level: must
+      appliesTo: package
+      statement: >-
+          Un paquete publicado sigue SemVer. Rompen, y por tanto suben la versión mayor: quitar o renombrar un export, una
+          prop, un token o una variable CSS; cambiar un valor por defecto; estrechar un tipo que se acepta; y subir la
+          versión mayor de una `peerDependency`. Antes de la 1.0, lo que rompe sube la versión menor.
+      rationale: >-
+          Quien instala `^1.2.0` espera que una versión menor o un parche no le rompan nada. En una librería de componentes,
+          lo que cuenta como API es más de lo que parece: el nombre de una prop o de un token ya es contrato.
+      examples:
+          good:
+              - caption: Renombrar una prop es un cambio que rompe
+                lang: md
+                code: |-
+                  ---
+                  "@jotis-me/react": major
+                  ---
+
+                  `Button` renombra `variant` a `hierarchy`. Sustituye `variant="primary"` por `hierarchy="primary"`.
+          bad:
+              - caption: El mismo cambio como parche
+                lang: md
+                code: |-
+                  ---
+                  "@jotis-me/react": patch
+                  ---
+
+                  `Button` renombra `variant` a `hierarchy`.
+      verification:
+          kind: review
+          review: Que el tipo del changeset (`major`, `minor`, `patch`) corresponde a lo que el cambio hace a quien instala el paquete.
+
+    - id: VER-002
+      title: Toda PR que cambia lo publicado trae un changeset
+      level: must
+      appliesTo: package
+      statement: >-
+          Una PR que cambia lo que publica un paquete (su `src/`, lo que lista `files` salvo `dist`, o su `package.json` sin
+          `devDependencies` ni `scripts`) trae un changeset que nombra el paquete, o un changeset vacío si no hay nada que
+          publicar. El PR de versión que abre changesets queda fuera.
+      rationale: >-
+          El historial público sale de los changesets. Sin uno, un cambio llega a quien instala el paquete sin explicación
+          y sin que la versión suba. El changeset vacío deja constancia de que alguien decidió que no hacía falta.
+      examples:
+          good:
+              - caption: Un changeset que nombra el paquete
+                lang: md
+                code: |-
+                  ---
+                  "@jotis-me/react": patch
+                  ---
+
+                  `Alert` ya no repite el icono en lectores de pantalla.
+              - caption: Un changeset vacío, cuando solo se tocan pruebas o documentación interna
+                lang: md
+                code: |-
+                  ---
+                  ---
+          bad:
+              - caption: Una PR que cambia un componente y no trae ningún archivo en .changeset
+                lang: text
+                code: |-
+                  packages/react/src/components/Alert.tsx
+      verification:
+          kind: ci
+          check: Changesets
+
+    - id: VER-003
+      title: El changeset se escribe para quien usa el paquete
+      level: must
+      appliesTo: package
+      statement: >-
+          Un changeset cuenta qué cambia para quien usa el paquete, no cómo se ha hecho, y si rompe dice cómo migrar. Va en
+          español (LNG-002).
+      rationale: >-
+          El changelog público sale de aquí. «Refactor del cálculo de huecos» no le dice nada a quien instala el paquete;
+          «`CalendarView` ya no solapa eventos» sí.
+      examples:
+          good:
+              - caption: Lo que cambia, para quien lo usa
+                lang: md
+                code: |-
+                  ---
+                  "@jotis-me/react": minor
+                  ---
+
+                  `CalendarView` coloca los eventos que se solapan en columnas paralelas, en lugar de apilarlos.
+          bad:
+              - caption: Lo que se hizo por dentro
+                lang: md
+                code: |-
+                  ---
+                  "@jotis-me/react": minor
+                  ---
+
+                  Refactor del cálculo de huecos.
+      verification:
+          kind: review
+          review: Que el texto diga qué cambia para quien usa el paquete y que, si rompe, diga cómo migrar.
+
+    - id: VER-004
+      title: Las prerreleases salen con el modo pre y una etiqueta propia
+      level: must
+      appliesTo: package
+      statement: >-
+          Una prerelease (`1.0.0-beta.0`) se publica con el modo pre de changesets (`changeset pre enter beta`) y con una
+          etiqueta de npm distinta de `latest` (`beta`).
+      rationale: >-
+          Con la etiqueta `latest`, quien ejecuta `bun add @jotis-me/react` recibiría la beta. Con una etiqueta propia, la
+          beta solo llega a quien la pide.
+      examples:
+          good:
+              - caption: Entrar en modo pre y publicar con su etiqueta
+                lang: sh
+                code: |-
+                  bunx changeset pre enter beta
+                  bun run version-packages     # 1.0.0-beta.0
+                  npm publish --tag beta
+          bad:
+              - caption: Una beta publicada como la última versión
+                lang: sh
+                code: |-
+                  npm publish --tag latest   # de 1.0.0-beta.0
+      verification:
+          kind: review
+          review: Que la versión con sufijo se publique con una etiqueta que no sea `latest`.
+
+    - id: VER-005
+      title: Se deprecia en una menor y se quita en la siguiente mayor
+      level: must
+      appliesTo: package
+      statement: >-
+          Antes de quitar un export, una prop o un token, se marca con `@deprecated` en una versión menor, con lo que se usa
+          en su lugar (DOC-003). Se quita en la siguiente versión mayor.
+      rationale: >-
+          Quitar sin avisar rompe a quien actualiza sin motivo aparente. Con un aviso en una menor, quien usa el paquete
+          tiene tiempo de migrar, y quitarlo en una mayor es lo que SemVer promete.
+      examples:
+          good:
+              - caption: Primero se avisa, en una versión menor
+                lang: ts
+                code: |-
+                  /** @deprecated Use `hierarchy` instead. It is removed in the next major version. */
+                  variant?: ButtonHierarchy;
+          bad:
+              - caption: Se quita sin haber avisado
+                lang: text
+                code: |-
+                  - variant?: ButtonHierarchy;
+      verification:
+          kind: review
+          review: Que lo que se quita llevara `@deprecated` desde una versión menor anterior.
+
+    - id: VER-006
+      title: El lockfile está en el repo y el CI instala con --frozen-lockfile
+      level: must
+      appliesTo: all
+      statement: >-
+          El lockfile está en el repositorio y el CI instala con `bun install --frozen-lockfile`, que falla si el lockfile no
+          coincide con los `package.json`.
+      rationale: >-
+          Si el CI puede resolver versiones nuevas, lo que prueba no es lo que se despliega. Con el lockfile congelado,
+          los mismos archivos dan las mismas dependencias en local, en el CI y en producción.
+      examples:
+          good:
+              - caption: Instalar sin tocar el lockfile
+                lang: yaml
+                code: |-
+                  - run: bun install --frozen-lockfile
+          bad:
+              - caption: Una instalación que puede cambiar las versiones
+                lang: yaml
+                code: |-
+                  - run: bun install
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: VER-007
+      title: Los frameworks compartidos van en peerDependencies
+      level: must
+      appliesTo: package
+      statement: >-
+          Los frameworks que comparte la app con el paquete (`react`, `react-dom`, `next`, `astro` y `tailwindcss`) van en
+          `peerDependencies`, con el rango de versiones mayores que admite el paquete, y nunca en `dependencies`.
+      rationale: >-
+          Con `react` en `dependencies`, la app acaba con dos copias de React: la suya y la del paquete. Los hooks fallan
+          sin un mensaje claro. Como `peerDependency`, el paquete usa la que ya tiene la app.
+      examples:
+          good:
+              - caption: React como peerDependency
+                lang: json
+                code: |-
+                  "peerDependencies": { "react": "^19.3.1", "react-dom": "^19.3.1" }
+          bad:
+              - caption: React como dependencia
+                lang: json
+                code: |-
+                  "dependencies": { "react": "^19.3.1" }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: VER-008
+      title: Las dependencias 0.x de un paquete publicado se fijan
+      level: should
+      appliesTo: package
+      statement: >-
+          Una dependencia 0.x en `dependencies` o `peerDependencies` de un paquete publicado se fija a una versión exacta.
+          No aplica a `devDependencies`, que el lockfile ya fija.
+      rationale: >-
+          En 0.x, una versión menor puede romper (`^0.2.0` admite `0.2.9` pero no `0.3.0`, y una 0.0.x cambia con cada
+          parche). Fijar la versión evita que quien instala el paquete reciba un cambio que no se probó.
+      examples:
+          good:
+              - caption: La versión exacta
+                lang: json
+                code: |-
+                  "dependencies": { "@untitledui/icons": "0.0.23" }
+          bad:
+              - caption: Un rango sobre una 0.x
+                lang: json
+                code: |-
+                  "dependencies": { "@untitledui/icons": "^0.0.23" }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: VER-009
+      title: Las dependencias internas usan workspace:, y no llegan a npm
+      level: must
+      appliesTo: package
+      statement: >-
+          Las dependencias entre paquetes del monorepo se declaran con `workspace:`. El paquete que se publica no lleva ningún
+          `workspace:`: se sustituye por la versión al empaquetar.
+      rationale: >-
+          `workspace:*` solo lo entiende el gestor del monorepo. Si llegara a npm, quien instala el paquete no podría
+          resolverlo.
+      examples:
+          good:
+              - caption: En el monorepo, el paquete hermano
+                lang: json
+                code: |-
+                  "dependencies": { "@jotis-me/tokens": "workspace:*" }
+          bad:
+              - caption: Un paquete publicado que conserva el workspace
+                lang: json
+                code: |-
+                  "dependencies": { "@jotis-me/tokens": "workspace:*" }   // dentro del .tgz
+      verification:
+          kind: ci
+          check: "Paquetes sin workspace:"
+
+    - id: VER-010
+      title: Una dependencia lleva el mismo rango en todo el monorepo
+      level: must
+      appliesTo: all
+      statement: >-
+          Una dependencia (de `dependencies` o de `devDependencies`) tiene el mismo rango en todos los workspaces. Se
+          quedan fuera las que usan `workspace:` o un alias `npm:`.
+      rationale: >-
+          Con rangos distintos, el lockfile guarda varias versiones de lo mismo, el monorepo pesa más y un error aparece en
+          un workspace y no en otro. Un solo rango por dependencia hace que subirla sea un solo cambio.
+      examples:
+          good:
+              - caption: El mismo rango en la web y en el ejemplo
+                lang: json
+                code: |-
+                  // apps/docs/package.json
+                  "react": "^19.3.1"
+                  // examples/next/package.json
+                  "react": "^19.3.1"
+          bad:
+              - caption: Rangos distintos para lo mismo
+                lang: json
+                code: |-
+                  // apps/docs/package.json
+                  "react": "^19.3.1"
+                  // examples/next/package.json
+                  "react": "^19.2.0"
+      exceptions:
+          - where: "`typescript` en los workspaces con `@astrojs/check` o con `next`"
+            why: "`astro check` y `next build` comprueban los tipos con la API de TypeScript 6, que TypeScript 7 no tiene."
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: VER-011
+      title: Los paquetes publicados declaran sideEffects
+      level: must
+      appliesTo: package
+      statement: >-
+          Un paquete publicado declara `sideEffects` en su `package.json`: `false` si ningún módulo tiene efectos al
+          importarse, o la lista de los que sí (`["**/*.css"]`).
+      rationale: >-
+          Sin ella, el empaquetador no sabe si puede quitar un módulo que nadie usa, y el paquete pesa más en la app de quien
+          lo instala.
+      examples:
+          good:
+              - caption: Solo el CSS tiene efectos
+                lang: json
+                code: |-
+                  "sideEffects": ["**/*.css"]
+          bad:
+              - caption: Sin declarar
+                lang: json
+                code: |-
+                  { "name": "@jotis-me/react", "type": "module" }
+      verification:
+          kind: ci
+          check: Normas de desarrollo

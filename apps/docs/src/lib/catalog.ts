@@ -34,6 +34,10 @@ export interface StandardAreaEntry {
 export const STANDARD_AREAS: readonly StandardAreaEntry[] = [
 	{ slug: "naming", label: "Nombres" },
 	{ slug: "language", label: "Idioma" },
+	{ slug: "stack", label: "Stack y herramientas" },
+	{ slug: "code", label: "Código" },
+	{ slug: "documentation", label: "Documentación" },
+	{ slug: "versioning", label: "Versiones y dependencias" },
 	{ slug: "git", label: "Git" },
 	{ slug: "ci", label: "CI" },
 	{ slug: "process", label: "Proceso" },

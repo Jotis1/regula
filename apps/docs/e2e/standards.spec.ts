@@ -7,9 +7,11 @@ test.use({ viewport: { width: 1440, height: 900 } });
 test("el índice lista las áreas con sus normas y cada una enlaza a su ancla", async ({ page }) => {
 	await page.goto("/standards/");
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Normas");
-	// Exact: a short label such as "CI" would also match "Documentación"
+	// Exact: a short label such as "CI" would also match "Documentación". Only the main content: the footer has its own h2
 	for (const area of STANDARD_AREAS)
-		await expect(page.getByRole("heading", { level: 2, name: area.label, exact: true })).toBeVisible();
+		await expect(
+			page.getByRole("main").getByRole("heading", { level: 2, name: area.label, exact: true }),
+		).toBeVisible();
 	const first = page.getByRole("link", { name: /NAM-001/ });
 	await expect(first).toHaveAttribute("href", "/standards/naming/#nam-001");
 	// The level is text, not only colour
