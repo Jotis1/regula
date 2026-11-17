@@ -19,17 +19,17 @@ rules:
               - caption: Un componente con su descripción
                 lang: tsx
                 code: |-
-                  /** A one-line status label: a color, some text and, optionally, an icon. */
-                  export function Badge({ children, color = "gray" }: BadgeProps) {
-                    return <span className={cx(BASE, COLORS[color])}>{children}</span>;
-                  }
+                    /** A one-line status label: a color, some text and, optionally, an icon. */
+                    export function Badge({ children, color = "gray" }: BadgeProps) {
+                      return <span className={cx(BASE, COLORS[color])}>{children}</span>;
+                    }
           bad:
               - caption: El mismo export sin comentario
                 lang: tsx
                 code: |-
-                  export function Badge({ children, color = "gray" }: BadgeProps) {
-                    return <span className={cx(BASE, COLORS[color])}>{children}</span>;
-                  }
+                    export function Badge({ children, color = "gray" }: BadgeProps) {
+                      return <span className={cx(BASE, COLORS[color])}>{children}</span>;
+                    }
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -49,20 +49,20 @@ rules:
               - caption: Una prop con su descripción y su valor por defecto
                 lang: ts
                 code: |-
-                  interface BadgeProps {
-                    /**
-                     * Size: `sm` 12 px · `md` 14 px · `lg` 14 px with more room.
-                     * @default "md"
-                     */
-                    size?: BadgeSize;
-                  }
+                    interface BadgeProps {
+                      /**
+                       * Size: `sm` 12 px · `md` 14 px · `lg` 14 px with more room.
+                       * @default "md"
+                       */
+                      size?: BadgeSize;
+                    }
           bad:
               - caption: Una prop sin comentario
                 lang: ts
                 code: |-
-                  interface BadgeProps {
-                    size?: BadgeSize;
-                  }
+                    interface BadgeProps {
+                      size?: BadgeSize;
+                    }
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -82,14 +82,14 @@ rules:
               - caption: El sustituto, en la misma línea
                 lang: ts
                 code: |-
-                  /** @deprecated Use `hierarchy` instead. */
-                  variant?: ButtonHierarchy;
+                    /** @deprecated Use `hierarchy` instead. */
+                    variant?: ButtonHierarchy;
           bad:
               - caption: Obsoleto, sin más
                 lang: ts
                 code: |-
-                  /** @deprecated */
-                  variant?: ButtonHierarchy;
+                    /** @deprecated */
+                    variant?: ButtonHierarchy;
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -109,24 +109,24 @@ rules:
               - caption: Instalación, uso y enlace
                 lang: md
                 code: |-
-                  # @jotis-me/react
+                    # @jotis-me/react
 
-                  Los componentes de la suite jotis.me para Next.js y Astro.
+                    Los componentes de la suite jotis.me para Next.js y Astro.
 
-                  ```sh
-                  bun add @jotis-me/react
-                  ```
+                    ```sh
+                    bun add @jotis-me/react
+                    ```
 
-                  ```tsx
-                  import { Button } from "@jotis-me/react";
-                  ```
+                    ```tsx
+                    import { Button } from "@jotis-me/react";
+                    ```
 
-                  Guía: https://regula.jotis.me
+                    Guía: https://regula.jotis.me
           bad:
               - caption: Un README que solo tiene el nombre
                 lang: md
                 code: |-
-                  # @jotis-me/react
+                    # @jotis-me/react
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -146,15 +146,15 @@ rules:
               - caption: Los cuatro comandos, cada uno con su comentario
                 lang: sh
                 code: |-
-                  bun install                  # instala las dependencias
-                  bun run build                # construye los paquetes y la web
-                  bun run --cwd apps/docs dev  # arranca la web
-                  bun run test                 # pasa los tests
+                    bun install                  # instala las dependencias
+                    bun run build                # construye los paquetes y la web
+                    bun run --cwd apps/docs dev  # arranca la web
+                    bun run test                 # pasa los tests
           bad:
               - caption: Solo la instalación
                 lang: sh
                 code: |-
-                  bun install
+                    bun install
       verification:
           kind: ci
           check: Normas de desarrollo

@@ -37,9 +37,9 @@ rules:
               - caption: Un índice que el tipo da por seguro
                 lang: ts
                 code: |-
-                  // Sin noUncheckedIndexedAccess, `first` es `Item` aunque la lista esté vacía
-                  const first = items[0];
-                  console.error(first.name);
+                    // Sin noUncheckedIndexedAccess, `first` es `Item` aunque la lista esté vacía
+                    const first = items[0];
+                    console.error(first.name);
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -85,16 +85,16 @@ rules:
               - caption: Un valor desconocido que se estrecha
                 lang: ts
                 code: |-
-                  function nameOf(value: unknown): string {
-                    return typeof value === "object" && value !== null && "name" in value ? String(value.name) : "";
-                  }
+                    function nameOf(value: unknown): string {
+                      return typeof value === "object" && value !== null && "name" in value ? String(value.name) : "";
+                    }
           bad:
               - caption: any para llegar a la propiedad
                 lang: ts
                 code: |-
-                  function nameOf(value: any): string {
-                    return value.name;
-                  }
+                    function nameOf(value: any): string {
+                      return value.name;
+                    }
       verification:
           kind: biome
           check: noExplicitAny
@@ -114,14 +114,14 @@ rules:
               - caption: Se decide qué pasa si no hay elemento
                 lang: ts
                 code: |-
-                  const first = items[0];
-                  if (!first) throw new Error("The list has no items");
-                  console.error(first.name);
+                    const first = items[0];
+                    if (!first) throw new Error("The list has no items");
+                    console.error(first.name);
           bad:
               - caption: Una aserción que calla al compilador
                 lang: ts
                 code: |-
-                  console.error(items[0]!.name);
+                    console.error(items[0]!.name);
       verification:
           kind: biome
           check: noNonNullAssertion
@@ -143,14 +143,14 @@ rules:
               - caption: Un test de tipos con su motivo
                 lang: ts
                 code: |-
-                  // @ts-expect-error: a button with only an icon needs a label
-                  render(<Button iconOnly={Plus} />);
+                    // @ts-expect-error: a button with only an icon needs a label
+                    render(<Button iconOnly={Plus} />);
           bad:
               - caption: Una supresión que no dice nada y que no avisa al dejar de hacer falta
                 lang: ts
                 code: |-
-                  // @ts-ignore
-                  render(<Button iconOnly={Plus} />);
+                    // @ts-ignore
+                    render(<Button iconOnly={Plus} />);
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -170,17 +170,17 @@ rules:
               - caption: Una entrada con sus tipos
                 lang: json
                 code: |-
-                  {
-                    "type": "module",
-                    "exports": {
-                      ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+                    {
+                      "type": "module",
+                      "exports": {
+                        ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+                      }
                     }
-                  }
           bad:
               - caption: Sin exports ni tipos para quien importa
                 lang: json
                 code: |-
-                  { "main": "./dist/index.js" }
+                    { "main": "./dist/index.js" }
       verification:
           kind: ci
           check: publint y arethetypeswrong
@@ -200,12 +200,12 @@ rules:
               - caption: El import con su extensión
                 lang: ts
                 code: |-
-                  import { cx } from "./cx.js";
+                    import { cx } from "./cx.js";
           bad:
               - caption: El import sin extensión
                 lang: ts
                 code: |-
-                  import { cx } from "./cx";
+                    import { cx } from "./cx";
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -224,16 +224,16 @@ rules:
               - caption: Una unión de literales
                 lang: ts
                 code: |-
-                  type ButtonSize = "sm" | "md" | "lg";
+                    type ButtonSize = "sm" | "md" | "lg";
           bad:
               - caption: Un enum
                 lang: ts
                 code: |-
-                  enum ButtonSize {
-                    Small,
-                    Medium,
-                    Large,
-                  }
+                    enum ButtonSize {
+                      Small,
+                      Medium,
+                      Large,
+                    }
       verification:
           kind: biome
           check: noEnum
@@ -253,28 +253,28 @@ rules:
               - caption: Una isla con su nombre
                 lang: tsx
                 code: |-
-                  // SiteSearch.tsx
-                  export function SiteSearch() {
-                    return <input type="search" />;
-                  }
+                    // SiteSearch.tsx
+                    export function SiteSearch() {
+                      return <input type="search" />;
+                    }
 
-                  // page.astro
-                  import { SiteSearch } from "../search/SiteSearch";
+                    // page.astro
+                    import { SiteSearch } from "../search/SiteSearch";
               - caption: La página de Next, que el framework importa por su export por defecto
                 lang: tsx
                 code: |-
-                  // app/page.tsx
-                  export default function Page() {
-                    return <main />;
-                  }
+                    // app/page.tsx
+                    export default function Page() {
+                      return <main />;
+                    }
           bad:
               - caption: Un componente con export por defecto
                 lang: tsx
                 code: |-
-                  // SiteSearch.tsx
-                  export default function SiteSearch() {
-                    return <input type="search" />;
-                  }
+                    // SiteSearch.tsx
+                    export default function SiteSearch() {
+                      return <input type="search" />;
+                    }
       exceptions:
           - where: "`**/app/**/{page,layout,template,loading,error,global-error,not-found,default,opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{ts,tsx}`"
             why: Next.js importa estos archivos por su export por defecto.
@@ -299,12 +299,12 @@ rules:
               - caption: El tipo, marcado
                 lang: ts
                 code: |-
-                  import { type ButtonProps, Button } from "@jotis-me/react";
+                    import { type ButtonProps, Button } from "@jotis-me/react";
           bad:
               - caption: Un tipo importado como si fuera un valor
                 lang: ts
                 code: |-
-                  import { ButtonProps, Button } from "@jotis-me/react";
+                    import { ButtonProps, Button } from "@jotis-me/react";
       verification:
           kind: biome
           check: useImportType
@@ -324,13 +324,13 @@ rules:
               - caption: Cada nombre, uno por línea
                 lang: ts
                 code: |-
-                  export { Button, type ButtonProps } from "./Button.js";
-                  export { Badge, type BadgeProps } from "./Badge.js";
+                    export { Button, type ButtonProps } from "./Button.js";
+                    export { Badge, type BadgeProps } from "./Badge.js";
           bad:
               - caption: Todo lo que haya
                 lang: ts
                 code: |-
-                  export * from "./Button.js";
+                    export * from "./Button.js";
       verification:
           kind: biome
           check: noReExportAll
@@ -350,21 +350,21 @@ rules:
               - caption: Por nombre
                 lang: ts
                 code: |-
-                  import { Button, Badge } from "@jotis-me/react";
+                    import { Button, Badge } from "@jotis-me/react";
               - caption: Un catálogo que recorre todos los iconos
                 lang: ts
                 code: |-
-                  // biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
-                  import * as lineIcons from "@untitledui/icons";
+                    // biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
+                    import * as lineIcons from "@untitledui/icons";
 
-                  export const ICON_NAMES = Object.keys(lineIcons);
+                    export const ICON_NAMES = Object.keys(lineIcons);
           bad:
               - caption: El módulo entero para usar dos nombres
                 lang: ts
                 code: |-
-                  import * as ui from "@jotis-me/react";
+                    import * as ui from "@jotis-me/react";
 
-                  const pair = [ui.Button, ui.Badge];
+                    const pair = [ui.Button, ui.Badge];
       exceptions:
           - where: El código que recorre todos los exports de un módulo, o los busca por nombre
             why: Necesita el módulo entero. La supresión de Biome lleva el motivo.
@@ -387,12 +387,12 @@ rules:
               - caption: Un aviso que merece verse
                 lang: ts
                 code: |-
-                  console.warn("The `value` prop is deprecated; use `defaultValue`");
+                    console.warn("The `value` prop is deprecated; use `defaultValue`");
           bad:
               - caption: Un log de depuración
                 lang: ts
                 code: |-
-                  console.log("items", items);
+                    console.log("items", items);
       exceptions:
           - where: "`**/scripts/**`, `**/test/**`, `**/e2e/**` y `**/*.config.{ts,mts,js,mjs}`"
             why: "Son programas y pruebas: la consola es su salida."

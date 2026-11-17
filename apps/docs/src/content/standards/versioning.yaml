@@ -19,20 +19,20 @@ rules:
               - caption: Renombrar una prop es un cambio que rompe
                 lang: md
                 code: |-
-                  ---
-                  "@jotis-me/react": major
-                  ---
+                    ---
+                    "@jotis-me/react": major
+                    ---
 
-                  `Button` renombra `variant` a `hierarchy`. Sustituye `variant="primary"` por `hierarchy="primary"`.
+                    `Button` renombra `variant` a `hierarchy`. Sustituye `variant="primary"` por `hierarchy="primary"`.
           bad:
               - caption: El mismo cambio como parche
                 lang: md
                 code: |-
-                  ---
-                  "@jotis-me/react": patch
-                  ---
+                    ---
+                    "@jotis-me/react": patch
+                    ---
 
-                  `Button` renombra `variant` a `hierarchy`.
+                    `Button` renombra `variant` a `hierarchy`.
       verification:
           kind: review
           review: Que el tipo del changeset (`major`, `minor`, `patch`) corresponde a lo que el cambio hace a quien instala el paquete.
@@ -53,21 +53,21 @@ rules:
               - caption: Un changeset que nombra el paquete
                 lang: md
                 code: |-
-                  ---
-                  "@jotis-me/react": patch
-                  ---
+                    ---
+                    "@jotis-me/react": patch
+                    ---
 
-                  `Alert` ya no repite el icono en lectores de pantalla.
+                    `Alert` ya no repite el icono en lectores de pantalla.
               - caption: Un changeset vacío, cuando solo se tocan pruebas o documentación interna
                 lang: md
                 code: |-
-                  ---
-                  ---
+                    ---
+                    ---
           bad:
               - caption: Una PR que cambia un componente y no trae ningún archivo en .changeset
                 lang: text
                 code: |-
-                  packages/react/src/components/Alert.tsx
+                    packages/react/src/components/Alert.tsx
       verification:
           kind: ci
           check: Changesets
@@ -87,20 +87,20 @@ rules:
               - caption: Lo que cambia, para quien lo usa
                 lang: md
                 code: |-
-                  ---
-                  "@jotis-me/react": minor
-                  ---
+                    ---
+                    "@jotis-me/react": minor
+                    ---
 
-                  `CalendarView` coloca los eventos que se solapan en columnas paralelas, en lugar de apilarlos.
+                    `CalendarView` coloca los eventos que se solapan en columnas paralelas, en lugar de apilarlos.
           bad:
               - caption: Lo que se hizo por dentro
                 lang: md
                 code: |-
-                  ---
-                  "@jotis-me/react": minor
-                  ---
+                    ---
+                    "@jotis-me/react": minor
+                    ---
 
-                  Refactor del cálculo de huecos.
+                    Refactor del cálculo de huecos.
       verification:
           kind: review
           review: Que el texto diga qué cambia para quien usa el paquete y que, si rompe, diga cómo migrar.
@@ -120,14 +120,14 @@ rules:
               - caption: Entrar en modo pre y publicar con su etiqueta
                 lang: sh
                 code: |-
-                  bunx changeset pre enter beta
-                  bun run version-packages     # 1.0.0-beta.0
-                  npm publish --tag beta
+                    bunx changeset pre enter beta
+                    bun run version-packages     # 1.0.0-beta.0
+                    npm publish --tag beta
           bad:
               - caption: Una beta publicada como la última versión
                 lang: sh
                 code: |-
-                  npm publish --tag latest   # de 1.0.0-beta.0
+                    npm publish --tag latest   # de 1.0.0-beta.0
       verification:
           kind: review
           review: Que la versión con sufijo se publique con una etiqueta que no sea `latest`.
@@ -147,13 +147,13 @@ rules:
               - caption: Primero se avisa, en una versión menor
                 lang: ts
                 code: |-
-                  /** @deprecated Use `hierarchy` instead. It is removed in the next major version. */
-                  variant?: ButtonHierarchy;
+                    /** @deprecated Use `hierarchy` instead. It is removed in the next major version. */
+                    variant?: ButtonHierarchy;
           bad:
               - caption: Se quita sin haber avisado
                 lang: text
                 code: |-
-                  - variant?: ButtonHierarchy;
+                    - variant?: ButtonHierarchy;
       verification:
           kind: review
           review: Que lo que se quita llevara `@deprecated` desde una versión menor anterior.
@@ -173,12 +173,12 @@ rules:
               - caption: Instalar sin tocar el lockfile
                 lang: yaml
                 code: |-
-                  - run: bun install --frozen-lockfile
+                    - run: bun install --frozen-lockfile
           bad:
               - caption: Una instalación que puede cambiar las versiones
                 lang: yaml
                 code: |-
-                  - run: bun install
+                    - run: bun install
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -198,12 +198,12 @@ rules:
               - caption: React como peerDependency
                 lang: json
                 code: |-
-                  "peerDependencies": { "react": "^19.3.1", "react-dom": "^19.3.1" }
+                    "peerDependencies": { "react": "^19.3.1", "react-dom": "^19.3.1" }
           bad:
               - caption: React como dependencia
                 lang: json
                 code: |-
-                  "dependencies": { "react": "^19.3.1" }
+                    "dependencies": { "react": "^19.3.1" }
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -223,12 +223,12 @@ rules:
               - caption: La versión exacta
                 lang: json
                 code: |-
-                  "dependencies": { "@untitledui/icons": "0.0.23" }
+                    "dependencies": { "@untitledui/icons": "0.0.23" }
           bad:
               - caption: Un rango sobre una 0.x
                 lang: json
                 code: |-
-                  "dependencies": { "@untitledui/icons": "^0.0.23" }
+                    "dependencies": { "@untitledui/icons": "^0.0.23" }
       verification:
           kind: ci
           check: Normas de desarrollo
@@ -248,12 +248,12 @@ rules:
               - caption: En el monorepo, el paquete hermano
                 lang: json
                 code: |-
-                  "dependencies": { "@jotis-me/tokens": "workspace:*" }
+                    "dependencies": { "@jotis-me/tokens": "workspace:*" }
           bad:
               - caption: Un paquete publicado que conserva el workspace
                 lang: json
                 code: |-
-                  "dependencies": { "@jotis-me/tokens": "workspace:*" }   // dentro del .tgz
+                    "dependencies": { "@jotis-me/tokens": "workspace:*" }   // dentro del .tgz
       verification:
           kind: ci
           check: "Paquetes sin workspace:"
@@ -273,18 +273,18 @@ rules:
               - caption: El mismo rango en la web y en el ejemplo
                 lang: json
                 code: |-
-                  // apps/docs/package.json
-                  "react": "^19.3.1"
-                  // examples/next/package.json
-                  "react": "^19.3.1"
+                    // apps/docs/package.json
+                    "react": "^19.3.1"
+                    // examples/next/package.json
+                    "react": "^19.3.1"
           bad:
               - caption: Rangos distintos para lo mismo
                 lang: json
                 code: |-
-                  // apps/docs/package.json
-                  "react": "^19.3.1"
-                  // examples/next/package.json
-                  "react": "^19.2.0"
+                    // apps/docs/package.json
+                    "react": "^19.3.1"
+                    // examples/next/package.json
+                    "react": "^19.2.0"
       exceptions:
           - where: "`typescript` en los workspaces con `@astrojs/check`, `next` o `dts-bundle-generator`"
             why: "Estas herramientas leen la API de JavaScript de TypeScript 6, que TypeScript 7 no tiene."
@@ -307,12 +307,12 @@ rules:
               - caption: Solo el CSS tiene efectos
                 lang: json
                 code: |-
-                  "sideEffects": ["**/*.css"]
+                    "sideEffects": ["**/*.css"]
           bad:
               - caption: Sin declarar
                 lang: json
                 code: |-
-                  { "name": "@jotis-me/react", "type": "module" }
+                    { "name": "@jotis-me/react", "type": "module" }
       verification:
           kind: ci
           check: Normas de desarrollo
