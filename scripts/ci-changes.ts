@@ -19,11 +19,14 @@ export function needsCode(files: readonly string[] | null): boolean {
 	return !files.every(isSkippable);
 }
 
-/** Files changed between `base` and `head` (from their merge base, as a PR shows them); `null` if git fails. */
-export function changedFiles(base: string, head: string): string[] | null {
+/**
+ * Files changed between `base` and `head` (from their merge base, as a PR shows them), in the repository at `cwd`;
+ * `null` if git fails.
+ */
+export function changedFiles(base: string, head: string, cwd?: string): string[] | null {
 	// A push that creates a branch has no previous commit (`0000…`): there is nothing to compare with
 	if (!base || /^0+$/.test(base)) return null;
-	const diff = Bun.spawnSync(["git", "diff", "--name-only", `${base}...${head}`]);
+	const diff = Bun.spawnSync(["git", "diff", "--name-only", `${base}...${head}`], { cwd });
 	if (diff.exitCode !== 0) return null;
 	return diff.stdout
 		.toString()

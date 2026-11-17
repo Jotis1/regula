@@ -1,4 +1,7 @@
 import { describe, expect, it } from "bun:test";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { changedFiles, isSkippable, needsCode } from "./ci-changes";
 
 describe("ci-changes", () => {
@@ -36,10 +39,35 @@ describe("ci-changes", () => {
 		expect(changedFiles("no-such-ref", "HEAD")).toBeNull();
 	});
 
-	it("lists the files of a real commit range", () => {
-		// The archive of add-native-props (PR #41) only touched openspec/
-		expect(needsCode(changedFiles("c4c45ec", "9454a61"))).toBe(false);
-		// The Turbo fix (PR #40) touched turbo.json
-		expect(needsCode(changedFiles("8622abd", "3bd8ebf"))).toBe(true);
+	it("lists the files of a commit range", () => {
+		// A throwaway repository: the CI clones Regula with depth 1, so its own history is not there
+		const dir = mkdtempSync(join(tmpdir(), "ci-changes-"));
+		const git = (...args: string[]) => {
+			const r = Bun.spawnSync(
+				["git", "-c", "user.name=t", "-c", "user.email=t@t", "-c", "commit.gpgsign=false", ...args],
+				{
+					cwd: dir,
+				},
+			);
+			return r.stdout.toString().trim();
+		};
+		const commit = (path: string) => {
+			mkdirSync(join(dir, path, ".."), { recursive: true });
+			writeFileSync(join(dir, path), path);
+			git("add", "-A");
+			git("commit", "-q", "-m", path);
+			return git("rev-parse", "HEAD");
+		};
+		try {
+			git("init", "-q");
+			const start = commit("README.md");
+			const spec = commit("openspec/specs/x/spec.md");
+			const turbo = commit("turbo.json");
+			expect(changedFiles(start, spec, dir)).toEqual(["openspec/specs/x/spec.md"]);
+			expect(needsCode(changedFiles(start, spec, dir))).toBe(false);
+			expect(needsCode(changedFiles(spec, turbo, dir))).toBe(true);
+		} finally {
+			rmSync(dir, { recursive: true, force: true });
+		}
 	});
 });
