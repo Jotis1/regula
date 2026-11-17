@@ -52,7 +52,7 @@ changes ──┬─► checks (Ubuntu)          if: code
 CI (puerta): needs: todos · if: always()
 ```
 
-La puerta lee `needs.*.result`. Falla si alguno es `failure` o `cancelled`. Acepta `skipped` solo en los jobs que dependen de `code`, y solo cuando `changes` terminó en `success` con `code=false`. Si `changes` falla, la puerta falla: es el caso que lo de GitHub da por verde.
+La puerta pasa `toJSON(needs)` a `scripts/ci-gate.ts`, que tiene sus propios tests, junto con la lista de jobs de código. La decisión es código probado y no una expresión de YAML. Falla si alguno es `failure` o `cancelled`. Acepta `skipped` solo en los jobs que dependen de `code`, y solo cuando `changes` terminó en `success` con `code=false`. Si `changes` falla, la puerta falla: es el caso que lo de GitHub da por verde.
 
 Los nombres visibles se mantienen («Comprobaciones», «Navegador (e2e 1/3)»…) para que los historiales se lean igual. La puerta se llama «CI».
 
