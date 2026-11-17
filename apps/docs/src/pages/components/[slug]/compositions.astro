@@ -4,7 +4,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { Breadcrumbs } from "@jotis-me/react";
-import CodeSnippet from "../../../components/CodeSnippetIsland";
+import { CodeSnippetIsland as CodeSnippet } from "../../../components/CodeSnippetIsland";
 import Base from "../../../layouts/Base.astro";
 import { groupOf, labelOf, SECTIONS, slugOf } from "../../../lib/catalog";
 import { compositionCode } from "../../../lib/composition-code";
@@ -14,7 +14,7 @@ import {
 	compositionsOf,
 	INLINE_COMPOSITIONS,
 } from "../../../visual/compositions";
-import VisualExample from "../../../visual/VisualExample";
+import { VisualExample } from "../../../visual/VisualExample";
 
 export function getStaticPaths() {
 	// Las que tienen pocas van en la página del componente (ComponentPage)

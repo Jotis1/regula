@@ -2,7 +2,7 @@
 // opciones preparadas.
 import type { Tweak } from "../lib/playground";
 
-export { Message as default } from "@jotis-me/react";
+export { Message as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	reply: {

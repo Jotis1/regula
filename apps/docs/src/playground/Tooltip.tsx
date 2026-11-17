@@ -4,7 +4,7 @@ import { Button } from "@jotis-me/react";
 import { InfoCircle } from "@untitledui/icons";
 import type { Tweak } from "../lib/playground";
 
-export { Tooltip as default } from "@jotis-me/react";
+export { Tooltip as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	children: {

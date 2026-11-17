@@ -2,7 +2,7 @@
 // funciones, que se eligen entre opciones preparadas.
 import type { Tweak } from "../lib/playground";
 
-export { Testimonial as default } from "@jotis-me/react";
+export { Testimonial as Component } from "@jotis-me/react";
 
 const FLECHA = { label: "Con flechas", value: () => {}, code: "() => {}" };
 

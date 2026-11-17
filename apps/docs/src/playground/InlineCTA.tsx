@@ -3,7 +3,7 @@
 import { Button } from "@jotis-me/react";
 import type { Tweak } from "../lib/playground";
 
-export { InlineCTA as default } from "@jotis-me/react";
+export { InlineCTA as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	actions: {

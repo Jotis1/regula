@@ -7,7 +7,7 @@ import { ArrowRight } from "@untitledui/icons";
 import { PecuniaForm } from "./PecuniaForm";
 import { STORY, stepLabel } from "./story";
 
-export default function RulesStrip() {
+export function RulesStrip() {
 	return (
 		<Carousel
 			type="strip"

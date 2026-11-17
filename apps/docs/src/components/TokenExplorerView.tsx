@@ -69,7 +69,7 @@ const COLUMNS: TableColumn<Row>[] = [
 	},
 ];
 
-export default function TokenExplorerView({ families }: { families: ExplorerFamily[] }) {
+export function TokenExplorerView({ families }: { families: ExplorerFamily[] }) {
 	const first = families[0]?.id;
 	return (
 		<div className="not-prose my-4 flex flex-col gap-5" data-tokens="">

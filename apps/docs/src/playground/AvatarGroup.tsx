@@ -2,7 +2,7 @@
 // función, que se elige entre opciones preparadas.
 import type { Tweak } from "../lib/playground";
 
-export { AvatarGroup as default } from "@jotis-me/react";
+export { AvatarGroup as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	onAdd: {

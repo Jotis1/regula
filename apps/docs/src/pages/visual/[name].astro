@@ -3,7 +3,7 @@
 // Tema oscuro con ?theme=dark, aplicado antes de pintar; las de `DARK_PREVIEWS` (Stream) van siempre en oscuro.
 import "../../styles/global.css";
 import { DARK_PREVIEWS, slugOf, visualExamples } from "../../visual/registry";
-import VisualExample from "../../visual/VisualExample";
+import { VisualExample } from "../../visual/VisualExample";
 
 export function getStaticPaths() {
 	return Object.keys(visualExamples).map((name) => ({ params: { name: slugOf(name) }, props: { name } }));

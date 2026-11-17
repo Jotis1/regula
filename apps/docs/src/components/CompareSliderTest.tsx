@@ -3,7 +3,7 @@
 import { CompareSlider } from "@jotis-me/react";
 import { useState } from "react";
 
-export default function CompareSliderTest() {
+export function CompareSliderTest() {
 	const [value, setValue] = useState(30);
 	return (
 		<div className="flex flex-col gap-4">

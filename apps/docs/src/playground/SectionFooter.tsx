@@ -3,7 +3,7 @@
 import { Button } from "@jotis-me/react";
 import type { Tweak } from "../lib/playground";
 
-export { SectionFooter as default } from "@jotis-me/react";
+export { SectionFooter as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	actions: {

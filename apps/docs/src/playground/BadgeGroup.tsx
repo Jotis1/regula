@@ -1,2 +1,2 @@
 // BadgeGroup en el ejemplo interactivo: un fichero por componente para que cada página cargue solo el suyo (design D4).
-export { BadgeGroup as default } from "@jotis-me/react";
+export { BadgeGroup as Component } from "@jotis-me/react";

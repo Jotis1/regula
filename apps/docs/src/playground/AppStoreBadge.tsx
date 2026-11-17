@@ -10,7 +10,7 @@ import {
 import type { ReactNode } from "react";
 import type { Tweak } from "../lib/playground";
 
-export { AppStoreBadge as default } from "@jotis-me/react";
+export { AppStoreBadge as Component } from "@jotis-me/react";
 
 const LOGOS: [string, ReactNode, string][] = [
 	["App Store", <StoreAppStoreLogo key="a" />, "StoreAppStoreLogo"],

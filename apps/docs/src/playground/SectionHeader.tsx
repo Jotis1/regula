@@ -4,7 +4,7 @@ import { Button, Input, Tabs } from "@jotis-me/react";
 import { Plus, SearchLg } from "@untitledui/icons";
 import type { Tweak } from "../lib/playground";
 
-export { SectionHeader as default } from "@jotis-me/react";
+export { SectionHeader as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	actions: {

@@ -6,7 +6,7 @@ import { CurrencyEuro } from "@untitledui/icons";
 
 const DIVISA = { label: "Divisa", options: ["EUR", "USD", "GBP"], defaultValue: "EUR" };
 
-export default function HeroForm() {
+export function HeroForm() {
 	return (
 		<BrowserFrame variant="minimal" url="pecunia.jotis.me/gastos/nuevo">
 			<div className="flex flex-col gap-5 bg-primary_alt p-6">

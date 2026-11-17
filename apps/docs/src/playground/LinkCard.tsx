@@ -3,7 +3,7 @@
 import { Badge, Button } from "@jotis-me/react";
 import type { Tweak } from "../lib/playground";
 
-export { LinkCard as default } from "@jotis-me/react";
+export { LinkCard as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	preview: {

@@ -256,7 +256,7 @@ export interface AssetGalleryProps {
 	initial?: string;
 }
 
-export default function AssetGallery({ kind, urls, categories, groups, titles, initial }: AssetGalleryProps) {
+export function AssetGallery({ kind, urls, categories, groups, titles, initial }: AssetGalleryProps) {
 	const c = CONFIG[kind];
 	const entries = useMemo(
 		() =>

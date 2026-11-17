@@ -3,7 +3,7 @@
 import { Button } from "@jotis-me/react";
 import type { Tweak } from "../lib/playground";
 
-export { PricingCard as default } from "@jotis-me/react";
+export { PricingCard as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	actions: {

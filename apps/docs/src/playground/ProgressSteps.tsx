@@ -5,7 +5,7 @@ import { ProgressSteps, type ProgressStepsProps } from "@jotis-me/react";
 import { useState } from "react";
 import type { Tweak } from "../lib/playground";
 
-export default function ProgressStepsPlayground({
+function ProgressStepsPlayground({
 	onChange,
 	children,
 	current,
@@ -50,3 +50,5 @@ export const tweaks: Record<string, Tweak> = {
 		],
 	},
 };
+
+export { ProgressStepsPlayground as Component };

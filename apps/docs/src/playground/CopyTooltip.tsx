@@ -4,7 +4,7 @@ import { Button, CopyTooltip } from "@jotis-me/react";
 import { Copy01 } from "@untitledui/icons";
 import type { ComponentProps } from "react";
 
-export default function CopyTooltipWithButton(props: ComponentProps<typeof CopyTooltip>) {
+function CopyTooltipWithButton(props: ComponentProps<typeof CopyTooltip>) {
 	return (
 		<>
 			<Button hierarchy="secondary" iconLeading={Copy01} data-copy="bun add @jotis-me/react">
@@ -14,3 +14,5 @@ export default function CopyTooltipWithButton(props: ComponentProps<typeof CopyT
 		</>
 	);
 }
+
+export { CopyTooltipWithButton as Component };

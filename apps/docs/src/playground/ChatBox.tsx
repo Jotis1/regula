@@ -28,7 +28,7 @@ const FEED: Omit<ChatMessage, "id">[] = [
 	{ user: "lucia_pixel", tone: "pink", badges: ["sub"], text: "AAAH" },
 ];
 
-export default function ChatBoxPlayground({
+function ChatBoxPlayground({
 	onSelect,
 	selectedId: _selectedId,
 	...props
@@ -64,3 +64,5 @@ export const tweaks: Record<string, Tweak> = {
 	},
 	selectedId: { kind: "hidden" },
 };
+
+export { ChatBoxPlayground as Component };

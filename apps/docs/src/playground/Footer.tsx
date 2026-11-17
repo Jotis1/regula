@@ -2,7 +2,7 @@
 // opciones preparadas.
 import type { Tweak } from "../lib/playground";
 
-export { Footer as default } from "@jotis-me/react";
+export { Footer as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	brand: {

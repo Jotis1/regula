@@ -8,7 +8,7 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
 import { initDocNav } from "../lib/docnav";
 import { onThemeChange, setTheme, THEME_OPTIONS, type ThemeChoice, themeChoice } from "../lib/theme";
 
-export default function MobileMenu({ children }: { children?: ReactNode }) {
+export function MobileMenu({ children }: { children?: ReactNode }) {
 	const [open, setOpen] = useState(false);
 	const [theme, setChoice] = useState<ThemeChoice>("sistema");
 	const body = useRef<HTMLDivElement>(null);

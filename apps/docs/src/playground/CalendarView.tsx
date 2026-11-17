@@ -7,7 +7,7 @@ import type { Tweak } from "../lib/playground";
 const HOY = new Date(2026, 9, 29);
 const MES = new Date(2026, 9, 1);
 
-export default function CalendarViewOctubre(props: ComponentProps<typeof CalendarView>) {
+function CalendarViewOctubre(props: ComponentProps<typeof CalendarView>) {
 	return <CalendarView today={HOY} month={MES} {...props} />;
 }
 
@@ -35,3 +35,5 @@ export const tweaks: Record<string, Tweak> = {
 		],
 	},
 };
+
+export { CalendarViewOctubre as Component };

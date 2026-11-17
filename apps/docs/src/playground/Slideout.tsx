@@ -3,7 +3,7 @@
 import { Button } from "@jotis-me/react";
 import type { Tweak } from "../lib/playground";
 
-export { Slideout as default } from "@jotis-me/react";
+export { Slideout as Component } from "@jotis-me/react";
 
 const GUARDAR_Y_CANCELAR = [
 	"<>",

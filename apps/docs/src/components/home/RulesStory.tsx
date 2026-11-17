@@ -10,7 +10,7 @@ import { STORY, stageNote } from "./story";
 const LAST = STORY.length - 1;
 const STEPS = STORY.map((s) => ({ title: s.title }));
 
-export default function RulesStory() {
+export function RulesStory() {
 	const [step, setStep] = useState(0);
 	const go = (n: number) => setStep(Math.max(0, Math.min(LAST, n)));
 

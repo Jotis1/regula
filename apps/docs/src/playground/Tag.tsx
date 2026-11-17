@@ -4,7 +4,7 @@ import { Avatar } from "@jotis-me/react";
 import { FlagEs } from "@untitledui/country-flags";
 import type { Tweak } from "../lib/playground";
 
-export { Tag as default } from "@jotis-me/react";
+export { Tag as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	flag: {

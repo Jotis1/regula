@@ -5,7 +5,7 @@ import type { ComponentProps } from "react";
 
 const regula = <AppIcon app="regula" size={32} />;
 
-export default function SidebarNavWithBrand(props: ComponentProps<typeof SidebarNav>) {
+function SidebarNavWithBrand(props: ComponentProps<typeof SidebarNav>) {
 	return (
 		<SidebarNav
 			brand={
@@ -19,3 +19,5 @@ export default function SidebarNavWithBrand(props: ComponentProps<typeof Sidebar
 		/>
 	);
 }
+
+export { SidebarNavWithBrand as Component };

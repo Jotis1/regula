@@ -1,2 +1,2 @@
 // RadioGroup en el ejemplo interactivo: un fichero por componente para que cada página cargue solo el suyo (design D4).
-export { RadioGroup as default } from "@jotis-me/react";
+export { RadioGroup as Component } from "@jotis-me/react";

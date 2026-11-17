@@ -1,2 +1,2 @@
 // ScreenMockup en el ejemplo interactivo: un fichero por componente para que cada pagina cargue solo el suyo (design D4).
-export { ScreenMockup as default } from "@jotis-me/react";
+export { ScreenMockup as Component } from "@jotis-me/react";

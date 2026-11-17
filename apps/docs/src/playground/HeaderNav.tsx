@@ -4,7 +4,7 @@ import { AppIcon, Button, Dropdown, HeaderNav, Input } from "@jotis-me/react";
 import { Bell01, SearchLg } from "@untitledui/icons";
 import type { ComponentProps } from "react";
 
-export default function HeaderNavWithBrand(
+function HeaderNavWithBrand(
 	props: Omit<ComponentProps<typeof HeaderNav>, "brand" | "search" | "actions" | "account">,
 ) {
 	return (
@@ -22,3 +22,5 @@ export default function HeaderNavWithBrand(
 		/>
 	);
 }
+
+export { HeaderNavWithBrand as Component };

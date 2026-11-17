@@ -1,2 +1,2 @@
 // Rating en el ejemplo interactivo: un fichero por componente para que cada página cargue solo el suyo (design D4).
-export { Rating as default } from "@jotis-me/react";
+export { Rating as Component } from "@jotis-me/react";

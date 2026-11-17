@@ -3,6 +3,6 @@
 // de 2580×1080 mide su contenedor.
 import { StreamScene } from "@jotis-me/react";
 
-export default function WideSceneCanvas() {
+export function WideSceneCanvas() {
 	return <StreamScene width={2580} variant="ending" next="Próximo directo: jueves, 20:00" />;
 }

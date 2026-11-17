@@ -4,7 +4,7 @@ import { SocialAppleLogoGray, SocialFacebookLogo, SocialGoogleLogo } from "@joti
 import { SocialButton } from "@jotis-me/react";
 import type { Tweak } from "../lib/playground";
 
-export { SocialButtonGroup as default } from "@jotis-me/react";
+export { SocialButtonGroup as Component } from "@jotis-me/react";
 
 const LOGOS = { "@jotis-me/assets/logos": ["SocialAppleLogoGray", "SocialFacebookLogo", "SocialGoogleLogo"] };
 

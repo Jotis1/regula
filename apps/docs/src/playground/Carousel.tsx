@@ -2,7 +2,7 @@
 // entre opciones preparadas.
 import type { Tweak } from "../lib/playground";
 
-export { Carousel as default } from "@jotis-me/react";
+export { Carousel as Component } from "@jotis-me/react";
 
 const SLIDES = [
 	<div key="a" className="flex h-48 items-center justify-center bg-brand-solid font-semibold text-white">

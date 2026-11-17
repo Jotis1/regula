@@ -3,7 +3,7 @@ import { ButtonGroup } from "@jotis-me/react";
 import { Clock } from "@untitledui/icons";
 import { useState } from "react";
 
-export default function Periodo() {
+export function Periodo() {
 	const [value, setValue] = useState("m");
 	return (
 		<div className="flex flex-col gap-3">

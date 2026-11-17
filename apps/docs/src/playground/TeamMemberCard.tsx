@@ -4,7 +4,7 @@ import { ButtonUtility } from "@jotis-me/react";
 import { Link01, Mail01 } from "@untitledui/icons";
 import type { Tweak } from "../lib/playground";
 
-export { TeamMemberCard as default } from "@jotis-me/react";
+export { TeamMemberCard as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	image: {

@@ -35,7 +35,7 @@ interface Props {
 	side: ExampleSide;
 }
 
-export default function Specimens({ name, side }: Props) {
+export function Specimens({ name, side }: Props) {
 	const { specimens, width, frame } = side;
 	return (
 		<div

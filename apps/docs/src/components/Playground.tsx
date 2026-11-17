@@ -54,7 +54,7 @@ import type { PropRow } from "../lib/props";
 
 /** Lo que exporta el fichero de un componente (src/playground/): el componente y, si los tiene, sus ajustes de cliente. */
 interface PlaygroundModule {
-	default: ComponentType<Record<string, unknown>>;
+	Component: ComponentType<Record<string, unknown>>;
 	tweaks?: Record<string, Tweak>;
 }
 
@@ -73,7 +73,7 @@ function load(name: string): Promise<PlaygroundModule> {
 
 const FRAME = "overflow-clip rounded-xl border border-secondary bg-primary";
 
-export default function Playground({ playground, rows }: { playground: Data; rows: PropRow[] }) {
+export function Playground({ playground, rows }: { playground: Data; rows: PropRow[] }) {
 	return (
 		<Suspense
 			fallback={
@@ -94,7 +94,7 @@ export default function Playground({ playground, rows }: { playground: Data; row
 const propName = (prop: string) => <span className="font-mono text-[13px] text-primary">{prop}</span>;
 
 function Loaded({ playground: data, rows }: { playground: Data; rows: PropRow[] }) {
-	const { default: Component, tweaks } = use(load(data.name));
+	const { Component, tweaks } = use(load(data.name));
 	// Los ajustes de cliente (contenido preparado, con nodos) no cruzan de Astro: los controles se rehacen con ellos
 	const playground = tweaks
 		? {

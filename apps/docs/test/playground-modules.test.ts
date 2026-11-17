@@ -19,16 +19,16 @@ describe("src/playground", () => {
 		for (const name of files) {
 			const src = readFileSync(join(dir, `${name}.tsx`), "utf8");
 			expect(src, name).toMatch(/@jotis-me\/react/);
-			expect(src, name).toMatch(/export default |as default/);
+			expect(src, name).toMatch(/as Component|export function Component/);
 			// Ni el paquete entero ni otro componente: lo que se importa es lo suyo
 			expect(src, name).not.toMatch(/import \* as/);
 		}
 	});
 
-	it("cada módulo se carga y su exportación por defecto es un componente", async () => {
+	it("cada módulo se carga y su export `Component` es un componente", async () => {
 		for (const name of files) {
-			const mod = (await import(`../src/playground/${name}.tsx`)) as { default: unknown };
-			expect(["function", "object"], name).toContain(typeof mod.default);
+			const mod = (await import(`../src/playground/${name}.tsx`)) as { Component: unknown };
+			expect(["function", "object"], name).toContain(typeof mod.Component);
 		}
 	});
 });

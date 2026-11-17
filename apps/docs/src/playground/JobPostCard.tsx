@@ -4,7 +4,7 @@
 import { FlagEs } from "@untitledui/country-flags";
 import type { Tweak } from "../lib/playground";
 
-export { JobPostCard as default } from "@jotis-me/react";
+export { JobPostCard as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	flag: {

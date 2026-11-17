@@ -56,7 +56,7 @@ const TRIGGER = (
 	</Button>
 );
 
-export default function ThemeMenu() {
+export function ThemeMenu() {
 	// Hasta hidratar no se sabe lo elegido (lo dice la CSS); el menú solo se abre ya hidratado
 	const [choice, setChoice] = useState<ThemeChoice>("sistema");
 

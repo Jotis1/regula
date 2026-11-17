@@ -2,7 +2,7 @@
 // cierra. Sin broma: algo ha ido mal.
 import { Notification } from "@jotis-me/react";
 
-export default function CopyError({ onClose }: { onClose: () => void }) {
+export function CopyError({ onClose }: { onClose: () => void }) {
 	return (
 		<div className="fixed right-4 bottom-4 left-4 z-60 flex justify-end" data-copy-error>
 			<Notification

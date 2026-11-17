@@ -4,7 +4,7 @@ import { Button } from "@jotis-me/react";
 import { UserPlus01 } from "@untitledui/icons";
 import type { Tweak } from "../lib/playground";
 
-export { SectionLabel as default } from "@jotis-me/react";
+export { SectionLabel as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	actions: {

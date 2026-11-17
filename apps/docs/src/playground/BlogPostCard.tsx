@@ -2,7 +2,7 @@
 // entre opciones preparadas.
 import type { Tweak } from "../lib/playground";
 
-export { BlogPostCard as default } from "@jotis-me/react";
+export { BlogPostCard as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	image: {

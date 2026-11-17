@@ -17,7 +17,7 @@ interface Pagefind {
 // Fuera del grafo de Vite: el índice de Pagefind se genera después de `astro build` (en dev no existe)
 const PAGEFIND = "/pagefind/pagefind.js";
 
-export default function SiteSearch() {
+export function SiteSearch() {
 	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState("");
 	const [entries, setEntries] = useState<SearchEntry[]>([]);

@@ -18,7 +18,7 @@ const TYPES: ProgressStepsType[] = [
 ];
 const ORIENTATIONS: ProgressStepsOrientation[] = ["horizontal", "vertical"];
 
-export default function ProgressStepsNavTest() {
+export function ProgressStepsNavTest() {
 	const [current, setCurrent] = useState(1);
 	return (
 		<div className="flex flex-col gap-10">

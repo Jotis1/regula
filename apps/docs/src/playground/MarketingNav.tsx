@@ -4,7 +4,7 @@ import { Button, NavMenu } from "@jotis-me/react";
 import { BarChart01, CurrencyEuro } from "@untitledui/icons";
 import type { Tweak } from "../lib/playground";
 
-export { MarketingNav as default } from "@jotis-me/react";
+export { MarketingNav as Component } from "@jotis-me/react";
 
 const MENU = (
 	<NavMenu.Section title="Producto">

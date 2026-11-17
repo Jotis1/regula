@@ -26,7 +26,7 @@ function exampleOf(name: string) {
 	return Example;
 }
 
-export default function VisualExample({ name }: { name: string }) {
+export function VisualExample({ name }: { name: string }) {
 	const Example = exampleOf(name);
 	return Example ? (
 		<Suspense fallback={null}>

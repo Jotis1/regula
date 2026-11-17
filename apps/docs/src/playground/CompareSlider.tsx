@@ -3,7 +3,7 @@
 import type { Tweak } from "../lib/playground";
 import { PantallaGastos } from "../visual/examples/compare-slider";
 
-export { CompareSlider as default } from "@jotis-me/react";
+export { CompareSlider as Component } from "@jotis-me/react";
 
 export const tweaks: Record<string, Tweak> = {
 	before: {

@@ -17,7 +17,7 @@ import {
 import type { ReactNode } from "react";
 import type { Tweak } from "../lib/playground";
 
-export { SocialButton as default } from "@jotis-me/react";
+export { SocialButton as Component } from "@jotis-me/react";
 
 const LOGOS: [string, ReactNode, string][] = [
 	["Google", <SocialGoogleLogo key="g" />, "SocialGoogleLogo"],
