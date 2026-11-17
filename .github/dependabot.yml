@@ -8,7 +8,7 @@ updates:
           interval: weekly
       ignore:
           # Con Playwright 1.65, Firefox se cuelga en los e2e de VerificationCodeInput; con 1.64 pasan. Se quita
-          # cuando salga una versión que lo arregle.
+          # cuando salga una versión que lo arregle, junto al override de playwright-core del package.json raíz.
           - dependency-name: "@playwright/test"
             versions: ["1.65.x"]
       groups:
