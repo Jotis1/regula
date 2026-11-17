@@ -30,6 +30,7 @@ interface SocialButtonBase {
 	iconOnly?: boolean;
 	/** Texto en lugar del de por defecto («Entrar con Google»); con `iconOnly`, el nombre para lectores. */
 	children?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

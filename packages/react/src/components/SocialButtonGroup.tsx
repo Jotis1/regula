@@ -17,6 +17,7 @@ export interface SocialButtonGroupProps {
 	size?: SocialButtonSize;
 	/** Nombre del grupo para lectores («Entrar con»). */
 	label?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

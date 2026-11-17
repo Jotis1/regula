@@ -6,6 +6,7 @@ import { type IconProp, iconSlot } from "../internal/icon.js";
 import { useControllable } from "../internal/use-controllable.js";
 
 interface ButtonGroupItemBase {
+	/** Identifies the item in `onChange` and in `value`. */
 	value: string;
 	/** Punto de color delante del texto (estado, como el del Figma). */
 	dot?: boolean;
@@ -34,11 +35,13 @@ export interface ButtonGroupProps {
 	value?: string;
 	/** Opción elegida al principio (no controlado). */
 	defaultValue?: string;
+	/** Called with the `value` of the item that was chosen. */
 	onChange?: (value: string) => void;
 	/** Alto del grupo: `md` (40 px, por defecto) o `sm` (36 px). */
 	size?: "sm" | "md";
 	/** Nombre del grupo para lectores de pantalla. */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

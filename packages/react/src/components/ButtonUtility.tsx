@@ -36,6 +36,7 @@ interface Base {
 	tooltipPlacement?: BubbleSide;
 	/** Fuerza el tooltip visible (vistas previas y capturas). */
 	tooltipOpen?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

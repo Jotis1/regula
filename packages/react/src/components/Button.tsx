@@ -27,6 +27,7 @@ interface ButtonBase {
 	destructive?: boolean;
 	/** Muestra un spinner, marca `aria-busy` y desactiva el botón. */
 	loading?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -35,8 +36,11 @@ interface WithText extends ButtonBase {
 	iconLeading?: IconProp;
 	/** Icono después del texto: un componente de `@untitledui/icons` (`Plus`) o un nodo. */
 	iconTrailing?: IconProp;
+	/** Not allowed with text: for an icon-only button use the `iconOnly` variant. */
 	iconOnly?: undefined;
+	/** Accessible name, when it differs from the visible text. */
 	label?: string;
+	/** The text of the button. */
 	children?: ReactNode;
 }
 
@@ -45,8 +49,11 @@ interface IconOnly extends ButtonBase {
 	iconOnly: IconProp;
 	/** Nombre accesible del botón solo con icono. */
 	label: string;
+	/** Not allowed on an icon-only button: the icon goes in `iconOnly`. */
 	iconLeading?: undefined;
+	/** Not allowed on an icon-only button: the icon goes in `iconOnly`. */
 	iconTrailing?: undefined;
+	/** Not allowed on an icon-only button: its name goes in `label`. */
 	children?: undefined;
 }
 
