@@ -20,7 +20,7 @@
 		"@types/bun": "^1.4.4",
 		"@types/node": "^26.6.6",
 		"@types/react": "^19.3.0",
-		"dts-bundle-generator": "^9.5.1",
+		"dts-bundle-generator": "^10.0.0",
 		"react-18": "npm:react@18.3.1",
 		"react-dom-18": "npm:react-dom@18.3.1",
 		"tailwindcss": "^4.3.3",
