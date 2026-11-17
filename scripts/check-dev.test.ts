@@ -179,6 +179,16 @@ describe("check-dev", () => {
 			expect(stackProblems(good()).join("\n")).not.toContain('is "warn"');
 		});
 
+		it("rejects an indent with spaces or of another width (STK-004)", () => {
+			const spaces = good();
+			(spaces.biome.formatter as Record<string, unknown>).indentStyle = "space";
+			expect(stackProblems(spaces).join("\n")).toMatch(/biome\.json \(STK-004\).*`formatter\.indentStyle`/);
+
+			const width = good();
+			(width.biome.formatter as Record<string, unknown>).indentWidth = 2;
+			expect(stackProblems(width).join("\n")).toContain("`formatter.indentWidth`");
+		});
+
 		it("rejects a root script that does not call Turbo (STK-005)", () => {
 			const repo = good();
 			(repo.rootPkg.scripts as Record<string, string>).test = "bun test";
