@@ -391,7 +391,7 @@ export function devProblems(repo: Repo): string[] {
 const readJson = (path: string) => JSON.parse(readFileSync(path, "utf8")) as Json;
 
 /** Expands the `workspaces` globs of the root package.json into directories that hold a package.json. */
-function workspaceDirs(root: string, patterns: string[]): string[] {
+export function workspaceDirs(root: string, patterns: string[]): string[] {
 	const dirs: string[] = [];
 	for (const pattern of patterns) {
 		if (pattern.endsWith("/*")) {
