@@ -54,7 +54,7 @@ describe("Slider", () => {
 			"data-focus-visible:shadow-focus-ring",
 		])
 			expect(thumb.className).toContain(c);
-		expect(thumb.style.left).toBe("calc(0.4 * (100% - 24px))");
+		expect(thumb.style.left).toBe("calc(40% - 9.6px)");
 	});
 
 	it("se renderiza en servidor", () => {

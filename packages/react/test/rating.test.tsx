@@ -11,7 +11,7 @@ describe("Rating", () => {
 		const img = screen.getByRole("img", { name: "4,5 de 5" });
 		expect(fills(img)).toEqual([100, 100, 100, 100, 50]);
 		const half = img.querySelectorAll("svg")[4]?.querySelectorAll("path")[1] as SVGPathElement;
-		expect(half.style.clipPath).toBe("inset(0 50% 0 0)");
+		expect(half.style.clipPath).toBe("inset(0px 50% 0px 0px)");
 		// Las llenas no recortan
 		const full = img.querySelectorAll("svg")[0]?.querySelectorAll("path")[1] as SVGPathElement;
 		expect(full.style.clipPath).toBe("");

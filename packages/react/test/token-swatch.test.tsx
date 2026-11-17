@@ -18,6 +18,9 @@ afterEach(() => {
 const props = { name: "text-primary", light: "#171717", dark: "#fafafa", utility: "text-primary" } as const;
 const swatches = (root: ParentNode) => [...root.querySelectorAll<HTMLElement>("[data-theme-swatch]")];
 const chip = (el: HTMLElement) => el.querySelector<HTMLElement>('[aria-hidden="true"]') as HTMLElement;
+/** A hex color as the browser serializes it in a style (`#d4d4d4` is `rgb(212, 212, 212)`). */
+const rgb = (hex: string) =>
+	`rgb(${[1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16)).join(", ")})`;
 
 describe("TokenSwatch", () => {
 	it("pinta las dos muestras con su valor, en cualquier tema de página", () => {
@@ -36,8 +39,8 @@ describe("TokenSwatch", () => {
 		render(<TokenSwatch {...props} />);
 		const [l, d] = swatches(document.body);
 		const edge = (el: HTMLElement) => chip(el).style.boxShadow;
-		expect(edge(l as HTMLElement)).toContain("#d4d4d4");
-		expect(edge(d as HTMLElement)).toContain("#404040");
+		expect(edge(l as HTMLElement)).toContain(rgb("#d4d4d4"));
+		expect(edge(d as HTMLElement)).toContain(rgb("#404040"));
 		expect(edge(l as HTMLElement)).not.toBe(edge(d as HTMLElement));
 	});
 
@@ -45,8 +48,8 @@ describe("TokenSwatch", () => {
 		const { light, dark } = colors["border-primary"];
 		render(<TokenSwatch {...props} />);
 		const [l, d] = swatches(document.body);
-		expect(chip(l as HTMLElement).style.boxShadow).toContain(light);
-		expect(chip(d as HTMLElement).style.boxShadow).toContain(dark);
+		expect(chip(l as HTMLElement).style.boxShadow).toContain(rgb(light));
+		expect(chip(d as HTMLElement).style.boxShadow).toContain(rgb(dark));
 	});
 
 	it("el valor del token de la spec (text-primary) coincide con los tokens", () => {
