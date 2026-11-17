@@ -31,7 +31,7 @@ Comandos:
   - con `bun run --cwd apps/docs typecheck` y el build;
   - que `examples/next/app/*` no da ningún diagnóstico;
   - con los e2e de la web.
-- [ ] 2.5 `noReExportAll` y `noNamespaceImport` en `error`. Pasar a exports con nombre los 4 `export *`. Los 17 `import * as` que recorren un módulo llevan su `biome-ignore` con motivo (D9). Comprobar con Biome, con `typecheck` y con `build`
+- [x] 2.5 `noReExportAll` y `noNamespaceImport` en `error`. Pasar a exports con nombre los 4 `export *`. Los 17 `import * as` que recorren un módulo llevan su `biome-ignore` con motivo (D9). Comprobar con Biome, con `typecheck` y con `build`
 - [ ] 2.6 `noConsole` con `allow: ["error", "warn"]` y su override para scripts, tests, e2e y configs. Comprobar con Biome
 - [ ] 2.7 `useFilenamingConvention` con los dos niveles de D4. Comprobar antes que acepta `[slug]`, `[...slug]` y los nombres con puntos. Medir con la regla configurada y renombrar lo que no cumpla, con sus imports. Comprobar con Biome, con `typecheck`, con el build de la web y de los ejemplos y con los e2e
 
