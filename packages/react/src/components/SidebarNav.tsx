@@ -18,8 +18,11 @@ import { ProgressCircle } from "./ProgressCircle.js";
 import { Tooltip } from "./Tooltip.js";
 
 export interface SidebarNavItem {
+	/** Icon shown before the label. */
 	icon?: IconProp;
+	/** The text of the item. */
 	label: ReactNode;
+	/** Where the item goes. Without it, the item only groups its children. */
 	href?: string;
 	/** Página actual: fondo `bg-secondary_hover` y `aria-current="page"`. */
 	active?: boolean;
@@ -40,7 +43,9 @@ export interface SidebarNavItem {
 
 /** Un grupo de elementos con título opcional, para `sections-dividers` y `sections-subheadings`. */
 export interface SidebarNavSection {
+	/** Heading of the section. */
 	title?: ReactNode;
+	/** The items in the section. */
 	items: SidebarNavItem[];
 }
 
@@ -77,6 +82,7 @@ export interface SidebarNavProps {
 	 * Muestra el buscador bajo la marca (en `sections-subheadings`, un botón de lupa junto a ella, y en `slim`, nada).
 	 */
 	search?: boolean;
+	/** The items of the navigation, when it has a single list. */
 	items?: SidebarNavItem[];
 	/** Grupos con título para `sections-dividers` y `sections-subheadings`. Sustituye a `items`. */
 	sections?: SidebarNavSection[];
@@ -107,6 +113,7 @@ export interface SidebarNavProps {
 	disclosure?: "script" | "native";
 	/** Textos que trae el componente, para sustituirlos. */
 	labels?: Partial<SidebarNavLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -259,7 +266,9 @@ function NativeDisclosure({ item }: { item: SidebarNavItem }) {
 }
 
 interface NavListProps {
+	/** The items of the list. */
 	items: SidebarNavItem[];
+	/** Shows the narrow version: only icons. */
 	slim?: boolean;
 	/** `disclosure="native"` en un tipo de una columna: los submenús son `<details>`. */
 	native?: boolean;
@@ -557,9 +566,11 @@ export function SidebarNav({
 interface CardBase {
 	/** Con ella sale la X arriba a la derecha. */
 	onClose?: () => void;
+	/** Accessible name of the button that closes the card. */
 	closeLabel?: string;
 	/** Tarjeta blanca con filo en lugar de la gris rellena. */
 	outline?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -595,7 +606,9 @@ function CardText({ title, description }: { title?: ReactNode; description?: Rea
 }
 
 export interface SidebarProgressCardProps extends CardBase {
+	/** The headline. */
 	title: ReactNode;
+	/** Supporting text under the title. */
 	description?: ReactNode;
 	/** De 0 a 100. */
 	value: number;
@@ -632,7 +645,9 @@ export interface SidebarNoticeCardProps extends CardBase {
 	icon?: ReactNode;
 	/** Imagen o vídeo bajo el texto, con las esquinas redondeadas, como en el Figma. */
 	media?: ReactNode;
+	/** The headline. */
 	title?: ReactNode;
+	/** Supporting text under the title. */
 	description?: ReactNode;
 	/** Entre el texto y los botones: un campo, una lista, un código QR… */
 	children?: ReactNode;
@@ -656,13 +671,17 @@ function NoticeCard({ icon, media, title, description, children, actions, ...car
 export interface SidebarUpgradeCardProps extends Omit<CardBase, "outline"> {
 	/** Icono del cuadro de arriba. */
 	icon?: IconProp;
+	/** The headline. */
 	title: ReactNode;
 	/** Etiqueta junto al título («20% OFF»). */
 	badge?: ReactNode;
+	/** Supporting text under the title. */
 	description?: ReactNode;
 	/** Texto del botón a ancho completo. */
 	cta: ReactNode;
+	/** Called when the button is pressed. */
 	onCta?: () => void;
+	/** Where the button goes. With it, the button is a link. */
 	href?: string;
 }
 

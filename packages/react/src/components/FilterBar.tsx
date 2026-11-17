@@ -25,6 +25,7 @@ export interface FilterBarProps {
 	segmentValue?: string;
 	/** Vista elegida al principio (no controlado). */
 	defaultSegment?: string;
+	/** Called with the `value` of the segment that was chosen. */
 	onSegment?: (value: string) => void;
 	/** Muestra el buscador (también aparece si pasas `onSearch`). */
 	search?: boolean;
@@ -39,6 +40,7 @@ export interface FilterBarProps {
 	onOpenFilters?: () => void;
 	/** Filtros aplicados: se ven siempre, como `Tag` con su X. El botón Filtros muestra cuántos hay. */
 	activeFilters?: ({ label: string } | string)[];
+	/** Called with the index of the filter the user removed. */
 	onRemoveFilter?: (index: number) => void;
 	/** "Limpiar todo", junto a los filtros aplicados. */
 	onClear?: () => void;
@@ -65,9 +67,11 @@ export interface FilterBarProps {
 	conditionFields?: { value: string; label: string }[];
 	/** Operadores que ofrecen las condiciones. */
 	conditionOperators?: { value: string; label: string }[];
+	/** Called with the new conditions when they change. */
 	onConditionsChange?: (conditions: FilterCondition[]) => void;
 	/** En `dropdowns-date`, la lupa que abre la búsqueda. */
 	onOpenSearch?: () => void;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -81,8 +85,11 @@ export type FilterBarType =
 	| "advanced";
 
 export interface FilterCondition {
+	/** What is filtered, such as `Status`. */
 	field: string;
+	/** How the field is compared, such as `is`. */
 	operator: string;
+	/** What the field is compared with. */
 	value: string;
 }
 

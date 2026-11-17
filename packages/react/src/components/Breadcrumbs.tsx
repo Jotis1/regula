@@ -6,7 +6,9 @@ import { defaultStrings } from "../internal/strings.js";
 import { Dropdown, type DropdownAccount } from "./Dropdown.js";
 
 export interface BreadcrumbItem {
+	/** The text of the step. */
 	label: string;
+	/** Where the step links to. The last step, the current page, has none. */
 	href?: string;
 	/** Icono en lugar del texto (el texto queda para lectores de pantalla). Pensado para el primero, `home-line`. */
 	icon?: IconProp;
@@ -45,6 +47,7 @@ export interface BreadcrumbsProps {
 	 * @default "Migas de pan"
 	 */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

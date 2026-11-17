@@ -25,12 +25,15 @@ import { Avatar, type AvatarStatus } from "./Avatar.js";
 import { Button } from "./Button.js";
 
 export interface DropdownAction {
+	/** Icon shown before the label. */
 	icon?: IconProp;
+	/** The text of the action. */
 	label: ReactNode;
 	/** Atajo de teclado que se muestra a la derecha (solo texto; no lo registra). */
 	shortcut?: string;
 	/** Acción destructiva: va al final, tras un separador. */
 	danger?: boolean;
+	/** Called when the action is chosen. */
 	onSelect?: () => void;
 	/**
 	 * Identifica la opción en un menú con elección (`selectedValue`): con él se marca y se avisa en `onSelectionChange`.
@@ -49,12 +52,17 @@ export type DropdownItem = DropdownAction | { divider: true } | { heading: React
 
 /** Una cuenta de la lista de cuentas de las variantes `account-*`. */
 export interface DropdownAccount {
+	/** Identifies the account in the menu's value. */
 	value: string;
+	/** The account name. */
 	name: string;
+	/** The account email, shown under the name. */
 	email?: string;
 	/** URL de la foto. Sin ella, las iniciales o el icono de usuario. */
 	avatar?: string;
+	/** Letters shown when the account has no image. */
 	initials?: string;
+	/** Presence dot on the avatar. */
 	status?: AvatarStatus;
 }
 
@@ -110,6 +118,7 @@ export interface DropdownProps {
 	accountsLabel?: string;
 	/** Con ella, al final de las cuentas sale la fila «Añadir cuenta». */
 	onAddAccount?: () => void;
+	/** Text of the button that adds an account. */
 	addAccountLabel?: string;
 	/** Abierto (controlado). */
 	open?: boolean;
@@ -117,6 +126,7 @@ export interface DropdownProps {
 	defaultOpen?: boolean;
 	/** Avisa al abrir y cerrar (ampliación sobre la guía, para el modo controlado). */
 	onOpenChange?: (open: boolean) => void;
+	/** The entries of the menu, in order. */
 	items: DropdownItem[];
 	/**
 	 * Valor de la opción elegida. Con él, el menú es de elección única: la opción elegida lleva un check a la derecha y se
@@ -128,6 +138,7 @@ export interface DropdownProps {
 	onSelectionChange?: (value: string) => void;
 	/** Nombre del menú para lectores de pantalla. Por defecto, el texto del botón. */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

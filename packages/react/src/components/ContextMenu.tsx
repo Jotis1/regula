@@ -19,13 +19,17 @@ import { defaultStrings } from "../internal/strings.js";
 
 /** Una acción del menú, o un submenú si lleva `items`. */
 export interface ContextMenuAction {
+	/** Icon shown before the label. */
 	icon?: IconProp;
+	/** The text of the action. */
 	label: ReactNode;
 	/** Atajo de teclado que se muestra a la derecha (solo texto; no lo registra). */
 	shortcut?: string;
 	/** Acción destructiva. */
 	danger?: boolean;
+	/** Disables the control. */
 	disabled?: boolean;
+	/** Called when the action is chosen. */
 	onSelect?: () => void;
 	/** Texto para la búsqueda por teclado si `label` no es texto. */
 	textValue?: string;
@@ -35,9 +39,13 @@ export interface ContextMenuAction {
 
 /** Una opción de un grupo con elección. */
 export interface ContextMenuChoice {
+	/** Identifies the choice in the menu's value. */
 	value: string;
+	/** The text of the choice. */
 	label: ReactNode;
+	/** Disables the control. */
 	disabled?: boolean;
+	/** Plain text used for type-ahead, when `label` is not text. */
 	textValue?: string;
 }
 
@@ -72,6 +80,7 @@ export interface ContextMenuProps {
 	defaultOpen?: boolean;
 	/** Dónde sale el menú de una vista previa abierta (`defaultOpen`), desde la esquina de la zona, en px. */
 	previewAt?: { x: number; y: number };
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

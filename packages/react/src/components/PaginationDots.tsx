@@ -30,9 +30,11 @@ export interface PaginationDotsProps {
 	size?: PaginationDotsSize;
 	/** Sobre una píldora blanca, para ponerlo encima de una imagen. */
 	framed?: boolean;
+	/** Texts for assistive technology, to translate. */
 	labels?: Partial<PaginationDotsLabels>;
 	/** Nombre del grupo de botones («Diapositivas»). */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
