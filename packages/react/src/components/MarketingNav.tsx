@@ -42,22 +42,29 @@ export interface MarketingNavPanel {
 }
 
 export interface MarketingNavItem {
+	/** The text of the item. */
 	label: string;
 	/** Un enlace; o, con `panel`, un botón que abre su menú. */
 	href?: string;
+	/** The panel that opens under the item. Without it, the item is a link. */
 	panel?: MarketingNavPanel;
+	/** Marks the item as the current page. */
 	current?: boolean;
 }
 
 export interface MarketingNavLabels {
+	/** Accessible name of the navigation. */
 	nav: string;
+	/** Accessible name of the button that opens the mobile menu. */
 	openMenu: string;
+	/** Accessible name of the button that closes the mobile menu. */
 	closeMenu: string;
 }
 
 export interface MarketingNavProps {
 	/** La marca, normalmente un enlace a la portada. */
 	brand: ReactNode;
+	/** The items of the navigation, in order. */
 	items: MarketingNavItem[];
 	/** Acciones a la derecha («Entrar», «Empezar»). En móvil van al pie del menú, a todo el ancho. */
 	actions?: ReactNode;
@@ -72,9 +79,11 @@ export interface MarketingNavProps {
 	floating?: boolean;
 	/** Enlaces del pie del menú móvil, en dos columnas. */
 	mobileLinks?: { label: string; href: string }[];
+	/** Texts for assistive technology, to translate. */
 	labels?: Partial<MarketingNavLabels>;
 	/** Menú abierto de inicio, en línea y sin popover ni foco: para vistas previas y capturas (la etiqueta del apartado). */
 	previewItem?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

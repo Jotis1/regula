@@ -6,6 +6,7 @@ import { Rating } from "./Rating.js";
 export interface TestimonialProps {
 	/** La cita, sin comillas: las pone el componente. */
 	quote?: ReactNode;
+	/** Who gave the testimonial. */
 	name: ReactNode;
 	/** Cargo y empresa: «Diseñadora, Capas». */
 	role?: ReactNode;
@@ -21,8 +22,11 @@ export interface TestimonialProps {
 	size?: "sm" | "md";
 	/** Con ellas, las flechas para pasar de testimonio (en un carrusel propio). */
 	onPrevious?: () => void;
+	/** Called when the next arrow is pressed. */
 	onNext?: () => void;
+	/** Accessible names of the arrows, to translate. */
 	labels?: { previous?: string; next?: string };
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

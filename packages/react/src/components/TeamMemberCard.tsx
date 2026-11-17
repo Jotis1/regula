@@ -13,9 +13,11 @@ export type TeamMemberCardType =
 	| "image-glass-full-width";
 
 export interface TeamMemberCardProps {
+	/** The person's name. */
 	name: string;
 	/** Cargo: «Fundadora y directora». */
 	role: ReactNode;
+	/** A short biography. */
 	bio?: ReactNode;
 	/** URL de la foto: el avatar en los `simple-*`. Sin ella, las iniciales. */
 	avatar?: string;
@@ -27,6 +29,7 @@ export interface TeamMemberCardProps {
 	href?: string;
 	/** Los siete tipos del Figma. @default "simple-left" */
 	type?: TeamMemberCardType;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

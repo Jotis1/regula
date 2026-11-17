@@ -18,7 +18,9 @@ export type BlogPostCardType =
 export interface BlogPostCardProps {
 	/** La entrada. El título es el enlace y toda la tarjeta responde al clic. */
 	href: string;
+	/** The post title. */
 	title: ReactNode;
+	/** A short summary of the post. */
 	description?: ReactNode;
 	/** La imagen de portada (el paquete no trae fotos). */
 	image?: ReactNode;
@@ -26,6 +28,7 @@ export interface BlogPostCardProps {
 	category?: ReactNode;
 	/** Tiempo de lectura, en `simple-02` y `card-02`: «8 min de lectura». */
 	readTime?: ReactNode;
+	/** Who wrote it: their name and, optionally, their avatar. */
 	author?: {
 		name: string;
 		/** URL de la foto; sin ella, las iniciales. */
@@ -48,6 +51,7 @@ export interface BlogPostCardProps {
 	 * @default "vertical"
 	 */
 	orientation?: "vertical" | "horizontal";
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -24,14 +24,18 @@ export type FooterType =
 	| "small-04";
 
 export interface FooterLink {
+	/** The text of the link. */
 	label: ReactNode;
+	/** Where the link goes. */
 	href: string;
 	/** Tras el enlace, como «Nuevo». */
 	badge?: ReactNode;
 }
 
 export interface FooterColumn {
+	/** Heading of the column. */
 	title: ReactNode;
+	/** The links in the column. */
 	links: FooterLink[];
 }
 
@@ -60,6 +64,7 @@ export interface FooterProps {
 	legal?: FooterLink[];
 	/** Iconos de redes, como enlaces con nombre. */
 	social?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -100,9 +105,11 @@ interface Layout {
 	cta?: "center" | "split" | "band" | "newsletter";
 	/** El bloque de la marca a la izquierda de las columnas, o centrado. */
 	brandBlock?: "side" | "center" | "bottom";
+	/** Whether the link columns are shown. */
 	columns?: boolean;
 	/** Enlaces en fila bajo la marca. */
 	rowLinks?: boolean;
+	/** Whether the side block is shown. */
 	aside?: boolean;
 	/** Columnas con título oscuro y enlaces de marca. */
 	strong?: boolean;

@@ -6,7 +6,9 @@ import { Badge, type BadgeColor } from "./Badge.js";
 export interface JobPostCardProps {
 	/** La oferta. El título es el enlace y toda la tarjeta responde al clic. */
 	href: string;
+	/** The job title. */
 	title: ReactNode;
+	/** A short summary of the job. */
 	description?: ReactNode;
 	/** Departamento, en una etiqueta con punto: «Diseño». */
 	department?: ReactNode;
@@ -26,6 +28,7 @@ export interface JobPostCardProps {
 	viewLabel?: string;
 	/** `simple` con una raya encima · `card-01` · `card-02`. @default "simple" */
 	type?: "simple" | "card-01" | "card-02";
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

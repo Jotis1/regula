@@ -15,11 +15,13 @@ export interface AccordionItem {
 }
 
 export interface AccordionProps {
+	/** The panels, in order. */
 	items: AccordionItem[];
 	/** Abiertos (controlado): los `id` (o posiciones como texto). */
 	expanded?: string[];
 	/** @default [] */
 	defaultExpanded?: string[];
+	/** Called with the ids of the open panels whenever one opens or closes. */
 	onExpandedChange?: (expanded: string[]) => void;
 	/** Solo uno abierto a la vez: abrir uno cierra el resto. */
 	single?: boolean;
@@ -29,6 +31,7 @@ export interface AccordionProps {
 	divider?: boolean;
 	/** Nivel del encabezado de cada pregunta. @default 3 */
 	headingLevel?: 2 | 3 | 4;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

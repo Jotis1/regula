@@ -29,6 +29,7 @@ export interface PricingCardProps {
 	price: ReactNode;
 	/** Tras la cifra, pequeño: «al mes». */
 	period?: ReactNode;
+	/** A short line under the plan name. */
 	description?: ReactNode;
 	/** Etiqueta junto al plan: «Popular». */
 	badge?: ReactNode;
@@ -38,6 +39,7 @@ export interface PricingCardProps {
 	features: ReactNode[];
 	/** Encima de la lista: «Funciones» y una línea («Todo lo del plan gratis, y…»). */
 	featuresTitle?: ReactNode;
+	/** Text above the list of features. */
 	featuresDescription?: ReactNode;
 	/** Los botones, a todo el ancho. */
 	actions: ReactNode;
@@ -45,6 +47,7 @@ export interface PricingCardProps {
 	banner?: ReactNode;
 	/** La nota de `call-out`, encima a la derecha: «¡El más elegido!». */
 	callout?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
