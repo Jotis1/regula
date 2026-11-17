@@ -48,6 +48,32 @@ describe("normas", () => {
 		expect(json.areas[0].id).toBe("git");
 	});
 
+	it("list_standards filtra por el área de código y trae sus trece normas", () => {
+		const { json } = call("list_standards", { area: "code" });
+		expect(json.areas).toHaveLength(1);
+		expect(json.areas[0].id).toBe("code");
+		expect(json.areas[0].rules).toHaveLength(13);
+	});
+
+	it("get_standard devuelve las excepciones de COD-009: los archivos especiales de Next", () => {
+		const { json } = call("get_standard", { id: "COD-009" });
+		expect(json).toMatchObject({ id: "COD-009", level: "must", area: "code" });
+		expect(json.verification).toEqual({ kind: "biome", check: "noDefaultExport" });
+		expect(json.exceptions.map((e: { where: string }) => e.where).join(" ")).toContain("page,layout");
+	});
+
+	it("get_standard lee VER-002: el changeset de toda PR que cambia lo publicado", () => {
+		const { json } = call("get_standard", { id: "VER-002" });
+		expect(json).toMatchObject({
+			id: "VER-002",
+			level: "must",
+			appliesTo: "package",
+			area: "versioning",
+		});
+		expect(json.verification).toEqual({ kind: "ci", check: "Changesets" });
+		expect(json.url).toBe("https://regula.jotis.me/standards/versioning/#ver-002");
+	});
+
 	it("list_standards con un área que no existe da error con las que hay", () => {
 		const r = call("list_standards", { area: "seo" });
 		expect(r.isError).toBe(true);

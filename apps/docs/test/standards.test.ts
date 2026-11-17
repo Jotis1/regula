@@ -144,3 +144,50 @@ describe("/standards.json", () => {
 		expect(standardsJson(entries, "9.9.9", "https://regula.jotis.me/")).toEqual(json);
 	});
 });
+
+// Design D2 of add-development-standards: the exceptions of a rule Biome checks are the `overrides` of biome.json
+describe("excepciones de framework y overrides de biome.json", () => {
+	interface Override {
+		includes: string[];
+		linter?: { rules?: Record<string, Record<string, unknown>> };
+	}
+	const biome = JSON.parse(readFileSync(join(root, "biome.json"), "utf8")) as { overrides: Override[] };
+	const allRules = areas.flatMap((a) => (a.data as StandardArea).rules);
+	const ruleById = (id: string) => allRules.find((r) => r.id === id);
+	/** The globs a rule lists in its exceptions: what is between backticks and starts with `**\/`. */
+	const globsOf = (id: string) =>
+		(ruleById(id)?.exceptions ?? [])
+			.flatMap((e) => [...e.where.matchAll(/`([^`]+)`/g)].map((m) => m[1] as string))
+			.filter((g) => g.startsWith("**/"))
+			.sort();
+	const includesOf = (pick: (o: Override) => boolean) =>
+		biome.overrides
+			.filter(pick)
+			.flatMap((o) => o.includes)
+			.sort();
+	const rule = (o: Override, group: string, name: string) => o.linter?.rules?.[group]?.[name];
+
+	it("COD-009 lista los archivos donde noDefaultExport está desactivado", () => {
+		const globs = globsOf("COD-009");
+		expect(globs.length).toBeGreaterThan(0);
+		expect(globs).toEqual(includesOf((o) => rule(o, "style", "noDefaultExport") === "off"));
+	});
+
+	it("COD-013 lista los archivos donde noConsole está desactivado", () => {
+		const globs = globsOf("COD-013");
+		expect(globs.length).toBeGreaterThan(0);
+		expect(globs).toEqual(includesOf((o) => rule(o, "suspicious", "noConsole") === "off"));
+	});
+
+	it("NAM-003 lista los archivos de componente, donde se admite PascalCase", () => {
+		const globs = globsOf("NAM-003");
+		expect(globs.length).toBeGreaterThan(0);
+		expect(globs).toEqual(includesOf((o) => rule(o, "style", "useFilenamingConvention") !== undefined));
+	});
+
+	it("toda norma de Biome con excepciones de archivo tiene su override", () => {
+		for (const r of allRules)
+			if (r.verification.kind === "biome" && (r.exceptions ?? []).some((e) => e.where.includes("**/")))
+				expect(globsOf(r.id), r.id).not.toEqual([]);
+	});
+});
