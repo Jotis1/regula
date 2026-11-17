@@ -9,6 +9,7 @@ astroNote: "`onChange` es una función y no cruza de Astro a una isla: envuélve
 **Props.** `total` (páginas), `page` / `defaultPage`, `onChange(n)`, `type`, `shape`, `align`, `pageSizes` / `pageSize` / `defaultPageSize` / `onPageSizeChange`. Con más de 7 páginas recorta con "…". Separada de la tabla por una línea `border-secondary`.
 
 **Tipos.** Los diez del Figma (`Pagination`, `1115:68622`) son seis `type` y la alineación:
+
 - `page-minimal` (por defecto, el de siempre): Anterior y Siguiente como botones, números en medio.
 - `page-default`: Anterior y Siguiente como texto.
 - `card-default`: como `page-minimal` con el relleno de una tarjeta.

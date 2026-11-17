@@ -14,6 +14,7 @@ interactive: true
 **Ampliación sobre la guía.** `labels` sustituye sus textos (Reproducir, Pausa, Posición, Silenciar, Activar sonido, Pantalla completa y el de la posición).
 
 **Tamaños (`size`).** Los del Figma, que cambian la barra de acciones; los botones llevan 8px de relleno e iconos de 16:
+
 - `sm` (320 × 180): reproducir, volumen y pantalla completa, sin barra de progreso. Esquinas `radius-lg`.
 - `md` (560 × 315): reproducir, tiempo transcurrido, progreso, tiempo que queda (`-08:24`), volumen y pantalla completa. Esquinas `radius-lg`.
 - `lg` (720 × 405): como `md`, con un control de volumen deslizante y el botón de velocidad (1x, 1.25x, 1.5x, 2x, 0.5x). Esquinas `radius-xl`.

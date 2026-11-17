@@ -23,11 +23,13 @@ Cada app de la suite tiene un icono de la misma familia: baldosa con las dos pri
 | Scaena   | Sc     | `lime`    |
 
 **Rasgos de la familia.** Tres cosas, siempre juntas, que distinguen un icono de jotis.me de cualquier baldosa oscura con letras:
+
 - **Esquina.** Tres esquinas con radio del 22,5 % del lado y la inferior izquierda casi recta (6/128). Es la silueta de la familia y no depende del color.
 - **Dos tonos.** La mayúscula en el tono claro y la minúscula en el medio.
 - **Virgulilla.** Una tilde (~) centrada bajo las letras, del tono medio. Es simétrica respecto a su centro: sube a la izquierda y baja a la derecha, a partes iguales. Tiene siempre el mismo tamaño, sea cual sea el nombre: no se adapta a las letras. Es además un guiño al castellano, la ñ de la marca.
 
 **Construcción** (sobre el lado L):
+
 - Bricolage Grotesque SemiBold (600), tamaño óptico 14, cuerpo al 47 % de L, tracking −3 %.
 - Horizontal: centrado por la caja de avance, incluido el tracking final.
 - Vertical: línea base al 62,5 % de L con virgulilla y al 66,4 % sin ella. La virgulilla va 11/128 por debajo de la línea base, mide 40/128 de largo (fijo), trazo de 3,6/128 con extremos redondos y una amplitud de unos 3/128.

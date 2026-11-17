@@ -16,6 +16,7 @@ interactive: false
 **Mensajes (`type="messages"`).** Autor en `text-sm-medium` con la hora al lado, el usuario (`handle`, «@lana») debajo y el texto en una burbuja con borde `border-secondary` y la esquina superior izquierda recta.
 
 **Elementos de apoyo (`supporting`).** Bajo el texto, uno de tres:
+
 - `{ type: "tags", tags }`: etiquetas `Tag`;
 - `{ type: "file", name, size, icon }`: archivo con su nombre y tamaño. El icono llega como nodo, como `<FileIcon type="pdf" />` de `@untitledui/file-icons`; sin él, `File04`;
 - `{ type: "text", text }`: un texto en un recuadro, como una respuesta.

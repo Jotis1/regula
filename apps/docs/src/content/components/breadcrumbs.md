@@ -10,6 +10,7 @@ interactive: false
 **Divisor.** `chevron` (por defecto) o `slash`. Los separadores quedan fuera del árbol accesible.
 
 **Tipos.** Los del Figma (`Breadcrumbs`, `1122:153`):
+
 - `text`: el de siempre.
 - `text-line`: la ruta entre dos rayas `border-secondary`.
 - `button`: cada elemento es un botón con fondo al pasar el ratón; la página actual lleva `bg-primary_hover`.
