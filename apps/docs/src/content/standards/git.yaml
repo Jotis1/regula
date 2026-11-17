@@ -103,3 +103,31 @@ rules:
       verification:
           kind: review
           review: Que el ruleset de la rama principal exija PR y las comprobaciones obligatorias.
+
+    - id: GIT-005
+      title: Cada commit es un solo cambio que se puede revertir
+      level: must
+      appliesTo: all
+      statement: >-
+          Cada commit contiene un solo cambio lógico, de un solo tipo (`feat`, `fix`, `test`, `docs`, `ci`…). Se puede
+          revertir sin arrastrar otros cambios y deja el repo compilando y con los tests en verde. Un cambio grande se
+          parte en varios commits y la PR los agrupa. El test va en el mismo commit que el código que prueba.
+      rationale: >-
+          Si algo falla en producción, `git revert` de un commit deshace justo ese cambio sin tocar los demás de la PR.
+          Un commit que mezcla una función, un arreglo y un cambio del CI obliga a deshacerlo todo o a reescribirlo a
+          mano.
+      examples:
+          good:
+              - caption: Tres cambios, tres commits de su tipo, en una sola PR
+                lang: text
+                code: |-
+                    feat(react): Button acepta loading
+                    fix(docs): la tabla de props respeta el orden de los tipos
+                    ci: caché remota de Turbo en los jobs que construyen
+          bad:
+              - caption: Un commit que lo mezcla todo
+                lang: text
+                code: "feat: varias cosas de Button, la docs y el CI"
+      verification:
+          kind: review
+          review: Que cada commit de la PR tenga un solo tipo de cambio, se pueda revertir solo y deje los tests en verde.
