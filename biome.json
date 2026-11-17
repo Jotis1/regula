@@ -33,7 +33,11 @@
 			"preset": "recommended",
 			"suspicious": {
 				"noExplicitAny": "error",
-				"noTsIgnore": "error"
+				"noTsIgnore": "error",
+				"noConsole": {
+					"level": "error",
+					"options": { "allow": ["error", "warn"] }
+				}
 			},
 			"style": {
 				"noEnum": "error",
@@ -74,6 +78,16 @@
 		}
 	},
 	"overrides": [
+		{
+			"includes": ["**/scripts/**", "**/test/**", "**/e2e/**", "**/*.config.{ts,mts,js,mjs}"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noConsole": "off"
+					}
+				}
+			}
+		},
 		{
 			"includes": [
 				"**/app/**/{page,layout,template,loading,error,global-error,not-found,default,opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{ts,tsx}",
