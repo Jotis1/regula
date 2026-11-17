@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { COMPOSITION_FILES, COMPOSITIONS, compositionsOf } from "../src/features/visual/compositions";
 import { catalogComponents } from "../src/lib/catalog";
 import { compositionCode } from "../src/lib/composition-code";
-import { COMPOSITION_FILES, COMPOSITIONS, compositionsOf } from "../src/visual/compositions";
 
 // Composiciones de ejemplo (design D7, requisito «Composiciones de ejemplo»): cada tipo del Figma tiene la suya.
 // La lista sale de la propiedad `Type` del conjunto `Modal` (`4057:415205`) del Figma «Yoruverse UI v8.0», en
@@ -93,7 +93,7 @@ const FIGMA = {
 
 const sourceOf = (component: string) =>
 	readFileSync(
-		new URL(`../src/visual/examples/${COMPOSITION_FILES[component]}.tsx`, import.meta.url),
+		new URL(`../src/features/visual/examples/${COMPOSITION_FILES[component]}.tsx`, import.meta.url),
 		"utf8",
 	);
 

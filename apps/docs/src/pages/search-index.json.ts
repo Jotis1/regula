@@ -4,13 +4,13 @@
 import { getCollection } from "astro:content";
 import { colors, radius, shadows, spacing, type } from "@jotis-me/tokens";
 import type { APIRoute } from "astro";
+import type { SearchEntry } from "../features/search/entries";
 import { COMPONENT_KEYWORDS, groupOf, labelOf, slugOf } from "../lib/catalog";
 import { kebab } from "../lib/gallery";
 import { hrefOf } from "../lib/standards";
 import { colorGroups, radiusRows, shadowRows, spacingRows } from "../lib/tokens";
 import { ICON_NAMES } from "../lib/untitled";
 import { nav } from "../nav";
-import type { SearchEntry } from "../search/entries";
 
 export const GET: APIRoute = async () => {
 	const components = await getCollection("components");

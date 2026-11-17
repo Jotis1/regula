@@ -5,7 +5,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import { gzipSync } from "node:zlib";
-import { EXAMPLE_FILES } from "../src/visual/example-files.ts";
+import { EXAMPLE_FILES } from "../src/features/visual/example-files.ts";
 
 export interface Size {
 	raw: number;
@@ -51,7 +51,7 @@ function follow(dist: string, entries: Iterable<string>) {
 	return seen;
 }
 
-/** Trozos de `src/visual/examples/` que pedirán las islas VisualExample de la página, según el `name` de cada una. */
+/** Trozos de `src/features/visual/examples/` que pedirán las islas VisualExample de la página, según el `name` de cada una. */
 export function exampleChunks(dist: string, html: string): string[] {
 	const out: string[] = [];
 	for (const m of html.matchAll(

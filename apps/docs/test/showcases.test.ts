@@ -3,8 +3,7 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { catalogComponents, slugOf } from "../src/lib/catalog";
-import { DARK_PREVIEWS } from "../src/visual/cards";
+import { DARK_PREVIEWS } from "../src/features/visual/cards";
 import {
 	fitScale,
 	SHOWCASE_BOX,
@@ -13,8 +12,9 @@ import {
 	SHOWCASE_MAX_BYTES,
 	SHOWCASE_SCALE,
 	showcaseFile,
-} from "../src/visual/showcase";
-import { SHOWCASES } from "../src/visual/showcases";
+} from "../src/features/visual/showcase";
+import { SHOWCASES } from "../src/features/visual/showcases";
+import { catalogComponents, slugOf } from "../src/lib/catalog";
 
 const dir = join(import.meta.dirname, "../src/assets/showcase");
 const needed = (name: string) =>

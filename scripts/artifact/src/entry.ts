@@ -4,8 +4,8 @@
 // comprueban con los tipos de la web.
 // biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as lib from "@jotis-me/react";
-import { COMPOSITIONS } from "../../../apps/docs/src/visual/compositions";
-import { visualExamples } from "../../../apps/docs/src/visual/registry";
+import { COMPOSITIONS } from "../../../apps/docs/src/features/visual/compositions";
+import { visualExamples } from "../../../apps/docs/src/features/visual/registry";
 
 // Una vista previa por componente del catálogo: las composiciones de la web (design D7) no son componentes
 const compositions = new Set(COMPOSITIONS.map((c) => c.name));

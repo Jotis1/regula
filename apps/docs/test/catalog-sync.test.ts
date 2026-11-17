@@ -3,8 +3,8 @@ import { fileURLToPath } from "node:url";
 // biome-ignore lint/performance/noNamespaceImport: looks exports up by name, so it needs the whole module
 import * as react from "@jotis-me/react";
 import { describe, expect, it } from "vitest";
+import { COMPOSITIONS } from "../src/features/visual/compositions";
 import { catalogComponents } from "../src/lib/catalog";
-import { COMPOSITIONS } from "../src/visual/compositions";
 
 // Un solo catálogo (design D5): lo que exporta @jotis-me/react, los grupos de la navegación, las páginas de la web y
 // las capturas aprobadas son la misma lista. Añadir un componente sin página, sin grupo o sin captura rompe aquí.

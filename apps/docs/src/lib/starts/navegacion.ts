@@ -197,7 +197,7 @@ export const navegacion: Record<string, Start> = {
 			],
 		},
 	},
-	// La marca (el icono de Regula) la pone `src/playground/SidebarNav.tsx`: los nodos no cruzan a la isla.
+	// La marca (el icono de Regula) la pone `src/features/playground/SidebarNav.tsx`: los nodos no cruzan a la isla.
 	// Con submenú, secciones, pie y cuenta, cada `type` se ve distinto: `dual-tier` y `slim` abren el panel de Panel.
 	SidebarNav: {
 		props: {

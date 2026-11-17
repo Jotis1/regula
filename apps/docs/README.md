@@ -6,7 +6,7 @@ Todo corre en Chromium. Lo que depende de cómo cada navegador entrega el teclad
 
 ## Paridad visual y capturas aprobadas
 
-Cada componente del catálogo tiene un ejemplo en `src/visual/registry.ts` (`visualExamples`), con el alto de su tarjeta (`CARD_HEIGHTS`) y, si se pinta siempre en oscuro, su entrada en `DARK_PREVIEWS`. La web lo sirve en `/visual/<componente>/`, y `e2e/visual.spec.ts` lo compara en claro y en oscuro con su **captura aprobada**: `e2e/visual/approved/<Nombre>-<light|dark>.png`. Las 74 originales se capturaron de la guía; desde entonces, la referencia es la captura aprobada, no la guía.
+Cada componente del catálogo tiene un ejemplo en `src/features/visual/registry.ts` (`visualExamples`), con el alto de su tarjeta (`CARD_HEIGHTS`) y, si se pinta siempre en oscuro, su entrada en `DARK_PREVIEWS`. La web lo sirve en `/visual/<componente>/`, y `e2e/visual.spec.ts` lo compara en claro y en oscuro con su **captura aprobada**: `e2e/visual/approved/<Nombre>-<light|dark>.png`. Las 74 originales se capturaron de la guía; desde entonces, la referencia es la captura aprobada, no la guía.
 
 En el PR que crea o cambia una captura el test pasa siempre, porque compara el ejemplo consigo mismo. **Lo que aprueba es la revisión de la PNG en el diff del PR.**
 
@@ -31,13 +31,13 @@ Siempre en Windows, como el job de navegador de CI: el suavizado del texto cambi
 
 1. Ejemplo en el registro (`visualExamples`), con su alto en `CARD_HEIGHTS`.
 2. Su página en `src/content/components/` y su grupo en `src/lib/catalog.ts`.
-3. Su muestra para la card del índice en `src/visual/showcases.tsx` y su captura (ver abajo).
+3. Su muestra para la card del índice en `src/features/visual/showcases.tsx` y su captura (ver abajo).
 4. Revisarlo en la vista previa del deploy (claro y oscuro, con interacción).
 5. Capturar y meter sus dos PNG en el mismo PR. El build de la web no las necesita, pero el test de catálogo y el visual fallan si falta alguna de estas piezas.
 
 ## Cards del índice (`/components/`)
 
-Cada card enseña una **captura WebP** de su componente: lo más característico (un botón, un campo, unas filas de tabla…), con sus propios datos y no el ejemplo del registro, que junta todas las variantes. No tiene que ser una representación 1:1: es un _showcase_. Las muestras están en `src/visual/showcases.tsx` (`SHOWCASES[nombre]` = `{ render }`); la web las pinta en `/showcase/<componente>/` (centradas y ajustadas solas a un marco de 640×400 sobre el damero) y `scripts/capture-showcases.ts` las fotografía:
+Cada card enseña una **captura WebP** de su componente: lo más característico (un botón, un campo, unas filas de tabla…), con sus propios datos y no el ejemplo del registro, que junta todas las variantes. No tiene que ser una representación 1:1: es un _showcase_. Las muestras están en `src/features/visual/showcases.tsx` (`SHOWCASES[nombre]` = `{ render }`); la web las pinta en `/showcase/<componente>/` (centradas y ajustadas solas a un marco de 640×400 sobre el damero) y `scripts/capture-showcases.ts` las fotografía:
 
 ```sh
 bun run build                                  # la web construida

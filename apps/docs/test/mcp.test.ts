@@ -3,9 +3,9 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { describe, expect, it } from "vitest";
-import { loadData } from "../src/mcp/data";
-import { handle, SERVER_NAME } from "../src/mcp/server";
-import { TOOLS } from "../src/mcp/tools";
+import { loadData } from "../src/features/mcp/data";
+import { handle, SERVER_NAME } from "../src/features/mcp/server";
+import { TOOLS } from "../src/features/mcp/tools";
 import { data, VERSION } from "./mcp-fixture";
 
 const URL_MCP = "https://regula.jotis.me/mcp";

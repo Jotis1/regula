@@ -12,7 +12,7 @@ const mcpRoute = {
 	name: "regula-mcp-route",
 	hooks: {
 		"astro:config:setup": ({ injectRoute }) =>
-			injectRoute({ pattern: "/mcp", entrypoint: "./src/mcp/route.ts", prerender: false }),
+			injectRoute({ pattern: "/mcp", entrypoint: "./src/features/mcp/route.ts", prerender: false }),
 	},
 };
 

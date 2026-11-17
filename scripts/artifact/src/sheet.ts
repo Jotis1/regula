@@ -5,7 +5,7 @@ import { compile } from "@tailwindcss/node";
 import { Scanner } from "@tailwindcss/oxide";
 import { DOCS } from "./paths";
 
-const EXAMPLES = join(DOCS, "src/visual");
+const EXAMPLES = join(DOCS, "src/features/visual");
 
 /**
  * Compatibilidad con los diseños hechos con la guía (decisión de la 6.1): envuelven su contenido en `.jm-root`, que en

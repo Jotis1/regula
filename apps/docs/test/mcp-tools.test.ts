@@ -1,6 +1,6 @@
 // The MCP tools (spec mcp-server): each scenario of the spec, run on the pure functions.
 import { describe, expect, it } from "vitest";
-import { TOOLS } from "../src/mcp/tools";
+import { TOOLS } from "../src/features/mcp/tools";
 import { data } from "./mcp-fixture";
 
 function call(name: string, args: Record<string, unknown> = {}) {

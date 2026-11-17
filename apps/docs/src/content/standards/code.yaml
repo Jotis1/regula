@@ -259,7 +259,7 @@ rules:
                     }
 
                     // page.astro
-                    import { SiteSearch } from "../search/SiteSearch";
+                    import { SiteSearch } from "../features/search/SiteSearch";
               - caption: La página de Next, que el framework importa por su export por defecto
                 lang: tsx
                 code: |-

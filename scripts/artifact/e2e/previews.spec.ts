@@ -3,8 +3,8 @@
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 import { compare, readApproved, VIEWPORT_WIDTH } from "../../../apps/docs/e2e/visual/compare";
+import { CARD_HEIGHTS } from "../../../apps/docs/src/features/visual/cards";
 import { catalogComponents } from "../../../apps/docs/src/lib/catalog";
-import { CARD_HEIGHTS } from "../../../apps/docs/src/visual/cards";
 import { ORIGIN, serve } from "./harness";
 
 const MAX_RATIO = 0.02;

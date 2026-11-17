@@ -18,6 +18,8 @@ import PropsTable from "../components/PropsTable.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import StreamNote from "../components/StreamNote.astro";
 import WideScene from "../components/WideScene.astro";
+import { COMPOSITION_FILES, compositionsOf, INLINE_COMPOSITIONS } from "../features/visual/compositions";
+import { VisualExample } from "../features/visual/VisualExample";
 import { type SplitCard, usageOf, usageToc } from "../lib/card";
 import { groupOf, labelOf, neighborsOf, SECTIONS, slugOf } from "../lib/catalog";
 import { compositionCode } from "../lib/composition-code";
@@ -25,8 +27,6 @@ import { inline } from "../lib/inline";
 import { PAGE_SECTIONS } from "../lib/layout";
 import { type Playground as PlaygroundData, STARTS } from "../lib/playground";
 import type { NativeTarget, PropRow } from "../lib/props";
-import { COMPOSITION_FILES, compositionsOf, INLINE_COMPOSITIONS } from "../visual/compositions";
-import { VisualExample } from "../visual/VisualExample";
 import Base from "./Base.astro";
 
 interface Props {
@@ -83,7 +83,10 @@ const compositions = compositionsOf(name);
 // Pocas (el modal del selector de color): en esta página, con su código; muchas: en su propia página
 const inlineCompositions = compositions.length > 0 && compositions.length <= INLINE_COMPOSITIONS;
 const compositionSource = inlineCompositions
-	? readFileSync(join(process.cwd(), "src/visual/examples", `${COMPOSITION_FILES[name]}.tsx`), "utf8")
+	? readFileSync(
+			join(process.cwd(), "src/features/visual/examples", `${COMPOSITION_FILES[name]}.tsx`),
+			"utf8",
+		)
 	: "";
 
 const importLine = `import { ${name} } from "@jotis-me/react"`;

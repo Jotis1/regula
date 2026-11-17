@@ -122,7 +122,7 @@ async function playgroundFor(name: string) {
 	if (!b) {
 		const rows = rowsOf(name);
 		const start = STARTS[name] as Start;
-		const mod = (await import(`../src/playground/${name}.tsx`)) as PlaygroundModule;
+		const mod = (await import(`../src/features/playground/${name}.tsx`)) as PlaygroundModule;
 		const controls = controlsOf(rows, { ...start.tweaks, ...mod.tweaks }, start.props, start.children);
 		const pg: Playground = {
 			name,

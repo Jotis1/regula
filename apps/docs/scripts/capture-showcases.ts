@@ -9,10 +9,15 @@ import { join, resolve } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import { chromium } from "@playwright/test";
 import sharp from "sharp";
+import { DARK_PREVIEWS } from "../src/features/visual/cards.ts";
+import { slugOf } from "../src/features/visual/registry.ts";
+import {
+	SHOWCASE_DENSITY,
+	SHOWCASE_IMAGE,
+	SHOWCASE_WEBP,
+	showcaseFile,
+} from "../src/features/visual/showcase.ts";
 import { catalogComponents } from "../src/lib/catalog.ts";
-import { DARK_PREVIEWS } from "../src/visual/cards.ts";
-import { slugOf } from "../src/visual/registry.ts";
-import { SHOWCASE_DENSITY, SHOWCASE_IMAGE, SHOWCASE_WEBP, showcaseFile } from "../src/visual/showcase.ts";
 
 export const SHOWCASE_DIR = resolve(import.meta.dirname, "../src/assets/showcase");
 

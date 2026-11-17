@@ -2,9 +2,9 @@
 // se capturaron de la guía; las de un componente nuevo, o las de uno que cambia de aspecto, se aprueban en su PR.
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
+import { COMPOSITIONS } from "../src/features/visual/compositions";
+import { CARD_HEIGHTS, slugOf } from "../src/features/visual/registry";
 import { catalogComponents } from "../src/lib/catalog";
-import { COMPOSITIONS } from "../src/visual/compositions";
-import { CARD_HEIGHTS, slugOf } from "../src/visual/registry";
 import { compare, hasApproved, missingApproved, readApproved, VIEWPORT_WIDTH } from "./visual/compare";
 
 const MAX_RATIO = 0.02;
