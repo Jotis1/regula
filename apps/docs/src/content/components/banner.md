@@ -6,7 +6,7 @@ interactive: true
 astroNote: "La cuenta atrás, el formulario de correo y `onClose` necesitan JavaScript: úsalo en una isla `.tsx` con `client:load`."
 ---
 
-**Props.** `title`, `description`, `icon` (icono destacado de 48px: `modern` en el tema por defecto y `light` en `brand`), `actions`, `email` ({`placeholder`, `buttonLabel`, `hint`, `onSubmit(value)`}: campo de 360px con botón), `countdown` (fecha objetivo; `now` congela el reloj para capturas), `theme` (`default` · `brand`), `layout` (`floating` · `full`), `slim` (una línea, centrada, sin icono), `onClose`.
+**Props.** `title`, `description`, `icon` (icono destacado de 48px: `modern` en el tema por defecto y `light` en `brand`), `actions`, `email` ({`placeholder`, `buttonLabel`, `hint`, `onSubmit(value)`}: campo de 360px con botón), `countdown` (fecha objetivo; `now` congela el reloj para capturas), `theme` (`default` - `brand`), `layout` (`floating` - `full`), `slim` (una línea, centrada, sin icono), `onClose`.
 
 **Visual.** `default`: `bg-secondary`, borde `border-secondary_alt`, título `text-secondary` semibold 14, apoyo `text-tertiary`. `brand`: `bg-brand-section_subtle`, borde `border-brand_alt`, título `text-primary_on-brand`, apoyo `text-tertiary_on-brand`. Flotante con `radius-xl` y `shadow-lg`, padding 12; `full` pegado al borde superior, sin radio.
 

@@ -5,7 +5,7 @@ description: "Tabla de datos en tarjeta con cabecera, columnas, pie opcional, lo
 interactive: true
 ---
 
-**Props.** `columns` [{`key`, `label`, `primary`, `align`, `render(row)`, `type`, `sortable`, `sortValue(row)`, `help`}], `sort` / `defaultSort` / `onSortChange`, `selection` (`checkbox` · `radio` · `toggle`), `selectedKeys` / `defaultSelectedKeys` / `onSelectionChange`, `striped`, `labels`, `rows`, `title`, `count`, `description`, `actions`, `footer` (p. ej. `Pagination`), `size` (`md` filas de 72px - `sm` 56px).
+**Props.** `columns` [{`key`, `label`, `primary`, `align`, `render(row)`, `type`, `sortable`, `sortValue(row)`, `help`}], `sort` / `defaultSort` / `onSortChange`, `selection` (`checkbox` - `radio` - `toggle`), `selectedKeys` / `defaultSelectedKeys` / `onSelectionChange`, `striped`, `labels`, `rows`, `title`, `count`, `description`, `actions`, `footer` (p. ej. `Pagination`), `size` (`md` filas de 72px - `sm` 56px).
 
 **Tipos de celda.** Los del Figma (`Table cell`, `1222:107305`): con `type`, el valor de la columna toma una forma y la tabla pinta la plantilla. `text` (texto o título y subtítulo), `avatar`, `file` (icono de `FileIcon`, de `@untitledui/file-icons`), `payment` (logo de `@jotis-me/assets/payments`), `badge`, `badges` (con «+N»), `trend` (valor y cambio en verde o rojo, con flecha), `avatar-group`, `select` (desplegable nativo con el punto de la opción), `progress`, `rating` (estrellas, con «4,5 de 5» para lectores), `actions` (botones de texto), `action-icons` (botones de icono con nombre) y `menu` (tres puntos, o el nodo que pases). `render` sigue mandando sobre `type`.
 

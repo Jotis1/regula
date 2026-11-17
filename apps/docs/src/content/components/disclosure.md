@@ -5,7 +5,7 @@ description: "Bloque plegable con título y contenido libre, que se abre y se ci
 interactive: false
 ---
 
-**Props.** `title`, `aside` (un contador, un `Badge`), `defaultOpen`, `size` (`sm` · `md`), `divider`, `className`, contenido en `children`.
+**Props.** `title`, `aside` (un contador, un `Badge`), `defaultOpen`, `size` (`sm` - `md`), `divider`, `className`, contenido en `children`.
 
 **Disclosure o Accordion.** `Accordion` es una lista de preguntas con respuestas de texto. `Disclosure` es un bloque suelto con contenido libre y denso: controles, listas, propiedades. Si lo que quieres es una columna de preguntas frecuentes, usa `Accordion`.
 

@@ -6,7 +6,7 @@ interactive: true
 astroNote: "El disparador tiene que ser un componente React (como `Button`), no HTML de la página Astro: pon `Tooltip` y su botón juntos en un `.tsx` y úsalo con `client:load`."
 ---
 
-**Props.** `title`, `text` (segunda línea en `tooltip-supporting-text`), `children` (el elemento que lo dispara), `open` (forzarlo visible), `placement` (`top` por defecto - `bottom` · `left` · `right`: el lado del control en el que sale) y `arrow` (`center` por defecto - `start` · `end`, a 12px de la esquina de la burbuja - `false`, sin flecha). Fondo `bg-primary-solid`, `radius-lg`, `shadow-lg`, flecha de 6px.
+**Props.** `title`, `text` (segunda línea en `tooltip-supporting-text`), `children` (el elemento que lo dispara), `open` (forzarlo visible), `placement` (`top` por defecto - `bottom` - `left` - `right`: el lado del control en el que sale) y `arrow` (`center` por defecto - `start` - `end`, a 12px de la esquina de la burbuja - `false`, sin flecha). Fondo `bg-primary-solid`, `radius-lg`, `shadow-lg`, flecha de 6px.
 
 **No.** Nada imprescindible dentro de un tooltip: en móvil no hay hover.
 

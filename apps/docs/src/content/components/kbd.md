@@ -5,7 +5,7 @@ description: "Tecla o atajo de teclado: el de una opción de menú o la pista de
 interactive: false
 ---
 
-**Props.** `variant` (`menu` · `field`), `className`, texto de la tecla en `children` («⌘K», «Ctrl K», «Esc»).
+**Props.** `variant` (`menu` - `field`), `className`, texto de la tecla en `children` («⌘K», «Ctrl K», «Esc»).
 
 **Cuándo.** `menu` va a la derecha de una opción de menú o de un comando para decir su atajo («⌘P»). `field` va dentro de un campo o botón de búsqueda y dice qué tecla lo abre («Ctrl K»).
 

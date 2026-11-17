@@ -5,7 +5,7 @@ description: "Lista cronológica de lo que ha pasado: quién hizo qué y cuándo
 interactive: false
 ---
 
-**Props.** `items` [{`author`, `avatar`, `time`, `handle`, `text` (admite `<strong>` para destacar el objeto), `supporting`, `content` (adjunto, etiquetas…), `unread`, `online`}], `divider` (`line` · `divider` · `connector` · `none`), `type` (`notifications` · `messages`), `size` (`md` · `sm`). `connector` sigue valiendo como alias de `divider="connector"`.
+**Props.** `items` [{`author`, `avatar`, `time`, `handle`, `text` (admite `<strong>` para destacar el objeto), `supporting`, `content` (adjunto, etiquetas…), `unread`, `online`}], `divider` (`line` - `divider` - `connector` - `none`), `type` (`notifications` - `messages`), `size` (`md` - `sm`). `connector` sigue valiendo como alias de `divider="connector"`.
 
 **Visual.** Avatar 40px, autor `text-sm-semibold` en `text-secondary`, hora `text-xs` en `text-tertiary`, texto en `text-tertiary`. Sin leer: punto `fg-success-secondary`.
 

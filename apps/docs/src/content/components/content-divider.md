@@ -5,7 +5,7 @@ description: "Separador horizontal, solo o con texto o un botón en el centro."
 interactive: false
 ---
 
-**Props.** `label` (+ `heading` para texto de título), `actions` o `children` (lo del centro), `variant` (`single` · `dual` · `fill`).
+**Props.** `label` (+ `heading` para texto de título), `actions` o `children` (lo del centro), `variant` (`single` - `dual` - `fill`).
 
 **Acciones.** Los tipos con botón del Figma (`Content divider`, `1252:126874`): `actions` recibe un `Button` («Añadir»), un `Button` solo icono o un `ButtonGroup` (anterior, nuevo y siguiente con iconos, o «Ver todo / Activos / Inactivos»), en cualquiera de las tres variantes. Es lo mismo que `children` con nombre; si llegan los dos, gana `actions`.
 

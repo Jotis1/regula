@@ -5,7 +5,7 @@ description: "Un token de color con su valor claro y su valor oscuro a la vez, y
 interactive: true
 ---
 
-**Props.** `name`, `light`, `dark` (hexadecimales), `usage`, `utility` (lo que se copia), `layout` (`row` · `card`), `onCopy`, `labels`, `className`.
+**Props.** `name`, `light`, `dark` (hexadecimales), `usage`, `utility` (lo que se copia), `layout` (`row` - `card`), `onCopy`, `labels`, `className`.
 
 **Cuándo.** Para documentar tokens de color: enseña los dos temas a la vez, sea cual sea el tema de la página. `row` va en una celda de `Table`; `card` apila nombre, muestras, utilidad y uso en una tarjeta.
 
