@@ -29,6 +29,10 @@ jobs:
         name: Comprobaciones
         if: github.event_name != 'workflow_dispatch'
         runs-on: ubuntu-latest
+        # INT-006: caché remota de Turbo del equipo de Vercel. Sin el secreto (PR desde forks), Turbo construye en local
+        env:
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
             - uses: actions/checkout@v4
             - uses: oven-sh/setup-bun@v2
@@ -89,6 +93,9 @@ jobs:
         name: Navegador (web, ejemplos y Lighthouse)
         if: github.event_name != 'workflow_dispatch'
         runs-on: windows-latest
+        env:
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
             - uses: actions/checkout@v4
             - uses: oven-sh/setup-bun@v2
@@ -152,6 +159,9 @@ jobs:
         name: Capturas aprobadas
         if: github.event_name == 'workflow_dispatch'
         runs-on: windows-latest
+        env:
+            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
             - uses: actions/checkout@v4
             - uses: oven-sh/setup-bun@v2
