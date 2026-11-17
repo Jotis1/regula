@@ -115,6 +115,9 @@ jobs:
             - run: bun install --frozen-lockfile
             - name: Conventional Commits
               run: bunx commitlint --from "${{ github.event.pull_request.base.sha }}" --to "${{ github.event.pull_request.head.sha }}" --verbose
+            # LNG-005: ni punto medio ni rayas en los commits. Los de los bots quedan fuera: copian notas de versión.
+            - name: Tipografía
+              run: bun run scripts/check-commit-typography.ts "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}"
             # VER-002: si la PR cambia lo que publica un paquete, trae un changeset que lo nombra (o uno vacío). El PR de
             # versión de changesets queda fuera: borra los changesets a propósito.
             - name: Changesets
