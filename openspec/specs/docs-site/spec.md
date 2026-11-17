@@ -185,7 +185,7 @@ La portada, las páginas de iconos y la 404 no SHALL llevar navegación lateral.
 - **THEN** las seis secciones caben, la búsqueda es un botón de icono de 44 px a la vista y la página no se desplaza en horizontal
 
 #### Scenario: Buscar una norma
-- **WHEN** el usuario pulsa Ctrl+K y escribe "NOM-001" o "dominio inverso"
+- **WHEN** el usuario pulsa Ctrl+K y escribe "NAM-001" o "dominio inverso"
 - **THEN** aparece la norma de los paquetes privados, y Enter lleva a su área con la norma a la vista
 
 ### Requirement: Publicación en regula.jotis.me
@@ -564,7 +564,7 @@ Las páginas SHALL usar los componentes de Regula y el esqueleto común de pági
 - **THEN** no hay errores
 
 ### Requirement: Cada norma en su página
-Cada norma SHALL tener un ancla con su ID en minúsculas (`/standards/naming/#nom-001`). El nivel SHALL verse como texto («Debe», «Debería», «Puede») y no solo como color. Los ejemplos de código SHALL pintarse con `CodeSnippet`, con el veredicto («Esto sí», «Esto no») en texto.
+Cada norma SHALL tener un ancla con su ID en minúsculas (`/standards/naming/#nam-001`). El nivel SHALL verse como texto («Debe», «Debería», «Puede») y no solo como color. Los ejemplos de código SHALL pintarse con `CodeSnippet`, con el veredicto («Esto sí», «Esto no») en texto.
 
 #### Scenario: Enlace a una norma
 - **WHEN** se abre `/standards/git/#git-001`
