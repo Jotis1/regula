@@ -18,18 +18,23 @@ export interface VerificationCodeInputProps extends FieldProps {
 	size?: FieldSize;
 	/** El código escrito, sin huecos. */
 	value?: string;
+	/** Code at the start (uncontrolled). */
 	defaultValue?: string;
 	/** Cada cambio, con el código escrito hasta ahora (sin huecos). */
 	onChange?: (code: string) => void;
 	/** Una vez cada vez que se rellenan todas las casillas, con el código completo. */
 	onComplete?: (code: string) => void;
+	/** Disables the control. */
 	disabled?: boolean;
 	/** Nombre del campo al enviar el formulario. */
 	name?: string;
 	/** Nombre accesible de cada casilla. Por defecto, "Dígito 1 de 6". */
 	digitLabel?: (n: number, total: number) => string;
+	/** Focuses the first digit when it appears. */
 	autoFocus?: boolean;
+	/** Id of the control, for a `<label htmlFor>` to point at it. */
 	id?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

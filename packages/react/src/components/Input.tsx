@@ -31,8 +31,11 @@ import { defaultStrings } from "../internal/strings.js";
 export interface InputAddonSelect {
 	/** Lista corta de opciones, como en `Select` (texto, o con apoyo, icono, avatar o punto). */
 	options: SelectOption[];
+	/** Selected option (controlled). */
 	value?: string;
+	/** Option selected at the start (uncontrolled). */
 	defaultValue?: string;
+	/** Called with the value of the option that was chosen. */
 	onChange?: (value: string) => void;
 	/** Nombre accesible del desplegable (p. ej. "Prefijo"). Obligatorio: no tiene etiqueta visible. */
 	label: string;
@@ -78,9 +81,11 @@ export function formatCardNumber(value: string): string {
 
 /** Botón pegado al campo por la derecha, con el filo compartido (`Trailing button` del Figma). */
 export interface InputTrailingButton {
+	/** The text of the button. */
 	label: ReactNode;
 	/** Icono de 20px delante del texto. */
 	icon?: IconProp;
+	/** Called when the button is pressed. */
 	onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 

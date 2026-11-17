@@ -31,15 +31,22 @@ import { Tag } from "./Tag.js";
 
 export type MultiSelectOption = string | { value: string; label: string; supporting?: ReactNode };
 interface Option {
+	/** Identifies the option in `value`. */
 	value: string;
+	/** The text of the option. */
 	label: string;
+	/** Secondary text shown next to the label. */
 	supporting?: ReactNode;
 }
 
 export interface MultiSelectProps extends FieldProps {
+	/** The options to choose from. */
 	options: MultiSelectOption[];
+	/** Selected values (controlled). */
 	value?: string[];
+	/** Values selected at the start (uncontrolled). */
 	defaultValue?: string[];
+	/** Called with the selected values when the selection changes. */
 	onChange?: (values: string[]) => void;
 	/** Lo que dice el campo sin nada elegido. */
 	placeholder?: string;
@@ -59,6 +66,7 @@ export interface MultiSelectProps extends FieldProps {
 	 * @default "md"
 	 */
 	size?: FieldSize;
+	/** Disables the control. */
 	disabled?: boolean;
 	/** Nombre del campo al enviar el formulario: los valores van separados por comas. */
 	name?: string;
@@ -66,12 +74,19 @@ export interface MultiSelectProps extends FieldProps {
 	defaultOpen?: boolean;
 	/** Textos: buscador, sin resultados, borrar búsqueda y los dos botones del pie. */
 	searchLabel?: string;
+	/** Title shown when the search finds no options. */
 	emptyTitle?: string;
+	/** Text shown when the search finds no options. */
 	emptyDescription?: string;
+	/** Accessible name of the button that clears the search. */
 	clearSearchLabel?: string;
+	/** Text of the button that clears the selection. */
 	resetLabel?: string;
+	/** Text of the button that selects every option. */
 	selectAllLabel?: string;
+	/** Id of the control, for a `<label htmlFor>` to point at it. */
 	id?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

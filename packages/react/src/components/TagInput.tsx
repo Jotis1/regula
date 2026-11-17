@@ -15,8 +15,11 @@ import { useControllable } from "../internal/use-controllable.js";
 import { Tag } from "./Tag.js";
 
 export interface TagInputProps extends FieldProps {
+	/** The tags (controlled). */
 	value?: string[];
+	/** The tags at the start (uncontrolled). */
 	defaultValue?: string[];
+	/** Called with all the tags when one is added or removed. */
 	onChange?: (tags: string[]) => void;
 	/**
 	 * `inside`: las etiquetas van en el campo, delante del texto, y el campo crece en alto.
@@ -37,12 +40,15 @@ export interface TagInputProps extends FieldProps {
 	multiline?: boolean;
 	/** Por defecto, "Añadir etiqueta". */
 	placeholder?: string;
+	/** Disables the control. */
 	disabled?: boolean;
 	/** Nombre del campo al enviar el formulario: las etiquetas van separadas por comas. */
 	name?: string;
 	/** Nombre accesible de la X de cada etiqueta. Por defecto, "Quitar" seguido de la etiqueta. */
 	removeLabel?: (tag: string) => string;
+	/** Id of the control, for a `<label htmlFor>` to point at it. */
 	id?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

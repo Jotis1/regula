@@ -16,11 +16,15 @@ import {
 import { defaultStrings } from "../internal/strings.js";
 
 export interface NumberInputProps extends FieldProps {
+	/** Current value (controlled). */
 	value?: number;
+	/** Value at the start (uncontrolled). */
 	defaultValue?: number;
 	/** Recibe el número, o `NaN` si el campo se vacía. */
 	onChange?: (value: number) => void;
+	/** Smallest value allowed. */
 	min?: number;
+	/** Largest value allowed. */
 	max?: number;
 	/**
 	 * Lo que suma o resta cada paso (botones, flechas, rueda).
@@ -39,14 +43,19 @@ export interface NumberInputProps extends FieldProps {
 	size?: FieldSize;
 	/** Formato del número (`es-ES`): decimales, divisa, porcentaje… */
 	formatOptions?: Intl.NumberFormatOptions;
+	/** Text shown while the field is empty. */
 	placeholder?: string;
+	/** Disables the control. */
 	disabled?: boolean;
 	/** Nombre del campo al enviar el formulario. */
 	name?: string;
 	/** Nombres de los botones. Por defecto, "Restar" y "Sumar". */
 	decrementLabel?: string;
+	/** Accessible name of the button that raises the value. */
 	incrementLabel?: string;
+	/** Id of the control, for a `<label htmlFor>` to point at it. */
 	id?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -41,7 +41,9 @@ export interface ColorPickerDropdownProps {
 	>;
 	/** Abierto (controlado). */
 	isOpen?: boolean;
+	/** Called with `true` or `false` when the panel opens or closes. */
 	onOpenChange?: (open: boolean) => void;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

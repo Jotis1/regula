@@ -24,14 +24,18 @@ interface SliderBaseProps {
 	formatValue?: (value: number) => ReactNode;
 	/** Qué se ajusta: "Presupuesto", "Volumen". */
 	"aria-label"?: string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
 export interface SingleSliderProps extends SliderBaseProps {
+	/** `false` for one handle (the default). */
 	range?: false;
+	/** Current value (controlled). */
 	value?: number;
 	/** @default 50 */
 	defaultValue?: number;
+	/** Called with the new value as it moves. */
 	onChange?: (value: number) => void;
 }
 
@@ -42,6 +46,7 @@ export interface RangeSliderProps extends SliderBaseProps {
 	value?: [number, number];
 	/** @default [25, 75] */
 	defaultValue?: [number, number];
+	/** Called with the new `[start, end]` as either handle moves. */
 	onChange?: (value: [number, number]) => void;
 	/** Nombre de cada mando para lectores de pantalla. Por defecto, «Mínimo» y «Máximo». */
 	thumbLabels?: [string, string];
