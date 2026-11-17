@@ -392,6 +392,7 @@ describe("check-dev", () => {
 			expect(typographyProblems(withText("a.md", `No se usa «${DOT}» ni \`${EM}\`.`))).toEqual([]);
 			expect(typographyProblems(withText("a.md", `« ${EN} »`))).toEqual([]);
 			expect(typographyProblems(withText("a.md", `\`a ${DOT} b\``))).toHaveLength(1);
+			expect(typographyProblems(withText("a.md", `\`right\` ${DOT} \`left\``))).toHaveLength(1);
 		});
 
 		it("leaves history, frozen copies, outside tools and generated files out of scope", () => {

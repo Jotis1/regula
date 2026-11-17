@@ -397,8 +397,9 @@ const DASHES: Record<string, string> = {
 };
 const DASH = `[${Object.keys(DASHES).join("")}]`;
 const FORBIDDEN = new RegExp(DASH);
-/** A lone mention of the character, which is how a text names it: `«·»` or the character between backticks. */
-const MENTION = new RegExp(`«[ ]?${DASH}[ ]?»|\`[ ]?${DASH}[ ]?\``, "g");
+/** A lone mention of the character, which is how a text names it: `«·»` or the bare character between backticks. */
+// No spaces inside the backticks: "`right` - `left`" with a dot would otherwise look like a mention.
+const MENTION = new RegExp(`«[ ]?${DASH}[ ]?»|\`${DASH}\``, "g");
 const TEXT_FILE = /\.(md|mdx|ya?ml|jsonc?|tsx?|mts|astro|mjs|cjs|js|css|html|svg|txt)$/;
 /** History, frozen copies, files written by outside tools and generated output stay as they are. */
 const OUT_OF_TYPOGRAPHY =
