@@ -173,7 +173,6 @@ El paso «Normas de desarrollo» SHALL fallar, nombrando el archivo y la norma, 
 Regula SHALL cumplir el área de estructura:
 - el ejemplo de Next con `src/app/`;
 - las funcionalidades de la web (`mcp`, `playground`, `search`, `visual`) en `src/features/`;
-- el `logo.tsx` interno de `@jotis-me/assets` en `src/internal/`;
 - `*.tsbuildinfo` en el `.gitignore` y fuera de Git.
 
 #### Scenario: Repo actual

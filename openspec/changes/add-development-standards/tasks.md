@@ -101,7 +101,6 @@ Comandos:
   - `fold` a `src/lib/` y `PantallaGastos` a `src/components/`;
   - `mcp/`, `playground/`, `search/` y `visual/` de la web a `src/features/`, con sus imports y las rutas que los nombran (`astro.config.mjs`, `js-budget.json`, los scripts de capturas, `e2e/visual/compare.ts` y los tests);
   - lo de `src/components/` y `src/lib/` que solo usa una funcionalidad, a su carpeta;
-  - `packages/assets/src/logo.tsx` a `src/internal/`, con el generador y un changeset `patch`;
   - `examples/next/tsconfig.tsbuildinfo` fuera de Git y `*.tsbuildinfo` en el `.gitignore`.
 
   Comprobar con `typecheck`, con el build de la web y de los ejemplos, con los tests y con los e2e de la web (paridad visual incluida)

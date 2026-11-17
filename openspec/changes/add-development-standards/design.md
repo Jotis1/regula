@@ -339,7 +339,6 @@ Cómo se pone Regula al día:
 - **La web:** `src/mcp/`, `src/playground/`, `src/search/` y `src/visual/` pasan a `src/features/`, con sus imports. También cambian las rutas que los nombran: `astro.config.mjs`, `js-budget.json`, los scripts de capturas, `e2e/visual/compare.ts` y los tests.
 - **Las dos importaciones cruzadas:** `fold` (de `search/entries`, que usa `mcp/rank.ts`) pasa a `src/lib/`. `PantallaGastos` (un ejemplo de `visual` que usa `playground/CompareSlider.tsx`) pasa a `src/components/`.
 - **Lo compartido que solo usa una funcionalidad:** se mira qué archivos de `src/components/` y `src/lib/` importa una sola funcionalidad, y se mueven a ella. Los que usan las páginas o los layouts se quedan.
-- **`packages/assets/src/logo.tsx`** pasa a `src/internal/`, con el generador que escribe sus imports. Lleva un changeset `patch`.
 - **`examples/next/tsconfig.tsbuildinfo`:** sale de Git, y `*.tsbuildinfo` entra en el `.gitignore`.
 
 ## Risks / Trade-offs

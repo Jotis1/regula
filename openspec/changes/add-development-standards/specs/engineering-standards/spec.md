@@ -310,11 +310,11 @@ El área de estructura SHALL fijar, con nivel DEBE y para las apps, que cada fun
 - **THEN** la norma pide moverlo a `src/lib/`, y no importarlo de `features/search/`
 
 ### Requirement: Área de estructura: paquetes
-El área de estructura SHALL fijar, con nivel DEBE y para los paquetes, que cada entrada de `exports` tiene su archivo o carpeta en la raíz de `src/`, y que lo que no se exporta va en `src/internal/`.
+El área de estructura SHALL fijar, con nivel DEBE y para los paquetes, que cada entrada de `exports` tiene su archivo o carpeta en la raíz de `src/`, junto a los módulos que esas entradas reexportan, y que lo que ningún export alcanza va en `src/internal/`.
 
 #### Scenario: Helper interno en la raíz
 - **WHEN** se mira el ejemplo que no cumple la norma de los paquetes
-- **THEN** enseña `src/logo.tsx`, que no es una entrada, y el que la cumple, `src/internal/logo.tsx`
+- **THEN** enseña `src/format-price.ts`, un helper que ninguna entrada exporta, y el que la cumple, `src/internal/format-price.ts`
 
 ### Requirement: Área de estructura: componentes
 El área de estructura SHALL fijar, con nivel DEBERÍA y para todos los proyectos, que cada componente tiene su archivo, con el nombre de su export (`Button.tsx` exporta `Button`).
