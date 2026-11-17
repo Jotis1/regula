@@ -4,6 +4,9 @@
 	"private": true,
 	"type": "module",
 	"license": "MIT",
+	"engines": {
+		"node": "24.x"
+	},
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build && bun run scripts/search-index.ts",

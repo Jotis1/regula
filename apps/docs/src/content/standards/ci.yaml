@@ -1,0 +1,247 @@
+prefix: INT
+title: CI
+description: Cómo se monta la integración continua para que proteja la rama principal sin hacer esperar de más.
+order: 4
+rules:
+    - id: INT-001
+      title: Un workflow con checks obligatorios no se filtra por rutas ni por ramas
+      level: must
+      appliesTo: all
+      statement: >-
+          El workflow que da los checks obligatorios arranca en cada PR. No lleva `paths`, `paths-ignore`, `branches`
+          ni `branches-ignore` en `pull_request`. Para no hacer trabajo de más, los jobs se saltan por dentro, con `if:`.
+      rationale: >-
+          Si un filtro impide que el workflow arranque, sus checks no se informan nunca. La PR se queda esperando un
+          estado «Pending» que no llega y no se puede fusionar. Un job saltado con `if:`, en cambio, cuenta como
+          superado.
+      examples:
+          good:
+              - caption: El workflow arranca siempre y el job decide si corre
+                lang: yaml
+                code: |-
+                    on:
+                        pull_request:
+                    jobs:
+                        checks:
+                            needs: changes
+                            if: needs.changes.outputs.code == 'true'
+          bad:
+              - caption: Un filtro de rutas en el workflow que da los checks obligatorios
+                lang: yaml
+                code: |-
+                    on:
+                        pull_request:
+                            paths-ignore: ["openspec/**"]
+      verification:
+          kind: ci
+          check: Normas de CI
+
+    - id: INT-002
+      title: Solo se saltan jobs si todo lo cambiado está en la lista de rutas seguras
+      level: must
+      appliesTo: all
+      statement: >-
+          Un job de detección compara lo cambiado con una lista explícita de rutas que ninguna comprobación lee, como
+          `openspec/**`. Los jobs de código solo se saltan si todos los archivos cambiados están en la lista. Basta uno
+          fuera para que corra todo. El CI, la config de Turbo y de Biome, el lockfile y los scripts de la raíz nunca
+          están en la lista.
+      rationale: >-
+          Equivocarse al saltar deja pasar código sin comprobar; equivocarse al correr solo cuesta unos minutos. Por
+          eso se declara lo inofensivo y no lo afectado: `turbo query affected` no ve los archivos que el CI ejecuta
+          fuera de Turbo, y con un cambio en `ci.yml` diría que no hay nada que comprobar.
+      examples:
+          good:
+              - caption: La lista de rutas seguras, con lo justo
+                lang: ts
+                code: export const SKIP_PATHS = ["openspec/**", ".claude/**"] as const;
+          bad:
+              - caption: Decidir con lo que Turbo ve como afectado
+                lang: bash
+                code: turbo query affected --tasks build test --exit-code || echo "code=false" >> "$GITHUB_OUTPUT"
+      verification:
+          kind: review
+          review: Que ninguna ruta de la lista la lea un paso del CI, y que cada ruta nueva llegue con su test.
+
+    - id: INT-003
+      title: Un job puerta es el único check obligatorio
+      level: must
+      appliesTo: all
+      statement: >-
+          El ruleset de la rama principal solo exige un job, que depende de todos los demás y corre con `if: always()`.
+          Lee el resultado de cada uno con `toJSON(needs)` y falla si alguno falló o se canceló, si falló la detección,
+          o si se saltó un job de código habiendo código.
+      rationale: >-
+          GitHub da por superado un job saltado, aunque se saltara porque falló otro del que depende. Sin la puerta,
+          una detección rota saltaría todas las comprobaciones y la PR saldría en verde. Además, el ruleset no cambia
+          cada vez que se añade o se parte un job.
+      examples:
+          good:
+              - caption: La puerta lee el resultado de cada job
+                lang: yaml
+                code: |-
+                    gate:
+                        name: CI
+                        needs: [changes, checks, browser]
+                        if: always()
+                        steps:
+                            - run: bun run scripts/ci-gate.ts checks browser
+                              env:
+                                  NEEDS: ${{ toJSON(needs) }}
+          bad:
+              - caption: El ruleset exige jobs que se pueden saltar
+                lang: text
+                code: "Checks obligatorios: Comprobaciones, Navegador"
+      verification:
+          kind: ci
+          check: Normas de CI
+
+    - id: INT-004
+      title: Turbo declara todo lo que lee el despliegue
+      level: must
+      appliesTo: all
+      statement: >-
+          Los `outputs` de una tarea de Turbo incluyen todo lo que lee un paso posterior o el despliegue, y su `env`,
+          las variables de entorno que cambian lo que genera.
+      rationale: >-
+          Con un acierto de caché, Turbo solo restaura lo que declara. Si falta la carpeta que publica el adaptador de
+          Vercel, el build sale bien en segundos y el despliegue sale vacío: le pasó a `regula.jotis.me`, que dio 404
+          en todas sus rutas.
+      examples:
+          good:
+              - caption: La salida del adaptador de Vercel y la variable que lo activa
+                lang: json
+                code: |-
+                    "build": {
+                        "env": ["VERCEL"],
+                        "outputs": ["dist/**", ".vercel/output/**"]
+                    }
+          bad:
+              - caption: Solo `dist/`, aunque Vercel publica `.vercel/output`
+                lang: json
+                code: |-
+                    "build": {
+                        "outputs": ["dist/**"]
+                    }
+      verification:
+          kind: review
+          review: Que cada carpeta que lee un paso del CI o del despliegue esté en los `outputs` de la tarea que la crea.
+
+    - id: INT-005
+      title: Una app solo se despliega si ha cambiado
+      level: should
+      appliesTo: app
+      statement: >-
+          El proyecto de Vercel de cada app tiene un `ignoreCommand` en su `vercel.json` que ejecuta
+          `turbo@<versión> query affected --packages <app> --base "$VERCEL_GIT_PREVIOUS_SHA" --exit-code || exit 1`,
+          con la misma versión de `turbo` que la raíz. No se usa `turbo-ignore`, que está obsoleto.
+      rationale: >-
+          Desplegar sin cambios gasta builds y puede publicar algo distinto de lo que había. `turbo query affected`
+          sabe de qué paquetes depende la app. Ante la duda (una rama nueva, sin commit anterior) sale con 2, y Vercel solo
+          entiende 0 (no construir) y 1 (construir): cualquier otro código falla el despliegue, así que `|| exit 1`
+          lo convierte en «construye». La versión va fijada porque Vercel ejecuta el comando antes de instalar.
+      examples:
+          good:
+              - caption: vercel.json de la app
+                lang: json
+                code: |-
+                    {
+                        "ignoreCommand": "npx -y turbo@2.11.10 query affected --packages me.jotis.regula.docs --base \"$VERCEL_GIT_PREVIOUS_SHA\" --exit-code || exit 1"
+                    }
+          bad:
+              - caption: La herramienta obsoleta y sin versión
+                lang: json
+                code: |-
+                    {
+                        "ignoreCommand": "npx turbo-ignore"
+                    }
+      verification:
+          kind: ci
+          check: Normas de CI
+
+    - id: INT-006
+      title: El CI usa la caché remota de Turbo
+      level: should
+      appliesTo: all
+      statement: >-
+          Los jobs que ejecutan Turbo reciben `TURBO_TOKEN` (secreto) y `TURBO_TEAM` (variable) para usar la caché
+          remota del equipo, la misma que usan las builds de Vercel. Van en el `env` de cada job, no en el del workflow.
+          Sin el secreto, el job construye sin caché remota y no falla.
+      rationale: >-
+          Varios jobs construyen lo mismo. Con la caché remota, el primero construye y los demás restauran en
+          segundos.
+      examples:
+          good:
+              - caption: Token y equipo en el job que construye
+                lang: yaml
+                code: |-
+                    checks:
+                        env:
+                            TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+                            TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+          bad:
+              - caption: Cada job construye desde cero
+                lang: yaml
+                code: |-
+                    checks:
+                        steps:
+                            - run: bunx turbo run build
+      verification:
+          kind: ci
+          check: Normas de CI
+
+    - id: INT-007
+      title: Las suites largas se reparten
+      level: should
+      appliesTo: all
+      statement: >-
+          Una suite de e2e que pasa de 10 minutos se reparte en shards que corren a la vez. Las comprobaciones que no
+          dependen unas de otras van en jobs paralelos, no en pasos seguidos del mismo job.
+      rationale: >-
+          El tiempo de una PR es el del job más lento. Repartir no ahorra minutos de máquina, pero sí espera.
+      examples:
+          good:
+              - caption: Una matriz de shards de Playwright
+                lang: yaml
+                code: |-
+                    strategy:
+                        matrix:
+                            shard: [1, 2, 3]
+                    steps:
+                        - run: bunx playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+          bad:
+              - caption: Toda la suite y Lighthouse, uno tras otro, en un solo job
+                lang: yaml
+                code: |-
+                    steps:
+                        - run: bunx playwright test
+                        - run: bun run test:lighthouse
+      verification:
+          kind: review
+          review: Que ningún job pase de 15 minutos en una PR con código; si pasa, repartirlo.
+
+    - id: INT-008
+      title: Una ejecución nueva en la misma rama cancela la anterior
+      level: should
+      appliesTo: all
+      statement: >-
+          El workflow tiene un bloque `concurrency` con un grupo por rama y `cancel-in-progress: true`.
+      rationale: >-
+          Tras un push nuevo, el resultado de la ejecución anterior ya no sirve. Dejarla correr solo ocupa runners y
+          retrasa la que importa.
+      examples:
+          good:
+              - caption: Un grupo por rama que cancela lo anterior
+                lang: yaml
+                code: |-
+                    concurrency:
+                        group: ci-${{ github.ref }}
+                        cancel-in-progress: true
+          bad:
+              - caption: Sin concurrencia, cada push suma una ejecución
+                lang: yaml
+                code: |-
+                    on:
+                        pull_request:
+      verification:
+          kind: ci
+          check: Normas de CI
