@@ -35,9 +35,11 @@ export interface FilterMenuProps {
 	 * @default "start"
 	 */
 	align?: "start" | "end";
+	/** Disables the control. */
 	disabled?: boolean;
 	/** Textos sustituibles. */
 	labels?: Partial<FilterLabels>;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -12,6 +12,7 @@ import { Dropdown } from "./Dropdown.js";
 export interface CalendarEvent {
 	/** El día del evento. En las vistas de semana y día, también su hora de inicio. */
 	date: Date;
+	/** The text shown on the event. */
 	title: string;
 	/** Hora o importe a la derecha del título (vista de mes) o bajo él (semana y día). Por defecto, la hora de inicio. */
 	time?: string;
@@ -27,6 +28,7 @@ export interface CalendarEvent {
 export type CalendarViewMode = "month" | "week" | "day";
 
 export interface CalendarViewProps {
+	/** The events to place on the calendar. */
 	events?: CalendarEvent[];
 	/** El día que se marca como hoy (por defecto, la fecha del sistema). Su hora fija la línea de la hora actual. */
 	today?: Date;
@@ -46,6 +48,7 @@ export interface CalendarViewProps {
 	 * @default "month"
 	 */
 	defaultView?: CalendarViewMode;
+	/** Called with the new view when the user switches between day, week and month. */
 	onViewChange?: (view: CalendarViewMode) => void;
 	/** Al pulsar un evento de las vistas de semana y día: con él, cada evento es un botón. */
 	onSelectEvent?: (event: CalendarEvent) => void;
@@ -62,9 +65,11 @@ export interface CalendarViewProps {
 	hours?: [number, number];
 	/** Panel a la derecha de la vista de día (el mini calendario o el detalle del evento del Figma). */
 	aside?: ReactNode;
+	/** Text under the heading, such as the number of events. */
 	subtitle?: ReactNode;
 	/** Acciones a la derecha de la cabecera, como "Nuevo evento". */
 	actions?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -99,10 +104,15 @@ function isoWeek(d: Date): number {
 }
 
 interface Placed {
+	/** The event being placed. */
 	event: CalendarEvent;
+	/** Start of the event, as a position along the time axis. */
 	start: number;
+	/** End of the event, as a position along the time axis. */
 	end: number;
+	/** Which of the parallel columns the event takes, from 0. */
 	lane: number;
+	/** How many parallel columns the overlapping events need. */
 	lanes: number;
 }
 
