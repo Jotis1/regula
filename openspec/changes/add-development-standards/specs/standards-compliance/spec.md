@@ -36,11 +36,11 @@ El paso «Normas de desarrollo» SHALL fallar si un archivo de texto que sigue G
 En cada PR, el paso «Tipografía» del job «Commits» SHALL fallar si un commit de la PR, salvo los de un bot, lleva alguno de esos caracteres en el título o en el cuerpo, y SHALL nombrar el commit.
 
 #### Scenario: Raya en un comentario
-- **WHEN** una PR añade `// Close the menu — on Escape` a un componente
+- **WHEN** una PR añade a un componente un comentario con una raya («—»)
 - **THEN** «Normas de desarrollo» falla y nombra el archivo, la línea y `LNG-005`
 
 #### Scenario: Punto medio en un commit
-- **WHEN** una PR trae el commit `fix(react): Badge · alto de 22`
+- **WHEN** una PR trae un commit con «·» en el título
 - **THEN** «Tipografía» falla y nombra el commit
 
 #### Scenario: Commit de Dependabot con notas de versión
