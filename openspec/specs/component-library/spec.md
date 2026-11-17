@@ -47,7 +47,7 @@ Cada componente SHALL reproducir, en claro y en oscuro, la captura aprobada de s
 - **THEN** no aparece ningún color hex ni utilidad de paleta cruda de Tailwind, salvo en los componentes cuya paleta fija documenta la guía: AppIcon (el tono de cada app), CreditCard (la tarjeta es un objeto y no cambia con el tema), BrowserFrame (el semáforo) y VideoPlayer (controles en blanco y negro sobre el vídeo); y las líneas sueltas que la guía fija y que se marcan con su motivo, como el brillo interior del botón primario
 
 ### Requirement: Estados comunes de interacción
-Los controles SHALL mostrar hover cambiando el fondo o el texto un escalón, deshabilitado al 50 % de opacidad en todo el control y foco de teclado con `focus-ring-shadow` (`focus-ring-error-shadow` si hay error), salvo los campos de formulario, cuyo foco es solo el borde de 2px `border-brand` (`border-error` si hay error), como en el Figma, con transiciones de color de 100–150 ms y sin animaciones decorativas, salvo la entrada y salida de la familia Stream (requisito propio).
+Los controles SHALL mostrar hover cambiando el fondo o el texto un escalón, deshabilitado al 50 % de opacidad en todo el control y foco de teclado con `focus-ring-shadow` (`focus-ring-error-shadow` si hay error), salvo los campos de formulario, cuyo foco es solo el borde de 2px `border-brand` (`border-error` si hay error), como en el Figma, con transiciones de color de 100-150 ms y sin animaciones decorativas, salvo la entrada y salida de la familia Stream (requisito propio).
 
 #### Scenario: Foco con teclado
 - **WHEN** el usuario llega a un `Input` con Tab
@@ -1109,7 +1109,7 @@ Los campos con etiqueta (`Input`, `Textarea`, `Select`, `MultiSelect`, `NumberIn
 
 #### Scenario: Canje en la lista
 - **WHEN** `StreamEvents` recibe un canje de «Hidratarse»
-- **THEN** su fila dice «Canje de puntos · Hidratarse»
+- **THEN** su fila dice «Canje de puntos - Hidratarse»
 
 ### Requirement: Chat seleccionable
 `ChatBox` SHALL admitir `onSelect` y `selectedId`. Con `onSelect`, cada mensaje con `id` y sin `selectable: false` SHALL ser un botón que llama a `onSelect` con su mensaje, y el elegido SHALL marcarse con `aria-pressed` y a la vista, con la raya de las líneas destacadas de `CodeSnippet` sobre un fondo de marca. Lo que dice cada botón está en el requisito «Qué hace el clic en el chat». Sin `onSelect`, `ChatBox` MUST NOT tener botones.
