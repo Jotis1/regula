@@ -329,3 +329,17 @@ El área de estructura SHALL fijar, con nivel DEBE y para todos los proyectos, q
 #### Scenario: Caché en Git
 - **WHEN** se mira el ejemplo que no cumple la norma de las cachés
 - **THEN** enseña `tsconfig.tsbuildinfo` en Git, y el que la cumple, la línea `*.tsbuildinfo` del `.gitignore`
+
+### Requirement: Área de proceso: lo que no tiene norma
+El área de proceso SHALL fijar, con nivel DEBE y para todos los proyectos, una norma `PRO-003`: que no haya norma no permite ni prohíbe nada por sí solo. El caso SHALL decidirse en este orden: lo que busca la norma más cercana, la convención oficial del framework o de la herramienta, lo que ya hace el repo y lo más simple. La PR SHALL anotar el caso, la decisión y su porqué.
+
+#### Scenario: Caso sin norma
+- **WHEN** una PR pone los workers de una app en una carpeta que ninguna norma nombra
+- **THEN** la PR dice que no había norma, dónde los pone y por qué, siguiendo el orden
+
+### Requirement: Un caso sin norma que se repite
+Cuando el mismo caso sin norma aparece por segunda vez, o la primera si afecta a más de un proyecto, SHALL proponerse la norma con OpenSpec.
+
+#### Scenario: Segunda vez
+- **WHEN** una PR vuelve a decidir dónde van los workers, que ya se anotó en otra PR
+- **THEN** la PR trae, o enlaza, la propuesta de la norma

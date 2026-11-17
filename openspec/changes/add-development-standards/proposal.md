@@ -66,6 +66,7 @@ Este cambio es el 3 de la hoja de ruta, «normas de desarrollo». Escribe las no
   - los commits y las ramas que generan los bots (Dependabot) quedan fuera de la norma del idioma. Siguen cumpliendo Conventional Commits;
   - una norma nueva de tipografía, `LNG-005`: ni el punto medio («·») ni las rayas («—» y «–») en ningún texto del repo ni en los commits. En su lugar va el guión simple («-»).
 - **Formato:** la norma del bloque de Biome dice de forma explícita la sangría (tabuladores de ancho 4), el largo de línea, las comillas y el punto y coma.
+- **Proceso:** una norma nueva, `PRO-003`, para lo que no tiene norma: se decide con un orden (lo que busca la norma más cercana, la convención del framework, lo que ya hace el repo y lo más simple), se anota en la PR y, cuando el caso se repite, se propone la norma.
 - **Orden de las áreas:** Nombres, Idioma, Stack, Estructura, Código, Documentación, Versiones, Git, CI y Proceso.
 - **Regula las cumple:**
   - un script nuevo, `check:dev` (paso «Normas de desarrollo»), y otro de changesets (paso «Changesets»);

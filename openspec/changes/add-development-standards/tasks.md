@@ -106,6 +106,7 @@ Comandos:
   Comprobar con `typecheck`, con el build de la web y de los ejemplos, con los tests y con los e2e de la web (paridad visual incluida)
 - [ ] 6.7 Las comprobaciones de STR-001 a STR-004 y STR-008 en `check:dev`, con un test por punto del requisito «Estructura comprobada» y otro del de las cachés. Comprobar que `bun run check:dev` pasa en el repo
 - [ ] 6.8 `structure.yaml` con STR-001 a STR-008, `order` 4, la entrada en `STANDARD_AREAS` y los `order` de detrás un puesto más. Actualizar los tests del orden de las áreas. Comprobar con los tests de la web, los e2e de normas y `openspec validate --strict`
+- [x] 6.9 `PRO-003` en `process.yaml`, de revisión (D13). Comprobar con los tests de normas y del MCP
 
 ## 7. Cierre
 

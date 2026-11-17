@@ -341,6 +341,18 @@ Cómo se pone Regula al día:
 - **Lo compartido que solo usa una funcionalidad:** se mira qué archivos de `src/components/` y `src/lib/` importa una sola funcionalidad, y se mueven a ella. Los que usan las páginas o los layouts se quedan.
 - **`examples/next/tsconfig.tsbuildinfo`:** sale de Git, y `*.tsbuildinfo` entra en el `.gitignore`.
 
+### D13. Lo que no tiene norma (`PRO-003`)
+
+Lo pidió el usuario: qué pasa con un caso que ninguna norma permite ni prohíbe. Sus decisiones:
+- **No bloquea.** Se decide con un orden y se anota en la PR:
+  1. lo que busca la norma más cercana;
+  2. la convención oficial del framework o de la herramienta;
+  3. lo que ya hace el repo;
+  4. lo más simple (COD-014).
+- **Se convierte en norma cuando se repite.** La segunda vez que aparece el caso, o la primera si afecta a más de un proyecto, se propone la norma con OpenSpec.
+
+Es de revisión: una máquina no sabe si un caso tenía norma. Su sitio es Proceso, porque trata de cómo se decide y no de qué se decide. La tabla de D3 la suma como `PRO-003 | all | Lo que no tiene norma se decide con un orden y se anota | review`.
+
 ## Risks / Trade-offs
 
 - **[El trabajo es grande: ~155 exports, ~300 props, renombrados de archivos y los errores de cuatro flags]** → Va en muchos commits pequeños, uno por regla, así que la PR se revisa por partes. Si alguna parte se alarga demasiado, se puede partir en otra PR sin romper el orden de D10.
