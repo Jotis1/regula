@@ -1,4 +1,4 @@
-// Checks the development standards that a machine can see (STK, COD, DOC and VER areas, and the typography of
+// Checks the development standards that a machine can see (STK, STR, COD, DOC and VER areas, and the typography of
 // LNG-005) against the repo: workspaces, tsconfigs, Biome, the CI workflows, Dependabot, READMEs, the source of the
 // published packages and every text file. What cannot be seen from here is checked in review.
 // Usage: bun run scripts/check-dev.ts   (exits 1 and lists every problem with its file and rule)
@@ -51,6 +51,8 @@ export interface Repo {
 	sources: SourceFile[];
 	/** Every text file tracked by Git that LNG-005 applies to. */
 	texts: SourceFile[];
+	/** Every path tracked by Git. */
+	files: string[];
 }
 
 export const TS_FLAGS = [
@@ -387,6 +389,50 @@ export function dependencyProblems(repo: Repo): string[] {
 	return out;
 }
 
+// ── STR ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+const WORKSPACE_ROOTS = ["apps/", "packages/", "examples/", "scripts/"];
+const SHARED_DIRS = ["components", "hooks", "lib", "styles", "data", "features"];
+const FRAMEWORK_DIRS = { next: ["app"], astro: ["pages", "layouts", "content", "assets"] };
+const TEST_IN_SRC = /(^|\/)src\/.*\.(test|spec)\.[cm]?[jt]sx?$/;
+const BUILD_OR_CACHE = /(^|\/)(dist|\.astro|\.next|\.turbo)\/|\.tsbuildinfo$/;
+
+export function structureProblems(repo: Repo): string[] {
+	const out: string[] = [];
+	for (const glob of repo.rootPkg.workspaces ?? [])
+		if (!WORKSPACE_ROOTS.some((root) => glob.startsWith(root)))
+			out.push(
+				`package.json (STR-001): workspace "${glob}" is outside apps/, packages/, examples/ and scripts/`,
+			);
+	for (const file of repo.files) {
+		if (TEST_IN_SRC.test(file)) out.push(`${file} (STR-002): tests go in test/ or e2e/, not in src/`);
+		if (BUILD_OR_CACHE.test(file))
+			out.push(`${file} (STR-008): build output or cache tracked by Git; add it to .gitignore`);
+	}
+	for (const w of repo.workspaces.filter((x) => x.app)) {
+		const inside = repo.files
+			.filter((f) => f.startsWith(`${w.dir}/`))
+			.map((f) => f.slice(w.dir.length + 1));
+		const next = has(w.pkg, "next");
+		if (next && !inside.some((f) => f.startsWith("src/app/")))
+			out.push(`${w.dir} (STR-003): a Next app keeps its routes in src/app/`);
+		if (next && inside.some((f) => f.startsWith("app/")))
+			out.push(`${w.dir}/app (STR-003): move it to src/app/`);
+		const allowed = [
+			...SHARED_DIRS,
+			...(next ? FRAMEWORK_DIRS.next : []),
+			...(has(w.pkg, "astro") ? FRAMEWORK_DIRS.astro : []),
+		];
+		const dirs = new Set(inside.flatMap((f) => /^src\/([^/]+)\//.exec(f)?.[1] ?? []));
+		for (const dir of dirs)
+			if (!allowed.includes(dir))
+				out.push(
+					`${w.dir}/src/${dir} (STR-004): only framework folders, ${SHARED_DIRS.slice(0, -1).join(", ")} and features/ go in src/; move it to src/features/${dir}/ or a shared folder`,
+				);
+	}
+	return out;
+}
+
 // ── LNG-005 ────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 // Built from code points so that this file does not break the rule it checks.
@@ -433,6 +479,7 @@ export function devProblems(repo: Repo): string[] {
 		...codeProblems(repo),
 		...docProblems(repo),
 		...dependencyProblems(repo),
+		...structureProblems(repo),
 		...typographyProblems(repo),
 	];
 }
@@ -512,6 +559,7 @@ export function readRepo(root: string): Repo {
 		sources: tracked
 			.filter((f) => /\.(tsx?|mts|astro|mjs|js)$/.test(f))
 			.map((path) => ({ path, text: readFileSync(join(root, path), "utf8") })),
+		files: tracked,
 		texts: tracked
 			.filter(inTypographyScope)
 			.filter((path) => existsSync(join(root, path)))

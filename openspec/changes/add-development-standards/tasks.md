@@ -96,7 +96,7 @@ Comandos:
 
   Comprobar con `bun run check:dev`, con el script de commits contra `origin/main`, con `biome ci` y con los tests de la web, de `@jotis-me/react` y de los e2e que miran esos textos
 - [x] 6.5 `COD-014` (KISS) y `COD-015` (lo nativo primero) en `code.yaml`, de revisión, con la excepción de los componentes del framework en `COD-015` (D11). Actualizar el test que cuenta las normas de `code` en `mcp-tools.test.ts`. Comprobar con los tests de la web y con `openspec validate --strict`
-- [ ] 6.6 Estructura en Regula (D12), un commit por movimiento:
+- [x] 6.6 Estructura en Regula (D12), un commit por movimiento:
   - `examples/next/app/` a `src/app/`;
   - `fold` a `src/lib/` y `PantallaGastos` a `src/components/`;
   - `mcp/`, `playground/`, `search/` y `visual/` de la web a `src/features/`, con sus imports y las rutas que los nombran (`astro.config.mjs`, `js-budget.json`, los scripts de capturas, `e2e/visual/compare.ts` y los tests);
@@ -104,7 +104,7 @@ Comandos:
   - `examples/next/tsconfig.tsbuildinfo` fuera de Git y `*.tsbuildinfo` en el `.gitignore`.
 
   Comprobar con `typecheck`, con el build de la web y de los ejemplos, con los tests y con los e2e de la web (paridad visual incluida)
-- [ ] 6.7 Las comprobaciones de STR-001 a STR-004 y STR-008 en `check:dev`, con un test por punto del requisito «Estructura comprobada» y otro del de las cachés. Comprobar que `bun run check:dev` pasa en el repo
+- [x] 6.7 Las comprobaciones de STR-001 a STR-004 y STR-008 en `check:dev`, con un test por punto del requisito «Estructura comprobada» y otro del de las cachés. Comprobar que `bun run check:dev` pasa en el repo
 - [ ] 6.8 `structure.yaml` con STR-001 a STR-008, `order` 4, la entrada en `STANDARD_AREAS` y los `order` de detrás un puesto más. Actualizar los tests del orden de las áreas. Comprobar con los tests de la web, los e2e de normas y `openspec validate --strict`
 - [x] 6.9 `PRO-003` en `process.yaml`, de revisión (D13). Comprobar con los tests de normas y del MCP
 

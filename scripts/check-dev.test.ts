@@ -8,6 +8,7 @@ import {
 	jsdocProblems,
 	type Repo,
 	stackProblems,
+	structureProblems,
 	suppressionProblems,
 	TS_FLAGS,
 	typographyProblems,
@@ -117,6 +118,7 @@ const good = (): Repo => ({
 	workspaces: [lib(), site()],
 	sources: [],
 	texts: [],
+	files: ["apps/site/src/pages/index.astro", "packages/lib/src/index.ts"],
 });
 
 const withWorkspace = (repo: Repo, dir: string, change: (w: Workspace) => void): Repo => {
@@ -368,6 +370,76 @@ describe("check-dev", () => {
 			expect(problems).toHaveLength(3);
 			expect(problems.join("\n")).toContain("start (dev)");
 			expect(problems.join("\n")).toContain("test");
+		});
+	});
+
+	describe("structure (STR)", () => {
+		const withFiles = (...files: string[]): Repo => {
+			const repo = good();
+			repo.files.push(...files);
+			return repo;
+		};
+		const next = (): Workspace => ({
+			...site(),
+			dir: "apps/shop",
+			pkg: { name: "me.jotis.shop", private: true, dependencies: { next: "^16" } },
+		});
+
+		it("rejects a workspace outside apps, packages, examples and scripts (STR-001)", () => {
+			const repo = good();
+			repo.rootPkg.workspaces = ["packages/*", "web"];
+			expect(structureProblems(repo)).toEqual([
+				'package.json (STR-001): workspace "web" is outside apps/, packages/, examples/ and scripts/',
+			]);
+		});
+
+		it("rejects a test inside src (STR-002)", () => {
+			const problems = structureProblems(withFiles("packages/lib/src/components/Button.test.tsx"));
+			expect(problems.join("\n")).toContain("packages/lib/src/components/Button.test.tsx (STR-002)");
+			expect(structureProblems(withFiles("packages/lib/test/button.test.tsx"))).toEqual([]);
+		});
+
+		it("asks a Next app for src/app and no app/ at its root (STR-003)", () => {
+			const root = withFiles("apps/shop/app/page.tsx");
+			root.workspaces.push(next());
+			const problems = structureProblems(root);
+			expect(problems.join("\n")).toContain("apps/shop (STR-003)");
+			expect(problems.join("\n")).toContain("apps/shop/app (STR-003)");
+
+			const inSrc = withFiles("apps/shop/src/app/page.tsx");
+			inSrc.workspaces.push(next());
+			expect(structureProblems(inSrc)).toEqual([]);
+		});
+
+		it("rejects a loose folder in the src of an app and names where it goes (STR-004)", () => {
+			const problems = structureProblems(withFiles("apps/site/src/search/SiteSearch.tsx"));
+			expect(problems).toHaveLength(1);
+			expect(problems[0]).toContain("apps/site/src/search (STR-004)");
+			expect(problems[0]).toContain("src/features/search/");
+			const fine = withFiles(
+				"apps/site/src/features/search/SiteSearch.tsx",
+				"apps/site/src/layouts/Base.astro",
+				"apps/site/src/lib/fold.ts",
+				"apps/site/src/content.config.ts",
+			);
+			expect(structureProblems(fine)).toEqual([]);
+		});
+
+		it("allows src/app only in a Next app (STR-004)", () => {
+			expect(structureProblems(withFiles("apps/site/src/app/page.tsx")).join("\n")).toContain(
+				"apps/site/src/app (STR-004)",
+			);
+		});
+
+		it("rejects build output and caches tracked by Git (STR-008)", () => {
+			const problems = structureProblems(
+				withFiles(
+					"examples/next/tsconfig.tsbuildinfo",
+					"packages/lib/dist/index.js",
+					"apps/site/.astro/types.d.ts",
+				),
+			);
+			expect(problems.filter((p) => p.includes("(STR-008)"))).toHaveLength(3);
 		});
 	});
 
