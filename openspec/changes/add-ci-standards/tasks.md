@@ -37,10 +37,10 @@ Cada tarea, o pieza coherente, va en su propio commit (GIT-005). Comandos: `bunx
 
 ## 5. Cierre
 
-- [ ] 5.1 Comprobar los escenarios de «CI de Regula con detección y puerta» con PR reales:
+- [x] 5.1 Comprobar los escenarios de «CI de Regula con detección y puerta» con PR reales:
   - una rama de prueba que solo toca `openspec/`, con «CI» en verde en menos de 5 min;
   - una que rompe un test a propósito, con «CI» en rojo.
 
   Cerrar las dos sin fusionar
-- [ ] 5.2 Ruleset de `main` (id 26397472) con `gh api`, con el permiso del usuario y en dos pasos (D2): añadir «CI» y después quitar «Comprobaciones» y «Navegador». Verificar con `gh api` que solo queda «CI» y que una PR abierta lo exige
+- [x] 5.2 Ruleset de `main` (id 26397472) con `gh api`, con el permiso del usuario y en dos pasos (D2): añadir «CI» y después quitar «Comprobaciones» y «Navegador». Verificar con `gh api` que solo queda «CI» y que una PR abierta lo exige
 - [ ] 5.3 Pasar los comandos de arriba, actualizar la memoria del proyecto y fusionar
