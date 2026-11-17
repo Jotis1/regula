@@ -51,7 +51,7 @@ Comandos:
 
 ## 5. Comprobaciones
 
-- [ ] 5.1 `scripts/check-dev.ts` y su test `scripts/check-dev.test.ts` (D6), con un fixture que incumple cada punto de los requisitos «… comprobadas». La heurística del JSDoc se prueba con:
+- [x] 5.1 `scripts/check-dev.ts` y su test `scripts/check-dev.test.ts` (D6), con un fixture que incumple cada punto de los requisitos «… comprobadas». La heurística del JSDoc se prueba con:
   - un `export const` de varias líneas;
   - un `export async function`;
   - un comentario `//`;
