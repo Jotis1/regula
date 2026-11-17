@@ -57,9 +57,9 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.5",
-		"@tailwindcss/node": "^4.3.3",
+		"@tailwindcss/node": "^4.3.5",
 		"@testing-library/react": "^16.3.3",
-		"@testing-library/user-event": "^14.6.8",
+		"@testing-library/user-event": "^14.6.10",
 		"@types/node": "^26.6.6",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",

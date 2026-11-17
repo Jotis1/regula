@@ -12,9 +12,9 @@
 		"test:e2e": "playwright test"
 	},
 	"dependencies": {
-		"@astrojs/react": "^7.1.2",
+		"@astrojs/react": "^7.1.9",
 		"@jotis-me/react": "workspace:*",
-		"@tailwindcss/vite": "^4.3.3",
+		"@tailwindcss/vite": "^4.3.5",
 		"@untitledui/icons": "0.0.23",
 		"astro": "^7",
 		"react": "^19.3.1",
@@ -23,7 +23,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.9.12",
-		"@playwright/test": "^1.64.1",
+		"@playwright/test": "^1.65.1",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
 		"typescript": "^6"
