@@ -1,3 +1,4 @@
+// Throwaway: checks that the Changesets step fails without a changeset (task 7.1). Never merged.
 import { XClose } from "@untitledui/icons";
 import type { ReactNode } from "react";
 import { cx } from "../internal/cx.js";
