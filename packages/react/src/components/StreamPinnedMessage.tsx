@@ -12,11 +12,13 @@ export interface StreamPinnedMessageLabels {
 export interface StreamPinnedMessageProps {
 	/** El mensaje, como en ChatBox. `text` es texto plano. */
 	message: ChatMessage;
+	/** Texts of the card, to translate. */
 	labels?: Partial<StreamPinnedMessageLabels>;
 	/** @default 420 */
 	width?: number | string;
 	/** `enter` entra en 250 ms; `exit` sale en 200 ms. Con menos movimiento, solo fundido. */
 	state?: StreamMotion;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

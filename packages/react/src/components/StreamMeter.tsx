@@ -13,6 +13,7 @@ export interface StreamMeterProps {
 	width?: number | string;
 	/** `enter` entra en 250 ms; `exit` sale en 200 ms. Con menos movimiento, solo fundido. */
 	state?: StreamMotion;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

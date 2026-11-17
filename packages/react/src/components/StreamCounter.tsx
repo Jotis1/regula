@@ -4,6 +4,7 @@ import { formatNumber } from "../internal/format.js";
 import { STREAM_ROOT, type StreamMotion, streamMotion, TABULAR } from "../internal/stream.js";
 
 export interface StreamCounterItem {
+	/** What the counter measures. */
 	label: ReactNode;
 	/** Entero de 0 o más; cualquier otro valor se pinta como 0. */
 	value: number;
@@ -16,6 +17,7 @@ export interface StreamCounterProps {
 	width?: number | string;
 	/** Entrada y salida de la tarjeta: `enter` en 250 ms, `exit` en 200 ms. Con menos movimiento, solo fundido. */
 	state?: StreamMotion;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

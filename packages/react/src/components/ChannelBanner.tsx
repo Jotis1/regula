@@ -4,13 +4,16 @@ import { keyText, stableKeys, streamGrid, TABULAR } from "../internal/stream.js"
 import { StreamStage } from "../internal/stream-stage.js";
 
 export interface ChannelBannerSlot {
+	/** The day of the week. */
 	day: ReactNode;
+	/** The time of day. */
 	time: ReactNode;
 }
 
 export interface ChannelBannerProps {
 	/** @default "Tu canal" */
 	name?: ReactNode;
+	/** A short line under the channel name. */
 	tagline?: ReactNode;
 	/** @default "Directos en Twitch" */
 	eyebrow?: ReactNode;
@@ -20,6 +23,7 @@ export interface ChannelBannerProps {
 	scheduleLabel?: string;
 	/** Mide `1200 × scale` (`scale={1}` para exportarlo tal cual). Sin él se ajusta al ancho del contenedor. */
 	scale?: number;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

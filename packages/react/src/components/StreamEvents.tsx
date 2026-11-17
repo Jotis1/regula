@@ -13,7 +13,9 @@ import {
 import { defaultStrings } from "../internal/strings.js";
 
 export interface StreamEventItem {
+	/** The kind of event: it decides the icon and the text. */
 	type: StreamEventType;
+	/** Who caused the event. */
 	user: ReactNode;
 	/** Cifra del evento: euros, bits, espectadores del raid o suscripciones regaladas. */
 	amount?: number;
@@ -49,6 +51,7 @@ export interface StreamEventsProps {
 	width?: number | string;
 	/** La primera fila entra con fundido y 8px de subida al llegar. */
 	animate?: boolean;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

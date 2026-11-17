@@ -20,7 +20,9 @@ export interface StreamSceneProps {
 	target?: StreamTime;
 	/** Hora fija para la cuenta atrás (pruebas). */
 	now?: StreamTime;
+	/** Shows the scene as paused. */
 	paused?: boolean;
+	/** Text shown under the countdown. */
 	countdownLabel?: ReactNode;
 	/** @default "Tu canal" */
 	channel?: ReactNode;
@@ -36,6 +38,7 @@ export interface StreamSceneProps {
 	width?: number;
 	/** Mide `width × scale`. Sin él se ajusta al ancho del contenedor (en OBS, a 1920, queda 1:1). */
 	scale?: number;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

@@ -5,12 +5,16 @@ import { keyText, STREAM_ROOT, stableKeys, TABULAR } from "../internal/stream.js
 import { Button, type ButtonHierarchy } from "./Button.js";
 
 export interface ChannelPanelRow {
+	/** What the row measures, such as `Followers`. */
 	label: ReactNode;
+	/** Its value. */
 	value: ReactNode;
 }
 
 export interface ChannelPanelAction {
+	/** The text of the action. */
 	label: ReactNode;
+	/** Where the action goes. Without it, the action is a button. */
 	href?: string;
 	/** Icono tras el texto. */
 	icon?: IconProp;
@@ -23,6 +27,7 @@ export interface ChannelPanelAction {
 export interface ChannelPanelProps {
 	/** En Bricolage Grotesque 24/32 semibold. */
 	title: ReactNode;
+	/** Icon shown next to the title. */
 	icon?: IconProp;
 	/** Párrafos; no más de cuatro líneas cada uno. */
 	children?: ReactNode;
@@ -35,6 +40,7 @@ export interface ChannelPanelProps {
 	 * @default 320
 	 */
 	width?: number | string;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 

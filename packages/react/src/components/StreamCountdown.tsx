@@ -22,6 +22,7 @@ export interface StreamCountdownProps {
 	size?: StreamCountdownSize | number;
 	/** Etiqueta debajo; obligatoria en la práctica si hay dos contadores en pantalla. */
 	label?: ReactNode;
+	/** Extra classes, merged with the component's own. */
 	className?: string;
 }
 
@@ -29,6 +30,7 @@ const SIZE: Record<StreamCountdownSize, string> = { md: "text-[36px]", lg: "text
 
 /** Solo para StreamScene: etiqueta más grande (`.jm-st-scene-main .jm-st-count-label` del bundle). No es pública. */
 interface CountdownSlots {
+	/** Extra classes for the label. Only `StreamScene` uses it; it is not public. */
 	labelClassName?: string;
 }
 
