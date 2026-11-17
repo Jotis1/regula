@@ -92,11 +92,9 @@ export function SocialButton({
 	);
 	const common = { hierarchy: brand ? "primary" : "secondary", size, className: classes } as const;
 	return iconOnly ? (
-		// biome-ignore lint/suspicious/noExplicitAny: las props de botón o de enlace pasan tal cual a Button
-		<Button {...(rest as any)} {...common} iconOnly={mark} label={text} />
+		<Button {...rest} {...common} iconOnly={mark} label={text} />
 	) : (
-		// biome-ignore lint/suspicious/noExplicitAny: las props de botón o de enlace pasan tal cual a Button
-		<Button {...(rest as any)} {...common} iconLeading={mark}>
+		<Button {...rest} {...common} iconLeading={mark}>
 			{text}
 		</Button>
 	);
