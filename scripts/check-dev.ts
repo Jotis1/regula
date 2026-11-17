@@ -63,6 +63,8 @@ export const TS_FLAGS = [
 /** Frameworks the app shares with the package: peer dependencies, never dependencies (VER-007). */
 const SHARED = ["react", "react-dom", "next", "astro", "tailwindcss"];
 const SITE = "https://regula.jotis.me";
+/** Tools that read the TypeScript 6 JS API: the workspaces that depend on them keep `typescript` at 6 (VER-010). */
+const TS6_TOOLS = ["@astrojs/check", "next", "dts-bundle-generator"];
 
 /** The Biome block of the guide (STK-004): where it lives in `biome.json` and what it must say. */
 const BIOME_BLOCK: [path: string[], expected: unknown][] = [
@@ -360,13 +362,14 @@ export function dependencyProblems(repo: Repo): string[] {
 	}
 
 	// VER-010: one range per dependency in the whole monorepo. The exception is a framework's own convention:
-	// `astro check` and `next build` type-check through the TypeScript 6 JS API, so their workspaces pin `typescript` 6
+	// `astro check`, `next build` and `dts-bundle-generator` read the TypeScript 6 JS API (TypeScript 7 has none), so
+	// the workspaces that use them pin `typescript` 6
 	const ranges = new Map<string, Map<string, string[]>>();
 	const note = (file: string, pkg: PackageJson) => {
 		for (const field of ["dependencies", "devDependencies"] as const)
 			for (const [name, range] of Object.entries(pkg[field] ?? {})) {
 				if (range.startsWith("workspace:") || range.startsWith("npm:")) continue;
-				if (name === "typescript" && (has(pkg, "@astrojs/check") || has(pkg, "next"))) continue;
+				if (name === "typescript" && TS6_TOOLS.some((tool) => has(pkg, tool))) continue;
 				const byRange = ranges.get(name) ?? new Map<string, string[]>();
 				byRange.set(range, [...(byRange.get(range) ?? []), file]);
 				ranges.set(name, byRange);

@@ -399,13 +399,17 @@ describe("check-dev", () => {
 			expect(problems[0]).toContain("apps/site/package.json");
 		});
 
-		it("lets Astro and Next workspaces pin TypeScript 6 (VER-010)", () => {
+		it("lets the workspaces of Astro, Next and dts-bundle-generator pin TypeScript 6 (VER-010)", () => {
 			expect(dependencyProblems(good())).toEqual([]);
 			const next = withWorkspace(good(), "apps/site", (w) => {
 				w.pkg.dependencies = { next: "^16" };
 				w.pkg.devDependencies = { typescript: "^6" };
 			});
 			expect(dependencyProblems(next)).toEqual([]);
+			const dts = withWorkspace(good(), "apps/site", (w) => {
+				w.pkg.devDependencies = { "dts-bundle-generator": "^9.5.1", typescript: "^6" };
+			});
+			expect(dependencyProblems(dts)).toEqual([]);
 			const plain = withWorkspace(good(), "apps/site", (w) => {
 				w.pkg.devDependencies = { typescript: "^6" };
 			});
