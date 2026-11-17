@@ -52,7 +52,7 @@ describe("normas", () => {
 		const { json } = call("list_standards", { area: "code" });
 		expect(json.areas).toHaveLength(1);
 		expect(json.areas[0].id).toBe("code");
-		expect(json.areas[0].rules).toHaveLength(13);
+		expect(json.areas[0].rules).toHaveLength(15);
 	});
 
 	it("get_standard devuelve las excepciones de COD-009: los archivos especiales de Next", () => {

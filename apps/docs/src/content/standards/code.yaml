@@ -399,3 +399,81 @@ rules:
       verification:
           kind: biome
           check: noConsole
+
+    - id: COD-014
+      title: Lo simple primero (KISS)
+      level: must
+      appliesTo: all
+      statement: >-
+          Se escribe la solución más directa que resuelve el caso de hoy. Sin capas, fábricas, opciones ni abstracciones
+          para casos que aún no existen: se añaden cuando llega el segundo caso real, no antes. Entre dos soluciones que
+          funcionan, gana la que se entiende leyéndola una vez.
+      rationale: >-
+          Cada capa de más hay que leerla, probarla y mantenerla, aunque nadie la use. El código simple es más fácil de
+          cambiar cuando llega el caso de verdad, y una persona o un agente lo entiende sin tener que seguir la pista a
+          cinco archivos.
+      examples:
+          good:
+              - caption: La función que hace lo único que se pide
+                lang: ts
+                code: |-
+                    export function formatPrice(amount: number): string {
+                      return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(amount);
+                    }
+          bad:
+              - caption: Una fábrica con opciones que nadie usa
+                lang: ts
+                code: |-
+                    export function createPriceFormatter(options: { locale?: string; currency?: string; plugins?: Plugin[] } = {}) {
+                      const { locale = "es-ES", currency = "EUR", plugins = [] } = options;
+                      return (amount: number) =>
+                        plugins.reduce((text, plugin) => plugin(text), new Intl.NumberFormat(locale, { style: "currency", currency }).format(amount));
+                    }
+      verification:
+          kind: review
+          review: Que el cambio no añada capas, opciones ni abstracciones que hoy no usa nadie, y que no haya una forma más directa de hacer lo mismo.
+
+    - id: COD-015
+      title: Lo nativo primero
+      level: must
+      appliesTo: all
+      statement: >-
+          Antes de añadir una dependencia o escribir código propio, se usa lo que ya da la plataforma: los elementos HTML
+          (`<button>`, `<a>`, `<dialog>`, `<details>`, `<input type="date">`, `<form>`) y las APIs del navegador y de
+          JavaScript (`Intl`, `fetch`, `URL`, `structuredClone`, `Array.prototype.toSorted`). Solo se sale de lo nativo
+          cuando no cubre el caso, y el porqué queda en un comentario.
+      rationale: >-
+          Lo nativo ya trae el teclado, el foco, la accesibilidad y el rendimiento, no pesa en el bundle y no hay que
+          actualizarlo. Rehacerlo a mano suele dejar fuera algo de eso.
+      examples:
+          good:
+              - caption: Un plegable con details y summary
+                lang: tsx
+                code: |-
+                    <details>
+                      <summary>Detalles del pedido</summary>
+                      <OrderLines order={order} />
+                    </details>
+          bad:
+              - caption: El mismo plegable rehecho con estado y atributos a mano
+                lang: tsx
+                code: |-
+                    const [open, setOpen] = useState(false);
+                    <div>
+                      <div role="button" tabIndex={0} aria-expanded={open} onClick={() => setOpen(!open)}>
+                        Detalles del pedido
+                      </div>
+                      {open && <OrderLines order={order} />}
+                    </div>
+      exceptions:
+          - where: Los componentes que da el framework (`next/link`, `next/image`, `<Image>` de Astro)
+            why: >-
+                Cuentan como nativos: son la forma que pide el framework, y añaden la precarga y la optimización que el
+                elemento HTML no tiene.
+          - where: Los componentes de `@jotis-me/react`
+            why: >-
+                Se usan en las apps en lugar del elemento suelto, porque traen el diseño de la suite. La norma aplica a
+                lo que pintan por dentro.
+      verification:
+          kind: review
+          review: Que no haya una dependencia ni código propio nuevos para algo que ya resuelve un elemento HTML, una API de la plataforma o un componente del framework.
