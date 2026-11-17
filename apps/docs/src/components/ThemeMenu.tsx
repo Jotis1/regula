@@ -37,6 +37,7 @@ const TRIGGER = (
 		hierarchy="secondary"
 		iconTrailing={ChevronDown}
 		iconLeading={
+			// biome-ignore lint/complexity/noUselessFragments: IconProp takes one element, so the mapped icons need a wrapper
 			<>
 				{THEME_OPTIONS.map((o) => {
 					const Icon = ICONS[o.value];

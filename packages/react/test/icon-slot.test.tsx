@@ -11,18 +11,18 @@ const Flag = forwardRef<SVGSVGElement, { size?: number }>(({ size }, ref) => (
 
 describe("iconSlot", () => {
 	it("pinta un componente de función con el tamaño del sitio y oculto", () => {
-		const html = renderToStaticMarkup(<>{iconSlot(Plus, 16)}</>);
+		const html = renderToStaticMarkup(iconSlot(Plus, 16));
 		expect(html).toContain('width="16"');
 		expect(html).toContain('aria-hidden="true"');
 	});
 
 	it("pinta un componente con forwardRef", () => {
-		expect(renderToStaticMarkup(<>{iconSlot(Flag, 20)}</>)).toContain('data-flag=""');
+		expect(renderToStaticMarkup(iconSlot(Flag, 20))).toContain('data-flag=""');
 	});
 
 	it("deja pasar un nodo tal cual", () => {
 		const node = <Plus size={32} className="text-fg-brand-primary" />;
-		const html = renderToStaticMarkup(<>{iconSlot(node, 16)}</>);
+		const html = renderToStaticMarkup(iconSlot(node, 16));
 		expect(html).toContain('width="32"');
 		expect(html).toContain("text-fg-brand-primary");
 	});
