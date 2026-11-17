@@ -10,8 +10,8 @@ test("el índice lista las áreas con sus normas y cada una enlaza a su ancla", 
 	// Exact: a short label such as "CI" would also match "Documentación"
 	for (const area of STANDARD_AREAS)
 		await expect(page.getByRole("heading", { level: 2, name: area.label, exact: true })).toBeVisible();
-	const first = page.getByRole("link", { name: /NOM-001/ });
-	await expect(first).toHaveAttribute("href", "/standards/naming/#nom-001");
+	const first = page.getByRole("link", { name: /NAM-001/ });
+	await expect(first).toHaveAttribute("href", "/standards/naming/#nam-001");
 	// The level is text, not only colour
 	await expect(page.locator('[data-area="naming"] li').first()).toContainText("Debe");
 });
@@ -41,7 +41,7 @@ test("/standards/git/#git-001 baja hasta la norma con todos sus datos", async ({
 test("el índice de la página enlaza a cada norma del área", async ({ page }) => {
 	await page.goto("/standards/language/");
 	const toc = page.getByRole("navigation", { name: "En esta página" });
-	for (const id of ["IDI-001", "IDI-002", "IDI-003", "IDI-004"])
+	for (const id of ["LNG-001", "LNG-002", "LNG-003", "LNG-004"])
 		await expect(toc.getByRole("link", { name: id })).toHaveAttribute("href", `#${id.toLowerCase()}`);
 });
 
@@ -56,17 +56,17 @@ async function search(page: Page, text: string) {
 	await page.keyboard.type(text);
 }
 
-for (const text of ["NOM-001", "dominio inverso"])
+for (const text of ["NAM-001", "dominio inverso"])
 	test(`Ctrl+K con «${text}» encuentra la norma de los paquetes privados`, async ({ page }) => {
 		await search(page, text);
 		await expect(page.getByRole("group", { name: "Normas" })).toBeVisible();
-		await expect(page.getByRole("option").first()).toHaveAccessibleName(/^NOM-001/);
+		await expect(page.getByRole("option").first()).toHaveAccessibleName(/^NAM-001/);
 		await page.keyboard.press("Enter");
-		await expect(page).toHaveURL(/\/standards\/naming\/#nom-001$/);
-		await expect(page.locator("#nom-001")).toBeInViewport();
+		await expect(page).toHaveURL(/\/standards\/naming\/#nam-001$/);
+		await expect(page.locator("#nam-001")).toBeInViewport();
 	});
 
-// IDI-004: the web's routes and parameters are in English (spec docs-site, «URLs de la web en inglés»)
+// LNG-004: the web's routes and parameters are in English (spec docs-site, «URLs de la web en inglés»)
 test("la ruta antigua de composiciones redirige a /compositions/", async ({ page }) => {
 	await page.goto("/components/modal/composiciones/");
 	await expect(page).toHaveURL(/\/components\/modal\/compositions\/?$/);

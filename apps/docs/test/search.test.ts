@@ -67,17 +67,17 @@ describe("búsqueda de la web", () => {
 		const standards: SearchEntry[] = [
 			{
 				group: "standards",
-				label: "NOM-001 · Los paquetes privados se llaman como su dominio, al revés",
+				label: "NAM-001 · Los paquetes privados se llaman como su dominio, al revés",
 				description: "Normas · Nombres",
-				href: "/standards/naming/#nom-001",
+				href: "/standards/naming/#nam-001",
 				keywords: "notación de dominio inverso de Java",
 			},
 		];
-		for (const q of ["NOM-001", "dominio inverso"]) {
+		for (const q of ["NAM-001", "dominio inverso"]) {
 			const groups = searchGroups([...entries, ...standards], q);
 			expect(groups.find((g) => g.group === "standards")?.label, q).toBe("Normas");
 			expect(groups.find((g) => g.group === "standards")?.entries[0]?.href, q).toBe(
-				"/standards/naming/#nom-001",
+				"/standards/naming/#nam-001",
 			);
 		}
 	});

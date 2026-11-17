@@ -1,9 +1,9 @@
-prefix: NOM
+prefix: NAM
 title: Nombres
 description: Cómo se llaman los paquetes de la suite, para que se sepa de quién son y dónde viven con solo leer el nombre.
 order: 1
 rules:
-    - id: NOM-001
+    - id: NAM-001
       title: Los paquetes privados se llaman como su dominio, al revés
       level: must
       appliesTo: all
@@ -38,7 +38,7 @@ rules:
           kind: ci
           check: Nombres de paquete
 
-    - id: NOM-002
+    - id: NAM-002
       title: Los paquetes publicados usan el scope de la organización
       level: must
       appliesTo: package

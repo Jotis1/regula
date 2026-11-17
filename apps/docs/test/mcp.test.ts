@@ -59,12 +59,12 @@ describe("una llamada con éxito y otra con error por herramienta", () => {
 		bad: Record<string, unknown>;
 		badText: string;
 	}[] = [
-		{ name: "list_standards", ok: {}, okText: "NOM-001", bad: { area: "seo" }, badText: "naming" },
+		{ name: "list_standards", ok: {}, okText: "NAM-001", bad: { area: "seo" }, badText: "naming" },
 		{
 			name: "get_standard",
 			ok: { id: "git-001" },
 			okText: "GIT-001",
-			bad: { id: "NOM-999" },
+			bad: { id: "NAM-999" },
 			badText: "list_standards",
 		},
 		{
@@ -89,7 +89,7 @@ describe("una llamada con éxito y otra con error por herramienta", () => {
 			badText: "query",
 		},
 		{ name: "search_icons", ok: { query: "search-lg" }, okText: "SearchLg", bad: {}, badText: "query" },
-		{ name: "search", ok: { query: "dominio inverso" }, okText: "NOM-001", bad: {}, badText: "query" },
+		{ name: "search", ok: { query: "dominio inverso" }, okText: "NAM-001", bad: {}, badText: "query" },
 	];
 
 	for (const c of cases)

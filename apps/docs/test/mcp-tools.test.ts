@@ -35,7 +35,7 @@ describe("normas", () => {
 			"ci",
 			"process",
 		]);
-		expect(json.areas[0].rules[0]).toMatchObject({ id: "NOM-001", level: "must" });
+		expect(json.areas[0].rules[0]).toMatchObject({ id: "NAM-001", level: "must" });
 	});
 
 	it("list_standards filtra por área", () => {
@@ -65,12 +65,22 @@ describe("normas", () => {
 	});
 
 	it("get_standard trae la URL de su página con el ancla", () => {
-		const { json } = call("get_standard", { id: "NOM-001" });
-		expect(json.url).toBe("https://regula.jotis.me/standards/naming/#nom-001");
+		const { json } = call("get_standard", { id: "NAM-001" });
+		expect(json.url).toBe("https://regula.jotis.me/standards/naming/#nam-001");
 	});
 
-	it("get_standard con NOM-999 dice que no existe y sugiere list_standards", () => {
-		const r = call("get_standard", { id: "NOM-999" });
+	it("get_standard con el ID antiguo NOM-001 dice que no existe (sin alias)", () => {
+		const r = call("get_standard", { id: "NOM-001" });
+		expect(r.isError).toBe(true);
+	});
+
+	it("get_standard devuelve las excepciones de LNG-002", () => {
+		const { json } = call("get_standard", { id: "LNG-002" });
+		expect(json.exceptions[0].where).toContain("Dependabot");
+	});
+
+	it("get_standard con NAM-999 dice que no existe y sugiere list_standards", () => {
+		const r = call("get_standard", { id: "NAM-999" });
 		expect(r.isError).toBe(true);
 		expect(r.text).toContain("list_standards");
 	});
@@ -149,9 +159,9 @@ describe("iconos", () => {
 });
 
 describe("búsqueda global", () => {
-	it("«dominio inverso» trae NOM-001 y dice que su detalle sale de get_standard", () => {
+	it("«dominio inverso» trae NAM-001 y dice que su detalle sale de get_standard", () => {
 		const { json } = call("search", { query: "dominio inverso" });
-		expect(json.standards[0]).toMatchObject({ id: "NOM-001", detail: "get_standard" });
+		expect(json.standards[0]).toMatchObject({ id: "NAM-001", detail: "get_standard" });
 	});
 
 	it("agrupa por tipo y limita cada grupo", () => {

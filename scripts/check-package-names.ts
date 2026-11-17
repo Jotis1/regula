@@ -1,4 +1,4 @@
-// Checks the `name` of every package in the workspace against the naming standards (NOM-001 and NOM-002):
+// Checks the `name` of every package in the workspace against the naming standards (NAM-001 and NAM-002):
 // private packages are named after the product domain, reversed (`me.jotis.regula.docs`); published ones live under
 // the `@jotis-me` scope. The product prefix is the root package's own name, so the same script works in any
 // repository of the suite.

@@ -18,7 +18,7 @@ const mcpRoute = {
 
 export default defineConfig({
 	site: "https://regula.jotis.me",
-	// The compositions route used to be in Spanish; old links keep working (IDI-004)
+	// The compositions route used to be in Spanish; old links keep working (LNG-004)
 	redirects: { "/components/[slug]/composiciones": "/components/[slug]/compositions" },
 	adapter: onVercel ? (await import("@astrojs/vercel")).default() : undefined,
 	integrations: [react(), mdx(), ...(onVercel ? [mcpRoute] : [])],

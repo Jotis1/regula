@@ -1,9 +1,9 @@
-prefix: IDI
+prefix: LNG
 title: Idioma
 description: Qué va en español y qué va en inglés, para que ni las personas ni los agentes tengan que adivinarlo.
 order: 2
 rules:
-    - id: IDI-001
+    - id: LNG-001
       title: El código va en inglés
       level: must
       appliesTo: all
@@ -33,7 +33,7 @@ rules:
           kind: review
           review: Que ningún identificador, fichero ni comentario nuevo esté en español.
 
-    - id: IDI-002
+    - id: LNG-002
       title: La guía y el historial van en español
       level: must
       appliesTo: all
@@ -64,8 +64,12 @@ rules:
       verification:
           kind: review
           review: Que los commits, los títulos de PR y los changesets estén en español.
+      exceptions:
+          - where: Commits, títulos y ramas de PR que genera un bot (Dependabot)
+            why: >-
+                El bot no deja elegir el idioma. Siguen cumpliendo Conventional Commits (`build(deps): …`).
 
-    - id: IDI-003
+    - id: LNG-003
       title: Los comentarios solo explican el porqué
       level: must
       appliesTo: all
@@ -92,7 +96,7 @@ rules:
           kind: review
           review: Que cada comentario nuevo diga un porqué y no repita lo que hace el código.
 
-    - id: IDI-004
+    - id: LNG-004
       title: Las rutas y los parámetros de URL van en inglés
       level: must
       appliesTo: app

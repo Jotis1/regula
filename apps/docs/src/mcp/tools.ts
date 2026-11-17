@@ -83,7 +83,7 @@ const getStandard = defineTool({
 	title: "Get a standard",
 	description:
 		"Get one standard by its ID (e.g. `GIT-001`, case-insensitive): level, who it applies to, statement, rationale, good and bad examples and how it is verified.",
-	inputSchema: { id: queryParam("Rule ID such as `NOM-001`.") },
+	inputSchema: { id: queryParam("Rule ID such as `NAM-001`.") },
 	run: ({ standards }, { id }) => {
 		const wanted = id.toUpperCase();
 		for (const area of standards.areas) {
