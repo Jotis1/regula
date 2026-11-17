@@ -35,7 +35,9 @@ Este cambio es el 3 de la hoja de ruta, «normas de desarrollo». Escribe las no
     - exports con nombre;
     - `import type`;
     - sin `export *` ni `import * as`;
-    - sin `console` en `src/`.
+    - sin `console` en `src/`;
+    - lo simple primero (KISS);
+    - lo nativo primero: elementos HTML y APIs de la plataforma antes que una dependencia o código propio.
   - **Documentación** (`DOC`):
     - JSDoc en los exports y en las props, con `@default`;
     - el README de cada paquete y el de la raíz;

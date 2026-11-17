@@ -101,6 +101,8 @@ Todas son de nivel `must`, salvo `STK-006` y `VER-008`, que son `should`. Las de
 | COD-011 | all | Sin `export *` | biome `noReExportAll` |
 | COD-012 | all | Sin `import * as`, salvo al recorrer el módulo | biome `noNamespaceImport` |
 | COD-013 | all | Sin `console.log` ni `console.debug` fuera de scripts, tests y configs | biome `noConsole` |
+| COD-014 | all | Lo simple primero (KISS): la solución más directa que resuelve el caso de hoy, sin abstracciones ni opciones para casos que aún no existen | review |
+| COD-015 | all | Lo nativo primero: elementos HTML (`<button>`, `<dialog>`, `<details>`, `<input type="date">`) y APIs de la plataforma (`Intl`, `fetch`, `structuredClone`) antes que una dependencia o código propio; los componentes del framework (`next/link`, `next/image`, `<Image>` de Astro) cuentan como nativos | review |
 | DOC-001 | package | JSDoc en los exports | ci |
 | DOC-002 | package | JSDoc en las props, con `@default` | ci |
 | DOC-003 | package | `@deprecated` con sustituto | ci |
@@ -298,6 +300,7 @@ Lo pidió el usuario tras la implementación: ni «·» ni rayas, y el guión si
 - **El ejemplo malo de la norma** tiene que enseñar el carácter. En el YAML va como cadena entre comillas dobles, con el escape Unicode del carácter (el de U+00B7): la página y el JSON lo muestran tal cual y el archivo no lo contiene.
 - **Los commits:** un script nuevo, `scripts/check-commit-typography.ts`, lee `git log base..head` y es el paso «Tipografía» del job «Commits». Salta los commits cuyo autor es un bot (`[bot]` en el nombre o en el correo), porque Dependabot copia las notas de versión de cada dependencia.
 - **Cómo se sustituye:** « · », « — » y « – » pasan a « - »; un «–» entre números o horas, a «-» sin espacios; las líneas de adorno de los comentarios, hechas de rayas, pasan a `--- Piezas ---`.
+- **KISS y lo nativo (`COD-014` y `COD-015`):** también los pidió el usuario tras la implementación. Son de revisión: ninguna regla de Biome mide si algo está demasiado complicado o si había un elemento nativo. Para no chocar con los frameworks, `COD-015` cuenta como nativos los componentes que da cada framework, y Regula sigue usando sus propios componentes de `@jotis-me/react`: la norma aplica a lo que esos componentes pintan por dentro y al código de las apps.
 - **Formato:** `biome.json` ya tenía `indentStyle: "tab"` e `indentWidth: 4`, y `check:dev` ya los comprobaba. Solo cambia el enunciado de `STK-004`, que ahora los nombra en vez de decir «el formato de la suite».
 
 ## Risks / Trade-offs

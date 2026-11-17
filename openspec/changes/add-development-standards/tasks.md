@@ -95,6 +95,7 @@ Comandos:
   - quitar los caracteres del repo, en un commit por paquete o por zona, con un changeset `patch` de `@jotis-me/react` y otro de `@jotis-me/tokens`.
 
   Comprobar con `bun run check:dev`, con el script de commits contra `origin/main`, con `biome ci` y con los tests de la web, de `@jotis-me/react` y de los e2e que miran esos textos
+- [ ] 6.5 `COD-014` (KISS) y `COD-015` (lo nativo primero) en `code.yaml`, de revisión, con la excepción de los componentes del framework en `COD-015` (D11). Actualizar el test que cuenta las normas de `code` en `mcp-tools.test.ts`. Comprobar con los tests de la web y con `openspec validate --strict`
 
 ## 7. Cierre
 

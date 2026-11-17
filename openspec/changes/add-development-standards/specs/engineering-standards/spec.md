@@ -195,6 +195,20 @@ El área de código SHALL fijar, con nivel DEBE y para todos los proyectos:
 - **WHEN** se mira el ejemplo que cumple la norma de los conjuntos de valores
 - **THEN** enseña `type ButtonSize = "sm" | "md" | "lg"` en lugar de un `enum`
 
+### Requirement: Área de código: simplicidad
+El área de código SHALL fijar, con nivel DEBE, para todos los proyectos y con verificación en revisión, `COD-014`, lo simple primero (KISS): la solución más directa que resuelve el caso de hoy, sin capas, opciones ni abstracciones para casos que aún no existen.
+
+#### Scenario: Opciones de más
+- **WHEN** se mira el ejemplo que no cumple la norma de lo simple
+- **THEN** enseña una función de formato con una fábrica y opciones que nadie usa, y el que la cumple, la función que hace lo único que se pide
+
+### Requirement: Área de código: lo nativo primero
+El área de código SHALL fijar, con nivel DEBE, para todos los proyectos y con verificación en revisión, `COD-015`: un elemento HTML o una API de la plataforma antes que una dependencia o código propio que haga lo mismo. SHALL contar como nativos los componentes que da el framework (`next/link`, `next/image`, `<Image>` de Astro), para no chocar con sus convenciones.
+
+#### Scenario: Plegable
+- **WHEN** se mira el ejemplo que cumple la norma de lo nativo
+- **THEN** enseña un `<details>` con su `<summary>`, y el que no la cumple, un `div` con estado de React, `onClick` y `aria-expanded` a mano
+
 ### Requirement: Área de documentación: JSDoc
 El área de documentación SHALL tener el prefijo `DOC` y fijar, con nivel DEBE y para los paquetes publicados:
 - que todo export público (componente, función, constante o clase) lleva un JSDoc que dice para qué sirve, salvo el código generado con un generador documentado;
