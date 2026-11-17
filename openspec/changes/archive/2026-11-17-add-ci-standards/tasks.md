@@ -43,4 +43,4 @@ Cada tarea, o pieza coherente, va en su propio commit (GIT-005). Comandos: `bunx
 
   Cerrar las dos sin fusionar
 - [x] 5.2 Ruleset de `main` (id 26397472) con `gh api`, con el permiso del usuario y en dos pasos (D2): añadir «CI» y después quitar «Comprobaciones» y «Navegador». Verificar con `gh api` que solo queda «CI» y que una PR abierta lo exige
-- [ ] 5.3 Pasar los comandos de arriba, actualizar la memoria del proyecto y fusionar
+- [x] 5.3 Pasar los comandos de arriba, actualizar la memoria del proyecto y fusionar
