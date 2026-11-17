@@ -41,9 +41,9 @@ El MCP de Regula responde sobre normas, componentes, tokens e iconos, pero no so
 - **Web (`apps/docs`):**
   - un endpoint nuevo, `src/pages/foundations.json.ts`;
   - un módulo que saca el texto de los `.md` y `.mdx` de `src/content/foundations/`;
-  - `src/mcp/data.ts`, que pasa a cargar cinco JSON;
-  - `src/mcp/tools.ts`, con las dos herramientas y el grupo nuevo de `search`;
-  - `src/mcp/guide.ts`.
+  - `src/features/mcp/data.ts`, que pasa a cargar cinco JSON;
+  - `src/features/mcp/tools.ts`, con las dos herramientas y el grupo nuevo de `search`;
+  - `src/features/mcp/guide.ts`.
 - **Tests:**
   - el del JSON (las secciones coinciden con los `##` de cada página, y no se pierde el texto de `Rule` ni de `Essentials`);
   - los de las herramientas;

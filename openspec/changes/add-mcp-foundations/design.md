@@ -12,7 +12,7 @@
   - `Fit`: `fits`, `nots`, `fitsLabel` y `notsLabel`.
 
   `Pair` solo agrupa dos `Rule`. Los demás (`Button`, `Badge`, `Input`, `Alert`, `TokenExplorer`, `ContrastExceptions`…) son demos.
-- **El MCP lee los JSON públicos.** El MCP (`src/mcp/`) carga hoy cuatro JSON públicos (`data.ts`) y responde solo con ellos (requisito «Datos públicos en JSON»).
+- **El MCP lee los JSON públicos.** El MCP (`src/features/mcp/`) carga hoy cuatro JSON públicos (`data.ts`) y responde solo con ellos (requisito «Datos públicos en JSON»).
 - **Astro 7 no usa remark.** El MDX lo procesa `satteri` (`@astrojs/markdown-satteri`), que ya está en el árbol en la versión 0.10.5 y exporta `mdxToMdast`. Probado con `color.mdx`:
   - devuelve un mdast con `mdxJsxFlowElement`;
   - los atributos de texto llegan como cadenas (`caption`);
