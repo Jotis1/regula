@@ -43,6 +43,10 @@
 				"noEnum": "error",
 				"noNonNullAssertion": "error",
 				"noDefaultExport": "error",
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": { "requireAscii": true, "filenameCases": ["kebab-case"] }
+				},
 				"useImportType": "error"
 			},
 			"performance": {
@@ -78,6 +82,23 @@
 		}
 	},
 	"overrides": [
+		{
+			"includes": ["**/*.tsx", "**/*.astro"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useFilenamingConvention": {
+							"level": "error",
+							"options": {
+								"requireAscii": true,
+								"strictCase": false,
+								"filenameCases": ["PascalCase", "kebab-case"]
+							}
+						}
+					}
+				}
+			}
+		},
 		{
 			"includes": ["**/scripts/**", "**/test/**", "**/e2e/**", "**/*.config.{ts,mts,js,mjs}"],
 			"linter": {
