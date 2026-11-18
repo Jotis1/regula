@@ -23,7 +23,7 @@ Comandos:
 
 ## 3. Avisos
 
-- [ ] 3.1 `SECURITY.md` en la raíz (D9), en español y sin «·» ni rayas. Comprobar con `check:dev` (tipografía) y que el enlace al aviso privado apunta a la pestaña de seguridad del repo
+- [x] 3.1 `SECURITY.md` en la raíz (D9), en español y sin «·» ni rayas. Comprobar con `check:dev` (tipografía) y que el enlace al aviso privado apunta a la pestaña de seguridad del repo
 
 ## 4. Auditoría
 
