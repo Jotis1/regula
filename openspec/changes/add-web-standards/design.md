@@ -81,14 +81,14 @@ Alternativa descartada: comprobarlo en el e2e que recorre todas las páginas. Es
 ### D4. `canonical` y Open Graph en `Base.astro`
 `Base.astro` calcula la URL canónica con `new URL(Astro.url.pathname, Astro.site)` y pinta `canonical`, `og:title`, `og:description`, `og:url`, `og:type`, `og:image`, `og:locale` y `twitter:card`. El título y la descripción de Open Graph son los de la página. Las páginas con `noindex` no pintan `canonical` ni Open Graph.
 
-Una sola imagen de Open Graph para toda la web, de 1200 por 630 px, guardada en el repo. Una imagen por página sería mejor para compartir, pero pide generarlas en el build y no hace falta para cumplir la norma (KISS).
+Una sola imagen de Open Graph para toda la web, de 1200 por 630 px, guardada en el repo (`src/assets/og.png`). Sale de una página interna, `/visual/og/`, hecha con los componentes y los tokens de la web, que `scripts/capture-og.ts` captura con Playwright. Una imagen por página sería mejor para compartir, pero pide generarlas en el build y no hace falta para cumplir la norma (KISS).
 
-### D5. Sitemap con `@astrojs/sitemap` y `robots.txt` como endpoint
-El sitemap sale de la integración oficial `@astrojs/sitemap`, con un `filter` que deja fuera las páginas internas. Astro no ofrece al código de una página la lista de todas las rutas del build, así que escribirlo a mano obligaría a mantener esa lista aparte. Es una dependencia nueva, solo de la web.
+### D5. Sitemap desde el gancho de build de Astro y `robots.txt` como endpoint
+Una integración de pocas líneas en `astro.config.mjs` (como la de `/mcp`) escribe `sitemap.xml` en `astro:build:done`, que entrega la lista de páginas del build. Deja fuera las páginas cuyo HTML lleva `noindex`, así que la propia página decide y no hay una lista de rutas que mantener al día. La función que monta el XML vive en `src/lib/sitemap.ts`, con su test.
 
-El `filter` se basa en la URL, y `noindex` se decide en cada página. Para que no se separen, el test de D3 exige que el sitemap liste exactamente las páginas sin `noindex`.
+Se propuso `@astrojs/sitemap` y se cambió al implementar: su filtro va por URL (habría que mantenerlo a la par de los `noindex`), es una dependencia nueva y obliga a tocar el lockfile. El gancho es API de Astro y cubre lo que hace falta (COD-015). El test de D3 exige además que el sitemap liste exactamente las páginas sin `noindex`.
 
-`robots.txt` es un endpoint (`src/pages/robots.txt.ts`) que toma el dominio de `Astro.site`: así el enlace al sitemap no se escribe a mano.
+`robots.txt` es un endpoint (`src/pages/robots.txt.ts`) que toma el dominio de `site`: así el enlace al sitemap no se escribe a mano.
 
 ### D6. `headingLevel` en `PageHeader` y `StreamScene`
 Los dos ganan una prop opcional `headingLevel`, de 1 a 6, con 1 por defecto. Solo cambia la etiqueta; las clases son las mismas. El nombre y el tipo son los de `Accordion`, que ya tenía `headingLevel`: se propuso `titleAs` y se cambió al implementar para no tener dos formas de decir lo mismo.

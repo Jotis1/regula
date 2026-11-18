@@ -71,7 +71,7 @@ Las normas de Regula cubren el código, los tests y la seguridad, pero nada dice
 - **Web:**
   - `apps/docs/src/layouts/Base.astro` (`canonical` y Open Graph);
   - `apps/docs/src/pages/robots.txt.ts`;
-  - `@astrojs/sitemap` en `apps/docs/astro.config.mjs` (dependencia nueva de la web);
+  - el sitemap, desde un gancho de build en `apps/docs/astro.config.mjs`, sin dependencia nueva;
   - la imagen de Open Graph;
   - los ejemplos de `PageHeader` y `StreamScene`;
   - un test nuevo sobre `dist/`.

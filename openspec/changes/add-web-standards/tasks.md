@@ -14,10 +14,10 @@
 
 ## 3. Metadatos, robots y sitemap de la web
 
-- [ ] 3.1 En `apps/docs/src/layouts/Base.astro`, pintar en las páginas indexables `canonical` (URL absoluta con `Astro.site`), `og:title`, `og:description`, `og:url`, `og:type`, `og:image`, `og:locale` y `twitter:card`; las páginas con `noindex` no los llevan. Verificación: en `dist/index.html` y `dist/components/button/index.html` aparecen con `https://regula.jotis.me/…`, y en `dist/visual/button/index.html` no.
-- [ ] 3.2 Crear la imagen de Open Graph (1200 por 630 px, logotipo y lema sobre el fondo de la marca) y enseñársela al usuario antes de fusionar. Verificación: el fichero existe, pesa menos de 200 kB y `og:image` apunta a él con URL absoluta.
-- [ ] 3.3 Añadir `@astrojs/sitemap` a la web con un `filter` que deja fuera las páginas internas, y revisar que la CSP y el `ignoreCommand` de Vercel no cambian. Verificación: `dist/sitemap-index.xml` existe y `bun install --frozen-lockfile` pasa.
-- [ ] 3.4 Crear `apps/docs/src/pages/robots.txt.ts`, que permite rastrear y enlaza al sitemap con el dominio de `Astro.site`. Verificación: `dist/robots.txt` contiene `Sitemap: https://regula.jotis.me/sitemap-index.xml`.
+- [x] 3.1 En `apps/docs/src/layouts/Base.astro`, pintar en las páginas indexables `canonical` (URL absoluta con `Astro.site`), `og:title`, `og:description`, `og:url`, `og:type`, `og:image`, `og:locale` y `twitter:card`; las páginas con `noindex` no los llevan. Verificación: en `dist/index.html` y `dist/components/button/index.html` aparecen con `https://regula.jotis.me/…`, y en `dist/visual/button/index.html` no.
+- [x] 3.2 Crear la imagen de Open Graph (1200 por 630 px, logotipo y lema sobre el fondo de la marca) y enseñársela al usuario antes de fusionar. Verificación: el fichero existe, pesa menos de 200 kB y `og:image` apunta a él con URL absoluta.
+- [x] 3.3 Escribir el sitemap desde el gancho `astro:build:done` (design D5), sin las páginas con `noindex`, con la función del XML en `src/lib/sitemap.ts` y su test. Verificación: `dist/sitemap.xml` lista las 166 páginas indexables y ninguna interna, y `test/sitemap.test.ts` pasa.
+- [x] 3.4 Crear `apps/docs/src/pages/robots.txt.ts`, que permite rastrear y enlaza al sitemap con el dominio de `Astro.site`. Verificación: `dist/robots.txt` contiene `Sitemap: https://regula.jotis.me/sitemap.xml`.
 
 ## 4. Test de las páginas construidas
 
