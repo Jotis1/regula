@@ -1,13 +1,14 @@
 // Select en Chromium, Firefox y WebKit: abrir la lista, elegir con el ratón y con el teclado, y que el valor llegue al
 // <select> oculto que React Aria pinta para los formularios (lo que se envía con `name`).
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "../hydration";
 
 const open = async (page: Page) => {
 	await page.goto("/visual/select/");
 	// Hidratado de verdad: sin los props de React colgados del botón, pulsar no abre nada.
 	await page.waitForFunction(() => {
 		const button = document.querySelector("button[aria-haspopup=listbox]");
-		return !!button && Object.keys(button).some((k) => k.startsWith("__reactProps"));
+		return !!button && window.islandReady(button);
 	});
 	// El ejemplo trae una lista abierta de inicio: Escape, pulsado dentro de ella, la cierra (WebKit no lo recibe sin foco).
 	await page.getByRole("listbox").press("Escape");

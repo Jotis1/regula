@@ -1,13 +1,14 @@
 // ChatBox y StreamPinnedMessage en el navegador (add-live-interaction-pieces, D3 y D7-D9): insignias junto al nombre,
 // enlaces marcados, el ejemplo animado que recibe mensajes, el chat seleccionable y el corte a cuatro líneas.
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
+import { expect, hydrated, test } from "./hydration";
 
 /** La sección del ejemplo interactivo, con su isla ya hidratada. */
 async function example(page: Page, path: string): Promise<Locator> {
 	await page.goto(path);
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await pg.scrollIntoViewIfNeeded();
-	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await hydrated(pg.locator("astro-island").first());
 	await expect(pg.locator("[data-playground]")).toBeVisible();
 	return pg;
 }

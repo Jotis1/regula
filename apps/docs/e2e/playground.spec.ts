@@ -2,16 +2,17 @@
 // atajos, lienzo y código a la izquierda, inspector a la derecha), grupos plegables, filtro, cambios a la vista y, en
 // móvil, una columna con el lienzo pegado arriba y una barra abajo. Y cada ejemplo aguanta el primer y el último valor
 // de cada control sin errores.
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { slugOf } from "../src/lib/catalog";
 import { STARTS } from "../src/lib/playground";
+import { expect, hydrated, test } from "./hydration";
 
 /** La sección del ejemplo, con su isla ya hidratada. */
 async function example(page: Page, path: string): Promise<Locator> {
 	await page.goto(path);
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await pg.scrollIntoViewIfNeeded();
-	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await hydrated(pg.locator("astro-island").first());
 	await expect(pg.locator("[data-playground]")).toBeVisible();
 	return pg;
 }

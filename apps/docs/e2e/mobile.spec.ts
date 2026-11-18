@@ -1,6 +1,7 @@
 // Cabecera móvil y menú a pantalla completa (reference/docs-design/HeaderM.dc.html y MobileMenu.dc.html), con el
 // tema en tres estados (design §7 y §8).
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, hydrated, test } from "./hydration";
 
 test.use({ viewport: { width: 390, height: 844 } });
 
@@ -109,7 +110,7 @@ test("la cabecera y el menú móvil comparten la elección de tema", async ({ pa
 	// (la cabecera pinta una isla del tema por versión, escritorio y móvil: se esperan las dos)
 	const islands = page.locator("body > header astro-island").filter({ hasText: "Tema:" });
 	await expect(islands).toHaveCount(2);
-	for (const island of await islands.all()) await expect(island).not.toHaveAttribute("ssr", /.*/);
+	for (const island of await islands.all()) await hydrated(island);
 	await header.getByRole("button", { name: "Tema: Sistema", exact: true }).click();
 	await page.getByRole("menuitemradio", { name: "Claro", exact: true }).click();
 	await expect(header.getByRole("button", { name: "Tema: Claro", exact: true })).toBeVisible();

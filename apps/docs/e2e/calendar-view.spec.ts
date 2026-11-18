@@ -1,6 +1,6 @@
 // CalendarView en Chromium real: el selector cambia de vista con el teclado y la semana en un calendario estrecho
 // enseña solo la columna del día elegido.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 800, height: 900 } });
 
@@ -8,7 +8,7 @@ const ready = async (page: import("@playwright/test").Page) => {
 	await page.goto("/visual/calendar-view/");
 	await page.waitForFunction(() => {
 		const b = document.querySelector("button[aria-haspopup]");
-		return !!b && Object.keys(b).some((k) => k.startsWith("__reactProps"));
+		return !!b && window.islandReady(b);
 	});
 };
 

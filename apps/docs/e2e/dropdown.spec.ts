@@ -1,6 +1,6 @@
 // Dropdown en Chromium real: la búsqueda dentro del menú no pierde el foco al filtrar y las cuentas se cambian con el
 // teclado. Las vistas previas abren el menú en línea (`defaultOpen`), así que se prueba el menú que abre el usuario.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 1000, height: 900 } });
 
@@ -8,7 +8,7 @@ const ready = async (page: import("@playwright/test").Page) => {
 	await page.goto("/visual/dropdown/");
 	await page.waitForFunction(() => {
 		const button = document.querySelector("button[aria-haspopup]");
-		return !!button && Object.keys(button).some((k) => k.startsWith("__reactProps"));
+		return !!button && window.islandReady(button);
 	});
 };
 

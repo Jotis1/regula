@@ -1,6 +1,7 @@
 // HeaderNav a 1440px (la cabecera de escritorio, con su segunda fila) y a 390px (la fila móvil y su panel): una sola
 // versión a la vista en cada ancho, sin desplazamiento horizontal de la cabecera. La CSS elige por el ancho de la propia cabecera.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 const open = async (page: Page, width: number) => {
 	await page.setViewportSize({ width, height: 900 });
@@ -8,7 +9,7 @@ const open = async (page: Page, width: number) => {
 	await page.waitForFunction(() => {
 		const buttons = document.querySelectorAll("header button");
 		const button = buttons[buttons.length - 1];
-		return !!button && Object.keys(button).some((k) => k.startsWith("__reactProps"));
+		return !!button && window.islandReady(button);
 	});
 };
 

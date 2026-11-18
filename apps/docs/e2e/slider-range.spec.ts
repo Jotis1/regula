@@ -1,6 +1,6 @@
 // Slider con `range` en Chromium real: cada mando se maneja con el teclado por separado, el mínimo no pasa del máximo
 // y arrastrar con el ratón mueve el mando más cercano.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 900, height: 900 } });
 
@@ -9,7 +9,7 @@ const ready = async (page: import("@playwright/test").Page) => {
 	await page.waitForFunction(() => {
 		const input = document.querySelector("input[type=range]");
 		const root = input?.closest("[data-rac]");
-		return !!root && Object.keys(root).some((k) => k.startsWith("__reactProps"));
+		return !!root && window.islandReady(root);
 	});
 };
 

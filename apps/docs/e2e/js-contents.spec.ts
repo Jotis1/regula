@@ -1,7 +1,8 @@
 // JavaScript solo de lo que se usa (docs-site, «JavaScript solo de lo que se usa»): la página de un componente
 // descarga el código de su ejemplo interactivo y no el de componentes pesados que no usa. Se buscan fragmentos de
 // clases únicos de cada uno en todo el JavaScript que baja la página, también el de los imports dinámicos.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, hydrated, test } from "./hydration";
 
 const MARKERS: Record<string, string> = {
 	ColorPicker: "h-50 w-full cursor-crosshair touch-none",
@@ -22,7 +23,7 @@ async function scripts(page: Page, path: string): Promise<string> {
 		.locator("section[aria-labelledby=ejemplo], section[aria-labelledby=variantes]")
 		.first();
 	await example.scrollIntoViewIfNeeded();
-	await expect(example.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await hydrated(example.locator("astro-island").first());
 	await page.waitForLoadState("networkidle");
 	return (await Promise.all(bodies)).join("\n");
 }

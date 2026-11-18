@@ -1,6 +1,7 @@
 // Carousel con deslizar real: la emulación táctil de Chromium manda eventos de toque (que el navegador convierte en
 // eventos de puntero), y el carrusel pasa de diapositiva con un arrastre de 48px o más.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ hasTouch: true, viewport: { width: 800, height: 700 } });
 
@@ -11,7 +12,7 @@ const open = async (page: Page) => {
 		const button = document.querySelector(
 			"[aria-roledescription=carrusel] button[aria-label^=Diapositiva]",
 		);
-		return !!button && Object.keys(button).some((k) => k.startsWith("__reactProps"));
+		return !!button && window.islandReady(button);
 	});
 	return page.getByRole("region", { name: "Novedades", exact: true });
 };

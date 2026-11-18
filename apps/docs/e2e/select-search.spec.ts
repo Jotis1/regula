@@ -1,6 +1,6 @@
 // Select con búsqueda y con etiquetas en Chromium real: escribir filtra la lista, la primera queda marcada y Enter la
 // elige, y el teclado elige otra con las flechas.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 1000, height: 1000 } });
 
@@ -8,7 +8,7 @@ const ready = async (page: import("@playwright/test").Page) => {
 	await page.goto("/visual/select/");
 	await page.waitForFunction(() => {
 		const input = document.querySelector("input[role=combobox]");
-		return !!input && Object.keys(input).some((k) => k.startsWith("__reactProps"));
+		return !!input && window.islandReady(input);
 	});
 	// La vista previa trae una lista abierta (`defaultOpen`) con su capa modal: se cierra para llegar al resto
 	await page.keyboard.press("Escape");

@@ -1,6 +1,7 @@
 // VerificationCodeInput en Chromium, Firefox y WebKit: el paso entre casillas, el pegado y el autocompletado
 // dependen de cómo cada navegador entrega los eventos de teclado, `paste` e `input`.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "../hydration";
 
 const open = async (page: Page) => {
 	await page.goto("/visual/verification-code-input/");
@@ -8,7 +9,7 @@ const open = async (page: Page) => {
 	// tarea. Hasta que React no cuelga sus props del <input>, escribir en él no pasa por onChange.
 	await page.waitForFunction(() => {
 		const cell = document.querySelector('fieldset input[autocomplete="one-time-code"]');
-		return !!cell && Object.keys(cell).some((k) => k.startsWith("__reactProps"));
+		return !!cell && window.islandReady(cell);
 	});
 	const group = page.getByRole("group", { name: "Código de verificación" });
 	const cells = group.getByRole("textbox");

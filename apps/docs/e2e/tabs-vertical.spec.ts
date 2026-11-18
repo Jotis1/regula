@@ -1,12 +1,12 @@
 // Tabs verticales a 1440px (la lista) y a 390px (el desplegable): una sola versión a la vista en cada ancho.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 const open = async (page: import("@playwright/test").Page, width: number) => {
 	await page.setViewportSize({ width, height: 900 });
 	await page.goto("/visual/tabs/");
 	await page.waitForFunction(() => {
 		const tab = document.querySelector("[role=tablist][aria-label='Ajustes con raya'] [role=tab]");
-		return !!tab && Object.keys(tab).some((k) => k.startsWith("__reactProps"));
+		return !!tab && window.islandReady(tab);
 	});
 };
 

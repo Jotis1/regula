@@ -1,14 +1,15 @@
 // Páginas de componente: ficha, ejemplos vivos, props, fragmentos de código y navegación.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { COMPONENT_GROUPS, groupOf, labelOf } from "../src/lib/catalog";
+import { expect, hydrated as islandReady, test } from "./hydration";
 
 /** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
 async function hydrated(page: Page, selector: string) {
 	const island = page.locator(`${selector} astro-island`);
 	await island.scrollIntoViewIfNeeded();
-	await expect(island).not.toHaveAttribute("ssr", /.*/);
+	await islandReady(island);
 }
 
 const dir = join(import.meta.dirname, "../src/content/components");
@@ -47,7 +48,7 @@ for (const { slug, name, label } of pages) {
 		// El ejemplo interactivo se hidrata al verse: después pinta el componente
 		const example = page.locator("section[aria-labelledby=ejemplo]");
 		await example.scrollIntoViewIfNeeded();
-		await expect(example.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+		await islandReady(example.locator("astro-island").first());
 		await expect(example.locator("[data-playground-preview]")).toBeVisible();
 		expect(await page.locator("section[aria-labelledby=props] tbody tr").count()).toBeGreaterThan(0);
 		const code = page.locator("[data-code-tabs]");
@@ -158,7 +159,7 @@ test("Dropdown: la tabla de props lleva la elección y el check de la elegida no
 	// Los ejemplos del registro (el menú de tema, el de cuentas) están en su página de comparación
 	await page.goto("/visual/dropdown/");
 	const examples = page.locator("body > astro-island");
-	await expect(examples).not.toHaveAttribute("ssr", /.*/);
+	await islandReady(examples);
 	// El menú de tema (el de elección única); el de cuentas también marca una con su radio
 	const checked = examples
 		.getByRole("menu", { name: "Tema" })
@@ -174,7 +175,7 @@ test("CommandMenu: con el foco en el buscador, la opción activa lleva el anillo
 }) => {
 	await page.goto("/visual/command-menu/");
 	const examples = page.locator("body > astro-island");
-	await expect(examples).not.toHaveAttribute("ssr", /.*/);
+	await islandReady(examples);
 	const search = examples.getByRole("combobox").first();
 	const active = examples.locator('[role="option"][aria-selected="true"]').first();
 	const ring = () => active.evaluate((el) => getComputedStyle(el).boxShadow);
@@ -560,7 +561,7 @@ test("/components/: el tema cambia las capturas sin recargar; las de Stream van 
 	// (una isla por versión de la cabecera, escritorio y móvil: se esperan las dos)
 	const themeIslands = page.locator("body > header astro-island").filter({ hasText: "Tema:" });
 	await expect(themeIslands).toHaveCount(2);
-	for (const island of await themeIslands.all()) await expect(island).not.toHaveAttribute("ssr", /.*/);
+	for (const island of await themeIslands.all()) await islandReady(island);
 	await page.getByRole("button", { name: /^Tema: / }).click();
 	await page.getByRole("menuitemradio", { name: "Oscuro", exact: true }).click();
 	await expect.poll(() => shown(page, "Button")).toEqual(["dark"]);

@@ -1,12 +1,13 @@
 // ButtonUtility con el ratón y el teclado reales (el del playground de su página, sin tooltip forzado): el tooltip
 // dice qué hace el botón y se va al quitar el ratón o con Escape.
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 // Hidratado de verdad: Astro quita `ssr` al llamar a hydrateRoot, pero React cuelga sus props después, en otra tarea.
 const hydrated = (page: Page) =>
 	page.waitForFunction(() => {
 		const button = document.querySelector("section[aria-labelledby=ejemplo] button[aria-label=Copiar]");
-		return !!button && Object.keys(button).some((k) => k.startsWith("__reactProps"));
+		return !!button && window.islandReady(button);
 	});
 
 // Un ratón de verdad: llega al botón desde fuera, en varios pasos (un salto suelto no siempre dispara el hover)

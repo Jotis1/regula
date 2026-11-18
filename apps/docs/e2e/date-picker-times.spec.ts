@@ -1,6 +1,6 @@
 // DatePicker en Chromium real: el modal se abre centrado con el fondo, atrapa el foco y devuelve el foco al cerrarlo;
 // con horas, elegir día y hora deja el disparador con los dos.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 800, height: 900 } });
 
@@ -8,7 +8,7 @@ const ready = async (page: import("@playwright/test").Page) => {
 	await page.goto("/visual/date-picker/");
 	await page.waitForFunction(() => {
 		const b = [...document.querySelectorAll("button")].find((x) => x.textContent?.includes("(modal)"));
-		return !!b && Object.keys(b).some((k) => k.startsWith("__reactProps"));
+		return !!b && window.islandReady(b);
 	});
 };
 

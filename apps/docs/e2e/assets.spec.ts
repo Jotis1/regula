@@ -1,8 +1,9 @@
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
 // biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as flags from "@untitledui/country-flags";
+import { expect, hydrated, test } from "./hydration";
 
 // Las galerías de banderas, pagos, archivos y cursores son la misma isla (`AssetGallery`) que la de iconos.
 const dist = (dir: string) => join(import.meta.dirname, "../../../packages/assets/dist", dir);
@@ -48,9 +49,7 @@ const GALLERIES = [
 
 async function ready(page: Page, g: (typeof GALLERIES)[number]) {
 	await page.goto(g.path);
-	await expect(
-		page.locator("astro-island").filter({ has: page.locator(`#${g.prefix}-search`) }),
-	).not.toHaveAttribute("ssr", /.*/);
+	await hydrated(page.locator("astro-island").filter({ has: page.locator(`#${g.prefix}-search`) }));
 }
 
 for (const g of GALLERIES) {

@@ -1,5 +1,6 @@
 // Tema de la web (docs-site, «Tema claro y oscuro»): selector de tres estados en la cabecera, sin parpadeo al cargar.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, hydrated as islandReady, test } from "./hydration";
 
 // Apunta el tema que ya tenía <html> en el momento en que aparece <body>, antes de la primera pintura
 const recordThemeAtBody = () => {
@@ -26,7 +27,7 @@ const hydrated = async (page: Page) => {
 	// La cabecera lleva una isla del selector por versión (escritorio y móvil): se esperan las dos
 	const islands = page.locator("body > header astro-island").filter({ hasText: "Tema:" });
 	await expect(islands).toHaveCount(2);
-	for (const island of await islands.all()) await expect(island).not.toHaveAttribute("ssr", /.*/);
+	for (const island of await islands.all()) await islandReady(island);
 };
 
 /** Abre el selector de la cabecera y elige una opción. */

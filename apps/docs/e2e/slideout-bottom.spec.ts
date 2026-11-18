@@ -1,6 +1,6 @@
 // Slideout con `side="bottom"` a 390 px: la hoja ocupa el ancho de la pantalla pegada abajo con el foco dentro, Escape
 // la cierra y el foco vuelve al botón que la abrió.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 390, height: 780 } });
 
@@ -12,7 +12,7 @@ test("la hoja inferior ocupa el ancho, pegada abajo y con el foco dentro; Escape
 	// Hidratado de verdad: sin los props de React colgados del botón, pulsarlo no abre nada
 	await page.waitForFunction(() => {
 		const button = [...document.querySelectorAll("button")].find((b) => b.textContent === "Ver detalle");
-		return !!button && Object.keys(button).some((k) => k.startsWith("__reactProps"));
+		return !!button && window.islandReady(button);
 	});
 	await opener.click();
 

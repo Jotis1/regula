@@ -1,12 +1,13 @@
 // MultiSelect en el navegador: abrir, buscar, elegir y cerrar con teclado, y la lista a 390px.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 async function open(page: Page) {
 	await page.goto("/visual/multi-select/");
 	// Hidratado de verdad: Astro quita `ssr` de la isla al llamar a hydrateRoot, pero React hidrata después.
 	await page.waitForFunction(() => {
 		const field = document.querySelector("button[aria-expanded]");
-		return !!field && Object.keys(field).some((k) => k.startsWith("__reactProps"));
+		return !!field && window.islandReady(field);
 	});
 	// El primero del ejemplo: sin nada elegido.
 	return page.getByRole("button", { name: "Equipos", exact: false }).first();
