@@ -1,7 +1,7 @@
 prefix: INT
 title: CI
 description: Cómo se monta la integración continua para que proteja la rama principal sin hacer esperar de más.
-order: 11
+order: 15
 rules:
     - id: INT-001
       title: Un workflow con checks obligatorios no se filtra por rutas ni por ramas

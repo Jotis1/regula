@@ -38,6 +38,10 @@ describe("normas", () => {
 			"documentation",
 			"versioning",
 			"security",
+			"accessibility",
+			"performance",
+			"seo",
+			"localization",
 			"git",
 			"ci",
 			"process",
@@ -100,7 +104,7 @@ describe("normas", () => {
 	});
 
 	it("list_standards con un área que no existe da error con las que hay", () => {
-		const r = call("list_standards", { area: "seo" });
+		const r = call("list_standards", { area: "marketing" });
 		expect(r.isError).toBe(true);
 		expect(r.text).toContain("naming");
 	});
