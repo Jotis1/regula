@@ -40,6 +40,7 @@ const BIOME = {
 				useFilenamingConvention: { level: "error", options: { filenameCases: ["kebab-case"] } },
 			},
 			performance: { noReExportAll: "error", noNamespaceImport: "error" },
+			security: { noDangerouslySetInnerHtml: "error", noGlobalEval: "error" },
 		},
 	},
 	javascript: { formatter: { quoteStyle: "double", semicolons: "always" } },

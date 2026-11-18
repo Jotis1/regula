@@ -56,6 +56,10 @@
 				"noNamespaceImport": "error",
 				"noReExportAll": "error"
 			},
+			"security": {
+				"noDangerouslySetInnerHtml": "error",
+				"noGlobalEval": "error"
+			},
 			"a11y": {
 				"useValidAriaRole": {
 					"level": "error",

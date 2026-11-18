@@ -88,6 +88,8 @@ const BIOME_BLOCK: [path: string[], expected: unknown][] = [
 	[["linter", "rules", "style", "useFilenamingConvention"], "error"],
 	[["linter", "rules", "performance", "noReExportAll"], "error"],
 	[["linter", "rules", "performance", "noNamespaceImport"], "error"],
+	[["linter", "rules", "security", "noDangerouslySetInnerHtml"], "error"],
+	[["linter", "rules", "security", "noGlobalEval"], "error"],
 	[["formatter", "indentStyle"], "tab"],
 	[["formatter", "indentWidth"], 4],
 	[["formatter", "lineWidth"], 110],

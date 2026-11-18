@@ -1,0 +1,197 @@
+prefix: TST
+title: Tests
+description: Qué se prueba, con qué y cómo, para que un test en verde signifique que el código funciona.
+order: 6
+rules:
+    - id: TST-001
+      title: Cada cambio de comportamiento lleva un test que fallaría sin él
+      level: must
+      appliesTo: all
+      statement: >-
+          Todo cambio que se nota desde fuera (una prop nueva, un valor por defecto, un caso que antes fallaba) llega
+          con un test que falla sin el cambio y pasa con él. Un arreglo empieza por el test que reproduce el fallo. No
+          hay umbral de cobertura.
+      rationale: >-
+          El test que fallaría sin el cambio es la prueba de que el cambio hace lo que dice, y el aviso si alguien lo
+          deshace. Un porcentaje de cobertura no sirve para eso: premia los tests que ejecutan código sin comprobar
+          nada, y castiga borrar un test que sobra.
+      examples:
+          good:
+              - caption: El arreglo de un fallo, con el test que lo reproduce
+                lang: tsx
+                code: |-
+                    it("Escape cierra el menú aunque el foco esté en la búsqueda", async () => {
+                        render(<Dropdown searchable items={items} />);
+                        await user.click(screen.getByRole("button", { name: "Opciones" }));
+                        await user.keyboard("{Escape}");
+                        expect(screen.queryByRole("menu")).toBeNull();
+                    });
+          bad:
+              - caption: Un test que sube la cobertura y no comprueba nada
+                lang: tsx
+                code: |-
+                    it("renderiza", () => {
+                        render(<Dropdown items={items} />);
+                    });
+      verification:
+          kind: review
+          review: >-
+              Que cada cambio de comportamiento trae su test, y que ese test falla al deshacer el cambio. En un
+              arreglo, que el test reproduce el fallo que se arregla.
+
+    - id: TST-002
+      title: Vitest, Playwright y bun test, cada uno para lo suyo
+      level: must
+      appliesTo: all
+      statement: >-
+          Las unidades y los componentes se prueban con Vitest y jsdom (`test`), el comportamiento en un navegador
+          real con Playwright (`test:e2e`) y los scripts del repo con `bun test`. Ni Jest, ni Mocha, ni Cypress.
+      rationale: >-
+          Una sola herramienta por tipo de test hace que cualquier proyecto de la suite se pruebe igual, y que un test
+          se pueda mover de un proyecto a otro sin traducirlo. Vitest comparte la config de Vite con Astro y con las
+          librerías; Playwright prueba Chromium, Firefox y WebKit con el mismo código.
+      examples:
+          good:
+              - caption: Los scripts de un paquete
+                lang: json
+                code: |-
+                    "scripts": {
+                        "test": "vitest run",
+                        "test:e2e": "playwright test"
+                    }
+          bad:
+              - caption: Otro runner
+                lang: json
+                code: |-
+                    "scripts": { "test": "jest" },
+                    "devDependencies": { "jest": "^30" }
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: TST-003
+      title: Se prueba lo que se ve
+      level: should
+      appliesTo: all
+      statement: >-
+          Un test busca los elementos como los encuentra quien usa la interfaz: por su rol y su nombre accesible, por
+          su etiqueta o por su texto. Comprueba lo que se ve o se anuncia, no el estado interno ni las clases.
+      rationale: >-
+          Un test que mira lo interno se rompe con cada refactor aunque nada cambie para quien usa el componente, y
+          sigue en verde cuando algo deja de verse. Buscar por rol, además, comprueba de paso que el elemento es
+          accesible.
+      examples:
+          good:
+              - caption: Por su rol y su nombre
+                lang: ts
+                code: |-
+                    await user.click(screen.getByRole("button", { name: "Guardar" }));
+          bad:
+              - caption: Por su clase CSS
+                lang: ts
+                code: |-
+                    await user.click(container.querySelector(".btn-primary") as HTMLElement);
+      verification:
+          kind: review
+          review: >-
+              Que los tests buscan por rol, etiqueta o texto, y que comprueban lo que se ve. Un selector de clase o de
+              `data-testid` necesita un motivo.
+
+    - id: TST-004
+      title: Tests deterministas
+      level: must
+      appliesTo: all
+      statement: >-
+          Un test da el mismo resultado cada vez que se ejecuta. No espera un tiempo fijo, sino a una condición, o
+          adelanta el reloj de la prueba (`page.clock`, `vi.useFakeTimers`). No usa red externa. Controla el reloj y
+          el azar cuando el resultado depende de ellos. En el CI, un test que solo pasa al reintentarlo hace fallar la
+          ejecución (`failOnFlakyTests`).
+      rationale: >-
+          Un test que falla a ratos enseña a relanzar el CI sin mirar, y entonces tampoco se mira cuando falla de
+          verdad. Una espera fija es lenta cuando sobra y falla cuando el runner va cargado. Reintentar en silencio
+          esconde el problema; marcarlo como inestable y fallar obliga a arreglarlo.
+      examples:
+          good:
+              - caption: Se adelanta el reloj en lugar de esperarlo
+                lang: ts
+                code: |-
+                    await page.clock.install();
+                    await page.goto("/components/chat-box/");
+                    await page.clock.runFor(3500);
+                    expect(await rows.allTextContents()).toEqual(before);
+              - caption: Un inestable hace fallar el CI
+                lang: ts
+                code: |-
+                    export default defineConfig({
+                        retries: process.env.CI ? 1 : 0,
+                        failOnFlakyTests: !!process.env.CI,
+                    });
+          bad:
+              - caption: Una espera fija
+                lang: ts
+                code: |-
+                    await page.waitForTimeout(3000);
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: TST-005
+      title: axe pasa en cada componente y en cada página
+      level: must
+      appliesTo: all
+      statement: >-
+          axe pasa sin errores serios ni críticos en cada componente público y en cada página de cada app, en tema
+          claro y oscuro. Solo se perdonan las excepciones de contraste que documenta la guía. Además, la apariencia
+          de los componentes DEBERÍA compararse con capturas aprobadas.
+      rationale: >-
+          La accesibilidad que no se prueba se pierde en el siguiente cambio de estilos. axe encuentra en segundos lo
+          que más se rompe (contraste, nombres accesibles, roles), y las capturas aprobadas avisan de un cambio visual
+          que nadie pidió.
+      examples:
+          good:
+              - caption: axe en cada página construida, en los dos temas
+                lang: ts
+                code: |-
+                    for (const path of pages(dist))
+                        for (const dark of [false, true])
+                            test(`${path} sin fallos serios`, async ({ page }) => {
+                                await page.emulateMedia({ colorScheme: dark ? "dark" : "light" });
+                                await page.goto(path);
+                                const { violations } = await new AxeBuilder({ page }).analyze();
+                                expect(violations.filter(serious)).toEqual([]);
+                            });
+          bad:
+              - caption: Una página nueva que nadie pasa por axe
+                lang: html
+                code: |-
+                    <img src="/hero.png" />
+      verification:
+          kind: ci
+          check: Web (funcional, axe y paridad visual)
+
+    - id: TST-006
+      title: Ni .only ni .skip sin motivo
+      level: must
+      appliesTo: all
+      statement: >-
+          En la rama principal no hay tests con `.only` ni con `.skip`. Un salto que depende de una condición lleva
+          el motivo en el propio salto y en su supresión. Lo vigilan las reglas `noFocusedTests` y `noSkippedTests`
+          de Biome.
+      rationale: >-
+          Un `.only` olvidado deja sin ejecutar todos los demás tests del archivo, y el CI sigue en verde. Un `.skip`
+          sin motivo es un test que nadie sabe si se puede borrar.
+      examples:
+          good:
+              - caption: Un salto condicional, con su motivo
+                lang: ts
+                code: |-
+                    // biome-ignore lint/suspicious/noSkippedTests: salto condicional, solo sin captura aprobada en ese tema
+                    test.skip(!hasApproved(name, theme), `${name} no tiene captura aprobada en ${theme}`);
+          bad:
+              - caption: Un test enfocado que se quedó
+                lang: ts
+                code: |-
+                    it.only("abre el menú", async () => {
+      verification:
+          kind: biome
+          check: noFocusedTests
