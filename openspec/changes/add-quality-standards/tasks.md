@@ -27,7 +27,7 @@ Comandos:
 
 ## 4. Auditoría
 
-- [ ] 4.1 Arreglar los dos avisos de hoy (D4): `bun audit fix --dry-run` y, si no basta, `overrides`. Lo que no se pueda forzar queda en `audit-exceptions.json` con su motivo y una caducidad de tres meses. Comprobar con `bunx turbo run build typecheck test`, `astro check` de la web y `bun audit --audit-level=high` (solo quedan los avisos con excepción)
+- [x] 4.1 Arreglar los dos avisos de hoy (D4): `bun audit fix --dry-run` y, si no basta, `overrides`. Lo que no se pueda forzar queda en `audit-exceptions.json` con su motivo y una caducidad de tres meses. Comprobar con `bunx turbo run build typecheck test`, `astro check` de la web y `bun audit --audit-level=high` (solo quedan los avisos con excepción)
 - [ ] 4.2 `scripts/check-audit.ts` y su test (D3), con un fixture de `bun audit --json` y estos casos:
   - un aviso alto sin excepción;
   - un aviso con excepción vigente;
