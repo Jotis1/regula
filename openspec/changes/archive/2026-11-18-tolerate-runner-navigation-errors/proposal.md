@@ -24,7 +24,7 @@ La causa de fondo no se ha encontrado. El usuario decidió el 2026-11-18 que, en
 
 ### Modified Capabilities
 
-- `engineering-standards`: el requisito «Área de tests: tests deterministas» admite el reintento de una navegación que el runner rechaza.
+- `engineering-standards`: un requisito nuevo del área de tests, la excepción de la navegación que el runner rechaza.
 - `standards-compliance`: cómo aplica Regula ese reintento y cómo lo prueba.
 
 ## Impact
