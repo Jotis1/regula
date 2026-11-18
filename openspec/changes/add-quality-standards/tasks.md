@@ -19,7 +19,7 @@ Comandos:
 
 - [x] 2.1 Fijar por SHA `oven-sh/setup-bun` en los tres workflows y `changesets/action` en `release.yml`, con la versión exacta en un comentario (D8). Comprobar que cada SHA es el commit de esa etiqueta con `gh api`
 - [x] 2.2 Pasar por `env:` los valores de `github.event.*` y `github.head_ref` de «Conventional Commits», «Tipografía» y «Changesets» (D8). Comprobar que ningún `run:` de `.github/workflows/` contiene `${{ github.event.` ni `${{ github.head_ref`, y que el job «Commits» pasa en la PR
-- [ ] 2.3 Quitar `HAS_NPM_TOKEN`, el paso «Token temporal de npm» y su comentario de `release.yml`. Comprobar que ningún workflow nombra `NPM_TOKEN` y que `bun run scripts/release.ts --dry-run` sigue pasando `--provenance`
+- [x] 2.3 Quitar `HAS_NPM_TOKEN`, el paso «Token temporal de npm» y su comentario de `release.yml`. Comprobar que ningún workflow nombra `NPM_TOKEN` y que `bun run scripts/release.ts --dry-run` sigue pasando `--provenance`
 
 ## 3. Avisos
 
