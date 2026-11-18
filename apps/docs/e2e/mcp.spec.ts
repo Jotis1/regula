@@ -1,7 +1,8 @@
 // Guide page of the MCP server (spec docs-site, «Página del MCP»). Axe runs on it in both themes through the crawl of
 // a11y.spec.ts, which covers every built page.
-import { expect, test } from "@playwright/test";
+
 import { TOOLS } from "../src/features/mcp/tools";
+import { expect, hydrated, test } from "./hydration";
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
@@ -24,7 +25,7 @@ test("el comando de Claude Code se copia entero", async ({ page, context }) => {
 	await page.goto("/start/mcp/");
 	const block = page.locator("[data-code]").first();
 	// CodeSnippet is an island `client:visible`: its button answers once it is hydrated
-	await expect(block.locator("astro-island")).not.toHaveAttribute("ssr", /.*/);
+	await hydrated(block.locator("astro-island"));
 	await block.getByRole("button", { name: "Copiar" }).click();
 	expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(COMMAND);
 });

@@ -1,13 +1,11 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test("ColorPickerDropdown se abre con el teclado, Escape lo cierra y el foco vuelve", async ({ page }) => {
 	await page.goto("/visual/color-picker-dropdown/");
 	const trigger = page.getByRole("button", { name: /^Color\s*:\s*#7F56D9$/ }).first();
 	// Espera a que la isla esté hidratada
 	await page.waitForFunction(() =>
-		[...document.querySelectorAll("button")].some((b) =>
-			Object.keys(b).some((k) => k.startsWith("__reactProps")),
-		),
+		[...document.querySelectorAll("button")].some((b) => window.islandReady(b)),
 	);
 	await trigger.focus();
 	await page.keyboard.press("Enter");

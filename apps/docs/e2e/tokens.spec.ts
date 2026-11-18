@@ -1,5 +1,6 @@
 import { colors, shadows, type } from "@jotis-me/tokens";
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, hydrated, test } from "./hydration";
 
 const total = Object.keys(colors).length;
 const inFamily = (prefix: string) => Object.keys(colors).filter((n) => n.startsWith(`${prefix}-`)).length;
@@ -21,9 +22,7 @@ const row = (page: Page, family: string, name: string) =>
 const cards = (page: Page) => explorer(page).locator("[data-layout=card]:visible");
 /** La burbuja de copiar es una isla `client:idle`: hasta que se hidrata, un clic no copia. */
 const copyReady = (page: Page) =>
-	expect(
-		page.locator("astro-island").filter({ has: page.locator("[data-copy-tooltip]") }),
-	).not.toHaveAttribute("ssr", /.*/);
+	hydrated(page.locator("astro-island").filter({ has: page.locator("[data-copy-tooltip]") }));
 
 test("la página de color tiene una fila y una tarjeta por token del paquete, sin islas", async ({ page }) => {
 	await page.goto("/foundations/color/");

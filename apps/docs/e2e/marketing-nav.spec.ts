@@ -1,13 +1,10 @@
 // MarketingNav en Chromium: el menú se abre con el teclado, el foco entra y Escape lo devuelve, en escritorio (a todo
 // el ancho) y en móvil.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 const hydrated = (page: Page) =>
-	page.waitForFunction(() =>
-		[...document.querySelectorAll("button")].some((b) =>
-			Object.keys(b).some((k) => k.startsWith("__reactProps")),
-		),
-	);
+	page.waitForFunction(() => [...document.querySelectorAll("button")].some((b) => window.islandReady(b)));
 
 test.describe("escritorio", () => {
 	test.use({ viewport: { width: 1440, height: 900 } });

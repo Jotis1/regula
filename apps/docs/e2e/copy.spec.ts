@@ -1,14 +1,12 @@
 // Copiar con aviso (component-library, «Copiar con aviso junto a lo pulsado»): la burbuja «Copiado» del paquete sale
 // sobre el botón pulsado, tanto en HTML estático (las tablas de tokens) como dentro de una isla (la galería de iconos).
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
+import { expect, hydrated as islandReady, test } from "./hydration";
 
 /** La burbuja es una isla `client:idle`: hasta que se hidrata, un clic en un `data-copy` no copia nada. */
 async function hydrated(page: Page) {
 	// La isla de la página (Base, `CopyTooltipIsland`): una página puede llevar más CopyTooltip dentro de otras islas
-	await expect(page.locator("astro-island[component-url*=CopyTooltipIsland]")).not.toHaveAttribute(
-		"ssr",
-		/.*/,
-	);
+	await islandReady(page.locator("astro-island[component-url*=CopyTooltipIsland]"));
 }
 
 const tooltip = (page: Page) => page.locator("[data-copy-tooltip]");
@@ -57,9 +55,7 @@ for (const scheme of ["light", "dark"] as const) {
 		await page.emulateMedia({ colorScheme: scheme });
 		await page.setViewportSize({ width: 1440, height: 900 });
 		await page.goto("/icons/");
-		await expect(
-			page.locator("astro-island").filter({ has: page.locator("#icon-search") }),
-		).not.toHaveAttribute("ssr", /.*/);
+		await islandReady(page.locator("astro-island").filter({ has: page.locator("#icon-search") }));
 		await hydrated(page);
 		// La galería enseña los primeros iconos: «calendar» se busca
 		await page.getByLabel("Buscar icono").fill("calendar");
@@ -103,7 +99,7 @@ test("la página de CopyTooltip: useCopy desde una isla y, con dos CopyTooltip m
 	// La isla del ejemplo interactivo (con su botón y su CopyTooltip) y la de la página tienen que estar hidratadas
 	const example = page.locator("section[aria-labelledby=ejemplo]");
 	await example.scrollIntoViewIfNeeded();
-	await expect(example.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await islandReady(example.locator("astro-island").first());
 	await hydrated(page);
 	// El de la página (Base) y el del ejemplo están montados a la vez
 	await expect(page.locator("[data-copy-tooltip]")).toHaveCount(2);

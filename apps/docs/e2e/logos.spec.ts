@@ -1,11 +1,10 @@
 // Galería de logos de terceros en /icons/logos/ (docs-site, «Galería de iconos», escenario «Elegir un logo»).
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, hydrated, test } from "./hydration";
 
 async function ready(page: Page) {
 	await page.goto("/icons/logos/");
-	await expect(
-		page.locator("astro-island").filter({ has: page.locator("#logo-search") }),
-	).not.toHaveAttribute("ssr", /.*/);
+	await hydrated(page.locator("astro-island").filter({ has: page.locator("#logo-search") }));
 }
 
 test("están los 332 SVG: 232 de apps, 16 integraciones y 34 redes, con su recuento", async ({ page }) => {

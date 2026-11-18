@@ -1,8 +1,9 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
 // biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as lineIcons from "@untitledui/icons";
+import { expect, hydrated, test } from "./hydration";
 
 // Los iconos de línea son los de @untitledui/icons: el recuento sale del propio paquete
 const names = Object.keys(lineIcons)
@@ -28,9 +29,7 @@ const sorted = (list: readonly string[]) => [...list].sort((a, b) => a.localeCom
 /** La galería es una isla: espera a que se hidrate antes de usarla. */
 async function ready(page: Page) {
 	await page.goto("/icons/");
-	await expect(
-		page.locator("astro-island").filter({ has: page.locator("#icon-search") }),
-	).not.toHaveAttribute("ssr", /.*/);
+	await hydrated(page.locator("astro-island").filter({ has: page.locator("#icon-search") }));
 }
 
 /** Pulsa «Mostrar más» hasta que no quede nada por mostrar. */

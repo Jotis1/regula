@@ -1,5 +1,5 @@
 // CodeSnippet: una línea destacada cubre todo el ancho que se desplaza, también si es más larga que el bloque.
-import { expect, test } from "@playwright/test";
+import { expect, hydrated, test } from "./hydration";
 
 test("Línea destacada larga: el destacado llega de borde a borde del área que se desplaza", async ({
 	page,
@@ -8,7 +8,7 @@ test("Línea destacada larga: el destacado llega de borde a borde del área que 
 	await page.goto("/components/input/");
 	const pg = page.locator("section[aria-labelledby=ejemplo]");
 	await pg.scrollIntoViewIfNeeded();
-	await expect(pg.locator("astro-island").first()).not.toHaveAttribute("ssr", /.*/);
+	await hydrated(pg.locator("astro-island").first());
 	const hint = pg.locator('[data-playground-controls] [data-prop="hint"]');
 	const group = hint.locator("xpath=ancestor::details[1]");
 	if (!(await group.evaluate((d) => (d as HTMLDetailsElement).open)))

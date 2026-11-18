@@ -1,6 +1,7 @@
 // ContextMenu con el botón derecho real de Chromium: se abre en el punto del puntero, también cerca del borde de la
 // ventana, y no sale el menú del navegador.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 1000, height: 700 } });
 
@@ -8,7 +9,7 @@ const open = async (page: Page) => {
 	await page.goto("/visual/context-menu/");
 	await page.waitForFunction(() => {
 		const zone = document.querySelector("div[tabindex='-1'].border-dashed");
-		return !!zone && Object.keys(zone).some((k) => k.startsWith("__reactProps"));
+		return !!zone && window.islandReady(zone);
 	});
 	// Las vistas previas abiertas (`defaultOpen`) traen su menú en línea: se cierra con un clic fuera
 	await page.mouse.click(5, 5);

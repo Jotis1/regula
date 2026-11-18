@@ -1,6 +1,7 @@
 // SidebarNav en Chromium real: los submenús se abren con el teclado, el estrecho enseña el nombre en un tooltip y abre
 // su segundo panel, la tarjeta de cuenta cambia de cuenta y el menú de la barra adaptable abre la navegación.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 800, height: 900 } });
 
@@ -11,7 +12,7 @@ const ready = async (page: Page) => {
 	await page.goto("/visual/sidebar-nav/");
 	await page.waitForFunction(() => {
 		const button = document.querySelector("nav button[aria-controls]");
-		return !!button && Object.keys(button).some((k) => k.startsWith("__reactProps"));
+		return !!button && window.islandReady(button);
 	});
 };
 

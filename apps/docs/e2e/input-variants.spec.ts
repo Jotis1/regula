@@ -1,6 +1,6 @@
 // Input en Chromium real: el campo de tarjeta agrupa mientras se escribe, el de archivo abre el selector con el botón y
 // muestra el nombre, y el botón de la fecha abre el selector nativo.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./hydration";
 
 test.use({ viewport: { width: 1000, height: 1000 } });
 
@@ -8,7 +8,7 @@ const ready = async (page: import("@playwright/test").Page) => {
 	await page.goto("/visual/input/");
 	await page.waitForFunction(() => {
 		const input = document.querySelector("input[autocomplete='cc-number']");
-		return !!input && Object.keys(input).some((k) => k.startsWith("__reactProps"));
+		return !!input && window.islandReady(input);
 	});
 };
 

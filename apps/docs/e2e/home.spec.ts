@@ -3,11 +3,12 @@
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { colors } from "@jotis-me/tokens";
-import { expect, type Locator, type Page, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 // biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as lineIcons from "@untitledui/icons";
 import { STORY, thousands } from "../src/components/home/story";
 import { COMPONENT_GROUPS, FOUNDATIONS } from "../src/lib/catalog";
+import { expect, islandOf, hydrated as islandReady, test } from "./hydration";
 
 const components = readdirSync(join(import.meta.dirname, "../src/content/components")).filter((f) =>
 	f.endsWith(".md"),
@@ -19,13 +20,11 @@ const streamGroups = COMPONENT_GROUPS.filter((g) => g.section === "stream");
 const appComponents = appGroups.reduce((n, g) => n + g.components.length, 0);
 
 const section = (page: Page, id: string) => page.locator(`section[aria-labelledby='${id}']`);
-/** Espera a que la isla que contiene `inside` esté hidratada (Astro le quita `ssr`). */
+/** Waits until the island that holds `inside` is hydrated and has run its effects. */
 async function hydrated(_page: Page, inside: Locator) {
 	await inside.scrollIntoViewIfNeeded();
-	// `inside` cuelga de la página, no de la isla: se mira su isla más cercana
-	await expect
-		.poll(() => inside.first().evaluate((el) => el.closest("astro-island")?.hasAttribute("ssr") ?? false))
-		.toBe(false);
+	// `inside` hangs from the page, not from the island: use its nearest island
+	await islandReady(islandOf(inside));
 }
 /** Suma de los tres canales de un `rgb(…)`: alta en un fondo claro, baja en uno oscuro. */
 /** Fondo y color de texto de un elemento: cambia cuando cambia su jerarquía o su color. */

@@ -10,7 +10,10 @@ export default defineConfig({
 	// queda para que el informe diga que es inestable, y no un fallo sin más.
 	retries: process.env.CI ? 1 : 0,
 	failOnFlakyTests: !!process.env.CI,
-	use: { baseURL: "http://localhost:4321" },
+	// 127.0.0.1 and not localhost: on Windows localhost is ::1 and 127.0.0.1, `astro preview` listened only on ::1, and a
+	// failed attempt fell back to the address with nobody listening (ERR_CONNECTION_REFUSED). The `preview` script fixes
+	// the host.
+	use: { baseURL: "http://127.0.0.1:4321" },
 	projects: [
 		{ name: "chromium", use: { browserName: "chromium" } },
 		{ name: "firefox", use: { browserName: "firefox" }, testMatch: CROSS_BROWSER },
@@ -18,7 +21,7 @@ export default defineConfig({
 	],
 	webServer: {
 		command: "bun run preview --port 4321",
-		url: "http://localhost:4321",
+		url: "http://127.0.0.1:4321",
 		reuseExistingServer: true,
 	},
 });
