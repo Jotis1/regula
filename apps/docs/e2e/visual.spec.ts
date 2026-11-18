@@ -36,6 +36,7 @@ test.describe("paridad visual con las capturas aprobadas", () => {
 	for (const name of entries) {
 		for (const theme of themes) {
 			test(`${name} (${label[theme]})`, async ({ page }) => {
+				// biome-ignore lint/suspicious/noSkippedTests: salto condicional, solo sin captura aprobada en ese tema
 				test.skip(!hasApproved(name, theme), `${name} no tiene captura aprobada en ${label[theme]}`);
 				await page.setViewportSize({ width: VIEWPORT_WIDTH, height: CARD_HEIGHTS[name] ?? 300 });
 				await page.emulateMedia({ reducedMotion: "reduce" });

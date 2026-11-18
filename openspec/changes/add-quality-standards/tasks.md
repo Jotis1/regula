@@ -13,7 +13,7 @@ Comandos:
 
 - [x] 1.1 Cambiar los `waitForTimeout` de `button-utility.spec.ts`, `chat-live.spec.ts` y `copy.spec.ts` por una espera a la condición o por `page.clock` (D7), y revisar el `setTimeout` del bucle de `components.spec.ts`. Comprobar que esos e2e pasan cinco veces seguidas con `--repeat-each=5` en Chromium y, los de `cross-browser`, también en Firefox y WebKit
 - [x] 1.2 `failOnFlakyTests: !!process.env.CI` en `apps/docs/playwright.config.ts`, con `retries: 1` (D6). Comprobar en local con `CI=1` que un test que falla a propósito en el primer intento y pasa en el segundo hace fallar la ejecución, y quitar ese test
-- [ ] 1.3 `noFocusedTests` y `noSkippedTests` en `error` en `biome.json`, y el `biome-ignore` con motivo en el `test.skip` condicional de `visual.spec.ts`. Comprobar con Biome que el repo pasa, y que un `it.only` de prueba lo hace fallar
+- [x] 1.3 `noFocusedTests` y `noSkippedTests` en `error` en `biome.json`, y el `biome-ignore` con motivo en el `test.skip` condicional de `visual.spec.ts`. Comprobar con Biome que el repo pasa, y que un `it.only` de prueba lo hace fallar
 
 ## 2. Workflows
 

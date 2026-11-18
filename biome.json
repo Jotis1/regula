@@ -35,6 +35,8 @@
 			"suspicious": {
 				"noExplicitAny": "error",
 				"noTsIgnore": "error",
+				"noFocusedTests": "error",
+				"noSkippedTests": "error",
 				"noConsole": {
 					"level": "error",
 					"options": { "allow": ["error", "warn"] }
