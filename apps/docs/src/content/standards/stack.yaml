@@ -102,7 +102,8 @@ rules:
       statement: >-
           `biome.json` añade a lo que genera `biome init` el bloque de la guía: el preset `recommended`, las reglas de las
           normas de código (`noExplicitAny`, `noTsIgnore`, `noConsole`, `noEnum`, `noNonNullAssertion`, `noDefaultExport`,
-          `useImportType`, `useFilenamingConvention`, `noReExportAll` y `noNamespaceImport`), el formato de la suite
+          `useImportType`, `useFilenamingConvention`, `noReExportAll` y `noNamespaceImport`), las de los tests (`noFocusedTests`
+          y `noSkippedTests`) y las de seguridad (`noDangerouslySetInnerHtml` y `noGlobalEval`), el formato de la suite
           (sangría con tabuladores de ancho 4, líneas de hasta 110, comillas dobles y punto y coma), los imports ordenados
           y el `.gitignore` como lista de ignorados. Una regla está en `error` o en `off`, nunca en `warn`, y el CI ejecuta
           `biome ci --error-on-warnings .`.
@@ -123,6 +124,8 @@ rules:
                           "suspicious": {
                             "noExplicitAny": "error",
                             "noTsIgnore": "error",
+                            "noFocusedTests": "error",
+                            "noSkippedTests": "error",
                             "noConsole": { "level": "error", "options": { "allow": ["error", "warn"] } }
                           },
                           "style": {
@@ -135,7 +138,8 @@ rules:
                               "options": { "requireAscii": true, "filenameCases": ["kebab-case"] }
                             }
                           },
-                          "performance": { "noReExportAll": "error", "noNamespaceImport": "error" }
+                          "performance": { "noReExportAll": "error", "noNamespaceImport": "error" },
+                          "security": { "noDangerouslySetInnerHtml": "error", "noGlobalEval": "error" }
                         }
                       },
                       "assist": { "actions": { "source": { "organizeImports": "on" } } },

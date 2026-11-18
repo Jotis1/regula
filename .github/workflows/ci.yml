@@ -35,7 +35,7 @@ jobs:
             - uses: actions/checkout@v7
               with:
                   fetch-depth: 0
-            - uses: oven-sh/setup-bun@v2
+            - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
               with:
                   bun-version-file: package.json
             - name: ¿Cambia código?
@@ -58,7 +58,7 @@ jobs:
             TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
             - uses: actions/checkout@v7
-            - uses: oven-sh/setup-bun@v2
+            - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
               with:
                   bun-version-file: package.json
             - run: bun install --frozen-lockfile
@@ -75,6 +75,9 @@ jobs:
             # STK, COD, DOC y VER: stack, tsconfig, supresiones, JSDoc, README y dependencias
             - name: Normas de desarrollo
               run: bun run check:dev
+            # SEC-001 y SEC-002: avisos altos o críticos en las dependencias, con sus excepciones (audit-exceptions.json)
+            - name: Auditoría
+              run: bun run check:audit
             - name: Tipos, tests y build
               run: bunx turbo run build typecheck test
             # El generador del artefacto (design D6) no necesita red: se ejecuta en un espacio de red vacío, como el
@@ -109,19 +112,30 @@ jobs:
             - uses: actions/checkout@v7
               with:
                   fetch-depth: 0
-            - uses: oven-sh/setup-bun@v2
+            - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
               with:
                   bun-version-file: package.json
             - run: bun install --frozen-lockfile
+            # SEC-008: los valores del evento llegan por `env:`, nunca dentro del `run:`
             - name: Conventional Commits
-              run: bunx commitlint --from "${{ github.event.pull_request.base.sha }}" --to "${{ github.event.pull_request.head.sha }}" --verbose
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+              run: bunx commitlint --from "$BASE" --to "$HEAD" --verbose
             # LNG-005: ni punto medio ni rayas en los commits. Los de los bots quedan fuera: copian notas de versión.
             - name: Tipografía
-              run: bun run scripts/check-commit-typography.ts "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}"
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+              run: bun run scripts/check-commit-typography.ts "$BASE" "$HEAD"
             # VER-002: si la PR cambia lo que publica un paquete, trae un changeset que lo nombra (o uno vacío). El PR de
             # versión de changesets queda fuera: borra los changesets a propósito.
             - name: Changesets
-              run: bun run scripts/check-changesets.ts "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" "${{ github.head_ref }}"
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+                  BRANCH: ${{ github.head_ref }}
+              run: bun run scripts/check-changesets.ts "$BASE" "$HEAD" "$BRANCH"
 
     # Pruebas con navegador. En Windows porque las capturas aprobadas de la paridad visual se capturaron en Windows: el
     # suavizado del texto cambia entre sistemas y en Linux superaría el umbral del 2 %.
@@ -142,7 +156,7 @@ jobs:
             TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
             - uses: actions/checkout@v7
-            - uses: oven-sh/setup-bun@v2
+            - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
               with:
                   bun-version-file: package.json
             - run: bun install --frozen-lockfile
@@ -175,7 +189,7 @@ jobs:
             TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
             - uses: actions/checkout@v7
-            - uses: oven-sh/setup-bun@v2
+            - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
               with:
                   bun-version-file: package.json
             - run: bun install --frozen-lockfile
@@ -236,7 +250,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v7
-            - uses: oven-sh/setup-bun@v2
+            - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
               with:
                   bun-version-file: package.json
             - name: Resultado de cada job
@@ -255,7 +269,7 @@ jobs:
             TURBO_TEAM: ${{ vars.TURBO_TEAM }}
         steps:
             - uses: actions/checkout@v7
-            - uses: oven-sh/setup-bun@v2
+            - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
               with:
                   bun-version-file: package.json
             - run: bun install --frozen-lockfile

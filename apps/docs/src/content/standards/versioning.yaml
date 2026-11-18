@@ -1,7 +1,7 @@
 prefix: VER
 title: Versiones y dependencias
 description: Qué promete un paquete a quien lo instala, cómo se versiona y cómo se declaran sus dependencias.
-order: 7
+order: 8
 rules:
     - id: VER-001
       title: Los paquetes siguen SemVer
@@ -167,7 +167,9 @@ rules:
           coincide con los `package.json`.
       rationale: >-
           Si el CI puede resolver versiones nuevas, lo que prueba no es lo que se despliega. Con el lockfile congelado,
-          los mismos archivos dan las mismas dependencias en local, en el CI y en producción.
+          los mismos archivos dan las mismas dependencias en local, en el CI y en producción. También es la primera
+          defensa de la cadena de suministro (SEC-013): una versión nueva y comprometida de una dependencia no entra
+          sola, sino en una PR que cambia el lockfile y pasa la auditoría (SEC-001).
       examples:
           good:
               - caption: Instalar sin tocar el lockfile

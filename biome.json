@@ -35,6 +35,8 @@
 			"suspicious": {
 				"noExplicitAny": "error",
 				"noTsIgnore": "error",
+				"noFocusedTests": "error",
+				"noSkippedTests": "error",
 				"noConsole": {
 					"level": "error",
 					"options": { "allow": ["error", "warn"] }
@@ -53,6 +55,10 @@
 			"performance": {
 				"noNamespaceImport": "error",
 				"noReExportAll": "error"
+			},
+			"security": {
+				"noDangerouslySetInnerHtml": "error",
+				"noGlobalEval": "error"
 			},
 			"a11y": {
 				"useValidAriaRole": {

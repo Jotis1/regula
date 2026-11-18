@@ -1,7 +1,7 @@
 prefix: PRO
 title: Proceso
 description: Cómo se decide un cambio antes de escribirlo, y cómo se queda registrado.
-order: 10
+order: 12
 rules:
     - id: PRO-001
       title: Los cambios no triviales se proponen con OpenSpec antes del código

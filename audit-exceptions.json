@@ -1,0 +1,8 @@
+[
+	{
+		"id": "GHSA-fc5q-39xc-vjpf",
+		"package": "picomatch",
+		"why": "ReDoS con globs como +(*), sin versión corregida publicada (<=4.0.7). Solo lo usan herramientas de build (Astro, Vite, changesets) con globs que fija el repo; ninguna recibe patrones de fuera. Revisar si hay versión corregida",
+		"until": "2027-02-18"
+	}
+]

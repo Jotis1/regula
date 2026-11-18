@@ -1,6 +1,6 @@
-// Checks the development standards that a machine can see (STK, STR, COD, DOC and VER areas, and the typography of
-// LNG-005) against the repo: workspaces, tsconfigs, Biome, the CI workflows, Dependabot, READMEs, the source of the
-// published packages and every text file. What cannot be seen from here is checked in review.
+// Checks the development standards that a machine can see (STK, STR, COD, TST, DOC, VER and SEC areas, and the
+// typography of LNG-005) against the repo: workspaces, tsconfigs, Biome, the CI workflows, Dependabot, READMEs, the
+// source of the published packages and every text file. What cannot be seen from here is checked in review.
 // Usage: bun run scripts/check-dev.ts   (exits 1 and lists every problem with its file and rule)
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -43,7 +43,8 @@ export interface Repo {
 	/** Config files of tools the stack does not use (ESLint, Prettier), by path. */
 	foreignConfigs: string[];
 	biome: Json;
-	workflows: { path: string; workflow: Workflow }[];
+	/** Each workflow parsed, and its raw text: the parser drops the comments that SEC-007 reads. */
+	workflows: { path: string; workflow: Workflow; text: string }[];
 	dependabot: Json | null;
 	rootReadme: string;
 	workspaces: Workspace[];
@@ -53,6 +54,8 @@ export interface Repo {
 	texts: SourceFile[];
 	/** Every path tracked by Git. */
 	files: string[];
+	/** The root `.gitignore`, or `""` when there is none. */
+	gitignore: string;
 }
 
 export const TS_FLAGS = [
@@ -76,6 +79,8 @@ const BIOME_BLOCK: [path: string[], expected: unknown][] = [
 	[["linter", "rules", "suspicious", "noExplicitAny"], "error"],
 	[["linter", "rules", "suspicious", "noTsIgnore"], "error"],
 	[["linter", "rules", "suspicious", "noConsole"], "error"],
+	[["linter", "rules", "suspicious", "noFocusedTests"], "error"],
+	[["linter", "rules", "suspicious", "noSkippedTests"], "error"],
 	[["linter", "rules", "style", "noEnum"], "error"],
 	[["linter", "rules", "style", "noNonNullAssertion"], "error"],
 	[["linter", "rules", "style", "noDefaultExport"], "error"],
@@ -83,6 +88,8 @@ const BIOME_BLOCK: [path: string[], expected: unknown][] = [
 	[["linter", "rules", "style", "useFilenamingConvention"], "error"],
 	[["linter", "rules", "performance", "noReExportAll"], "error"],
 	[["linter", "rules", "performance", "noNamespaceImport"], "error"],
+	[["linter", "rules", "security", "noDangerouslySetInnerHtml"], "error"],
+	[["linter", "rules", "security", "noGlobalEval"], "error"],
 	[["formatter", "indentStyle"], "tab"],
 	[["formatter", "indentWidth"], 4],
 	[["formatter", "lineWidth"], 110],
@@ -473,10 +480,144 @@ export function typographyProblems(repo: Repo): string[] {
 	);
 }
 
+// ── TST ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/** Test runners the suite does not use (TST-002). */
+const FOREIGN_RUNNERS = ["jest", "mocha", "cypress"];
+
+export function testingProblems(repo: Repo): string[] {
+	const out: string[] = [];
+	for (const w of repo.workspaces) {
+		const file = `${w.dir}/package.json`;
+		for (const name of Object.keys(allDeps(w.pkg)))
+			if (FOREIGN_RUNNERS.includes(name) || name.startsWith("@jest/"))
+				out.push(
+					`${file} (TST-002): depends on \`${name}\`; tests run with Vitest, Playwright or \`bun test\``,
+				);
+		const test = w.pkg.scripts?.test;
+		if (test !== undefined && !/\bvitest\b|\bbun test\b/.test(test))
+			out.push(`${file} (TST-002): the \`test\` script runs neither Vitest nor \`bun test\``);
+		const e2e = w.pkg.scripts?.["test:e2e"];
+		if (e2e !== undefined && !/\bplaywright test\b/.test(e2e))
+			out.push(`${file} (TST-002): the \`test:e2e\` script does not run Playwright`);
+	}
+	for (const file of repo.sources) {
+		if (/(^|\/)e2e\//.test(file.path))
+			file.text.split("\n").forEach((line, i) => {
+				if (/\bwaitForTimeout\(/.test(line))
+					out.push(
+						`${file.path}:${i + 1} (TST-004): a fixed wait; wait for a condition, or move the test clock (\`page.clock\`)`,
+					);
+			});
+		// A text search on purpose: the config is not run here, and Biome formats it predictably
+		if (/(^|\/)playwright\.config\.[cm]?[jt]s$/.test(file.path)) {
+			const retries = /\bretries\s*:\s*([^,\n]+)/.exec(file.text)?.[1]?.trim();
+			if (retries !== undefined && retries !== "0" && !/\bfailOnFlakyTests\s*:/.test(file.text))
+				out.push(
+					`${file.path} (TST-004): retries tests without \`failOnFlakyTests\`, so a flaky test passes in silence`,
+				);
+		}
+	}
+	return out;
+}
+
+// ── SEC ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/** Owners whose actions can stay on a major tag (SEC-007); a local action (`./`) has no version at all. */
+const PINNED_EXEMPT = /^(actions|github)\/|^\.\/|^docker:\/\//;
+const PINNED = /@[0-9a-f]{40}$/;
+/** A dependency that does not come from the registry (SEC-013): Git, a hosted repo, a URL or a local tarball. */
+const OFF_REGISTRY = /^(git\+|git:|github:|gitlab:|bitbucket:|https?:|file:)|^[\w.-]+\/[\w.-]+(#.*)?$/;
+const UNTRUSTED = /\$\{\{\s*github\.(event\.|head_ref\b)/;
+
+type SecStep = { name?: string; uses?: string; run?: string };
+type SecJob = { uses?: string; steps?: SecStep[] };
+
+export function securityProblems(repo: Repo): string[] {
+	const out: string[] = [];
+	const add = (file: string, rule: string, text: string) => out.push(`${file} (${rule}): ${text}`);
+
+	const published = repo.workspaces.filter((w) => w.published);
+	const texts = [...repo.workflows.map((w) => w.text), ...repo.sources.map((src) => src.text)];
+	for (const { path, text } of repo.workflows)
+		for (const token of ["NPM_TOKEN", "NODE_AUTH_TOKEN"])
+			if (text.includes(token))
+				add(path, "SEC-005", `names \`${token}\`: npm publishes with trusted publishing`);
+	const provenance =
+		texts.some((t) => t.includes("--provenance")) ||
+		published.every((w) => (w.pkg as { publishConfig?: Json }).publishConfig?.provenance === true);
+	if (published.length > 0 && !provenance)
+		add(
+			"package.json",
+			"SEC-005",
+			"nothing publishes with `--provenance` (or `publishConfig.provenance`)",
+		);
+
+	for (const { path, workflow, text } of repo.workflows) {
+		const root = (workflow as { permissions?: unknown }).permissions;
+		const values = root && typeof root === "object" ? Object.values(root) : [root];
+		if (root === undefined) add(path, "SEC-006", "declares no `permissions` at its root");
+		else if (!(root === "read-all" || values.every((v) => v === "read" || v === "none")))
+			add(path, "SEC-006", "the root `permissions` grant writing; ask for it in the job that needs it");
+
+		const on = workflow.on;
+		const events = typeof on === "string" ? [on] : Array.isArray(on) ? on : Object.keys(on ?? {});
+		if (events.includes("pull_request_target"))
+			add(
+				path,
+				"SEC-008",
+				"uses `pull_request_target`, which runs the PR with the secrets of the repo",
+			);
+
+		const lines = text.split("\n");
+		for (const [id, job] of Object.entries((workflow.jobs ?? {}) as Record<string, SecJob>)) {
+			const uses = [job.uses, ...(job.steps ?? []).map((st) => st.uses)].filter(
+				(u): u is string => typeof u === "string",
+			);
+			for (const action of uses) {
+				if (PINNED_EXEMPT.test(action)) continue;
+				if (!PINNED.test(action))
+					add(
+						path,
+						"SEC-007",
+						`job "${id}" uses \`${action}\`: pin it to the full SHA of its commit`,
+					);
+				else if (!lines.some((l) => l.includes(action) && /#\s*\S/.test(l.slice(l.indexOf(action)))))
+					add(path, "SEC-007", `job "${id}" pins \`${action}\` without its version in a comment`);
+			}
+			for (const st of job.steps ?? [])
+				if (UNTRUSTED.test(st.run ?? ""))
+					add(
+						path,
+						"SEC-008",
+						`job "${id}", step "${st.name ?? "(unnamed)"}" puts the event or the branch name inside \`run:\`; pass it through \`env:\``,
+					);
+		}
+	}
+
+	const ignored = repo.gitignore.split("\n").map((l) => l.trim());
+	for (const entry of [".env", ".env.*"])
+		if (!ignored.includes(entry)) add(".gitignore", "SEC-009", `does not ignore \`${entry}\``);
+	if (!repo.files.includes("SECURITY.md"))
+		add("SECURITY.md", "SEC-010", "missing: the root says how to report a vulnerability in private");
+
+	const manifests: [string, PackageJson][] = [
+		["package.json", repo.rootPkg],
+		...repo.workspaces.map((w): [string, PackageJson] => [`${w.dir}/package.json`, w.pkg]),
+	];
+	for (const [file, pkg] of manifests)
+		for (const [name, range] of Object.entries(allDeps(pkg)))
+			if (OFF_REGISTRY.test(range))
+				add(file, "SEC-013", `\`${name}\` comes from \`${range}\`, not from the npm registry`);
+	return out;
+}
+
 export function devProblems(repo: Repo): string[] {
 	return [
 		...stackProblems(repo),
 		...codeProblems(repo),
+		...testingProblems(repo),
+		...securityProblems(repo),
 		...docProblems(repo),
 		...dependencyProblems(repo),
 		...structureProblems(repo),
@@ -546,10 +687,14 @@ export function readRepo(root: string): Repo {
 		workflows: existsSync(workflowDir)
 			? readdirSync(workflowDir)
 					.filter((f) => /\.ya?ml$/.test(f))
-					.map((f) => ({
-						path: `.github/workflows/${f}`,
-						workflow: Bun.YAML.parse(readFileSync(join(workflowDir, f), "utf8")) as Workflow,
-					}))
+					.map((f) => {
+						const text = readFileSync(join(workflowDir, f), "utf8");
+						return {
+							path: `.github/workflows/${f}`,
+							workflow: Bun.YAML.parse(text) as Workflow,
+							text,
+						};
+					})
 			: [],
 		dependabot: existsSync(dependabot)
 			? (Bun.YAML.parse(readFileSync(dependabot, "utf8")) as Json)
@@ -564,6 +709,7 @@ export function readRepo(root: string): Repo {
 			.filter(inTypographyScope)
 			.filter((path) => existsSync(join(root, path)))
 			.map((path) => ({ path, text: readFileSync(join(root, path), "utf8") })),
+		gitignore: existsSync(join(root, ".gitignore")) ? readFileSync(join(root, ".gitignore"), "utf8") : "",
 	};
 }
 

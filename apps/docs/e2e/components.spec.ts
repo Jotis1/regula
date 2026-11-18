@@ -612,7 +612,7 @@ test("/components/: todas las cards tienen su imagen y se cargan sin error", asy
 	await page.evaluate(async () => {
 		for (let y = 0; y < document.body.scrollHeight; y += 700) {
 			window.scrollTo(0, y);
-			await new Promise((r) => setTimeout(r, 40));
+			await new Promise((r) => requestAnimationFrame(r));
 		}
 	});
 	await page.waitForLoadState("networkidle");

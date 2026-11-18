@@ -18,6 +18,7 @@
 		"check:reference": "bun run scripts/check-reference.ts",
 		"check:names": "bun test scripts/check-package-names.test.ts && bun run scripts/check-package-names.ts",
 		"check:dev": "bun test scripts/check-dev.test.ts scripts/check-changesets.test.ts scripts/check-commit-typography.test.ts && bun run scripts/check-dev.ts",
+		"check:audit": "bun test scripts/check-audit.test.ts && bun run scripts/check-audit.ts",
 		"check:ci": "bun test scripts/ci-changes.test.ts scripts/ci-gate.test.ts scripts/check-ci.test.ts && bun run scripts/check-ci.ts",
 		"artifact:build": "bun run --cwd scripts/artifact artifact:build",
 		"format": "biome format --write .",
@@ -41,6 +42,9 @@
 	"overrides": {
 		"@emnapi/core": "1.11.3",
 		"@emnapi/runtime": "1.11.3",
-		"playwright-core": "~1.64.1"
+		"playwright-core": "~1.64.1",
+		"@vercel/routing-utils": {
+			"path-to-regexp": "6.3.0"
+		}
 	}
 }

@@ -1,0 +1,568 @@
+prefix: SEC
+title: Seguridad
+description: >-
+    Cómo se protegen las dependencias, la publicación, los workflows y la web, con una norma por cada categoría del
+    OWASP Top 10:2025.
+order: 9
+rules:
+    - id: SEC-001
+      title: El CI audita las dependencias y falla con avisos altos o críticos
+      level: must
+      appliesTo: all
+      statement: >-
+          El CI ejecuta `bun audit` sobre todo el lockfile, dependencias de desarrollo incluidas, y falla con cualquier
+          aviso alto o crítico que no tenga una excepción vigente (SEC-002). Las actualizaciones de seguridad de
+          Dependabot traen el arreglo cuando existe.
+      rationale: >-
+          Un aviso nuevo aparece sin que nadie toque el código, así que solo lo ve una comprobación que corre en cada
+          PR. Las dependencias de desarrollo cuentan: corren en el CI, con sus secretos, y en la publicación.
+      examples:
+          good:
+              - caption: El paso de auditoría del CI
+                lang: yaml
+                code: |-
+                    - name: Auditoría
+                      run: bun run check:audit
+          bad:
+              - caption: Auditar solo lo que se publica
+                lang: bash
+                code: |-
+                    bun audit --prod
+      verification:
+          kind: ci
+          check: Auditoría
+
+    - id: SEC-002
+      title: Una excepción a la auditoría tiene motivo y caduca
+      level: must
+      appliesTo: all
+      statement: >-
+          Un aviso que no se puede arreglar todavía va a `audit-exceptions.json` con su ID (GHSA), el paquete, el
+          motivo y una fecha de caducidad de como mucho tres meses. Una excepción caducada vuelve a fallar, y una cuyo
+          aviso ya no sale se quita.
+      rationale: >-
+          Sin caducidad, una excepción se queda para siempre y nadie vuelve a mirar si ya hay arreglo. El archivo vive
+          en el repo para que cada excepción se vea y se discuta en la PR que la añade.
+      examples:
+          good:
+              - caption: Una excepción con motivo y fecha
+                lang: json
+                code: |-
+                    {
+                        "id": "GHSA-fc5q-39xc-vjpf",
+                        "package": "picomatch",
+                        "why": "Sin versión corregida. Solo lo usan herramientas de build con globs del repo",
+                        "until": "2027-02-18"
+                    }
+          bad:
+              - caption: Ignorar el aviso en el workflow, sin fecha
+                lang: bash
+                code: |-
+                    bun audit --ignore=GHSA-fc5q-39xc-vjpf
+      verification:
+          kind: ci
+          check: Auditoría
+
+    - id: SEC-003
+      title: Las actualizaciones de seguridad de Dependabot están activadas
+      level: must
+      appliesTo: all
+      statement: >-
+          El repositorio tiene activadas las actualizaciones de seguridad de Dependabot, además de las semanales de
+          STK-007: una dependencia con un aviso recibe su PR en cuanto sale el arreglo.
+      rationale: >-
+          Las actualizaciones semanales agrupan; las de seguridad llegan solas y al momento. Así el arreglo de un aviso
+          de SEC-001 suele estar en una PR antes de que haga falta una excepción.
+      examples:
+          good:
+              - caption: Activarlas en el repositorio
+                lang: bash
+                code: |-
+                    gh api -X PUT repos/<owner>/<repo>/automated-security-fixes
+          bad:
+              - caption: Esperar a la PR semanal para un aviso crítico
+                lang: text
+                code: '"dependabot_security_updates": { "status": "disabled" }'
+      verification:
+          kind: review
+          review: Que «Dependabot security updates» está activado en la configuración de seguridad del repositorio.
+
+    - id: SEC-004
+      title: Solo los paquetes de confianza ejecutan scripts de instalación
+      level: should
+      appliesTo: all
+      statement: >-
+          Bun no ejecuta los scripts de instalación (`postinstall`) de las dependencias, salvo los de
+          `trustedDependencies`. Un paquete entra en esa lista solo si lo necesita para funcionar, y la PR que lo
+          añade dice por qué.
+      rationale: >-
+          Un script de instalación ejecuta código de un tercero en cada máquina y en cada CI que instala el repo. Es
+          la vía más común de los ataques a la cadena de suministro, y la lista corta de Bun la cierra por defecto.
+      examples:
+          good:
+              - caption: Un paquete que compila un binario al instalarse, con su motivo en la PR
+                lang: json
+                code: '"trustedDependencies": ["sharp"]'
+          bad:
+              - caption: Confiar en todo para que deje de quejarse
+                lang: bash
+                code: |-
+                    bun pm trust --all
+      verification:
+          kind: review
+          review: Que cada paquete nuevo de `trustedDependencies` llega con el motivo en la PR.
+
+    - id: SEC-005
+      title: npm se publica con trusted publishing y provenance
+      level: must
+      appliesTo: package
+      statement: >-
+          Los paquetes se publican desde GitHub Actions con trusted publishing (OIDC) y `--provenance`. Ni el repo ni
+          sus workflows tienen un token de npm (`NPM_TOKEN`, `NODE_AUTH_TOKEN`).
+      rationale: >-
+          Un token de npm de larga vida es un secreto que se puede robar y que sirve para publicar cualquier cosa en
+          nombre del paquete. Con trusted publishing no hay nada que robar, y la provenance demuestra qué commit y qué
+          workflow publicaron cada versión.
+      examples:
+          good:
+              - caption: El job de publicación pide el token de OIDC
+                lang: yaml
+                code: |-
+                    permissions:
+                        id-token: write
+                    steps:
+                        - run: npm publish --provenance --access public
+          bad:
+              - caption: Un token en los secretos
+                lang: yaml
+                code: |-
+                    env:
+                        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: SEC-006
+      title: Los workflows piden los permisos mínimos
+      level: must
+      appliesTo: all
+      statement: >-
+          Cada workflow declara `permissions` en su raíz, vacío (`{}`) o solo de lectura. Un job que escribe pide aparte
+          sus permisos de escritura, y solo los que usa.
+      rationale: >-
+          Sin `permissions`, el token del workflow puede tener permiso de escritura en todo el repositorio. Si un paso
+          se ve comprometido, el daño se limita a lo que pidió su job.
+      examples:
+          good:
+              - caption: Lectura en la raíz, escritura en el job que la necesita
+                lang: yaml
+                code: |-
+                    permissions: {}
+                    jobs:
+                        release:
+                            permissions:
+                                contents: write
+                                id-token: write
+          bad:
+              - caption: Escritura para todos los jobs
+                lang: yaml
+                code: |-
+                    permissions:
+                        contents: write
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: SEC-007
+      title: Las acciones de terceros se fijan por SHA
+      level: must
+      appliesTo: all
+      statement: >-
+          Una acción de fuera de `actions/*` y `github/*` se fija por el SHA completo de su commit, con la versión en
+          un comentario. Dependabot actualiza el SHA y el comentario. Las de `actions/*` y `github/*` PUEDEN ir por
+          etiqueta mayor.
+      rationale: >-
+          Una etiqueta, o una rama como `v1`, se puede mover a otro código en cualquier momento, y el workflow lo
+          ejecutaría sin que nadie cambie nada. En marzo de 2025 movieron las etiquetas de `tj-actions/changed-files`
+          a un código que sacaba los secretos del CI, y miles de repositorios los escribieron en sus logs. Un SHA no
+          se puede mover.
+      examples:
+          good:
+              - caption: El SHA del commit, con la versión al lado
+                lang: yaml
+                code: "- uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0"
+          bad:
+              - caption: Una acción de terceros por etiqueta
+                lang: yaml
+                code: "- uses: oven-sh/setup-bun@v2"
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: SEC-008
+      title: Nada del evento entra en un script del workflow
+      level: must
+      appliesTo: all
+      statement: >-
+          Ningún workflow usa `pull_request_target`. Ningún `run:` interpola `${{ github.event.* }}` ni
+          `${{ github.head_ref }}`: esos valores llegan al paso por `env:` y el script los lee como variables.
+      rationale: >-
+          GitHub sustituye `${{ }}` dentro del script antes de ejecutarlo. El nombre de la rama o el título de la PR
+          los elige quien abre la PR, y pueden llevar órdenes de shell. Una variable de entorno es solo texto.
+          `pull_request_target` ejecuta el código de la PR con los secretos del repositorio.
+      examples:
+          good:
+              - caption: El valor llega por env
+                lang: yaml
+                code: |-
+                    - name: Changesets
+                      env:
+                          BRANCH: ${{ github.head_ref }}
+                      run: bun run scripts/check-changesets.ts "$BRANCH"
+          bad:
+              - caption: El nombre de la rama dentro del script
+                lang: yaml
+                code: '- run: ./check.sh "${{ github.head_ref }}"'
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: SEC-009
+      title: Ningún secreto en el repositorio
+      level: must
+      appliesTo: all
+      statement: >-
+          `.env` y `.env.*` están en `.gitignore`, salvo `.env.example`. El repositorio tiene activados secret
+          scanning y push protection, que bloquean un push con un secreto conocido.
+      rationale: >-
+          Un secreto que llega a Git queda en el historial aunque se borre después, y hay que darlo por filtrado. La
+          protección del push lo para antes de que salga del ordenador.
+      examples:
+          good:
+              - caption: El .gitignore
+                lang: text
+                code: |-
+                    .env
+                    .env.*
+                    !.env.example
+          bad:
+              - caption: Un .env con valores en Git
+                lang: text
+                code: |-
+                    TURBO_TOKEN=tk_live_...
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: SEC-010
+      title: Un SECURITY.md dice cómo avisar en privado
+      level: must
+      appliesTo: all
+      statement: >-
+          La raíz del repositorio tiene un `SECURITY.md` que dice qué versiones reciben arreglos y cómo avisar de una
+          vulnerabilidad en privado, con el aviso privado de GitHub activado. Pide no abrir un issue público.
+      rationale: >-
+          Quien encuentra un fallo busca primero ese archivo. Sin un canal privado, el aviso acaba en un issue público
+          y el fallo se conoce antes de que exista el arreglo.
+      examples:
+          good:
+              - caption: El enlace del aviso privado
+                lang: markdown
+                code: |-
+                    Avisa en privado desde <https://github.com/<owner>/<repo>/security/advisories/new>.
+          bad:
+              - caption: Pedir un issue
+                lang: markdown
+                code: |-
+                    Si encuentras un fallo de seguridad, abre un issue.
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: SEC-011
+      title: A01 Control de acceso
+      level: must
+      appliesTo: app
+      statement: >-
+          El servidor comprueba los permisos en cada ruta, Server Action de Next, endpoint de Astro o API, y deniega
+          por defecto. Esconder un botón no es un control. CORS no combina `*` con credenciales. El servidor no pide
+          una URL que llega del usuario sin una lista de destinos permitidos (SSRF).
+      rationale: >-
+          Es la primera categoría del OWASP Top 10:2025: la que más se encuentra en aplicaciones reales. Una Server
+          Action es un endpoint público aunque no lo parezca, y cualquiera la puede llamar con otros argumentos.
+      examples:
+          good:
+              - caption: La acción comprueba que el recurso es de quien la llama
+                lang: ts
+                code: |-
+                    export async function deleteNote(id: string) {
+                        "use server";
+                        const user = await requireUser();
+                        const note = await db.note.findUnique({ where: { id } });
+                        if (note?.ownerId !== user.id) throw new Error("Forbidden");
+                        await db.note.delete({ where: { id } });
+                    }
+          bad:
+              - caption: Borra lo que le pidan
+                lang: ts
+                code: |-
+                    export async function deleteNote(id: string) {
+                        "use server";
+                        await db.note.delete({ where: { id } });
+                    }
+      verification:
+          kind: review
+          review: >-
+              Que cada ruta, acción o endpoint comprueba en el servidor quién llama y si puede, que CORS no abre más de
+              la cuenta y que ninguna URL del usuario llega a un `fetch` del servidor sin lista de destinos.
+
+    - id: SEC-012
+      title: A02 Configuración insegura
+      level: must
+      appliesTo: app
+      statement: >-
+          Cada respuesta de una app que se despliega lleva una CSP sin `unsafe-inline` ni `unsafe-eval` en
+          `script-src` y con `frame-ancestors 'none'`, `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`,
+          `Referrer-Policy: strict-origin-when-cross-origin` y una `Permissions-Policy` que apaga lo que la app no usa.
+          En Astro, la CSP la da `security.csp`, y las cabeceras, `vercel.json`. En Next, las cabeceras van en
+          `headers()` de `next.config.ts` y la CSP con nonce en `proxy.ts`. En producción no se sirven mapas de código
+          ni páginas de depuración.
+      rationale: >-
+          Las cabeceras son la defensa más barata: no cambian el código y cortan de raíz el clickjacking, la
+          inyección de scripts de otros orígenes y la degradación a HTTP. La CSP con hashes o nonce de cada framework
+          es la nativa, y no necesita `unsafe-inline` para sus propios scripts.
+      examples:
+          good:
+              - caption: Astro, con la CSP de Astro y las cabeceras en vercel.json
+                lang: json
+                code: |-
+                    "headers": [{
+                        "source": "/(.*)",
+                        "headers": [
+                            { "key": "Content-Security-Policy", "value": "frame-ancestors 'none'" },
+                            { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" },
+                            { "key": "X-Content-Type-Options", "value": "nosniff" },
+                            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+                            { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+                        ]
+                    }]
+          bad:
+              - caption: Una CSP que abre la puerta que debía cerrar
+                lang: text
+                code: "Content-Security-Policy: script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+      verification:
+          kind: test
+          check: apps/docs/test/security-headers.test.ts
+
+    - id: SEC-013
+      title: A03 Cadena de suministro
+      level: must
+      appliesTo: all
+      statement: >-
+          Las dependencias salen del registro de npm, nunca de una URL de Git, de un repositorio (`org/repo`) ni de un
+          tarball. Un script que se carga de otro origen lleva `integrity`.
+      rationale: >-
+          Es nueva en el OWASP Top 10:2025 y entra en tercer lugar. Una dependencia de Git no tiene versión inmutable
+          ni aparece en la auditoría, y un script de otro origen sin `integrity` ejecuta lo que ese origen sirva ese
+          día. El resto de la categoría ya lo cubren SEC-001, SEC-002, SEC-005, SEC-007 y VER-006.
+      examples:
+          good:
+              - caption: Del registro, con su rango
+                lang: json
+                code: '"dependencies": { "clsx": "^2.1.1" }'
+          bad:
+              - caption: De una rama de GitHub
+                lang: json
+                code: '"dependencies": { "lib": "github:org/lib#main" }'
+      verification:
+          kind: ci
+          check: Normas de desarrollo
+
+    - id: SEC-014
+      title: A04 Criptografía
+      level: must
+      appliesTo: app
+      statement: >-
+          Todo va por HTTPS. Ningún secreto llega al navegador: solo son públicas las variables `PUBLIC_` de Astro
+          (`astro:env/client`) y `NEXT_PUBLIC_` de Next. Un valor aleatorio de seguridad sale de la Web Crypto API
+          (`crypto.randomUUID`, `crypto.getRandomValues`), nunca de `Math.random`. Las contraseñas las guarda el
+          proveedor de autenticación, no la app.
+      rationale: >-
+          `Math.random` es predecible y no sirve para un token. Una variable de entorno que el bundler mete en el
+          cliente es pública aunque se llame secreta. Guardar contraseñas bien es difícil, y un proveedor ya lo hace.
+      examples:
+          good:
+              - caption: Un token de invitación
+                lang: ts
+                code: |-
+                    const token = crypto.randomUUID();
+          bad:
+              - caption: Un token predecible
+                lang: ts
+                code: |-
+                    const token = Math.random().toString(36).slice(2);
+      verification:
+          kind: review
+          review: >-
+              Que ningún secreto se lee desde el cliente, que los valores aleatorios de seguridad usan la Web Crypto API
+              y que la app no guarda contraseñas propias.
+
+    - id: SEC-015
+      title: A05 Inyección
+      level: must
+      appliesTo: all
+      statement: >-
+          El HTML crudo (`dangerouslySetInnerHTML` en React, `set:html` en Astro) solo pinta contenido del propio repo
+          o contenido limpiado, con el motivo en su supresión. No hay `eval` ni `new Function`. La entrada del servidor
+          se valida con un esquema (Zod, o `astro:schema`). Las consultas a una base de datos van parametrizadas.
+      rationale: >-
+          El texto de un usuario que se pinta como HTML ejecuta los scripts que lleve (XSS). Validar con un esquema
+          cierra a la vez los tipos inesperados y los campos de más. Biome vigila el HTML crudo y `eval`.
+      examples:
+          good:
+              - caption: HTML del propio paquete, con su motivo
+                lang: tsx
+                code: |-
+                    // biome-ignore lint/security/noDangerouslySetInnerHtml: dibujo fijo del propio paquete (device-frames.ts)
+                    <svg dangerouslySetInnerHTML={{ __html: IPHONE_FRAME }} />
+          bad:
+              - caption: El comentario de un usuario como HTML
+                lang: tsx
+                code: |-
+                    <p dangerouslySetInnerHTML={{ __html: comment.body }} />
+      verification:
+          kind: biome
+          check: noDangerouslySetInnerHtml
+
+    - id: SEC-016
+      title: A06 Diseño inseguro
+      level: must
+      appliesTo: all
+      statement: >-
+          El `design.md` de un cambio de OpenSpec que toca autenticación, datos de usuarios o un endpoint del servidor
+          tiene una sección «Seguridad»: qué puede salir mal, quién podría abusar y cómo se evita. Un endpoint público
+          tiene un límite de peticiones (el firewall de Vercel lo da sin código).
+      rationale: >-
+          Un fallo de diseño no lo arregla una buena implementación: hay que verlo antes de escribir el código. La
+          sección obliga a hacerse las preguntas cuando cuesta poco cambiar de idea.
+      examples:
+          good:
+              - caption: La sección de un endpoint nuevo
+                lang: markdown
+                code: |-
+                    ## Seguridad
+                    - Público y de solo lectura: no hay datos de usuarios.
+                    - Abuso: un bucle de peticiones. Límite de 100 por minuto e IP en el firewall de Vercel.
+          bad:
+              - caption: Un endpoint público sin límite ni análisis
+                lang: markdown
+                code: |-
+                    Se añade `/api/search`.
+      verification:
+          kind: review
+          review: >-
+              Que la propuesta de un cambio con autenticación, datos de usuarios o endpoints tiene su sección
+              «Seguridad», y que cada endpoint público tiene límite de peticiones.
+
+    - id: SEC-017
+      title: A07 Autenticación
+      level: must
+      appliesTo: app
+      statement: >-
+          La autenticación la da una biblioteca o un proveedor probado, no código propio. Las cookies de sesión son
+          `HttpOnly`, `Secure` y `SameSite`. El inicio de sesión tiene límite de intentos, y se ofrece un segundo
+          factor. Solo aplica a las apps con usuarios.
+      rationale: >-
+          La autenticación casera falla en los detalles (comparar en tiempo constante, rotar la sesión, invalidarla).
+          Una cookie `HttpOnly` no la puede leer un script inyectado, y un token en `localStorage` sí.
+      examples:
+          good:
+              - caption: La sesión en una cookie que no ve JavaScript
+                lang: ts
+                code: 'cookies.set("session", id, { httpOnly: true, secure: true, sameSite: "lax", path: "/" });'
+          bad:
+              - caption: El token en localStorage
+                lang: ts
+                code: |-
+                    localStorage.setItem("token", token);
+      verification:
+          kind: review
+          review: >-
+              Que la autenticación usa una biblioteca o un proveedor, que la cookie de sesión lleva sus tres atributos y
+              que el inicio de sesión limita los intentos.
+
+    - id: SEC-018
+      title: A08 Integridad
+      level: must
+      appliesTo: all
+      statement: >-
+          Lo que llega de fuera no se cree sin comprobarlo. Un webhook verifica su firma antes de hacer nada, un dato
+          que se deserializa pasa por un esquema, y un paquete se publica con provenance (SEC-005).
+      rationale: >-
+          Cualquiera puede llamar a la URL de un webhook. Sin la firma, una petición falsa marca un pago como cobrado.
+      examples:
+          good:
+              - caption: El webhook verifica la firma primero
+                lang: ts
+                code: |-
+                    const event = stripe.webhooks.constructEvent(body, request.headers.get("stripe-signature"), secret);
+          bad:
+              - caption: El webhook se cree el cuerpo
+                lang: ts
+                code: |-
+                    const event = await request.json();
+      verification:
+          kind: review
+          review: Que cada webhook verifica su firma y que los datos de fuera pasan por un esquema antes de usarse.
+
+    - id: SEC-019
+      title: A09 Registro y alertas
+      level: must
+      appliesTo: app
+      statement: >-
+          Los errores del servidor y los fallos de autenticación quedan registrados con contexto (ruta, momento,
+          identificador de la petición), sin secretos ni datos personales. Un pico de errores avisa a alguien. Solo
+          aplica a las apps con servidor.
+      rationale: >-
+          Un ataque que nadie registra no se descubre, y un registro con tokens o contraseñas es una fuga más. Sin
+          alerta, el registro solo sirve para saber después qué pasó.
+      examples:
+          good:
+              - caption: El error, con contexto y sin la petición entera
+                lang: ts
+                code: 'console.error("mcp: tool failed", { tool: name, requestId, message: error.message });'
+          bad:
+              - caption: Las cabeceras de la petición en el registro
+                lang: ts
+                code: |-
+                    console.error("fallo", request.headers);
+      verification:
+          kind: review
+          review: >-
+              Que los errores del servidor se registran sin secretos ni datos personales, y que hay una alerta (de
+              Vercel o del proveedor) ante un pico.
+
+    - id: SEC-020
+      title: A10 Condiciones excepcionales
+      level: must
+      appliesTo: app
+      statement: >-
+          Ante un error o una entrada inesperada, el servidor falla cerrado: deniega en lugar de dejar pasar, responde
+          con un error genérico sin trazas ni rutas internas, limita el tamaño de la entrada y pone un tiempo máximo a
+          las llamadas externas. Solo aplica a las apps con servidor.
+      rationale: >-
+          Es nueva en el OWASP Top 10:2025. Una traza enseña la estructura del servidor a quien busca por dónde entrar,
+          y un `catch` que deja pasar convierte un fallo en un acceso. Sin límites, una entrada enorme o una llamada
+          que no responde tumba el servidor.
+      examples:
+          good:
+              - caption: Un cuerpo roto recibe un error genérico
+                lang: json
+                code: '{ "jsonrpc": "2.0", "error": { "code": -32700, "message": "Parse error: Invalid JSON" }, "id": null }'
+          bad:
+              - caption: La traza del servidor en la respuesta
+                lang: ts
+                code: "return Response.json({ error: error.stack }, { status: 500 });"
+      verification:
+          kind: test
+          check: apps/docs/test/mcp.test.ts

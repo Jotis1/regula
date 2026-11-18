@@ -22,6 +22,23 @@ export default defineConfig({
 	redirects: { "/components/[slug]/composiciones": "/components/[slug]/compositions" },
 	adapter: onVercel ? (await import("@astrojs/vercel")).default() : undefined,
 	integrations: [react(), mdx(), ...(onVercel ? [mcpRoute] : [])],
+	// SEC-012: cada página lleva su CSP en una <meta>, con los hashes de sus scripts y estilos. frame-ancestors no
+	// cabe en una <meta>: va como cabecera en vercel.json, con las demás cabeceras de seguridad.
+	security: {
+		csp: {
+			styleDirective: {
+				// Los atributos `style=` que React pinta en el servidor (ancho de una barra, color de una muestra). Solo
+				// en `style-src-attr`, que no ejecuta código: `script-src` no lleva nunca `unsafe-inline`.
+				resources: [{ resource: "'unsafe-inline'", kind: "attribute" }],
+				// Los dos <style> que React Aria crea con un texto fijo: usePress (touch-action) y preventScroll del
+				// Dialog (overscroll-behavior). Si React Aria cambia ese texto, el e2e de a11y.spec.ts lo detecta.
+				hashes: [
+					"sha256-38RhXrc7EdReTKsOm23ZPOCUgniTUUcjky8QOOrQx6o=",
+					"sha256-gYiS/BvZvRcK27JIXTuwhZ3hs2+VJ1X+2gUlE+farlg=",
+				],
+			},
+		},
+	},
 	// El texto de la guía sale tal cual: sin comillas tipográficas inglesas
 	markdown: { smartypants: false },
 	vite: { plugins: [tailwindcss()] },

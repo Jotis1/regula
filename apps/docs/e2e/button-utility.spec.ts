@@ -39,11 +39,13 @@ test("al pasar el ratón o llegar con el teclado sale el tooltip con su nombre, 
 });
 
 test("deshabilitado no abre tooltip", async ({ page }) => {
+	// El reloj es el de la prueba: el tooltip tarda 300 ms en salir, y aquí ese tiempo pasa sin esperarlo
+	await page.clock.install();
 	// El botón deshabilitado está en el ejemplo del registro (su página de comparación): el playground no lo tiene
 	await page.goto("/visual/button-utility/");
 	const disabled = page.locator("button[aria-label=Borrar][disabled]").first();
 	await expect(disabled).toBeVisible();
 	await approach(page, disabled);
-	await page.waitForTimeout(500);
+	await page.clock.runFor(500);
 	await expect(page.locator("[role=tooltip]:not(.pointer-events-none)")).toHaveCount(0);
 });

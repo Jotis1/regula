@@ -12,12 +12,6 @@ const families = explorerFamilies(colors);
 ---
 
 <TokenExplorerView families={families} />
-<noscript>
-	<style is:inline>
-		[data-tokens] [data-token-family] { display: block; }
-		[data-tokens] [data-tokens-js] { display: none; }
-	</style>
-</noscript>
 
 <script>
 	import { initTokenExplorer } from "../lib/token-explorer";

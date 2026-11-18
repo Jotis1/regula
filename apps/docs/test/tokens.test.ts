@@ -131,10 +131,15 @@ describe("explorador de tokens de color", () => {
 			expect(html).toMatch(/<button[^>]*data-tokens-clear[^>]*>[\s\S]*?Limpiar búsqueda/);
 		});
 
+		// Con `noscript:` (@media (scripting: none)) y no con un <style> en <noscript>, que la CSP bloquearía (SEC-012)
 		it("sin JavaScript se leen todas las familias y no aparece el filtro", () => {
-			expect(html).toMatch(
-				/<noscript>[\s\S]*\[data-token-family\][\s\S]*\[data-tokens-js\][\s\S]*<\/noscript>/,
-			);
+			const families = html.match(/<section[^>]*data-token-family=[^>]*>/g) ?? [];
+			expect(families.length).toBeGreaterThan(1);
+			for (const f of families) expect(f).toMatch(/class="[^"]*noscript:block!/);
+			const jsOnly = html.match(/<[a-z]+[^>]*data-tokens-js=[^>]*>/g) ?? [];
+			expect(jsOnly.length).toBeGreaterThan(0);
+			for (const el of jsOnly) expect(el).toMatch(/class="[^"]*noscript:hidden/);
+			expect(html).not.toContain("<noscript>");
 		});
 	});
 });
