@@ -1,5 +1,5 @@
 {
-  "lockfileVersion": 2,
+  "lockfileVersion": 3,
   "configVersion": 1,
   "workspaces": {
     "": {
@@ -98,7 +98,7 @@
     },
     "packages/assets": {
       "name": "@jotis-me/assets",
-      "version": "0.10.1",
+      "version": "0.11.0",
       "devDependencies": {
         "@arethetypeswrong/cli": "^0.18.5",
         "@jotis-me/react": "workspace:*",
@@ -122,7 +122,7 @@
     },
     "packages/react": {
       "name": "@jotis-me/react",
-      "version": "0.10.1",
+      "version": "0.11.0",
       "dependencies": {
         "@internationalized/date": "^3.12.4",
         "@jotis-me/tokens": "workspace:*",
@@ -153,7 +153,7 @@
     },
     "packages/tokens": {
       "name": "@jotis-me/tokens",
-      "version": "0.10.1",
+      "version": "0.11.0",
       "devDependencies": {
         "@arethetypeswrong/cli": "^0.18.5",
         "@fontsource-variable/bricolage-grotesque": "^5.3.0",
