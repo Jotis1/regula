@@ -64,7 +64,7 @@ async function once(browser: Awaited<ReturnType<typeof chromium.launch>>): Promi
 		transferBytes += e.encodedDataLength;
 		if (documentIds.has(e.requestId)) htmlBytes = e.encodedDataLength;
 	});
-	await page.goto(`http://localhost:${port}${path}`, { waitUntil: "networkidle" });
+	await page.goto(`http://127.0.0.1:${port}${path}`, { waitUntil: "networkidle" });
 	if (scroll) {
 		await page.evaluate(async () => {
 			for (let y = 0; y < document.body.scrollHeight; y += 600) {

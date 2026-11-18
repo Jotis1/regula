@@ -21,7 +21,7 @@ import { catalogComponents } from "../src/lib/catalog.ts";
 
 export const SHOWCASE_DIR = resolve(import.meta.dirname, "../src/assets/showcase");
 
-const BASE = "http://localhost:4321";
+const BASE = "http://127.0.0.1:4321";
 const args = process.argv.slice(2);
 const outIndex = args.indexOf("--out");
 const outDir = outIndex >= 0 ? resolve(args[outIndex + 1] ?? "") : SHOWCASE_DIR;

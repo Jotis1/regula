@@ -12,7 +12,7 @@ import { COMPOSITIONS } from "../src/features/visual/compositions.ts";
 import { CARD_HEIGHTS, slugOf } from "../src/features/visual/registry.ts";
 import { catalogComponents } from "../src/lib/catalog.ts";
 
-const BASE = "http://localhost:4321";
+const BASE = "http://127.0.0.1:4321";
 const args = process.argv.slice(2);
 const outIndex = args.indexOf("--out");
 const outDir = outIndex >= 0 ? resolve(args[outIndex + 1] ?? "") : APPROVED_DIR;

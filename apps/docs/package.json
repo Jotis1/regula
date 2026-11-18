@@ -10,7 +10,7 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build && bun run scripts/search-index.ts",
-		"preview": "astro preview",
+		"preview": "astro preview --host 127.0.0.1",
 		"typecheck": "astro check",
 		"test:e2e": "playwright test",
 		"test": "vitest run",
