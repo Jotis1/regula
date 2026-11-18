@@ -30,3 +30,6 @@ Thumbs.db
 
 # Artefacto generado (scripts/artifact)
 dist-artifact/
+
+# Agentes (AGT-005): la configuración personal no se comparte
+.claude/settings.local.json

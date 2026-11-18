@@ -60,6 +60,11 @@ export interface Repo {
 	standards: { id: string; kind: string }[];
 	/** `standards-exceptions.json` as parsed, or `null` when the repo has none. */
 	standardsExceptions: unknown;
+	/** The root `AGENTS.md`, `CLAUDE.md`, `.mcp.json` and `.claude/settings.json` as text; `null` when missing. */
+	agentsMd: string | null;
+	claudeMd: string | null;
+	mcpJson: string | null;
+	claudeSettings: string | null;
 }
 
 export const TS_FLAGS = [
@@ -335,16 +340,87 @@ export function docProblems(repo: Repo): string[] {
 			)
 				out.push(...jsdocProblems(file));
 	}
-	const blocks = [...repo.rootReadme.matchAll(/```(?:sh|bash)?\n([\s\S]*?)```/g)]
+	out.push(...commandProblems("README.md", "DOC-005", repo.rootReadme));
+	return out;
+}
+
+/** The code blocks of a root document show how to install, start, build and test (DOC-005, AGT-001). */
+function commandProblems(file: string, rule: string, text: string): string[] {
+	const blocks = [...text.matchAll(/```(?:sh|bash)?\n([\s\S]*?)```/g)]
 		.map((m) => m[1] as string)
 		.join("\n");
-	for (const [word, re] of [
-		["install", /\binstall\b/],
-		["start (dev)", /\bdev\b/],
-		["build", /\bbuild\b/],
-		["test", /\btest\b/],
-	] as const)
-		if (!re.test(blocks)) out.push(`README.md (DOC-005): the code blocks must show how to ${word}`);
+	return (
+		[
+			["install", /\binstall\b/],
+			["start (dev)", /\bdev\b/],
+			["build", /\bbuild\b/],
+			["test", /\btest\b/],
+		] as const
+	)
+		.filter(([, re]) => !re.test(blocks))
+		.map(([word]) => `${file} (${rule}): the code blocks must show how to ${word}`);
+}
+
+// ── AGT ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+const MCP_URL = `${SITE}/mcp`;
+/** What the shared agent configuration must deny (AGT-006): `.env` files anywhere in the monorepo. */
+const DENIED_READS = ["Read(**/.env)", "Read(**/.env.*)"];
+const PERSONAL_SETTINGS = ".claude/settings.local.json";
+
+const parseJson = (text: string): unknown => {
+	try {
+		return JSON.parse(text);
+	} catch {
+		return undefined;
+	}
+};
+
+export function agentProblems(repo: Repo): string[] {
+	const out: string[] = [];
+	const add = (file: string, rule: string, message: string) => out.push(`${file} (${rule}): ${message}`);
+
+	if (repo.agentsMd === null)
+		add("AGENTS.md", "AGT-001", "missing: the root tells an agent the commands and the structure");
+	else {
+		if (!repo.agentsMd.includes(SITE)) add("AGENTS.md", "AGT-001", `must link to the guide (${SITE})`);
+		out.push(...commandProblems("AGENTS.md", "AGT-001", repo.agentsMd));
+	}
+
+	if (repo.claudeMd === null)
+		add("CLAUDE.md", "AGT-002", "missing: it imports AGENTS.md with `@AGENTS.md`");
+	else if (repo.claudeMd.trim() !== "@AGENTS.md")
+		add("CLAUDE.md", "AGT-002", "must contain only `@AGENTS.md`; the instructions live in AGENTS.md");
+
+	if (repo.mcpJson === null) add(".mcp.json", "AGT-003", "missing: it declares the Regula MCP server");
+	else {
+		const mcp = parseJson(repo.mcpJson) as { mcpServers?: { regula?: { url?: unknown } } } | undefined;
+		if (mcp === undefined) add(".mcp.json", "AGT-003", "is not valid JSON");
+		else if (mcp?.mcpServers?.regula?.url !== MCP_URL)
+			add(".mcp.json", "AGT-003", `\`mcpServers.regula.url\` must be ${MCP_URL}`);
+	}
+
+	const ignored = repo.gitignore.split("\n").map((l) => l.trim());
+	if (!ignored.includes(PERSONAL_SETTINGS))
+		add(".gitignore", "AGT-005", `does not ignore \`${PERSONAL_SETTINGS}\``);
+	if (repo.files.includes(PERSONAL_SETTINGS))
+		add(PERSONAL_SETTINGS, "AGT-005", "tracked by Git: personal configuration is not shared");
+
+	const file = ".claude/settings.json";
+	if (repo.claudeSettings === null)
+		add(file, "AGT-006", "missing: it denies the agent reading `.env` files");
+	else {
+		const settings = parseJson(repo.claudeSettings) as { permissions?: { deny?: unknown } } | undefined;
+		if (settings === undefined) add(file, "AGT-006", "is not valid JSON");
+		else {
+			const deny = Array.isArray(settings?.permissions?.deny)
+				? (settings.permissions.deny as unknown[])
+				: [];
+			for (const rule of DENIED_READS)
+				if (!deny.includes(rule))
+					add(file, "AGT-006", `\`permissions.deny\` must include \`${rule}\``);
+		}
+	}
 	return out;
 }
 
@@ -658,6 +734,7 @@ export function devProblems(repo: Repo, today = new Date().toISOString().slice(0
 		...testingProblems(repo),
 		...securityProblems(repo),
 		...docProblems(repo),
+		...agentProblems(repo),
 		...dependencyProblems(repo),
 		...structureProblems(repo),
 		...typographyProblems(repo),
@@ -667,6 +744,8 @@ export function devProblems(repo: Repo, today = new Date().toISOString().slice(0
 // ── reading the repo ───────────────────────────────────────────────────────────────────────────────────────────────
 
 const readJson = (path: string) => JSON.parse(readFileSync(path, "utf8")) as Json;
+const readText = (root: string, path: string) =>
+	existsSync(join(root, path)) ? readFileSync(join(root, path), "utf8") : null;
 
 /** Expands the `workspaces` globs of the root package.json into directories that hold a package.json. */
 export function workspaceDirs(root: string, patterns: string[]): string[] {
@@ -760,6 +839,10 @@ export function readRepo(root: string): Repo {
 		standardsExceptions: existsSync(join(root, "standards-exceptions.json"))
 			? readJson(join(root, "standards-exceptions.json"))
 			: null,
+		agentsMd: readText(root, "AGENTS.md"),
+		claudeMd: readText(root, "CLAUDE.md"),
+		mcpJson: readText(root, ".mcp.json"),
+		claudeSettings: readText(root, ".claude/settings.json"),
 	};
 }
 

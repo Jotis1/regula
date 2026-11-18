@@ -130,6 +130,7 @@ describe("/standards.json", () => {
 			"git",
 			"ci",
 			"process",
+			"agents",
 		]);
 	});
 

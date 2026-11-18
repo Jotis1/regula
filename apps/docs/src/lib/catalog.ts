@@ -48,6 +48,7 @@ export const STANDARD_AREAS: readonly StandardAreaEntry[] = [
 	{ slug: "git", label: "Git" },
 	{ slug: "ci", label: "CI" },
 	{ slug: "process", label: "Proceso" },
+	{ slug: "agents", label: "Agentes" },
 ];
 
 export interface Foundation {

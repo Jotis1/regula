@@ -1,6 +1,7 @@
 // biome-ignore-all lint/suspicious/noTemplateCurlyInString: the fixtures hold GitHub Actions expressions, not templates
 import { describe, expect, it } from "bun:test";
 import {
+	agentProblems,
 	codeProblems,
 	dependencyProblems,
 	devProblems,
@@ -134,12 +135,17 @@ const good = (): Repo => ({
 	sources: [],
 	texts: [],
 	files: ["SECURITY.md", "apps/site/src/pages/index.astro", "packages/lib/src/index.ts"],
-	gitignore: "node_modules/\n.env\n.env.*\n!.env.example\n",
+	gitignore: "node_modules/\n.env\n.env.*\n!.env.example\n.claude/settings.local.json\n",
 	standards: [
 		{ id: "LOC-003", kind: "review" },
 		{ id: "SEO-001", kind: "test" },
 	],
 	standardsExceptions: null,
+	agentsMd:
+		"# Repo\n\nGuide: https://regula.jotis.me\n\n```sh\nbun install\nbun run build\nbun run --cwd apps/site dev\nbun run test\n```\n",
+	claudeMd: "@AGENTS.md\n",
+	mcpJson: JSON.stringify({ mcpServers: { regula: { type: "http", url: "https://regula.jotis.me/mcp" } } }),
+	claudeSettings: JSON.stringify({ permissions: { deny: ["Read(**/.env)", "Read(**/.env.*)"] } }),
 });
 
 const withWorkspace = (repo: Repo, dir: string, change: (w: Workspace) => void): Repo => {
@@ -728,6 +734,83 @@ describe("check-dev", () => {
 			expect(problems[0]).toBe(
 				"apps/site/package.json (SEC-013): `lib` comes from `github:org/lib`, not from the npm registry",
 			);
+		});
+	});
+
+	describe("agents (AGT)", () => {
+		const base = good();
+		const changed = (change: Partial<Repo>): Repo => ({ ...base, ...change });
+
+		it("accepts the instructions and the configuration of the good repo", () => {
+			expect(agentProblems(base)).toEqual([]);
+		});
+
+		it("rejects a repo with no AGENTS.md (AGT-001)", () => {
+			expect(agentProblems(changed({ agentsMd: null }))).toEqual([
+				"AGENTS.md (AGT-001): missing: the root tells an agent the commands and the structure",
+			]);
+		});
+
+		it("rejects an AGENTS.md without the link to the guide (AGT-001)", () => {
+			const agentsMd = (base.agentsMd as string).replace("https://regula.jotis.me", "the guide");
+			expect(agentProblems(changed({ agentsMd }))).toEqual([
+				"AGENTS.md (AGT-001): must link to the guide (https://regula.jotis.me)",
+			]);
+		});
+
+		it("rejects an AGENTS.md whose code blocks miss the commands (AGT-001)", () => {
+			const agentsMd = "# Repo\n\nhttps://regula.jotis.me\n\n```sh\nbun install\n```\n";
+			expect(agentProblems(changed({ agentsMd }))).toEqual([
+				"AGENTS.md (AGT-001): the code blocks must show how to start (dev)",
+				"AGENTS.md (AGT-001): the code blocks must show how to build",
+				"AGENTS.md (AGT-001): the code blocks must show how to test",
+			]);
+		});
+
+		it("rejects a repo with no CLAUDE.md (AGT-002)", () => {
+			expect(rules(agentProblems(changed({ claudeMd: null })))).toEqual(["AGT-002"]);
+		});
+
+		it("rejects a CLAUDE.md with instructions of its own (AGT-002)", () => {
+			expect(rules(agentProblems(changed({ claudeMd: "@AGENTS.md\n\nUse tabs.\n" })))).toEqual([
+				"AGT-002",
+			]);
+			expect(rules(agentProblems(changed({ claudeMd: "Use tabs.\n" })))).toEqual(["AGT-002"]);
+		});
+
+		it("rejects a missing, broken or wrong .mcp.json (AGT-003)", () => {
+			expect(rules(agentProblems(changed({ mcpJson: null })))).toEqual(["AGT-003"]);
+			expect(agentProblems(changed({ mcpJson: "{" }))).toEqual([
+				".mcp.json (AGT-003): is not valid JSON",
+			]);
+			const other = JSON.stringify({ mcpServers: { regula: { url: "https://example.com/mcp" } } });
+			expect(rules(agentProblems(changed({ mcpJson: other })))).toEqual(["AGT-003"]);
+			expect(rules(agentProblems(changed({ mcpJson: "{}" })))).toEqual(["AGT-003"]);
+		});
+
+		it("rejects personal configuration that Git does not ignore or tracks (AGT-005)", () => {
+			expect(agentProblems(changed({ gitignore: ".env\n" }))).toEqual([
+				".gitignore (AGT-005): does not ignore `.claude/settings.local.json`",
+			]);
+			const tracked = changed({ files: [...base.files, ".claude/settings.local.json"] });
+			expect(agentProblems(tracked)).toEqual([
+				".claude/settings.local.json (AGT-005): tracked by Git: personal configuration is not shared",
+			]);
+		});
+
+		it("rejects a shared configuration that lets the agent read .env files (AGT-006)", () => {
+			expect(rules(agentProblems(changed({ claudeSettings: null })))).toEqual(["AGT-006"]);
+			expect(agentProblems(changed({ claudeSettings: "{" }))).toEqual([
+				".claude/settings.json (AGT-006): is not valid JSON",
+			]);
+			for (const missing of ["Read(**/.env)", "Read(**/.env.*)"]) {
+				const deny = ["Read(**/.env)", "Read(**/.env.*)"].filter((r) => r !== missing);
+				const claudeSettings = JSON.stringify({ permissions: { deny } });
+				expect(agentProblems(changed({ claudeSettings }))).toEqual([
+					`.claude/settings.json (AGT-006): \`permissions.deny\` must include \`${missing}\``,
+				]);
+			}
+			expect(rules(agentProblems(changed({ claudeSettings: "{}" })))).toEqual(["AGT-006", "AGT-006"]);
 		});
 	});
 
