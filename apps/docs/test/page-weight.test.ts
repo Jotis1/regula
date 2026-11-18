@@ -5,11 +5,11 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
 import { afterAll, describe, expect, it } from "vitest";
-import { limitOf, overBudget, weighPage, weighSite } from "../scripts/js-weight";
+import { limitOf, overBudget, weighPage, weighSite } from "../scripts/page-weight";
 
-const script = fileURLToPath(new URL("../scripts/js-weight.ts", import.meta.url));
+const script = fileURLToPath(new URL("../scripts/page-weight.ts", import.meta.url));
 
-const dist = mkdtempSync(join(tmpdir(), "js-weight-"));
+const dist = mkdtempSync(join(tmpdir(), "page-weight-"));
 afterAll(() => rmSync(dist, { recursive: true, force: true }));
 
 const write = (path: string, text: string) => {
@@ -38,7 +38,7 @@ const visual =
 	'const f={"./examples/display.tsx":()=>d(()=>import(`./display.js`)),"./examples/forms.tsx":()=>d(()=>import(`./forms.js`))};';
 const display = `import{a}from"./shared.js";export const AvatarExample=a;${"z".repeat(1000)}`;
 // En su propio dist, para no cambiar la lista de páginas del resto de tests
-const distVisual = mkdtempSync(join(tmpdir(), "js-weight-visual-"));
+const distVisual = mkdtempSync(join(tmpdir(), "page-weight-visual-"));
 afterAll(() => rmSync(distVisual, { recursive: true, force: true }));
 const writeVisual = (path: string, text: string) => {
 	mkdirSync(join(distVisual, path, ".."), { recursive: true });
@@ -53,7 +53,29 @@ writeVisual(
 	`<html><astro-island component-url="/_astro/VisualExample.abc.js" renderer-url="/_astro/client.js" props="{&quot;slot&quot;:[0,&quot;examples&quot;],&quot;name&quot;:[0,&quot;Avatar&quot;]}" opts="{&quot;name&quot;:&quot;VisualExample&quot;}"></astro-island></html>`,
 );
 
-describe("js-weight", () => {
+// A page with two style sheets, one of them linked twice, and a page with none: for the HTML and CSS weight
+const distStyles = mkdtempSync(join(tmpdir(), "page-weight-styles-"));
+afterAll(() => rmSync(distStyles, { recursive: true, force: true }));
+const writeStyles = (path: string, text: string) => {
+	mkdirSync(join(distStyles, path, ".."), { recursive: true });
+	writeFileSync(join(distStyles, path), text);
+};
+const sheet = `.a{color:red}${".b{margin:0}".repeat(300)}`;
+const print = "@media print{.a{display:none}}";
+const styledHtml = `<html><head><link rel="stylesheet" href="/_astro/global.css"><link href="/_astro/print.css" rel="stylesheet"><link rel="stylesheet" href="/_astro/global.css"><link rel="icon" href="/icon.css"></head><body>${"<p>x</p>".repeat(200)}</body></html>`;
+writeStyles("_astro/global.css", sheet);
+writeStyles("_astro/print.css", print);
+writeStyles("index.html", styledHtml);
+writeStyles("plain/index.html", "<html><body>sin hojas</body></html>");
+
+/** Budgets no page of the fixtures reaches. */
+const ROOMY = {
+	js: { default: 1000, pages: {} },
+	css: { default: 1000, pages: {} },
+	html: { default: 1000, pages: {} },
+};
+
+describe("page-weight", () => {
 	it("suma las entradas y sus imports estáticos, y deja aparte los dinámicos", () => {
 		const home = weighPage(dist, "index.html");
 		expect(home.page).toBe("/");
@@ -92,17 +114,40 @@ describe("js-weight", () => {
 		expect(limitOf(budget, "/components/button/full/")).toBe(10 * 1024);
 	});
 
-	it("check:js falla con la página, su peso y su límite cuando una se pasa", () => {
+	it("check:weight falla con la página, su peso y su límite cuando una se pasa de JS", () => {
 		const budgetFile = join(dist, "budget.json");
-		writeFileSync(budgetFile, JSON.stringify({ default: 1000, pages: { "/": 0.001 } }));
-		expect(
-			overBudget(weighSite(dist), { default: 1000, pages: { "/": 0.001 } }).map((o) => o.page),
-		).toEqual(["/"]);
+		const tight = { ...ROOMY, js: { default: 1000, pages: { "/": 0.001 } } };
+		writeFileSync(budgetFile, JSON.stringify(tight));
+		expect(overBudget(weighSite(dist), tight).map((o) => [o.page, o.kind])).toEqual([["/", "js"]]);
 		const run = spawnSync("bun", ["run", script, dist, budgetFile], { encoding: "utf8" });
 		expect(run.status).toBe(1);
-		expect(run.stderr).toMatch(/\/: \d+\.\d kB gzip, límite 0\.0 kB/);
-		writeFileSync(budgetFile, JSON.stringify({ default: 1000, pages: {} }));
+		expect(run.stderr).toMatch(/\/: JS \d+\.\d kB gzip, límite 0\.0 kB/);
+		writeFileSync(budgetFile, JSON.stringify(ROOMY));
 		expect(spawnSync("bun", ["run", script, dist, budgetFile], { encoding: "utf8" }).status).toBe(0);
+	});
+
+	it("mide el HTML de la página y el CSS de las hojas que enlaza, una vez cada una", () => {
+		const page = weighPage(distStyles, "index.html");
+		expect(page.html.gz).toBe(gz(styledHtml));
+		expect(page.css).toEqual({ raw: sheet.length + print.length, gz: gz(sheet) + gz(print), files: 2 });
+		// Una página sin hojas no pesa nada de CSS
+		expect(weighPage(distStyles, "plain/index.html").css).toEqual({ raw: 0, gz: 0, files: 0 });
+	});
+
+	it("check:weight falla cuando el HTML o el CSS de una página pasan de su límite, y dice de cuál", () => {
+		const pages = weighSite(distStyles);
+		expect(overBudget(pages, ROOMY)).toEqual([]);
+		const tightCss = { ...ROOMY, css: { default: 1000, pages: { "/": 0.001 } } };
+		expect(overBudget(pages, tightCss)).toEqual([
+			{ page: "/", kind: "css", gz: gz(sheet) + gz(print), limit: 0.001 * 1024 },
+		]);
+		const tightHtml = { ...ROOMY, html: { default: 0.001, pages: { "/": 1000 } } };
+		expect(overBudget(pages, tightHtml).map((o) => [o.page, o.kind])).toEqual([["/plain/", "html"]]);
+		const budgetFile = join(distStyles, "budget.json");
+		writeFileSync(budgetFile, JSON.stringify(tightCss));
+		const run = spawnSync("bun", ["run", script, distStyles, budgetFile], { encoding: "utf8" });
+		expect(run.status).toBe(1);
+		expect(run.stderr).toMatch(/\/: CSS \d+\.\d kB gzip, límite 0\.0 kB/);
 	});
 
 	it("una página sin JS pesa cero y todas salen en la lista del sitio", () => {

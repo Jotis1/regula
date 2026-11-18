@@ -95,9 +95,9 @@ jobs:
             - name: Tamaño por componente
               run: bun run check:size
               working-directory: packages/react
-            # Sobre la web que ya construyó `turbo run build`: JS estático por página frente a `js-budget.json`.
-            - name: JS por página de la web
-              run: bun run check:js
+            # Sobre la web que ya construyó `turbo run build`: HTML, CSS y JS de cada página frente a `weight-budget.json` (PRF-002).
+            - name: Peso por página de la web
+              run: bun run check:weight
               working-directory: apps/docs
             - name: "Paquetes sin workspace:"
               run: bun run scripts/pack.ts

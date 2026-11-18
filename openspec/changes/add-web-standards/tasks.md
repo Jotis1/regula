@@ -27,9 +27,9 @@
 
 ## 5. Peso por página: HTML, CSS y JS
 
-- [ ] 5.1 Renombrar `apps/docs/scripts/js-weight.ts` a `page-weight.ts` y medir también el HTML de la página y el CSS que enlaza, en gzip; el fallo nombra la página, el tipo, lo medido y el límite. Verificación: casos nuevos en el test del script (HTML y CSS por encima y por debajo del límite), en verde.
-- [ ] 5.2 Pasar `js-budget.json` a `weight-budget.json` con los bloques `js`, `css` y `html`: conservar los límites de JS y fijar los de HTML y CSS con lo medido más un 10 %, con su motivo en `$comment`. Verificación: `bun run check:weight` pasa sobre el build actual.
-- [ ] 5.3 Renombrar el script `check:js` a `check:weight` y el paso del CI a «Peso por página de la web», y actualizar lo que los nombre (`check-ci`, normas y documentación). Verificación: `bun run check:ci` pasa y `grep -r "check:js"` no encuentra nada fuera de `openspec/changes/archive/` y de los changelogs.
+- [x] 5.1 Renombrar `apps/docs/scripts/js-weight.ts` a `page-weight.ts` y medir también el HTML de la página y el CSS que enlaza, en gzip; el fallo nombra la página, el tipo, lo medido y el límite. Verificación: casos nuevos en el test del script (HTML y CSS por encima y por debajo del límite), en verde.
+- [x] 5.2 Pasar `js-budget.json` a `weight-budget.json` con los bloques `js`, `css` y `html`: conservar los límites de JS y fijar los de HTML y CSS con lo medido más un 10 %, con su motivo en `$comment`. Verificación: `bun run check:weight` pasa sobre el build actual.
+- [x] 5.3 Renombrar el script `check:js` a `check:weight` y el paso del CI a «Peso por página de la web», y actualizar lo que los nombre (`check-ci`, normas y documentación). Verificación: `bun run check:ci` pasa y `grep -r "check:js"` no encuentra nada fuera de `openspec/changes/archive/` y de los changelogs.
 
 ## 6. Lighthouse
 
