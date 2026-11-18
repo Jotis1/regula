@@ -13,10 +13,10 @@
 
 ## 3. Regula cumple las normas
 
-- [ ] 3.1 Escribir `AGENTS.md` en la raíz, en español, con el contenido del design D4 y sin copiar normas, y `CLAUDE.md` con la sola línea `@AGENTS.md`. Verificación: cada comando que nombra `AGENTS.md` existe en `package.json`, y en una sesión nueva de Claude Code `/memory` enseña `AGENTS.md` cargado a través de `CLAUDE.md`.
-- [ ] 3.2 Crear `.mcp.json` con el servidor `regula` (el bloque de `/start/mcp/`). Verificación: `claude mcp list` en el repo enseña `regula` desde el fichero del proyecto.
-- [ ] 3.3 Crear `.claude/settings.json` con las dos reglas de `deny` (design D5) y añadir `.claude/settings.local.json` a `.gitignore`. Verificación: con un `apps/docs/.env.local` de prueba, pedir al agente que lo lea y ver que se deniega; si la sintaxis `**/` no deniega, corregir el patrón, el design D5 y la comprobación antes de seguir. `git check-ignore .claude/settings.local.json` lo nombra.
-- [ ] 3.4 Verificación del grupo: `bun run check:dev` pasa y Biome no avisa de los ficheros nuevos.
+- [x] 3.1 Escribir `AGENTS.md` en la raíz, en español, con el contenido del design D4 y sin copiar normas, y `CLAUDE.md` con la sola línea `@AGENTS.md`. Verificación: cada comando, comando de OpenSpec y herramienta del MCP que nombra `AGENTS.md` existe (scripts de `package.json` y de `apps/docs`, `.claude/commands/opsx/`, `list_standards` y `get_standard`). Que `/memory` enseñe `AGENTS.md` cargado a través de `CLAUDE.md` solo se ve en una sesión nueva: queda para que la mire el usuario.
+- [x] 3.2 Crear `.mcp.json` con el servidor `regula` (el bloque de `/start/mcp/`). Verificación: `check:dev` lo valida (JSON y URL). `claude mcp list` no sirve para ver el fichero del proyecto en la máquina del usuario: `regula` ya está en su configuración local, que tiene prioridad.
+- [x] 3.3 Crear `.claude/settings.json` con las dos reglas de `deny` (design D5) y añadir `.claude/settings.local.json` a `.gitignore`. Verificación: leer `examples/astro/.env` y `examples/astro/.env.agt-test` (ninguno existe) da «denied by your permission settings», y leer otro fichero que tampoco existe da «File does not exist»: la regla con `**/` deniega. `git check-ignore -v .claude/settings.local.json` lo nombra.
+- [x] 3.4 Verificación del grupo: `bun run check:dev` pasa y Biome no avisa de los ficheros nuevos.
 
 ## 4. El área de normas
 
