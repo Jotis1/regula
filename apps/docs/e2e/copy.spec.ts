@@ -117,6 +117,8 @@ test("la página de CopyTooltip: useCopy desde una isla y, con dos CopyTooltip m
 test("copiar falla: un aviso de error dice qué ha pasado y cómo seguir, y no se cierra solo", async ({
 	page,
 }) => {
+	// El reloj es el de la prueba: pasa el tiempo en que una burbuja se habría ido sin esperarlo
+	await page.clock.install();
 	// El navegador no deja usar el portapapeles
 	await page.addInitScript(() => {
 		Object.defineProperty(navigator, "clipboard", {
@@ -132,7 +134,7 @@ test("copiar falla: un aviso de error dice qué ha pasado y cómo seguir, y no s
 	await expect(alert).toContainText("Selecciona el texto y cópialo a mano.");
 	// Sin la burbuja de siempre, y sigue ahí pasado el tiempo en que una burbuja se habría ido
 	await expect(tooltip(page)).toHaveText("");
-	await page.waitForTimeout(7000);
+	await page.clock.runFor(7000);
 	await expect(alert).toBeVisible();
 	// Se va cuando se cierra
 	await alert.getByRole("button").click();

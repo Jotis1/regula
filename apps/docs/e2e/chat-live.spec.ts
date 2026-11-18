@@ -72,15 +72,18 @@ test.describe("Enlaces en el chat", () => {
 
 test.describe("Chat animado en el ejemplo", () => {
 	test("Animación apagada: el chat del ejemplo no cambia", async ({ page }) => {
+		// El reloj es el de la prueba: pasa más de un intervalo del chat animado sin esperarlo
+		await page.clock.install();
 		const pg = await example(page, "/components/chat-box/");
 		const before = await rows(pg).allTextContents();
-		await page.waitForTimeout(3500);
+		await page.clock.runFor(3500);
 		expect(await rows(pg).allTextContents()).toEqual(before);
 	});
 
 	test("Encender la animación: entra un mensaje nuevo con su entrada, y la ventana no pasa de 8", async ({
 		page,
 	}) => {
+		await page.clock.install();
 		const pg = await example(page, "/components/chat-box/");
 		const n = await rows(pg).count();
 		const toggle = (await control(pg, "animate")).getByRole("switch");
@@ -91,7 +94,7 @@ test.describe("Chat animado en el ejemplo", () => {
 		await expect(pg.locator("[data-playground-code]")).toContainText("animate");
 		await expect(pg.locator("[data-playground-code]")).not.toContainText("setInterval");
 		await expect.poll(() => rows(pg).count(), { timeout: 25_000, intervals: [2500] }).toBe(8);
-		await page.waitForTimeout(3000);
+		await page.clock.runFor(3000);
 		expect(await rows(pg).count()).toBe(8);
 	});
 });
