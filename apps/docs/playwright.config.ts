@@ -6,9 +6,10 @@ const CROSS_BROWSER = /cross-browser[\\/].*\.spec\.ts$/;
 
 export default defineConfig({
 	testDir: "e2e",
-	// En CI, un reintento: en el runner de Windows `astro preview` rechaza a veces una conexión suelta
-	// (ERR_CONNECTION_REFUSED a mitad de pasada). Un test que solo pasa al reintentar sale como "flaky" en el informe.
+	// TST-004: en CI, un test que solo pasa al reintentar sale como "flaky" y hace fallar la ejecución. El reintento
+	// queda para que el informe diga que es inestable, y no un fallo sin más.
 	retries: process.env.CI ? 1 : 0,
+	failOnFlakyTests: !!process.env.CI,
 	use: { baseURL: "http://localhost:4321" },
 	projects: [
 		{ name: "chromium", use: { browserName: "chromium" } },
