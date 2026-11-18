@@ -60,6 +60,19 @@ describe("frontera servidor", () => {
 });
 
 describe("PageHeader", () => {
+	it("headingLevel cambia la etiqueta del título y no su aspecto, en las dos formas de la cabecera", () => {
+		for (const extra of [{}, { centered: true }]) {
+			const byDefault = render(<PageHeader title="Gastos" {...extra} />);
+			const h1 = byDefault.getByRole("heading", { level: 1, name: "Gastos" });
+			byDefault.unmount();
+			const lower = render(<PageHeader title="Gastos" headingLevel={2} {...extra} />);
+			const h2 = lower.getByRole("heading", { level: 2, name: "Gastos" });
+			expect(lower.queryByRole("heading", { level: 1 })).toBeNull();
+			expect(h2.className).toBe(h1.className);
+			lower.unmount();
+		}
+	});
+
 	it("migas, h1, descripción, acciones y línea inferior", () => {
 		const { container } = render(
 			<PageHeader

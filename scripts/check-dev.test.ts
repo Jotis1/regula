@@ -5,6 +5,7 @@ import {
 	dependencyProblems,
 	devProblems,
 	docProblems,
+	exceptionProblems,
 	inTypographyScope,
 	jsdocProblems,
 	type Repo,
@@ -134,6 +135,11 @@ const good = (): Repo => ({
 	texts: [],
 	files: ["SECURITY.md", "apps/site/src/pages/index.astro", "packages/lib/src/index.ts"],
 	gitignore: "node_modules/\n.env\n.env.*\n!.env.example\n",
+	standards: [
+		{ id: "LOC-003", kind: "review" },
+		{ id: "SEO-001", kind: "test" },
+	],
+	standardsExceptions: null,
 });
 
 const withWorkspace = (repo: Repo, dir: string, change: (w: Workspace) => void): Repo => {
@@ -721,6 +727,60 @@ describe("check-dev", () => {
 			expect(rules(problems)).toEqual(["SEC-013", "SEC-013", "SEC-013"]);
 			expect(problems[0]).toBe(
 				"apps/site/package.json (SEC-013): `lib` comes from `github:org/lib`, not from the npm registry",
+			);
+		});
+	});
+
+	describe("exceptions to the standards", () => {
+		const TODAY = "2026-11-18";
+		const withExceptions = (list: unknown): Repo => ({ ...good(), standardsExceptions: list });
+		const FILE = "standards-exceptions.json";
+
+		it("accepts a repo without the file, an empty list and a valid exception", () => {
+			expect(exceptionProblems(good(), TODAY)).toEqual([]);
+			expect(exceptionProblems(withExceptions([]), TODAY)).toEqual([]);
+			const valid = [
+				{ rule: "LOC-003", why: "The texts move to catalogs in their own change.", until: TODAY },
+			];
+			expect(exceptionProblems(withExceptions(valid), TODAY)).toEqual([]);
+		});
+
+		it("rejects an expired exception and names the standard and the day", () => {
+			const list = [{ rule: "LOC-003", why: "Pending.", until: "2026-11-17" }];
+			expect(exceptionProblems(withExceptions(list), TODAY)).toEqual([
+				`${FILE} #1 (LOC-003): expired on 2026-11-17`,
+			]);
+		});
+
+		it("rejects a standard that does not exist", () => {
+			const list = [{ rule: "LOC-099", why: "Pending.", until: "2027-01-01" }];
+			expect(exceptionProblems(withExceptions(list), TODAY)).toEqual([
+				`${FILE} #1 (LOC-099): there is no standard with that id`,
+			]);
+		});
+
+		it("rejects an exception for a standard with an automatic check", () => {
+			const list = [{ rule: "SEO-001", why: "Pending.", until: "2027-01-01" }];
+			expect(exceptionProblems(withExceptions(list), TODAY)).toEqual([
+				`${FILE} #1 (SEO-001): the standard is verified by test, and an exception cannot switch off a check`,
+			]);
+		});
+
+		it("rejects an exception without its reason or its day, a day that is not one and a file that is not a list", () => {
+			expect(exceptionProblems(withExceptions([{ rule: "LOC-003", why: " " }]), TODAY)).toEqual([
+				`${FILE} #1 (LOC-003): has no why, until`,
+			]);
+			const notADay = [{ rule: "LOC-003", why: "Pending.", until: "2027-02-30" }];
+			expect(exceptionProblems(withExceptions(notADay), TODAY)).toEqual([
+				`${FILE} #1 (LOC-003): the day in until must be YYYY-MM-DD`,
+			]);
+			expect(exceptionProblems(withExceptions({}), TODAY)).toEqual([`${FILE}: must be an array`]);
+		});
+
+		it("is part of the whole check", () => {
+			const list = [{ rule: "LOC-003", why: "Pending.", until: "2026-01-01" }];
+			expect(devProblems(withExceptions(list), TODAY)).toContain(
+				`${FILE} #1 (LOC-003): expired on 2026-01-01`,
 			);
 		});
 	});

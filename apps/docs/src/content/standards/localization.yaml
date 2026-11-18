@@ -1,0 +1,167 @@
+prefix: LOC
+title: Internacionalización
+description: Cómo se escribe la interfaz para que otro idioma sea cuestión de traducir, no de reescribir.
+order: 13
+rules:
+    - id: LOC-001
+      title: La página dice su idioma
+      level: must
+      appliesTo: app
+      statement: >-
+          `<html>` lleva `lang` con el idioma de la página (`es`). Un fragmento en otro idioma lleva su propio
+          `lang`.
+      rationale: >-
+          Con `lang`, un lector de pantalla pronuncia con la voz del idioma, el navegador ofrece traducir cuando toca
+          y parte bien las palabras. Sin él, un texto en español se lee con fonética inglesa.
+      examples:
+          good:
+              - caption: El idioma de la página, y el de una cita en otro
+                lang: html
+                code: |-
+                    <html lang="es">
+                        <p>Como dice su lema, <q lang="en">move fast</q>.</p>
+                    </html>
+          bad:
+              - caption: Una página que no dice en qué idioma está
+                lang: html
+                code: |-
+                    <html>
+      verification:
+          kind: test
+          check: apps/docs/test/pages.test.ts
+
+    - id: LOC-002
+      title: Cifras, fechas y monedas se formatean con Intl
+      level: must
+      appliesTo: all
+      statement: >-
+          Las cifras, las fechas, las horas, las monedas y las listas se formatean con `Intl` (`NumberFormat`,
+          `DateTimeFormat`, `RelativeTimeFormat`, `ListFormat`), con la configuración regional escrita de forma
+          explícita. No se montan a mano ni se deja la configuración regional de la máquina.
+      rationale: >-
+          Cada idioma pone el separador de miles, el símbolo de la moneda y el orden de la fecha a su manera, e
+          `Intl` ya lo sabe. Sin configuración regional explícita, el servidor formatea a la suya y el navegador a
+          otra, y la página cambia al hidratar.
+      examples:
+          good:
+              - caption: Un importe, con su configuración regional
+                lang: ts
+                code: |-
+                    const euros = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
+                    euros.format(1234.5); // "1234,50 €"
+          bad:
+              - caption: El importe montado a mano
+                lang: ts
+                code: |-
+                    const euros = (n: number) => `${n.toFixed(2).replace(".", ",")} €`;
+      verification:
+          kind: review
+          review: Que ninguna cifra, fecha o moneda nueva se formatee a mano o sin configuración regional.
+
+    - id: LOC-003
+      title: Los textos de la interfaz viven en catálogos
+      level: must
+      appliesTo: all
+      statement: >-
+          Los textos que ve el usuario (etiquetas, mensajes, textos alternativos) viven en catálogos por idioma, fuera
+          del código que los pinta. Un componente publicado recibe sus textos por props o de un catálogo que se puede
+          sustituir, con el español por defecto.
+      rationale: >-
+          Un texto escrito dentro del JSX obliga a tocar el código para traducirlo y no se puede revisar de una vez.
+          Con catálogos, otro idioma es un fichero más, y quien revisa los textos los tiene todos juntos.
+      examples:
+          good:
+              - caption: El texto viene del catálogo del idioma
+                lang: tsx
+                code: |-
+                    const t = useMessages();
+                    <Button>{t("expenses.new")}</Button>
+          bad:
+              - caption: El texto escrito en el componente
+                lang: tsx
+                code: |-
+                    <Button>Nuevo gasto</Button>
+      verification:
+          kind: review
+          review: Que los textos nuevos de la interfaz entren en el catálogo y no en el código que los pinta.
+
+    - id: LOC-004
+      title: Las frases no se montan a trozos
+      level: must
+      appliesTo: all
+      statement: >-
+          Cada mensaje es una frase completa, con sus variables dentro. No se concatena texto con datos ni con otros
+          textos. Los plurales se resuelven con las reglas del idioma (`Intl.PluralRules` o el formato de mensajes
+          del catálogo), no con una `s` añadida.
+      rationale: >-
+          Otro idioma pone las palabras en otro orden, tiene más de dos formas de plural o concuerda en género. Una
+          frase a trozos solo se puede traducir trozo a trozo, y el resultado es incorrecto en casi todos.
+      examples:
+          good:
+              - caption: Una frase entera, con su variable y su plural
+                lang: ts
+                code: |-
+                    t("results.showing", { shown: 96, total: 1179 });
+                    // "Mostrando 96 de 1179 iconos"
+          bad:
+              - caption: La frase, a trozos
+                lang: ts
+                code: |-
+                    "Mostrando " + shown + " de " + total + " icono" + (total === 1 ? "" : "s");
+      verification:
+          kind: review
+          review: Que ningún mensaje nuevo se monte concatenando textos y datos.
+
+    - id: LOC-005
+      title: Con varios idiomas, cada uno tiene su ruta y su hreflang
+      level: must
+      appliesTo: app
+      statement: >-
+          Una app con más de un idioma da a cada idioma su ruta (`/en/…`), con el español en la raíz, y enlaza las
+          versiones de cada página con `<link rel="alternate" hreflang>`, incluida `x-default`. El idioma no se
+          elige solo con una cookie ni con la cabecera del navegador. En Astro, `i18n` en la configuración; en Next,
+          un segmento `[lang]`. Una app en un solo idioma ya cumple.
+      rationale: >-
+          Una URL por idioma se puede enlazar, compartir e indexar; una página que cambia de idioma según quién la
+          pide, no. `hreflang` le dice al buscador qué versión enseñar a cada persona.
+      examples:
+          good:
+              - caption: Las versiones de una página, enlazadas entre sí
+                lang: html
+                code: |-
+                    <link rel="alternate" hreflang="es" href="https://app.jotis.me/precios/">
+                    <link rel="alternate" hreflang="en" href="https://app.jotis.me/en/pricing/">
+                    <link rel="alternate" hreflang="x-default" href="https://app.jotis.me/precios/">
+          bad:
+              - caption: La misma URL, en el idioma que diga una cookie
+                lang: ts
+                code: |-
+                    const lang = cookies.get("lang") ?? "es";
+      verification:
+          kind: review
+          review: En una app con varios idiomas, que cada página nueva tenga su ruta por idioma y sus `hreflang`.
+
+    - id: LOC-006
+      title: La interfaz aguanta textos más largos
+      level: should
+      appliesTo: all
+      statement: >-
+          Un texto un 40 % más largo no se corta, no se sale de su caja y no rompe el diseño. Los contenedores crecen
+          con el texto: sin anchos fijos para lo que lleva texto, y con salto de línea donde quepa.
+      rationale: >-
+          El mismo mensaje ocupa bastante más en alemán que en español, y el usuario puede agrandar la letra. Un
+          botón con ancho fijo que hoy queda justo, mañana corta su etiqueta.
+      examples:
+          good:
+              - caption: El botón mide lo que mida su texto
+                lang: tsx
+                code: |-
+                    <Button className="w-fit">Guardar cambios</Button>
+          bad:
+              - caption: Un ancho fijo, medido para el texto de hoy
+                lang: tsx
+                code: |-
+                    <Button className="w-[132px] truncate">Guardar cambios</Button>
+      verification:
+          kind: review
+          review: Probar lo nuevo con un texto bastante más largo y con la letra del navegador agrandada.

@@ -59,7 +59,7 @@ describe("una llamada con éxito y otra con error por herramienta", () => {
 		bad: Record<string, unknown>;
 		badText: string;
 	}[] = [
-		{ name: "list_standards", ok: {}, okText: "NAM-001", bad: { area: "seo" }, badText: "naming" },
+		{ name: "list_standards", ok: {}, okText: "NAM-001", bad: { area: "marketing" }, badText: "naming" },
 		{
 			name: "get_standard",
 			ok: { id: "git-001" },

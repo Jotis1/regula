@@ -10,6 +10,12 @@ export interface StreamSceneProps {
 	variant?: StreamSceneVariant;
 	/** Titular en Bricolage a 152px; no más de 24 caracteres. */
 	title?: ReactNode;
+	/**
+	 * Nivel del encabezado del titular. Solo cambia la etiqueta, no el aspecto: usa otro cuando la escena va dentro de
+	 * una página que ya tiene su `<h1>`.
+	 * @default 1
+	 */
+	headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 	/** `false` lo oculta. */
 	subtitle?: ReactNode | false;
 	/** Texto de la insignia de estado. */
@@ -89,8 +95,10 @@ export function StreamScene({
 	handle,
 	width,
 	scale,
+	headingLevel = 1,
 	className,
 }: StreamSceneProps) {
+	const Heading = `h${headingLevel}` as "h1";
 	const d = SCENES[variant] ?? SCENES.starting;
 	const countdown = (variant === "starting" || variant === "brb") && (seconds != null || target != null);
 	return (
@@ -104,9 +112,9 @@ export function StreamScene({
 					/>
 					{badge ?? d.badge}
 				</span>
-				<h1 className="m-0 font-display text-[152px] leading-[1.04] font-semibold tracking-[-0.02em] text-primary">
+				<Heading className="m-0 font-display text-[152px] leading-[1.04] font-semibold tracking-[-0.02em] text-primary">
 					{title ?? d.title}
-				</h1>
+				</Heading>
 				{subtitle !== false ? (
 					<p className="m-0 max-w-[1040px] text-[40px] leading-14 text-tertiary">
 						{subtitle ?? d.sub}

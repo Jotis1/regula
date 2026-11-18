@@ -84,3 +84,15 @@ test("Modal en una página de servidor: foco atrapado, Escape, foco de vuelta y 
 	await expect(dialog).toHaveCount(0);
 	expect(problems).toEqual([]);
 });
+
+test("la página dice su idioma y empieza por un enlace de salto al contenido (LOC-001, ACC-003)", async ({
+	page,
+}) => {
+	await page.goto("/");
+	await expect(page.locator("html")).toHaveAttribute("lang", "es");
+	await page.keyboard.press("Tab");
+	const skip = page.getByRole("link", { name: "Saltar al contenido" });
+	await expect(skip).toBeFocused();
+	await expect(skip).toHaveAttribute("href", "#contenido");
+	await expect(page.locator("main#contenido")).toBeVisible();
+});

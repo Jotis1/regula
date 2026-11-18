@@ -9,6 +9,8 @@ import favicon32 from "@jotis-me/assets/app-icons/regula-favicon-32.png?no-inlin
 import bricolage from "@jotis-me/tokens/fonts/BricolageGrotesque-Variable-latin.woff2?url";
 import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
 import geistMono from "@jotis-me/tokens/fonts/GeistMono-Variable.woff2?url";
+// The Open Graph image of the whole site (SEO-007): 1200x630, captured from /visual/og/ with scripts/capture-og.ts
+import ogImage from "../assets/og.png?url";
 import { CopyTooltipIsland as CopyTooltip } from "../components/CopyTooltipIsland";
 import SideNav from "../components/SideNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
@@ -41,6 +43,12 @@ const indexed = noindex ? {} : { "data-pagefind-body": true };
 const current = Astro.url.pathname;
 // Iconos y la 404 (la única página `noindex`) van sin lateral; en la 404 la ruta es la que no existe, así que no sirve
 const hasSidebar = sidebar ?? !(noindex || sectionOf(current) === "icons");
+const pageTitle = title === "Regula" ? "Regula - jotis.me" : `${title} - Regula`;
+// SEO-002 and SEO-007: absolute URLs, from `site`. A `noindex` page carries neither the canonical nor the card.
+// Without `site` (the tests that render a layout on its own), the base is the URL of the request.
+const origin = Astro.site ?? Astro.url;
+const canonical = new URL(current, origin).href;
+const ogImageUrl = new URL(ogImage, origin).href;
 ---
 
 <!doctype html>
@@ -55,9 +63,28 @@ const hasSidebar = sidebar ?? !(noindex || sectionOf(current) === "icons");
 		<link rel="preload" href={geist} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={geistMono} as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href={bricolage} as="font" type="font/woff2" crossorigin />
-		<title>{title === "Regula" ? "Regula - jotis.me" : `${title} - Regula`}</title>
+		<title>{pageTitle}</title>
 		<meta name="description" content={description} />
-		{noindex && <meta name="robots" content="noindex" />}
+		{
+			noindex ? (
+				<meta name="robots" content="noindex" />
+			) : (
+				<>
+					<link rel="canonical" href={canonical} />
+					<meta property="og:type" content="website" />
+					<meta property="og:site_name" content="Regula" />
+					<meta property="og:locale" content="es_ES" />
+					<meta property="og:title" content={pageTitle} />
+					<meta property="og:description" content={description} />
+					<meta property="og:url" content={canonical} />
+					<meta property="og:image" content={ogImageUrl} />
+					<meta property="og:image:width" content="1200" />
+					<meta property="og:image:height" content="630" />
+					<meta property="og:image:alt" content="Regula: las reglas de la suite, con el código al lado." />
+					<meta name="twitter:card" content="summary_large_image" />
+				</>
+			)
+		}
 		<slot name="head" />
 	</head>
 	<body class="min-h-screen bg-primary text-md text-primary antialiased">

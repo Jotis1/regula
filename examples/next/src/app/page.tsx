@@ -4,7 +4,7 @@ import { CheckCircle, Plus } from "@untitledui/icons";
 
 export default function Page() {
 	return (
-		<main className="flex flex-col gap-6">
+		<main id="contenido" className="flex flex-col gap-6">
 			<h1 className="font-display text-display-sm font-semibold">Componentes estáticos</h1>
 			<div className="flex flex-wrap items-center gap-3">
 				<Button iconLeading={Plus}>Nuevo gasto</Button>

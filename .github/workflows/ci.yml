@@ -95,9 +95,9 @@ jobs:
             - name: Tamaño por componente
               run: bun run check:size
               working-directory: packages/react
-            # Sobre la web que ya construyó `turbo run build`: JS estático por página frente a `js-budget.json`.
-            - name: JS por página de la web
-              run: bun run check:js
+            # Sobre la web que ya construyó `turbo run build`: HTML, CSS y JS de cada página frente a `weight-budget.json` (PRF-002).
+            - name: Peso por página de la web
+              run: bun run check:weight
               working-directory: apps/docs
             - name: "Paquetes sin workspace:"
               run: bun run scripts/pack.ts
@@ -213,7 +213,7 @@ jobs:
             - name: Artefacto "Jotis.me" (React 18, hoja y vistas previas frente a las capturas)
               run: bun run test:e2e
               working-directory: scripts/artifact
-            - name: Lighthouse (móvil, ≥ 90 en rendimiento y accesibilidad)
+            - name: Lighthouse (móvil, CLS y accesibilidad)
               id: lighthouse
               shell: bash
               working-directory: apps/docs

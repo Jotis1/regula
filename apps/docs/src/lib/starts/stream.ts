@@ -92,6 +92,8 @@ export const stream: Record<string, Start> = {
 	StreamScene: {
 		props: { variant: "brb", seconds: 480, countdownLabel: "Vuelvo en" },
 		wide: true,
+		// The example always paints an `<h2>` (its page has the `<h1>`): the control would not change anything
+		tweaks: { headingLevel: { kind: "hidden" } },
 	},
 	ChannelPanel: {
 		props: {

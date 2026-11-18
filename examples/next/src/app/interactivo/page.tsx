@@ -7,7 +7,7 @@ import { BorrarGasto } from "./borrar-gasto";
 
 export default function Page() {
 	return (
-		<main className="flex flex-col gap-6">
+		<main id="contenido" className="flex flex-col gap-6">
 			<h1 className="font-display text-display-sm font-semibold">Componentes interactivos</h1>
 			<ButtonGroup
 				aria-label="Periodo"

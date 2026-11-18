@@ -1,9 +1,12 @@
 // PageHeader en el ejemplo interactivo (un fichero por componente: design D4): las acciones y el avatar son nodos, que
-// se eligen entre opciones preparadas.
-import { Avatar, Button } from "@jotis-me/react";
+// se eligen entre opciones preparadas. The title is an `<h2>` here: the page of the guide already has its `<h1>`
+// (SEO-004). The code of the example does not show it: in an app, the header keeps its `<h1>`.
+import { Avatar, Button, PageHeader, type PageHeaderProps } from "@jotis-me/react";
 import type { Tweak } from "../../lib/playground";
 
-export { PageHeader as Component } from "@jotis-me/react";
+export function Component(props: PageHeaderProps) {
+	return <PageHeader headingLevel={2} {...props} />;
+}
 
 export const tweaks: Record<string, Tweak> = {
 	actions: {

@@ -1,0 +1,220 @@
+prefix: ACC
+title: Accesibilidad
+description: Que cualquiera pueda usar lo que hacemos, con teclado, con lector de pantalla o con la vista cansada.
+order: 10
+rules:
+    - id: ACC-001
+      title: El objetivo es WCAG 2.2 AA
+      level: must
+      appliesTo: all
+      statement: >-
+          Todo proyecto con interfaz cumple los criterios de WCAG 2.2 en el nivel AA. axe en cada página y en cada
+          componente (`TST-005`) es la parte automática, y cubre solo una parte: el resto se revisa a mano, con el
+          teclado y con un lector de pantalla.
+      rationale: >-
+          AA es el nivel que piden las leyes europeas de accesibilidad y el que deja usar la interfaz a quien no ve
+          bien, no usa ratón o navega con un lector. Decir el nivel evita discutirlo en cada PR. Una herramienta
+          encuentra un contraste bajo, pero no sabe si un nombre accesible dice algo útil.
+      examples:
+          good:
+              - caption: Un cambio de interfaz, revisado con el teclado y con el lector
+                lang: text
+                code: |-
+                    Probado con teclado: Tab llega al botón, Enter abre el menú, Escape lo cierra y devuelve el foco.
+                    Probado con NVDA: anuncia «Opciones, botón, contraído» y, al abrir, «menú, 3 elementos».
+          bad:
+              - caption: Dar por buena la accesibilidad porque axe pasa
+                lang: text
+                code: |-
+                    axe: 0 violaciones. No se ha probado con teclado ni con lector.
+      verification:
+          kind: review
+          review: Que la PR de un cambio de interfaz diga cómo se probó con teclado y con lector de pantalla.
+
+    - id: ACC-002
+      title: Todo se maneja con el teclado
+      level: must
+      appliesTo: all
+      statement: >-
+          Todo lo que se hace con el ratón se hace con el teclado: en un orden lógico, sin trampas de foco y con el
+          foco siempre a la vista. Lo interactivo usa el elemento nativo (`button`, `a`, `input`) o un componente de
+          `@jotis-me/react`, que ya lleva el teclado.
+      rationale: >-
+          Quien no puede usar un ratón, y quien va más rápido sin él, se queda fuera de un control que solo responde
+          al clic. Un `div` con `onClick` no recibe el foco, no responde a Enter y no se anuncia: el elemento nativo
+          da todo eso gratis.
+      examples:
+          good:
+              - caption: Un botón de verdad
+                lang: tsx
+                code: |-
+                    <Button iconLeading={Trash01} onClick={remove}>Eliminar</Button>
+          bad:
+              - caption: Un div que parece un botón
+                lang: tsx
+                code: |-
+                    <div className="boton" onClick={remove}>Eliminar</div>
+      verification:
+          kind: review
+          review: Recorrer con Tab lo nuevo o cambiado y comprobar que todo se alcanza, se activa y enseña el foco.
+
+    - id: ACC-003
+      title: Cada página tiene enlace de salto y región principal
+      level: must
+      appliesTo: app
+      statement: >-
+          Cada página de una app tiene una región `main` y, como primer elemento que recibe el foco, un enlace que
+          salta a ella. El resto del contenido va en sus regiones (`header`, `nav`, `footer`).
+      rationale: >-
+          Sin enlace de salto, quien navega con teclado recorre toda la cabecera en cada página antes de llegar a lo
+          que busca. Las regiones dejan a un lector de pantalla saltar de una parte a otra de la página.
+      examples:
+          good:
+              - caption: El enlace de salto, lo primero de la página
+                lang: astro
+                code: |-
+                    <body>
+                        <a href="#contenido" class="fixed -top-24 focus:top-3">Saltar al contenido</a>
+                        <header>…</header>
+                        <main id="contenido"><slot /></main>
+                    </body>
+          bad:
+              - caption: Todo en divs, sin región principal ni enlace de salto
+                lang: astro
+                code: |-
+                    <body>
+                        <div class="cabecera">…</div>
+                        <div class="contenido"><slot /></div>
+                    </body>
+      verification:
+          kind: test
+          check: apps/docs/test/pages.test.ts
+
+    - id: ACC-004
+      title: Cada control tiene nombre y cada imagen su texto
+      level: must
+      appliesTo: all
+      statement: >-
+          Cada control tiene un nombre accesible que dice lo que hace, y cada imagen con contenido, un texto
+          alternativo. Un botón de solo icono lleva `aria-label`. Una imagen decorativa lleva `alt=""` o
+          `aria-hidden`, para que no se anuncie.
+      rationale: >-
+          Un lector de pantalla lee el nombre del control: sin él dice «botón» y nada más. axe avisa cuando el nombre
+          falta, pero no cuando existe y no ayuda («icono», «imagen 3»): eso se revisa leyendo.
+      examples:
+          good:
+              - caption: Un botón de solo icono con su nombre
+                lang: tsx
+                code: |-
+                    <ButtonUtility icon={X} label="Cerrar" onClick={close} />
+          bad:
+              - caption: Un botón que un lector anuncia como «botón»
+                lang: tsx
+                code: |-
+                    <button onClick={close}><X /></button>
+      verification:
+          kind: review
+          review: Que cada control nuevo tenga un nombre que diga lo que hace, y cada imagen, su texto o su `alt` vacío.
+
+    - id: ACC-005
+      title: Contraste AA en los dos temas
+      level: must
+      appliesTo: all
+      statement: >-
+          El texto cumple un contraste de 4,5:1 (3:1 el texto grande y los bordes de los controles) en el tema claro y
+          en el oscuro. Los colores salen de los tokens de `@jotis-me/tokens`, que ya lo cumplen por parejas. Las
+          excepciones son las que documenta la guía.
+      rationale: >-
+          Un gris claro sobre blanco es ilegible al sol o con la vista cansada. Los tokens están pensados por parejas
+          de fondo y texto: un color escrito a mano se sale de esas parejas y casi siempre falla en uno de los dos
+          temas.
+      examples:
+          good:
+              - caption: Texto secundario con su token
+                lang: tsx
+                code: |-
+                    <p className="text-tertiary">Actualizado hace 5 minutos</p>
+          bad:
+              - caption: Un gris escrito a mano, que no cambia con el tema
+                lang: tsx
+                code: |-
+                    <p style={{ color: "#b3b3b3" }}>Actualizado hace 5 minutos</p>
+      verification:
+          kind: review
+          review: Que los colores de lo nuevo sean tokens y que se haya mirado en claro y en oscuro.
+
+    - id: ACC-006
+      title: Se respeta el movimiento reducido
+      level: must
+      appliesTo: all
+      statement: >-
+          Con `prefers-reduced-motion: reduce`, las animaciones y transiciones que mueven, escalan o hacen parpadear
+          algo se quitan o se quedan en un fundido corto. Nada se mueve solo más de cinco segundos sin un control
+          para pararlo.
+      rationale: >-
+          A quien tiene un trastorno vestibular, un desplazamiento o un zoom animado le marea de verdad. El ajuste del
+          sistema es la forma que tiene de pedirlo, y respetarlo cuesta una variante de Tailwind.
+      examples:
+          good:
+              - caption: La animación solo si no se ha pedido menos movimiento
+                lang: tsx
+                code: |-
+                    <div className="motion-safe:animate-slide-in motion-reduce:opacity-100">…</div>
+          bad:
+              - caption: Una animación que no se puede evitar
+                lang: tsx
+                code: |-
+                    <div className="animate-bounce">…</div>
+      verification:
+          kind: review
+          review: Activar el movimiento reducido del sistema y comprobar que lo nuevo no se mueve.
+
+    - id: ACC-007
+      title: Lo que se pulsa mide al menos 24 px
+      level: must
+      appliesTo: all
+      statement: >-
+          Cada control mide al menos 24 por 24 px, o deja ese espacio libre a su alrededor para no pulsar el de al
+          lado. Los enlaces dentro de un texto quedan fuera.
+      rationale: >-
+          Un objetivo pequeño falla con el dedo, con temblor o con un puntero poco preciso. 24 px es el mínimo de WCAG
+          2.2; los tamaños de los componentes de `@jotis-me/react` ya lo cumplen.
+      examples:
+          good:
+              - caption: Un botón de icono con su tamaño de componente
+                lang: tsx
+                code: |-
+                    <ButtonUtility icon={Edit01} label="Editar" size="sm" />
+          bad:
+              - caption: Un icono de 12 px como único objetivo
+                lang: tsx
+                code: |-
+                    <button className="size-3" aria-label="Editar"><Edit01 size={12} /></button>
+      verification:
+          kind: review
+          review: Que ningún control nuevo mida menos de 24 px ni quede pegado a otro.
+
+    - id: ACC-008
+      title: La información no depende solo del color
+      level: should
+      appliesTo: all
+      statement: >-
+          Un estado, un error o una categoría se dicen también con texto, con un icono o con una forma, no solo con el
+          color.
+      rationale: >-
+          Una de cada doce personas distingue mal el rojo del verde. Un campo con el borde rojo y nada más no les dice
+          que hay un error, y tampoco se lo dice a un lector de pantalla.
+      examples:
+          good:
+              - caption: El error, con su texto
+                lang: tsx
+                code: |-
+                    <Input label="Correo" error="Falta la arroba." />
+          bad:
+              - caption: Solo el borde cambia de color
+                lang: tsx
+                code: |-
+                    <input className={invalid ? "border-red-500" : "border-gray-300"} />
+      verification:
+          kind: review
+          review: Mirar lo nuevo en escala de grises y comprobar que los estados se siguen distinguiendo.

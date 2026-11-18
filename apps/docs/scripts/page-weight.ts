@@ -1,7 +1,11 @@
-// Mide el JavaScript que descarga cada página de `dist`: los `<script src>`, las islas de Astro (`component-url`,
-// `renderer-url`) y los scripts en línea con `import`, más todo lo que importan de forma estática. Los imports
-// dinámicos se cuentan aparte: no se descargan al cargar la página. Falla si una página pasa de su límite de
-// `js-budget.json`. Uso: bun run scripts/js-weight.ts [dist] [js-budget.json]
+// Mide lo que descarga cada página de `dist` (PRF-002), en gzip:
+// - el JavaScript: los `<script src>`, las islas de Astro (`component-url`, `renderer-url`) y los scripts en línea con
+//   `import`, más todo lo que importan de forma estática. Los imports dinámicos se cuentan aparte: no se descargan al
+//   cargar la página;
+// - el HTML de la propia página;
+// - el CSS de las hojas que enlaza.
+// Falla si una página pasa de su límite de `weight-budget.json`.
+// Uso: bun run scripts/page-weight.ts [dist] [weight-budget.json]
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, posix } from "node:path";
 import { gzipSync } from "node:zlib";
@@ -22,6 +26,10 @@ export interface PageWeight {
 	dynamic: Size;
 	/** Cada archivo con su peso y si es estático o dinámico, el mayor primero. */
 	files: { url: string; kind: "static" | "dynamic"; raw: number; gz: number }[];
+	/** The HTML of the page itself. */
+	html: Size;
+	/** The style sheets the page links. */
+	css: Size & { files: number };
 }
 
 const sizeOf = (file: string): Size => {
@@ -94,7 +102,27 @@ export function weighPage(dist: string, htmlFile: string): PageWeight {
 	}
 	files.sort((a, b) => b.gz - a.gz);
 	const page = `/${htmlFile.replace(/index\.html$/, "")}`;
-	return { page, islands, static: total.static, dynamic: total.dynamic, files };
+	const css = { raw: 0, gz: 0, files: 0 };
+	const sheets = new Set(
+		[...html.matchAll(/<link[^>]*\brel="stylesheet"[^>]*>/g)]
+			.map((m) => /\bhref="([^"]+\.css)"/.exec(m[0])?.[1])
+			.filter((href): href is string => !!href && existsSync(join(dist, href))),
+	);
+	for (const href of sheets) {
+		const s = sizeOf(join(dist, href));
+		css.raw += s.raw;
+		css.gz += s.gz;
+		css.files++;
+	}
+	return {
+		page,
+		islands,
+		static: total.static,
+		dynamic: total.dynamic,
+		files,
+		html: sizeOf(join(dist, htmlFile)),
+		css,
+	};
 }
 
 /** Todas las páginas HTML de `dist` (sin `/visual/`, que es la comparación con la guía, ni el 404). */
@@ -135,20 +163,39 @@ export function limitOf(budget: Budget, page: string): number {
 	return budget.default * 1024;
 }
 
-/** Páginas que se pasan de su límite. */
-export function overBudget(pages: PageWeight[], budget: Budget) {
-	return pages
-		.map((p) => ({ page: p.page, gz: p.static.gz, limit: limitOf(budget, p.page) }))
-		.filter((p) => p.gz > p.limit);
+/** What a page is weighed for, and the budget of each. */
+export const KINDS = ["js", "css", "html"] as const;
+export type Kind = (typeof KINDS)[number];
+export type Budgets = Record<Kind, Budget>;
+
+const LABEL: Record<Kind, string> = { js: "JS", css: "CSS", html: "HTML" };
+const weightOf = (page: PageWeight, kind: Kind): number =>
+	kind === "js" ? page.static.gz : kind === "css" ? page.css.gz : page.html.gz;
+
+/** Lo que se pasa de su límite: la página, de qué (JS, CSS o HTML), lo medido y el límite. */
+export function overBudget(pages: PageWeight[], budgets: Budgets) {
+	return pages.flatMap((p) =>
+		KINDS.map((kind) => ({
+			page: p.page,
+			kind,
+			gz: weightOf(p, kind),
+			limit: limitOf(budgets[kind], p.page),
+		})).filter((o) => o.gz > o.limit),
+	);
 }
 
 const kb = (n: number) => `${(n / 1024).toFixed(1)} kB`;
 
 function main() {
 	const dist = process.argv[2] ?? join(import.meta.dirname, "../dist");
-	const budgetFile = process.argv[3] ?? join(import.meta.dirname, "../js-budget.json");
-	const budget = JSON.parse(readFileSync(budgetFile, "utf8")) as Budget;
+	const budgetFile = process.argv[3] ?? join(import.meta.dirname, "../weight-budget.json");
+	const budgets = JSON.parse(readFileSync(budgetFile, "utf8")) as Budgets;
 	const pages = weighSite(dist);
+	for (const kind of ["css", "html"] as const) {
+		const top = [...pages].sort((a, b) => weightOf(b, kind) - weightOf(a, kind)).slice(0, 3);
+		console.log(`${LABEL[kind]} (gzip) de las más pesadas:`);
+		for (const p of top) console.log(`  ${kb(weightOf(p, kind)).padStart(9)}  ${p.page}`);
+	}
 	const heaviest = [...pages].sort((a, b) => b.static.gz - a.static.gz).slice(0, 8);
 	console.log(`${pages.length} páginas. JS estático (gzip) de las más pesadas:`);
 	for (const p of heaviest)
@@ -159,14 +206,15 @@ function main() {
 		);
 		for (const f of p.files.slice(0, 6)) console.log(`  ${kb(f.gz).padStart(9)}  ${f.kind}  ${f.url}`);
 	}
-	const over = overBudget(pages, budget);
+	const over = overBudget(pages, budgets);
 	if (!over.length) {
-		console.log(`\nTodas las páginas dentro de su límite (js-budget.json).`);
+		console.log(`\nTodas las páginas dentro de su límite (weight-budget.json).`);
 		return;
 	}
-	console.error(`\n${over.length} página(s) por encima de su límite de JS (js-budget.json):`);
-	for (const o of over) console.error(`  ${o.page}: ${kb(o.gz)} gzip, límite ${kb(o.limit)}`);
+	console.error(`\n${over.length} límite(s) de peso superados (weight-budget.json):`);
+	for (const o of over)
+		console.error(`  ${o.page}: ${LABEL[o.kind]} ${kb(o.gz)} gzip, límite ${kb(o.limit)}`);
 	process.exitCode = 1;
 }
 
-if (process.argv[1]?.endsWith("js-weight.ts")) main();
+if (process.argv[1]?.endsWith("page-weight.ts")) main();

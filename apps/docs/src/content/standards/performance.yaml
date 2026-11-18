@@ -1,0 +1,205 @@
+prefix: PRF
+title: Rendimiento
+description: Páginas que cargan rápido y no saltan, medidas con cifras que no dependen de la máquina que mide.
+order: 11
+rules:
+    - id: PRF-001
+      title: Core Web Vitals dentro de sus límites
+      level: must
+      appliesTo: app
+      statement: >-
+          Cada página de una app que se despliega cumple en móvil un LCP de 2,5 s o menos, un CLS de 0,1 o menos y un
+          INP de 200 ms o menos. Se mide sobre la web publicada, con Lighthouse en móvil o con los datos de uso real
+          cuando los hay.
+      rationale: >-
+          Son las tres medidas de lo que nota quien usa la página: cuánto tarda en ver lo principal, si la página
+          salta mientras carga y cuánto tarda en responder a un toque. Sus límites son los que usan los buscadores
+          para decir que una página va bien.
+      examples:
+          good:
+              - caption: Una página publicada dentro de los tres límites
+                lang: text
+                code: |-
+                    /components/button/ (móvil): LCP 1,0 s - CLS 0,00 - INP 80 ms
+          bad:
+              - caption: Lo principal tarda cuatro segundos en verse
+                lang: text
+                code: |-
+                    / (móvil): LCP 4,1 s - CLS 0,00 - INP 90 ms
+      verification:
+          kind: review
+          review: Medir con Lighthouse en móvil la web publicada después de un cambio que afecte a la carga.
+
+    - id: PRF-002
+      title: Cada página tiene su presupuesto de peso
+      level: must
+      appliesTo: app
+      statement: >-
+          El CI comprueba en cada PR el peso del HTML, del CSS y del JS de cada página, comprimidos, contra un
+          presupuesto que vive en el repo. Hay un límite por defecto y límites por página. Subir uno es un cambio de
+          ese fichero, a la vista en la PR y con su motivo.
+      rationale: >-
+          El peso es lo que más decide la carga y es una cifra exacta: no cambia con la máquina que la mide. Un
+          presupuesto convierte «la web va cada vez más lenta» en una PR concreta que se pasa por 3 kB, cuando todavía
+          es fácil ver por qué.
+      examples:
+          good:
+              - caption: Un límite que sube con su motivo
+                lang: json
+                code: |-
+                    "html": {
+                        "$comment": "/foundations/color/ pinta una fila por token (47,5 kB): 53.",
+                        "default": 48,
+                        "pages": { "/foundations/*/": 53 }
+                    }
+          bad:
+              - caption: Un presupuesto que nunca falla
+                lang: json
+                code: |-
+                    "html": { "default": 100000, "pages": {} }
+      verification:
+          kind: ci
+          check: Peso por página de la web
+
+    - id: PRF-003
+      title: El CI falla por el CLS, no por la puntuación de Lighthouse
+      level: must
+      appliesTo: app
+      statement: >-
+          El CI mide el CLS de las páginas principales y falla si pasa de 0,1. La puntuación de rendimiento de
+          Lighthouse se calcula y se enseña como aviso, y no hace fallar el CI. La puntuación sí es criterio sobre la
+          web publicada (`PRF-001`).
+      rationale: >-
+          La puntuación de Lighthouse depende de la velocidad de la máquina que mide: en un runner cargado baja de 90
+          sin que cambie el código, y un CI que falla sin motivo enseña a relanzarlo sin mirar. El CLS no depende de
+          la velocidad: o la página salta o no salta.
+      examples:
+          good:
+              - caption: El CLS es error y la puntuación, aviso
+                lang: json
+                code: |-
+                    "assertions": {
+                        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+                        "categories:performance": ["warn", { "minScore": 0.9 }]
+                    }
+          bad:
+              - caption: La puntuación como puerta del CI
+                lang: json
+                code: |-
+                    "assertions": {
+                        "categories:performance": ["error", { "minScore": 0.9 }]
+                    }
+      verification:
+          kind: ci
+          check: Lighthouse (móvil, CLS y accesibilidad)
+
+    - id: PRF-004
+      title: Las imágenes van en formato moderno, con sus dimensiones
+      level: must
+      appliesTo: app
+      statement: >-
+          Las imágenes de contenido van en WebP, AVIF o SVG, con `width` y `height` declarados, y con
+          `loading="lazy"` las que quedan bajo el pliegue. La imagen principal de la página se carga sin retraso. En
+          Astro, `<Image>`; en Next, `next/image`.
+      rationale: >-
+          Una imagen sin dimensiones empuja el contenido cuando llega, y eso es el CLS. Un PNG pesa varias veces lo
+          que el mismo WebP. Y cargar ya las imágenes que nadie ha visto todavía le quita la red a lo que sí se ve.
+      examples:
+          good:
+              - caption: La imagen del framework, con formato, tamaño y carga diferida
+                lang: astro
+                code: |-
+                    <Image src={captura} alt="El panel de gastos" width={1200} height={630} loading="lazy" />
+          bad:
+              - caption: Un PNG sin dimensiones
+                lang: html
+                code: |-
+                    <img src="/captura.png" alt="El panel de gastos">
+      verification:
+          kind: review
+          review: Que cada imagen nueva use el componente del framework, con formato moderno y dimensiones.
+
+    - id: PRF-005
+      title: Las fuentes son propias y solo se precargan las del primer pintado
+      level: must
+      appliesTo: app
+      statement: >-
+          Las fuentes se sirven desde el propio sitio, en WOFF2, con `font-display: swap`. Solo se precargan las que
+          usa lo que se ve al cargar. Las de `@jotis-me/tokens` ya vienen así.
+      rationale: >-
+          Una fuente de otro dominio añade una conexión y un tercero a cada visita. Sin `swap`, el texto no se ve
+          hasta que llega la fuente. Precargar todas las fuentes gasta la red en ficheros que la página quizá no usa;
+          no precargar ninguna hace que el texto cambie de tamaño al llegar.
+      examples:
+          good:
+              - caption: Se precarga la fuente del texto principal, desde el propio sitio
+                lang: astro
+                code: |-
+                    ---
+                    import geist from "@jotis-me/tokens/fonts/Geist-Variable.woff2?url";
+                    ---
+                    <link rel="preload" href={geist} as="font" type="font/woff2" crossorigin />
+          bad:
+              - caption: Una fuente de otro dominio
+                lang: html
+                code: |-
+                    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist">
+      verification:
+          kind: review
+          review: Que no se añada ninguna fuente de otro dominio y que una precarga nueva sea de algo que se ve al cargar.
+
+    - id: PRF-006
+      title: Estático por defecto
+      level: should
+      appliesTo: app
+      statement: >-
+          Una página se pinta en el servidor y solo lleva al navegador lo interactivo. En Astro, una isla usa la
+          directiva menos urgente que sirva: `client:visible` bajo el pliegue, `client:idle` para lo secundario y
+          `client:load` solo para lo que se usa nada más cargar. En Next, un componente es de servidor salvo que
+          necesite estado o eventos.
+      rationale: >-
+          El JavaScript que no se envía no se descarga, no se analiza y no bloquea. Hidratar al cargar lo que está
+          tres pantallas más abajo retrasa lo que el usuario sí tiene delante.
+      examples:
+          good:
+              - caption: Una isla bajo el pliegue se hidrata cuando se ve
+                lang: astro
+                code: |-
+                    <Carousel client:visible items={items} />
+          bad:
+              - caption: Todo se hidrata al cargar
+                lang: astro
+                code: |-
+                    <Carousel client:load items={items} />
+                    <Footer client:load />
+      verification:
+          kind: review
+          review: Que cada isla o componente de cliente nuevo lo necesite, y con la directiva menos urgente.
+
+    - id: PRF-007
+      title: Los assets llevan hash y caché inmutable
+      level: should
+      appliesTo: app
+      statement: >-
+          Los ficheros de JS, CSS, fuentes e imágenes llevan un hash de su contenido en el nombre y se sirven con
+          `Cache-Control: public, max-age=31536000, immutable`. El HTML no se guarda en caché sin revalidar. Astro y
+          Next ya ponen el hash; en Vercel, la caché de `/_astro/` y de `/_next/static/` viene así.
+      rationale: >-
+          Con el hash en el nombre, un fichero que cambia tiene otra URL: el navegador puede guardar el anterior para
+          siempre y la segunda visita no descarga nada. Un asset sin hash obliga a elegir entre caché corta o
+          usuarios con una versión vieja.
+      examples:
+          good:
+              - caption: Un asset con hash, guardado un año
+                lang: text
+                code: |-
+                    /_astro/global.BvlOnMMB.css
+                    Cache-Control: public, max-age=31536000, immutable
+          bad:
+              - caption: Un fichero sin hash en la carpeta pública
+                lang: html
+                code: |-
+                    <link rel="stylesheet" href="/estilos.css">
+      verification:
+          kind: review
+          review: Que ningún asset nuevo se enlace desde la carpeta pública sin hash si puede pasar por el bundler.

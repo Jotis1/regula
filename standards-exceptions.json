@@ -1,0 +1,12 @@
+[
+	{
+		"rule": "LOC-003",
+		"why": "Los textos de @jotis-me/react (unos 276) y los de la web están escritos en el código. Moverlos a catálogos pide dar a los componentes una forma de recibir el idioma, que cambia la API pública: va en un cambio propio.",
+		"until": "2027-03-31"
+	},
+	{
+		"rule": "LOC-004",
+		"why": "Algunos textos de los componentes y de la web se montan con datos (recuentos, rangos). Se rehacen como mensajes completos en el mismo cambio que mueve los textos a catálogos (LOC-003).",
+		"until": "2027-03-31"
+	}
+]

@@ -1,0 +1,225 @@
+prefix: SEO
+title: SEO
+description: Lo que una página pública necesita para que un buscador la encuentre, la entienda y la enseñe bien.
+order: 12
+rules:
+    - id: SEO-001
+      title: Cada página tiene su título y su descripción
+      level: must
+      appliesTo: app
+      statement: >-
+          Cada página indexable de una app que se despliega lleva un `<title>` propio, que no se repite en otra
+          página, y una descripción propia en `<meta name="description">`, de una o dos frases. Una página es
+          indexable si no lleva `noindex`.
+      rationale: >-
+          El título y la descripción son lo que un buscador enseña de la página, y lo que distingue una pestaña de
+          otra. Dos páginas con el mismo título compiten entre sí y ninguna dice de qué va.
+      examples:
+          good:
+              - caption: El título y la descripción salen del contenido de cada página
+                lang: astro
+                code: |-
+                    <Base title={component.name} description={component.description}>
+          bad:
+              - caption: El mismo título en todas
+                lang: astro
+                code: |-
+                    <title>Regula</title>
+      verification:
+          kind: test
+          check: apps/docs/test/pages.test.ts
+
+    - id: SEO-002
+      title: Cada página dice cuál es su URL canónica
+      level: must
+      appliesTo: app
+      statement: >-
+          Cada página indexable lleva un `<link rel="canonical">` con su URL absoluta, formada con el dominio de
+          producción. En Astro sale de `site`; en Next, de `metadataBase` y `alternates.canonical`.
+      rationale: >-
+          La misma página se alcanza por varias URLs: con parámetros, por el dominio de una vista previa o con otra
+          barra final. El canonical dice cuál es la buena, y el buscador no reparte el valor entre copias.
+      examples:
+          good:
+              - caption: Astro, con el dominio de `site`
+                lang: astro
+                code: |-
+                    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+          bad:
+              - caption: Una URL relativa, que cada dominio resuelve a su manera
+                lang: html
+                code: |-
+                    <link rel="canonical" href="/components/button/">
+      verification:
+          kind: test
+          check: apps/docs/test/pages.test.ts
+
+    - id: SEO-003
+      title: La app sirve robots.txt y un sitemap
+      level: must
+      appliesTo: app
+      statement: >-
+          La app sirve `/robots.txt`, que enlaza al sitemap, y un sitemap con todas las páginas indexables y ninguna
+          más. El sitemap se genera en el build a partir de las páginas, no se escribe a mano.
+      rationale: >-
+          El sitemap le dice al buscador qué páginas hay sin depender de que las encuentre siguiendo enlaces. Escrito
+          a mano se queda viejo en la primera página nueva. Una página con `noindex` dentro del sitemap se contradice.
+      examples:
+          good:
+              - caption: robots.txt deja rastrear y enlaza al sitemap
+                lang: text
+                code: |-
+                    User-agent: *
+                    Allow: /
+
+                    Sitemap: https://regula.jotis.me/sitemap.xml
+          bad:
+              - caption: Una app pública que se cierra a los buscadores sin querer
+                lang: text
+                code: |-
+                    User-agent: *
+                    Disallow: /
+      verification:
+          kind: test
+          check: apps/docs/test/pages.test.ts
+
+    - id: SEO-004
+      title: Cada página tiene un solo h1
+      level: must
+      appliesTo: app
+      statement: >-
+          Cada página indexable tiene exactamente un `<h1>`, que dice de qué va la página. Los demás encabezados
+          bajan de nivel en orden, sin saltos. Un componente que pinta su propio título deja elegir el nivel cuando
+          va dentro de otra página (`headingLevel` en `PageHeader`).
+      rationale: >-
+          El `<h1>` es el título de la página para un buscador y para un lector de pantalla, que además usa los
+          encabezados como índice. Con dos, ninguno dice cuál es el tema; sin ninguno, la página no tiene título.
+      examples:
+          good:
+              - caption: Una cabecera dentro de una página que ya tiene su título
+                lang: tsx
+                code: |-
+                    <h1>Gastos del equipo</h1>
+                    <PageHeader title="Este mes" headingLevel={2} />
+          bad:
+              - caption: Dos títulos de página
+                lang: tsx
+                code: |-
+                    <h1>Gastos del equipo</h1>
+                    <PageHeader title="Este mes" />
+      verification:
+          kind: test
+          check: apps/docs/test/pages.test.ts
+
+    - id: SEO-005
+      title: Lo interno lleva noindex
+      level: must
+      appliesTo: app
+      statement: >-
+          Las páginas internas o de prueba (lienzos, vistas de un solo ejemplo, pantallas de error) llevan
+          `<meta name="robots" content="noindex">`, y no llevan canonical ni tarjeta para redes. Los despliegues de
+          vista previa no se indexan: en Vercel ya responden con `X-Robots-Tag: noindex`.
+      rationale: >-
+          Una página de prueba en los resultados de un buscador confunde a quien llega y le quita sitio a las de
+          verdad. Bloquearla en `robots.txt` no basta: impide leerla, pero no impide que aparezca si alguien la
+          enlaza.
+      examples:
+          good:
+              - caption: Una página de prueba, fuera de los buscadores
+                lang: html
+                code: |-
+                    <meta name="robots" content="noindex">
+          bad:
+              - caption: Esconderla solo con robots.txt
+                lang: text
+                code: |-
+                    User-agent: *
+                    Disallow: /visual/
+      verification:
+          kind: test
+          check: apps/docs/test/pages.test.ts
+
+    - id: SEO-006
+      title: Una página que se mueve deja una redirección
+      level: must
+      appliesTo: app
+      statement: >-
+          Cuando una página cambia de URL, la anterior redirige a la nueva de forma permanente. En Astro, `redirects`
+          en la configuración; en Next, `redirects()` con `permanent: true`. Una URL publicada no devuelve nunca un
+          404 por un cambio de nombre.
+      rationale: >-
+          Los enlaces de fuera, los marcadores y lo que el buscador ya sabía de la página apuntan a la URL vieja. Sin
+          redirección, todo eso se pierde y quien llega encuentra un error.
+      examples:
+          good:
+              - caption: La ruta antigua lleva a la nueva
+                lang: js
+                code: |-
+                    redirects: { "/components/[slug]/composiciones": "/components/[slug]/compositions" }
+          bad:
+              - caption: Renombrar la página y nada más
+                lang: text
+                code: |-
+                    src/pages/components/[slug]/composiciones.astro -> compositions.astro
+      verification:
+          kind: review
+          review: Que una PR que renombra o mueve una página publicada añada la redirección desde la URL anterior.
+
+    - id: SEO-007
+      title: Cada página lleva su tarjeta para redes
+      level: should
+      appliesTo: app
+      statement: >-
+          Cada página indexable lleva Open Graph con su título, su descripción, su URL y una imagen de 1200 por 630
+          px con URL absoluta, y `twitter:card` con `summary_large_image`. Vale una imagen para toda la app.
+      rationale: >-
+          Es lo que enseña un chat o una red cuando alguien pega el enlace. Sin la tarjeta sale la URL sola, o un
+          trozo de texto elegido al azar.
+      examples:
+          good:
+              - caption: La tarjeta, con los datos de la propia página
+                lang: astro
+                code: |-
+                    <meta property="og:title" content={pageTitle} />
+                    <meta property="og:description" content={description} />
+                    <meta property="og:url" content={canonical} />
+                    <meta property="og:image" content={new URL(ogImage, Astro.site).href} />
+                    <meta name="twitter:card" content="summary_large_image" />
+          bad:
+              - caption: Una imagen con URL relativa, que las redes no resuelven
+                lang: html
+                code: |-
+                    <meta property="og:image" content="/og.png">
+      verification:
+          kind: test
+          check: apps/docs/test/pages.test.ts
+
+    - id: SEO-008
+      title: Datos estructurados cuando describen bien el contenido
+      level: may
+      appliesTo: app
+      statement: >-
+          Una página puede llevar datos estructurados JSON-LD de schema.org cuando su contenido encaja en un tipo
+          (un artículo, un producto, una pregunta frecuente, las migas de pan). Lo que dicen coincide con lo que se
+          ve en la página.
+      rationale: >-
+          Los datos estructurados dejan al buscador enseñar la página con más detalle. No hacen falta en todas, y
+          unos datos que no coinciden con lo que se ve cuentan como engaño y penalizan.
+      examples:
+          good:
+              - caption: Las migas de pan de la página, como datos
+                lang: html
+                code: |-
+                    <script type="application/ld+json">
+                        { "@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [] }
+                    </script>
+          bad:
+              - caption: Valoraciones que la página no enseña
+                lang: html
+                code: |-
+                    <script type="application/ld+json">
+                        { "@type": "Product", "aggregateRating": { "ratingValue": 5, "reviewCount": 1200 } }
+                    </script>
+      verification:
+          kind: review
+          review: Que los datos estructurados que se añadan correspondan a lo que la página enseña.

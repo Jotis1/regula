@@ -1,0 +1,37 @@
+---
+// The Open Graph image of the site (SEO-007), as a page: `scripts/capture-og.ts` screenshots it at 1200x630 into
+// `src/assets/og.png`. Built with the site's own components and tokens, so it follows the brand. Out of the
+// navigation, the search and the sitemap.
+import { AppIcon, BackgroundPattern } from "@jotis-me/react";
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=1200" />
+		<meta name="robots" content="noindex" />
+		<title>Imagen de Open Graph - Regula</title>
+	</head>
+	<body class="m-0 bg-primary font-body text-primary antialiased">
+		<main class="dark-mode relative h-[630px] w-[1200px] overflow-hidden bg-primary text-primary">
+			<div aria-hidden="true" class="pointer-events-none absolute inset-0">
+				<BackgroundPattern pattern="grid" size="lg" mask="radial-down" width={1200} height={630} />
+			</div>
+			<div class="relative flex h-full flex-col justify-between p-20">
+				<div class="flex items-center gap-5">
+					<span aria-hidden="true" class="flex"><AppIcon app="regula" size={72} /></span>
+					<p class="m-0 font-display text-display-md font-semibold text-primary">Regula</p>
+				</div>
+				<div class="flex flex-col gap-6">
+					<h1 class="m-0 max-w-[900px] font-display text-display-2xl font-semibold tracking-[-0.02em] text-balance text-primary">
+						Las reglas de la suite, con el código al lado.
+					</h1>
+					<p class="m-0 text-display-xs text-tertiary">El sistema de diseño de la suite jotis.me</p>
+				</div>
+				<p class="m-0 text-xl font-medium text-tertiary">regula.jotis.me</p>
+			</div>
+		</main>
+	</body>
+</html>

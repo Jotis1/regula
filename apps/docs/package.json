@@ -15,7 +15,7 @@
 		"test:e2e": "playwright test",
 		"test": "vitest run",
 		"test:lighthouse": "lhci autorun",
-		"check:js": "bun run scripts/js-weight.ts",
+		"check:weight": "bun run scripts/page-weight.ts",
 		"capture:showcases": "bun run scripts/capture-showcases.ts"
 	},
 	"dependencies": {
