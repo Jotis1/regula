@@ -278,6 +278,14 @@ export function AssetGallery({ kind, urls, categories, groups, titles, initial }
 	);
 	const [sheetOpen, setSheetOpen] = useState(false);
 	const q = searchQuery(query);
+	// A new search or category starts from the top of the list again. Adjusted while rendering and not in an effect:
+	// an effect also runs on mount, after the first paint, and undid a «Mostrar más» pressed before it.
+	const filter = `${group}\n${q}`;
+	const [limitFilter, setLimitFilter] = useState(filter);
+	if (limitFilter !== filter) {
+		setLimitFilter(filter);
+		setLimit(FIRST);
+	}
 	const matches = entries.filter(
 		(e) => (group === "all" || e.groups.includes(group)) && searchText(e).includes(q),
 	);
@@ -296,10 +304,6 @@ export function AssetGallery({ kind, urls, categories, groups, titles, initial }
 			setSelected(hit);
 		}
 	}, [kind, entries]);
-
-	// Cambiar el filtro vuelve a empezar por el principio de la lista
-	// biome-ignore lint/correctness/useExhaustiveDependencies: se reinicia al cambiar la búsqueda o la categoría
-	useEffect(() => setLimit(FIRST), [q, group]);
 
 	const variantOf = (e: GalleryEntry, key: string) =>
 		e.variants.find((v) => v.key === key) ?? (e.variants[0] as GalleryVariant);
