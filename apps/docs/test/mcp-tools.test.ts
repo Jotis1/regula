@@ -45,6 +45,7 @@ describe("normas", () => {
 			"git",
 			"ci",
 			"process",
+			"agents",
 		]);
 		expect(json.areas[0].rules[0]).toMatchObject({ id: "NAM-001", level: "must" });
 	});
