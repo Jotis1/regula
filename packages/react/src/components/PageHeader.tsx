@@ -5,8 +5,14 @@ import { Line } from "../internal/line.js";
 import { type BreadcrumbItem, Breadcrumbs } from "./Breadcrumbs.js";
 
 export interface PageHeaderProps {
-	/** Título de la página (`<h1>`), en Bricolage Grotesque 30/38 semibold. */
+	/** Título de la página, en Bricolage Grotesque 30/38 semibold. */
 	title: ReactNode;
+	/**
+	 * Nivel del encabezado del título. Solo cambia la etiqueta, no el aspecto: usa otro cuando la cabecera va dentro
+	 * de una página que ya tiene su `<h1>`.
+	 * @default 1
+	 */
+	headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 	/** Una frase en `text-tertiary` bajo el título. */
 	description?: ReactNode;
 	/** Ruta encima del título (`Breadcrumbs`). */
@@ -53,14 +59,18 @@ function ClassicPageHeader({
 	actions,
 	children,
 	divider = true,
+	headingLevel = 1,
 	className,
 }: PageHeaderProps) {
+	const Heading = `h${headingLevel}` as "h1";
 	return (
 		<header className={cx("flex flex-col gap-5 font-body", className)}>
 			{breadcrumbs ? <Breadcrumbs items={breadcrumbs} /> : null}
 			<div className="flex flex-wrap items-start justify-between gap-4">
 				<div>
-					<h1 className="m-0 font-display text-display-sm font-semibold text-primary">{title}</h1>
+					<Heading className="m-0 font-display text-display-sm font-semibold text-primary">
+						{title}
+					</Heading>
 					{description ? <p className="mt-1 mb-0 text-md text-tertiary">{description}</p> : null}
 				</div>
 				{actions ? <div className="flex flex-wrap items-center gap-3">{actions}</div> : null}
@@ -82,8 +92,10 @@ function TypedPageHeader({
 	banner,
 	centered,
 	back,
+	headingLevel = 1,
 	className,
 }: PageHeaderProps) {
+	const Heading = `h${headingLevel}` as "h1";
 	const hasBanner = !!banner;
 	const crumbs = breadcrumbs ? (
 		<div className={cx(back && "@max-md:hidden", centered && "flex justify-center")}>
@@ -115,9 +127,9 @@ function TypedPageHeader({
 	) : null;
 	const text = (
 		<div className={cx("min-w-0", centered && "text-center")}>
-			<h1 className="m-0 font-display text-display-sm font-semibold text-primary @max-md:text-display-xs">
+			<Heading className="m-0 font-display text-display-sm font-semibold text-primary @max-md:text-display-xs">
 				{title}
-			</h1>
+			</Heading>
 			{description ? <p className="mt-1 mb-0 text-md text-tertiary">{description}</p> : null}
 		</div>
 	);

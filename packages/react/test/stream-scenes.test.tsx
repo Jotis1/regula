@@ -116,6 +116,16 @@ describe("StreamCountdown", () => {
 });
 
 describe("StreamScene", () => {
+	it("headingLevel cambia la etiqueta del titular y no su aspecto", () => {
+		const byDefault = render(<StreamScene scale={0.5} title="Ya casi" />);
+		const h1 = byDefault.getByRole("heading", { level: 1, name: "Ya casi" });
+		byDefault.unmount();
+		const lower = render(<StreamScene scale={0.5} title="Ya casi" headingLevel={2} />);
+		const h2 = lower.getByRole("heading", { level: 2, name: "Ya casi" });
+		expect(lower.queryByRole("heading", { level: 1 })).toBeNull();
+		expect(h2.className).toBe(h1.className);
+	});
+
 	it("con scale={0.5} ocupa 960×540 y el lienzo interior mide 1920×1080", () => {
 		const { container } = render(<StreamScene scale={0.5} />);
 		const outer = container.firstElementChild as HTMLElement;
