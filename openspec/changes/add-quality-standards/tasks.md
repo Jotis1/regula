@@ -57,7 +57,7 @@ Comandos:
   - que `/standards.json` trae las 12 áreas en el orden de la spec;
   - que `get_standard` del MCP devuelve `SEC-007` y `SEC-012`;
   - con el e2e de normas
-- [ ] 7.2 Comprobación final: Biome, `bunx turbo run build typecheck test`, `check:ci`, `check:dev`, `check-audit`, los e2e de la web y `openspec validate add-quality-standards --strict`, todo en verde en local antes de abrir la PR
+- [x] 7.2 Comprobación final: Biome, `bunx turbo run build typecheck test`, `check:ci`, `check:dev`, `check-audit`, los e2e de la web y `openspec validate add-quality-standards --strict`, todo en verde en local antes de abrir la PR
 
 ## Workflow follow-up
 
