@@ -75,6 +75,9 @@ jobs:
             # STK, COD, DOC y VER: stack, tsconfig, supresiones, JSDoc, README y dependencias
             - name: Normas de desarrollo
               run: bun run check:dev
+            # SEC-001 y SEC-002: avisos altos o críticos en las dependencias, con sus excepciones (audit-exceptions.json)
+            - name: Auditoría
+              run: bun run check:audit
             - name: Tipos, tests y build
               run: bunx turbo run build typecheck test
             # El generador del artefacto (design D6) no necesita red: se ejecuta en un espacio de red vacío, como el
