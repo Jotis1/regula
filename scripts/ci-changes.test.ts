@@ -9,8 +9,14 @@ describe("ci-changes", () => {
 		expect(needsCode(["openspec/changes/x/tasks.md", "openspec/specs/docs-site/spec.md"])).toBe(false);
 	});
 
-	it("skips a change that only touches OpenSpec and .claude", () => {
+	it("skips a change that only touches OpenSpec, .claude commands and .claude skills", () => {
 		expect(needsCode(["openspec/changes/x/proposal.md", ".claude/skills/a/SKILL.md"])).toBe(false);
+		expect(needsCode([".claude/commands/opsx/apply.md"])).toBe(false);
+	});
+
+	it("checks everything when the shared agent configuration changes (AGT-006)", () => {
+		expect(needsCode([".claude/settings.json"])).toBe(true);
+		expect(needsCode(["openspec/changes/x/tasks.md", ".claude/settings.json"])).toBe(true);
 	});
 
 	it("checks everything when the CI changes too", () => {

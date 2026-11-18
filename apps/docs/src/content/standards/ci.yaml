@@ -53,7 +53,7 @@ rules:
           good:
               - caption: La lista de rutas seguras, con lo justo
                 lang: ts
-                code: export const SKIP_PATHS = ["openspec/**", ".claude/**"] as const;
+                code: export const SKIP_PATHS = ["openspec/**", ".claude/commands/**", ".claude/skills/**"] as const;
           bad:
               - caption: Decidir con lo que Turbo ve como afectado
                 lang: bash

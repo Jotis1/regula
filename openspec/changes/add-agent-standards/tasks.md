@@ -2,8 +2,8 @@
 
 ## 1. El CI deja de saltarse `.claude/**` entero
 
-- [ ] 1.1 Pasar `SKIP_PATHS` de `scripts/ci-changes.ts` a `["openspec/**", ".claude/commands/**", ".claude/skills/**"]` (design D6). Verificación: en `scripts/ci-changes.test.ts`, el caso de OpenSpec y una skill sigue saltándose y un caso nuevo con `.claude/settings.json` pide comprobar código; `bun test scripts/ci-changes.test.ts` en verde.
-- [ ] 1.2 Actualizar el ejemplo de `INT-002` en `apps/docs/src/content/standards/ci.yaml` con la lista nueva. Verificación: `grep -rn '".claude/\*\*"'` no encuentra nada fuera de `openspec/changes/archive/`, y `bun run check:ci` pasa.
+- [x] 1.1 Pasar `SKIP_PATHS` de `scripts/ci-changes.ts` a `["openspec/**", ".claude/commands/**", ".claude/skills/**"]` (design D6). Verificación: en `scripts/ci-changes.test.ts`, el caso de OpenSpec y una skill sigue saltándose y un caso nuevo con `.claude/settings.json` pide comprobar código; `bun test scripts/ci-changes.test.ts` en verde.
+- [x] 1.2 Actualizar el ejemplo de `INT-002` en `apps/docs/src/content/standards/ci.yaml` con la lista nueva. Verificación: `grep -rn '".claude/\*\*"'` no encuentra nada fuera de `openspec/changes/archive/`, y `bun run check:ci` pasa.
 
 ## 2. Comprobaciones del área en `check:dev`
 

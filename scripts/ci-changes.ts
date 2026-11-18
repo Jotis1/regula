@@ -6,7 +6,7 @@ import { appendFileSync } from "node:fs";
 import { Glob } from "bun";
 
 /** Paths that no check reads. Not here: the CI itself, Turbo, Biome or the root scripts, which every job uses. */
-export const SKIP_PATHS = ["openspec/**", ".claude/**"] as const;
+export const SKIP_PATHS = ["openspec/**", ".claude/commands/**", ".claude/skills/**"] as const;
 
 const globs = SKIP_PATHS.map((p) => new Glob(p));
 
