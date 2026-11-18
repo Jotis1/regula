@@ -41,8 +41,8 @@ Comandos:
 
 ## 5. Comprobaciones en `check:dev`
 
-- [ ] 5.1 `testingProblems` (TST-002 y TST-004, D5) con fixtures en `check-dev.test.ts`: `jest` en un `package.json`, un `test` sin Vitest ni `bun test`, un `test:e2e` sin Playwright, un `waitForTimeout` en `e2e/` y un `playwright.config.ts` con `retries` y sin `failOnFlakyTests`. Comprobar con `bun run check:dev`
-- [ ] 5.2 `securityProblems` (SEC-005 a SEC-010 y SEC-013, D5) con fixtures: una dependencia `github:` y otra `https:` a un `.tgz` (y `workspace:` y `npm:`, que pasan), `NPM_TOKEN` en un workflow, `release.ts` sin `--provenance`, `permissions` de escritura en la raíz y sin `permissions`, una acción de terceros por etiqueta, una con SHA y sin comentario, `actions/checkout@v7` (que pasa), `pull_request_target`, `${{ github.head_ref }}` en un `run:`, un `.gitignore` sin `.env` y la falta de `SECURITY.md`. Comprobar con `bun run check:dev`, y que añadir `uses: some-org/some-action@v3` a `ci.yml` lo hace fallar con el archivo, la acción y `SEC-007`
+- [x] 5.1 `testingProblems` (TST-002 y TST-004, D5) con fixtures en `check-dev.test.ts`: `jest` en un `package.json`, un `test` sin Vitest ni `bun test`, un `test:e2e` sin Playwright, un `waitForTimeout` en `e2e/` y un `playwright.config.ts` con `retries` y sin `failOnFlakyTests`. Comprobar con `bun run check:dev`
+- [x] 5.2 `securityProblems` (SEC-005 a SEC-010 y SEC-013, D5) con fixtures: una dependencia `github:` y otra `https:` a un `.tgz` (y `workspace:` y `npm:`, que pasan), `NPM_TOKEN` en un workflow, `release.ts` sin `--provenance`, `permissions` de escritura en la raíz y sin `permissions`, una acción de terceros por etiqueta, una con SHA y sin comentario, `actions/checkout@v7` (que pasa), `pull_request_target`, `${{ github.head_ref }}` en un `run:`, un `.gitignore` sin `.env` y la falta de `SECURITY.md`. Comprobar con `bun run check:dev`, y que añadir `uses: some-org/some-action@v3` a `ci.yml` lo hace fallar con el archivo, la acción y `SEC-007`
 
 ## 6. Web y `/mcp` (OWASP)
 

@@ -1,3 +1,4 @@
+// biome-ignore-all lint/suspicious/noTemplateCurlyInString: the fixtures hold GitHub Actions expressions, not templates
 import { describe, expect, it } from "bun:test";
 import {
 	codeProblems,
@@ -7,10 +8,12 @@ import {
 	inTypographyScope,
 	jsdocProblems,
 	type Repo,
+	securityProblems,
 	stackProblems,
 	structureProblems,
 	suppressionProblems,
 	TS_FLAGS,
+	testingProblems,
 	typographyProblems,
 	type Workspace,
 } from "./check-dev";
@@ -25,6 +28,8 @@ const BIOME = {
 			suspicious: {
 				noExplicitAny: "error",
 				noTsIgnore: "error",
+				noFocusedTests: "error",
+				noSkippedTests: "error",
 				noConsole: { level: "error", options: { allow: ["error", "warn"] } },
 			},
 			style: {
@@ -40,6 +45,7 @@ const BIOME = {
 	javascript: { formatter: { quoteStyle: "double", semicolons: "always" } },
 	assist: { actions: { source: { organizeImports: "on" } } },
 };
+const SHA = "0c5077e51419868618aeaa5fe8019c62421857d6";
 const UPDATE = {
 	schedule: { interval: "weekly" },
 	groups: { "minor-patch": { "update-types": ["minor", "patch"] } },
@@ -94,16 +100,23 @@ const good = (): Repo => ({
 		{
 			path: ".github/workflows/ci.yml",
 			workflow: {
+				permissions: { contents: "read" },
 				jobs: {
 					checks: {
 						steps: [
-							{ uses: "oven-sh/setup-bun@v2", with: { "bun-version-file": "package.json" } },
+							{
+								uses: `oven-sh/setup-bun@${SHA}`,
+								with: { "bun-version-file": "package.json" },
+							},
+							{ uses: "actions/checkout@v7" },
 							{ run: "bun install --frozen-lockfile" },
 							{ run: "bunx biome ci --error-on-warnings ." },
+							{ name: "Publish", run: "npm publish --provenance" },
 						],
 					},
 				},
 			},
+			text: `jobs:\n    checks:\n        steps:\n            - uses: actions/checkout@v7\n            - uses: oven-sh/setup-bun@${SHA} # v2.2.0\n            - run: npm publish --provenance\n`,
 		} as Repo["workflows"][number],
 	],
 	dependabot: {
@@ -118,7 +131,8 @@ const good = (): Repo => ({
 	workspaces: [lib(), site()],
 	sources: [],
 	texts: [],
-	files: ["apps/site/src/pages/index.astro", "packages/lib/src/index.ts"],
+	files: ["SECURITY.md", "apps/site/src/pages/index.astro", "packages/lib/src/index.ts"],
+	gitignore: "node_modules/\n.env\n.env.*\n!.env.example\n",
 });
 
 const withWorkspace = (repo: Repo, dir: string, change: (w: Workspace) => void): Repo => {
@@ -559,6 +573,154 @@ describe("check-dev", () => {
 				};
 			});
 			expect(dependencyProblems(repo)).toEqual([]);
+		});
+	});
+
+	describe("testing", () => {
+		const withSource = (path: string, text: string): Repo => {
+			const repo = good();
+			repo.sources.push({ path, text });
+			return repo;
+		};
+
+		it("rejects Jest, Mocha and Cypress, and a test script that is not Vitest nor bun test (TST-002)", () => {
+			const repo = withWorkspace(good(), "packages/lib", (w) => {
+				w.pkg.devDependencies = { ...w.pkg.devDependencies, jest: "^30", "@jest/globals": "^30" };
+				w.pkg.scripts = { ...w.pkg.scripts, test: "jest", "test:e2e": "cypress run" };
+			});
+			const problems = testingProblems(repo);
+			expect(rules(problems)).toEqual(["TST-002", "TST-002", "TST-002", "TST-002"]);
+			expect(problems.join("\n")).toContain("depends on `jest`");
+			expect(problems.join("\n")).toContain("`test:e2e` script does not run Playwright");
+		});
+
+		it("accepts vitest run, bun test and playwright test (TST-002)", () => {
+			const repo = withWorkspace(good(), "packages/lib", (w) => {
+				w.pkg.scripts = { ...w.pkg.scripts, test: "bun test ./test", "test:e2e": "playwright test" };
+			});
+			expect(testingProblems(repo)).toEqual([]);
+		});
+
+		it("rejects a fixed wait in an e2e, with file and line, but not outside e2e/ (TST-004)", () => {
+			const text = 'await page.goto("/");\nawait page.waitForTimeout(500);\n';
+			expect(testingProblems(withSource("apps/site/e2e/home.spec.ts", text))).toEqual([
+				"apps/site/e2e/home.spec.ts:2 (TST-004): a fixed wait; wait for a condition, or move the test clock (`page.clock`)",
+			]);
+			expect(testingProblems(withSource("apps/site/src/lib/wait.ts", text))).toEqual([]);
+		});
+
+		it("rejects a Playwright config that retries without failOnFlakyTests (TST-004)", () => {
+			const retries = "export default defineConfig({\n\tretries: process.env.CI ? 1 : 0,\n});\n";
+			expect(rules(testingProblems(withSource("apps/site/playwright.config.ts", retries)))).toEqual([
+				"TST-004",
+			]);
+			const strict = retries.replace("0,\n", "0,\n\tfailOnFlakyTests: !!process.env.CI,\n");
+			expect(testingProblems(withSource("apps/site/playwright.config.ts", strict))).toEqual([]);
+			const none = "export default defineConfig({\n\tretries: 0,\n});\n";
+			expect(testingProblems(withSource("apps/site/playwright.config.ts", none))).toEqual([]);
+		});
+	});
+
+	describe("security", () => {
+		const ci = (repo: Repo) => repo.workflows[0] as Repo["workflows"][number];
+		const steps = (repo: Repo) =>
+			ci(repo).workflow.jobs?.checks?.steps as { uses?: string; run?: string }[];
+
+		it("rejects a workflow that names an npm token, and a repo that publishes without provenance (SEC-005)", () => {
+			const token = good();
+			ci(token).text +=
+				"              env:\n                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}\n";
+			expect(securityProblems(token)).toEqual([
+				".github/workflows/ci.yml (SEC-005): names `NPM_TOKEN`: npm publishes with trusted publishing",
+				".github/workflows/ci.yml (SEC-005): names `NODE_AUTH_TOKEN`: npm publishes with trusted publishing",
+			]);
+
+			const plain = good();
+			ci(plain).text = ci(plain).text.replace(" --provenance", "");
+			expect(rules(securityProblems(plain))).toEqual(["SEC-005"]);
+			const config = withWorkspace(plain, "packages/lib", (w) => {
+				(w.pkg as { publishConfig?: unknown }).publishConfig = { provenance: true };
+			});
+			expect(securityProblems(config)).toEqual([]);
+		});
+
+		it("rejects root permissions that write or are missing, and accepts an empty block (SEC-006)", () => {
+			const write = good();
+			(ci(write).workflow as { permissions?: unknown }).permissions = { contents: "write" };
+			expect(securityProblems(write).join("\n")).toContain(
+				"(SEC-006): the root `permissions` grant writing",
+			);
+
+			const missing = good();
+			delete (ci(missing).workflow as { permissions?: unknown }).permissions;
+			expect(securityProblems(missing).join("\n")).toContain("(SEC-006): declares no `permissions`");
+
+			const empty = good();
+			(ci(empty).workflow as { permissions?: unknown }).permissions = {};
+			expect(securityProblems(empty)).toEqual([]);
+		});
+
+		it("rejects a third-party action on a tag, and a SHA without its version, naming the action (SEC-007)", () => {
+			const tag = good();
+			steps(tag).push({ uses: "some-org/some-action@v3" });
+			expect(securityProblems(tag)).toEqual([
+				'.github/workflows/ci.yml (SEC-007): job "checks" uses `some-org/some-action@v3`: pin it to the full SHA of its commit',
+			]);
+
+			const bare = good();
+			ci(bare).text = ci(bare).text.replace(" # v2.2.0", "");
+			expect(securityProblems(bare).join("\n")).toContain("without its version in a comment");
+		});
+
+		it("lets actions/* and github/* stay on a tag (SEC-007)", () => {
+			const repo = good();
+			steps(repo).push({ uses: "github/codeql-action/init@v4" });
+			expect(steps(repo).some((s) => s.uses === "actions/checkout@v7")).toBe(true);
+			expect(securityProblems(repo)).toEqual([]);
+		});
+
+		it("rejects pull_request_target and the event or the branch name inside run (SEC-008)", () => {
+			const target = good();
+			ci(target).workflow.on = { pull_request_target: {} };
+			expect(rules(securityProblems(target))).toEqual(["SEC-008"]);
+
+			const branch = good();
+			steps(branch).push({ run: './check.sh "${{ github.head_ref }}"' });
+			steps(branch).push({ run: 'echo "${{ github.event.pull_request.title }}"' });
+			const problems = securityProblems(branch);
+			expect(rules(problems)).toEqual(["SEC-008", "SEC-008"]);
+			expect(problems[0]).toContain('job "checks", step "(unnamed)"');
+		});
+
+		it("accepts a matrix value inside run (SEC-008)", () => {
+			const repo = good();
+			steps(repo).push({ run: "bunx playwright test --shard=${{ matrix.shard }}/3" });
+			expect(securityProblems(repo)).toEqual([]);
+		});
+
+		it("rejects a .gitignore without .env, and a repo without SECURITY.md (SEC-009, SEC-010)", () => {
+			const repo = good();
+			repo.gitignore = "node_modules/\n";
+			repo.files = repo.files.filter((f) => f !== "SECURITY.md");
+			expect(rules(securityProblems(repo))).toEqual(["SEC-009", "SEC-009", "SEC-010"]);
+		});
+
+		it("rejects a dependency from Git, a hosted repo or a tarball URL, but not workspace: nor npm: (SEC-013)", () => {
+			const repo = withWorkspace(good(), "apps/site", (w) => {
+				w.pkg.dependencies = {
+					...w.pkg.dependencies,
+					lib: "github:org/lib",
+					short: "org/short#main",
+					tarball: "https://example.com/pkg.tgz",
+					"@jotis-me/lib": "workspace:*",
+					"react-18": "npm:react@18.3.1",
+				};
+			});
+			const problems = securityProblems(repo);
+			expect(rules(problems)).toEqual(["SEC-013", "SEC-013", "SEC-013"]);
+			expect(problems[0]).toBe(
+				"apps/site/package.json (SEC-013): `lib` comes from `github:org/lib`, not from the npm registry",
+			);
 		});
 	});
 });
