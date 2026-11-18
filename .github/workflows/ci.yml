@@ -113,15 +113,26 @@ jobs:
               with:
                   bun-version-file: package.json
             - run: bun install --frozen-lockfile
+            # SEC-008: los valores del evento llegan por `env:`, nunca dentro del `run:`
             - name: Conventional Commits
-              run: bunx commitlint --from "${{ github.event.pull_request.base.sha }}" --to "${{ github.event.pull_request.head.sha }}" --verbose
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+              run: bunx commitlint --from "$BASE" --to "$HEAD" --verbose
             # LNG-005: ni punto medio ni rayas en los commits. Los de los bots quedan fuera: copian notas de versión.
             - name: Tipografía
-              run: bun run scripts/check-commit-typography.ts "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}"
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+              run: bun run scripts/check-commit-typography.ts "$BASE" "$HEAD"
             # VER-002: si la PR cambia lo que publica un paquete, trae un changeset que lo nombra (o uno vacío). El PR de
             # versión de changesets queda fuera: borra los changesets a propósito.
             - name: Changesets
-              run: bun run scripts/check-changesets.ts "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" "${{ github.head_ref }}"
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha }}
+                  HEAD: ${{ github.event.pull_request.head.sha }}
+                  BRANCH: ${{ github.head_ref }}
+              run: bun run scripts/check-changesets.ts "$BASE" "$HEAD" "$BRANCH"
 
     # Pruebas con navegador. En Windows porque las capturas aprobadas de la paridad visual se capturaron en Windows: el
     # suavizado del texto cambia entre sistemas y en Linux superaría el umbral del 2 %.
