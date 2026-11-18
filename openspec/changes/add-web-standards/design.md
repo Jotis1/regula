@@ -118,11 +118,11 @@ En `lighthouserc.json`:
 El CLS y la accesibilidad no dependen de la velocidad de la máquina; la puntuación de rendimiento sí. El resumen (`lighthouse-summary.ts`) sigue enseñando las puntuaciones. El paso del CI se renombra a «Lighthouse (móvil, CLS y accesibilidad)». El workflow manual sobre la web publicada no cambia: allí el 90 de rendimiento sigue siendo el criterio.
 
 ### D9. `standards-exceptions.json`
-En la raíz, con la misma forma que `audit-exceptions.json`:
+En la raíz, con los mismos nombres de campo que `audit-exceptions.json` (`why` y `until`):
 ```json
-[{ "rule": "LOC-003", "reason": "…", "expires": "2027-03-31" }]
+[{ "rule": "LOC-003", "why": "…", "until": "2027-03-31" }]
 ```
-`check:dev` falla si una entrada ha caducado, si `rule` no es el ID de una norma, si falta `reason` o `expires`, o si la norma es automática (`biome`, `ci` o `test`): una excepción no puede tapar una comprobación. No hay plazo máximo, a diferencia de la auditoría: una migración puede necesitar más de tres meses, y la fecha queda a la vista en la PR.
+`check:dev` falla si una entrada ha caducado, si `rule` no es el ID de una norma, si falta `why` o `until`, o si la norma es automática (`biome`, `ci` o `test`): una excepción no puede tapar una comprobación. No hay plazo máximo, a diferencia de la auditoría: una migración puede necesitar más de tres meses, y la fecha queda a la vista en la PR.
 
 Entran `LOC-003` y `LOC-004` con caducidad el 2027-03-31.
 

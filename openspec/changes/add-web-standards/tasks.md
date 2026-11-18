@@ -2,8 +2,8 @@
 
 ## 1. Excepciones de normas con caducidad
 
-- [ ] 1.1 Añadir a `scripts/check-dev.ts` la lectura de `standards-exceptions.json` (raíz): falla si una entrada ha caducado, si `rule` no es el ID de una norma, si falta `reason` o `expires`, o si la norma es automática (`biome`, `ci` o `test`). Verificación: casos nuevos en `scripts/check-dev.test.ts`, uno por cada fallo y uno válido, en verde con `bun test scripts`.
-- [ ] 1.2 Crear `standards-exceptions.json` vacío (`[]`). Verificación: `bun run check:dev` pasa.
+- [x] 1.1 Añadir a `scripts/check-dev.ts` la lectura de `standards-exceptions.json` (raíz): falla si una entrada ha caducado, si `rule` no es el ID de una norma, si falta `why` o `until`, o si la norma es automática (`biome`, `ci` o `test`). Verificación: casos nuevos en `scripts/check-dev.test.ts`, uno por cada fallo y uno válido, en verde con `bun test scripts`.
+- [x] 1.2 Crear `standards-exceptions.json` vacío (`[]`). Verificación: `bun run check:dev` pasa.
 
 ## 2. `titleAs` en PageHeader y StreamScene
 

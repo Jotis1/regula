@@ -56,6 +56,10 @@ export interface Repo {
 	files: string[];
 	/** The root `.gitignore`, or `""` when there is none. */
 	gitignore: string;
+	/** Every standard of the guide: its id and how it is verified (`biome`, `ci`, `test` or `review`). */
+	standards: { id: string; kind: string }[];
+	/** `standards-exceptions.json` as parsed, or `null` when the repo has none. */
+	standardsExceptions: unknown;
 }
 
 export const TS_FLAGS = [
@@ -612,8 +616,43 @@ export function securityProblems(repo: Repo): string[] {
 	return out;
 }
 
-export function devProblems(repo: Repo): string[] {
+const isDay = (value: string) =>
+	/^\d{4}-\d{2}-\d{2}$/.test(value) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
+
+/**
+ * The standards the repo does not follow yet live in standards-exceptions.json, each with its reason and its last
+ * day. An exception only covers a standard verified by review: it cannot switch off an automatic check.
+ */
+export function exceptionProblems(repo: Repo, today: string): string[] {
+	const raw = repo.standardsExceptions;
+	if (raw === null) return [];
+	const file = "standards-exceptions.json";
+	if (!Array.isArray(raw)) return [`${file}: must be an array`];
+	const out: string[] = [];
+	raw.forEach((item: unknown, index) => {
+		const e = (typeof item === "object" && item !== null ? item : {}) as Record<string, unknown>;
+		const text = (key: string) => (typeof e[key] === "string" ? (e[key] as string).trim() : "");
+		const label = `${file} #${index + 1}${text("rule") ? ` (${text("rule")})` : ""}`;
+		const missing = ["rule", "why", "until"].filter((key) => text(key) === "");
+		if (missing.length > 0) {
+			out.push(`${label}: has no ${missing.join(", ")}`);
+			return;
+		}
+		const standard = repo.standards.find((s) => s.id === text("rule"));
+		if (!standard) out.push(`${label}: there is no standard with that id`);
+		else if (standard.kind !== "review")
+			out.push(
+				`${label}: the standard is verified by ${standard.kind}, and an exception cannot switch off a check`,
+			);
+		if (!isDay(text("until"))) out.push(`${label}: the day in until must be YYYY-MM-DD`);
+		else if (text("until") < today) out.push(`${label}: expired on ${text("until")}`);
+	});
+	return out;
+}
+
+export function devProblems(repo: Repo, today = new Date().toISOString().slice(0, 10)): string[] {
 	return [
+		...exceptionProblems(repo, today),
 		...stackProblems(repo),
 		...codeProblems(repo),
 		...testingProblems(repo),
@@ -710,6 +749,17 @@ export function readRepo(root: string): Repo {
 			.filter((path) => existsSync(join(root, path)))
 			.map((path) => ({ path, text: readFileSync(join(root, path), "utf8") })),
 		gitignore: existsSync(join(root, ".gitignore")) ? readFileSync(join(root, ".gitignore"), "utf8") : "",
+		standards: tracked
+			.filter((f) => /^apps\/docs\/src\/content\/standards\/[\w-]+\.yaml$/.test(f))
+			.flatMap((f) => {
+				const area = Bun.YAML.parse(readFileSync(join(root, f), "utf8")) as {
+					rules?: { id: string; verification: { kind: string } }[];
+				};
+				return (area.rules ?? []).map((r) => ({ id: r.id, kind: r.verification.kind }));
+			}),
+		standardsExceptions: existsSync(join(root, "standards-exceptions.json"))
+			? readJson(join(root, "standards-exceptions.json"))
+			: null,
 	};
 }
 
