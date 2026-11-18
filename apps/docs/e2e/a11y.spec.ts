@@ -33,6 +33,21 @@ async function documentedContrastException(page: Page, rule: string, target: str
 		);
 }
 
+// SEC-012: el navegador avisa con `securitypolicyviolation` de todo lo que la CSP bloquea. Se apunta desde antes de
+// cargar la página, para ver también lo que bloquea al pintarla.
+type CspWindow = { __cspViolations?: string[] };
+test.beforeEach(async ({ page }) => {
+	await page.addInitScript(() => {
+		const w = window as unknown as CspWindow;
+		w.__cspViolations = [];
+		document.addEventListener("securitypolicyviolation", (e) =>
+			w.__cspViolations?.push(`${e.effectiveDirective} ${e.blockedURI || "(inline)"}`),
+		);
+	});
+});
+const cspViolations = (page: Page) =>
+	page.evaluate(() => (window as unknown as CspWindow).__cspViolations ?? []);
+
 for (const path of pages(dist)) {
 	for (const dark of [false, true]) {
 		test(`${path} sin fallos de accesibilidad serios (${dark ? "oscuro" : "claro"})`, async ({
@@ -69,6 +84,9 @@ for (const path of pages(dist)) {
 							.join(", ")}`,
 				);
 			expect(serious).toEqual([]);
+			// SEC-012: la CSP de Astro va en una <meta> de cada página, y no bloquea nada de lo que la página usa
+			await expect(page.locator('meta[http-equiv="content-security-policy" i]')).toHaveCount(1);
+			expect(await cspViolations(page)).toEqual([]);
 		});
 	}
 }

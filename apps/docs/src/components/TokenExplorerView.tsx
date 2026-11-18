@@ -74,7 +74,11 @@ export function TokenExplorerView({ families }: { families: ExplorerFamily[] }) 
 	return (
 		<div className="not-prose my-4 flex flex-col gap-5" data-tokens="">
 			<div className="flex flex-wrap items-end gap-3">
-				<div className="min-w-56 flex-1 md:max-w-90" data-tokens-filter="" data-tokens-js="">
+				<div
+					className="min-w-56 flex-1 noscript:hidden md:max-w-90"
+					data-tokens-filter=""
+					data-tokens-js=""
+				>
 					<Input
 						type="search"
 						label="Filtrar tokens"
@@ -102,7 +106,7 @@ export function TokenExplorerView({ families }: { families: ExplorerFamily[] }) 
 			<p
 				role="status"
 				aria-live="polite"
-				className="text-sm text-tertiary"
+				className="text-sm text-tertiary noscript:hidden"
 				data-tokens-status=""
 				data-tokens-js=""
 			>
@@ -118,7 +122,8 @@ export function TokenExplorerView({ families }: { families: ExplorerFamily[] }) 
 						data-label={f.label}
 						data-collapsed={f.id === first ? undefined : ""}
 						// Al llegar por su enlace, el filtro y las pestañas quedan a la vista por encima
-						className="scroll-mt-80 data-collapsed:hidden"
+						// Sin JavaScript se leen todas seguidas (noscript: es @media (scripting: none), sin estilos en línea)
+						className="scroll-mt-80 data-collapsed:hidden noscript:block!"
 					>
 						<div className="max-lg:hidden">
 							<Table<Row>

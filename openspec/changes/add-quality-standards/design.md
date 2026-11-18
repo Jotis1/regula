@@ -145,7 +145,7 @@ Dos funciones nuevas, `testingProblems(repo)` y `securityProblems(repo)`, en el 
 - **SEC-010:** existe `SECURITY.md` en la raíz.
 - **SEC-013:** ninguna dependencia de un `package.json` es una URL (`github:`, `git+`, `http:`, `https:` o `file:` a un `.tgz`). `workspace:` y `npm:` valen.
 
-`noFocusedTests` y `noSkippedTests` van en `error` en `biome.json`. El `test.skip` condicional de `visual.spec.ts` lleva `biome-ignore lint/suspicious/noSkippedTests: <motivo>`, que `COD-005` ya exige con motivo.
+`noFocusedTests` y `noSkippedTests` van en `error` en `biome.json`, y entran en el bloque de STK-004 (`BIOME_BLOCK` de `check-dev.ts`), igual que `noDangerouslySetInnerHtml` y `noGlobalEval` de `SEC-015`. Estas dos ya las activaba el preset, pero `problemsOf` busca el nombre de la regla en `biome.json`, así que se declaran de forma explícita. El `test.skip` condicional de `visual.spec.ts` lleva `biome-ignore lint/suspicious/noSkippedTests: <motivo>`, que `COD-005` ya exige con motivo.
 
 ### D6. Tests inestables
 
@@ -203,7 +203,12 @@ Una app sin servidor o sin usuarios cumple las normas de `app` que no le aplican
 ### D12. Cabeceras y CSP
 
 **Astro (la web):**
-- `security: { csp: true }` en `astro.config.mjs`. Astro calcula los hashes de los scripts y estilos de cada página y los pone en una `<meta>`. Se prefiere a una CSP escrita a mano en `vercel.json`, que tendría que llevar `unsafe-inline` para los scripts de Astro (lo nativo primero, `COD-015`).
+- `security.csp` en `astro.config.mjs`. Astro calcula los hashes de los scripts y estilos de cada página y los pone en una `<meta>`. Medido al activarla, hacen falta dos ajustes en `styleDirective`, y ninguno toca `script-src`:
+  - `'unsafe-inline'` con `kind: "attribute"` (solo `style-src-attr`), para los atributos `style=` que React pinta en el servidor;
+  - los hashes de los dos `<style>` que React Aria crea con un texto fijo: el de `usePress` (`touch-action`) y el de `preventScroll` del `Dialog` (`overscroll-behavior`).
+
+  Se descartó `'unsafe-inline'` en `style-src-elem`: los dos textos son fijos, y si React Aria los cambia, el e2e lo detecta.
+- Se prefiere a una CSP escrita a mano en `vercel.json`, que tendría que llevar `unsafe-inline` para los scripts de Astro (lo nativo primero, `COD-015`).
 - En `vercel.json`, `headers` para `/(.*)` con:
   - `Content-Security-Policy: frame-ancestors 'none'` (la `<meta>` no la admite);
   - `Strict-Transport-Security: max-age=63072000; includeSubDomains`;
