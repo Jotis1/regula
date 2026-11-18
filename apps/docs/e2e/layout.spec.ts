@@ -1,6 +1,6 @@
 // Ancho de la web: la navegación lateral queda fuera del contenedor de la guía (container-max-width-desktop, 1280) y
 // el contenido y el pie miden como mucho 1280, centrados; la cabecera ocupa toda la ventana.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const CONTAINER = 1280;
 

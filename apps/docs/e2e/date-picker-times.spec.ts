@@ -1,6 +1,6 @@
 // DatePicker en Chromium real: el modal se abre centrado con el fondo, atrapa el foco y devuelve el foco al cerrarlo;
 // con horas, elegir día y hora deja el disparador con los dos.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 800, height: 900 } });
 

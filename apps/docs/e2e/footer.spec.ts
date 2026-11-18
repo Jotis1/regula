@@ -1,5 +1,5 @@
 // Footer en un contenedor de 375 px: las columnas de enlaces se apilan de dos en dos, como el Figma en móvil.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test("a 375 px las columnas van de dos en dos", async ({ page }) => {
 	await page.goto("/visual/footer/");

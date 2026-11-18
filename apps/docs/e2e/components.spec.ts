@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Locator, Page } from "@playwright/test";
 import { COMPONENT_GROUPS, groupOf, labelOf } from "../src/lib/catalog";
-import { expect, hydrated as islandReady, test } from "./hydration";
+import { expect, hydrated as islandReady, test } from "./fixtures";
 
 /** El bloque de código (CodeSnippet) es una isla `client:visible`: sus pestañas responden después de hidratarse. */
 async function hydrated(page: Page, selector: string) {

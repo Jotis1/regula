@@ -1,7 +1,8 @@
 // Reglas con ejemplos (redesign-docs-site-v2, requisito «Reglas con ejemplos»): las páginas de componente y las de
 // fundamentos enseñan sus reglas con pares de `ExampleCard` hechos con componentes de verdad, cada uno con su
 // veredicto en texto y una frase.
-import { expect, type Locator, test } from "@playwright/test";
+import type { Locator } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 /** El veredicto de una tarjeta: la palabra de su insignia. */
 const card = (scope: Locator, verdict: string) =>

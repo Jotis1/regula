@@ -1,5 +1,5 @@
 // /changelog/ pinta las listas de una entrada como listas (design D11): la 0.4.0 trae dos, de cuatro y de tres elementos.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test("la entrada de la 0.4.0 pinta sus dos listas como <ul>/<li> y no deja guiones sueltos", async ({
 	page,

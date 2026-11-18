@@ -1,7 +1,8 @@
 // Navegación lateral del rediseño (reference/docs-design/Main.dc.html), con el `SidebarNav` del paquete: el árbol de
 // la sección actual, con sus grupos como <details> (design D2 de redesign-docs-site-v2).
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { COMPONENT_GROUPS, FOUNDATIONS } from "../src/lib/catalog";
+import { expect, test } from "./fixtures";
 
 const groupsOf = (section: "components" | "stream") => COMPONENT_GROUPS.filter((g) => g.section === section);
 

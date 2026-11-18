@@ -2,7 +2,7 @@
 // descarga el código de su ejemplo interactivo y no el de componentes pesados que no usa. Se buscan fragmentos de
 // clases únicos de cada uno en todo el JavaScript que baja la página, también el de los imports dinámicos.
 import type { Page } from "@playwright/test";
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 const MARKERS: Record<string, string> = {
 	ColorPicker: "h-50 w-full cursor-crosshair touch-none",

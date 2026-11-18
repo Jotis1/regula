@@ -1,7 +1,7 @@
 // ContextMenu con el botón derecho real de Chromium: se abre en el punto del puntero, también cerca del borde de la
 // ventana, y no sale el menú del navegador.
 import type { Page } from "@playwright/test";
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 1000, height: 700 } });
 

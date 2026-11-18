@@ -1,6 +1,7 @@
 // `prefers-reduced-motion` con CSS real: jsdom no evalúa media queries.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { streamMotion } from "../../../packages/react/src/internal/stream";
+import { expect, test } from "./fixtures";
 
 // Entrada y salida de Stream (design §12). La web escanea packages/react/dist, así que su CSS ya trae estas
 // clases. Se monta un elemento con la entrada y luego se pasa a la salida, mirando qué transiciones arranca.

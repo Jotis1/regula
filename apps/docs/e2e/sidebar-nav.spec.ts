@@ -1,7 +1,7 @@
 // SidebarNav en Chromium real: los submenús se abren con el teclado, el estrecho enseña el nombre en un tooltip y abre
 // su segundo panel, la tarjeta de cuenta cambia de cuenta y el menú de la barra adaptable abre la navegación.
 import type { Page } from "@playwright/test";
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 800, height: 900 } });
 

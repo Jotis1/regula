@@ -1,6 +1,6 @@
 // Slider con `range` en Chromium real: cada mando se maneja con el teclado por separado, el mínimo no pasa del máximo
 // y arrastrar con el ratón mueve el mando más cercano.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 900, height: 900 } });
 

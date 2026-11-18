@@ -1,7 +1,7 @@
 // VerificationCodeInput en Chromium, Firefox y WebKit: el paso entre casillas, el pegado y el autocompletado
 // dependen de cómo cada navegador entrega los eventos de teclado, `paste` e `input`.
 import type { Page } from "@playwright/test";
-import { expect, test } from "../hydration";
+import { expect, test } from "../fixtures";
 
 const open = async (page: Page) => {
 	await page.goto("/visual/verification-code-input/");

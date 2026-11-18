@@ -1,6 +1,6 @@
 // Input en Chromium real: el campo de tarjeta agrupa mientras se escribe, el de archivo abre el selector con el botón y
 // muestra el nombre, y el botón de la fecha abre el selector nativo.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 1000, height: 1000 } });
 

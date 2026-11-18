@@ -1,7 +1,7 @@
 // Cabecera móvil y menú a pantalla completa (reference/docs-design/HeaderM.dc.html y MobileMenu.dc.html), con el
 // tema en tres estados (design §7 y §8).
 import type { Page } from "@playwright/test";
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 test.use({ viewport: { width: 390, height: 844 } });
 

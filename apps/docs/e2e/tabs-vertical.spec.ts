@@ -1,5 +1,5 @@
 // Tabs verticales a 1440px (la lista) y a 390px (el desplegable): una sola versión a la vista en cada ancho.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 const open = async (page: import("@playwright/test").Page, width: number) => {
 	await page.setViewportSize({ width, height: 900 });

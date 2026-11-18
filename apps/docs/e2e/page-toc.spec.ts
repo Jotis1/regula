@@ -1,6 +1,7 @@
 // «En esta página» (design D1 de redesign-docs-site-v2): Tabs vertical `line` con `href` de ancla, a la derecha y
 // pegada arriba al desplazarse, que marca con `aria-current="location"` la sección que se lee. En móvil no se pinta.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const toc = (page: Page) => page.getByRole("navigation", { name: "En esta página" });
 

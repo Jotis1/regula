@@ -2,7 +2,7 @@
 // a11y.spec.ts, which covers every built page.
 
 import { TOOLS } from "../src/features/mcp/tools";
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 test.use({ viewport: { width: 1440, height: 900 } });
 

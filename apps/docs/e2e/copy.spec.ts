@@ -1,7 +1,7 @@
 // Copiar con aviso (component-library, «Copiar con aviso junto a lo pulsado»): la burbuja «Copiado» del paquete sale
 // sobre el botón pulsado, tanto en HTML estático (las tablas de tokens) como dentro de una isla (la galería de iconos).
 import type { Locator, Page } from "@playwright/test";
-import { expect, hydrated as islandReady, test } from "./hydration";
+import { expect, hydrated as islandReady, test } from "./fixtures";
 
 /** La burbuja es una isla `client:idle`: hasta que se hidrata, un clic en un `data-copy` no copia nada. */
 async function hydrated(page: Page) {

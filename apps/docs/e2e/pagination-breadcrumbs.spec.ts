@@ -1,6 +1,6 @@
 // Pagination y Breadcrumbs en Chromium real: en móvil los botones quedan solo con el icono y los números pasan a
 // «Página N de T»; el desplegable de cuenta de las migas cambia de cuenta con el teclado.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 const hydrated = async (page: import("@playwright/test").Page, nav: string) => {
 	await page.waitForFunction((name) => {

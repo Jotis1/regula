@@ -1,7 +1,7 @@
 // HelpIcon con el ratón y el teclado reales (el del playground de su página, que no está forzado a `open`): el tooltip
 // sale en el lado pedido, apuntando al icono, y se va al quitar el ratón o con Escape.
 import type { Locator, Page } from "@playwright/test";
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 // Hidratado de verdad: Astro quita `ssr` al llamar a hydrateRoot, pero React cuelga sus props después, en otra tarea.
 const hydrated = (page: Page) =>

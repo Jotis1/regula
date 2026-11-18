@@ -1,6 +1,6 @@
 // Select con búsqueda y con etiquetas en Chromium real: escribir filtra la lista, la primera queda marcada y Enter la
 // elige, y el teclado elige otra con las flechas.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 1000, height: 1000 } });
 

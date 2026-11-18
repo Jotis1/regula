@@ -1,5 +1,5 @@
 // Variante de Stream de la página de componente (Scene.dc.html) y lienzos a tamaño real (design §10).
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 for (const [slug, width, height] of [
 	["stream-scene", 1920, 1080],

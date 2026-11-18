@@ -1,5 +1,6 @@
 // Cabecera del rediseño (reference/docs-design/Header.dc.html): marca, secciones, búsqueda y tema.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const header = (page: Page) => page.locator("body > header");
 const sections = (page: Page) => page.getByRole("navigation", { name: "Secciones" });

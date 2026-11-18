@@ -1,10 +1,18 @@
+// The `test` every e2e spec imports. It adds two things to Playwright's.
+//
 // When an island is ready to use. Astro drops `ssr` as soon as it hands the island to React, but React hydrates later
 // (inside `startTransition`), may commit lazy content later still, and runs `useEffect` after each commit: a click
 // before that is lost or undone. React calls the DevTools hook on every commit and again right after it runs the
 // effects of a root, and the root's container is the island. A test-only hook uses that to know, per element, that
-// React has committed it and that its island has no effects left to run. Specs that wait for an island import `test`
-// from here.
+// React has committed it and that its island has no effects left to run.
+//
+// One more try for a navigation the runner refused (TST-004). On a slow Windows runner, opening a connection to the
+// local preview fails now and then (1 pass in 18, measured 2026-11-18, with ports and memory to spare). That says
+// nothing about the test, so `page.goto` tries once more and leaves a note in the report. Any other failure counts.
 import { test as base, expect, type Locator } from "@playwright/test";
+
+/** Connection errors seen on the runner when opening the local preview. Add one only after seeing it there. */
+const RUNNER_CONNECTION_ERRORS = /net::ERR_(CONNECTION_REFUSED|NO_BUFFER_SPACE)\b/;
 
 declare global {
 	interface Window {
@@ -14,6 +22,23 @@ declare global {
 }
 
 export const test = base.extend<{ effectsHook: undefined }>({
+	page: async ({ page }, use, testInfo) => {
+		const goto = page.goto.bind(page);
+		page.goto = async (url, options) => {
+			try {
+				return await goto(url, options);
+			} catch (error) {
+				const message = error instanceof Error ? error.message : "";
+				if (!RUNNER_CONNECTION_ERRORS.test(message)) throw error;
+				testInfo.annotations.push({ type: "navigation-retry", description: message.split("\n")[0] });
+				// Chromium (the only one that reports `net::ERR_`) loads its error page after the failure: a navigation
+				// started before that one ends is interrupted by it
+				await page.waitForURL(/^chrome-error:\/\//);
+				return goto(url, options);
+			}
+		};
+		await use(page);
+	},
 	effectsHook: [
 		async ({ page }, use) => {
 			await page.addInitScript(() => {

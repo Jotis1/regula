@@ -1,6 +1,7 @@
 // Standards section (spec docs-site, «Sección de normas»): index, rule pages with anchors, and search.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { STANDARD_AREAS } from "../src/lib/catalog";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 1440, height: 900 } });
 

@@ -1,10 +1,10 @@
 // Paridad visual: el ejemplo de cada componente en la web frente a su captura aprobada (design D4). Las 74 originales
 // se capturaron de la guía; las de un componente nuevo, o las de uno que cambia de aspecto, se aprueban en su PR.
 import { join } from "node:path";
-import { expect, test } from "@playwright/test";
 import { COMPOSITIONS } from "../src/features/visual/compositions";
 import { CARD_HEIGHTS, slugOf } from "../src/features/visual/registry";
 import { catalogComponents } from "../src/lib/catalog";
+import { expect, test } from "./fixtures";
 import { compare, hasApproved, missingApproved, readApproved, VIEWPORT_WIDTH } from "./visual/compare";
 
 const MAX_RATIO = 0.02;
