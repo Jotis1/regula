@@ -7,9 +7,9 @@
 
 ## 2. Comprobaciones del área en `check:dev`
 
-- [ ] 2.1 Añadir a `Repo` y a `readRepo` lo que falta (`AGENTS.md`, `CLAUDE.md`, `.mcp.json` y `.claude/settings.json` de la raíz, `null` si no existen) y escribir `agentProblems(repo)` con los fallos de `AGT-001` y `AGT-002` (design D3), reutilizando la comprobación de comandos de `DOC-005`. Verificación: casos nuevos en `scripts/check-dev.test.ts` (sin `AGENTS.md`, sin enlace a la guía, sin comandos, sin `CLAUDE.md`, `CLAUDE.md` con texto de más y uno válido), en verde.
-- [ ] 2.2 Añadir a `agentProblems` los fallos de `AGT-003`, `AGT-005` y `AGT-006`. Verificación: casos nuevos (sin `.mcp.json`, JSON roto, otra URL, `.gitignore` sin la línea, `settings.local.json` seguido por Git, sin `settings.json`, sin cada una de las dos reglas de `deny` y uno válido), en verde.
-- [ ] 2.3 Llamar a `agentProblems` desde `devProblems`. Verificación: `bun run scripts/check-dev.ts` falla y lista los cinco ID, porque Regula todavía no tiene los ficheros (se arregla en el grupo 3).
+- [x] 2.1 Añadir a `Repo` y a `readRepo` lo que falta (`AGENTS.md`, `CLAUDE.md`, `.mcp.json` y `.claude/settings.json` de la raíz, `null` si no existen) y escribir `agentProblems(repo)` con los fallos de `AGT-001` y `AGT-002` (design D3), reutilizando la comprobación de comandos de `DOC-005`. Verificación: casos nuevos en `scripts/check-dev.test.ts` (sin `AGENTS.md`, sin enlace a la guía, sin comandos, sin `CLAUDE.md`, `CLAUDE.md` con texto de más y uno válido), en verde.
+- [x] 2.2 Añadir a `agentProblems` los fallos de `AGT-003`, `AGT-005` y `AGT-006`. Verificación: casos nuevos (sin `.mcp.json`, JSON roto, otra URL, `.gitignore` sin la línea, `settings.local.json` seguido por Git, sin `settings.json`, sin cada una de las dos reglas de `deny` y uno válido), en verde.
+- [x] 2.3 Llamar a `agentProblems` desde `devProblems`. Verificación: `bun run scripts/check-dev.ts` falla y lista los cinco ID, porque Regula todavía no tiene los ficheros (se arregla en el grupo 3).
 
 ## 3. Regula cumple las normas
 
