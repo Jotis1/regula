@@ -57,3 +57,15 @@ test("sin directiva el interactivo pinta su HTML inicial pero no responde", asyn
 	await group.getByRole("button", { name: "Y" }).click();
 	await expect(group.getByRole("button", { name: "Y" })).toHaveAttribute("aria-pressed", "false");
 });
+
+test("la página dice su idioma y empieza por un enlace de salto al contenido (LOC-001, ACC-003)", async ({
+	page,
+}) => {
+	await page.goto("/");
+	await expect(page.locator("html")).toHaveAttribute("lang", "es");
+	await page.keyboard.press("Tab");
+	const skip = page.getByRole("link", { name: "Saltar al contenido" });
+	await expect(skip).toBeFocused();
+	await expect(skip).toHaveAttribute("href", "#contenido");
+	await expect(page.locator("main#contenido")).toBeVisible();
+});

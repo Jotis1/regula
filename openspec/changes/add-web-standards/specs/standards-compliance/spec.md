@@ -32,7 +32,7 @@ El mismo test SHALL fallar si falta `robots.txt`, si no enlaza al sitemap, o si 
 - **THEN** el test falla y nombra la URL
 
 ### Requirement: Idioma y regiones comprobados
-El test que recorre las páginas construidas SHALL fallar si una página no lleva `lang` en `<html>`, no tiene una región `main` o no tiene un enlace de salto al contenido.
+El test que recorre las páginas construidas SHALL fallar si una página no lleva `lang` en `<html>`, o si una página indexable no tiene una región `main` y, antes de ella, un enlace de salto al contenido. Los lienzos internos de prueba, que llevan `noindex`, quedan fuera de la segunda comprobación.
 
 #### Scenario: Página sin lang
 - **WHEN** una página se construye sin `lang` en `<html>`

@@ -21,9 +21,9 @@
 
 ## 4. Test de las páginas construidas
 
-- [ ] 4.1 Crear `apps/docs/test/pages.test.ts`: recorre los `index.html` de `dist/`, separa las indexables y comprueba en cada una título único, descripción, `canonical` igual a su URL absoluta, un solo `<h1>` y Open Graph completo; y en todas, `lang` en `<html>`, región `main` y enlace de salto. Los fallos nombran la página. Verificación: el test pasa, y falla al quitar a mano el `canonical` de una página de `dist/`.
-- [ ] 4.2 En el mismo test, comprobar que `robots.txt` enlaza al sitemap y que el sitemap lista exactamente las páginas indexables. Verificación: el test pasa, y falla si se añade una URL de `/visual/` al sitemap de `dist/`.
-- [ ] 4.3 Comprobar que los dos ejemplos cumplen `ACC-003` y `LOC-001` (`lang`, región `main` y enlace de salto) y arreglar el que no. Verificación: los e2e de los ejemplos siguen en verde y un caso nuevo en cada uno comprueba `lang` y el enlace de salto.
+- [x] 4.1 Crear `apps/docs/test/pages.test.ts`: recorre los `index.html` de `dist/`, separa las indexables y comprueba en cada una título único, descripción, `canonical` igual a su URL absoluta, un solo `<h1>` y Open Graph completo; en todas, `lang` en `<html>`; y en las indexables, región `main` y enlace de salto. Los fallos nombran la página. Verificación: el test pasa, y falla al quitar a mano el `canonical` de una página de `dist/`.
+- [x] 4.2 En el mismo test, comprobar que `robots.txt` enlaza al sitemap y que el sitemap lista exactamente las páginas indexables. Verificación: el test pasa, y falla si se añade una URL de `/visual/` al sitemap de `dist/`.
+- [x] 4.3 Comprobar que los dos ejemplos cumplen `ACC-003` y `LOC-001` (`lang`, región `main` y enlace de salto) y arreglar el que no. Verificación: los e2e de los ejemplos siguen en verde y un caso nuevo en cada uno comprueba `lang` y el enlace de salto.
 
 ## 5. Peso por página: HTML, CSS y JS
 
