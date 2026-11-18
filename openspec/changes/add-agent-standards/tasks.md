@@ -22,13 +22,13 @@
 
 - [x] 4.1 Crear `apps/docs/src/content/standards/agents.yaml` (`AGT-001` a `AGT-012`, `order` 17) con enunciado, porqué, ejemplos y verificación según la tabla del design D2; las automáticas con `kind: ci` y `check: Normas de desarrollo`, y `AGT-012` diciendo que `Claude-Session` no se exige. Los `code:` de varias claves, en bloques `|-`. Verificación: `bun run test` de la web valida el esquema y encuentra el paso del CI.
 - [x] 4.2 Añadir `{ slug: "agents", label: "Agentes" }` al final de `STANDARD_AREAS` y `agents` al orden que fijan `standards.test.ts` y `mcp-tools.test.ts`. Verificación: esos tests pasan, y tras `bun run build` `/standards.json` lista 17 áreas y 137 normas con `agents` la última.
-- [ ] 4.3 Revisar la página `/standards/agents/` construida y la navegación lateral, y añadir el caso del área a `apps/docs/e2e/standards.spec.ts` si el spec enumera las áreas. Verificación: la página se abre en la vista previa con sus 12 normas, y el e2e de normas pasa.
+- [x] 4.3 Revisar la página `/standards/agents/` construida y la navegación lateral, y añadir el caso del área a `apps/docs/e2e/standards.spec.ts` si el spec enumera las áreas. Verificación: la página se abre en la vista previa con sus 12 normas, y el e2e de normas pasa.
 
 ## 5. Comprobación final
 
-- [ ] 5.1 Pasar en local, guardando el código de salida de cada uno: `bunx turbo run build typecheck test`, Biome con `--error-on-warnings`, `check:dev`, `check:ci`, `check:audit` y `check:weight`. Verificación: todos terminan en 0.
-- [ ] 5.2 Pasar los e2e de la web con `CI=1`. Verificación: ningún test falla ni sale inestable.
-- [ ] 5.3 `openspec validate add-agent-standards --strict`. Verificación: sin errores.
+- [x] 5.1 Pasar en local, guardando el código de salida de cada uno: `bunx turbo run build typecheck test`, Biome con `--error-on-warnings`, `check:dev`, `check:ci`, `check:audit` y `check:weight`. Verificación: todos terminan en 0.
+- [x] 5.2 Pasar los e2e de la web con `CI=1`. Verificación: ningún test falla ni sale inestable.
+- [x] 5.3 `openspec validate add-agent-standards --strict`. Verificación: sin errores.
 
 ## Workflow follow-up
 
