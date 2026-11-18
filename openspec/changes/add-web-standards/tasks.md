@@ -47,9 +47,9 @@
 
 ## 8. Comprobación final
 
-- [ ] 8.1 Pasar en local, guardando el código de salida de cada uno: `bunx turbo run build typecheck test`, Biome con `--error-on-warnings`, `check:dev`, `check:ci`, `check:audit` y `check:weight`. Verificación: todos terminan en 0.
-- [ ] 8.2 Pasar los e2e completos de la web con `CI=1`. Verificación: ningún test falla ni sale inestable.
-- [ ] 8.3 `openspec validate add-web-standards --strict`. Verificación: sin errores.
+- [x] 8.1 Pasar en local, guardando el código de salida de cada uno: `bunx turbo run build typecheck test`, Biome con `--error-on-warnings`, `check:dev`, `check:ci`, `check:audit` y `check:weight`. Verificación: todos terminan en 0.
+- [x] 8.2 Pasar los e2e completos de la web con `CI=1`. Verificación: ningún test falla ni sale inestable.
+- [x] 8.3 `openspec validate add-web-standards --strict`. Verificación: sin errores.
 
 ## Workflow follow-up
 
