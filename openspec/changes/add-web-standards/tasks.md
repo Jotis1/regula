@@ -5,12 +5,12 @@
 - [x] 1.1 Añadir a `scripts/check-dev.ts` la lectura de `standards-exceptions.json` (raíz): falla si una entrada ha caducado, si `rule` no es el ID de una norma, si falta `why` o `until`, o si la norma es automática (`biome`, `ci` o `test`). Verificación: casos nuevos en `scripts/check-dev.test.ts`, uno por cada fallo y uno válido, en verde con `bun test scripts`.
 - [x] 1.2 Crear `standards-exceptions.json` vacío (`[]`). Verificación: `bun run check:dev` pasa.
 
-## 2. `titleAs` en PageHeader y StreamScene
+## 2. `headingLevel` en PageHeader y StreamScene
 
-- [ ] 2.1 Añadir a `PageHeader` la prop opcional `titleAs` (`"h1"` a `"h6"`, por defecto `"h1"`), con su JSDoc, en sus dos variantes. Verificación: tests nuevos en el test del componente (por defecto pinta `<h1>`; con `titleAs="h2"` pinta `<h2>` con las mismas clases), en verde.
-- [ ] 2.2 Añadir la misma prop a `StreamScene`. Verificación: tests nuevos equivalentes, en verde.
-- [ ] 2.3 Documentar la prop en la página de cada componente y en su ejemplo interactivo, y usar `titleAs="h2"` en los ejemplos de la guía de los dos. Verificación: tras `bun run build`, `/components/page-header/` y `/components/stream-scene/` tienen un solo `<h1>` en `dist/`, y sus capturas aprobadas no cambian.
-- [ ] 2.4 Changeset `minor` para `@jotis-me/react`. Verificación: `bunx changeset status` lo lista.
+- [x] 2.1 Añadir a `PageHeader` la prop opcional `headingLevel` (de 1 a 6, por defecto 1), con su JSDoc, en sus dos variantes. Verificación: tests nuevos en el test del componente (por defecto pinta `<h1>`; con `headingLevel={2}` pinta `<h2>` con las mismas clases), en verde.
+- [x] 2.2 Añadir la misma prop a `StreamScene`. Verificación: tests nuevos equivalentes, en verde.
+- [x] 2.3 Documentar la prop en la página de cada componente y en su ejemplo interactivo, y usar `headingLevel={2}` en los ejemplos de la guía de los dos. Verificación: tras `bun run build`, `/components/page-header/` y `/components/stream-scene/` tienen un solo `<h1>` en `dist/`, y sus capturas aprobadas no cambian.
+- [x] 2.4 Changeset `minor` para `@jotis-me/react`. Verificación: `bunx changeset status` lo lista.
 
 ## 3. Metadatos, robots y sitemap de la web
 

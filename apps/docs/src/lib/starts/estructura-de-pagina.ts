@@ -9,6 +9,8 @@ export const estructuraDePagina: Record<string, Start> = {
 			actions: "Exportar y nuevo gasto",
 		},
 		wide: true,
+		// The example always paints an `<h2>` (its page has the `<h1>`): the control would not change anything
+		tweaks: { headingLevel: { kind: "hidden" } },
 	},
 	CardHeader: {
 		props: { title: "Suscripciones", badge: "12 activas", description: "Pagos recurrentes de este mes." },

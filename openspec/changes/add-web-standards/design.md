@@ -90,8 +90,10 @@ El `filter` se basa en la URL, y `noindex` se decide en cada página. Para que n
 
 `robots.txt` es un endpoint (`src/pages/robots.txt.ts`) que toma el dominio de `Astro.site`: así el enlace al sitemap no se escribe a mano.
 
-### D6. `titleAs` en `PageHeader` y `StreamScene`
-Los dos ganan una prop opcional `titleAs`, de `"h1"` a `"h6"`, con `"h1"` por defecto. Solo cambia la etiqueta; las clases son las mismas. Los ejemplos de la guía de esos dos componentes usan `titleAs="h2"`.
+### D6. `headingLevel` en `PageHeader` y `StreamScene`
+Los dos ganan una prop opcional `headingLevel`, de 1 a 6, con 1 por defecto. Solo cambia la etiqueta; las clases son las mismas. El nombre y el tipo son los de `Accordion`, que ya tenía `headingLevel`: se propuso `titleAs` y se cambió al implementar para no tener dos formas de decir lo mismo.
+
+En la guía, el ejemplo interactivo de cada uno envuelve el componente con `headingLevel={2}` (el patrón de `ChatBox`) y esconde el control: el ejemplo pinta siempre un `<h2>`, y el código que enseña no lleva la prop, porque en una app el título sigue siendo un `<h1>`.
 
 Es aditivo y lleva changeset `minor`.
 
@@ -130,14 +132,14 @@ Entran `LOC-003` y `LOC-004` con caducidad el 2027-03-31.
 
 - **Presupuestos de HTML y CSS recién medidos** → pueden saltar en la primera PR que añada contenido. Mitigación: el 10 % de margen, y subir un límite es un cambio de una línea con su motivo.
 - **El CSS global pesa 175 kB sin comprimir** y es uno para toda la web → el presupuesto de CSS será casi el mismo en todas las páginas. Vale como aviso de crecimiento, no como reparto por página.
-- **`titleAs` amplía la API pública** → es una prop más que mantener. Se limita a los dos componentes que hoy pintan `<h1>`.
+- **`headingLevel` amplía la API pública** → es una prop más que mantener. Se limita a los dos componentes que hoy pintan `<h1>`.
 - **Una sola imagen de Open Graph** → todas las páginas se comparten con la misma imagen. Aceptado por KISS.
 - **Normas de revisión sin comprobación** (la mayoría de `ACC` y `LOC`) → dependen de quien revisa. Es el mismo trato que las normas de diseño del OWASP.
 - **La excepción de `LOC` puede caducar sin migración hecha** → `check:dev` fallará el 2027-03-31. Es lo que se busca: obliga a hacer la migración o a renovar la fecha con un motivo nuevo.
 
 ## Migration Plan
 
-Un commit por pieza, en este orden: las excepciones con caducidad, `titleAs`, los metadatos y el sitemap, el test de las páginas, `check:weight`, Lighthouse y, al final, las cuatro áreas de normas (que no pueden publicarse como automáticas antes de que existan sus comprobaciones). No hay nada que deshacer en producción: si algo falla, se revierte la PR.
+Un commit por pieza, en este orden: las excepciones con caducidad, `headingLevel`, los metadatos y el sitemap, el test de las páginas, `check:weight`, Lighthouse y, al final, las cuatro áreas de normas (que no pueden publicarse como automáticas antes de que existan sus comprobaciones). No hay nada que deshacer en producción: si algo falla, se revierte la PR.
 
 ## Open Questions
 
