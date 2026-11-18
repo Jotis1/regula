@@ -1,7 +1,7 @@
 // TextEditor con barras del Figma en Chromium real: la barra flotante sale sobre la selección y Escape la cierra, y la
 // barra avanzada aplica color, tipo y tamaño de letra a lo seleccionado con el modo de edición del navegador.
 import type { Locator } from "@playwright/test";
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 1100, height: 1400 } });
 

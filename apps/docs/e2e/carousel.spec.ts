@@ -1,7 +1,7 @@
 // Carousel con deslizar real: la emulación táctil de Chromium manda eventos de toque (que el navegador convierte en
 // eventos de puntero), y el carrusel pasa de diapositiva con un arrastre de 48px o más.
 import type { Page } from "@playwright/test";
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ hasTouch: true, viewport: { width: 800, height: 700 } });
 

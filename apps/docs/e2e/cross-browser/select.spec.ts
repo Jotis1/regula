@@ -1,7 +1,7 @@
 // Select en Chromium, Firefox y WebKit: abrir la lista, elegir con el ratón y con el teclado, y que el valor llegue al
 // <select> oculto que React Aria pinta para los formularios (lo que se envía con `name`).
 import type { Page } from "@playwright/test";
-import { expect, test } from "../hydration";
+import { expect, test } from "../fixtures";
 
 const open = async (page: Page) => {
 	await page.goto("/visual/select/");

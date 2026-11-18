@@ -1,6 +1,6 @@
 // Galería de logos de terceros en /icons/logos/ (docs-site, «Galería de iconos», escenario «Elegir un logo»).
 import type { Page } from "@playwright/test";
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 async function ready(page: Page) {
 	await page.goto("/icons/logos/");

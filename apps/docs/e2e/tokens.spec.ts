@@ -1,6 +1,6 @@
 import { colors, shadows, type } from "@jotis-me/tokens";
 import type { Page } from "@playwright/test";
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 const total = Object.keys(colors).length;
 const inFamily = (prefix: string) => Object.keys(colors).filter((n) => n.startsWith(`${prefix}-`)).length;

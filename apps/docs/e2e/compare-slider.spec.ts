@@ -1,6 +1,7 @@
 // CompareSlider en /visual/compare-slider-test/: con ratón y con teclado la línea se mueve y el recorte la sigue, y sin
 // JavaScript se ve en su valor inicial y el mando queda desactivado.
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const slider = (page: Page) => page.getByRole("slider", { name: "Tema de la pantalla" });
 const at = (page: Page) =>

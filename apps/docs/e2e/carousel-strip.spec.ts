@@ -1,6 +1,6 @@
 // Carousel con `type="strip"` a 390 px y con el JavaScript desactivado: la página se pinta solo en el servidor, se ve la
 // primera diapositiva entera y parte de la segunda, la fila se desplaza y no hay flechas.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test.use({ javaScriptEnabled: false, viewport: { width: 390, height: 800 } });
 

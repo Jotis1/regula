@@ -8,7 +8,7 @@ import type { Locator, Page } from "@playwright/test";
 import * as lineIcons from "@untitledui/icons";
 import { STORY, thousands } from "../src/components/home/story";
 import { COMPONENT_GROUPS, FOUNDATIONS } from "../src/lib/catalog";
-import { expect, islandOf, hydrated as islandReady, test } from "./hydration";
+import { expect, islandOf, hydrated as islandReady, test } from "./fixtures";
 
 const components = readdirSync(join(import.meta.dirname, "../src/content/components")).filter((f) =>
 	f.endsWith(".md"),

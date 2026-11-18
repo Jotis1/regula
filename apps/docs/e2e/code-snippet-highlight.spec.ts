@@ -1,5 +1,5 @@
 // CodeSnippet: una línea destacada cubre todo el ancho que se desplaza, también si es más larga que el bloque.
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 test("Línea destacada larga: el destacado llega de borde a borde del área que se desplaza", async ({
 	page,

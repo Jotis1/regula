@@ -1,6 +1,6 @@
 // Página 404: la que se sirve para cualquier dirección que no existe.
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test("una dirección que no existe da 404 con la página propia", async ({ page }) => {
 	const response = await page.goto("/esto-no-existe/");

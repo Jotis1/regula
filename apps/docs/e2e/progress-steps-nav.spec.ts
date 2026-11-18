@@ -1,7 +1,7 @@
 // ProgressSteps con `onChange` (cambio add-stream-scene-width): el texto visible de cada botón es su nombre, así que
 // axe no marca `label-content-name-mismatch` (WCAG 2.5.3). Es una regla experimental de axe: hay que pedirla por nombre.
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test("ProgressSteps navegable: la descripción va fuera del botón y axe no marca label-content-name-mismatch", async ({
 	page,

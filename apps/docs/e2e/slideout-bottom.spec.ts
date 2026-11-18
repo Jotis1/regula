@@ -1,6 +1,6 @@
 // Slideout con `side="bottom"` a 390 px: la hoja ocupa el ancho de la pantalla pegada abajo con el foco dentro, Escape
 // la cierra y el foco vuelve al botón que la abrió.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 390, height: 780 } });
 

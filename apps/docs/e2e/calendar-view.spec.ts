@@ -1,6 +1,6 @@
 // CalendarView en Chromium real: el selector cambia de vista con el teclado y la semana en un calendario estrecho
 // enseña solo la columna del día elegido.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 800, height: 900 } });
 

@@ -3,7 +3,7 @@
 // tamaño real; para aprobar unas nuevas, `APPROVE_WIDE=1` las escribe en lugar de compararlas.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { approvedPath, compare } from "./visual/compare";
 
 const SCALE = 4 / 3;

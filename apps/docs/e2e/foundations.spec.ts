@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, test } from "@playwright/test";
 import { FOUNDATIONS } from "../src/lib/catalog";
 import { nav } from "../src/nav";
+import { expect, test } from "./fixtures";
 
 // Las páginas de fundamentos son la fuente de la guía (design D6: de ellas sale también el README del artefacto).
 // Cada una tiene su entrada en la navegación y se abre con su título; la instalación con Tailwind v4 vive en /start/.

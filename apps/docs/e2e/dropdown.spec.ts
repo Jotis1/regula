@@ -1,6 +1,6 @@
 // Dropdown en Chromium real: la búsqueda dentro del menú no pierde el foco al filtrar y las cuentas se cambian con el
 // teclado. Las vistas previas abren el menú en línea (`defaultOpen`), así que se prueba el menú que abre el usuario.
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test.use({ viewport: { width: 1000, height: 900 } });
 

@@ -1,4 +1,4 @@
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 test("ColorPickerDropdown se abre con el teclado, Escape lo cierra y el foco vuelve", async ({ page }) => {
 	await page.goto("/visual/color-picker-dropdown/");

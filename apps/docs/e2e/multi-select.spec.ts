@@ -1,6 +1,6 @@
 // MultiSelect en el navegador: abrir, buscar, elegir y cerrar con teclado, y la lista a 390px.
 import type { Page } from "@playwright/test";
-import { expect, test } from "./hydration";
+import { expect, test } from "./fixtures";
 
 async function open(page: Page) {
 	await page.goto("/visual/multi-select/");

@@ -1,7 +1,8 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import AxeBuilder from "@axe-core/playwright";
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // Todas las páginas construidas de la web (sin las de comparación visual ni las de captura de las cards, que no son navegables)
 const dist = join(import.meta.dirname, "../dist");

@@ -1,6 +1,6 @@
 // Tema de la web (docs-site, «Tema claro y oscuro»): selector de tres estados en la cabecera, sin parpadeo al cargar.
 import type { Page } from "@playwright/test";
-import { expect, hydrated as islandReady, test } from "./hydration";
+import { expect, hydrated as islandReady, test } from "./fixtures";
 
 // Apunta el tema que ya tenía <html> en el momento en que aparece <body>, antes de la primera pintura
 const recordThemeAtBody = () => {

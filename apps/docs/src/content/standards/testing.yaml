@@ -131,6 +131,13 @@ rules:
                 lang: ts
                 code: |-
                     await page.waitForTimeout(3000);
+      exceptions:
+          - where: La navegación de un e2e al servidor de pruebas local, cuando el runner rechaza la conexión
+            why: >-
+                Un fallo al abrir la conexión (en Chromium, `net::ERR_CONNECTION_REFUSED` o
+                `net::ERR_NO_BUFFER_SPACE`) viene de la máquina del CI y no dice nada del test. Esa navegación se
+                reintenta una sola vez dentro del mismo test y queda anotada en el informe. Cualquier otro fallo, y
+                un segundo fallo de conexión, cuentan como siempre.
       verification:
           kind: ci
           check: Normas de desarrollo

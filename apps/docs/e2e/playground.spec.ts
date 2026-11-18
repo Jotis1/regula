@@ -5,7 +5,7 @@
 import type { Locator, Page } from "@playwright/test";
 import { slugOf } from "../src/lib/catalog";
 import { STARTS } from "../src/lib/playground";
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 /** La sección del ejemplo, con su isla ya hidratada. */
 async function example(page: Page, path: string): Promise<Locator> {

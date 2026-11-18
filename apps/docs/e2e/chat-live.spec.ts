@@ -1,7 +1,7 @@
 // ChatBox y StreamPinnedMessage en el navegador (add-live-interaction-pieces, D3 y D7-D9): insignias junto al nombre,
 // enlaces marcados, el ejemplo animado que recibe mensajes, el chat seleccionable y el corte a cuatro líneas.
 import type { Locator, Page } from "@playwright/test";
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 /** La sección del ejemplo interactivo, con su isla ya hidratada. */
 async function example(page: Page, path: string): Promise<Locator> {

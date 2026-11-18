@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 /** La isla de búsqueda se hidrata con `client:idle`: hasta entonces el atajo no responde. La cabecera lleva una por versión (escritorio y móvil). */
 async function ready(page: Page, path = "/") {

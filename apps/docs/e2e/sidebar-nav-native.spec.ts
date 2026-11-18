@@ -1,6 +1,6 @@
 // SidebarNav con `disclosure="native"` con el JavaScript desactivado: la página se pinta solo en el servidor, el grupo
 // con el elemento activo sale abierto y otro grupo se abre y se cierra al pulsar su título.
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test.use({ javaScriptEnabled: false, viewport: { width: 800, height: 900 } });
 

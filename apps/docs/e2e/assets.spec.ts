@@ -3,7 +3,7 @@ import { join } from "node:path";
 import type { Page } from "@playwright/test";
 // biome-ignore lint/performance/noNamespaceImport: iterates over every export of the module
 import * as flags from "@untitledui/country-flags";
-import { expect, hydrated, test } from "./hydration";
+import { expect, hydrated, test } from "./fixtures";
 
 // Las galerías de banderas, pagos, archivos y cursores son la misma isla (`AssetGallery`) que la de iconos.
 const dist = (dir: string) => join(import.meta.dirname, "../../../packages/assets/dist", dir);
