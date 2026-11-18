@@ -38,12 +38,12 @@
 
 ## 7. Las cuatro áreas de normas
 
-- [ ] 7.1 Crear `accessibility.yaml` (`ACC-001` a `ACC-008`, `order` 10) con enunciado, porqué, ejemplos y verificación según la tabla del design D2. Verificación: `bun run test` de la web valida el esquema y la página `/standards/accessibility/` se construye.
-- [ ] 7.2 Crear `performance.yaml` (`PRF-001` a `PRF-007`, `order` 11), con `PRF-002` y `PRF-003` apuntando a los pasos del CI de los grupos 5 y 6. Verificación: los tests de la fuente de normas encuentran esos pasos en `ci.yml`.
-- [ ] 7.3 Crear `seo.yaml` (`SEO-001` a `SEO-008`, `order` 12), con las automáticas apuntando a `pages.test.ts`. Verificación: los tests de la fuente de normas pasan.
-- [ ] 7.4 Crear `localization.yaml` (`LOC-001` a `LOC-006`, `order` 13). Verificación: los tests de la fuente de normas pasan.
-- [ ] 7.5 Pasar `git`, `ci` y `process` a `order` 14, 15 y 16, añadir las cuatro áreas a `STANDARD_AREAS` y actualizar el orden en `standards.test.ts` y `mcp-tools.test.ts`. Verificación: esos tests pasan y `/standards.json` lista las 16 áreas en el orden de la spec.
-- [ ] 7.6 Declarar `LOC-003` y `LOC-004` en `standards-exceptions.json`, con su motivo y caducidad el 2027-03-31 (o la fecha que fije el usuario). Verificación: `bun run check:dev` pasa.
+- [x] 7.1 Crear `accessibility.yaml` (`ACC-001` a `ACC-008`, `order` 10) con enunciado, porqué, ejemplos y verificación según la tabla del design D2. Verificación: `bun run test` de la web valida el esquema y la página `/standards/accessibility/` se construye.
+- [x] 7.2 Crear `performance.yaml` (`PRF-001` a `PRF-007`, `order` 11), con `PRF-002` y `PRF-003` apuntando a los pasos del CI de los grupos 5 y 6. Verificación: los tests de la fuente de normas encuentran esos pasos en `ci.yml`.
+- [x] 7.3 Crear `seo.yaml` (`SEO-001` a `SEO-008`, `order` 12), con las automáticas apuntando a `pages.test.ts`. Verificación: los tests de la fuente de normas pasan.
+- [x] 7.4 Crear `localization.yaml` (`LOC-001` a `LOC-006`, `order` 13). Verificación: los tests de la fuente de normas pasan.
+- [x] 7.5 Pasar `git`, `ci` y `process` a `order` 14, 15 y 16, añadir las cuatro áreas a `STANDARD_AREAS` y actualizar el orden en `standards.test.ts` y `mcp-tools.test.ts`. Verificación: esos tests pasan y `/standards.json` lista las 16 áreas en el orden de la spec.
+- [x] 7.6 Declarar `LOC-003` y `LOC-004` en `standards-exceptions.json`, con su motivo y caducidad el 2027-03-31 (o la fecha que fije el usuario). Verificación: `bun run check:dev` pasa.
 
 ## 8. Comprobación final
 
