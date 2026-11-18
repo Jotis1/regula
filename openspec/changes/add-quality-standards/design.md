@@ -224,7 +224,7 @@ Una app sin servidor o sin usuarios cumple las normas de `app` que no le aplican
 - **Errores (A10):**
   - un caso nuevo en `test/mcp.test.ts` envía a `handle` un cuerpo que no es JSON y comprueba que la respuesta es un error JSON-RPC `-32700`, sin trazas ni rutas de archivo;
   - el `catch` de las herramientas sigue devolviendo `error.message`, porque los errores de `tool.run` los escribe Regula y no llevan rutas. Otro caso fuerza un fallo de `load` y comprueba que el mensaje no trae traza.
-- **Tamaño (A10):** se mide si el SDK limita el cuerpo. Si no, `handle` rechaza con 413 un `Content-Length` de más de 1 MB antes de leerlo, con su test.
+- **Tamaño (A10):** medido al implementar: el SDK de MCP (1.32.2) ya rechaza con 413 un cuerpo de más de 4 MB (`maxRequestBodySize`), sin leerlo entero. No se añade un límite propio (lo nativo primero, `COD-015`); un test lo cubre.
 - **Límite de peticiones (A06):** una regla de *rate limit* del firewall de Vercel para `/mcp` (lo nativo primero): 100 peticiones por minuto e IP, con respuesta 429. Es un ajuste del proyecto en Vercel, fuera del repo, así que se pide permiso al usuario.
 - **CORS (A01):** `/mcp` no envía `Access-Control-Allow-Origin`. Los clientes MCP no son navegadores, así que no hace falta.
 

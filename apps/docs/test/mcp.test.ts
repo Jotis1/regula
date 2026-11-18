@@ -120,6 +120,57 @@ describe("una llamada con éxito y otra con error por herramienta", () => {
 	});
 });
 
+// SEC-020 (A10): ante una entrada rota o un fallo, el servidor responde con un error genérico, sin trazas ni rutas
+describe("errores sin trazas (SEC-020)", () => {
+	const post = (body: string) =>
+		handle(
+			new Request(URL_MCP, {
+				method: "POST",
+				headers: {
+					"content-type": "application/json",
+					accept: "application/json, text/event-stream",
+				},
+				body,
+			}),
+			options,
+		);
+	/** Una traza de pila o una ruta de archivo del servidor. */
+	const LEAK = /\n\s+at |node_modules|[A-Za-z]:\\|\/src\/|\.ts:\d+/;
+
+	it("un cuerpo que no es JSON es un error JSON-RPC de parseo, sin traza", async () => {
+		const response = await post("{ esto no es JSON");
+		expect(response.status).toBe(400);
+		const body = await response.text();
+		expect(JSON.parse(body)).toMatchObject({ jsonrpc: "2.0", error: { code: -32700 } });
+		expect(body).not.toMatch(LEAK);
+	});
+
+	it("un cuerpo de más de 4 MB se rechaza con 413 sin leerlo entero", async () => {
+		const response = await post(`"${"x".repeat(4 * 1024 * 1024)}"`);
+		expect(response.status).toBe(413);
+		expect(await response.text()).not.toMatch(LEAK);
+	});
+
+	it("si los datos no cargan, la herramienta da un error con el mensaje y sin la traza", async () => {
+		const failing = {
+			version: VERSION,
+			load: async () => {
+				throw new Error("No se pudo descargar /components.json");
+			},
+		};
+		const transport = new StreamableHTTPClientTransport(new URL(URL_MCP), {
+			fetch: (input, init) => handle(new Request(input, init), failing),
+		});
+		const client = new Client({ name: "test", version: "0.0.0" });
+		await client.connect(transport);
+		const result = await client.callTool({ name: "list_components", arguments: {} });
+		expect(result.isError).toBe(true);
+		expect(text(result)).toBe("list_components failed: No se pudo descargar /components.json");
+		expect(text(result)).not.toMatch(LEAK);
+		await client.close();
+	});
+});
+
 describe("loadData", () => {
 	const files: Record<string, unknown> = {
 		"/standards.json": data.standards,

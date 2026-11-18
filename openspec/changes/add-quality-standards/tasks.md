@@ -48,7 +48,7 @@ Comandos:
 
 - [ ] 6.1 `security: { csp: true }` en `apps/docs/astro.config.mjs` y las cabeceras de D12 en `apps/docs/vercel.json`, con `apps/docs/test/security-headers.test.ts`. Comprobar con `bun run --cwd apps/docs test` y que quitar una cabecera hace fallar el test
 - [ ] 6.2 Recoger los eventos `securitypolicyviolation` en `a11y.spec.ts` y exigir la `<meta>` de la CSP en cada página (D12). Arreglar lo que salga, con `'unsafe-inline'` solo en `style-src-attr` si los `style=` de React lo piden, y nunca en `script-src`. Comprobar con los e2e completos de la web en Chromium, Firefox y WebKit, el tema claro y el oscuro y las islas interactivas, sin ninguna violación
-- [ ] 6.3 Los casos de error de `/mcp` en `test/mcp.test.ts` (D13): un cuerpo que no es JSON da `-32700` sin traza, y un fallo de `load` da un mensaje sin traza. Medir si el SDK limita el tamaño del cuerpo y, si no, rechazar con 413 más de 1 MB, con su test. Comprobar con `bun run --cwd apps/docs test`
+- [x] 6.3 Los casos de error de `/mcp` en `test/mcp.test.ts` (D13): un cuerpo que no es JSON da `-32700` sin traza, y un fallo de `load` da un mensaje sin traza. Medir si el SDK limita el tamaño del cuerpo y, si no, rechazar con 413 más de 1 MB, con su test. Comprobar con `bun run --cwd apps/docs test`
 
 ## 7. Normas
 
