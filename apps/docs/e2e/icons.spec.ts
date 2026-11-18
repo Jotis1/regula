@@ -51,6 +51,16 @@ test("la galería enseña los primeros iconos con el recuento total y pide «Mos
 	await expect(page.locator("#icon-more")).toBeHidden();
 });
 
+test("cambiar la búsqueda vuelve a empezar por los primeros iconos", async ({ page }) => {
+	await ready(page);
+	await page.locator("#icon-more").click();
+	await expect(page.locator("[data-item]")).toHaveCount(96 + 240);
+	await page.locator("#icon-search").fill("calendar");
+	await expect(page.locator("#icon-more")).toBeHidden();
+	await page.locator("#icon-search").fill("");
+	await expect(page.locator("[data-item]")).toHaveCount(96);
+});
+
 test("el HTML de /icons/ y los SVG que se piden no crecen con los iconos del set", async ({
 	page,
 	request,
