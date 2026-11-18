@@ -231,6 +231,8 @@ test.describe("StreamPinnedMessage", () => {
 		await page.goto("/visual/stream-pinned-message/?theme=dark");
 		await page.evaluate(() => document.fonts.ready);
 		const card = page.locator("[data-scene], div.rounded-2xl", { hasText: "lucia_88" }).first();
+		// The test rewrites the text by hand: if React hydrates after that, it repaints the card and the locator loses it
+		await expect.poll(() => card.evaluate((el) => window.islandReady(el))).toBe(true);
 		const width = (await card.boundingBox())?.width;
 		const m = await card.evaluate((el) => {
 			const p = el.querySelector("p") as HTMLElement;
