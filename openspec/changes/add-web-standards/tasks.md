@@ -33,8 +33,8 @@
 
 ## 6. Lighthouse
 
-- [ ] 6.1 En `apps/docs/lighthouserc.json`: `categories:performance` como `warn`, `cumulative-layout-shift` como `error` con máximo 0,1, y `categories:accessibility` como está. Verificación: `bun run test:lighthouse` en local termina en 0 aunque una puntuación de rendimiento baje de 0,9, y enseña el aviso.
-- [ ] 6.2 Renombrar el paso del CI a «Lighthouse (móvil, CLS y accesibilidad)» y hacer que `lighthouse-summary.ts` enseñe la puntuación de rendimiento como aviso y el CLS. Verificación: `bun run check:ci` pasa y el test del resumen cubre un informe con rendimiento bajo y CLS correcto.
+- [x] 6.1 En `apps/docs/lighthouserc.json`: `categories:performance` como `warn`, `cumulative-layout-shift` como `error` con máximo 0,1, y `categories:accessibility` como está. Verificación: `bun run test:lighthouse` en local termina en 0 aunque una puntuación de rendimiento baje de 0,9, y enseña el aviso.
+- [x] 6.2 Renombrar el paso del CI a «Lighthouse (móvil, CLS y accesibilidad)» y hacer que `lighthouse-summary.ts` enseñe la puntuación de rendimiento como aviso y el CLS. Verificación: `bun run check:ci` pasa y el test del resumen cubre un informe con rendimiento bajo y CLS correcto.
 
 ## 7. Las cuatro áreas de normas
 

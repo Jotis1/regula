@@ -213,7 +213,7 @@ jobs:
             - name: Artefacto "Jotis.me" (React 18, hoja y vistas previas frente a las capturas)
               run: bun run test:e2e
               working-directory: scripts/artifact
-            - name: Lighthouse (móvil, ≥ 90 en rendimiento y accesibilidad)
+            - name: Lighthouse (móvil, CLS y accesibilidad)
               id: lighthouse
               shell: bash
               working-directory: apps/docs
