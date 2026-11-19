@@ -124,7 +124,10 @@ test("copiar falla: un aviso de error dice qué ha pasado y cómo seguir, y no s
 	});
 	await page.goto("/start/install/");
 	await hydrated(page);
-	await page.getByRole("button", { name: "Copiar" }).first().click();
+	// El botón es de otra isla (el bloque de código, `client:visible`): sin hidratar, el clic se pierde
+	const button = page.getByRole("button", { name: "Copiar" }).first();
+	await expect.poll(() => button.evaluate((el) => window.islandReady(el))).toBe(true);
+	await button.click();
 	const alert = page.getByRole("alert");
 	await expect(alert).toContainText("No se ha podido copiar");
 	await expect(alert).toContainText("Selecciona el texto y cópialo a mano.");
