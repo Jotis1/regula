@@ -13,7 +13,7 @@
 
   `Pair` solo agrupa dos `Rule`. Los demás (`Button`, `Badge`, `Input`, `Alert`, `TokenExplorer`, `ContrastExceptions`…) son demos.
 - **El MCP lee los JSON públicos.** El MCP (`src/features/mcp/`) carga hoy cuatro JSON públicos (`data.ts`) y responde solo con ellos (requisito «Datos públicos en JSON»).
-- **Astro 7 no usa remark.** El MDX lo procesa `satteri` (`@astrojs/markdown-satteri`), que ya está en el árbol en la versión 0.10.5 y exporta `mdxToMdast`. Probado con `color.mdx`:
+- **Astro 7 no usa remark.** El MDX lo procesa `satteri` (`@astrojs/markdown-satteri`), que ya está en el árbol en la versión 0.11.7 y exporta `mdxToMdast`. Probado con `color.mdx`:
   - devuelve un mdast con `mdxJsxFlowElement`;
   - los atributos de texto llegan como cadenas (`caption`);
   - los de expresión llegan como el código fuente del literal (`items={[{ title: "Fondos", … }]}`).
@@ -34,7 +34,7 @@
 
 ### D1. Leer el MDX con `satteri`, no renderizar la página
 
-`src/lib/foundations-json.ts` parsea el cuerpo de cada entrada (`entry.body`) con `mdxToMdast` y recorre el árbol. `satteri` pasa a `dependencies` de la web con la versión exacta que ya resuelve Astro (`0.10.5`): es 0.x, así que VER exige fijarla. No entra nada nuevo en `bun.lock` salvo la línea del workspace.
+`src/lib/foundations-json.ts` parsea el cuerpo de cada entrada (`entry.body`) con `mdxToMdast` y recorre el árbol. `satteri` pasa a `dependencies` de la web con la versión exacta que ya resuelve Astro (`0.11.7`): es 0.x, así que VER exige fijarla. No entra nada nuevo en `bun.lock` salvo la línea del workspace.
 
 Alternativas descartadas:
 - **Renderizar con el Container API de Astro y quitar las etiquetas.** Necesita los renderers de React, pinta las demos y mezcla su texto («Pagado», «Exportar») con el de la guía.
@@ -72,7 +72,7 @@ Alternativa descartada: un parser de JS (`acorn`) para leer el literal sin evalu
 
 ```json
 {
-	"version": "0.10.0",
+	"version": "0.11.0",
 	"foundations": [
 		{
 			"id": "color",
@@ -91,7 +91,7 @@ Alternativa descartada: un parser de JS (`acorn`) para leer el literal sin evalu
 
 - **Orden de los fundamentos:** ordenados por `order`, el de la navegación.
 - **`intro`:** es el texto anterior al primer `##`.
-- **Secciones:** una por `##`, con `###`, listas, negritas y código en Markdown. El texto se escribe con un serializador pequeño para los nodos que usan los fundamentos: párrafo, encabezado, lista, `strong`, `emphasis`, `inlineCode`, `link` y `text`. Un nodo de otro tipo hace fallar el build, como en D2.
+- **Secciones:** una por `##`, con `###`, listas, negritas y código en Markdown. El texto se escribe con un serializador pequeño para los nodos que usan los fundamentos: párrafo, encabezado, lista, tabla (la de `brand.md`), `strong`, `emphasis`, `inlineCode`, `link` y `text`. Los `import` del MDX y los comentarios (`{/* … */}`) se saltan: no son texto de la guía. Un nodo de otro tipo, o una expresión que no sea un comentario, hace fallar el build, como en D2.
 - **Anclas:** salen de los `headings` que devuelve `render()`, emparejados por orden con los `##`. Así son las mismas que la página, sin volver a calcularlas.
 - **Tablas de tokens:** las secciones de `tokenSections` entran al final, con el texto «Los tokens de esta sección están en `search_tokens`, categoría `<x>`.».
 
@@ -166,4 +166,3 @@ Las dos citan `VER-001` y `VER-005`, que piden lo mismo para los paquetes.
 - **[`satteri` es 0.x y Astro lo actualiza]** → Se fija en la versión de Astro. VER-010 hace que una subida de Astro que lo cambie se note en «Normas de desarrollo», que pide el mismo rango en todo el monorepo. Si el mdast cambia de forma, fallan los tests de D6.
 - **[`new Function` sobre código del repo]** → Solo en el build, solo sobre las props de `TEXT` y sobre archivos que pasan revisión. Si algún día los fundamentos vinieran de fuera, habría que cambiarlo por un parser.
 - **[El texto del JSON no es idéntico al de la página]** → Es la misma fuente, pero sin las demos y con las etiquetas en negrita. El test compara secciones y textos clave, no el HTML.
-- **[El cambio choca con `add-development-standards` en `mcp-server`]** → Se archiva después. Sus escenarios ya usan los IDs nuevos.

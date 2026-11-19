@@ -1,7 +1,5 @@
 # Tasks
 
-Va después de que se fusione `add-development-standards` (PR #47): la rama se rebasa sobre `main` antes de empezar.
-
 ## 1. Extraer el texto de los fundamentos
 
 - [ ] 1.1 `satteri` en `dependencies` de `apps/docs`, con la versión exacta que resuelve Astro (D1). Comprobar con `bun install --frozen-lockfile` sin paquetes nuevos en `bun.lock` y con `bun run check:dev`
@@ -40,4 +38,4 @@ Va después de que se fusione `add-development-standards` (PR #47): la rama se r
 ## Workflow follow-up
 
 - Tras desplegar, comprobar a mano que un cliente MCP se conecta a `https://regula.jotis.me/mcp` y lee un fundamento (requisito «Servidor comprobado»).
-- Archivar con `/opsx:archive` en una PR aparte, solo de `openspec/`, después de archivar `add-development-standards`.
+- Archivar con `/opsx:archive` en una PR aparte, solo de `openspec/`.
