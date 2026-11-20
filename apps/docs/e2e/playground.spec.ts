@@ -14,6 +14,11 @@ async function example(page: Page, path: string): Promise<Locator> {
 	await pg.scrollIntoViewIfNeeded();
 	await hydrated(pg.locator("astro-island").first());
 	await expect(pg.locator("[data-playground]")).toBeVisible();
+	// El ejemplo va dentro de un Suspense (un módulo por componente): la isla se hidrata antes de que React lo confirme,
+	// y un clic en ese hueco se pierde
+	await expect
+		.poll(() => pg.locator("[data-playground]").evaluate((el) => window.islandReady(el)))
+		.toBe(true);
 	return pg;
 }
 
