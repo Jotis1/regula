@@ -2,12 +2,11 @@
 // in a test with no network. A server and a transport are created per request and nothing is kept between requests.
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
+import { API_VERSION } from "./contract";
 import type { RegulaData } from "./data";
 import { TOOLS } from "./tools";
 
 export interface McpOptions {
-	/** Version of `@jotis-me/react` the site documents; the server announces it. */
-	version: string;
 	/** The data, loaded the first time a tool needs it: `initialize` and `tools/list` do not fetch anything. */
 	load: () => Promise<RegulaData>;
 }
@@ -15,8 +14,9 @@ export interface McpOptions {
 export const SERVER_NAME = "regula";
 const GUIDE = "https://regula.jotis.me/start/mcp/";
 
-export function createServer({ version, load }: McpOptions): McpServer {
-	const server = new McpServer({ name: SERVER_NAME, version });
+export function createServer({ load }: McpOptions): McpServer {
+	// The version it announces is the contract's, not the one of the packages it documents (VER-012)
+	const server = new McpServer({ name: SERVER_NAME, version: API_VERSION });
 	for (const tool of TOOLS) {
 		server.registerTool(
 			tool.name,

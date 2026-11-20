@@ -2,7 +2,8 @@
 import react from "@jotis-me/react/package.json";
 import source from "@jotis-me/tokens/tokens.json";
 import type { APIRoute } from "astro";
+import { published } from "../features/mcp/contract";
 import { type TokensSource, tokensJson } from "../lib/tokens-json";
 
 export const GET: APIRoute = () =>
-	Response.json(tokensJson(source as unknown as TokensSource, react.version));
+	Response.json(published(tokensJson(source as unknown as TokensSource, react.version)));

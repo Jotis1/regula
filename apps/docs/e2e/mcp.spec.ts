@@ -1,6 +1,7 @@
 // Guide page of the MCP server (spec docs-site, «Página del MCP»). Axe runs on it in both themes through the crawl of
 // a11y.spec.ts, which covers every built page.
 
+import { API_HISTORY, API_VERSION, CONTRACT_FILES } from "../src/features/mcp/contract";
 import { TOOLS } from "../src/features/mcp/tools";
 import { expect, hydrated, test } from "./fixtures";
 
@@ -17,7 +18,25 @@ test("/start/mcp/ explica la conexión y lista todas las herramientas", async ({
 	// other names, so the term is matched whole.
 	for (const tool of TOOLS)
 		await expect(page.locator("dt", { hasText: new RegExp(`^${tool.name}$`) })).toBeVisible();
-	await expect(page.locator("dt", { hasText: "/standards.json" })).toBeVisible();
+	for (const file of CONTRACT_FILES) await expect(page.locator("dt", { hasText: file })).toBeVisible();
+});
+
+test("/start/mcp/ enseña la versión del contrato y su historial", async ({ page }) => {
+	await page.goto("/start/mcp/");
+	await expect(page.getByRole("heading", { level: 2, name: "Versión del contrato" })).toBeVisible();
+	// The history is a list of terms: one per version, the newest first
+	const versions = page.locator("dt").filter({ hasText: /^\d+\.\d+\.\d+$/ });
+	await expect(versions).toHaveText(API_HISTORY.map((entry) => entry.version));
+	await expect(versions).toHaveText(["1.1.0", "1.0.0"]);
+	await expect(page.locator("main")).toContainText(`ahora es la ${API_VERSION}`);
+});
+
+test("cada JSON público lleva la versión del contrato en apiVersion", async ({ request }) => {
+	for (const file of CONTRACT_FILES) {
+		const json = (await (await request.get(file)).json()) as { version: string; apiVersion: string };
+		expect(json.apiVersion, file).toBe(API_VERSION);
+		expect(json.version, file).toMatch(/^\d+\.\d+\.\d+/);
+	}
 });
 
 test("el comando de Claude Code se copia entero", async ({ page, context }) => {

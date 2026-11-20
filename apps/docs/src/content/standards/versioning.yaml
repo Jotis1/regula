@@ -318,3 +318,62 @@ rules:
       verification:
           kind: ci
           check: Normas de desarrollo
+
+    - id: VER-012
+      title: Una API pública tiene su propia versión
+      level: must
+      appliesTo: app
+      statement: >-
+          Una API pública de una app (un servidor MCP, unos JSON públicos, una API HTTP) tiene su propia versión SemVer,
+          distinta de la de los paquetes, y la anuncia en sus respuestas. Añadir una herramienta, un parámetro opcional o un
+          campo sube la menor. Quitar o renombrar algo, o cambiar lo que significa, sube la mayor.
+      rationale: >-
+          De una API dependen agentes y programas que no leen el changelog de los paquetes. La versión de un paquete dice
+          qué se documenta, no qué contrato se ofrece: con una versión propia, quien la consume sabe si un cambio le rompe
+          con solo mirarla. Es lo que VER-001 pide para los paquetes.
+      examples:
+          good:
+              - caption: El servidor MCP se anuncia con la versión de su contrato y cada JSON la lleva
+                lang: json
+                code: |-
+                    // initialize
+                    { "serverInfo": { "name": "regula", "version": "1.1.0" } }
+                    // /tokens.json
+                    { "version": "0.11.0", "apiVersion": "1.1.0", "tokens": [] }
+          bad:
+              - caption: El MCP se anuncia con la versión del paquete de componentes
+                lang: json
+                code: |-
+                    { "serverInfo": { "name": "regula", "version": "0.11.0" } }
+      verification:
+          kind: review
+          review: >-
+              Que la API anuncia una versión propia y que un cambio de sus herramientas, sus parámetros o sus campos la sube
+              como pide SemVer.
+
+    - id: VER-013
+      title: En una API pública se deprecia en una menor y se quita en la siguiente mayor
+      level: must
+      appliesTo: app
+      statement: >-
+          Lo que se va a quitar de una API pública (una herramienta, un parámetro, un campo) se marca antes como deprecado
+          en una versión menor, con lo que lo sustituye, y sigue funcionando. Se quita en la siguiente versión mayor.
+      rationale: >-
+          Quien consume una API no despliega a la vez que ella: un campo que cambia de nombre de un despliegue a otro rompe
+          a todos sus clientes sin aviso. Es lo que VER-005 pide para los paquetes.
+      examples:
+          good:
+              - caption: Una menor marca la herramienta como deprecada, y sigue respondiendo
+                lang: ts
+                code: |-
+                    // 1.2.0
+                    description: "Deprecated: use search. Search the icon galleries by name."
+          bad:
+              - caption: Un campo renombrado de un despliegue a otro
+                lang: text
+                code: |-
+                    - { "version": "0.11.0", "tokens": [] }
+                    + { "version": "0.11.0", "items": [] }
+      verification:
+          kind: review
+          review: Que lo que se quita llevara `Deprecated` en su descripción desde una versión menor anterior.

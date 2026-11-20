@@ -11,12 +11,14 @@ function call(name: string, args: Record<string, unknown> = {}) {
 }
 
 describe("estructura", () => {
-	it("hay siete herramientas con nombre en inglés y snake_case", () => {
+	it("hay nueve herramientas con nombre en inglés y snake_case", () => {
 		expect(TOOLS.map((t) => t.name)).toEqual([
 			"list_standards",
 			"get_standard",
 			"list_components",
 			"get_component",
+			"list_foundations",
+			"get_foundation",
 			"search_tokens",
 			"search_icons",
 			"search",
@@ -146,6 +148,18 @@ describe("normas", () => {
 	});
 });
 
+describe("normas de las APIs públicas", () => {
+	it("el área de versiones trae trece normas, con VER-012 y VER-013 para las apps", () => {
+		const { json } = call("list_standards", { area: "versioning" });
+		expect(json.areas[0].rules).toHaveLength(13);
+		for (const id of ["VER-012", "VER-013"]) {
+			const rule = call("get_standard", { id }).json;
+			expect(rule, id).toMatchObject({ level: "must", appliesTo: "app" });
+			expect(rule.verification.kind, id).toBe("review");
+		}
+	});
+});
+
 describe("componentes", () => {
 	it("list_components agrupa y describe", () => {
 		const { json } = call("list_components", { group: "acciones" });
@@ -179,6 +193,51 @@ describe("componentes", () => {
 		const r = call("get_component", { name: "Botón" });
 		expect(r.isError).toBe(true);
 		expect(r.text).toMatch(/Closest names: Button/);
+	});
+});
+
+describe("fundamentos", () => {
+	it("list_foundations trae los diez en el orden de la navegación, con su URL y los títulos de sus secciones", () => {
+		const { json } = call("list_foundations");
+		expect(json.foundations.map((f: { id: string }) => f.id)).toEqual([
+			"principles",
+			"content",
+			"color",
+			"typography",
+			"layout",
+			"states",
+			"iconography",
+			"backgrounds",
+			"stream",
+			"brand",
+		]);
+		const color = json.foundations[2];
+		expect(color.url).toBe("https://regula.jotis.me/foundations/color/");
+		expect(color.sections[0]).toEqual({
+			title: "Con ejemplos",
+			url: "https://regula.jotis.me/foundations/color/#con-ejemplos",
+		});
+		expect(color.sections[0]).not.toHaveProperty("text");
+	});
+
+	it("get_foundation Color trae sus secciones, con la regla precedida de «Esto sí»", () => {
+		const { json } = call("get_foundation", { id: "Color" });
+		expect(json).toEqual(data.foundations.foundations.find((f) => f.id === "color"));
+		expect(json.sections[0].text).toContain(
+			"**Esto sí.** Un estado siempre lleva palabra o icono además del color.",
+		);
+	});
+
+	it("get_foundation también entiende el título, sin tildes ni mayúsculas", () => {
+		expect(call("get_foundation", { id: "tipografía" }).json.id).toBe("typography");
+		expect(call("get_foundation", { id: "TIPOGRAFIA" }).json.id).toBe("typography");
+	});
+
+	it("get_foundation colour da error, propone color y sugiere list_foundations", () => {
+		const r = call("get_foundation", { id: "colour" });
+		expect(r.isError).toBe(true);
+		expect(r.text).toMatch(/No foundation "colour"\. Closest ids: color/);
+		expect(r.text).toContain("list_foundations");
 	});
 });
 
@@ -224,9 +283,15 @@ describe("búsqueda global", () => {
 		expect(json.standards[0]).toMatchObject({ id: "NAM-001", detail: "get_standard" });
 	});
 
+	it("«semánticos» trae el fundamento de color, con el ancla de su sección y get_foundation", () => {
+		const { json } = call("search", { query: "semánticos" });
+		expect(json.foundations[0]).toMatchObject({ id: "color", detail: "get_foundation" });
+		expect(json.foundations[0].url).toMatch(/^https:\/\/regula\.jotis\.me\/foundations\/color\/#/);
+	});
+
 	it("agrupa por tipo y limita cada grupo", () => {
 		const { json } = call("search", { query: "button", limit: 2 });
-		for (const kind of ["standards", "components", "tokens", "icons"])
+		for (const kind of ["standards", "components", "foundations", "tokens", "icons"])
 			expect(json[kind].length).toBeLessThanOrEqual(2);
 		expect(json.components[0]).toMatchObject({ name: "Button", detail: "get_component" });
 	});

@@ -9,7 +9,7 @@ import { TOOLS } from "../src/features/mcp/tools";
 import { data, VERSION } from "./mcp-fixture";
 
 const URL_MCP = "https://regula.jotis.me/mcp";
-const options = { version: VERSION, load: async () => data };
+const options = { load: async () => data };
 
 async function connect() {
 	const transport = new StreamableHTTPClientTransport(new URL(URL_MCP), {
@@ -24,18 +24,18 @@ const text = (result: Awaited<ReturnType<Client["callTool"]>>) =>
 	(result.content as { type: string; text: string }[])[0]?.text ?? "";
 
 describe("conexión", () => {
-	it("initialize devuelve el nombre, la versión y la capacidad de herramientas, sin credenciales", async () => {
+	it("initialize devuelve el nombre, la versión del contrato y la capacidad de herramientas, sin credenciales", async () => {
 		const client = await connect();
-		expect(client.getServerVersion()).toMatchObject({ name: SERVER_NAME, version: VERSION });
+		expect(client.getServerVersion()).toMatchObject({ name: SERVER_NAME, version: "1.1.0" });
 		expect(client.getServerCapabilities()).toHaveProperty("tools");
 		await client.close();
 	});
 
-	it("tools/list devuelve las siete herramientas, todas de solo lectura", async () => {
+	it("tools/list devuelve las nueve herramientas, todas de solo lectura", async () => {
 		const client = await connect();
 		const { tools } = await client.listTools();
 		expect(tools.map((t) => t.name)).toEqual(TOOLS.map((t) => t.name));
-		expect(tools).toHaveLength(7);
+		expect(tools).toHaveLength(9);
 		for (const t of tools) {
 			expect(t.annotations?.readOnlyHint, t.name).toBe(true);
 			expect(t.annotations?.openWorldHint, t.name).toBe(false);
@@ -51,13 +51,14 @@ describe("conexión", () => {
 	});
 });
 
-describe("una llamada con éxito y otra con error por herramienta", () => {
+describe("una llamada con éxito y, si tiene parámetros, otra con error por herramienta", () => {
 	const cases: {
 		name: string;
 		ok: Record<string, unknown>;
 		okText: string;
-		bad: Record<string, unknown>;
-		badText: string;
+		/** A tool without parameters has no call that can go wrong. */
+		bad?: Record<string, unknown>;
+		badText?: string;
 	}[] = [
 		{ name: "list_standards", ok: {}, okText: "NAM-001", bad: { area: "marketing" }, badText: "naming" },
 		{
@@ -81,6 +82,14 @@ describe("una llamada con éxito y otra con error por herramienta", () => {
 			bad: { name: "Botón" },
 			badText: "Button",
 		},
+		{ name: "list_foundations", ok: {}, okText: "Tipografía" },
+		{
+			name: "get_foundation",
+			ok: { id: "color" },
+			okText: "Esto sí",
+			bad: { id: "colour" },
+			badText: "list_foundations",
+		},
 		{
 			name: "search_tokens",
 			ok: { query: "text-secondary" },
@@ -98,9 +107,11 @@ describe("una llamada con éxito y otra con error por herramienta", () => {
 			const success = await client.callTool({ name: c.name, arguments: c.ok });
 			expect(success.isError).toBeFalsy();
 			expect(text(success)).toContain(c.okText);
-			const failure = await client.callTool({ name: c.name, arguments: c.bad });
-			expect(failure.isError, "error de herramienta, no de protocolo").toBe(true);
-			expect(text(failure)).toContain(c.badText);
+			if (c.bad) {
+				const failure = await client.callTool({ name: c.name, arguments: c.bad });
+				expect(failure.isError, "error de herramienta, no de protocolo").toBe(true);
+				expect(text(failure)).toContain(c.badText);
+			}
 			await client.close();
 		});
 
@@ -153,7 +164,6 @@ describe("errores sin trazas (SEC-020)", () => {
 
 	it("si los datos no cargan, la herramienta da un error con el mensaje y sin la traza", async () => {
 		const failing = {
-			version: VERSION,
 			load: async () => {
 				throw new Error("No se pudo descargar /components.json");
 			},
@@ -175,11 +185,12 @@ describe("loadData", () => {
 	const files: Record<string, unknown> = {
 		"/standards.json": data.standards,
 		"/components.json": data.components,
+		"/foundations.json": data.foundations,
 		"/tokens.json": data.tokens,
 		"/icons.json": data.icons,
 	};
 
-	it("descarga los cuatro JSON del mismo origen y los guarda", async () => {
+	it("descarga los cinco JSON del mismo origen y los guarda", async () => {
 		const asked: string[] = [];
 		const get = async (url: string) => {
 			asked.push(url);

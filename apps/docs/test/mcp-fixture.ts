@@ -1,17 +1,19 @@
-// Data for the MCP tests: built with the same functions that write the public JSON, from the real standards, tokens
-// and galleries, and from three real component cards so it does not parse all 130 sources.
+// Data for the MCP tests: built with the same functions that write the public JSON, from the real standards, foundations,
+// tokens and galleries, and from three real component cards so it does not parse all 130 sources.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import source from "@jotis-me/tokens/tokens.json";
 import { parse } from "yaml";
 import type { RegulaData } from "../src/features/mcp/data";
 import { type ComponentEntry, componentsJson } from "../src/lib/components-json";
+import { foundationsJson } from "../src/lib/foundations-json";
 import { galleryEntries } from "../src/lib/gallery-entries";
 import { GALLERIES, iconsJson } from "../src/lib/icons-json";
 import { nativeOf, propsOf } from "../src/lib/props";
 import { snippetsOf } from "../src/lib/snippets";
 import { standardsJson } from "../src/lib/standards";
 import { type TokensSource, tokensJson } from "../src/lib/tokens-json";
+import { deps as foundationDeps, entries as foundations } from "./foundations-fixture";
 
 const root = join(import.meta.dirname, "../../..");
 const content = join(import.meta.dirname, "../src/content");
@@ -55,6 +57,7 @@ export const data: RegulaData = {
 		VERSION,
 		SITE,
 	),
+	foundations: foundationsJson(foundations, foundationDeps, VERSION, SITE),
 	tokens: tokensJson(source as unknown as TokensSource, VERSION),
 	icons: iconsJson(galleries, VERSION, SITE),
 };

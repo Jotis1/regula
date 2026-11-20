@@ -178,14 +178,23 @@ export function explorerFamilies(colors: Record<string, ThemedToken>): ExplorerF
 export function tokenSections(
 	page: string,
 	typeGroups: readonly { name: string }[],
-): { slug: string; text: string }[] {
-	const titles: Record<string, string[]> = {
-		typography: typeGroups.map((g) => g.name),
-		layout: ["Escala de espaciado", "Radios", "Anchos"],
-		states: ["Sombras", "Desenfoques"],
+): { slug: string; text: string; category: string }[] {
+	// Each title with the category of `/tokens.json` its table shows
+	const sections: Record<string, [text: string, category: string][]> = {
+		typography: typeGroups.map((g) => [g.name, "type"]),
+		layout: [
+			["Escala de espaciado", "spacing"],
+			["Radios", "radius"],
+			["Anchos", "width"],
+		],
+		states: [
+			["Sombras", "shadow"],
+			["Desenfoques", "blur"],
+		],
 	};
-	return (titles[page] ?? []).map((text) => ({
+	return (sections[page] ?? []).map(([text, category]) => ({
 		text,
+		category,
 		slug: `tokens-${text
 			.normalize("NFD")
 			.replace(/\p{Diacritic}/gu, "")
