@@ -2,12 +2,13 @@
 layout: ../../layouts/ProseMdx.astro
 slug: mcp
 title: Servidor MCP
-description: Consulta las normas, los componentes, los tokens y los iconos de Regula desde tu agente.
+description: Consulta las normas, los componentes, los fundamentos, los tokens y los iconos de Regula desde tu agente.
 ---
 
 import Code from "../../components/compose/Code.astro";
 import Terms from "../../components/compose/Terms.astro";
 import MdxH2 from "../../components/MdxH2.astro";
+import { API_VERSION, historyTerms } from "../../features/mcp/contract";
 import { toolTerms } from "../../features/mcp/guide";
 
 export const components = { h2: MdxH2 };
@@ -43,13 +44,22 @@ Los nombres de las herramientas y de sus parámetros van en inglés. Lo que devu
 
 ## Datos en JSON
 
-Los mismos datos que usa el servidor están publicados como ficheros, por si prefieres leerlos sin MCP. Todos llevan la versión de Regula que los publica.
+Los mismos datos que usa el servidor están publicados como ficheros, por si prefieres leerlos sin MCP. Todos llevan la versión de Regula que documentan (`version`) y la del contrato (`apiVersion`).
 
 <Terms
 	items={[
 		{ term: "/standards.json", text: "Las normas, por áreas, con todos sus campos." },
 		{ term: "/components.json", text: "Los componentes con su grupo, su guía, sus props y sus fragmentos." },
+		{ term: "/foundations.json", text: "Los fundamentos de diseño, sección a sección, con el texto de sus reglas." },
 		{ term: "/tokens.json", text: "Los tokens con su categoría, su uso y su valor por tema." },
 		{ term: "/icons.json", text: "Las galerías de iconos con el `import` de cada uno." },
 	]}
 />
+
+## Versión del contrato
+
+Las herramientas, sus parámetros y la forma de estos JSON son un contrato con versión propia, que no es la de los paquetes: ahora es la <strong>{API_VERSION}</strong>. El servidor la anuncia al conectar y cada JSON la lleva en `apiVersion`.
+
+Sigue SemVer. Añadir una herramienta, un parámetro opcional o un campo sube la menor. Quitar o renombrar algo, o cambiar lo que significa, sube la mayor, y antes pasa al menos una menor marcado como deprecado, con `Deprecated: use …` en su descripción, y sigue funcionando.
+
+<Terms items={historyTerms()} />
