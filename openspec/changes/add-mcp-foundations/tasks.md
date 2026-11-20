@@ -21,9 +21,9 @@
 
 ## 3. Versión del contrato
 
-- [ ] 3.1 `src/features/mcp/contract.ts` con `API_VERSION` (`1.1.0`), `CONTRACT_TOOLS` y `API_HISTORY` (D7). El servidor se anuncia con `API_VERSION`, y los cinco JSON llevan `apiVersion`. Comprobar con los tres tests de D7 y con `initialize` en `test/mcp.test.ts`, que recibe `1.1.0`
-- [ ] 3.2 El historial del contrato en `/start/mcp/`. Comprobar con el build y con un e2e que encuentra `1.1.0` y `1.0.0` en la página
-- [ ] 3.3 `VER-012` y `VER-013` en `versioning.yaml` (D8). Comprobar con los tests de normas y del MCP (`list_standards` del área `versioning` trae trece normas)
+- [x] 3.1 `src/features/mcp/contract.ts` con `API_VERSION` (`1.1.0`), `CONTRACT_TOOLS` y `API_HISTORY` (D7). El servidor se anuncia con `API_VERSION`, y los cinco JSON llevan `apiVersion`. Comprobar con los tres tests de D7 y con `initialize` en `test/mcp.test.ts`, que recibe `1.1.0`
+- [x] 3.2 El historial del contrato en `/start/mcp/`. Comprobar con el build y con un e2e que encuentra `1.1.0` y `1.0.0` en la página
+- [x] 3.3 `VER-012` y `VER-013` en `versioning.yaml` (D8). Comprobar con los tests de normas y del MCP (`list_standards` del área `versioning` trae trece normas)
 
 ## 4. Cierre
 

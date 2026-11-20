@@ -140,14 +140,14 @@ export const API_VERSION = "1.1.0";
 export const CONTRACT_TOOLS = ["list_standards", "get_standard", "list_foundations", "get_foundation", ...] as const;
 /** Newest first: what each version added, deprecated or removed, in Spanish (it is shown on /start/mcp/). */
 export const API_HISTORY = [
-	{ version: "1.1.0", date: "2026-11-…", changes: ["Añade list_foundations, get_foundation y /foundations.json."] },
+	{ version: "1.1.0", date: "2026-11-20", changes: ["Añade list_foundations, get_foundation y /foundations.json."] },
 	{ version: "1.0.0", date: "2026-11-16", changes: ["Siete herramientas y cuatro JSON: …"] },
 ];
 ```
 
 Lo usan estas piezas:
-- **El servidor:** `createServer` se anuncia con `API_VERSION` en vez de la versión de `@jotis-me/react`. Esa sigue en el campo `version` de cada JSON y en el texto de `/start/mcp/`.
-- **Los cinco JSON:** cada uno añade `apiVersion: API_VERSION` junto a su `version`. Es un campo nuevo, así que no rompe a quien ya los lee.
+- **El servidor:** `createServer` se anuncia con `API_VERSION` en vez de la versión de `@jotis-me/react`, y deja de recibirla por parámetro. Esa sigue en el campo `version` de cada JSON y en el texto de `/start/mcp/`.
+- **Los cinco JSON:** cada endpoint publica su JSON con `published()`, que añade `apiVersion: API_VERSION` junto a su `version`. Es un campo nuevo, así que no rompe a quien ya los lee. Las funciones de `src/lib/` siguen sin conocer el contrato; `CONTRACT_FILES` lista los cinco.
 - **`/start/mcp/`:** pinta `API_HISTORY` como una lista, con la versión, la fecha y los cambios.
 
 Y lo comprueban tres tests:
