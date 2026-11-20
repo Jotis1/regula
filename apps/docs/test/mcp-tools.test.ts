@@ -148,6 +148,18 @@ describe("normas", () => {
 	});
 });
 
+describe("normas de las APIs públicas", () => {
+	it("el área de versiones trae trece normas, con VER-012 y VER-013 para las apps", () => {
+		const { json } = call("list_standards", { area: "versioning" });
+		expect(json.areas[0].rules).toHaveLength(13);
+		for (const id of ["VER-012", "VER-013"]) {
+			const rule = call("get_standard", { id }).json;
+			expect(rule, id).toMatchObject({ level: "must", appliesTo: "app" });
+			expect(rule.verification.kind, id).toBe("review");
+		}
+	});
+});
+
 describe("componentes", () => {
 	it("list_components agrupa y describe", () => {
 		const { json } = call("list_components", { group: "acciones" });
