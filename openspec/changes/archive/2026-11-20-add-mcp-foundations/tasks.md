@@ -35,9 +35,9 @@
   Llamar a una herramienta no se puede comprobar en la vista previa: está protegida por Vercel Authentication y el servidor, al pedir sus propios JSON, recibe la página de acceso (le pasa igual a `get_standard`, no es de este cambio). Esa llamada queda para producción, en «Workflow follow-up».
 
   Pasan `bunx biome ci --error-on-warnings .`, `bun run check:dev` y `bunx turbo run build typecheck test`
-- [ ] 4.2 Abrir la PR, con el CI en verde, y fusionarla tras la revisión del usuario
+- [x] 4.2 Abrir la PR, con el CI en verde, y fusionarla tras la revisión del usuario (PR #72, fusionada el 2026-11-20)
 
 ## Workflow follow-up
 
-- Tras desplegar, comprobar que un cliente MCP se conecta a `https://regula.jotis.me/mcp` y lee un fundamento con `get_foundation` y `color` (requisito «Servidor comprobado»). Es la llamada que la vista previa no dejó comprobar.
+- Tras desplegar, comprobar que un cliente MCP se conecta a `https://regula.jotis.me/mcp` y lee un fundamento con `get_foundation` y `color` (requisito «Servidor comprobado»). Es la llamada que la vista previa no dejó comprobar. Hecho el 2026-11-20 con el cliente del SDK: el servidor anuncia `1.1.0`, lista las nueve herramientas, `get_foundation` con `color` trae sus seis secciones y con `colour` propone `color`, y los cinco JSON llevan `apiVersion` `1.1.0`.
 - Archivar con `/opsx:archive` en una PR aparte, solo de `openspec/`.
