@@ -51,22 +51,28 @@ const TEXT: Record<string, (props) => string[]> = {
 	Terms: (p) => p.items.map((i) => `**${i.term}.** ${i.text}`),
 	Formats: (p) => p.items.map((i) => `**${i.label}.** ${i.value}`),
 	Fit: (p) => [`**${p.fitsLabel ?? "Cabe"}:** ${p.fits.join(", ")}`, `**${p.notsLabel ?? "No cabe"}:** ${p.nots.join(", ")}`],
+	ContrastExceptions: () => [/* one list item per exception: token, ratio per theme and how to use it */],
+	TokenExplorer: () => ["Los tokens de color están en `search_tokens`, categoría `color`."],
 };
-const CONTAINERS = new Set(["Pair"]); // its children are read
-const DEMOS = new Set(["Button", "Badge", "Input", "Alert", "Banner", "EmptyState", "Calendar", "BackgroundPattern", "TokenExplorer", "ContrastExceptions", "OversizedIcon"]);
+const CONTAINERS = new Set(["Pair"]); // its children are read, after its `title` in bold
+const DEMOS = new Set(["Button", "Badge", "Input", "Alert", "Banner", "EmptyState", "Calendar", "BackgroundPattern", "OversizedIcon"]);
 ```
 
-`VERDICT` usa las etiquetas de `ExampleCard`: «Esto sí», «Esto no», «En lugar de» y «Mejor». Los elementos HTML en minúscula (`div`, `span`) se recorren por si llevan texto de la guía dentro, y se quedan con su texto. Las cadenas de una sola palabra de una demo no llegan, porque las demos no se recorren.
+`VERDICT` usa las etiquetas de `ExampleCard` («Esto sí», «Esto no», «En lugar de» y «Mejor»), leídas de `defaultStrings` de `@jotis-me/react` para no copiarlas.
+
+`ContrastExceptions` y `TokenExplorer` no son demos aunque no lleven props: la primera pinta la tabla de excepciones de contraste, que es texto de la guía y sale de `lib/contrast-exceptions.ts`; la segunda es todo lo que tiene la sección «Tokens» de color, que sin ella quedaría vacía. Un test comprueba que ninguna sección se queda sin texto. Los elementos HTML en minúscula (`div`, `span`) se recorren por si llevan texto de la guía dentro, y se quedan con su texto. Las cadenas de una sola palabra de una demo no llegan, porque las demos no se recorren.
 
 Un componente que no está ni en `TEXT`, ni en `CONTAINERS`, ni en `DEMOS` hace fallar la función con su nombre y el archivo. Así falla el build, y el test de D6 lo comprueba.
 
 Alternativa descartada: una heurística general (coger toda cadena con espacios). Es menos código para empezar, pero mezcla textos de demo y nadie sabe qué entra.
 
-### D3. Los atributos de expresión se evalúan solo si son literales
+### D3. Los atributos de expresión se leen de su árbol, sin evaluarlos
 
-`items={[...]}` llega como código fuente. Se evalúa con `new Function(\`return (${source});\`)()` y solo para las props que usa `TEXT`. El código es del propio repo y corre en el build, no con datos de fuera. Si la expresión no es un literal (un identificador como `icon={Inbox01}`), lanza `ReferenceError`. Eso solo pasa en props que `TEXT` no lee, porque esas no se evalúan.
+`items={[...]}` llega como código fuente. Se parsea con `parseExpressionAt` de `acorn` y se lee su valor del árbol, solo para las props que usa `TEXT`: literales, plantillas sin expresiones, arrays y objetos. Si la expresión no es un literal (un identificador como `icon={Inbox01}`), la lectura falla con el nombre de la prop y del componente. Eso solo pasa en props que `TEXT` lee; las demás no se parsean.
 
-Alternativa descartada: un parser de JS (`acorn`) para leer el literal sin evaluarlo. Sería otro paquete y otro recorrido de árbol para el mismo resultado, en código de confianza.
+`acorn` pasa a `dependencies` de la web con la versión exacta que ya está en el árbol (`8.19.0`), como `satteri`: no entra ningún paquete nuevo.
+
+Alternativa descartada: evaluar el literal con `new Function`. Era la decisión original, por ser menos código sobre archivos del propio repo, pero `SEC-015` lo prohíbe sin excepciones («No hay `eval` ni `new Function`») y Regula tiene que cumplir sus normas.
 
 ### D4. Forma del JSON
 
@@ -92,8 +98,8 @@ Alternativa descartada: un parser de JS (`acorn`) para leer el literal sin evalu
 - **Orden de los fundamentos:** ordenados por `order`, el de la navegación.
 - **`intro`:** es el texto anterior al primer `##`.
 - **Secciones:** una por `##`, con `###`, listas, negritas y código en Markdown. El texto se escribe con un serializador pequeño para los nodos que usan los fundamentos: párrafo, encabezado, lista, tabla (la de `brand.md`), `strong`, `emphasis`, `inlineCode`, `link` y `text`. Los `import` del MDX y los comentarios (`{/* … */}`) se saltan: no son texto de la guía. Un nodo de otro tipo, o una expresión que no sea un comentario, hace fallar el build, como en D2.
-- **Anclas:** salen de los `headings` que devuelve `render()`, emparejados por orden con los `##`. Así son las mismas que la página, sin volver a calcularlas.
-- **Tablas de tokens:** las secciones de `tokenSections` entran al final, con el texto «Los tokens de esta sección están en `search_tokens`, categoría `<x>`.».
+- **Anclas:** salen de los `headings` que devuelve `render()`, emparejados por orden con los `##`. Así son las mismas que la página, sin volver a calcularlas. `foundationsJson` las recibe por parámetro (`anchorsOf`), como `componentsJson` recibe `propsOf`, para que los tests corran sin Astro; si no cuadran con los `##` leídos, falla.
+- **Tablas de tokens:** las secciones de `tokenSections` entran al final, con el texto «Los tokens de esta sección están en `search_tokens`, categoría `<x>`.». `tokenSections` devuelve además la categoría de cada sección.
 
 ### D5. Las herramientas
 
@@ -107,11 +113,14 @@ Alternativa descartada: un parser de JS (`acorn`) para leer el literal sin evalu
 
 - **`test/foundations-json.test.ts`:**
   - los diez fundamentos, en orden;
-  - las secciones de tipografía coinciden con sus `##` y sus anclas;
+  - las secciones de tipografía coinciden con sus `##`, y detrás van las de sus tablas de tokens;
   - la regla «Esto no» de color;
   - un apartado de `Essentials` y otro de `Terms`;
   - el `intro`;
-  - un MDX inventado con `<Nuevo />`, que lanza un error que nombra `Nuevo` y el archivo.
+  - un MDX inventado con `<Nuevo />`, que lanza un error que nombra `Nuevo` y el archivo;
+  - una prop de texto que no es un literal, que también falla, y una prop sin texto (`icon`) que no molesta;
+  - ninguna sección sin texto.
+- **`e2e/foundations-json.spec.ts`:** con la web construida, cada sección del JSON es un `##` de su página, en el mismo orden y con la misma ancla.
 - **`test/mcp-tools.test.ts`:**
   - `list_foundations`;
   - `get_foundation` con `Color`, con `tipografía` y con `colour`, que da error con `color`;
@@ -164,5 +173,4 @@ Las dos citan `VER-001` y `VER-005`, que piden lo mismo para los paquetes.
 ## Risks / Trade-offs
 
 - **[`satteri` es 0.x y Astro lo actualiza]** → Se fija en la versión de Astro. VER-010 hace que una subida de Astro que lo cambie se note en «Normas de desarrollo», que pide el mismo rango en todo el monorepo. Si el mdast cambia de forma, fallan los tests de D6.
-- **[`new Function` sobre código del repo]** → Solo en el build, solo sobre las props de `TEXT` y sobre archivos que pasan revisión. Si algún día los fundamentos vinieran de fuera, habría que cambiarlo por un parser.
 - **[El texto del JSON no es idéntico al de la página]** → Es la misma fuente, pero sin las demos y con las etiquetas en negrita. El test compara secciones y textos clave, no el HTML.

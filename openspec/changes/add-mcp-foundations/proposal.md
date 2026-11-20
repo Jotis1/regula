@@ -15,6 +15,7 @@ Además, el MCP y los JSON públicos son una API de la que dependen agentes y pr
 - **El texto incluye lo que hay dentro de los componentes de la página**, no solo el Markdown:
   - el pie de cada `Rule`, con la etiqueta de su veredicto («Esto sí», «Esto no»…);
   - los apartados de `Essentials`, `Terms`, `Formats` y `Fit`;
+  - las excepciones de contraste de la página de color;
   - el pie de cada `Example`.
 
   Los componentes que solo pintan una demo (`Button`, `Badge`, `TokenExplorer`…) no aportan texto.
@@ -65,7 +66,7 @@ Además, el MCP y los JSON públicos son una API de la que dependen agentes y pr
   - el del servidor con un cliente MCP real;
   - uno que falla si un MDX de fundamentos usa un componente que el extractor no conoce;
   - uno que falla si cambian las herramientas del MCP y no cambia la versión del contrato.
-- **Dependencias:** `satteri` pasa a dependencia directa de la web, fijada en la versión que ya usa Astro para el MDX. No entra ningún paquete nuevo en el árbol.
+- **Dependencias:** `satteri` y `acorn` pasan a dependencias directas de la web, fijadas en las versiones que ya están en el árbol (la primera la usa Astro para el MDX). No entra ningún paquete nuevo.
 - **Fuera de alcance:**
   - escribir desde el MCP;
   - devolver las demos renderizadas;

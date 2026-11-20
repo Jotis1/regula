@@ -2,15 +2,15 @@
 
 ## 1. Extraer el texto de los fundamentos
 
-- [ ] 1.1 `satteri` en `dependencies` de `apps/docs`, con la versión exacta que resuelve Astro (D1). Comprobar con `bun install --frozen-lockfile` sin paquetes nuevos en `bun.lock` y con `bun run check:dev`
-- [ ] 1.2 `src/lib/foundations-json.ts` con:
+- [x] 1.1 `satteri` y `acorn` en `dependencies` de `apps/docs`, con las versiones exactas que ya están en el árbol (D1 y D3). Comprobar con `bun install --frozen-lockfile` sin paquetes nuevos en `bun.lock` y con `bun run check:dev`
+- [x] 1.2 `src/lib/foundations-json.ts` con:
   - el mapa `TEXT`, `CONTAINERS` y `DEMOS` (D2);
-  - la evaluación de los literales (D3);
+  - la lectura de los literales (D3);
   - el serializador de Markdown (D4);
   - el error con el nombre del componente o del nodo y el archivo.
 
   Comprobar con `test/foundations-json.test.ts`: los casos de D6, incluido el MDX inventado con `<Nuevo />`
-- [ ] 1.3 `src/pages/foundations.json.ts`, con las anclas de `render()` y las secciones de tokens (D4). Comprobar con el build: `/foundations.json` tiene los diez fundamentos, y las secciones de `/foundations/typography/` coinciden con las del JSON
+- [x] 1.3 `src/pages/foundations.json.ts`, con las anclas de `render()` y las secciones de tokens (D4). Comprobar con el build y `e2e/foundations-json.spec.ts`: `/foundations.json` tiene los diez fundamentos, y las secciones de cada página coinciden con las del JSON
 
 ## 2. MCP
 
