@@ -27,15 +27,17 @@
 
 ## 4. Cierre
 
-- [ ] 4.1 Comprobar, en la vista previa de Vercel de la PR:
-  - `/start/mcp/` lista las dos herramientas;
-  - `/foundations.json` responde;
-  - un cliente MCP llama a `get_foundation` con `color` contra `/mcp`.
+- [x] 4.1 Comprobar, en la vista previa de Vercel de la PR:
+  - `/start/mcp/` lista las dos herramientas y el historial del contrato;
+  - `/foundations.json` responde, con `apiVersion` `1.1.0`;
+  - `/mcp` responde a `initialize` con la versión `1.1.0` y a `tools/list` con las nueve herramientas.
+
+  Llamar a una herramienta no se puede comprobar en la vista previa: está protegida por Vercel Authentication y el servidor, al pedir sus propios JSON, recibe la página de acceso (le pasa igual a `get_standard`, no es de este cambio). Esa llamada queda para producción, en «Workflow follow-up».
 
   Pasan `bunx biome ci --error-on-warnings .`, `bun run check:dev` y `bunx turbo run build typecheck test`
 - [ ] 4.2 Abrir la PR, con el CI en verde, y fusionarla tras la revisión del usuario
 
 ## Workflow follow-up
 
-- Tras desplegar, comprobar a mano que un cliente MCP se conecta a `https://regula.jotis.me/mcp` y lee un fundamento (requisito «Servidor comprobado»).
+- Tras desplegar, comprobar que un cliente MCP se conecta a `https://regula.jotis.me/mcp` y lee un fundamento con `get_foundation` y `color` (requisito «Servidor comprobado»). Es la llamada que la vista previa no dejó comprobar.
 - Archivar con `/opsx:archive` en una PR aparte, solo de `openspec/`.
