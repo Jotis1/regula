@@ -145,6 +145,47 @@ const getComponent = defineTool({
 	},
 });
 
+// ── foundations ────────────────────────────────────────────────────────────────────────────────────────────────────
+
+const listFoundations = defineTool({
+	name: "list_foundations",
+	title: "List design foundations",
+	description:
+		"List the design foundations of Regula in the order of the guide (principles, content and tone, color, typography, layout, states, iconography, backgrounds, stream, brand), each with its id, title, description, URL and the titles of its sections. Read them before composing a screen: they say how the pieces go together.",
+	inputSchema: {},
+	run: ({ foundations }) =>
+		ok({
+			version: foundations.version,
+			foundations: foundations.foundations.map((f) => ({
+				id: f.id,
+				title: f.title,
+				description: f.description,
+				url: f.url,
+				sections: f.sections.map((s) => ({ title: s.title, url: s.url })),
+			})),
+		}),
+});
+
+const getFoundation = defineTool({
+	name: "get_foundation",
+	title: "Get a design foundation",
+	description:
+		"Get one design foundation by its id (e.g. `color`, case-insensitive) or its title (`Tipografía`): its introduction and the text of each section in Markdown, with the rules of the guide marked «Esto sí» and «Esto no».",
+	inputSchema: { id: queryParam("Foundation id such as `color`.") },
+	run: ({ foundations }, { id }) => {
+		const wanted = fold(id);
+		const found = foundations.foundations.find((f) => f.id === wanted || fold(f.title) === wanted);
+		if (found) return ok(found);
+		const near = closest(
+			id,
+			foundations.foundations.map((f) => f.id),
+		);
+		return fail(
+			`No foundation "${id}". Closest ids: ${near.join(", ")}. Use list_foundations to see all.`,
+		);
+	},
+});
+
 // ── tokens ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 const searchTokens = defineTool({
@@ -198,7 +239,7 @@ const search = defineTool({
 	name: "search",
 	title: "Search everything",
 	description:
-		"Search standards, components, tokens and icons at once. Results are grouped by kind, and each one names the tool that gives its detail.",
+		"Search standards, components, design foundations, tokens and icons at once. Results are grouped by kind, and each one names the tool that gives its detail.",
 	inputSchema: {
 		query: queryParam("Text to look for."),
 		limit: z
@@ -209,8 +250,12 @@ const search = defineTool({
 			.default(5)
 			.describe("Maximum results per kind (default 5)."),
 	},
-	run: ({ standards, components, tokens, icons }, { query, limit }) => {
+	run: ({ standards, components, foundations, tokens, icons }, { query, limit }) => {
 		const rules = standards.areas.flatMap((a) => a.rules.map((r) => ({ area: a.id, rule: r })));
+		// One entry per section, so a result points at its anchor
+		const sections = foundations.foundations.flatMap((f) =>
+			f.sections.map((section) => ({ foundation: f, section })),
+		);
 		return ok({
 			query,
 			standards: rank(
@@ -243,6 +288,21 @@ const search = defineTool({
 					description: c.description,
 					url: c.url,
 					detail: "get_component",
+				})),
+			foundations: rank(
+				sections.map((s) => ({
+					item: s,
+					names: [s.foundation.id, s.foundation.title],
+					text: `${s.foundation.description} ${s.section.title} ${s.section.text}`,
+				})),
+				query,
+			)
+				.slice(0, limit)
+				.map(({ foundation, section }) => ({
+					id: foundation.id,
+					name: `${foundation.title} - ${section.title}`,
+					url: section.url,
+					detail: "get_foundation",
 				})),
 			tokens: rank(
 				tokens.tokens.map((t) => ({ item: t, names: [t.name], text: t.usage ?? "" })),
@@ -277,6 +337,8 @@ export const TOOLS: readonly Tool[] = [
 	getStandard,
 	listComponents,
 	getComponent,
+	listFoundations,
+	getFoundation,
 	searchTokens,
 	searchIcons,
 	search,

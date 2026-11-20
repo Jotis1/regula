@@ -31,11 +31,11 @@ describe("conexión", () => {
 		await client.close();
 	});
 
-	it("tools/list devuelve las siete herramientas, todas de solo lectura", async () => {
+	it("tools/list devuelve las nueve herramientas, todas de solo lectura", async () => {
 		const client = await connect();
 		const { tools } = await client.listTools();
 		expect(tools.map((t) => t.name)).toEqual(TOOLS.map((t) => t.name));
-		expect(tools).toHaveLength(7);
+		expect(tools).toHaveLength(9);
 		for (const t of tools) {
 			expect(t.annotations?.readOnlyHint, t.name).toBe(true);
 			expect(t.annotations?.openWorldHint, t.name).toBe(false);
@@ -51,13 +51,14 @@ describe("conexión", () => {
 	});
 });
 
-describe("una llamada con éxito y otra con error por herramienta", () => {
+describe("una llamada con éxito y, si tiene parámetros, otra con error por herramienta", () => {
 	const cases: {
 		name: string;
 		ok: Record<string, unknown>;
 		okText: string;
-		bad: Record<string, unknown>;
-		badText: string;
+		/** A tool without parameters has no call that can go wrong. */
+		bad?: Record<string, unknown>;
+		badText?: string;
 	}[] = [
 		{ name: "list_standards", ok: {}, okText: "NAM-001", bad: { area: "marketing" }, badText: "naming" },
 		{
@@ -81,6 +82,14 @@ describe("una llamada con éxito y otra con error por herramienta", () => {
 			bad: { name: "Botón" },
 			badText: "Button",
 		},
+		{ name: "list_foundations", ok: {}, okText: "Tipografía" },
+		{
+			name: "get_foundation",
+			ok: { id: "color" },
+			okText: "Esto sí",
+			bad: { id: "colour" },
+			badText: "list_foundations",
+		},
 		{
 			name: "search_tokens",
 			ok: { query: "text-secondary" },
@@ -98,9 +107,11 @@ describe("una llamada con éxito y otra con error por herramienta", () => {
 			const success = await client.callTool({ name: c.name, arguments: c.ok });
 			expect(success.isError).toBeFalsy();
 			expect(text(success)).toContain(c.okText);
-			const failure = await client.callTool({ name: c.name, arguments: c.bad });
-			expect(failure.isError, "error de herramienta, no de protocolo").toBe(true);
-			expect(text(failure)).toContain(c.badText);
+			if (c.bad) {
+				const failure = await client.callTool({ name: c.name, arguments: c.bad });
+				expect(failure.isError, "error de herramienta, no de protocolo").toBe(true);
+				expect(text(failure)).toContain(c.badText);
+			}
 			await client.close();
 		});
 
@@ -175,11 +186,12 @@ describe("loadData", () => {
 	const files: Record<string, unknown> = {
 		"/standards.json": data.standards,
 		"/components.json": data.components,
+		"/foundations.json": data.foundations,
 		"/tokens.json": data.tokens,
 		"/icons.json": data.icons,
 	};
 
-	it("descarga los cuatro JSON del mismo origen y los guarda", async () => {
+	it("descarga los cinco JSON del mismo origen y los guarda", async () => {
 		const asked: string[] = [];
 		const get = async (url: string) => {
 			asked.push(url);

@@ -12,11 +12,15 @@ export const TOOL_GUIDE: Record<string, string> = {
 		"Los componentes agrupados como en la guía, con su descripción. Se puede filtrar por grupo (`acciones`, `formularios`…).",
 	get_component:
 		"La ficha de un componente por su nombre (`Button`): guía de uso, props con su tipo y su valor por defecto, y los fragmentos de Next.js y Astro. Si el nombre no existe, propone los más parecidos.",
+	list_foundations:
+		"Los fundamentos de diseño en el orden de la guía (principios, contenido, color, tipografía…), con su descripción y los títulos de sus secciones.",
+	get_foundation:
+		"Un fundamento completo por su id (`color`) o su título: su texto sección a sección, con las reglas de «Esto sí» y «Esto no» de la página. Si no existe, propone los más parecidos.",
 	search_tokens:
 		"Busca tokens por nombre o por uso (`text-secondary`). Cada uno trae su valor en claro y oscuro cuando cambia entre temas. Filtra por categoría.",
 	search_icons:
 		"Busca en las galerías de iconos, banderas, tipos de archivo, pagos y cursores, por nombre (`SearchLg` o `search-lg`) o por título (`España`). Cada resultado trae su `import`.",
-	search: "Busca a la vez en normas, componentes, tokens e iconos. Cada resultado dice qué herramienta da su detalle.",
+	search: "Busca a la vez en normas, componentes, fundamentos, tokens e iconos. Cada resultado dice qué herramienta da su detalle.",
 };
 
 /** The list the page shows: one entry per tool, in the order of `tools/list`. */

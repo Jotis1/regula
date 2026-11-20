@@ -14,10 +14,10 @@
 
 ## 2. MCP
 
-- [ ] 2.1 `data.ts` carga `/foundations.json`, y `mcp-fixture.ts` lo sirve. Comprobar con `test/mcp.test.ts`
-- [ ] 2.2 `list_foundations` y `get_foundation` en `tools.ts` (D5), con su texto en `guide.ts`. Comprobar con `test/mcp-tools.test.ts`: listar, `Color`, `tipografía` y `colour`, que da error y propone `color`
-- [ ] 2.3 El grupo `foundations` en `search`, una entrada por sección. Comprobar con `search` y `semánticos` en `test/mcp-tools.test.ts`
-- [ ] 2.4 El test del servidor con un cliente MCP real: `tools/list` trae las dos herramientas, y cada una tiene una llamada con éxito y otra con error. Comprobar con `bun run --cwd apps/docs test`
+- [x] 2.1 `data.ts` carga `/foundations.json`, y `mcp-fixture.ts` lo sirve. Comprobar con `test/mcp.test.ts`
+- [x] 2.2 `list_foundations` y `get_foundation` en `tools.ts` (D5), con su texto en `guide.ts`. Comprobar con `test/mcp-tools.test.ts`: listar, `Color`, `tipografía` y `colour`, que da error y propone `color`
+- [x] 2.3 El grupo `foundations` en `search`, una entrada por sección. Comprobar con `search` y `semánticos` en `test/mcp-tools.test.ts`
+- [x] 2.4 El test del servidor con un cliente MCP real: `tools/list` trae las dos herramientas, y cada una tiene una llamada con éxito y otra con error (`list_foundations` no tiene parámetros, así que solo la de éxito). Comprobar con `bun run --cwd apps/docs test`
 
 ## 3. Versión del contrato
 
