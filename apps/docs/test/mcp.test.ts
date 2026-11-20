@@ -9,7 +9,7 @@ import { TOOLS } from "../src/features/mcp/tools";
 import { data, VERSION } from "./mcp-fixture";
 
 const URL_MCP = "https://regula.jotis.me/mcp";
-const options = { version: VERSION, load: async () => data };
+const options = { load: async () => data };
 
 async function connect() {
 	const transport = new StreamableHTTPClientTransport(new URL(URL_MCP), {
@@ -24,9 +24,9 @@ const text = (result: Awaited<ReturnType<Client["callTool"]>>) =>
 	(result.content as { type: string; text: string }[])[0]?.text ?? "";
 
 describe("conexión", () => {
-	it("initialize devuelve el nombre, la versión y la capacidad de herramientas, sin credenciales", async () => {
+	it("initialize devuelve el nombre, la versión del contrato y la capacidad de herramientas, sin credenciales", async () => {
 		const client = await connect();
-		expect(client.getServerVersion()).toMatchObject({ name: SERVER_NAME, version: VERSION });
+		expect(client.getServerVersion()).toMatchObject({ name: SERVER_NAME, version: "1.1.0" });
 		expect(client.getServerCapabilities()).toHaveProperty("tools");
 		await client.close();
 	});
@@ -164,7 +164,6 @@ describe("errores sin trazas (SEC-020)", () => {
 
 	it("si los datos no cargan, la herramienta da un error con el mensaje y sin la traza", async () => {
 		const failing = {
-			version: VERSION,
 			load: async () => {
 				throw new Error("No se pudo descargar /components.json");
 			},

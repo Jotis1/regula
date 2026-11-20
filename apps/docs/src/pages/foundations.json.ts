@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import react from "@jotis-me/react/package.json";
 import { type } from "@jotis-me/tokens";
 import type { APIRoute } from "astro";
+import { published } from "../features/mcp/contract";
 import { foundationsJson } from "../lib/foundations-json";
 import { tokenSections } from "../lib/tokens";
 
@@ -18,14 +19,16 @@ export const GET: APIRoute = async ({ site }) => {
 		),
 	);
 	return Response.json(
-		foundationsJson(
-			entries,
-			{
-				anchorsOf: (entry) => anchors.get(entry.id) ?? [],
-				tokenSectionsOf: (id) => tokenSections(id, type.groups),
-			},
-			react.version,
-			(site as URL).href,
+		published(
+			foundationsJson(
+				entries,
+				{
+					anchorsOf: (entry) => anchors.get(entry.id) ?? [],
+					tokenSectionsOf: (id) => tokenSections(id, type.groups),
+				},
+				react.version,
+				(site as URL).href,
+			),
 		),
 	);
 };
