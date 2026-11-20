@@ -89,13 +89,12 @@ El servidor SHALL tener `search`, que busca un texto en normas, componentes, fun
 - **THEN** el grupo de fundamentos trae el de color y dice que su detalle sale de `get_foundation`
 
 ### Requirement: Datos públicos en JSON
-La web SHALL publicar en el build, desde las mismas fuentes que sus páginas:
-- `/components.json`: cada componente con su grupo, su ficha, sus props y sus atributos nativos reenviados;
+La web SHALL publicar, desde las fuentes de sus páginas:
+- `/components.json`: cada componente con su grupo, su ficha, sus props y sus atributos nativos;
 - `/tokens.json`: los tokens con sus valores por tema;
-- `/icons.json`: las entradas de cada galería con su import;
-- `/foundations.json`: los fundamentos de diseño con sus secciones (requisito «Fundamentos en JSON»).
+- `/icons.json`: las entradas de cada galería con su import.
 
-Los nombres de campo SHALL ir en inglés. Cada JSON SHALL llevar la versión de Regula que documenta (`version`) y la del contrato (`apiVersion`, requisito «Versión del contrato»). El MCP SHALL responder con estos datos y con `/standards.json`, sin otra fuente.
+Los nombres de campo SHALL ir en inglés. Cada JSON SHALL llevar `version` (la de Regula) y `apiVersion` (la del contrato). El MCP SHALL responder con ellos, con `/foundations.json` y con `/standards.json`, sin otra fuente.
 
 #### Scenario: Mismo dato en la web y en el MCP
 - **WHEN** cambia la descripción de `Button` en su ficha y se despliega
