@@ -45,7 +45,7 @@
 		"@untitledui/icons": "0.0.23",
 		"clsx": "^2.1.1",
 		"react-aria-components": "^1.22.1",
-		"tailwind-merge": "^3.7.0"
+		"tailwind-merge": "^3.7.1"
 	},
 	"peerDependencies": {
 		"react": "^19.3.1",
@@ -59,11 +59,11 @@
 		"@arethetypeswrong/cli": "^0.18.5",
 		"@tailwindcss/node": "^4.3.5",
 		"@testing-library/react": "^16.3.3",
-		"@testing-library/user-event": "^14.6.10",
+		"@testing-library/user-event": "^14.6.13",
 		"@types/node": "^26.6.6",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
-		"axe-core": "^4.14.0",
+		"axe-core": "^4.14.1",
 		"jsdom": "^31.0.1",
 		"publint": "^0.3.25",
 		"vitest": "^5",
